@@ -2,10 +2,12 @@ package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.ModBlocks;
 import com.aranaira.magichem.block.entity.ModBlockEntities;
+import com.aranaira.magichem.gui.MagicCircleScreen;
 import com.aranaira.magichem.gui.ModMenuTypes;
 import com.aranaira.magichem.item.ModItems;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.BlockItem;
@@ -104,6 +106,7 @@ public class MagiChemMod
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.MAGIC_CIRCLE.get(), RenderType.cutout());
+            MenuScreens.register(ModMenuTypes.MAGIC_CIRCLE_MENU.get(), MagicCircleScreen::new);
         }
     }
 }

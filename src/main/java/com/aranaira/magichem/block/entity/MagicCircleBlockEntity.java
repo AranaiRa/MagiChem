@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.gui.MagicCircleMenu;
 import com.aranaira.magichem.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,6 +41,12 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
                 return switch (index) {
                     case 0 -> MagicCircleBlockEntity.this.progressReagentTier1;
                     case 1 -> MagicCircleBlockEntity.this.maxProgressReagentTier1;
+                    case 2 -> MagicCircleBlockEntity.this.progressReagentTier2;
+                    case 3 -> MagicCircleBlockEntity.this.maxProgressReagentTier2;
+                    case 4 -> MagicCircleBlockEntity.this.progressReagentTier3;
+                    case 5 -> MagicCircleBlockEntity.this.maxProgressReagentTier3;
+                    case 6 -> MagicCircleBlockEntity.this.progressReagentTier4;
+                    case 7 -> MagicCircleBlockEntity.this.maxProgressReagentTier4;
                     default -> 0;
                 };
             }
@@ -49,12 +56,18 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
                 switch (index) {
                     case 0 -> MagicCircleBlockEntity.this.progressReagentTier1 = value;
                     case 1 -> MagicCircleBlockEntity.this.maxProgressReagentTier1 = value;
+                    case 2 -> MagicCircleBlockEntity.this.progressReagentTier2 = value;
+                    case 3 -> MagicCircleBlockEntity.this.maxProgressReagentTier2 = value;
+                    case 4 -> MagicCircleBlockEntity.this.progressReagentTier3 = value;
+                    case 5 -> MagicCircleBlockEntity.this.maxProgressReagentTier3 = value;
+                    case 6 -> MagicCircleBlockEntity.this.progressReagentTier4 = value;
+                    case 7 -> MagicCircleBlockEntity.this.maxProgressReagentTier4 = value;
                 }
             }
 
             @Override
             public int getCount() {
-                return 2;
+                return 4;
             }
         };
     }
@@ -64,16 +77,23 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     protected final ContainerData data;
     private int progressReagentTier1 = 0;
     private int maxProgressReagentTier1 = 1280;
+    private int progressReagentTier2 = 0;
+    private int maxProgressReagentTier2 = 1280;
+    private int progressReagentTier3 = 0;
+    private int maxProgressReagentTier3 = 1280;
+    private int progressReagentTier4 = 0;
+    private int maxProgressReagentTier4 = 1280;
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("magic_circle");
+        //return Component.literal("Magic Circle");
+        return Component.translatable("block.magichem.magic_circle");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return null;
+        return new MagicCircleMenu(id, inventory, this, this.data);
     }
 
     @Override
@@ -155,6 +175,9 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     private void resetProgress(int tier) {
         switch (tier) {
             case 1: progressReagentTier1 = 0;
+            case 2: progressReagentTier2 = 0;
+            case 3: progressReagentTier3 = 0;
+            case 4: progressReagentTier4 = 0;
         }
     }
 

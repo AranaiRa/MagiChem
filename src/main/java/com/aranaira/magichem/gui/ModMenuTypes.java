@@ -15,8 +15,8 @@ public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, MagiChemMod.MODID);
 
-    //public static final RegistryObject<MenuType<MagicCircleMenu>> MAGIC_CIRCLE_MENU =
-    //        registerMenuType(MagicCircleMenu::new, "magic_circle_menu");
+    public static final RegistryObject<MenuType<MagicCircleMenu>> MAGIC_CIRCLE_MENU =
+            registerMenuType(MagicCircleMenu::new, "magic_circle_menu");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
