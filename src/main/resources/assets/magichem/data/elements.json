@@ -1,0 +1,194 @@
+{
+  "elements": [
+    {
+      "name": "quintessence",
+      "atomic_number": 1,
+      "abbreviation": "◈",
+      "group": "1",
+      "period": "1",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+	{
+      "name": "ender",
+      "atomic_number": 11,
+      "abbreviation": "ʡ",
+      "group": "2",
+      "period": "2",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+	{
+      "name": "earth",
+      "atomic_number": 12,
+      "abbreviation": "🜃",
+      "group": "2",
+      "period": "2",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+	{
+      "name": "water",
+      "atomic_number": 13,
+      "abbreviation": "🜄",
+      "group": "2",
+      "period": "3",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+	{
+      "name": "air",
+      "atomic_number": 14,
+      "abbreviation": "🜁",
+      "group": "2",
+      "period": "4",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+	{
+      "name": "fire",
+      "atomic_number": 15,
+      "abbreviation": "🜂",
+      "group": "2",
+      "period": "5",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+	{
+      "name": "arcane",
+      "atomic_number": 16,
+      "abbreviation": "୬",
+      "group": "2",
+      "period": "6",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "conceptual",
+      "atomic_number": 41,
+      "abbreviation": "Ξ",
+      "group": "3",
+      "period": "1",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "verdant",
+      "atomic_number": 42,
+      "abbreviation": "Θ",
+      "group": "3",
+      "period": "2",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "fleshy",
+      "atomic_number": 43,
+      "abbreviation": "Π",
+      "group": "3",
+      "period": "3",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "nourishing",
+      "atomic_number": 44,
+      "abbreviation": "Ψ",
+      "group": "3",
+      "period": "4",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "rotten",
+      "atomic_number": 45,
+      "abbreviation": "Σ",
+      "group": "3",
+      "period": "5",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "mineral",
+      "atomic_number": 46,
+      "abbreviation": "Γ",
+      "group": "3",
+      "period": "6",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "wrought",
+      "atomic_number": 47,
+      "abbreviation": "Φ",
+      "group": "3",
+      "period": "7",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "precious",
+      "atomic_number": 48,
+      "abbreviation": "Ω",
+      "group": "3",
+      "period": "8",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "nigredo",
+      "atomic_number": 101,
+      "abbreviation": "⎏",
+      "group": "4",
+      "period": "1",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "albedo",
+      "atomic_number": 103,
+      "abbreviation": "⎑",
+      "group": "4",
+      "period": "2",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "citrinitas",
+      "atomic_number": 105,
+      "abbreviation": "⎐",
+      "group": "4",
+      "period": "3",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+    {
+      "name": "rubedo",
+      "atomic_number": 107,
+      "abbreviation": "⎒",
+      "group": "4",
+      "period": "4",
+      "matter_state": "solid",
+      "metal_type": "nonmetal",
+      "color": "FFFFFF"
+    },
+  ]
+}
