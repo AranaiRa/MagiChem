@@ -39,9 +39,9 @@ public class MagicCircleScreen extends AbstractContainerScreen<MagicCircleMenu> 
     }
 
     private void renderProgressBar(int tier, PoseStack poseStack, int x, int y) {
-        if(menu.isCrafting()) {
+        //if(menu.isCrafting()) {
             blit(poseStack, x, y, 0, 253, menu.getScaledProgress(tier), 3);
-        }
+        //}
     }
 
     @Override

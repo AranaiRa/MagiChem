@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "magichem:tarnished_silver_lump",
+  "output": "magichem:silver_dust",
+  "output_quantity": 1
+}

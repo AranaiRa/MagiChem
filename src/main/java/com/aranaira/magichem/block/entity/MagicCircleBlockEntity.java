@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.gui.MagicCircleMenu;
 import com.aranaira.magichem.item.ModItems;
+import com.aranaira.magichem.util.ModEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,6 +24,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,13 +43,9 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
             public int get(int index) {
                 return switch (index) {
                     case 0 -> MagicCircleBlockEntity.this.progressReagentTier1;
-                    case 1 -> MagicCircleBlockEntity.this.maxProgressReagentTier1;
-                    case 2 -> MagicCircleBlockEntity.this.progressReagentTier2;
-                    case 3 -> MagicCircleBlockEntity.this.maxProgressReagentTier2;
-                    case 4 -> MagicCircleBlockEntity.this.progressReagentTier3;
-                    case 5 -> MagicCircleBlockEntity.this.maxProgressReagentTier3;
-                    case 6 -> MagicCircleBlockEntity.this.progressReagentTier4;
-                    case 7 -> MagicCircleBlockEntity.this.maxProgressReagentTier4;
+                    case 1 -> MagicCircleBlockEntity.this.progressReagentTier2;
+                    case 2 -> MagicCircleBlockEntity.this.progressReagentTier3;
+                    case 3 -> MagicCircleBlockEntity.this.progressReagentTier4;
                     default -> 0;
                 };
             }
@@ -55,13 +54,9 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
             public void set(int index, int value) {
                 switch (index) {
                     case 0 -> MagicCircleBlockEntity.this.progressReagentTier1 = value;
-                    case 1 -> MagicCircleBlockEntity.this.maxProgressReagentTier1 = value;
-                    case 2 -> MagicCircleBlockEntity.this.progressReagentTier2 = value;
-                    case 3 -> MagicCircleBlockEntity.this.maxProgressReagentTier2 = value;
-                    case 4 -> MagicCircleBlockEntity.this.progressReagentTier3 = value;
-                    case 5 -> MagicCircleBlockEntity.this.maxProgressReagentTier3 = value;
-                    case 6 -> MagicCircleBlockEntity.this.progressReagentTier4 = value;
-                    case 7 -> MagicCircleBlockEntity.this.maxProgressReagentTier4 = value;
+                    case 1 -> MagicCircleBlockEntity.this.progressReagentTier2 = value;
+                    case 2 -> MagicCircleBlockEntity.this.progressReagentTier3 = value;
+                    case 3 -> MagicCircleBlockEntity.this.progressReagentTier4 = value;
                 }
             }
 
@@ -75,14 +70,20 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     protected final ContainerData data;
-    private int progressReagentTier1 = 0;
-    private int maxProgressReagentTier1 = 1280;
-    private int progressReagentTier2 = 0;
-    private int maxProgressReagentTier2 = 1280;
-    private int progressReagentTier3 = 0;
-    private int maxProgressReagentTier3 = 1280;
-    private int progressReagentTier4 = 0;
-    private int maxProgressReagentTier4 = 1280;
+    private int
+            progressReagentTier1 = 0,
+            progressReagentTier2 = 0,
+            progressReagentTier3 = 0,
+            progressReagentTier4 = 0;
+    private static int
+            maxProgressReagentTier1 = 1280,
+            maxProgressReagentTier2 = 1280,
+            maxProgressReagentTier3 = 1280,
+            maxProgressReagentTier4 = 1280;
+
+    public static final RegistryObject<Item>
+            REAGENT_TIER1 =  ModItems.SILVER_DUST,
+            WASTE_TIER1 =  ModItems.TARNISHED_SILVER_LUMP;
 
     @Override
     public Component getDisplayName() {
@@ -138,10 +139,13 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     public void dropInventoryToWorld() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots());
+        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
         for (int i=0; i<itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
+
+        //Make sure we don't void reagents entirely if the block is broken; always drop waste of a currently "burning" reagent
+        if(progressReagentTier1 > 0) inventory.addItem(new ItemStack(WASTE_TIER1.get(), 1));
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
@@ -151,17 +155,18 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
             return;
         }
 
-        if(hasReagent(1, entity)) {
-            entity.progressReagentTier1++;
+        if(hasReagent(1, entity) || entity.progressReagentTier1 > 0) {
+            entity.incrementProgress(1);
             setChanged(level, pos, state);
 
             if(entity.progressReagentTier1 >= entity.maxProgressReagentTier1) {
                 ejectWaste(1, level, entity);
-            } else {
                 entity.resetProgress(1);
-                setChanged(level, pos, state);
             }
+            setChanged(level, pos, state);
         }
+
+        //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
     }
 
     /* GENERATOR REAGENT USE LOGIC */
@@ -171,7 +176,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
 
         switch (tier) {
             case 1: {
-                wasteProduct = new ItemStack(ModItems.TARNISHED_SILVER_LUMP.get(), 1);
+                wasteProduct = new ItemStack(WASTE_TIER1.get(), 1);
             }
         }
 
@@ -188,6 +193,40 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         }
     }
 
+    private void incrementProgress(int tier) {
+        switch (tier) {
+            case 1: progressReagentTier1++;
+            case 2: progressReagentTier2++;
+            case 3: progressReagentTier3++;
+            case 4: progressReagentTier4++;
+        }
+    }
+
+    public static int getMaxProgressByTier(int tier) {
+        int query = -1;
+
+        switch (tier) {
+            case 1: query = maxProgressReagentTier1;
+            case 2: query = maxProgressReagentTier2;
+            case 3: query = maxProgressReagentTier3;
+            case 4: query = maxProgressReagentTier4;
+        }
+
+        return query;
+    }
+
+    public int getProgressByTier(int tier) {
+        int query = -1;
+
+        switch (tier) {
+            case 1: query = progressReagentTier1;
+            case 2: query = progressReagentTier2;
+            case 3: query = progressReagentTier3;
+            case 4: query = progressReagentTier4;
+        }
+        return query;
+    }
+
     private static boolean hasReagent(int reagentTier, MagicCircleBlockEntity entity) {
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i=0; i<entity.itemHandler.getSlots(); i++) {
@@ -198,10 +237,30 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
 
         switch(reagentTier) {
             case 1: {
-                query = entity.itemHandler.getStackInSlot(1).getItem() == ModItems.SILVER_DUST.get();
+                query = entity.itemHandler.getStackInSlot(0).getItem() == REAGENT_TIER1.get();
+                //Consume the reagent if we don't have an existing one "burning"
+                if(query && entity.progressReagentTier1 == 0) {
+                    entity.itemHandler.getStackInSlot(0).setCount(0);
+                    entity.incrementProgress(1);
+                }
             }
         }
 
         return query;
     }
+
+    /* FE STUFF */
+    private static final int
+        ENERGY_GEN_1_REAGENT = 3,
+        ENERGY_GEN_2_REAGENT = 12,
+        ENERGY_GEN_3_REAGENT = 48,
+        ENERGY_GEN_4_REAGENT = 200,
+        ENERGY_MAX_MULTIPLIER = 3;
+
+    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+        @Override
+        public void onEnergyChanged() {
+            setChanged();
+        }
+    };
 }

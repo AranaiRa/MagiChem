@@ -37,6 +37,8 @@ public class MagicCircleMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, 2, 98, 32));
             this.addSlot(new SlotItemHandler(handler, 3, 134, 32));
         });
+
+        addDataSlots(data);
     }
 
     @Override
@@ -58,17 +60,15 @@ public class MagicCircleMenu extends AbstractContainerMenu {
         }
     }
 
-    public boolean isCrafting() {
-        return data.get(0) > 0;
-    }
-
     public int getScaledProgress(int tier) {
         int BAR_WIDTH = 22;
+        int progress = data.get(tier-1);
+        int max = MagicCircleBlockEntity.getMaxProgressByTier(tier);
 
-        int inputData = data.get((tier-1)*2);
-        int maxData = data.get((tier-1)*2 + 1);
-
-        return maxData != 0 && inputData != 0 ? inputData * BAR_WIDTH / maxData : 0;
+        if(max == 0 || max == -1)
+            return -1;
+        else
+            return (max - progress) * BAR_WIDTH / max;
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
