@@ -18,8 +18,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -98,7 +98,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
 
@@ -120,7 +120,10 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
-
+        nbt.putInt("magic_circle.progressReagentTier1", this.progressReagentTier1);
+        nbt.putInt("magic_circle.progressReagentTier2", this.progressReagentTier2);
+        nbt.putInt("magic_circle.progressReagentTier3", this.progressReagentTier3);
+        nbt.putInt("magic_circle.progressReagentTier4", this.progressReagentTier4);
         super.saveAdditional(nbt);
     }
 
@@ -128,6 +131,10 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        progressReagentTier1 = nbt.getInt("magic_circle.progressReagentTier1");
+        progressReagentTier2 = nbt.getInt("magic_circle.progressReagentTier2");
+        progressReagentTier3 = nbt.getInt("magic_circle.progressReagentTier3");
+        progressReagentTier4 = nbt.getInt("magic_circle.progressReagentTier4");
     }
 
     public void dropInventoryToWorld() {
