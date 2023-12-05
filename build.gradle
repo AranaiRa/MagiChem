@@ -159,6 +159,13 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
+mixin {
+    // AP Settings
+    disableTargetValidator = true
+    overwriteErrorLevel = 'error'
+    quiet
+}
+
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
 // When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.

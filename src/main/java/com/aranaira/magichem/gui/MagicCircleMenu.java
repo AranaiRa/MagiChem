@@ -68,7 +68,11 @@ public class MagicCircleMenu extends AbstractContainerMenu {
         if(max == 0 || max == -1)
             return -1;
         else
-            return (max - progress) * BAR_WIDTH / max;
+            return (max - progress + 1) * BAR_WIDTH / max;
+    }
+
+    public boolean isCrafting(int tier) {
+        return data.get(tier-1) > 0;
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons

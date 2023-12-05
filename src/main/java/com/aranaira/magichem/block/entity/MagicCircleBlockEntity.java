@@ -215,18 +215,6 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         return query;
     }
 
-    public int getProgressByTier(int tier) {
-        int query = -1;
-
-        switch (tier) {
-            case 1: query = progressReagentTier1;
-            case 2: query = progressReagentTier2;
-            case 3: query = progressReagentTier3;
-            case 4: query = progressReagentTier4;
-        }
-        return query;
-    }
-
     private static boolean hasReagent(int reagentTier, MagicCircleBlockEntity entity) {
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i=0; i<entity.itemHandler.getSlots(); i++) {
