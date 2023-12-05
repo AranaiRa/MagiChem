@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.custom.DistilleryBlock;
 import com.aranaira.magichem.block.custom.MagicCircleBlock;
 import com.aranaira.magichem.item.ModCreativeModeTab;
 import com.aranaira.magichem.item.ModItems;
@@ -22,6 +23,11 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> MAGIC_CIRCLE = registerBlock("magic_circle",
             () -> new MagicCircleBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(6f).noOcclusion()), ModCreativeModeTab.MAGICHEM_TAB
+    );
+
+    public static final RegistryObject<Block> DISTILLERY = registerBlock("distillery",
+            () -> new DistilleryBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(6f).noOcclusion()), ModCreativeModeTab.MAGICHEM_TAB
     );
 

@@ -1,0 +1,8 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 2
+
+newmtl ALEMBIC
+map_Kd magichem:block/copper_alembic
+
+newmtl DEVICE_BASE
+map_Kd magichem:block/magic_circle

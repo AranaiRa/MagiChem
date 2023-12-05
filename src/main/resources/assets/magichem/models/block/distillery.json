@@ -1,0 +1,24 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "textures": {
+    "particle": "magichem:block/magic_circle_breakparticle"
+  },
+  "parts": {
+    "part1": {
+      "loader": "forge:obj",
+      "detectCullableFaces": false,
+      "diffuseLighting": true,
+      "flip-v": true,
+      "ambientToFullbright": false,
+      "model": "magichem:models/obj/alembic.obj"
+    }
+  },
+  "display": {
+    "gui": {
+      "rotation": [29, 45, 0],
+      "scale": [0.6, 0.6, 0.6],
+      "translation": [0, 0, 0]
+    }
+  }
+}
