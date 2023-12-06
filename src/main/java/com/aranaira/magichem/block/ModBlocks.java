@@ -31,6 +31,11 @@ public class ModBlocks {
                     .strength(6f).noOcclusion()), ModCreativeModeTab.MAGICHEM_TAB
     );
 
+    public static final RegistryObject<Block> POWER_SPIKE = registerBlock("power_spike",
+            () -> new DistilleryBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(6f).noOcclusion()), ModCreativeModeTab.MAGICHEM_TAB
+    );
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, tab);

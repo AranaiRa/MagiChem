@@ -12,8 +12,16 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MagiChemMod.MODID);
 
+    public static final RegistryObject<BlockEntityType<DistilleryBlockEntity>> DISTILLERY = BLOCK_ENTITIES.register("distillery", () ->
+            BlockEntityType.Builder.of(DistilleryBlockEntity::new, ModBlocks.DISTILLERY.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<MagicCircleBlockEntity>> MAGIC_CIRCLE = BLOCK_ENTITIES.register("magic_circle", () ->
             BlockEntityType.Builder.of(MagicCircleBlockEntity::new, ModBlocks.MAGIC_CIRCLE.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<PowerSpikeBlockEntity>> POWER_SPIKE = BLOCK_ENTITIES.register("power_spike", () ->
+            BlockEntityType.Builder.of(PowerSpikeBlockEntity::new, ModBlocks.POWER_SPIKE.get()).build(null)
     );
 
     public static void register(IEventBus eventBus) {

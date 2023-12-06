@@ -1,0 +1,8 @@
+# Blender MTL File: 'power spike.blend'
+# Material Count: 2
+
+newmtl CHIMERITE
+map_Kd mna:block/oreblockchimerite
+
+newmtl SILVER
+map_Kd mna:block/artifice/decoration/transmuted_silver_block_side

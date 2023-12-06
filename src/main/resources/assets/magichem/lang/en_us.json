@@ -4,6 +4,7 @@
 
   "block.magichem.distillery": "Distillery",
   "block.magichem.magic_circle": "Magic Circle",
+  "block.magichem.power_spike": "Power Spike",
 
   "itemGroup.magichemtab" : "MagiChem"
 }
