@@ -27,6 +27,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.shadowed.eliotlash.mclib.utils.MathHelper;
 
 public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
@@ -166,6 +167,8 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
             setChanged(level, pos, state);
         }
 
+        generatePower(entity);
+
         //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
     }
 
@@ -251,4 +254,24 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
             setChanged();
         }
     };
+
+    private static void generatePower(MagicCircleBlockEntity entity) {
+        int reagentCount = 0;
+        int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
+        if(entity.progressReagentTier1 > 0) reagentCount++;
+        if(entity.progressReagentTier2 > 0) reagentCount++;
+        if(entity.progressReagentTier3 > 0) reagentCount++;
+        if(entity.progressReagentTier4 > 0) reagentCount++;
+
+        switch(reagentCount) {
+            case 1: {
+                int cap = ENERGY_GEN_1_REAGENT * ENERGY_MAX_MULTIPLIER;
+                if(currentEnergy < cap) {
+                    int mod = currentEnergy + ENERGY_GEN_1_REAGENT;
+                    if(currentEnergy > cap) mod = cap - currentEnergy;
+                    entity.ENERGY_STORAGE.receiveEnergy(mod,false);
+                }
+            }
+        }
+    }
 }

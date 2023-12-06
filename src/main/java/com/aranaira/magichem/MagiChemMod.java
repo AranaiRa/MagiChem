@@ -2,6 +2,7 @@ package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.ModBlocks;
 import com.aranaira.magichem.block.entity.ModBlockEntities;
+import com.aranaira.magichem.gui.DistilleryScreen;
 import com.aranaira.magichem.gui.MagicCircleScreen;
 import com.aranaira.magichem.gui.ModMenuTypes;
 import com.aranaira.magichem.item.ModItems;
@@ -107,6 +108,7 @@ public class MagiChemMod
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
             ItemBlockRenderTypes.setRenderLayer(ModBlocks.MAGIC_CIRCLE.get(), RenderType.cutout());
             MenuScreens.register(ModMenuTypes.MAGIC_CIRCLE_MENU.get(), MagicCircleScreen::new);
+            MenuScreens.register(ModMenuTypes.DISTILLERY_MENU.get(), DistilleryScreen::new);
         }
     }
 }

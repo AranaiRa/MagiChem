@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.gui.MagicCircleMenu;
+import com.aranaira.magichem.gui.DistilleryMenu;
 import com.aranaira.magichem.item.ModItems;
 import com.aranaira.magichem.util.ModEnergyStorage;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(21) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -37,15 +37,12 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
     };
 
     public DistilleryBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.MAGIC_CIRCLE.get(), pos, state);
+        super(ModBlockEntities.DISTILLERY.get(), pos, state);
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {
-                    case 0 -> DistilleryBlockEntity.this.progressReagentTier1;
-                    case 1 -> DistilleryBlockEntity.this.progressReagentTier2;
-                    case 2 -> DistilleryBlockEntity.this.progressReagentTier3;
-                    case 3 -> DistilleryBlockEntity.this.progressReagentTier4;
+                    case 0 -> DistilleryBlockEntity.this.progress;
                     default -> 0;
                 };
             }
@@ -53,10 +50,7 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0 -> DistilleryBlockEntity.this.progressReagentTier1 = value;
-                    case 1 -> DistilleryBlockEntity.this.progressReagentTier2 = value;
-                    case 2 -> DistilleryBlockEntity.this.progressReagentTier3 = value;
-                    case 3 -> DistilleryBlockEntity.this.progressReagentTier4 = value;
+                    case 0 -> DistilleryBlockEntity.this.progress = value;
                 }
             }
 
@@ -71,30 +65,19 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
 
     protected final ContainerData data;
     private int
-            progressReagentTier1 = 0,
-            progressReagentTier2 = 0,
-            progressReagentTier3 = 0,
-            progressReagentTier4 = 0;
+            progress = 0;
     private static int
-            maxProgressReagentTier1 = 1280,
-            maxProgressReagentTier2 = 1280,
-            maxProgressReagentTier3 = 1280,
-            maxProgressReagentTier4 = 1280;
-
-    public static final RegistryObject<Item>
-            REAGENT_TIER1 =  ModItems.SILVER_DUST,
-            WASTE_TIER1 =  ModItems.TARNISHED_SILVER_LUMP;
+            maxProgress = 60;
 
     @Override
     public Component getDisplayName() {
-        //return Component.literal("Magic Circle");
-        return Component.translatable("block.magichem.magic_circle");
+        return Component.translatable("block.magichem.distillery");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new MagicCircleMenu(id, inventory, this, this.data);
+        return new DistilleryMenu(id, inventory, this, this.data);
     }
 
     @Override
@@ -121,10 +104,7 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("magic_circle.progressReagentTier1", this.progressReagentTier1);
-        nbt.putInt("magic_circle.progressReagentTier2", this.progressReagentTier2);
-        nbt.putInt("magic_circle.progressReagentTier3", this.progressReagentTier3);
-        nbt.putInt("magic_circle.progressReagentTier4", this.progressReagentTier4);
+        nbt.putInt("distillery.progress", this.progress);
         super.saveAdditional(nbt);
     }
 
@@ -132,10 +112,7 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progressReagentTier1 = nbt.getInt("magic_circle.progressReagentTier1");
-        progressReagentTier2 = nbt.getInt("magic_circle.progressReagentTier2");
-        progressReagentTier3 = nbt.getInt("magic_circle.progressReagentTier3");
-        progressReagentTier4 = nbt.getInt("magic_circle.progressReagentTier4");
+        progress = nbt.getInt("distillery.progress");
     }
 
     public void dropInventoryToWorld() {
@@ -143,9 +120,6 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
         for (int i=0; i<itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
-
-        //Make sure we don't void reagents entirely if the block is broken; always drop waste of a currently "burning" reagent
-        if(progressReagentTier1 > 0) inventory.addItem(new ItemStack(WASTE_TIER1.get(), 1));
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
@@ -155,86 +129,15 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
             return;
         }
 
-        if(hasReagent(1, entity) || entity.progressReagentTier1 > 0) {
-            entity.incrementProgress(1);
-            setChanged(level, pos, state);
-
-            if(entity.progressReagentTier1 >= entity.maxProgressReagentTier1) {
-                ejectWaste(1, level, entity);
-                entity.resetProgress(1);
-            }
-            setChanged(level, pos, state);
-        }
-
         //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
     }
 
-    /* GENERATOR REAGENT USE LOGIC */
-
-    private static void ejectWaste(int tier, Level level, DistilleryBlockEntity entity) {
-        ItemStack wasteProduct = null;
-
-        switch (tier) {
-            case 1: {
-                wasteProduct = new ItemStack(WASTE_TIER1.get(), 1);
-            }
-        }
-
-        if(wasteProduct != null)
-            Containers.dropItemStack(level, entity.worldPosition.getX(), entity.worldPosition.getY()+0.125, entity.worldPosition.getZ(), wasteProduct);
+    private void resetProgress() {
+        progress = 0;
     }
 
-    private void resetProgress(int tier) {
-        switch (tier) {
-            case 1: progressReagentTier1 = 0;
-            case 2: progressReagentTier2 = 0;
-            case 3: progressReagentTier3 = 0;
-            case 4: progressReagentTier4 = 0;
-        }
-    }
-
-    private void incrementProgress(int tier) {
-        switch (tier) {
-            case 1: progressReagentTier1++;
-            case 2: progressReagentTier2++;
-            case 3: progressReagentTier3++;
-            case 4: progressReagentTier4++;
-        }
-    }
-
-    public static int getMaxProgressByTier(int tier) {
-        int query = -1;
-
-        switch (tier) {
-            case 1: query = maxProgressReagentTier1;
-            case 2: query = maxProgressReagentTier2;
-            case 3: query = maxProgressReagentTier3;
-            case 4: query = maxProgressReagentTier4;
-        }
-
-        return query;
-    }
-
-    private static boolean hasReagent(int reagentTier, DistilleryBlockEntity entity) {
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i=0; i<entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        boolean query = false;
-
-        switch(reagentTier) {
-            case 1: {
-                query = entity.itemHandler.getStackInSlot(0).getItem() == REAGENT_TIER1.get();
-                //Consume the reagent if we don't have an existing one "burning"
-                if(query && entity.progressReagentTier1 == 0) {
-                    entity.itemHandler.getStackInSlot(0).setCount(0);
-                    entity.incrementProgress(1);
-                }
-            }
-        }
-
-        return query;
+    private void incrementProgress() {
+        progress++;
     }
 
     /* FE STUFF */

@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.custom;
 
-import com.aranaira.magichem.block.entity.MagicCircleBlockEntity;
+import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -50,8 +50,8 @@ public class DistilleryBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof MagicCircleBlockEntity) {
-                ((MagicCircleBlockEntity) blockEntity).dropInventoryToWorld();
+            if(blockEntity instanceof DistilleryBlockEntity) {
+                ((DistilleryBlockEntity) blockEntity).dropInventoryToWorld();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
@@ -61,10 +61,10 @@ public class DistilleryBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof MagicCircleBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (MagicCircleBlockEntity)entity, pos);
+            if(entity instanceof DistilleryBlockEntity) {
+                NetworkHooks.openScreen((ServerPlayer)player, (DistilleryBlockEntity)entity, pos);
             } else {
-                throw new IllegalStateException("MagicCircleBlockEntity container provider is missing!");
+                throw new IllegalStateException("DistilleryBlockEntity container provider is missing!");
             }
         }
 
@@ -74,13 +74,13 @@ public class DistilleryBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new MagicCircleBlockEntity(pos, state);
+        return new DistilleryBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.MAGIC_CIRCLE.get(),
-                MagicCircleBlockEntity::tick);
+        return createTickerHelper(type, ModBlockEntities.DISTILLERY.get(),
+                DistilleryBlockEntity::tick);
     }
 }
