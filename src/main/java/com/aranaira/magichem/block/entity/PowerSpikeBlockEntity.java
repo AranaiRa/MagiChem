@@ -28,7 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PowerSpikeBlockEntity extends BlockEntity implements MenuProvider {
+public class PowerSpikeBlockEntity extends BlockEntity {
     private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -37,7 +37,7 @@ public class PowerSpikeBlockEntity extends BlockEntity implements MenuProvider {
     };
 
     public PowerSpikeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.MAGIC_CIRCLE.get(), pos, state);
+        super(ModBlockEntities.POWER_SPIKE.get(), pos, state);
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -81,22 +81,6 @@ public class PowerSpikeBlockEntity extends BlockEntity implements MenuProvider {
             maxProgressReagentTier3 = 1280,
             maxProgressReagentTier4 = 1280;
 
-    public static final RegistryObject<Item>
-            REAGENT_TIER1 =  ModItems.SILVER_DUST,
-            WASTE_TIER1 =  ModItems.TARNISHED_SILVER_LUMP;
-
-    @Override
-    public Component getDisplayName() {
-        //return Component.literal("Magic Circle");
-        return Component.translatable("block.magichem.magic_circle");
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new MagicCircleMenu(id, inventory, this, this.data);
-    }
-
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
@@ -138,103 +122,12 @@ public class PowerSpikeBlockEntity extends BlockEntity implements MenuProvider {
         progressReagentTier4 = nbt.getInt("magic_circle.progressReagentTier4");
     }
 
-    public void dropInventoryToWorld() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
-        for (int i=0; i<itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
-
-        //Make sure we don't void reagents entirely if the block is broken; always drop waste of a currently "burning" reagent
-        if(progressReagentTier1 > 0) inventory.addItem(new ItemStack(WASTE_TIER1.get(), 1));
-
-        Containers.dropContents(this.level, this.worldPosition, inventory);
-    }
-
     public static void tick(Level level, BlockPos pos, BlockState state, PowerSpikeBlockEntity entity) {
         if(level.isClientSide()) {
             return;
         }
 
-        if(hasReagent(1, entity) || entity.progressReagentTier1 > 0) {
-            entity.incrementProgress(1);
-            setChanged(level, pos, state);
-
-            if(entity.progressReagentTier1 >= entity.maxProgressReagentTier1) {
-                ejectWaste(1, level, entity);
-                entity.resetProgress(1);
-            }
-            setChanged(level, pos, state);
-        }
-
         //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
-    }
-
-    /* GENERATOR REAGENT USE LOGIC */
-
-    private static void ejectWaste(int tier, Level level, PowerSpikeBlockEntity entity) {
-        ItemStack wasteProduct = null;
-
-        switch (tier) {
-            case 1: {
-                wasteProduct = new ItemStack(WASTE_TIER1.get(), 1);
-            }
-        }
-
-        if(wasteProduct != null)
-            Containers.dropItemStack(level, entity.worldPosition.getX(), entity.worldPosition.getY()+0.125, entity.worldPosition.getZ(), wasteProduct);
-    }
-
-    private void resetProgress(int tier) {
-        switch (tier) {
-            case 1: progressReagentTier1 = 0;
-            case 2: progressReagentTier2 = 0;
-            case 3: progressReagentTier3 = 0;
-            case 4: progressReagentTier4 = 0;
-        }
-    }
-
-    private void incrementProgress(int tier) {
-        switch (tier) {
-            case 1: progressReagentTier1++;
-            case 2: progressReagentTier2++;
-            case 3: progressReagentTier3++;
-            case 4: progressReagentTier4++;
-        }
-    }
-
-    public static int getMaxProgressByTier(int tier) {
-        int query = -1;
-
-        switch (tier) {
-            case 1: query = maxProgressReagentTier1;
-            case 2: query = maxProgressReagentTier2;
-            case 3: query = maxProgressReagentTier3;
-            case 4: query = maxProgressReagentTier4;
-        }
-
-        return query;
-    }
-
-    private static boolean hasReagent(int reagentTier, PowerSpikeBlockEntity entity) {
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i=0; i<entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        boolean query = false;
-
-        switch(reagentTier) {
-            case 1: {
-                query = entity.itemHandler.getStackInSlot(0).getItem() == REAGENT_TIER1.get();
-                //Consume the reagent if we don't have an existing one "burning"
-                if(query && entity.progressReagentTier1 == 0) {
-                    entity.itemHandler.getStackInSlot(0).setCount(0);
-                    entity.incrementProgress(1);
-                }
-            }
-        }
-
-        return query;
     }
 
     /* FE STUFF */

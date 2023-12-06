@@ -1,0 +1,64 @@
+package com.aranaira.magichem.item.custom;
+
+import com.aranaira.magichem.block.ModBlocks;
+import com.aranaira.magichem.block.custom.MagicCircleBlock;
+import com.aranaira.magichem.block.entity.ModBlockEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PowerSpikeItem extends BlockItem {
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        return super.use(level, player, hand);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+        if(stack.hasTag()) {
+            if (stack.getTag().contains("magichem.powerspike.targetpos")) {
+                BlockPos pos = BlockPos.of(stack.getTag().getLong("magichem.powerspike.targetpos"));
+                components.add(Component.literal("Drawing power from (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")"));
+            }
+        }
+
+        super.appendHoverText(stack, level, components, tooltipFlag);
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        if(!context.getLevel().isClientSide) {
+            if(context.getPlayer() != null && context.getPlayer().isCrouching()) {
+                BlockPos pos = context.getClickedPos();
+                if(context.getLevel().getBlockState(pos).getBlock() instanceof MagicCircleBlock) {
+                    context.getPlayer().sendSystemMessage(Component.literal("Used on magic circle @ "+pos));
+                    CompoundTag tag = new CompoundTag();
+                    tag.putLong("magichem.powerspike.targetpos",pos.asLong());
+
+                    context.getItemInHand().setTag(tag);
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
+
+        return super.useOn(context);
+    }
+
+    public PowerSpikeItem(Block block, Properties properties) {
+        super(block, properties);
+    }
+}

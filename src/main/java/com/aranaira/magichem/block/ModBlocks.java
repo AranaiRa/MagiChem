@@ -3,8 +3,10 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.custom.DistilleryBlock;
 import com.aranaira.magichem.block.custom.MagicCircleBlock;
+import com.aranaira.magichem.block.custom.PowerSpikeBlock;
 import com.aranaira.magichem.item.ModCreativeModeTab;
 import com.aranaira.magichem.item.ModItems;
+import com.aranaira.magichem.item.custom.PowerSpikeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -32,7 +34,7 @@ public class ModBlocks {
     );
 
     public static final RegistryObject<Block> POWER_SPIKE = registerBlock("power_spike",
-            () -> new DistilleryBlock(BlockBehaviour.Properties.of(Material.STONE)
+            () -> new PowerSpikeBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(6f).noOcclusion()), ModCreativeModeTab.MAGICHEM_TAB
     );
 
@@ -43,7 +45,10 @@ public class ModBlocks {
     }
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab tab) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+        switch(name) {
+            case "power_spike": return ModItems.ITEMS.register(name, () -> new PowerSpikeItem(block.get(), new Item.Properties().tab(tab)));
+            default: return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+        }
     }
 
     public static void register(IEventBus eventBus) {
