@@ -1,4 +1,4 @@
-package mixin;
+package com.aranaira.magichem.mixin;
 
 import com.google.gson.JsonObject;
 import com.smashingmods.chemlib.registry.ChemicalRegistry;
