@@ -38,48 +38,11 @@ public class PowerSpikeBlockEntity extends BlockEntity {
 
     public PowerSpikeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.POWER_SPIKE.get(), pos, state);
-        this.data = new ContainerData() {
-            @Override
-            public int get(int index) {
-                return switch (index) {
-                    case 0 -> PowerSpikeBlockEntity.this.progressReagentTier1;
-                    case 1 -> PowerSpikeBlockEntity.this.progressReagentTier2;
-                    case 2 -> PowerSpikeBlockEntity.this.progressReagentTier3;
-                    case 3 -> PowerSpikeBlockEntity.this.progressReagentTier4;
-                    default -> 0;
-                };
-            }
-
-            @Override
-            public void set(int index, int value) {
-                switch (index) {
-                    case 0 -> PowerSpikeBlockEntity.this.progressReagentTier1 = value;
-                    case 1 -> PowerSpikeBlockEntity.this.progressReagentTier2 = value;
-                    case 2 -> PowerSpikeBlockEntity.this.progressReagentTier3 = value;
-                    case 3 -> PowerSpikeBlockEntity.this.progressReagentTier4 = value;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return 4;
-            }
-        };
     }
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    protected final ContainerData data;
-    private int
-            progressReagentTier1 = 0,
-            progressReagentTier2 = 0,
-            progressReagentTier3 = 0,
-            progressReagentTier4 = 0;
-    private static int
-            maxProgressReagentTier1 = 1280,
-            maxProgressReagentTier2 = 1280,
-            maxProgressReagentTier3 = 1280,
-            maxProgressReagentTier4 = 1280;
+    private BlockPos powerDrawPos;
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -104,22 +67,14 @@ public class PowerSpikeBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("magic_circle.progressReagentTier1", this.progressReagentTier1);
-        nbt.putInt("magic_circle.progressReagentTier2", this.progressReagentTier2);
-        nbt.putInt("magic_circle.progressReagentTier3", this.progressReagentTier3);
-        nbt.putInt("magic_circle.progressReagentTier4", this.progressReagentTier4);
+        nbt.putLong("magichem.powerspike.powerDrawPos", this.powerDrawPos.asLong());
         super.saveAdditional(nbt);
     }
 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progressReagentTier1 = nbt.getInt("magic_circle.progressReagentTier1");
-        progressReagentTier2 = nbt.getInt("magic_circle.progressReagentTier2");
-        progressReagentTier3 = nbt.getInt("magic_circle.progressReagentTier3");
-        progressReagentTier4 = nbt.getInt("magic_circle.progressReagentTier4");
+        powerDrawPos = BlockPos.of(nbt.getLong("magichem.powerspike.powerDrawPos"));
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PowerSpikeBlockEntity entity) {
@@ -130,14 +85,12 @@ public class PowerSpikeBlockEntity extends BlockEntity {
         //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
     }
 
-    /* FE STUFF */
-    private static final int
-        ENERGY_GEN_1_REAGENT = 3,
-        ENERGY_GEN_2_REAGENT = 12,
-        ENERGY_GEN_3_REAGENT = 48,
-        ENERGY_GEN_4_REAGENT = 200,
-        ENERGY_MAX_MULTIPLIER = 3;
+    public void setPowerDrawTarget(BlockPos pos) {
+        this.powerDrawPos = pos;
+        System.out.println("Power draw target @ "+pos);
+    }
 
+    /* FE STUFF */
     private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE) {
         @Override
         public void onEnergyChanged() {

@@ -3,6 +3,7 @@ package com.aranaira.magichem.item.custom;
 import com.aranaira.magichem.block.ModBlocks;
 import com.aranaira.magichem.block.custom.MagicCircleBlock;
 import com.aranaira.magichem.block.entity.ModBlockEntities;
+import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,9 +14,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -56,6 +59,29 @@ public class PowerSpikeItem extends BlockItem {
         }
 
         return super.useOn(context);
+    }
+
+    @Override
+    public InteractionResult place(BlockPlaceContext context) {
+        InteractionResult result = super.place(context);
+
+        if(!context.getLevel().isClientSide) {
+            BlockPos pos = context.getClickedPos();
+            ItemStack item = context.getItemInHand();
+            BlockEntity entity = context.getLevel().getBlockEntity(pos);
+
+            if (entity != null) {
+                if (entity instanceof PowerSpikeBlockEntity && item.hasTag()) {
+                    if (item.getTag().contains("magichem.powerspike.targetpos")) {
+                        BlockPos tPos = BlockPos.of(item.getTag().getLong("magichem.powerspike.targetpos"));
+                        PowerSpikeBlockEntity typedEntity = (PowerSpikeBlockEntity) entity;
+                        typedEntity.setPowerDrawTarget(tPos);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     public PowerSpikeItem(Block block, Properties properties) {
