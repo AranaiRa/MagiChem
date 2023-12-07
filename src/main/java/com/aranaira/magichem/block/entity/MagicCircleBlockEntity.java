@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.RegistryObject;
@@ -69,6 +70,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
 
     protected final ContainerData data;
     private int
@@ -100,6 +102,10 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ENERGY) {
+            return lazyEnergyHandler.cast();
+        }
+
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
@@ -111,12 +117,14 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyEnergyHandler.invalidate();
     }
 
     @Override
@@ -126,6 +134,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         nbt.putInt("magic_circle.progressReagentTier2", this.progressReagentTier2);
         nbt.putInt("magic_circle.progressReagentTier3", this.progressReagentTier3);
         nbt.putInt("magic_circle.progressReagentTier4", this.progressReagentTier4);
+        nbt.putInt("magic_circle.energy", this.ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
     }
 
@@ -137,6 +146,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         progressReagentTier2 = nbt.getInt("magic_circle.progressReagentTier2");
         progressReagentTier3 = nbt.getInt("magic_circle.progressReagentTier3");
         progressReagentTier4 = nbt.getInt("magic_circle.progressReagentTier4");
+        ENERGY_STORAGE.setEnergy(nbt.getInt("magic_circle.energy"));
     }
 
     public void dropInventoryToWorld() {

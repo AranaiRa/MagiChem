@@ -36,8 +36,8 @@ public class PowerSpikeBlock extends BaseEntityBlock {
     }
 
     private static final VoxelShape
-            VOXEL_SHAPE_DOWN = Block.box(7,0,7,9,3,9),
-            VOXEL_SHAPE_UP = Block.box(7,13,7,9,16,9),
+            VOXEL_SHAPE_DOWN = Block.box(7,13,7,9,16,9),
+            VOXEL_SHAPE_UP = Block.box(7,0,7,9,3,9),
             VOXEL_SHAPE_NORTH = Block.box(7,7,13,9,9,16),
             VOXEL_SHAPE_SOUTH = Block.box(7,7,0,9,9,3),
             VOXEL_SHAPE_EAST = Block.box(0,7,7,3,9,9),

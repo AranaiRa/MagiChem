@@ -9,12 +9,20 @@ public abstract class ModEnergyStorage extends EnergyStorage {
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        return super.receiveEnergy(maxReceive, simulate);
+        int receivedEnergy = super.extractEnergy(maxExtract, simulate);
+        if(receivedEnergy != 0)
+            onEnergyChanged();
+
+        return receivedEnergy;
     }
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
-        return super.extractEnergy(maxExtract, simulate);
+        int extractedEnergy = super.extractEnergy(maxExtract, simulate);
+        if(extractedEnergy != 0)
+            onEnergyChanged();
+
+        return extractedEnergy;
     }
 
     public int setEnergy(int energy) {

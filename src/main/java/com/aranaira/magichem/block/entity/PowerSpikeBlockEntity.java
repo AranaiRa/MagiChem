@@ -42,7 +42,8 @@ public class PowerSpikeBlockEntity extends BlockEntity {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    private BlockPos powerDrawPos;
+    private BlockPos
+            powerDrawPos, powerTransferPos;
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -82,7 +83,7 @@ public class PowerSpikeBlockEntity extends BlockEntity {
             return;
         }
 
-        
+
 
         //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
     }
@@ -90,6 +91,11 @@ public class PowerSpikeBlockEntity extends BlockEntity {
     public void setPowerDrawTarget(BlockPos pos) {
         this.powerDrawPos = pos;
         System.out.println("Power draw target @ "+pos);
+    }
+
+    public void setPowerTransferTarget(BlockPos pos) {
+        this.powerTransferPos = pos;
+        System.out.println("Power transfer target @ "+pos);
     }
 
     /* FE STUFF */
