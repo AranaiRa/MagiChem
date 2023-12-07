@@ -178,8 +178,6 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         }
 
         generatePower(entity);
-
-        //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
     }
 
     /* GENERATOR REAGENT USE LOGIC */
@@ -207,25 +205,20 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     private void incrementProgress(int tier) {
-        switch (tier) {
-            case 1: progressReagentTier1++;
-            case 2: progressReagentTier2++;
-            case 3: progressReagentTier3++;
-            case 4: progressReagentTier4++;
-        }
+        if(tier == 1) progressReagentTier1++;
+        if(tier == 2) progressReagentTier2++;
+        if(tier == 3) progressReagentTier3++;
+        if(tier == 4) progressReagentTier4++;
     }
 
     public static int getMaxProgressByTier(int tier) {
-        int query = -1;
-
         switch (tier) {
-            case 1: query = maxProgressReagentTier1;
-            case 2: query = maxProgressReagentTier2;
-            case 3: query = maxProgressReagentTier3;
-            case 4: query = maxProgressReagentTier4;
+            case 1: return maxProgressReagentTier1;
+            case 2: return maxProgressReagentTier2;
+            case 3: return maxProgressReagentTier3;
+            case 4: return maxProgressReagentTier4;
+            default: return -1;
         }
-
-        return query;
     }
 
     private static boolean hasReagent(int reagentTier, MagicCircleBlockEntity entity) {
@@ -258,7 +251,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         ENERGY_GEN_4_REAGENT = 200,
         ENERGY_MAX_MULTIPLIER = 3;
 
-    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE/2, Integer.MAX_VALUE/2) {
         @Override
         public void onEnergyChanged() {
             setChanged();
@@ -279,7 +272,8 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
                 if(currentEnergy < cap) {
                     int mod = currentEnergy + ENERGY_GEN_1_REAGENT;
                     if(currentEnergy > cap) mod = cap - currentEnergy;
-                    entity.ENERGY_STORAGE.receiveEnergy(mod,false);
+                    int insert = entity.ENERGY_STORAGE.receiveEnergy(mod,false);
+                    //int insert = entity.ENERGY_STORAGE.setEnergy(ENERGY_GEN_1_REAGENT);
                 }
             }
         }
