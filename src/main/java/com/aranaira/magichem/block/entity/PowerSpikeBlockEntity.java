@@ -82,6 +82,8 @@ public class PowerSpikeBlockEntity extends BlockEntity {
             return;
         }
 
+        
+
         //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
     }
 
