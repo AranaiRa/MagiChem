@@ -77,9 +77,8 @@ public class PowerSpikeItem extends BlockItem {
                     if (item.getTag().contains("magichem.powerspike.targetpos")) {
                         BlockPos drawPos = BlockPos.of(item.getTag().getLong("magichem.powerspike.targetpos"));
                         PowerSpikeBlockEntity typedEntity = (PowerSpikeBlockEntity) entity;
-                        typedEntity.setPowerDrawTarget(drawPos);
 
-                        typedEntity.setPowerTransferTarget(clickedPos);
+                        typedEntity.setPowerDrawPos(drawPos);
                     }
                 }
             }

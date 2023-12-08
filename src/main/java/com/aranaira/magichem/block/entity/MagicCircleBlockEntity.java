@@ -28,7 +28,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.shadowed.eliotlash.mclib.utils.MathHelper;
 
 public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
@@ -251,7 +250,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         ENERGY_GEN_4_REAGENT = 200,
         ENERGY_MAX_MULTIPLIER = 3;
 
-    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE/2, Integer.MAX_VALUE/2) {
+    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE) {
         @Override
         public void onEnergyChanged() {
             setChanged();

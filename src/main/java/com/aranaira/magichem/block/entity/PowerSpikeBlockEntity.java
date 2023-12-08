@@ -1,74 +1,35 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.gui.MagicCircleMenu;
-import com.aranaira.magichem.item.ModItems;
 import com.aranaira.magichem.util.ModEnergyStorage;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.apache.commons.lang3.mutable.MutableInt;
+
+import java.util.Objects;
 
 public class PowerSpikeBlockEntity extends BlockEntity {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-        }
-    };
 
     public PowerSpikeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.POWER_SPIKE.get(), pos, state);
     }
 
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-
     private BlockPos
             powerDrawPos, powerTransferPos;
 
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
-
-    @Override
     public void onLoad() {
         super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        lazyItemHandler.invalidate();
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putLong("magichem.powerspike.powerDrawPos", this.powerDrawPos.asLong());
+        nbt.putLong("magichem.powerspike.powerTransferPos", this.powerTransferPos.asLong());
         super.saveAdditional(nbt);
     }
 
@@ -76,6 +37,7 @@ public class PowerSpikeBlockEntity extends BlockEntity {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         powerDrawPos = BlockPos.of(nbt.getLong("magichem.powerspike.powerDrawPos"));
+        powerTransferPos = BlockPos.of(nbt.getLong("magichem.powerspike.powerTransferPos"));
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PowerSpikeBlockEntity entity) {
@@ -83,26 +45,39 @@ public class PowerSpikeBlockEntity extends BlockEntity {
             return;
         }
 
+        if(entity.powerTransferPos != null && entity.powerDrawPos != null) {
 
+            MutableInt powerAvailable = new MutableInt(0);
+            MutableInt powerToTransfer = new MutableInt(0);
 
-        //System.out.println("hasReagent1="+hasReagent(1, entity)+";   prog="+entity.progressReagentTier1);
-    }
+            BlockEntity drawEntity = level.getBlockEntity(entity.powerDrawPos);
+            BlockEntity transferEntity = level.getBlockEntity(entity.powerTransferPos);
 
-    public void setPowerDrawTarget(BlockPos pos) {
-        this.powerDrawPos = pos;
-        System.out.println("Power draw target @ "+pos);
-    }
+            if(drawEntity != null && transferEntity != null) {
+                drawEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(drawCap -> {
+                    transferEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(transferCap -> {
+                        powerAvailable.setValue(drawCap.getEnergyStored());
 
-    public void setPowerTransferTarget(BlockPos pos) {
-        this.powerTransferPos = pos;
-        System.out.println("Power transfer target @ "+pos);
-    }
+                        powerToTransfer.setValue(transferCap.receiveEnergy(powerAvailable.intValue(), true));
 
-    /* FE STUFF */
-    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE) {
-        @Override
-        public void onEnergyChanged() {
-            setChanged();
+                        drawCap.extractEnergy(powerToTransfer.intValue(), false);
+
+                        transferCap.receiveEnergy(powerToTransfer.intValue(), false);
+                    });
+                });
+            }
         }
-    };
+        else if(entity.powerTransferPos == null){
+            updatePowerTransferPos(entity);
+        }
+    }
+
+    private static void updatePowerTransferPos(PowerSpikeBlockEntity entity) {
+        BlockPos thisPos = entity.getBlockPos();
+        entity.powerTransferPos = thisPos.offset(entity.getBlockState().getValue(BlockStateProperties.FACING).getOpposite().getNormal());
+    }
+
+    public void setPowerDrawPos(BlockPos drawPos) {
+        this.powerDrawPos = drawPos;
+    }
 }

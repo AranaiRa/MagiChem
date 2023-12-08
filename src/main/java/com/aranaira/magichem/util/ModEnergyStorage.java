@@ -10,7 +10,6 @@ public abstract class ModEnergyStorage extends EnergyStorage {
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         int receivedEnergy = super.receiveEnergy(maxReceive, simulate);
-        boolean cr =canReceive();
         if (receivedEnergy != 0)
             onEnergyChanged();
 

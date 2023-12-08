@@ -2,7 +2,6 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.ModBlocks;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
-import com.aranaira.magichem.block.entity.MagicCircleBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -129,7 +128,6 @@ public class DistilleryMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
         } else {
-            System.out.println("Invalid slotIndex:" + index);
             return ItemStack.EMPTY;
         }
         // If stack size == 0 (the entire stack was moved) set slot contents to null
