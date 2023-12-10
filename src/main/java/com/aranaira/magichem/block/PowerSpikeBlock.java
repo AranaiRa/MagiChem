@@ -1,14 +1,10 @@
-package com.aranaira.magichem.block.custom;
+package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.MagicCircleBlockEntity;
-import com.aranaira.magichem.block.entity.ModBlockEntities;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -21,8 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -106,7 +100,7 @@ public class PowerSpikeBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.POWER_SPIKE.get(),
+        return createTickerHelper(type, BlockEntitiesRegistry.POWER_SPIKE_BE.get(),
                 PowerSpikeBlockEntity::tick);
     }
 }

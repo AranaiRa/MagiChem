@@ -9,11 +9,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class MagicCircleScreen extends AbstractContainerScreen<MagicCircleMenu> {
+public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_magic_circle.png");
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_distillery.png");
 
-    public MagicCircleScreen(MagicCircleMenu menu, Inventory inventory, Component component) {
+    public AlembicScreen(AlembicMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
     }
 
@@ -29,20 +29,12 @@ public class MagicCircleScreen extends AbstractContainerScreen<MagicCircleMenu> 
         RenderSystem.setShaderTexture(0, TEXTURE);
 
         int w = 176;
-        int h = 139;
+        int h = 192;
 
         int x = (width - w) / 2;
         int y = (height - h) / 2;
 
         this.blit(poseStack, x, y, 0, 0, w, h);
-        renderProgressBar(1, poseStack, x + 23, y + 42);
-    }
-
-    private void renderProgressBar(int tier, PoseStack poseStack, int x, int y) {
-        int sp1 = menu.getScaledProgress(tier);
-
-        if(menu.isCrafting(1))
-            blit(poseStack, x, y, 0, 253, sp1, 3);
     }
 
     @Override

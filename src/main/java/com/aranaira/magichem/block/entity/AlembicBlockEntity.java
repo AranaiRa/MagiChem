@@ -1,8 +1,8 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.gui.DistilleryMenu;
-import com.aranaira.magichem.item.ModItems;
-import com.aranaira.magichem.util.ModEnergyStorage;
+import com.aranaira.magichem.gui.AlembicMenu;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.util.IEnergyStoragePlus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,8 +14,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,11 +23,10 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
+public class AlembicBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(21) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -37,13 +34,13 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
-    public DistilleryBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.DISTILLERY.get(), pos, state);
+    public AlembicBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntitiesRegistry.ALEMBIC_BE.get(), pos, state);
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {
-                    case 0 -> DistilleryBlockEntity.this.progress;
+                    case 0 -> AlembicBlockEntity.this.progress;
                     default -> 0;
                 };
             }
@@ -51,7 +48,7 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0 -> DistilleryBlockEntity.this.progress = value;
+                    case 0 -> AlembicBlockEntity.this.progress = value;
                 }
             }
 
@@ -79,7 +76,7 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new DistilleryMenu(id, inventory, this, this.data);
+        return new AlembicMenu(id, inventory, this, this.data);
     }
 
     @Override
@@ -134,7 +131,7 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, DistilleryBlockEntity entity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, AlembicBlockEntity entity) {
         if(level.isClientSide()) {
             return;
         }
@@ -156,7 +153,7 @@ public class DistilleryBlockEntity extends BlockEntity implements MenuProvider {
         ENERGY_GEN_4_REAGENT = 200,
         ENERGY_MAX_MULTIPLIER = 3;
 
-    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
         @Override
         public void onEnergyChanged() {
             setChanged();

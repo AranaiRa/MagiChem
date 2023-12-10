@@ -1,7 +1,8 @@
-package com.aranaira.magichem.gui;
+package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.smashingmods.chemlib.api.Chemical;
+import com.aranaira.magichem.gui.AlembicMenu;
+import com.aranaira.magichem.gui.CirclePowerMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -11,15 +12,15 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-public class ModMenuTypes {
+public class MenuRegistry {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, MagiChemMod.MODID);
 
-    public static final RegistryObject<MenuType<MagicCircleMenu>> MAGIC_CIRCLE_MENU =
-            registerMenuType(MagicCircleMenu::new, "magic_circle_menu");
+    public static final RegistryObject<MenuType<CirclePowerMenu>> CIRCLE_POWER_MENU =
+            registerMenuType(CirclePowerMenu::new, "circle_power");
 
-    public static final RegistryObject<MenuType<DistilleryMenu>> DISTILLERY_MENU =
-            registerMenuType(DistilleryMenu::new, "distillery_menu");
+    public static final RegistryObject<MenuType<AlembicMenu>> ALEMBIC_MENU =
+            registerMenuType(AlembicMenu::new, "alembic");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));

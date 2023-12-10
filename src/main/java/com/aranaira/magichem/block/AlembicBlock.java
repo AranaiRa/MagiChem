@@ -1,9 +1,8 @@
-package com.aranaira.magichem.block.custom;
+package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.MagicCircleBlockEntity;
-import com.aranaira.magichem.block.entity.ModBlockEntities;
+import com.aranaira.magichem.block.entity.AlembicBlockEntity;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,8 +22,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class MagicCircleBlock extends BaseEntityBlock {
-    public MagicCircleBlock(Properties properties) {
+public class AlembicBlock extends BaseEntityBlock {
+    public AlembicBlock(Properties properties) {
         super(properties);
     }
 
@@ -51,8 +50,8 @@ public class MagicCircleBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof MagicCircleBlockEntity) {
-                ((MagicCircleBlockEntity) blockEntity).dropInventoryToWorld();
+            if(blockEntity instanceof AlembicBlockEntity) {
+                ((AlembicBlockEntity) blockEntity).dropInventoryToWorld();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
@@ -62,10 +61,10 @@ public class MagicCircleBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof MagicCircleBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (MagicCircleBlockEntity)entity, pos);
+            if(entity instanceof AlembicBlockEntity) {
+                NetworkHooks.openScreen((ServerPlayer)player, (AlembicBlockEntity)entity, pos);
             } else {
-                throw new IllegalStateException("MagicCircleBlockEntity container provider is missing!");
+                throw new IllegalStateException("DistilleryBlockEntity container provider is missing!");
             }
         }
 
@@ -75,13 +74,13 @@ public class MagicCircleBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new MagicCircleBlockEntity(pos, state);
+        return new AlembicBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.MAGIC_CIRCLE.get(),
-                MagicCircleBlockEntity::tick);
+        return createTickerHelper(type, BlockEntitiesRegistry.ALEMBIC_BE.get(),
+                AlembicBlockEntity::tick);
     }
 }

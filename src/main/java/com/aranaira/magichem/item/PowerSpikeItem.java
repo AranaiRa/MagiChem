@@ -1,11 +1,8 @@
-package com.aranaira.magichem.item.custom;
+package com.aranaira.magichem.item;
 
-import com.aranaira.magichem.block.ModBlocks;
-import com.aranaira.magichem.block.custom.MagicCircleBlock;
-import com.aranaira.magichem.block.entity.ModBlockEntities;
+import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -20,10 +17,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PowerSpikeItem extends BlockItem {
@@ -49,7 +44,7 @@ public class PowerSpikeItem extends BlockItem {
         if(!context.getLevel().isClientSide) {
             if(context.getPlayer() != null && context.getPlayer().isCrouching()) {
                 BlockPos pos = context.getClickedPos();
-                if(context.getLevel().getBlockState(pos).getBlock() instanceof MagicCircleBlock) {
+                if(context.getLevel().getBlockState(pos).getBlock() instanceof CirclePowerBlock) {
                     context.getPlayer().sendSystemMessage(Component.literal("Used on magic circle @ "+pos));
                     CompoundTag tag = new CompoundTag();
                     tag.putLong("magichem.powerspike.targetpos",pos.asLong());

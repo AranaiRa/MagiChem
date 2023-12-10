@@ -5,4 +5,4 @@ newmtl ALEMBIC
 map_Kd magichem:block/copper_alembic
 
 newmtl DEVICE_BASE
-map_Kd magichem:block/magic_circle
+map_Kd magichem:block/circle_power

@@ -2,8 +2,8 @@
   "item.magichem.silver_dust": "Transmuted Silver Dust",
   "item.magichem.tarnished_silver_lump": "Tarnished Silver Lump",
 
-  "block.magichem.distillery": "Distillery",
-  "block.magichem.magic_circle": "Magic Circle",
+  "block.magichem.alembic": "Alembic",
+  "block.magichem.circle_power": "Circle of Power",
   "block.magichem.power_spike": "Power Spike",
 
   "itemGroup.magichemtab" : "MagiChem"

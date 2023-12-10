@@ -1,8 +1,9 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.gui.MagicCircleMenu;
-import com.aranaira.magichem.item.ModItems;
-import com.aranaira.magichem.util.ModEnergyStorage;
+import com.aranaira.magichem.gui.CirclePowerMenu;
+import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.util.IEnergyStoragePlus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +30,9 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider {
+public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider {
+    public static final String REGISTRY_NAME = "circle_power";
+
     private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -37,16 +40,16 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         }
     };
 
-    public MagicCircleBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.MAGIC_CIRCLE.get(), pos, state);
+    public CirclePowerBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntitiesRegistry.CIRCLE_POWER_BE.get(), pos, state);
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {
-                    case 0 -> MagicCircleBlockEntity.this.progressReagentTier1;
-                    case 1 -> MagicCircleBlockEntity.this.progressReagentTier2;
-                    case 2 -> MagicCircleBlockEntity.this.progressReagentTier3;
-                    case 3 -> MagicCircleBlockEntity.this.progressReagentTier4;
+                    case 0 -> CirclePowerBlockEntity.this.progressReagentTier1;
+                    case 1 -> CirclePowerBlockEntity.this.progressReagentTier2;
+                    case 2 -> CirclePowerBlockEntity.this.progressReagentTier3;
+                    case 3 -> CirclePowerBlockEntity.this.progressReagentTier4;
                     default -> 0;
                 };
             }
@@ -54,10 +57,10 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0 -> MagicCircleBlockEntity.this.progressReagentTier1 = value;
-                    case 1 -> MagicCircleBlockEntity.this.progressReagentTier2 = value;
-                    case 2 -> MagicCircleBlockEntity.this.progressReagentTier3 = value;
-                    case 3 -> MagicCircleBlockEntity.this.progressReagentTier4 = value;
+                    case 0 -> CirclePowerBlockEntity.this.progressReagentTier1 = value;
+                    case 1 -> CirclePowerBlockEntity.this.progressReagentTier2 = value;
+                    case 2 -> CirclePowerBlockEntity.this.progressReagentTier3 = value;
+                    case 3 -> CirclePowerBlockEntity.this.progressReagentTier4 = value;
                 }
             }
 
@@ -84,19 +87,18 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
             maxProgressReagentTier4 = 1280;
 
     public static final RegistryObject<Item>
-            REAGENT_TIER1 =  ModItems.SILVER_DUST,
-            WASTE_TIER1 =  ModItems.TARNISHED_SILVER_LUMP;
+            REAGENT_TIER1 =  ItemRegistry.SILVER_DUST,
+            WASTE_TIER1 =  ItemRegistry.TARNISHED_SILVER_LUMP;
 
     @Override
     public Component getDisplayName() {
-        //return Component.literal("Magic Circle");
-        return Component.translatable("block.magichem.magic_circle");
+        return Component.translatable("block.magichem.circle_power");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new MagicCircleMenu(id, inventory, this, this.data);
+        return new CirclePowerMenu(id, inventory, this, this.data);
     }
 
     @Override
@@ -129,11 +131,11 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("magic_circle.progressReagentTier1", this.progressReagentTier1);
-        nbt.putInt("magic_circle.progressReagentTier2", this.progressReagentTier2);
-        nbt.putInt("magic_circle.progressReagentTier3", this.progressReagentTier3);
-        nbt.putInt("magic_circle.progressReagentTier4", this.progressReagentTier4);
-        nbt.putInt("magic_circle.energy", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.putInt(REGISTRY_NAME+".progressReagentTier1", this.progressReagentTier1);
+        nbt.putInt(REGISTRY_NAME+".progressReagentTier2", this.progressReagentTier2);
+        nbt.putInt(REGISTRY_NAME+".progressReagentTier3", this.progressReagentTier3);
+        nbt.putInt(REGISTRY_NAME+".progressReagentTier4", this.progressReagentTier4);
+        nbt.putInt(REGISTRY_NAME+".energy", this.ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
     }
 
@@ -141,11 +143,11 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progressReagentTier1 = nbt.getInt("magic_circle.progressReagentTier1");
-        progressReagentTier2 = nbt.getInt("magic_circle.progressReagentTier2");
-        progressReagentTier3 = nbt.getInt("magic_circle.progressReagentTier3");
-        progressReagentTier4 = nbt.getInt("magic_circle.progressReagentTier4");
-        ENERGY_STORAGE.setEnergy(nbt.getInt("magic_circle.energy"));
+        progressReagentTier1 = nbt.getInt(REGISTRY_NAME+".progressReagentTier1");
+        progressReagentTier2 = nbt.getInt(REGISTRY_NAME+".progressReagentTier2");
+        progressReagentTier3 = nbt.getInt(REGISTRY_NAME+".progressReagentTier3");
+        progressReagentTier4 = nbt.getInt(REGISTRY_NAME+".progressReagentTier4");
+        ENERGY_STORAGE.setEnergy(nbt.getInt(REGISTRY_NAME+".energy"));
     }
 
     public void dropInventoryToWorld() {
@@ -160,7 +162,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, MagicCircleBlockEntity entity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, CirclePowerBlockEntity entity) {
         if(level.isClientSide()) {
             return;
         }
@@ -181,7 +183,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
 
     /* GENERATOR REAGENT USE LOGIC */
 
-    private static void ejectWaste(int tier, Level level, MagicCircleBlockEntity entity) {
+    private static void ejectWaste(int tier, Level level, CirclePowerBlockEntity entity) {
         ItemStack wasteProduct = null;
 
         switch (tier) {
@@ -220,7 +222,7 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         }
     }
 
-    private static boolean hasReagent(int reagentTier, MagicCircleBlockEntity entity) {
+    private static boolean hasReagent(int reagentTier, CirclePowerBlockEntity entity) {
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i=0; i<entity.itemHandler.getSlots(); i++) {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
@@ -250,14 +252,14 @@ public class MagicCircleBlockEntity extends BlockEntity implements MenuProvider 
         ENERGY_GEN_4_REAGENT = 200,
         ENERGY_MAX_MULTIPLIER = 3;
 
-    private final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
         @Override
         public void onEnergyChanged() {
             setChanged();
         }
     };
 
-    private static void generatePower(MagicCircleBlockEntity entity) {
+    private static void generatePower(CirclePowerBlockEntity entity) {
         int reagentCount = 0;
         int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
         if(entity.progressReagentTier1 > 0) reagentCount++;

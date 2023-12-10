@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.util.ModEnergyStorage;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -10,12 +10,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-import java.util.Objects;
-
 public class PowerSpikeBlockEntity extends BlockEntity {
 
     public PowerSpikeBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.POWER_SPIKE.get(), pos, state);
+        super(BlockEntitiesRegistry.POWER_SPIKE_BE.get(), pos, state);
     }
 
     private BlockPos

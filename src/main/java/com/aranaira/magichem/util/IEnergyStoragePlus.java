@@ -2,8 +2,8 @@ package com.aranaira.magichem.util;
 
 import net.minecraftforge.energy.EnergyStorage;
 
-public abstract class ModEnergyStorage extends EnergyStorage {
-    public ModEnergyStorage(int capacity, int maxTransfer) {
+public abstract class IEnergyStoragePlus extends EnergyStorage {
+    public IEnergyStoragePlus(int capacity, int maxTransfer) {
         super(capacity, maxTransfer);
     }
 
