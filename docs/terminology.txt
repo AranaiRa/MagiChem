@@ -1,0 +1,52 @@
+Admixture
+    A combined substance made from two or more types of Essentia. In chemistry, this would be called a "Compound".
+
+Catalyst
+    An object required for Fabrication or Inundation that does not get consumed.
+    There is a special Catalyst slot on the Circle of Fabrication/Inundation GUI.
+
+Distillation
+    The alchemical process in which an object or fluid is destroyed and rendered into Essentia or Admixtures.
+    Performed at an Alembic or at a Distillery.
+
+Essentia
+    A distilled substance in its most fundamental form. In chemistry, this would be called an "Element".
+
+Exaltation
+    The alchemical process in which Essentia is combined with Quintessence or Antessence, resulting in a different type of Essentia within the same Court.
+
+Fabrication
+    The alchemical process in which Admixtures are consumed to create objects.
+    Some objects that can be Distilled cannot be directly Fabricated—Fabrication can usually only create raw materials.
+    Some acts of Fabrication may require a Catalyst or Medium.
+    Performed at a Circle of Fabrication.
+
+Fixation
+    The alchemical process in which two or more types of Essentia are combined into a single Admixture.
+    Some types of Admixtures involve bonding Admixtures to Essentia, or Admixtures to other Admixtures.
+
+House
+    The "group" that a type of Essentia belongs to.
+    The House of Elements contains Ender, Earth, Water, Air, Fire, and Arcane.
+    The House of Qualities contains Conceptual, Verdant, Fleshy, Nourishing, Rotten, Mineral, Wrought, and Precious.
+    The House of Alchemy contains Nigredo, Albedo, Citrinitas, and Rubedo.
+    Antessence, Nulla, and Quintessence do not belong to a House.
+
+Inundation
+    The alchemical process in which Admixtures are consumed to create fluids.
+    Some acts of Inundation may require a Catalyst or Medium.
+    Performed at a Circle of Inundation.
+
+Materia
+    Umbrella term for all distilled substances. Materia can be of type "Essentia" or "Admixture". In chemistry, this would be called a "Chemical".
+
+Medium
+    A material required for Fabrication/Inundation that is consumed in the process.
+    There is a special Medium slot on the Circle of Fabrication/Inundation GUI.
+
+Reagent
+    One of four objects used to generate energy in a Circle of Power.
+
+Separation
+    The alchemical process in which an Admixture is split into its component parts.
+    Performing Separation on Nulla results in one Antessence and one Quintessence.

@@ -1,0 +1,37 @@
+Actuator
+    A device attached to a Centrifuge, Distillery,
+    Requires an input about once a second or so to either rotate left, right, pull out, pull in. Each operation consumes Mana.
+    Can be automated with a Construct.
+    Manual actuating improves machine efficiency to 100%, Construct automation improves it based on Intelligence (though one Construct can handle multiple devices)
+
+Alembic
+    A simple device that performs Distillation. Requires a heat source, 50% baseline efficiency.
+
+Centrifuge
+    A device used to perform Separation. Requires FE, 75% baseline efficiency.
+    Speed can be improved by increasing power draw.
+    Efficiency can be improved with an Actuator.
+
+Circle of Fabrication
+    A device that performs Fabrication. Requires FE.
+    Speed can be improved by increasing power draw.
+
+Circle of Inundation
+    A device that performs Inundation. Requires FE.
+    Speed can be improved by increasing power draw.
+
+Circle of Power
+    A device that uses up to four Reagents to generate FE.
+
+Conjunctor
+    A device that performs Fixation. The more advanced form of the Vessel. Requires FE, 75% baseline efficiency.
+    Speed can be improved by increasing power draw.
+    Efficiency can be improved with an Actuator.
+
+Distillery
+    A device that breaks down an object or fluid into its component materia. The more advanced form of the Alembic. Requires FE, 75% baseline efficiency.
+    Speed can be improved by increasing power draw.
+    Efficiency can be improved with an Actuator.
+
+Vessel
+    A simple device that performs Fixation. Requires a heat source, 50% baseline efficiency.

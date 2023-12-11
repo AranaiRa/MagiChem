@@ -6,5 +6,30 @@
   "block.magichem.circle_power": "Circle of Power",
   "block.magichem.power_spike": "Power Spike",
 
-  "itemGroup.magichemtab" : "MagiChem"
+  "itemGroup.magichemtab" : "MagiChem",
+
+  "materia.polarity.negative": "Antessence",
+  "materia.polarity.neutral": "Nulla",
+  "materia.polarity.positive": "Quintessence",
+
+  "materia.element.ender": "Ender",
+  "materia.element.earth": "Earth",
+  "materia.element.water": "Water",
+  "materia.element.air": "Air",
+  "materia.element.fire": "Fire",
+  "materia.element.arcane": "Arcane",
+
+  "materia.adjective.conceptual": "Conceptual",
+  "materia.adjective.verdant": "Verdant",
+  "materia.adjective.fleshy": "Fleshy",
+  "materia.adjective.nourishing": "Nourishing",
+  "materia.adjective.rotten": "Rotten",
+  "materia.adjective.mineral": "Mineral",
+  "materia.adjective.wrought": "Wrought",
+  "materia.adjective.precious": "Precious",
+
+  "materia.alchemy.tier2": "Nigredo",
+  "materia.alchemy.tier3": "Albedo",
+  "materia.alchemy.tier4": "Citrinitas",
+  "materia.alchemy.tier5": "Rubedo"
 }
