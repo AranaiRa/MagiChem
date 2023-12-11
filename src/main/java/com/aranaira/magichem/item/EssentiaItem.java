@@ -54,7 +54,10 @@ public class EssentiaItem extends Item implements Essentia {
                 new TranslatableContents("tooltip.magichem."+getMateriaName())).withStyle(ChatFormatting.DARK_GRAY)
         );
         tooltipComponents.add(MutableComponent.create(
-                new LiteralContents("\""+getAbbreviation())).withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD)
+                new TranslatableContents("tooltip.magichem.sign")).withStyle(ChatFormatting.DARK_GRAY)
+                .append(" [ ")
+                .append(Component.literal(getAbbreviation()).withStyle(ChatFormatting.DARK_AQUA))
+                .append(" ]")
         );
     }
 

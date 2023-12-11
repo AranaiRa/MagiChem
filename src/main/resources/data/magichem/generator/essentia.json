@@ -2,147 +2,147 @@
   "essentia": [
     {
       "name": "antessence",
-      "abbreviation": "⇓",
+      "abbreviation": "\u21D3",
       "wheel": 0,
       "house": "none",
       "color": "FFFFFF"
     },
     {
       "name": "nulla",
-      "abbreviation": "⇔",
+      "abbreviation": "\u21D4",
       "wheel": 1,
       "house": "none",
       "color": "FFFFFF"
     },
     {
       "name": "quintessence",
-      "abbreviation": "⇑",
+      "abbreviation": "\u21D1",
       "wheel": 2,
       "house": "none",
       "color": "FFFFFF"
     },
 	{
       "name": "ender",
-      "abbreviation": "ʡ",
+      "abbreviation": "\u02A1",
       "wheel": 0,
       "house": "elements",
       "color": "FFFFFF"
     },
 	{
       "name": "earth",
-      "abbreviation": "🜃",
+      "abbreviation": "\uD83D\uDF03",
       "wheel": 1,
       "house": "elements",
       "color": "FFFFFF"
     },
 	{
       "name": "water",
-      "abbreviation": "🜄",
+      "abbreviation": "\uD83D\uDF04",
       "wheel": 2,
       "house": "elements",
       "color": "FFFFFF"
     },
 	{
       "name": "air",
-      "abbreviation": "🜁",
+      "abbreviation": "\uD83D\uDF01",
       "wheel": 3,
       "house": "elements",
       "color": "FFFFFF"
     },
 	{
       "name": "fire",
-      "abbreviation": "🜂",
+      "abbreviation": "\uD83D\uDF02",
       "wheel": 4,
       "house": "elements",
       "color": "FFFFFF"
     },
 	{
       "name": "arcane",
-      "abbreviation": "୬",
+      "abbreviation": "\u0B6C",
       "wheel": 5,
       "house": "elements",
       "color": "FFFFFF"
     },
     {
       "name": "conceptual",
-      "abbreviation": "Ξ",
+      "abbreviation": "\u039E",
       "wheel": 0,
       "house": "qualities",
       "color": "FFFFFF"
     },
     {
       "name": "verdant",
-      "abbreviation": "Θ",
+      "abbreviation": "\u0398",
       "wheel": 1,
       "house": "qualities",
       "color": "FFFFFF"
     },
     {
       "name": "fleshy",
-      "abbreviation": "Π",
+      "abbreviation": "\u03A0",
       "wheel": 2,
       "house": "qualities",
       "color": "FFFFFF"
     },
     {
       "name": "nourishing",
-      "abbreviation": "Ψ",
+      "abbreviation": "\u03A8",
       "wheel": 3,
       "house": "qualities",
       "color": "FFFFFF"
     },
     {
       "name": "rotten",
-      "abbreviation": "Σ",
+      "abbreviation": "\u03A3",
       "wheel": 4,
       "house": "qualities",
       "color": "FFFFFF"
     },
     {
       "name": "mineral",
-      "abbreviation": "Γ",
+      "abbreviation": "\u0393",
       "wheel": 5,
       "house": "qualities",
       "color": "FFFFFF"
     },
     {
       "name": "wrought",
-      "abbreviation": "Φ",
+      "abbreviation": "\u03A6",
       "wheel": 6,
       "house": "qualities",
       "color": "FFFFFF"
     },
     {
       "name": "precious",
-      "abbreviation": "Ω",
+      "abbreviation": "\u03A9",
       "wheel": 7,
       "house": "qualities",
       "color": "FFFFFF"
     },
     {
       "name": "nigredo",
-      "abbreviation": "⎏",
+      "abbreviation": "\u238F",
       "wheel": 0,
       "house": "alchemy",
       "color": "222222"
     },
     {
       "name": "albedo",
-      "abbreviation": "⎑",
+      "abbreviation": "\u2391",
       "wheel": 0,
       "house": "alchemy",
       "color": "FFFFFF"
     },
     {
       "name": "citrinitas",
-      "abbreviation": "⎐",
+      "abbreviation": "\u2390",
       "wheel": 0,
       "house": "alchemy",
       "color": "FFFF22"
     },
     {
       "name": "rubedo",
-      "abbreviation": "⎒",
+      "abbreviation": "\u2392",
       "wheel": 0,
       "house": "alchemy",
       "color": "FF2222"
