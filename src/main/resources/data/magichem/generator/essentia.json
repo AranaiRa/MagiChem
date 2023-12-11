@@ -124,7 +124,7 @@
       "abbreviation": "⎏",
       "wheel": 0,
       "house": "alchemy",
-      "color": "FFFFFF"
+      "color": "222222"
     },
     {
       "name": "albedo",
@@ -138,14 +138,14 @@
       "abbreviation": "⎐",
       "wheel": 0,
       "house": "alchemy",
-      "color": "FFFFFF"
+      "color": "FFFF22"
     },
     {
       "name": "rubedo",
       "abbreviation": "⎒",
       "wheel": 0,
       "house": "alchemy",
-      "color": "FFFFFF"
+      "color": "FF2222"
     }
   ]
 }

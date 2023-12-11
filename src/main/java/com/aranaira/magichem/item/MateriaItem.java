@@ -2,7 +2,7 @@ package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.foundation.Essentia;
 import com.aranaira.magichem.foundation.Materia;
-import com.aranaira.magichem.foundation.enums.EMateriaHouse;
+import com.aranaira.magichem.foundation.enums.EEssentiaHouse;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -45,7 +45,7 @@ public class MateriaItem extends Item implements Materia {
         }
     }
 
-    private String getTranslationKeyByHouse(EMateriaHouse house) {
+    private String getTranslationKeyByHouse(EEssentiaHouse house) {
         switch(house) {
             case ELEMENTS: return "essentia.house.elements";
             case QUALITIES: return "essentia.house.qualities";
