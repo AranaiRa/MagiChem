@@ -1,7 +1,9 @@
 package com.aranaira.magichem.foundation;
 
-public interface Essentia extends Materia {
-    int getWheelIndex();
+import com.aranaira.magichem.foundation.enums.EMateriaHouse;
 
-    String getHouseName();
+public interface Essentia extends Materia {
+    int getWheel();
+
+    EMateriaHouse getHouse();
 }

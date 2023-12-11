@@ -8,6 +8,10 @@
 
   "itemGroup.magichemtab" : "MagiChem",
 
+  "essentia.house.elements": "House of Elements",
+  "essentia.house.qualities": "House of Qualities",
+  "essentia.house.alchemy": "House of Alchemy",
+
   "materia.polarity.negative": "Antessence",
   "materia.polarity.neutral": "Nulla",
   "materia.polarity.positive": "Quintessence",

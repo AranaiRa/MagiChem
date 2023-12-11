@@ -1,11 +1,8 @@
 package com.aranaira.magichem;
 
-import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.gui.AlembicScreen;
 import com.aranaira.magichem.gui.CirclePowerScreen;
-import com.aranaira.magichem.registry.MenuRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -46,6 +43,7 @@ public class MagiChemMod
         BlockRegistry.register(modEventBus);
         BlockEntitiesRegistry.register(modEventBus);
         MenuRegistry.register(modEventBus);
+        MateriaRegistry.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

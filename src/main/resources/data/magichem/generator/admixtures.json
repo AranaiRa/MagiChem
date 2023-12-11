@@ -1,0 +1,32 @@
+{
+  "admixtures": [
+    {
+      "name": "light",
+      "color": "FFFFFF",
+      "components": [
+        {
+          "name": "fire",
+          "count": 1
+        },
+        {
+          "name": "conceptual",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "name": "light",
+      "color": "FFFFFF",
+      "components": [
+        {
+          "name": "fire",
+          "count": 1
+        },
+        {
+          "name": "conceptual",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

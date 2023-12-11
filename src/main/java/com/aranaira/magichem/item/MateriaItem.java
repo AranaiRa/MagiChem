@@ -2,10 +2,12 @@ package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.foundation.Essentia;
 import com.aranaira.magichem.foundation.Materia;
+import com.aranaira.magichem.foundation.enums.EMateriaHouse;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -35,9 +37,20 @@ public class MateriaItem extends Item implements Materia {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         if(getMateria() instanceof Essentia essentia) {
             tooltipComponents.add(MutableComponent.create(new LiteralContents(String.format("%s (%d)", getAbbreviation()))).withStyle(ChatFormatting.DARK_AQUA));
-            tooltipComponents.add(MutableComponent.create(new LiteralContents(essentia.getHouseName())).withStyle(ChatFormatting.GRAY));
+            String house = getTranslationKeyByHouse(essentia.getHouse());
+            if(house != null)
+                tooltipComponents.add(MutableComponent.create(new TranslatableContents(house)).withStyle(ChatFormatting.GRAY));
         } else {
             tooltipComponents.add(MutableComponent.create(new LiteralContents(getAbbreviation())).withStyle(ChatFormatting.DARK_AQUA));
+        }
+    }
+
+    private String getTranslationKeyByHouse(EMateriaHouse house) {
+        switch(house) {
+            case ELEMENTS: return "essentia.house.elements";
+            case QUALITIES: return "essentia.house.qualities";
+            case ALCHEMY: return "essentia.house.alchemy";
+            default: return null;
         }
     }
 
