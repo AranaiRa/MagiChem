@@ -1,12 +1,10 @@
 package com.aranaira.magichem.item;
 
-import com.aranaira.magichem.foundation.Essentia;
 import com.aranaira.magichem.foundation.enums.EEssentiaHouse;
 import com.aranaira.magichem.registry.CreativeModeTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,21 +16,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EssentiaItem extends Item implements Essentia {
+public class EssentiaItem extends MateriaItem {
 
     private final String name;
     private final String abbreviation;
-    private final int color;
     private final EEssentiaHouse house;
     private final int wheel;
 
     public EssentiaItem(String essentiaName, String essentiaAbbreviation, String essentiaHouse, int essentiaWheel, String essentiaColor) {
-        super(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB));
+        super(essentiaName, essentiaColor, new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB));
         this.name = essentiaName;
         this.abbreviation = essentiaAbbreviation;
         this.house = parseStringToHouse(essentiaHouse, essentiaName);
         this.wheel = essentiaWheel;
-        this.color = Integer.parseInt(essentiaColor, 16) | 0xFF00000;
     }
 
     private EEssentiaHouse parseStringToHouse(String input, String nameForErrorHandling) {
@@ -61,28 +57,15 @@ public class EssentiaItem extends Item implements Essentia {
         );
     }
 
-    @Override
-    public int getWheel() {
+    public int getEssentiaWheel() {
         return this.wheel;
     }
 
-    @Override
-    public EEssentiaHouse getHouse() {
+    public EEssentiaHouse getEssentiaHouse() {
         return this.house;
     }
 
-    @Override
-    public String getMateriaName() {
-        return this.name;
-    }
-
-    @Override
     public String getAbbreviation() {
         return this.abbreviation;
-    }
-
-    @Override
-    public int getColor() {
-        return this.color;
     }
 }
