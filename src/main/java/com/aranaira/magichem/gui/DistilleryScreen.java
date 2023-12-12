@@ -9,11 +9,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
+public class DistilleryScreen extends AbstractContainerScreen<AlembicMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_alembic.png");
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_distillery.png");
 
-    public AlembicScreen(AlembicMenu menu, Inventory inventory, Component component) {
+    public DistilleryScreen(AlembicMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
     }
 

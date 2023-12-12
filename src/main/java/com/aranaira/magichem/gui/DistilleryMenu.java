@@ -1,9 +1,7 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.CirclePowerBlock;
+import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,22 +12,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 
-public class CirclePowerMenu extends AbstractContainerMenu {
+public class DistilleryMenu extends AbstractContainerMenu {
 
-    public final CirclePowerBlockEntity blockEntity;
+    public final AlembicBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
-    public CirclePowerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+    public DistilleryMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(21));
     }
 
-    public CirclePowerMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(MenuRegistry.CIRCLE_POWER_MENU.get(), id);
-        checkContainerSize(inv, 4);
-        blockEntity = (CirclePowerBlockEntity) entity;
+    public DistilleryMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
+        super(MenuRegistry.ALEMBIC_MENU.get(), id);
+        checkContainerSize(inv, 21);
+        blockEntity = (AlembicBlockEntity) entity;
         this.level = inv.player.level;
         this.data = data;
 
@@ -37,18 +34,32 @@ public class CirclePowerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 26, 32) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    if(stack.getItem() == ItemRegistry.SILVER_DUST.get())
-                        return true;
-                    else
-                        return false;
-                }
-            });
-            this.addSlot(new SlotItemHandler(handler, 1, 62, 32));
-            this.addSlot(new SlotItemHandler(handler, 2, 98, 32));
-            this.addSlot(new SlotItemHandler(handler, 3, 134, 32));
+            //Input item slots
+            this.addSlot(new SlotItemHandler(handler, 0, 44, -5));
+            this.addSlot(new SlotItemHandler(handler, 1, 44, 13));
+            this.addSlot(new SlotItemHandler(handler, 2, 44, 31));
+            this.addSlot(new SlotItemHandler(handler, 3, 44, 49));
+            this.addSlot(new SlotItemHandler(handler, 4, 44, 67));
+
+            //Processing slot
+            this.addSlot(new SlotItemHandler(handler, 5, 80, 31));
+
+            //Output item slots
+            this.addSlot(new SlotItemHandler(handler, 6, 116, -5));
+            this.addSlot(new SlotItemHandler(handler, 7, 134, -5));
+            this.addSlot(new SlotItemHandler(handler, 8, 152, -5));
+            this.addSlot(new SlotItemHandler(handler, 9, 116, 13));
+            this.addSlot(new SlotItemHandler(handler, 10, 134, 13));
+            this.addSlot(new SlotItemHandler(handler, 11, 152, 13));
+            this.addSlot(new SlotItemHandler(handler, 12, 116, 31));
+            this.addSlot(new SlotItemHandler(handler, 13, 134, 31));
+            this.addSlot(new SlotItemHandler(handler, 14, 152, 31));
+            this.addSlot(new SlotItemHandler(handler, 15, 116, 49));
+            this.addSlot(new SlotItemHandler(handler, 16, 134, 49));
+            this.addSlot(new SlotItemHandler(handler, 17, 152, 49));
+            this.addSlot(new SlotItemHandler(handler, 18, 116, 67));
+            this.addSlot(new SlotItemHandler(handler, 19, 134, 67));
+            this.addSlot(new SlotItemHandler(handler, 20, 152, 67));
         });
 
         addDataSlots(data);
@@ -56,36 +67,29 @@ public class CirclePowerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.CIRCLE_POWER.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.ALEMBIC.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
         for(int i=0; i<3; i++) {
             for(int l=0; l<9; l++) {
-                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 71 + i*18)));
+                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 97 + i*18)));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for(int i=0; i<9; i++) {
-            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 129)));
+            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 155)));
         }
     }
 
     public int getScaledProgress(int tier) {
-        int BAR_WIDTH = 22;
-        int progress = data.get(tier-1);
-        int max = CirclePowerBlockEntity.getMaxProgressByTier(tier);
-
-        if(max == 0 || max == -1)
-            return -1;
-        else
-            return (max - progress + 1) * BAR_WIDTH / max;
+        return -1;
     }
 
     public boolean isCrafting(int tier) {
-        return data.get(tier-1) > 0;
+        return false;
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
@@ -104,7 +108,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 4;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 21;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
