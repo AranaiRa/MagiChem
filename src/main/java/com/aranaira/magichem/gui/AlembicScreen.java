@@ -43,4 +43,9 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         super.render(poseStack, mouseX, mouseY, delta);
         renderTooltip(poseStack, mouseX, mouseY);
     }
+
+    @Override
+    protected void renderLabels(PoseStack p_97808_, int p_97809_, int p_97810_) {
+
+    }
 }
