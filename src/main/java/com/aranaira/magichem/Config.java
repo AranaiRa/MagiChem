@@ -20,17 +20,25 @@ public class Config
 {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-    private static final ForgeConfigSpec.BooleanValue LOG_DIRT_BLOCK = BUILDER
-            .comment("Whether to log the dirt block on common setup")
-            .define("logDirtBlock", true);
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_1_REAGENT = BUILDER
+            .comment("How much FE/tick the Circle of Power generates when it has one reagent")
+            .defineInRange("circlePowerGen1", 3, 1, Integer.MAX_VALUE);
 
-    private static final ForgeConfigSpec.IntValue MAGIC_NUMBER = BUILDER
-            .comment("A magic number")
-            .defineInRange("magicNumber", 42, 0, Integer.MAX_VALUE);
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_2_REAGENT = BUILDER
+            .comment("How much FE/tick the Circle of Power generates when it has two reagents")
+            .defineInRange("circlePowerGen2", 12, 2, Integer.MAX_VALUE);
 
-    public static final ForgeConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION = BUILDER
-            .comment("What you want the introduction message to be for the magic number")
-            .define("magicNumberIntroduction", "The magic number is... ");
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_3_REAGENT = BUILDER
+            .comment("How much FE/tick the Circle of Power generates when it has three reagents")
+            .defineInRange("circlePowerGen3", 48, 3, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_4_REAGENT = BUILDER
+            .comment("How much FE/tick the Circle of Power generates when it has all four reagents")
+            .defineInRange("circlePowerGen4", 200, 4, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_BUFFER = BUILDER
+            .comment("How many ticks of activity the Circle of Power stores at once")
+            .defineInRange("circlePowerBuffer", 3, 1, 72000);
 
     // a list of strings that are treated as resource locations for items
     /*private static final ForgeConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER
@@ -39,10 +47,12 @@ public class Config
 */
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
-    public static boolean logDirtBlock;
-    public static int magicNumber;
-    public static String magicNumberIntroduction;
-    public static Set<Item> items;
+    public static int
+        circlePowerGen1Reagent,
+        circlePowerGen2Reagent,
+        circlePowerGen3Reagent,
+        circlePowerGen4Reagent,
+        circlePowerBuffer;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -52,9 +62,11 @@ public class Config
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
-        logDirtBlock = LOG_DIRT_BLOCK.get();
-        magicNumber = MAGIC_NUMBER.get();
-        magicNumberIntroduction = MAGIC_NUMBER_INTRODUCTION.get();
+        circlePowerGen1Reagent = CIRCLE_OF_POWER_GEN_1_REAGENT.get();
+        circlePowerGen2Reagent = CIRCLE_OF_POWER_GEN_2_REAGENT.get();
+        circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();
+        circlePowerGen4Reagent = CIRCLE_OF_POWER_GEN_4_REAGENT.get();
+        circlePowerBuffer = CIRCLE_OF_POWER_BUFFER.get();
 
         // convert the list of strings into a set of items
         /*items = ITEM_STRINGS.get().stream()
