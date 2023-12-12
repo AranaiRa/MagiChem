@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_distillery.png");
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_alembic.png");
 
     public AlembicScreen(AlembicMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -42,5 +42,10 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         renderBackground(poseStack);
         super.render(poseStack, mouseX, mouseY, delta);
         renderTooltip(poseStack, mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderLabels(PoseStack p_97808_, int p_97809_, int p_97810_) {
+
     }
 }

@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 version = mod_version
@@ -31,7 +32,8 @@ minecraft {
     //
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: mapping_channel, version: mapping_version
+    //mappings channel: mapping_channel, version: mapping_version
+    mappings channel: 'parchment', version: '2022.08.14-1.19.2'
 
     // When true, this property will have all Eclipse/IntelliJ IDEA run configurations run the "prepareX" task for the given run configuration before launching the game.
     // In most cases, it is not necessary to enable.
@@ -136,7 +138,6 @@ dependencies {
 
     implementation fg.deobf("curse.maven:jei-238222:4712866")
     implementation fg.deobf("curse.maven:top-245211:3965693")
-    implementation fg.deobf("curse.maven:chemlib-340666:4770563")
     implementation fg.deobf("curse.maven:geckolib-388172:4407241")
     implementation fg.deobf("curse.maven:curios-309927:4902099")
     implementation fg.deobf("curse.maven:mna-406360:4918349")

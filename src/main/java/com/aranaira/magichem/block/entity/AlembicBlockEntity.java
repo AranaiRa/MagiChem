@@ -2,7 +2,6 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
-import com.aranaira.magichem.util.IEnergyStoragePlus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AlembicBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(21) {
+    private final ItemStackHandler inputHandler = new ItemStackHandler(21) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -54,13 +53,12 @@ public class AlembicBlockEntity extends BlockEntity implements MenuProvider {
 
             @Override
             public int getCount() {
-                return 4;
+                return 14;
             }
         };
     }
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
 
     protected final ContainerData data;
     private int
@@ -81,10 +79,6 @@ public class AlembicBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ENERGY) {
-            return lazyEnergyHandler.cast();
-        }
-
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
@@ -95,37 +89,33 @@ public class AlembicBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
-        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
+        lazyItemHandler = LazyOptional.of(() -> inputHandler);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
-        lazyEnergyHandler.invalidate();
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("distillery.progress", this.progress);
-        nbt.putInt("distillery.energy", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.put("alembic.inventory", inputHandler.serializeNBT());
+        nbt.putInt("alembic.progress", this.progress);
         super.saveAdditional(nbt);
     }
 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progress = nbt.getInt("distillery.progress");
-        ENERGY_STORAGE.setEnergy(nbt.getInt("distillery.energy"));
+        inputHandler.deserializeNBT(nbt.getCompound("inventory"));
+        progress = nbt.getInt("alembic.progress");
     }
 
     public void dropInventoryToWorld() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
-        for (int i=0; i<itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
+        SimpleContainer inventory = new SimpleContainer(inputHandler.getSlots()+4);
+        for (int i = 0; i< inputHandler.getSlots(); i++) {
+            inventory.setItem(i, inputHandler.getStackInSlot(i));
         }
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
@@ -144,19 +134,4 @@ public class AlembicBlockEntity extends BlockEntity implements MenuProvider {
     private void incrementProgress() {
         progress++;
     }
-
-    /* FE STUFF */
-    private static final int
-        ENERGY_GEN_1_REAGENT = 3,
-        ENERGY_GEN_2_REAGENT = 12,
-        ENERGY_GEN_3_REAGENT = 48,
-        ENERGY_GEN_4_REAGENT = 200,
-        ENERGY_MAX_MULTIPLIER = 3;
-
-    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
-        @Override
-        public void onEnergyChanged() {
-            setChanged();
-        }
-    };
 }

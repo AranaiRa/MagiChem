@@ -1,0 +1,399 @@
+[11Dec2023 04:23:13.465] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 1.19, --assetsDir, C:\Users\Aranai\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 43.3.5, --fml.mcVersion, 1.19.2, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20220805.130853, --mod, magichem, --all, --output, C:\Users\Aranai\Documents\Forge\1.19.2\MagnumOpus\src\generated\resources, --existing, C:\Users\Aranai\Documents\Forge\1.19.2\MagnumOpus\src\main\resources]
+[11Dec2023 04:23:13.471] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.1 by Eclipse Adoptium; OS Windows 10 arch amd64 version 10.0
+[11Dec2023 04:23:13.637] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/Aranai/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23126!/ Service=ModLauncher Env=CLIENT
+[11Dec2023 04:23:14.008] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Aranai\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.19.2-43.3.5\55755cd045eae96aa3db8022691862f4a61d5212\javafmllanguage-1.19.2-43.3.5.jar is missing mods.toml file
+[11Dec2023 04:23:14.017] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Aranai\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.19.2-43.3.5\b4af46fd18e45dd794c753c4f4c931bd2ca9b32d\lowcodelanguage-1.19.2-43.3.5.jar is missing mods.toml file
+[11Dec2023 04:23:14.027] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Aranai\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.19.2-43.3.5\e86ce0c5b6a44bd5d0025928b5c220f5abe20a37\mclanguage-1.19.2-43.3.5.jar is missing mods.toml file
+[11Dec2023 04:23:14.035] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\Aranai\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.19.2-43.3.5\9ff627ecdc4d91b2e935e8f3358c97ba91ab7851\fmlcore-1.19.2-43.3.5.jar is missing mods.toml file
+[11Dec2023 04:23:14.286] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: Found 2 dependencies adding them to mods collection
+[11Dec2023 04:23:15.753] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[11Dec2023 04:23:15.777] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\Aranai\.gradle\caches\forge_gradle\assets, --assetIndex, 1.19, --mod, magichem, --all, --output, C:\Users\Aranai\Documents\Forge\1.19.2\MagnumOpus\src\generated\resources, --existing, C:\Users\Aranai\Documents\Forge\1.19.2\MagnumOpus\src\main\resources]
+[11Dec2023 04:23:16.213] [main/INFO] [mixin/]: Remapping refMap mna.refmap.json using C:\Users\Aranai\Documents\Forge\1.19.2\MagnumOpus\build\createSrgToMcp\output.srg
+[11Dec2023 04:23:16.215] [main/INFO] [mixin/]: Remapping refMap curios.refmap.json using C:\Users\Aranai\Documents\Forge\1.19.2\MagnumOpus\build\createSrgToMcp\output.srg
+[11Dec2023 04:23:16.695] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [magichem]
+[11Dec2023 04:23:16.867] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.2.0).
+[11Dec2023 04:23:19.761] [main/INFO] [net.minecraft.util.datafix.DataFixers/]: Building unoptimized datafixer
+[11Dec2023 04:23:21.321] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 43.3.5, for MC 1.19.2 with MCP 20220805.130853
+[11Dec2023 04:23:21.321] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v43.3.5 Initialized
+[11Dec2023 04:23:21.337] [modloading-worker-0/INFO] [com.mna.ManaAndArtifice/]: M&A -> Config Loaded
+[11Dec2023 04:23:21.402] [modloading-worker-0/WARN] [software.bernie.geckolib3.GeckoLib/]: Minecraft.getInstance() was null, could not register reload listeners. Ignore if datagenning.
+[11Dec2023 04:23:22.424] [modloading-worker-0/INFO] [com.mna.ManaAndArtifice/]: M&A -> Mod Event Bus Handlers Registered
+[11Dec2023 04:23:22.648] [main/INFO] [com.mna.ManaAndArtifice/]: Finished registering registries!
+[11Dec2023 04:23:22.698] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.698] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.699] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.699] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.703] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.703] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.703] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.703] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.905] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.906] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.906] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.906] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.912] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.913] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.913] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.913] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.917] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.917] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.917] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.917] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.929] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.929] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.929] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.930] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.935] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.935] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.935] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.936] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.937] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.937] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.937] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.937] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.938] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.938] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.938] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.938] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.939] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.939] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.940] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.940] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.941] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.941] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.941] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.941] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:22.943] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:22.943] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:22.943] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:22.943] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.090] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.090] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.090] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.090] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.091] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.092] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.092] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.092] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.093] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.093] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.093] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.093] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.094] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.094] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.094] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.095] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.096] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.096] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.096] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.097] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.098] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.098] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.098] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.098] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.099] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.099] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.100] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.100] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.100] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.100] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.101] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.101] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.101] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.101] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.101] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.101] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.102] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.102] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.102] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.102] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.103] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.103] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.103] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.103] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.103] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.103] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.104] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.104] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.104] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.104] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.104] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.104] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.105] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.105] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.105] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.105] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.154] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.155] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.155] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.158] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.165] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.166] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.166] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.166] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.167] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.167] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.167] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.167] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.170] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.170] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.171] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.171] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.172] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.172] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.173] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.173] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.195] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.195] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.195] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.196] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.202] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.203] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.203] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.203] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.204] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.204] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.204] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.204] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.205] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.205] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.206] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.206] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.206] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.207] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.207] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.207] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.207] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.207] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.207] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.208] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.208] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.208] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.208] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.208] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.218] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.235] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.235] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.235] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.240] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.240] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.240] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.240] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.271] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.271] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.271] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.272] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.285] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.285] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.286] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.286] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.288] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.288] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.289] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.289] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.291] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.291] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.291] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.291] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.293] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.293] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.293] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.293] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.294] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.294] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.295] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.295] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.296] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.296] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.296] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.296] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.297] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.297] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.297] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.297] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.297] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.298] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.298] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.298] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.299] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.300] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.300] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.300] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.301] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.302] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.302] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.302] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.304] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.305] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.305] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.305] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.305] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.305] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.306] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.306] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.306] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.306] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.306] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.306] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.307] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.307] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.307] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.307] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.308] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.308] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.308] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.308] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.308] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.309] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.309] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.309] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.309] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.310] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.310] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.310] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.311] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.311] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.311] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.311] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.312] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.312] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.312] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.313] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.313] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.313] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.313] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.314] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.315] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.315] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.315] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.315] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.316] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.316] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.316] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.316] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.317] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.317] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.317] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.317] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.318] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.318] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.318] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.318] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.319] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.319] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.319] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.319] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.320] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.320] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.320] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.320] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.321] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.321] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.321] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.321] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.321] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.322] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.322] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.322] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.322] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.322] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.322] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.323] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.323] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.323] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.323] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.323] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.324] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.324] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.324] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.324] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.325] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.325] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.325] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.325] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.325] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.326] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.326] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.326] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.326] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.326] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.327] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.327] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.327] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.327] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.327] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.327] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.328] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.328] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.328] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.329] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.330] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.330] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.331] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.331] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.332] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.332] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.332] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.332] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.332] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.333] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.333] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.333] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.339] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.339] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.339] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.339] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.340] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.340] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.340] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.340] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.347] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.348] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.348] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.348] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.349] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.349] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.349] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.350] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.354] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.354] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.354] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.355] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.355] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.356] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.356] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.356] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.358] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.358] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.358] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.358] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.366] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.367] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.375] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.375] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.376] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.377] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.377] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.377] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.378] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.378] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.378] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.378] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.416] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.416] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.417] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.417] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.418] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Ritual Effects Registered
+[11Dec2023 04:23:23.418] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Containers Registered
+[11Dec2023 04:23:23.418] [main/INFO] [com.mna.ManaAndArtifice/]: Mana and Artifice >> Registered Construct Tasks
+[11Dec2023 04:23:23.419] [main/INFO] [com.mna.ManaAndArtifice/]: M&A -> Block Items Registered
+[11Dec2023 04:23:23.474] [main/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class com.mna.entities.boss.BossMonster from class com.mna.entities.boss.Odin
+[11Dec2023 04:23:23.474] [main/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class com.mna.entities.boss.BossMonster from class com.mna.entities.boss.Odin
+[11Dec2023 04:23:23.496] [main/WARN] [net.minecraft.server.packs.VanillaPackResources/]: Assets URL 'union:/C:/Users/Aranai/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.19.2-43.3.5_mapped_official_1.19.2/forge-1.19.2-43.3.5_mapped_official_1.19.2-recomp.jar%23188!/assets/.mcassetsroot' uses unexpected schema
+[11Dec2023 04:23:23.497] [main/WARN] [net.minecraft.server.packs.VanillaPackResources/]: Assets URL 'union:/C:/Users/Aranai/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.19.2-43.3.5_mapped_official_1.19.2/forge-1.19.2-43.3.5_mapped_official_1.19.2-recomp.jar%23188!/data/.mcassetsroot' uses unexpected schema
+[11Dec2023 04:23:23.801] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Item Models: magichem
+[11Dec2023 04:23:23.951] [main/INFO] [net.minecraft.data.DataGenerator/]: Item Models: magichem finished after 148 ms
+[11Dec2023 04:23:23.951] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Languages: en_us
+[11Dec2023 04:23:23.956] [main/INFO] [net.minecraft.data.DataGenerator/]: Languages: en_us finished after 4 ms
+[11Dec2023 04:23:23.956] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 155 ms
+[11Dec2023 04:23:23.967] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 22, old count: 42, new count: 23, removed stale: 0, written: 22

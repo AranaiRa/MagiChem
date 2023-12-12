@@ -3,6 +3,7 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class CirclePowerMenu extends AbstractContainerMenu {
 
@@ -35,7 +37,15 @@ public class CirclePowerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 26, 32));
+            this.addSlot(new SlotItemHandler(handler, 0, 26, 32) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    if(stack.getItem() == ItemRegistry.SILVER_DUST.get())
+                        return true;
+                    else
+                        return false;
+                }
+            });
             this.addSlot(new SlotItemHandler(handler, 1, 62, 32));
             this.addSlot(new SlotItemHandler(handler, 2, 98, 32));
             this.addSlot(new SlotItemHandler(handler, 3, 134, 32));

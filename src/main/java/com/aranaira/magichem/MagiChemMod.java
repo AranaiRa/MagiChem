@@ -1,11 +1,8 @@
 package com.aranaira.magichem;
 
-import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.gui.AlembicScreen;
 import com.aranaira.magichem.gui.CirclePowerScreen;
-import com.aranaira.magichem.registry.MenuRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -32,7 +29,7 @@ import org.slf4j.Logger;
 public class MagiChemMod
 {
     public static final String MODID = "magichem";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
@@ -46,6 +43,7 @@ public class MagiChemMod
         BlockRegistry.register(modEventBus);
         BlockEntitiesRegistry.register(modEventBus);
         MenuRegistry.register(modEventBus);
+        MateriaRegistry.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -62,11 +60,6 @@ public class MagiChemMod
     {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
-
-        if (Config.logDirtBlock)
-            LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
-
-        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

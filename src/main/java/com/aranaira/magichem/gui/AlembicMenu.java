@@ -1,6 +1,10 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.AlembicBlock;
+import com.aranaira.magichem.block.entity.container.DistillationResultSlot;
+import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -8,11 +12,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class AlembicMenu extends AbstractContainerMenu {
 
@@ -26,7 +32,7 @@ public class AlembicMenu extends AbstractContainerMenu {
 
     public AlembicMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuRegistry.ALEMBIC_MENU.get(), id);
-        checkContainerSize(inv, 21);
+        checkContainerSize(inv, 14);
         blockEntity = (AlembicBlockEntity) entity;
         this.level = inv.player.level;
         this.data = data;
@@ -35,32 +41,36 @@ public class AlembicMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+
+            //Bottle slot
+            this.addSlot(new SlotItemHandler(handler, 0, 134, -5) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    if(stack.getItem() instanceof BottleItem) {
+                        return true;
+                    } else
+                        return false;
+                }
+            });
+
             //Input item slots
-            this.addSlot(new SlotItemHandler(handler, 0, 44, -5));
-            this.addSlot(new SlotItemHandler(handler, 1, 44, 13));
-            this.addSlot(new SlotItemHandler(handler, 2, 44, 31));
-            this.addSlot(new SlotItemHandler(handler, 3, 44, 49));
-            this.addSlot(new SlotItemHandler(handler, 4, 44, 67));
+            this.addSlot(new NoMateriaInputSlot(handler, 1, 44, 28));
+            this.addSlot(new NoMateriaInputSlot(handler, 2, 44, 46));
+            this.addSlot(new NoMateriaInputSlot(handler, 3, 44, 64));
 
             //Processing slot
-            this.addSlot(new SlotItemHandler(handler, 5, 80, 31));
+            this.addSlot(new NoMateriaInputSlot(handler, 4, 80, 46));
 
             //Output item slots
-            this.addSlot(new SlotItemHandler(handler, 6, 116, -5));
-            this.addSlot(new SlotItemHandler(handler, 7, 134, -5));
-            this.addSlot(new SlotItemHandler(handler, 8, 152, -5));
-            this.addSlot(new SlotItemHandler(handler, 9, 116, 13));
-            this.addSlot(new SlotItemHandler(handler, 10, 134, 13));
-            this.addSlot(new SlotItemHandler(handler, 11, 152, 13));
-            this.addSlot(new SlotItemHandler(handler, 12, 116, 31));
-            this.addSlot(new SlotItemHandler(handler, 13, 134, 31));
-            this.addSlot(new SlotItemHandler(handler, 14, 152, 31));
-            this.addSlot(new SlotItemHandler(handler, 15, 116, 49));
-            this.addSlot(new SlotItemHandler(handler, 16, 134, 49));
-            this.addSlot(new SlotItemHandler(handler, 17, 152, 49));
-            this.addSlot(new SlotItemHandler(handler, 18, 116, 67));
-            this.addSlot(new SlotItemHandler(handler, 19, 134, 67));
-            this.addSlot(new SlotItemHandler(handler, 20, 152, 67));
+            this.addSlot(new DistillationResultSlot(handler, 5, 116, 28, 0));
+            this.addSlot(new DistillationResultSlot(handler, 6, 134, 28, 0));
+            this.addSlot(new DistillationResultSlot(handler, 7, 152, 28, 0));
+            this.addSlot(new DistillationResultSlot(handler, 8, 116, 46, 0));
+            this.addSlot(new DistillationResultSlot(handler, 9, 134, 46, 0));
+            this.addSlot(new DistillationResultSlot(handler, 10, 152, 46, 0));
+            this.addSlot(new DistillationResultSlot(handler, 11, 116, 64, 0));
+            this.addSlot(new DistillationResultSlot(handler, 12, 134, 64, 0));
+            this.addSlot(new DistillationResultSlot(handler, 13, 152, 64, 0));
         });
 
         addDataSlots(data);
@@ -74,14 +84,14 @@ public class AlembicMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for(int i=0; i<3; i++) {
             for(int l=0; l<9; l++) {
-                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 97 + i*18)));
+                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 94 + i*18)));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for(int i=0; i<9; i++) {
-            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 155)));
+            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 152)));
         }
     }
 
@@ -109,7 +119,7 @@ public class AlembicMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 21;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 14;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {

@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.gui.CirclePowerMenu;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -245,12 +246,6 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     /* FE STUFF */
-    private static final int
-        ENERGY_GEN_1_REAGENT = 3,
-        ENERGY_GEN_2_REAGENT = 12,
-        ENERGY_GEN_3_REAGENT = 48,
-        ENERGY_GEN_4_REAGENT = 200,
-        ENERGY_MAX_MULTIPLIER = 3;
 
     private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
         @Override
@@ -269,9 +264,9 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
 
         switch(reagentCount) {
             case 1: {
-                int cap = ENERGY_GEN_1_REAGENT * ENERGY_MAX_MULTIPLIER;
+                int cap = Config.circlePowerGen1Reagent * Config.circlePowerBuffer;
                 if(currentEnergy < cap) {
-                    int mod = currentEnergy + ENERGY_GEN_1_REAGENT;
+                    int mod = currentEnergy + Config.circlePowerGen1Reagent;
                     if(currentEnergy > cap) mod = cap - currentEnergy;
                     int insert = entity.ENERGY_STORAGE.receiveEnergy(mod,false);
                     //int insert = entity.ENERGY_STORAGE.setEnergy(ENERGY_GEN_1_REAGENT);

@@ -27,7 +27,7 @@ public class AlembicBlock extends BaseEntityBlock {
         super(properties);
     }
 
-    private static final VoxelShape VOXEL_SHAPE = Block.box(0,0,0,16,6,16);
+    private static final VoxelShape VOXEL_SHAPE = Block.box(4,0,4,12,10,12);
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
