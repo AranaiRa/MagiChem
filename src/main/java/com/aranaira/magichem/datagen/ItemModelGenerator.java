@@ -22,7 +22,8 @@ public class ItemModelGenerator extends ItemModelProvider {
         for(EssentiaItem item : ItemRegistry.getEssentia()) {
             withExistingParent(String.format("item/essentia_%s", item.getMateriaName()), mcLoc("item/generated"))
                     .texture("layer0", modLoc("item/phial_essentia_fill"))
-                    .texture("layer1", modLoc("item/phial_essentia"));
+                    .texture("layer1", modLoc("item/phial_essentia"))
+                    .texture("layer2", modLoc("item/overlays/essentiaoverlay_"+item.getMateriaName()));
         }
     }
 }

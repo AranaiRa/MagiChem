@@ -2,6 +2,7 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "magichem:item/phial_essentia_fill",
-    "layer1": "magichem:item/phial_essentia"
+    "layer1": "magichem:item/phial_essentia",
+    "layer2": "magichem:item/overlays/essentiaoverlay_precious"
   }
 }

@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "magichem:item/phial_essentia_fill",
-    "layer1": "magichem:item/phial_essentia"
-  }
-}
