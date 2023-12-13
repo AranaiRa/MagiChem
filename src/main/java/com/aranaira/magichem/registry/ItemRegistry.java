@@ -4,7 +4,6 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
-import it.unimi.dsi.fastutil.Hash;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -13,8 +12,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,7 +23,7 @@ public class ItemRegistry {
     public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
 
     public static final RegistryObject<Item> SILVER_DUST = ITEMS.register("silver_dust",
-            () -> new Item(new Item.Properties().durability(64).defaultDurability(64).setNoRepair().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
     public static final RegistryObject<Item> TARNISHED_SILVER_LUMP = ITEMS.register("tarnished_silver_lump",
@@ -48,10 +45,15 @@ public class ItemRegistry {
         return ESSENTIA.getEntries().stream().map(RegistryObject::get).map(item -> (EssentiaItem) item).collect(Collectors.toList());
     }
 
-    public static HashMap<String, EssentiaItem> getEssentiaMap() {
+    public static HashMap<String, EssentiaItem> getEssentiaMap(boolean appendModID, boolean appendTypePrefix) {
         HashMap<String, EssentiaItem> output = new HashMap<>();
         ESSENTIA.getEntries().stream().map(RegistryObject::get).map(item -> (EssentiaItem) item).forEach(item -> {
-            output.put(item.getMateriaName(), item);
+            String prefix = "";
+            if(appendModID)
+                prefix += MagiChemMod.MODID+":";
+            if(appendTypePrefix)
+                prefix += "essentia_";
+            output.put(prefix+item.getMateriaName(), item);
         });
         return output;
     }
@@ -60,10 +62,36 @@ public class ItemRegistry {
         return ADMIXTURES.getEntries().stream().map(RegistryObject::get).map(item -> (AdmixtureItem) item).collect(Collectors.toList());
     }
 
-    public static HashMap<String, AdmixtureItem> getAdmixturesMap() {
+    public static HashMap<String, AdmixtureItem> getAdmixturesMap(boolean appendModID, boolean appendTypePrefix) {
         HashMap<String, AdmixtureItem> output = new HashMap<>();
         ADMIXTURES.getEntries().stream().map(RegistryObject::get).map(item -> (AdmixtureItem) item).forEach(item -> {
-            output.put(item.getMateriaName(), item);
+            String prefix = "";
+            if(appendModID)
+                prefix += MagiChemMod.MODID+":";
+            if(appendTypePrefix)
+                prefix += "admixture_";
+            output.put(prefix+item.getMateriaName(), item);
+        });
+        return output;
+    }
+
+    public static HashMap<String, MateriaItem> getMateriaMap(boolean appendModID, boolean appendTypePrefix) {
+        HashMap<String, MateriaItem> output = new HashMap<>();
+        ESSENTIA.getEntries().stream().map(RegistryObject::get).map(item -> (EssentiaItem) item).forEach(item -> {
+            String prefix = "";
+            if(appendModID)
+                prefix += MagiChemMod.MODID+":";
+            if(appendTypePrefix)
+                prefix += "essentia_";
+            output.put(prefix+item.getMateriaName(), item);
+        });
+        ADMIXTURES.getEntries().stream().map(RegistryObject::get).map(item -> (AdmixtureItem) item).forEach(item -> {
+            String prefix = "";
+            if(appendModID)
+                prefix += MagiChemMod.MODID+":";
+            if(appendTypePrefix)
+                prefix += "admixture_";
+            output.put(prefix+item.getMateriaName(), item);
         });
         return output;
     }

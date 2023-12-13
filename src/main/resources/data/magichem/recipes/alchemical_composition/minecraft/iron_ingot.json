@@ -1,0 +1,8 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "object": { "item": "minecraft:iron_ingot" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 6 }
+  ]
+}

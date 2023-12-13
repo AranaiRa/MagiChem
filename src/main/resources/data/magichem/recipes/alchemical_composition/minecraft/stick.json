@@ -1,0 +1,8 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "object": { "item": "minecraft:stick" },
+  "components": [
+    { "item": "magichem:admixture_plant" }
+  ]
+}

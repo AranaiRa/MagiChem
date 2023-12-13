@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "object": { "item": "minecraft:ice" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 4 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:admixture_cold", "count": 1 }
+  ]
+}

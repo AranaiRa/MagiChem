@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "object": { "item": "mna:vinteum_dust" },
+  "components": [
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:admixture_mana", "count": 4 },
+    { "item": "magichem:admixture_dust", "count": 2 }
+  ]
+}

@@ -43,7 +43,7 @@ public class AlembicMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slot
-            this.addSlot(new SlotItemHandler(handler, 0, 134, -5) {
+            this.addSlot(new SlotItemHandler(handler, AlembicBlockEntity.SLOT_BOTTLES, 134, -5) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() instanceof BottleItem) {
@@ -54,23 +54,23 @@ public class AlembicMenu extends AbstractContainerMenu {
             });
 
             //Input item slots
-            this.addSlot(new NoMateriaInputSlot(handler, 1, 44, 28));
-            this.addSlot(new NoMateriaInputSlot(handler, 2, 44, 46));
-            this.addSlot(new NoMateriaInputSlot(handler, 3, 44, 64));
+            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_1, 44, 28));
+            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_2, 44, 46));
+            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_3, 44, 64));
 
             //Processing slot
-            this.addSlot(new NoMateriaInputSlot(handler, 4, 80, 46));
+            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_PROCESSING, 80, 46));
 
             //Output item slots
-            this.addSlot(new DistillationResultSlot(handler, 5, 116, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, 6, 134, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, 7, 152, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, 8, 116, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, 9, 134, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, 10, 152, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, 11, 116, 64, 0));
-            this.addSlot(new DistillationResultSlot(handler, 12, 134, 64, 0));
-            this.addSlot(new DistillationResultSlot(handler, 13, 152, 64, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_1, 116, 28, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_2, 134, 28, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_3, 152, 28, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_4, 116, 46, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_5, 134, 46, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_6, 152, 46, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_7, 116, 64, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_8, 134, 64, 0));
+            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_9, 152, 64, 0));
         });
 
         addDataSlots(data);

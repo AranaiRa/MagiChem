@@ -64,8 +64,8 @@ public class AdmixtureItem extends MateriaItem {
     private String constructDisplayFormula() {
         String output = "";
 
-        HashMap<String, EssentiaItem> essentiaMap = ItemRegistry.getEssentiaMap();
-        HashMap<String, AdmixtureItem> admixturesMap = ItemRegistry.getAdmixturesMap();
+        HashMap<String, EssentiaItem> essentiaMap = ItemRegistry.getEssentiaMap(false, false);
+        HashMap<String, AdmixtureItem> admixturesMap = ItemRegistry.getAdmixturesMap(false, false);
 
         //add elements
         for (NameCountPair formulaEssentiaPortion : formulaEssentiaPortions) {
