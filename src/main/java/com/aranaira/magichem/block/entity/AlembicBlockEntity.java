@@ -182,7 +182,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             //Move an item into the processing slot
             int targetSlot = nextInputSlotWithItem(entity);
             if (targetSlot != -1) {
-                ItemStack stack = entity.itemHandler.extractItem(targetSlot, 64, false);
+                ItemStack stack = entity.itemHandler.extractItem(targetSlot, 1, false);
                 entity.itemHandler.insertItem(SLOT_PROCESSING, stack, false);
             }
         }
