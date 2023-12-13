@@ -23,6 +23,15 @@ public class EssentiaItem extends MateriaItem {
             "conceptual", "verdant", "fleshy",  "nourishing", "rotten", "mineral", "wrought", "precious",
             "nigredo", "albedo", "citrinitas", "rubedo"
     };
+    private static final String[] houseOfElements = {
+            "ender", "earth", "water", "air", "fire", "arcane"
+    };
+    private static final String[] houseOfQualities = {
+            "conceptual", "verdant", "fleshy",  "nourishing", "rotten", "mineral", "wrought", "precious"
+    };
+    private static final String[] houseOfAlchemy = {
+            "nigredo", "albedo", "citrinitas", "rubedo"
+    };
 
     private final String name;
     private final String abbreviation;
@@ -43,6 +52,38 @@ public class EssentiaItem extends MateriaItem {
             if(test == query) {
                 result = true;
                 break;
+            }
+        }
+        return result;
+    }
+
+    public static boolean isInHouse(String query, EEssentiaHouse houseQuery) {
+        boolean result = false;
+
+        switch(houseQuery) {
+            case ELEMENTS: {
+                for (String test : houseOfElements) {
+                    if (test == query) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            case QUALITIES: {
+                for (String test : houseOfQualities) {
+                    if (test == query) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            case ALCHEMY: {
+                for (String test : houseOfAlchemy) {
+                    if (test == query) {
+                        result = true;
+                        break;
+                    }
+                }
             }
         }
         return result;

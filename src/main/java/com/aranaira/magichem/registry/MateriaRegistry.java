@@ -13,16 +13,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class MateriaRegistry {
     public static final JsonObject ESSENTIA_JSON = getStreamAsJsonObject("/data/magichem/generator/essentia.json");
@@ -60,17 +57,26 @@ public class MateriaRegistry {
             String admixtureName = object.get("name").getAsString();
             String color = object.get("color").getAsString();
             JsonArray components = object.getAsJsonArray("components");
-            NonNullList<NameCountPair> formula = NonNullList.create();
+            List<NameCountPair> formulaE = new ArrayList<>();
+            List<NameCountPair> formulaA = new ArrayList<>();
             for(JsonElement component : components) {
                 JsonObject componentObject = component.getAsJsonObject();
-                String componentName = componentObject.get("name").getAsString();
+
                 byte componentCount = componentObject.has("count") ? componentObject.get("count").getAsByte() : 1;
 
-                formula.add(new NameCountPair(componentName, componentCount));
+                if(componentObject.has("essentia")) {
+                    String componentName = componentObject.get("essentia").getAsString();
+                    formulaE.add(new NameCountPair(componentName, componentCount));
+                }
+                else if(componentObject.has("admixture")) {
+                    String componentName = componentObject.get("admixture").getAsString();
+                    formulaA.add(new NameCountPair(componentName, componentCount));
+                }
+
             }
 
             ItemRegistry.ADMIXTURES.register("admixture_"+admixtureName,
-                    () -> new AdmixtureItem(admixtureName, color, formula));
+                    () -> new AdmixtureItem(admixtureName, color, formulaE, formulaA));
             RegistryObject<Item> registryObject = ItemRegistry.getRegistryObject(ItemRegistry.ADMIXTURES, "admixture_"+admixtureName);
         }
     }

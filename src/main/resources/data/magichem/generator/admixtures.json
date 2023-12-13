@@ -4,262 +4,262 @@
       "name": "alcohol",
       "color": "859c9b",
       "components": [
-        { "name": "poison", "count": 1 },
-        { "name": "nourishing", "count": 2 },
-        { "name": "wrought", "count": 2 }
+        { "essentia": "nourishing", "count": 2 },
+        { "essentia": "wrought", "count": 2 },
+        { "admixture": "poison", "count": 1 }
       ]
     },
     {
       "name": "alien",
       "color": "605175",
       "components": [
-        { "name": "ender", "count": 4 },
-        { "name": "fleshy", "count": 2 }
+        { "essentia": "ender", "count": 4 },
+        { "essentia": "fleshy", "count": 2 }
       ]
     },
     {
       "name": "blood",
       "color": "711814",
       "components": [
-        { "name": "water", "count": 4 },
-        { "name": "fleshy", "count": 2 }
+        { "essentia": "water", "count": 4 },
+        { "essentia": "fleshy", "count": 2 }
       ]
     },
     {
       "name": "bone",
       "color": "a6a391",
       "components": [
-        { "name": "earth", "count": 4 },
-        { "name": "fleshy", "count": 2 }
+        { "essentia": "earth", "count": 4 },
+        { "essentia": "fleshy", "count": 2 }
       ]
     },
     {
       "name": "breath",
       "color": "94d1da",
       "components": [
-        { "name": "air", "count": 4 },
-        { "name": "nourishing", "count": 2 }
+        { "essentia": "air", "count": 4 },
+        { "essentia": "nourishing", "count": 2 }
       ]
     },
     {
       "name": "change",
       "color": "4f987a",
       "components": [
-        { "name": "water", "count": 4 },
-        { "name": "conceptual", "count": 2 }
+        { "essentia": "water", "count": 4 },
+        { "essentia": "conceptual", "count": 2 }
       ]
     },
     {
       "name": "cold",
       "color": "b9d5d5",
       "components": [
-        { "name": "fire", "count": 4 },
-        { "name": "rotten", "count": 2 }
+        { "essentia": "fire", "count": 4 },
+        { "essentia": "rotten", "count": 2 }
       ]
     },
     {
       "name": "creature",
       "color": "b28383",
       "components": [
-        { "name": "blood", "count": 1 },
-        { "name": "breath", "count": 1 }
+        { "admixture": "blood", "count": 1 },
+        { "admixture": "breath", "count": 1 }
       ]
     },
     {
       "name": "darkness",
       "color": "131418",
       "components": [
-        { "name": "light", "count": 1 },
-        { "name": "rotten", "count": 2 }
+        { "essentia": "rotten", "count": 2 },
+        { "admixture": "light", "count": 1 }
       ]
     },
     {
       "name": "death",
       "color": "262b29",
       "components": [
-        { "name": "breath", "count": 1 },
-        { "name": "rotten", "count": 2 }
+        { "essentia": "rotten", "count": 2 },
+        { "admixture": "breath", "count": 1 }
       ]
     },
     {
       "name": "demon",
       "color": "452e25",
       "components": [
-        { "name": "fire", "count": 4 },
-        { "name": "fleshy", "count": 2 }
+        { "essentia": "fire", "count": 4 },
+        { "essentia": "fleshy", "count": 2 }
       ]
     },
     {
       "name": "destruction",
       "color": "370944",
       "components": [
-        { "name": "fire", "count": 4 },
-        { "name": "conceptual", "count": 2 }
+        { "essentia": "fire", "count": 4 },
+        { "essentia": "conceptual", "count": 2 }
       ]
     },
     {
       "name": "dust",
       "color": "393a3b",
       "components": [
-        { "name": "air", "count": 4 },
-        { "name": "mineral", "count": 2 }
+        { "essentia": "air", "count": 4 },
+        { "essentia": "mineral", "count": 2 }
       ]
     },
     {
       "name": "energy",
       "color": "f6c95f",
       "components": [
-        { "name": "storm", "count": 1 },
-        { "name": "wrought", "count": 2 }
+        { "essentia": "wrought", "count": 2 },
+        { "admixture": "storm", "count": 1 }
       ]
     },
     {
       "name": "fey",
       "color": "5ff6a2",
       "components": [
-        { "name": "air", "count": 4 },
-        { "name": "fleshy", "count": 2 }
+        { "essentia": "air", "count": 4 },
+        { "essentia": "fleshy", "count": 2 }
       ]
     },
     {
       "name": "instrument",
       "color": "6a6dd4",
       "components": [
-        { "name": "thought", "count": 1 },
-        { "name": "permanence", "count": 1 },
-        { "name": "wrought", "count": 2 }
+        { "essentia": "wrought", "count": 2 },
+        { "admixture": "thought", "count": 1 },
+        { "admixture": "permanence", "count": 1 }
       ]
     },
     {
       "name": "lies",
       "color": "a57994",
       "components": [
-        { "name": "thought", "count": 1 },
-        { "name": "rotten", "count": 2 }
+        { "essentia": "rotten", "count": 2 },
+        { "admixture": "thought", "count": 1 }
       ]
     },
     {
       "name": "light",
       "color": "fff7a1",
       "components": [
-        { "name": "fire", "count": 4 },
-        { "name": "nourishing", "count": 2 }
+        { "essentia": "fire", "count": 4 },
+        { "essentia": "nourishing", "count": 2 }
       ]
     },
     {
       "name": "mana",
       "color": "23a1d6",
       "components": [
-        { "name": "arcane", "count": 4 },
-        { "name": "nourishing", "count": 2 }
+        { "essentia": "arcane", "count": 4 },
+        { "essentia": "nourishing", "count": 2 }
       ]
     },
     {
       "name": "memory",
       "color": "7cd623",
       "components": [
-        { "name": "thought", "count": 1 },
-        { "name": "precious", "count": 2 }
+        { "essentia": "precious", "count": 2 },
+        { "admixture": "thought", "count": 1 }
       ]
     },
     {
       "name": "metal",
       "color": "9e9ea5",
       "components": [
-        { "name": "earth", "count": 4 },
-        { "name": "fire", "count": 4 },
-        { "name": "wrought", "count": 2 },
-        { "name": "mineral", "count": 2 }
+        { "essentia": "earth", "count": 4 },
+        { "essentia": "fire", "count": 4 },
+        { "essentia": "wrought", "count": 2 },
+        { "essentia": "mineral", "count": 2 }
       ]
     },
     {
       "name": "motion",
       "color": "6786bf",
       "components": [
-        { "name": "air", "count": 4 },
-        { "name": "conceptual", "count": 2 }
+        { "essentia": "air", "count": 4 },
+        { "essentia": "conceptual", "count": 2 }
       ]
     },
     {
       "name": "nectar",
       "color": "90731c",
       "components": [
-        { "name": "water", "count": 4 },
-        { "name": "verdant", "count": 2 }
+        { "essentia": "water", "count": 4 },
+        { "essentia": "verdant", "count": 2 }
       ]
     },
     {
       "name": "permanence",
       "color": "756f0b",
       "components": [
-        { "name": "earth", "count": 4 },
-        { "name": "conceptual", "count": 2 }
+        { "essentia": "earth", "count": 4 },
+        { "essentia": "conceptual", "count": 2 }
       ]
     },
     {
       "name": "plant",
       "color": "2f5f3d",
       "components": [
-        { "name": "nectar", "count": 1 },
-        { "name": "breath", "count": 1 },
-        { "name": "verdant", "count": 2 }
+        { "essentia": "verdant", "count": 2 },
+        { "admixture": "nectar", "count": 1 },
+        { "admixture": "breath", "count": 1 }
       ]
     },
     {
       "name": "poison",
       "color": "475c3b",
       "components": [
-        { "name": "water", "count": 4 },
-        { "name": "rotten", "count": 2 }
+        { "essentia": "water", "count": 4 },
+        { "essentia": "rotten", "count": 2 }
       ]
     },
     {
       "name": "stone",
       "color": "4f545c",
       "components": [
-        { "name": "earth", "count": 4 },
-        { "name": "mineral", "count": 2 }
+        { "essentia": "earth", "count": 4 },
+        { "essentia": "mineral", "count": 2 }
       ]
     },
     {
       "name": "storm",
       "color": "394149",
       "components": [
-        { "name": "fire", "count": 6 },
-        { "name": "air", "count": 2 },
-        { "name": "verdant", "count": 2 }
+        { "essentia": "fire", "count": 6 },
+        { "essentia": "air", "count": 2 },
+        { "essentia": "verdant", "count": 2 }
       ]
     },
     {
       "name": "thought",
       "color": "786cb2",
       "components": [
-        { "name": "arcane", "count": 4 },
-        { "name": "conceptual", "count": 2 }
+        { "essentia": "arcane", "count": 4 },
+        { "essentia": "conceptual", "count": 2 }
       ]
     },
     {
       "name": "trap",
       "color": "4a4842",
       "components": [
-        { "name": "motion", "count": 1 },
-        { "name": "rotten", "count": 2 }
+        { "essentia": "rotten", "count": 2 },
+        { "admixture": "motion", "count": 1 }
       ]
     },
     {
       "name": "violence",
       "color": "683b1e",
       "components": [
-        { "name": "destruction", "count": 1 },
-        { "name": "thought", "count": 1 }
+        { "admixture": "thought", "count": 1 },
+        { "admixture": "destruction", "count": 1 }
       ]
     },
     {
       "name": "wizard",
       "color": "9959d5",
       "components": [
-        { "name": "arcane", "count": 4 },
-        { "name": "fleshy", "count": 2 }
+        { "essentia": "arcane", "count": 4 },
+        { "essentia": "fleshy", "count": 2 }
       ]
     }
   ]

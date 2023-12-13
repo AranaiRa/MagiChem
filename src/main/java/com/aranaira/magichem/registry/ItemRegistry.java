@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
+import it.unimi.dsi.fastutil.Hash;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -12,8 +13,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = MagiChemMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -45,8 +48,24 @@ public class ItemRegistry {
         return ESSENTIA.getEntries().stream().map(RegistryObject::get).map(item -> (EssentiaItem) item).collect(Collectors.toList());
     }
 
+    public static HashMap<String, EssentiaItem> getEssentiaMap() {
+        HashMap<String, EssentiaItem> output = new HashMap<>();
+        ESSENTIA.getEntries().stream().map(RegistryObject::get).map(item -> (EssentiaItem) item).forEach(item -> {
+            output.put(item.getMateriaName(), item);
+        });
+        return output;
+    }
+
     public static List<AdmixtureItem> getAdmixtures() {
         return ADMIXTURES.getEntries().stream().map(RegistryObject::get).map(item -> (AdmixtureItem) item).collect(Collectors.toList());
+    }
+
+    public static HashMap<String, AdmixtureItem> getAdmixturesMap() {
+        HashMap<String, AdmixtureItem> output = new HashMap<>();
+        ADMIXTURES.getEntries().stream().map(RegistryObject::get).map(item -> (AdmixtureItem) item).forEach(item -> {
+            output.put(item.getMateriaName(), item);
+        });
+        return output;
     }
 
     @SubscribeEvent
