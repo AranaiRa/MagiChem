@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity.ext;
 
+import com.aranaira.magichem.MagiChemMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -7,6 +8,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 public class BlockEntityWithEfficiency extends BlockEntity {
@@ -21,7 +25,28 @@ public class BlockEntityWithEfficiency extends BlockEntity {
     }
 
     public static NonNullList<ItemStack> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency) {
-        //TODO: roll this sucka
-        return query;
+        if(efficiency < 100) {
+            ArrayList<ItemStack> modifiableQuery = new ArrayList<>();
+            for (ItemStack stack : query) {
+                modifiableQuery.add(new ItemStack(stack.getItem(), stack.getCount()));
+            }
+
+            NonNullList<ItemStack> output = NonNullList.create();
+            for (ItemStack stack : modifiableQuery) {
+                int count = stack.getCount();
+                for (int i = 0; i < count; i++) {
+                    if (r.nextInt(100) > efficiency)
+                        stack.shrink(1);
+                }
+            }
+
+            for(ItemStack stack : modifiableQuery) {
+                if(stack.getCount() > 0)
+                    output.add(stack);
+            }
+            return output;
+        }
+        else
+            return query;
     }
 }

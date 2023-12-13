@@ -1,0 +1,279 @@
+{
+  "Essentia": {
+    "index": "1000",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Essentia"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Essentia",
+            "bold": true
+          },
+          {
+            "text": " is the purified essence of "
+          },
+          {
+            "text": "something",
+            "italic": true
+          },
+          {
+            "text": " distilled from an object or fluid. It's the most fundamental part of the alchemical arts. There are eighteen types of Essentia, each bearing a particular "
+          },
+          {
+            "text": "Sign",
+            "bold": true
+          },
+          {
+            "text": " and arranged into three "
+          },
+          {
+            "text": "Houses",
+            "bold": true
+          },
+          {
+            "text": ", groupings of Essentia types that share similar themes.\n\nThe "
+          },
+          {
+            "text": "House of Elements",
+            "bold": true
+          },
+          {
+            "text": " contains Essentia that represent the six core affinities of magic that most magicians are already familiar with: "
+          },
+          {
+            "text": "Ender",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Earth",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Water",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Air",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Fire",
+            "bold": true
+          },
+          {
+            "text": ", and "
+          },
+          {
+            "text": "Arcane",
+            "bold": true
+          },
+          {
+            "text": ".\n\nThe "
+          },
+          {
+            "text": "House of Qualities",
+            "bold": true
+          },
+          {
+            "text": " contains Essentia that "
+          },
+          {
+            "text": "describe",
+            "italic": true
+          },
+          {
+            "text": " what something is; if the House of Elements is about nouns, the House of Qualities is about adjectives. There are eight members of the House of Qualities: "
+          },
+          {
+            "text": "Conceptual",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Verdant",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Fleshy",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Nourishing",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Rotten",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Mineral",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Wrought",
+            "bold": true
+          },
+          {
+            "text": ", and "
+          },
+          {
+            "text": "Precious",
+            "bold": true
+          },
+          {
+            "text": ".\n\nThe "
+          },
+          {
+            "text": "House of Alchemy",
+            "bold": true
+          },
+          {
+            "text": " contains four mysterious types of Essentia that represent ascending power and the search for the Philosopher's Stone: "
+          },
+          {
+            "text": "Nigredo",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Albedo",
+            "bold": true
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Citrinitas",
+            "bold": true
+          },
+          {
+            "text": ", and "
+          },
+          {
+            "text": "Rubedo",
+            "bold": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Admixtures": {
+    "index": "1001",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Admixtures"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Admixtures",
+            "bold": true
+          },
+          {
+            "text": " are combinations of different Essentia that represent higher-ordered themes or ideas.\n\nAn Admixture can be composed of two to five different kinds of Essentia, always includes at least one type of Essentia of both the House of Elements and the House of Qualities, and never includes Essentia of the House of Alchemy. Some Admixtures can even include other Admixtures.\n\nAdmixtures can be obtained by distilling objects and fluids, or by combining Essentia through the alchemical process of Fixation."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Process: Distillation": {
+    "index": "1002",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Distillation"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Distill",
+            "bold": true
+          },
+          {
+            "text": " is to break an object or fluid down into the Materia (that is, Essentia and Admixtures) that make it up. Basic Distillation is performed at an "
+          },
+          {
+            "text": "Alembic",
+            "bold": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "recipe",
+        "location": ":alembic",
+        "recipeType": "manaweaving_altar"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Place the Alembic over a heat source (such as a campfire or a magma block) and then insert items or fluids into the left side of the interface. Over time, the Alembic will break the objects down one by one into some of the Materia that composes it.\n\nYou can't remove Materia from the right side of the interface unless glass bottles are supplied in the slot in the top right.\n\nAn Alembic is an imperfect device. Only about half of the Materia that makes up an object is actually distilled; the rest is lost, destroyed due to inefficiencies in the machine's design, or simply fails to congeal."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": ":alembic::::::"
+      }
+    ]
+  },
+  "version": "1.0.0a"
+}

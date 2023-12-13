@@ -116,5 +116,7 @@
   "tooltip.magichem.nigredo": "First of the House of Alchemy",
   "tooltip.magichem.albedo": "Second of the House of Alchemy",
   "tooltip.magichem.citrinitas": "Third of the House of Alchemy",
-  "tooltip.magichem.rubedo": "Last of the House of Alchemy"
+  "tooltip.magichem.rubedo": "Last of the House of Alchemy",
+
+  "jei.magichem.distillation": "Distillation"
 }

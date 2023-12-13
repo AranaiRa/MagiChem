@@ -182,7 +182,8 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
         if(processingItem != ItemStack.EMPTY && recipe != null) {
             if(entity.progress > Config.alembicOperationTime) {
-                craftItem(entity, recipe);
+                if(!level.isClientSide())
+                    craftItem(entity, recipe);
                 if(!entity.isStalled)
                     entity.resetProgress();
             }
