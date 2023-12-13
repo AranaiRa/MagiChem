@@ -2,42 +2,42 @@
   "essentia": [
     {
       "name": "ender",
-      "abbreviation": "\u02A1",
+      "abbreviation": "\u0547",
       "wheel": 0,
       "house": "elements",
       "color": "2e1c45"
     },
 	{
       "name": "earth",
-      "abbreviation": "\uD83D\uDF03",
+      "abbreviation": "\u053D",
       "wheel": 1,
       "house": "elements",
       "color": "442f17"
     },
 	{
       "name": "water",
-      "abbreviation": "\uD83D\uDF04",
+      "abbreviation": "\u0539",
       "wheel": 2,
       "house": "elements",
       "color": "2c66bd"
     },
 	{
       "name": "air",
-      "abbreviation": "\uD83D\uDF01",
+      "abbreviation": "\u0545",
       "wheel": 3,
       "house": "elements",
       "color": "c9c3b1"
     },
 	{
       "name": "fire",
-      "abbreviation": "\uD83D\uDF02",
+      "abbreviation": "\u0554",
       "wheel": 4,
       "house": "elements",
       "color": "ee8015"
     },
 	{
       "name": "arcane",
-      "abbreviation": "\u0B6C",
+      "abbreviation": "\u0556",
       "wheel": 5,
       "house": "elements",
       "color": "b870ef"
