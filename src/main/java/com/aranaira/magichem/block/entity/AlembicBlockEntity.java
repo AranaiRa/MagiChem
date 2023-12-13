@@ -38,7 +38,8 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         SLOT_PROCESSING = 4,
         SLOT_OUTPUT_1 = 5, SLOT_OUTPUT_2  = 6, SLOT_OUTPUT_3  = 7,
         SLOT_OUTPUT_4 = 8, SLOT_OUTPUT_5  = 9, SLOT_OUTPUT_6  = 10,
-        SLOT_OUTPUT_7 = 11, SLOT_OUTPUT_8 = 12, SLOT_OUTPUT_9 = 13;
+        SLOT_OUTPUT_7 = 11, SLOT_OUTPUT_8 = 12, SLOT_OUTPUT_9 = 13,
+        PROGRESS_BAR_WIDTH = 22;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(21) {
         @Override
@@ -75,8 +76,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     protected final ContainerData data;
-    private int
-            progress = 0;
+    private int progress = 0;
 
     @Override
     public Component getDisplayName() {
@@ -124,6 +124,10 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         progress = nbt.getInt("alembic.progress");
     }
 
+    public static int getScaledProgress(AlembicBlockEntity entity) {
+        return PROGRESS_BAR_WIDTH * entity.progress / Config.alembicOperationTime;
+    }
+
     public void dropInventoryToWorld() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
         for (int i = 0; i< itemHandler.getSlots(); i++) {
@@ -160,25 +164,13 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         return null;
     }
 
-    private static SimpleContainer tryInsertIngredientsIntoOutputSlot(SimpleContainer inventory, NonNullList<Ingredient> ingredients) {
-        SimpleContainer outputSlots = new SimpleContainer(9);
-        for(int i=SLOT_OUTPUT_1; i<=SLOT_OUTPUT_9; i++) {
-            outputSlots.setItem(i, inventory.getItem(i));
-        }
-
-        ingredients.forEach(ing -> {
-            MagiChemMod.LOGGER.debug(ing.toString());
-        });
-
-        return outputSlots;
-    }
-
     public static void tick(Level level, BlockPos pos, BlockState state, AlembicBlockEntity entity) {
-        if(level.isClientSide()) {
+        /*if(level.isClientSide()) {
             return;
-        }
+        }*/
 
-        if(entity.itemHandler.getStackInSlot(SLOT_PROCESSING) == ItemStack.EMPTY) {
+        ItemStack processingItem = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
+        if(processingItem == ItemStack.EMPTY) {
             //Move an item into the processing slot
             int targetSlot = nextInputSlotWithItem(entity);
             if (targetSlot != -1) {
@@ -188,15 +180,17 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         }
 
         AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
-        if(entity.itemHandler.getStackInSlot(SLOT_PROCESSING) != ItemStack.EMPTY && recipe != null) {
-            entity.incrementProgress();
-            if(entity.progress > /*Config.alembicOperationTime*/60) {
+        if(processingItem != ItemStack.EMPTY && recipe != null) {
+            if(entity.progress > Config.alembicOperationTime) {
                 craftItem(entity, recipe);
                 if(!entity.isStalled)
                     entity.resetProgress();
             }
-            MagiChemMod.LOGGER.debug("Ticking, "+entity.progress+" of "+Config.alembicOperationTime);
+            else
+                entity.incrementProgress();
         }
+        else if(processingItem == ItemStack.EMPTY)
+            entity.resetProgress();
     }
 
     private static void craftItem(AlembicBlockEntity entity, AlchemicalCompositionRecipe recipe) {

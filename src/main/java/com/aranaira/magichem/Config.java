@@ -34,6 +34,10 @@ public class Config
             .comment("The time, in ticks, that it takes for an Alembic to process one object.")
             .define("alembicNeedsHeat", true);
 
+    private static final ForgeConfigSpec.BooleanValue ALEMBIC_GENERATES_WASTE = BUILDER
+            .comment("Whether the Alembic creates Alchemical Waste on failed rolls.")
+            .define("alembicGeneratesWaste", false);
+
     //----------------CIRCLE OF POWER
 
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_1_REAGENT = BUILDER
@@ -75,7 +79,8 @@ public class Config
         distilleryEfficiency;
 
     public static boolean
-        alembicNeedsHeat;
+        alembicNeedsHeat,
+        alembicGeneratesWaste;
 
 
     private static boolean validateItemName(final Object obj)
@@ -87,8 +92,9 @@ public class Config
     static void onLoad(final ModConfigEvent event)
     {
         alembicEfficiency = ALEMBIC_EFFICIENCY.get();
-        alembicOperationTime = ALEMBIC_OPERATION_TIME.get();
+        alembicOperationTime = 60;//ALEMBIC_OPERATION_TIME.get();
         alembicNeedsHeat = ALEMBIC_NEEDS_HEAT.get();
+        alembicGeneratesWaste = ALEMBIC_GENERATES_WASTE.get();
         circlePowerGen1Reagent = CIRCLE_OF_POWER_GEN_1_REAGENT.get();
         circlePowerGen2Reagent = CIRCLE_OF_POWER_GEN_2_REAGENT.get();
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();

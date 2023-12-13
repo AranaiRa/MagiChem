@@ -20,6 +20,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
+import static com.aranaira.magichem.block.entity.AlembicBlockEntity.PROGRESS_BAR_WIDTH;
+
 public class AlembicMenu extends AbstractContainerMenu {
 
     public final AlembicBlockEntity blockEntity;
@@ -98,10 +100,6 @@ public class AlembicMenu extends AbstractContainerMenu {
         for(int i=0; i<9; i++) {
             this.addSlot((new Slot(playerInventory, i, 8 + i*18, 152)));
         }
-    }
-
-    public int getScaledProgress(int tier) {
-        return -1;
     }
 
     public boolean isCrafting(int tier) {

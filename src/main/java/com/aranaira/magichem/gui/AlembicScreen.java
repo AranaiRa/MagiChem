@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -35,6 +36,10 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         int y = (height - h) / 2;
 
         this.blit(poseStack, x, y, 0, 0, w, h);
+
+        int sp = menu.blockEntity.getScaledProgress(menu.blockEntity);
+        if(sp > 0)
+            this.blit(poseStack, x+77, y+83, 0, 253, sp, 3);
     }
 
     @Override
