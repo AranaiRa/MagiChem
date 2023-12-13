@@ -16,7 +16,7 @@ public class DataGenerators {
         generator.addProvider(event.includeClient(), new ItemModelGenerator(generator, event.getExistingFileHelper()));
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-        generator.addProvider(false, new ItemModelGenerator(generator, existingFileHelper));
+        generator.addProvider(true, new ItemModelGenerator(generator, existingFileHelper));
         generator.addProvider(true, new LangGenerator(generator, "en_us"));
     }
 }

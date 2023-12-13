@@ -14,9 +14,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.List;
 
 public class EssentiaItem extends MateriaItem {
+    private static final String[] essentiaTypes = {
+            "ender", "earth", "water", "air", "fire", "arcane",
+            "conceptual", "verdant", "fleshy",  "nourishing", "rotten", "mineral", "wrought", "precious",
+            "nigredo", "albedo", "citrinitas", "rubedo"
+    };
 
     private final String name;
     private final String abbreviation;
@@ -29,6 +35,17 @@ public class EssentiaItem extends MateriaItem {
         this.abbreviation = essentiaAbbreviation;
         this.house = parseStringToHouse(essentiaHouse, essentiaName);
         this.wheel = essentiaWheel;
+    }
+
+    public static boolean isEssentia(String query) {
+        boolean result = false;
+        for(String test : essentiaTypes) {
+            if(test == query) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     private EEssentiaHouse parseStringToHouse(String input, String nameForErrorHandling) {

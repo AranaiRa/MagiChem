@@ -16,5 +16,6 @@ public class LangGenerator extends LanguageProvider {
     @SuppressWarnings("deprecation")
     protected void addTranslations() {
         ItemRegistry.getEssentia().forEach(essentia -> add(String.format("item.magichem.essentia_%s", essentia.getMateriaName()), WordUtils.capitalize(essentia.getMateriaName()) + " Essentia"));
+        ItemRegistry.getAdmixtures().forEach(essentia -> add(String.format("item.magichem.admixture_%s", essentia.getMateriaName()), "Admixture of " + WordUtils.capitalize(essentia.getMateriaName())));
     }
 }

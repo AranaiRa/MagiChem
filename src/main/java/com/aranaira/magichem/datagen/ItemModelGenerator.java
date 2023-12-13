@@ -1,6 +1,7 @@
 package com.aranaira.magichem.datagen;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.data.DataGenerator;
@@ -16,6 +17,7 @@ public class ItemModelGenerator extends ItemModelProvider {
     @Override
     protected void registerModels() {
         generateEssentiaModels();
+        generateAdmixtureModels();
     }
 
     private void generateEssentiaModels() {
@@ -24,6 +26,14 @@ public class ItemModelGenerator extends ItemModelProvider {
                     .texture("layer0", modLoc("item/phial_essentia_fill"))
                     .texture("layer1", modLoc("item/phial_essentia"))
                     .texture("layer2", modLoc("item/overlays/essentiaoverlay_"+item.getMateriaName()));
+        }
+    }
+
+    private void generateAdmixtureModels() {
+        for(AdmixtureItem item : ItemRegistry.getAdmixtures()) {
+            withExistingParent(String.format("item/admixture_%s", item.getMateriaName()), mcLoc("item/generated"))
+                    .texture("layer0", modLoc("item/phial_admixture_fill"))
+                    .texture("layer1", modLoc("item/phial_admixture"));
         }
     }
 }

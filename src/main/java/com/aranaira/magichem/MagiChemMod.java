@@ -45,6 +45,8 @@ public class MagiChemMod
         MenuRegistry.register(modEventBus);
         MateriaRegistry.register(modEventBus);
 
+        RecipeRegistry.register(modEventBus);
+
         modEventBus.addListener(this::commonSetup);
 
         BLOCKS.register(modEventBus);

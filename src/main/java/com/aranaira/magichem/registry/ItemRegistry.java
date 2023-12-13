@@ -1,6 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import net.minecraft.world.item.Item;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class ItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ESSENTIA = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
+    public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
 
     public static final RegistryObject<Item> SILVER_DUST = ITEMS.register("silver_dust",
             () -> new Item(new Item.Properties().durability(64).defaultDurability(64).setNoRepair().tab(CreativeModeTabs.MAGICHEM_TAB))
@@ -31,6 +33,7 @@ public class ItemRegistry {
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         ESSENTIA.register(eventBus);
+        ADMIXTURES.register(eventBus);
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -42,8 +45,13 @@ public class ItemRegistry {
         return ESSENTIA.getEntries().stream().map(RegistryObject::get).map(item -> (EssentiaItem) item).collect(Collectors.toList());
     }
 
+    public static List<AdmixtureItem> getAdmixtures() {
+        return ADMIXTURES.getEntries().stream().map(RegistryObject::get).map(item -> (AdmixtureItem) item).collect(Collectors.toList());
+    }
+
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, getEssentia().toArray(new EssentiaItem[0]));
+        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, getAdmixtures().toArray(new AdmixtureItem[0]));
     }
 }
