@@ -42,6 +42,18 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             SLOT_OUTPUT_6 = 16, SLOT_OUTPUT_7 = 17, SLOT_OUTPUT_8 = 18, SLOT_OUTPUT_9 = 19, SLOT_OUTPUT_10 = 20,
             PROGRESS_BAR_WIDTH = 66, PROGRESS_BAR_HEIGHT = 34;
 
+    private static final int[] powerDraw = { //TODO: Convert this to config
+            1, 3, 5, 8, 12, 17, 23, 30, 39, 50,
+            64, 82, 104, 132, 167, 210, 264, 332, 417, 523,
+            655, 820, 1027, 1285, 1608, 2012, 2517, 3148, 3937, 4923
+    };
+
+    private static final int[] operationTicks = { //TODO: Convert this to config
+            1735, 1388, 1110, 888, 710, 568, 454, 363, 290, 232,
+            185, 148, 118, 94, 75, 60, 48, 38, 30, 24,
+            19, 15, 12, 9, 7, 5, 4, 3, 2, 1
+    };
+
     private final ItemStackHandler itemHandler = new ItemStackHandler(21) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -79,7 +91,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     protected final ContainerData data;
     private int
             progress = 0,
-            powerLevel = 0;
+            powerLevel = 1;
     private boolean isStalled = false;
     private String currentRecipe = "";
 
@@ -146,7 +158,6 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         if(!level.isClientSide()) {
             return;
         }
-        MagiChemMod.LOGGER.debug("powerLevel = "+entity.getPowerLevel());
     }
 
     private static void craftItem(CircleFabricationBlockEntity entity, AlchemicalCompositionRecipe recipe) {
@@ -178,6 +189,14 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
     public int getPowerLevel() {
         return powerLevel;
+    }
+
+    public int getPowerDraw() {
+        return powerDraw[powerLevel-1];
+    }
+
+    public int getOperationTicks() {
+        return operationTicks[powerLevel-1];
     }
 
     public int setPowerLevel(int powerLevel) {

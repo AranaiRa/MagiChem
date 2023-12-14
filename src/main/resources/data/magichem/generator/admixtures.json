@@ -58,6 +58,14 @@
       ]
     },
     {
+      "name": "crystal",
+      "color": "73acaa",
+      "components": [
+        { "essentia": "arcane", "count": 4 },
+        { "essentia": "mineral", "count": 2 }
+      ]
+    },
+    {
       "name": "creature",
       "color": "b28383",
       "components": [
@@ -119,6 +127,15 @@
       "components": [
         { "essentia": "air", "count": 4 },
         { "essentia": "fleshy", "count": 2 }
+      ]
+    },
+    {
+      "name": "healing",
+      "color": "f54c4c",
+      "components": [
+        { "admixture": "nectar", "count": 1 },
+        { "admixture": "blood", "count": 1 },
+        { "essentia": "nourishing", "count": 8 }
       ]
     },
     {

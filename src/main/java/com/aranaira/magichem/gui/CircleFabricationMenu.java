@@ -3,6 +3,8 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
+import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
+import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -39,29 +41,29 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 56, 67, true));
 
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_1, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_2, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_3, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_4, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_5, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_6, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_7, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_8, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_9, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_10, 134, -5, false));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_1, 8, -5));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_2, 26, -5));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_3, 8, 13));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_4, 26, 13));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_5, 8, 31));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_6, 26, 31));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_7, 8, 49));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_8, 26, 49));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_9, 8, 67));
+            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_10, 26, 67));
 
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_1, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_2, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_3, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_4, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_5, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_6, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_7, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_8, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_9, 134, -5, false));
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_10, 134, -5, false));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_1, 134, -5));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_2, 152, -5));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_3, 134, 13));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_4, 152, 13));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_5, 134, 31));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_6, 152, 31));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_7, 134, 49));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_8, 152, 49));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_9, 134, 67));
+            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_10, 152, 67));
         });
     }
 
