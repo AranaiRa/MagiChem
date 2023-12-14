@@ -78,7 +78,7 @@ public class DistilleryBlockEntity extends BlockEntityWithEfficiency implements 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new AlembicMenu(id, inventory, this, this.data);
+        return new AlembicMenu(id, inventory, this);
     }
 
     @Override

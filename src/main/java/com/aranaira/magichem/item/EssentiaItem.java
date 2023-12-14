@@ -39,7 +39,7 @@ public class EssentiaItem extends MateriaItem {
     private final int wheel;
 
     public EssentiaItem(String essentiaName, String essentiaAbbreviation, String essentiaHouse, int essentiaWheel, String essentiaColor) {
-        super(essentiaName, essentiaColor, new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB));
+        super(essentiaName, essentiaColor, new Item.Properties().tab(CreativeModeTabs.MAGICHEM_MATERIA_TAB));
         this.name = essentiaName;
         this.abbreviation = essentiaAbbreviation;
         this.house = parseStringToHouse(essentiaHouse, essentiaName);

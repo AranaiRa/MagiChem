@@ -1,17 +1,15 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.AlembicBlock;
-import com.aranaira.magichem.block.entity.container.DistillationResultSlot;
-import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
-import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
+import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -20,30 +18,27 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-import static com.aranaira.magichem.block.entity.AlembicBlockEntity.PROGRESS_BAR_WIDTH;
+public class CircleFabricationMenu extends AbstractContainerMenu {
 
-public class AlembicMenu extends AbstractContainerMenu {
-
-    public final AlembicBlockEntity blockEntity;
+    public final CircleFabricationBlockEntity blockEntity;
     private final Level level;
 
-    public AlembicMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+    public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
     }
 
-    public AlembicMenu(int id, Inventory inv, BlockEntity entity) {
-        super(MenuRegistry.ALEMBIC_MENU.get(), id);
+    public CircleFabricationMenu(int id, Inventory inv, BlockEntity entity) {
+        super(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), id);
         checkContainerSize(inv, 14);
-        blockEntity = (AlembicBlockEntity) entity;
+        blockEntity = (CircleFabricationBlockEntity) entity;
         this.level = inv.player.level;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-
             //Bottle slot
-            this.addSlot(new SlotItemHandler(handler, AlembicBlockEntity.SLOT_BOTTLES, 134, -5) {
+            this.addSlot(new SlotItemHandler(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 134, -5) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() instanceof BottleItem) {
@@ -52,36 +47,12 @@ public class AlembicMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-
-            //Input item slots
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_1, 44, 28));
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_2, 44, 46));
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_3, 44, 64));
-
-            //Processing slot
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_PROCESSING, 80, 46) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-            });
-
-            //Output item slots
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_1, 116, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_2, 134, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_3, 152, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_4, 116, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_5, 134, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_6, 152, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_7, 116, 64, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_8, 134, 64, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_9, 152, 64, 0));
         });
     }
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.ALEMBIC.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.CIRCLE_FABRICATION.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

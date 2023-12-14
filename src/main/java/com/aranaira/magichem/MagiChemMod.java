@@ -1,5 +1,6 @@
 package com.aranaira.magichem;
 
+import com.aranaira.magichem.gui.CircleFabricationScreen;
 import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.gui.AlembicScreen;
 import com.aranaira.magichem.gui.CirclePowerScreen;
@@ -83,6 +84,7 @@ public class MagiChemMod
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
             //ItemBlockRenderTypes.setRenderLayer(BlockRegistry.CIRCLE_POWER.get(), RenderType.cutout());
+            MenuScreens.register(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), CircleFabricationScreen::new);
             MenuScreens.register(MenuRegistry.CIRCLE_POWER_MENU.get(), CirclePowerScreen::new);
             MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
         }

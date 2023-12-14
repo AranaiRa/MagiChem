@@ -2,6 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.AlembicBlock;
+import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.PowerSpikeBlock;
 import com.aranaira.magichem.item.PowerSpikeItem;
@@ -21,13 +22,18 @@ import java.util.function.Supplier;
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MagiChemMod.MODID);
 
+    public static final RegistryObject<Block> ALEMBIC = registerBlock("alembic",
+            () -> new AlembicBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(6f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
+    );
+
     public static final RegistryObject<Block> CIRCLE_POWER = registerBlock("circle_power",
             () -> new CirclePowerBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(6f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 
-    public static final RegistryObject<Block> ALEMBIC = registerBlock("alembic",
-            () -> new AlembicBlock(BlockBehaviour.Properties.of(Material.STONE)
+    public static final RegistryObject<Block> CIRCLE_FABRICATION = registerBlock("circle_fabrication",
+            () -> new CircleFabricationBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(6f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 

@@ -29,7 +29,7 @@ public class AdmixtureItem extends MateriaItem {
     private final List<NameCountPair> formulaAdmixturePortions;
 
     public AdmixtureItem(String pName, String pColor, List<NameCountPair> pFormulaEssentia, List<NameCountPair> pFormulaAdmixtures) {
-        super(pName, pColor, new Properties().tab(CreativeModeTabs.MAGICHEM_TAB));
+        super(pName, pColor, new Properties().tab(CreativeModeTabs.MAGICHEM_MATERIA_TAB));
         this.name = pName;
         this.formulaEssentiaPortions = pFormulaEssentia;
         this.formulaAdmixturePortions = pFormulaAdmixtures;

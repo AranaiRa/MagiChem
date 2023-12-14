@@ -2,6 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.gui.AlembicMenu;
+import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.gui.CirclePowerMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -15,6 +16,9 @@ import net.minecraftforge.registries.RegistryObject;
 public class MenuRegistry {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, MagiChemMod.MODID);
+
+    public static final RegistryObject<MenuType<CircleFabricationMenu>> CIRCLE_FABRICATION_MENU =
+            registerMenuType(CircleFabricationMenu::new, "circle_fabrication");
 
     public static final RegistryObject<MenuType<CirclePowerMenu>> CIRCLE_POWER_MENU =
             registerMenuType(CirclePowerMenu::new, "circle_power");

@@ -10,4 +10,11 @@ public class CreativeModeTabs {
             return new ItemStack(BlockRegistry.CIRCLE_POWER.get());
         }
     };
+
+    public static final CreativeModeTab MAGICHEM_MATERIA_TAB = new CreativeModeTab("magichemtab.substances") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(ItemRegistry.ADMIXTURES.getEntries().stream().findAny().get().get());
+        }
+    };
 }

@@ -3,10 +3,12 @@
   "item.magichem.tarnished_silver_lump": "Tarnished Silver Lump",
 
   "block.magichem.alembic": "Alembic",
+  "block.magichem.circle_fabrication": "Circle of Fabrication",
   "block.magichem.circle_power": "Circle of Power",
   "block.magichem.power_spike": "Power Spike",
 
-  "itemGroup.magichemtab" : "MagiChem",
+  "itemGroup.magichemtab" : "MagiChem - Blocks and Items",
+  "itemGroup.magichemtab.substances" : "MagiChem - Essentia and Admixtures",
 
   "essentia.house.elements": "House of Elements",
   "essentia.house.qualities": "House of Qualities",
