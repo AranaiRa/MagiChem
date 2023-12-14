@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,20 +34,34 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         blockEntity = (CircleFabricationBlockEntity) entity;
         this.level = inv.player.level;
 
+
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            //Bottle slot
-            this.addSlot(new SlotItemHandler(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 134, -5) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    if(stack.getItem() instanceof BottleItem) {
-                        return true;
-                    } else
-                        return false;
-                }
-            });
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 134, -5, false));
+
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_1, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_2, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_3, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_4, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_5, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_6, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_7, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_8, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_9, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_10, 134, -5, false));
+
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_1, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_2, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_3, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_4, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_5, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_6, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_7, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_8, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_9, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_10, 134, -5, false));
         });
     }
 
@@ -58,14 +73,14 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for(int i=0; i<3; i++) {
             for(int l=0; l<9; l++) {
-                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 94 + i*18)));
+                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 97 + i*18)));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for(int i=0; i<9; i++) {
-            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 152)));
+            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 155)));
         }
     }
 

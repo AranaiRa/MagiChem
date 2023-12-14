@@ -7,6 +7,7 @@ import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -35,12 +36,11 @@ import org.jetbrains.annotations.Nullable;
 public class CircleFabricationBlockEntity extends BlockEntity implements MenuProvider {
     public static final int
             SLOT_BOTTLES = 0,
-            SLOT_INPUT_1 = 1, SLOT_INPUT_2 = 2, SLOT_INPUT_3 = 3,
-            SLOT_PROCESSING = 4,
-            SLOT_OUTPUT_1 = 5, SLOT_OUTPUT_2  = 6, SLOT_OUTPUT_3  = 7,
-            SLOT_OUTPUT_4 = 8, SLOT_OUTPUT_5  = 9, SLOT_OUTPUT_6  = 10,
-            SLOT_OUTPUT_7 = 11, SLOT_OUTPUT_8 = 12, SLOT_OUTPUT_9 = 13,
-            PROGRESS_BAR_WIDTH = 22;
+            SLOT_INPUT_1 = 1, SLOT_INPUT_2 = 2, SLOT_INPUT_3 = 3, SLOT_INPUT_4 = 4, SLOT_INPUT_5 = 5,
+            SLOT_INPUT_6 = 6, SLOT_INPUT_7 = 7, SLOT_INPUT_8 = 8, SLOT_INPUT_9 = 9, SLOT_INPUT_10 = 10,
+            SLOT_OUTPUT_1 = 11, SLOT_OUTPUT_2 = 12, SLOT_OUTPUT_3 = 13, SLOT_OUTPUT_4 = 14, SLOT_OUTPUT_5 = 15,
+            SLOT_OUTPUT_6 = 16, SLOT_OUTPUT_7 = 17, SLOT_OUTPUT_8 = 18, SLOT_OUTPUT_9 = 19, SLOT_OUTPUT_10 = 20,
+            PROGRESS_BAR_WIDTH = 66, PROGRESS_BAR_HEIGHT = 34;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(21) {
         @Override
@@ -69,7 +69,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
             @Override
             public int getCount() {
-                return 14;
+                return 21;
             }
         };
     }
@@ -77,8 +77,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     protected final ContainerData data;
-    private int progress = 0;
+    private int
+            progress = 0,
+            powerLevel = 0;
     private boolean isStalled = false;
+    private String currentRecipe = "";
 
     @Override
     public Component getDisplayName() {
@@ -139,61 +142,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    private static NonNullList<ItemStack> getRecipeComponents(CircleFabricationBlockEntity entity) {
-        Level level = entity.level;
-        NonNullList<ItemStack> result = NonNullList.create();
-
-        AlchemicalCompositionRecipe recipe = AlchemicalCompositionRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(SLOT_PROCESSING));
-
-        if(recipe != null) {
-            recipe.getComponentMateria().forEach(item -> {
-                result.add(new ItemStack(item.getItem(), item.getCount()));
-            });
-        }
-
-        return result;
-    }
-
-    private static AlchemicalCompositionRecipe getRecipeInSlot(CircleFabricationBlockEntity entity) {
-        Level level = entity.level;
-
-        AlchemicalCompositionRecipe recipe = AlchemicalCompositionRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(SLOT_PROCESSING));
-
-        if(recipe != null) {
-            return recipe;
-        }
-
-        return null;
-    }
-
     public static void tick(Level level, BlockPos pos, BlockState state, CircleFabricationBlockEntity entity) {
-        /*if(level.isClientSide()) {
+        if(!level.isClientSide()) {
             return;
-        }*/
-
-        ItemStack processingItem = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
-        if(processingItem == ItemStack.EMPTY) {
-            //Move an item into the processing slot
-            int targetSlot = nextInputSlotWithItem(entity);
-            if (targetSlot != -1) {
-                ItemStack stack = entity.itemHandler.extractItem(targetSlot, 1, false);
-                entity.itemHandler.insertItem(SLOT_PROCESSING, stack, false);
-            }
         }
-
-        AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
-        if(processingItem != ItemStack.EMPTY && recipe != null) {
-            if(entity.progress > Config.alembicOperationTime) {
-                if(!level.isClientSide())
-                    craftItem(entity, recipe);
-                if(!entity.isStalled)
-                    entity.resetProgress();
-            }
-            else
-                entity.incrementProgress();
-        }
-        else if(processingItem == ItemStack.EMPTY)
-            entity.resetProgress();
+        MagiChemMod.LOGGER.debug("powerLevel = "+entity.getPowerLevel());
     }
 
     private static void craftItem(CircleFabricationBlockEntity entity, AlchemicalCompositionRecipe recipe) {
@@ -217,5 +170,30 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
     private void incrementProgress() {
         progress++;
+    }
+
+    public String getCurrentRecipeID() {
+        return currentRecipe;
+    }
+
+    public int getPowerLevel() {
+        return powerLevel;
+    }
+
+    public int setPowerLevel(int powerLevel) {
+        this.powerLevel = powerLevel;
+        return this.powerLevel;
+    }
+
+    public int incrementPowerLevel() {
+        if(powerLevel + 1 < 31)
+            this.powerLevel++;
+        return this.powerLevel;
+    }
+
+    public int decrementPowerLevel() {
+        if(powerLevel - 1 > 0)
+        this.powerLevel--;
+        return this.powerLevel;
     }
 }

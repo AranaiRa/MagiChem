@@ -1,0 +1,21 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:iris_argenti",
+  "tier": 2,
+  "items": [
+    "magichem:admixture_mana",
+    "magichem:silver_dust",
+    "magichem:admixture_change",
+    "magichem:silver_dust",
+    "mna:chimerite_gem",
+    "magichem:silver_dust",
+    "magichem:admixture_change",
+    "magichem:silver_dust",
+    "magichem:admixture_mana"
+  ],
+  "patterns": [
+    "mna:circle",
+    "mna:knot",
+    "mna:square"
+  ]
+}

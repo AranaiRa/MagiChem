@@ -2,6 +2,7 @@ package com.aranaira.magichem.interop;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.jei.DistillationRecipeCategory;
+import com.aranaira.magichem.interop.jei.FabricationRecipeCategory;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -17,8 +18,10 @@ import java.util.Objects;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    public static RecipeType<AlchemicalCompositionRecipe> ALCHEMICAL_COMPOSITION_TYPE =
+    public static RecipeType<AlchemicalCompositionRecipe> DISTILLATION_TYPE =
             new RecipeType<>(DistillationRecipeCategory.UID, AlchemicalCompositionRecipe.class);
+    public static RecipeType<AlchemicalCompositionRecipe> FABRICATION_TYPE =
+            new RecipeType<>(FabricationRecipeCategory.UID, AlchemicalCompositionRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -35,6 +38,7 @@ public class JEIPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
         List<AlchemicalCompositionRecipe> recipesAlchemicalComposition = rm.getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
-        registration.addRecipes(ALCHEMICAL_COMPOSITION_TYPE, recipesAlchemicalComposition);
+        registration.addRecipes(DISTILLATION_TYPE, recipesAlchemicalComposition);
+        registration.addRecipes(FABRICATION_TYPE, recipesAlchemicalComposition);
     }
 }

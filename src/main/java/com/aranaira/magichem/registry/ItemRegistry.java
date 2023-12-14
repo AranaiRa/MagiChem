@@ -26,6 +26,14 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
+    public static final RegistryObject<Item> IRIS_ARGENTI = ITEMS.register("iris_argenti",
+            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> MAGIC_CIRCLE = ITEMS.register("magic_circle",
+            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
     public static final RegistryObject<Item> TARNISHED_SILVER_LUMP = ITEMS.register("tarnished_silver_lump",
             () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );

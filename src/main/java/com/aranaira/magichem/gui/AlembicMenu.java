@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.AlembicBlock;
+import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.DistillationResultSlot;
 import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.item.MateriaItem;
@@ -43,15 +44,7 @@ public class AlembicMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slot
-            this.addSlot(new SlotItemHandler(handler, AlembicBlockEntity.SLOT_BOTTLES, 134, -5) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    if(stack.getItem() instanceof BottleItem) {
-                        return true;
-                    } else
-                        return false;
-                }
-            });
+            this.addSlot(new BottleStockSlot(handler, AlembicBlockEntity.SLOT_BOTTLES, 134, -5, false));
 
             //Input item slots
             this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_1, 44, 28));

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ACA",
+    " N ",
+    "TTT"
+  ],
+  "key": {
+    "C": {
+      "item": "magichem:magic_circle"
+    },
+    "A": {
+      "item": "magichem:admixture_energy"
+    },
+    "N": {
+      "item": "magichem:essentia_nigredo"
+    },
+    "T": {
+      "item": "minecraft:tuff"
+    }
+  },
+  "result": {
+    "item": "magichem:circle_power"
+  }
+}

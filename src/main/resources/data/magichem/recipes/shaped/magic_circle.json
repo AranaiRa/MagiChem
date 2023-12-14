@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "I I",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "magichem:iris_argenti"
+    }
+  },
+  "result": {
+    "item": "magichem:magic_circle"
+  }
+}

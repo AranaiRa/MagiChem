@@ -1,6 +1,8 @@
 {
   "item.magichem.silver_dust": "Transmuted Silver Dust",
   "item.magichem.tarnished_silver_lump": "Tarnished Silver Lump",
+  "item.magichem.iris_argenti": "Iris Argenti",
+  "item.magichem.magic_circle": "Magic Circle",
 
   "block.magichem.alembic": "Alembic",
   "block.magichem.circle_fabrication": "Circle of Fabrication",
@@ -13,10 +15,6 @@
   "essentia.house.elements": "House of Elements",
   "essentia.house.qualities": "House of Qualities",
   "essentia.house.alchemy": "House of Alchemy",
-
-  "essentia.polarity.negative": "Antessence",
-  "essentia.polarity.neutral": "Nulla",
-  "essentia.polarity.positive": "Quintessence",
 
   "essentia.element.ender": "Ender",
   "essentia.element.earth": "Earth",
@@ -120,5 +118,8 @@
   "tooltip.magichem.citrinitas": "Third of the House of Alchemy",
   "tooltip.magichem.rubedo": "Last of the House of Alchemy",
 
-  "jei.magichem.distillation": "Distillation"
+  "jei.magichem.distillation": "Alchemical Distillation",
+  "jei.magichem.fabrication": "Alchemical Fabrication",
+  "jei.magichem.fixation": "Alchemical Fixation",
+  "jei.magichem.separation": "Alchemical Separation"
 }
