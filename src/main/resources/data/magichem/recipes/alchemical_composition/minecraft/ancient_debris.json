@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:ancient_debris" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_demon", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 1 },
+    { "item": "magichem:essentia_albedo", "count": 1 }
+  ]
+}

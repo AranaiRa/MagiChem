@@ -10,12 +10,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -28,13 +30,15 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
     private final ItemStack alchemyObject;
     private final NonNullList<ItemStack> componentMateria;
     private final boolean distillOnly;
+    private final float outputRate;
 
     public AlchemicalCompositionRecipe(ResourceLocation id, ItemStack alchemyObject,
-                                    NonNullList<ItemStack> componentMateria, boolean distillOnly) {
+                                    NonNullList<ItemStack> componentMateria, boolean distillOnly, float outputRate) {
         this.id = id;
         this.alchemyObject = alchemyObject;
         this.componentMateria = componentMateria;
         this.distillOnly = distillOnly;
+        this.outputRate = outputRate;
     }
 
     /**
@@ -75,6 +79,8 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
     public ItemStack getAlchemyObject() {
         return alchemyObject;
     }
+
+    public float getOutputRate() { return outputRate; }
 
     @Override
     public ItemStack assemble(SimpleContainer pContainer) {
@@ -138,11 +144,13 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
             ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
 
             boolean distillOnly = GsonHelper.getAsBoolean(pSerializedRecipe, "distill_only");
+            float rate = GsonHelper.getAsFloat(pSerializedRecipe, "output_rate");
 
             JsonArray components = GsonHelper.getAsJsonArray(pSerializedRecipe, "components");
             NonNullList<ItemStack> extractedIngredients = NonNullList.create();
             components.forEach(element -> {
                 String key = element.getAsJsonObject().get("item").getAsString();
+
                 ItemStack ing = ItemStack.EMPTY;
 
                 MateriaItem matQuery = materiaMap.get(key);
@@ -155,12 +163,14 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
                 extractedIngredients.add(ing);
             });
 
-            return new AlchemicalCompositionRecipe(pRecipeId, recipeObject, extractedIngredients, distillOnly);
+            return new AlchemicalCompositionRecipe(pRecipeId, recipeObject, extractedIngredients, distillOnly, rate);
         }
 
         @Override
         public @Nullable AlchemicalCompositionRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             boolean readDistillOnly = buf.readBoolean();
+
+            float readOutputRate = buf.readFloat();
 
             ItemStack readAlchemyObject = buf.readItem();
 
@@ -170,7 +180,7 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
                 buf.readItem();
             }
 
-            return new AlchemicalCompositionRecipe(id, readAlchemyObject, readComponentMateria, readDistillOnly);
+            return new AlchemicalCompositionRecipe(id, readAlchemyObject, readComponentMateria, readDistillOnly, readOutputRate);
         }
 
         @Override
@@ -178,16 +188,31 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
             //Parameter 0: Distill Only
             buf.writeBoolean(recipe.distillOnly);
 
-            //Parameter 1: Alchemy Object
+            //Parameter 1: Total number of component materia
+            buf.writeFloat(recipe.outputRate);
+
+            //Parameter 2: Alchemy Object
             buf.writeItemStack(recipe.alchemyObject, true);
 
-            //Parameter 2: Total number of component materia
-            buf.writeInt(recipe.componentMateria.size());
+            //Parameter 3: Total number of component materia
+            buf.writeFloat(recipe.componentMateria.size());
 
-            //Parameter 3...: Component materia
+            //Parameter 4...: Component materia
             for(ItemStack stack : recipe.componentMateria) {
                 buf.writeItemStack(stack, true);
             }
         }
+    }
+
+    public static List<Item> fabricationRecipeOutputs = new ArrayList<>();
+    public static List<Item> getFabrictionRecipeOutputs(Level level) {
+        if(fabricationRecipeOutputs.size() == 0) {
+            List<AlchemicalCompositionRecipe> allACRs = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+            for(AlchemicalCompositionRecipe acr : allACRs) {
+                if(!acr.getIsDistillOnly())
+                    fabricationRecipeOutputs.add(acr.alchemyObject.getItem());
+            }
+        }
+        return fabricationRecipeOutputs;
     }
 }

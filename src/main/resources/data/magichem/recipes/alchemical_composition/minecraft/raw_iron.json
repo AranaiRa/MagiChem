@@ -1,8 +1,8 @@
 {
   "type": "magichem:alchemical_composition",
-  "distill_only": false,
+  "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:iron_ingot" },
+  "object": { "item": "minecraft:raw_iron" },
   "components": [
     { "item": "magichem:admixture_metal", "count": 6 }
   ]

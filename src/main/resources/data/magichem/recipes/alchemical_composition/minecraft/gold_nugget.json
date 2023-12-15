@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.222,
+  "object": { "item": "minecraft:gold_nugget" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 1 },
+    { "item": "magichem:essentia_precious", "count": 2 }
+  ]
+}

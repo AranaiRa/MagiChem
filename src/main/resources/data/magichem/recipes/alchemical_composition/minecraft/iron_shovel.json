@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:iron_shovel" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 4 }
+  ]
+}

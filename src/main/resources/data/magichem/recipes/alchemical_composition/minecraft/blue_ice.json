@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:blue_ice" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 64 },
+    { "item": "magichem:essentia_mineral", "count": 64 },
+    { "item": "magichem:admixture_cold", "count": 64 }
+  ]
+}

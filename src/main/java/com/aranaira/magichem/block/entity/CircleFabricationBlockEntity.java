@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -93,7 +94,15 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             progress = 0,
             powerLevel = 1;
     private boolean isStalled = false;
-    private String currentRecipe = "";
+    private Item currentRecipe;
+
+    public void setCurrentRecipeTarget(Item currentRecipe) {
+        this.currentRecipe = currentRecipe;
+    }
+
+    public Item getCurrentRecipeTarget() {
+        return currentRecipe;
+    }
 
     @Override
     public Component getDisplayName() {
@@ -181,10 +190,6 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
     private void incrementProgress() {
         progress++;
-    }
-
-    public String getCurrentRecipeID() {
-        return currentRecipe;
     }
 
     public int getPowerLevel() {

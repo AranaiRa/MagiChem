@@ -24,7 +24,7 @@ public class BlockEntityWithEfficiency extends BlockEntity {
         baseEfficiency = efficiency;
     }
 
-    public static NonNullList<ItemStack> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency) {
+    public static NonNullList<ItemStack> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate) {
         if(efficiency < 100) {
             ArrayList<ItemStack> modifiableQuery = new ArrayList<>();
             for (ItemStack stack : query) {
@@ -35,8 +35,15 @@ public class BlockEntityWithEfficiency extends BlockEntity {
             for (ItemStack stack : modifiableQuery) {
                 int count = stack.getCount();
                 for (int i = 0; i < count; i++) {
+                    boolean doShrink = false;
                     if (r.nextInt(100) > efficiency)
-                        stack.shrink(1);
+                        doShrink = true;
+                    else if (outputRate < 1.0) {
+                        if(r.nextFloat() > outputRate)
+                            doShrink = true;
+                    }
+
+                    if(doShrink) stack.shrink(1);
                 }
             }
 

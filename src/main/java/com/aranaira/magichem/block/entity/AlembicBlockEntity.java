@@ -201,7 +201,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         }
 
         NonNullList<ItemStack> componentMateria = applyEfficiencyToCraftingResult(recipe.getComponentMateria(),
-                baseEfficiency + entity.efficiencyMod);
+                baseEfficiency + entity.efficiencyMod, recipe.getOutputRate());
 
         for(ItemStack item : componentMateria) {
             if(outputSlots.canAddItem(item)) {

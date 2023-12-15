@@ -2,8 +2,8 @@
   "type": "magichem:alchemical_composition",
   "distill_only": false,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:iron_ingot" },
+  "object": { "item": "minecraft:cobblestone" },
   "components": [
-    { "item": "magichem:admixture_metal", "count": 6 }
+    { "item": "magichem:admixture_stone", "count": 4 }
   ]
 }

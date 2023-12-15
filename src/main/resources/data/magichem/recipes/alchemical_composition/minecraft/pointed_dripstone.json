@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.25,
+  "object": { "item": "minecraft:pointed_dripstone" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 2 },
+    { "item": "magichem:admixture_change", "count": 1 }
+  ]
+}

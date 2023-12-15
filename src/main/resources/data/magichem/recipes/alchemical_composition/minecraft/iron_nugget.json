@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.667,
+  "object": { "item": "minecraft:iron_nugget" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 1 }
+  ]
+}

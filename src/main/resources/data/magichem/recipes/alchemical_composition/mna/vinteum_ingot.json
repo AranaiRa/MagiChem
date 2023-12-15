@@ -1,6 +1,7 @@
 {
   "type": "magichem:alchemical_composition",
   "distill_only": true,
+  "output_rate": 1.0,
   "object": { "item": "mna:vinteum_ingot" },
   "components": [
     { "item": "magichem:admixture_mana", "count": 2 },

@@ -120,6 +120,8 @@
   "tooltip.magichem.citrinitas": "Third of the House of Alchemy",
   "tooltip.magichem.rubedo": "Last of the House of Alchemy",
 
+  "gui.magichem.typetofilter": "Filter...",
+
   "jei.magichem.distillation": "Alchemical Distillation",
   "jei.magichem.fabrication": "Alchemical Fabrication",
   "jei.magichem.fixation": "Alchemical Fixation",

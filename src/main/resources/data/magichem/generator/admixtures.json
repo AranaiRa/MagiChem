@@ -223,6 +223,15 @@
       ]
     },
     {
+      "name": "protection",
+      "color": "566b88",
+      "components": [
+        { "admixture": "breath", "count": 1 },
+        { "admixture": "permanence", "count": 1 },
+        { "essentia": "wrought", "count": 2 }
+      ]
+    },
+    {
       "name": "poison",
       "color": "475c3b",
       "components": [

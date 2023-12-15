@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:dripstone_block" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 2 },
+    { "item": "magichem:admixture_change", "count": 1 }
+  ]
+}

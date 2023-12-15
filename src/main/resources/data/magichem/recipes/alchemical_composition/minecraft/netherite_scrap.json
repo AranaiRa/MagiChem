@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:netherite_scrap" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 3 },
+    { "item": "magichem:admixture_demon", "count": 3 },
+    { "item": "magichem:essentia_precious", "count": 2 },
+    { "item": "magichem:essentia_albedo", "count": 2 }
+  ]
+}
