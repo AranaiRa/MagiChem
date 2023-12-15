@@ -61,8 +61,11 @@ public class MagiChemMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+        event.enqueueWork(() -> {
+
+        });
+
+        PacketRegistry.register();
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:polished_deepslate" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 3 },
+    { "item": "magichem:admixture_darkness", "count": 1 }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:crimson_nylium" },
+  "components": [
+    { "item": "magichem:admixture_demon", "count": 4 },
+    { "item": "magichem:admixture_alien", "count": 1 },
+    { "item": "magichem:admixture_stone", "count": 1 }
+  ]
+}

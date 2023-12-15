@@ -130,6 +130,17 @@
       ]
     },
     {
+      "name": "filth",
+      "color": "452607",
+      "components": [
+        { "essentia": "water", "count": 2 },
+        { "essentia": "earth", "count": 2 },
+        { "essentia": "fleshy", "count": 1 },
+        { "essentia": "verdant", "count": 1 },
+        { "essentia": "rotten", "count": 1 }
+      ]
+    },
+    {
       "name": "healing",
       "color": "f54c4c",
       "components": [

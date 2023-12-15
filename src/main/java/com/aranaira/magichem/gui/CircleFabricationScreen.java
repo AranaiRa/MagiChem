@@ -4,7 +4,9 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.gui.element.ImageButtonFabricationRecipeSelector;
+import com.aranaira.magichem.networking.SyncFabricationDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -57,9 +59,19 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private void initializePowerLevelButtons(){
         b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 126, 12, 7, 232, 242, TEXTURE, button -> {
             menu.blockEntity.incrementPowerLevel();
+            PacketRegistry.sendToServer(new SyncFabricationDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    menu.blockEntity.getCurrentRecipeTarget(),
+                    menu.blockEntity.getPowerLevel()
+            ));
         }));
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(180, 126, 12, 7, 244, 242, TEXTURE, button -> {
             menu.blockEntity.decrementPowerLevel();
+            PacketRegistry.sendToServer(new SyncFabricationDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    menu.blockEntity.getCurrentRecipeTarget(),
+                    menu.blockEntity.getPowerLevel()
+            ));
         }));
     }
 
@@ -81,6 +93,11 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int trueIndex = recipeFilterRow*3 + index;
         if(trueIndex < filteredRecipeItems.size()) {
             menu.blockEntity.setCurrentRecipeTarget(filteredRecipeItems.get(trueIndex));
+            PacketRegistry.sendToServer(new SyncFabricationDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    filteredRecipeItems.get(trueIndex),
+                    menu.blockEntity.getPowerLevel()
+            ));
         }
     }
 
