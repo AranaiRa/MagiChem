@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -31,6 +32,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,6 +100,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
     public void setCurrentRecipeTarget(Item currentRecipe) {
         this.currentRecipe = currentRecipe;
+        MagiChemMod.LOGGER.debug("current recipe is now "+currentRecipe);
     }
 
     public Item getCurrentRecipeTarget() {
@@ -140,6 +143,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("circle_fabrication.inventory", itemHandler.serializeNBT());
         nbt.putInt("circle_fabrication.progress", this.progress);
+        nbt.putInt("circle_fabrication.powerLevel", this.powerLevel);
+
+        MagiChemMod.LOGGER.debug("&&&& "+currentRecipe+" is trying to be ["+ForgeRegistries.ITEMS.getKey(currentRecipe).getNamespace()+":"+currentRecipe+"]");
+
+        nbt.putString("circle_fabrication.recipe", ForgeRegistries.ITEMS.getKey(currentRecipe).getNamespace()+":"+currentRecipe);
         super.saveAdditional(nbt);
     }
 
@@ -148,6 +156,8 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("circle_fabrication.inventory"));
         progress = nbt.getInt("circle_fabrication.progress");
+        powerLevel = nbt.getInt("circle_fabrication.powerLevel");
+        currentRecipe = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("circle_fabrication.recipe")));
     }
 
     public static int getScaledProgress(CircleFabricationBlockEntity entity) {

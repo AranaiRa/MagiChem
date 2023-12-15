@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,8 +38,14 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-        List<AlchemicalCompositionRecipe> recipesAlchemicalComposition = rm.getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
-        registration.addRecipes(DISTILLATION_TYPE, recipesAlchemicalComposition);
-        registration.addRecipes(FABRICATION_TYPE, recipesAlchemicalComposition);
+        List<AlchemicalCompositionRecipe> recipesDistillation = rm.getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
+        registration.addRecipes(DISTILLATION_TYPE, recipesDistillation);
+
+        List<AlchemicalCompositionRecipe> recipesFabrication = new ArrayList<>();
+        for(AlchemicalCompositionRecipe acr : recipesDistillation) {
+            if(!acr.getIsDistillOnly())
+                recipesFabrication.add(acr);
+        }
+        registration.addRecipes(FABRICATION_TYPE, recipesFabrication);
     }
 }
