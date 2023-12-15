@@ -16,27 +16,27 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class FabricationRecipeCategory implements IRecipeCategory<AlchemicalCompositionRecipe> {
-    public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "fabrication");
+public class CompositionRecipeCategory implements IRecipeCategory<AlchemicalCompositionRecipe> {
+    public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "composition");
     public static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/alchemical_composition.png");
 
     private final IDrawable background;
     private final IDrawable icon;
 
-    public FabricationRecipeCategory(IGuiHelper helper) {
+    public CompositionRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 96, 110);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get()));
     }
 
     @Override
     public RecipeType<AlchemicalCompositionRecipe> getRecipeType() {
-        return JEIPlugin.FABRICATION_TYPE;
+        return JEIPlugin.COMPOSITION_TYPE;
     }
 
     @Override
     public Component getTitle() {
-        return Component.translatable("jei.magichem.fabrication");
+        return Component.translatable("jei.magichem.composition");
     }
 
     @Override
@@ -52,11 +52,14 @@ public class FabricationRecipeCategory implements IRecipeCategory<AlchemicalComp
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AlchemicalCompositionRecipe recipe, IFocusGroup group) {
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT,40,6).addItemStack(recipe.getAlchemyObject());
+        builder.addSlot(RecipeIngredientRole.INPUT,40,6).addItemStack(recipe.getAlchemyObject());
+        if(recipe.getIsDistillOnly())
+            builder.addSlot(RecipeIngredientRole.OUTPUT,0,60000).addItemStack(recipe.getAlchemyObject());
 
         int i=0;
         for(ItemStack stack : recipe.getComponentMateria()) {
-            builder.addSlot(RecipeIngredientRole.INPUT, 4 + i*18, 90).addItemStack(stack);
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 4 + i*18, 90).addItemStack(stack);
+            builder.addSlot(RecipeIngredientRole.INPUT, 0, 40000).addItemStack(stack);
             i++;
         }
     }

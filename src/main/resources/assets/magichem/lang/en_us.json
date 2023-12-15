@@ -122,8 +122,7 @@
 
   "gui.magichem.typetofilter": "Filter...",
 
-  "jei.magichem.distillation": "Alchemical Distillation",
-  "jei.magichem.fabrication": "Alchemical Fabrication",
+  "jei.magichem.composition": "Alchemical Composition",
   "jei.magichem.fixation": "Alchemical Fixation",
   "jei.magichem.separation": "Alchemical Separation"
 }
