@@ -4,6 +4,7 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:cobblestone" },
   "components": [
-    { "item": "magichem:admixture_stone", "count": 4 }
+    { "item": "magichem:admixture_stone", "count": 3 },
+    { "item": "magichem:admixture_erosion", "count": 1 }
   ]
 }

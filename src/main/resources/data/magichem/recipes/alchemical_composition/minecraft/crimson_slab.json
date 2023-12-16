@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.1875,
+  "object": { "item": "minecraft:crimson_slab" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_demon", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
+  ]
+}

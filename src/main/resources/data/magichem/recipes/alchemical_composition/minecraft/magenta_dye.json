@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:magenta_dye" },
+  "components": [
+    { "item": "magichem:admixture_change", "count": 2 }
+  ]
+}

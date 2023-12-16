@@ -49,6 +49,8 @@ public class AdmixtureItem extends MateriaItem {
     }
 
     private String sub(int num) {
+        if(num > 9)
+            return subscriptNumbers[num % 10] + "" + subscriptNumbers[num/10];
         return subscriptNumbers[num];
     }
 

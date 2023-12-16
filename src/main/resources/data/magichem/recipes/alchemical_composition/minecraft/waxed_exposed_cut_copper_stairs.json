@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.667,
+  "object": { "item": "minecraft:waxed_exposed_cut_copper_stairs" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 18 },
+    { "item": "magichem:admixture_change", "count": 6 },
+    { "item": "magichem:admixture_energy", "count": 9 },
+    { "item": "magichem:admixture_nectar", "count": 3 },
+    { "item": "magichem:admixture_permanence", "count": 3 }
+  ]
+}

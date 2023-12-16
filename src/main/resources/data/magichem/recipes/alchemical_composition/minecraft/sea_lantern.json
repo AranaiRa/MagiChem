@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:sea_lantern" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 64 },
+    { "item": "magichem:admixture_crystal", "count": 40 },
+    { "item": "magichem:admixture_light", "count": 30 },
+    { "item": "magichem:admixture_alien", "count": 9 }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.667,
+  "object": { "item": "minecraft:cobblestone_stairs" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 4 }
+  ]
+}

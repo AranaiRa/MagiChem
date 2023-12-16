@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "minecraft:cut_copper_slab" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 18 },
+    { "item": "magichem:admixture_energy", "count": 9 }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:red_terracottta" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 6 },
+    { "item": "magichem:admixture_change", "count": 2 },
+    { "item": "magichem:admixture_mineral", "count": 4 }
+  ]
+}

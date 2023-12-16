@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "minecraft:granite_slab" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 3 },
+    { "item": "magichem:admixture_permanence", "count": 1 }
+  ]
+}

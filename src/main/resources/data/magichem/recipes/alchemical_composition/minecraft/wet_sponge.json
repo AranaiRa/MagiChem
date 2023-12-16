@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:wet_sponge" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 64 },
+    { "item": "magichem:admixture_vessel", "count": 2 }
+  ]
+}

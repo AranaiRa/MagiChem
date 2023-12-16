@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:raw_gold_block" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 18 },
+    { "item": "magichem:essentia_precious", "count": 36 }
+  ]
+}

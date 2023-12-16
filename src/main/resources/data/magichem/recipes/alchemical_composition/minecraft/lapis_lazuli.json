@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:lapis_lazuli" },
+  "components": [
+    { "item": "magichem:admixture_memory", "count": 2 },
+    { "item": "magichem:admixture_mineral", "count": 2 },
+    { "item": "magichem:admixture_precious", "count": 1 }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.375,
+  "object": { "item": "minecraft:blue_stained_glass" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 2 },
+    { "item": "magichem:admixture_change", "count": 2 }
+  ]
+}

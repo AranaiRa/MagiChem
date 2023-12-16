@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:black_wool" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 2 },
+    { "item": "magichem:admixture_comfort", "count": 1 },
+    { "item": "magichem:essentia_fleshy", "count": 2 }
+  ]
+}

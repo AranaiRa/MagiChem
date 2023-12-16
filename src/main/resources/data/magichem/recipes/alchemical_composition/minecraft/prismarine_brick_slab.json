@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "minecraft:prismarine_brick_slab" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 64 },
+    { "item": "magichem:admixture_crystal", "count": 18 },
+    { "item": "magichem:admixture_alien", "count": 9 },
+    { "item": "magichem:essentia_wrought", "count": 9 }
+  ]
+}

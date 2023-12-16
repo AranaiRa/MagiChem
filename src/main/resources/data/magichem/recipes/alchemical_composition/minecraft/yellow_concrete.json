@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:yellow_concrete" },
+  "components": [
+    { "item": "magichem:admixture_permanence", "count": 4 },
+    { "item": "magichem:admixture_change", "count": 2 },
+    { "item": "magichem:essentia_mineral", "count": 2 }
+  ]
+}

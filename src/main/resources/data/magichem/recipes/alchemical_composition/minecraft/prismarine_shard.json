@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:prismarine_shard" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 8 },
+    { "item": "magichem:admixture_crystal", "count": 2 },
+    { "item": "magichem:admixture_alien", "count": 1 }
+  ]
+}

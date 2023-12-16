@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:end_stone" },
+  "components": [
+    { "item": "magichem:admixture_alien", "count": 2 },
+    { "item": "magichem:admixture_stone", "count": 2 },
+    { "item": "magichem:essentia_nigredo", "count": 1 }
+  ]
+}

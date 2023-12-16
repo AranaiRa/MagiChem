@@ -1,9 +1,9 @@
 {
   "type": "magichem:alchemical_composition",
   "distill_only": true,
-  "output_rate": 0.25,
+  "output_rate": 0.0625,
   "object": { "item": "minecraft:stick" },
   "components": [
-    { "item": "magichem:admixture_plant" }
+    { "item": "magichem:admixture_plant", "count": 1 }
   ]
 }

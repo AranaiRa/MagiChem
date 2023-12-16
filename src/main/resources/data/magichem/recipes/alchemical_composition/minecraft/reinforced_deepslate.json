@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:reinforced_deepslate" },
+  "components": [
+    { "item": "magichem:admixture_permanence", "count": 8 },
+    { "item": "magichem:admixture_stone", "count": 4 },
+    { "item": "magichem:admixture_metal", "count": 4 },
+    { "item": "magichem:admixture_darkness", "count": 2 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

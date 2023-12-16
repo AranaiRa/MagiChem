@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:honeycomb" },
+  "components": [
+    { "item": "magichem:admixture_nectar", "count": 3 },
+    { "item": "magichem:essentia_nourishing", "count": 2 }
+  ]
+}

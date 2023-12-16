@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:tinted_glass" },
+  "components": [
+    { "item": "magichem:essentia_arcane", "count": 20 },
+    { "item": "magichem:essentia_crystal", "count": 14 },
+    { "item": "magichem:essentia_darkness", "count": 8 }
+  ]
+}

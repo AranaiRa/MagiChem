@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.667,
+  "object": { "item": "minecraft:red_nether_brick_stairs" },
+  "components": [
+    { "item": "magichem:admixture_demon", "count": 12 },
+    { "item": "magichem:admixture_stone", "count": 4 },
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
+  ]
+}

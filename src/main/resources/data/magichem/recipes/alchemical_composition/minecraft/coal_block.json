@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:coal_block" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 54 },
+    { "item": "magichem:admixture_energy", "count": 18 },
+    { "item": "magichem:essentia_mineral", "count": 18 }
+  ]
+}

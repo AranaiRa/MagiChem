@@ -6,6 +6,6 @@
   "components": [
     { "item": "magichem:essentia_water", "count": 36 },
     { "item": "magichem:essentia_mineral", "count": 18 },
-    { "item": "magichem:admixture_cold", "count": 9 }
+    { "item": "magichem:admixture_cold", "count": 36 }
   ]
 }

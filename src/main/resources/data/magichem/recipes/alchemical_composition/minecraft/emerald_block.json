@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:emerald" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 36 },
+    { "item": "magichem:admixture_bargain", "count": 9 },
+    { "item": "magichem:essentia_mineral", "count": 36 },
+    { "item": "magichem:essentia_precious", "count": 9 }
+  ]
+}

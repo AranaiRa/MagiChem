@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:bone_meal" },
+  "components": [
+    { "item": "magichem:admixture_bone", "count": 2 },
+    { "item": "magichem:admixture_death", "count": 1 },
+    { "item": "magichem:essentia_nourishing", "count": 6 }
+  ]
+}

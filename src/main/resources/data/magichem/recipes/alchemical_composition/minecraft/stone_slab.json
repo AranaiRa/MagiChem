@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "minecraft:stone_slab" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 4 }
+  ]
+}

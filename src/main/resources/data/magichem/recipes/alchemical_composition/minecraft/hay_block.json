@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:hay_block" },
+  "components": [
+    { "item": "magichem:essentia_air", "count": 18 },
+    { "item": "magichem:essentia_nourishing", "count": 18 }
+  ]
+}

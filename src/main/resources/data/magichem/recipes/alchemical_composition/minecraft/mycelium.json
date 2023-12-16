@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:mycelium" },
+  "components": [
+    { "item": "magichem:essentia_earth", "count": 4 },
+    { "item": "magichem:essentia_nourishing", "count": 8 },
+    { "item": "magichem:essentia_rotten", "count": 8 }
+  ]
+}

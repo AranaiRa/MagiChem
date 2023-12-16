@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:nether_wart" },
+  "components": [
+    { "item": "magichem:admixture_demon", "count": 2 },
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_mana", "count": 1 },
+    { "item": "magichem:essentia_nourishing", "count": 4 }
+  ]
+}

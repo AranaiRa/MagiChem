@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:magenta_concrete_powder" },
+  "components": [
+    { "item": "magichem:admixture_erosion", "count": 2 },
+    { "item": "magichem:admixture_dust", "count": 2 },
+    { "item": "magichem:admixture_change", "count": 2 },
+    { "item": "magichem:essentia_mineral", "count": 2 }
+  ]
+}

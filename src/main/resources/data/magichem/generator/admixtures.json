@@ -18,6 +18,15 @@
       ]
     },
     {
+      "name": "bargain",
+      "color": "72b036",
+      "components": [
+        { "essentia": "fey", "count": 2 },
+        { "admixture": "instrument", "count": 1 },
+        { "admixture": "precious", "count": 2 }
+      ]
+    },
+    {
       "name": "blood",
       "color": "711814",
       "components": [
@@ -55,6 +64,14 @@
       "components": [
         { "essentia": "fire", "count": 4 },
         { "essentia": "rotten", "count": 2 }
+      ]
+    },
+    {
+      "name": "comfort",
+      "color": "77536c",
+      "components": [
+        { "essentia": "water", "count": 4 },
+        { "essentia": "nourishing", "count": 2 }
       ]
     },
     {
@@ -119,6 +136,15 @@
       "components": [
         { "essentia": "wrought", "count": 2 },
         { "admixture": "storm", "count": 1 }
+      ]
+    },
+    {
+      "name": "erosion",
+      "color": "3a3c2d",
+      "components": [
+        { "essentia": "ender", "count": 2 },
+        { "essentia": "mineral", "count": 4 },
+        { "essentia": "rotten", "count": 2 }
       ]
     },
     {
@@ -281,6 +307,15 @@
       "components": [
         { "essentia": "rotten", "count": 2 },
         { "admixture": "motion", "count": 1 }
+      ]
+    },
+    {
+      "name": "vessel",
+      "color": "798873",
+      "components": [
+        { "essentia": "air", "count": 1 },
+        { "essentia": "ender", "count": 1 },
+        { "essentia": "conceptual", "count": 1 }
       ]
     },
     {

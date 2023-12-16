@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:purpur_pillar" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 3 },
+    { "item": "magichem:admixture_alien", "count": 2 },
+    { "item": "magichem:admixture_stone", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

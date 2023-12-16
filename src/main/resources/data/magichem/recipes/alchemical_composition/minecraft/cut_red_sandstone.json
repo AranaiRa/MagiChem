@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:cut_red_sandstone" },
+  "components": [
+    { "item": "magichem:essentia_air", "count": 16 },
+    { "item": "magichem:essentia_fire", "count": 8 },
+    { "item": "magichem:admixture_dust", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
+  ]
+}

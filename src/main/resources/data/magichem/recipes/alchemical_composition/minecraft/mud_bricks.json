@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:mud_bricks" },
+  "components": [
+    { "item": "magichem:essentia_earth", "count": 4 },
+    { "item": "magichem:admixture_filth", "count": 2 },
+    { "item": "magichem:admixture_wrought", "count": 2 }
+  ]
+}

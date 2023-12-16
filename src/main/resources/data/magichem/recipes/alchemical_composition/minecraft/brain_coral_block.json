@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:brain_coral_block" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 16 },
+    { "item": "magichem:admixture_bone", "count": 2 },
+    { "item": "magichem:admixture_creature", "count": 1 }
+  ]
+}

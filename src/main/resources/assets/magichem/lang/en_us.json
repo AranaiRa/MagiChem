@@ -66,6 +66,7 @@
   "item.magichem.admixture_breath": "Admixture of Breath",
   "item.magichem.admixture_change": "Admixture of Change",
   "item.magichem.admixture_cold": "Admixture of Cold",
+  "item.magichem.admixture_comfort": "Admixture of Comfort",
   "item.magichem.admixture_creature": "Admixture of the Creature",
   "item.magichem.admixture_crystal": "Admixture of Crystal",
   "item.magichem.admixture_darkness": "Admixture of Darkness",
@@ -74,6 +75,7 @@
   "item.magichem.admixture_destruction": "Admixture of Destruction",
   "item.magichem.admixture_dust": "Admixture of Dust",
   "item.magichem.admixture_energy": "Admixture of Energy",
+  "item.magichem.admixture_erosion": "Admixture of Erosion",
   "item.magichem.admixture_fey": "Admixture of the Fey",
   "item.magichem.admixture_filth": "Admixture of Filth",
   "item.magichem.admixture_healing": "Admixture of Healing",
@@ -93,6 +95,7 @@
   "item.magichem.admixture_storm": "Admixture of Storm",
   "item.magichem.admixture_thought": "Admixture of Thought",
   "item.magichem.admixture_trap": "Admixture of the Trap",
+  "item.magichem.admixture_vessel": "Admixture of the Vessel",
   "item.magichem.admixture_violence": "Admixture of Violence",
   "item.magichem.admixture_wizard": "Admixture of the Wizard",
 

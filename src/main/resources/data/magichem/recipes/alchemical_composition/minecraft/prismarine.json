@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:prismarine" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 32 },
+    { "item": "magichem:admixture_crystal", "count": 8 },
+    { "item": "magichem:admixture_alien", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

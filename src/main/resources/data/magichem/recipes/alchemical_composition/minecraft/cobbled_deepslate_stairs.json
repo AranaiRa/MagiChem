@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.667,
+  "object": { "item": "minecraft:cobbled_deepslate_stairs" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 3 },
+    { "item": "magichem:admixture_darkness", "count": 1 }
+  ]
+}
