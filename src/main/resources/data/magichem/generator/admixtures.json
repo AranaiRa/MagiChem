@@ -21,9 +21,9 @@
       "name": "bargain",
       "color": "72b036",
       "components": [
-        { "essentia": "fey", "count": 2 },
+        { "admixture": "fey", "count": 2 },
         { "admixture": "instrument", "count": 1 },
-        { "admixture": "precious", "count": 2 }
+        { "essentia": "precious", "count": 2 }
       ]
     },
     {
@@ -91,6 +91,14 @@
       ]
     },
     {
+      "name": "curse",
+      "color": "140523",
+      "components": [
+        { "admixture": "sorcery", "count": 1 },
+        { "essentia": "rotten", "count": 2 }
+      ]
+    },
+    {
       "name": "darkness",
       "color": "131418",
       "components": [
@@ -104,6 +112,15 @@
       "components": [
         { "essentia": "rotten", "count": 2 },
         { "admixture": "breath", "count": 1 }
+      ]
+    },
+    {
+      "name": "delight",
+      "color": "f6ade2",
+      "components": [
+        { "admixture": "vessel", "count": 1 },
+        { "essentia": "nourishing", "count": 2 },
+        { "essentia": "rotten", "count": 2 }
       ]
     },
     {
@@ -167,12 +184,31 @@
       ]
     },
     {
+      "name": "fungus",
+      "color": "ae8866",
+      "components": [
+        { "admixture": "nectar", "count": 1 },
+        { "admixture": "filth", "count": 1 },
+        { "essentia": "nourishing", "count": 2 }
+      ]
+    },
+    {
       "name": "healing",
       "color": "f54c4c",
       "components": [
         { "admixture": "nectar", "count": 1 },
         { "admixture": "blood", "count": 1 },
         { "essentia": "nourishing", "count": 8 }
+      ]
+    },
+    {
+      "name": "industry",
+      "color": "30326e",
+      "components": [
+        { "admixture": "thought", "count": 1 },
+        { "admixture": "instrument", "count": 1 },
+        { "admixture": "energy", "count": 1 },
+        { "essentia": "wrought", "count": 4 }
       ]
     },
     {
@@ -260,6 +296,14 @@
       ]
     },
     {
+      "name": "poison",
+      "color": "475c3b",
+      "components": [
+        { "essentia": "water", "count": 4 },
+        { "essentia": "rotten", "count": 2 }
+      ]
+    },
+    {
       "name": "protection",
       "color": "566b88",
       "components": [
@@ -269,11 +313,12 @@
       ]
     },
     {
-      "name": "poison",
-      "color": "475c3b",
+      "name": "sorcery",
+      "color": "af50d7",
       "components": [
-        { "essentia": "water", "count": 4 },
-        { "essentia": "rotten", "count": 2 }
+        { "admixture": "wizard", "count": 1 },
+        { "admixture": "mana", "count": 6 },
+        { "essentia": "conceptual", "count": 2 }
       ]
     },
     {

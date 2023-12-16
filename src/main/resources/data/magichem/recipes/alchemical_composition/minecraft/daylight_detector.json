@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:daylight_detector" },
+  "components": [
+    { "item": "magichem:admixture_thought", "count": 4 },
+    { "item": "magichem:admixture_energy", "count": 3 },
+    { "item": "magichem:admixture_industry", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:crimson_roots" },
+  "components": [
+    { "item": "magichem:admixture_fungus", "count": 1 },
+    { "item": "magichem:admixture_demon", "count": 1 }
+  ]
+}

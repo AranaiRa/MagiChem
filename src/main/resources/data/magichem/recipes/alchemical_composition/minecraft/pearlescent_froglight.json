@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:pearlescent_froglight" },
+  "components": [
+    { "item": "magichem:admixture_light", "count": 12 },
+    { "item": "magichem:admixture_bargain", "count": 7 },
+    { "item": "magichem:admixture_death", "count": 2 },
+    { "item": "magichem:admixture_fleshy", "count": 4 }
+  ]
+}

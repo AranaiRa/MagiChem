@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:cartography_table" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 8 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_travel", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:end_rod" },
+  "components": [
+    { "item": "magichem:admixture_alien", "count": 6 },
+    { "item": "magichem:admixture_light", "count": 4 },
+    { "item": "magichem:essentia_fleshy", "count": 2 },
+    { "item": "magichem:essentia_albedo", "count": 4 }
+  ]
+}

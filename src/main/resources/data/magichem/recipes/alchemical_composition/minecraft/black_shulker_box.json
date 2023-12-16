@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:black_shulker_box" },
+  "components": [
+    { "item": "magichem:admixture_vessel", "count": 24 },
+    { "item": "magichem:admixture_creature", "count": 4 },
+    { "item": "magichem:admixture_alien", "count": 2 },
+    { "item": "magichem:admixture_change", "count": 2 },
+    { "item": "magichem:essentia_albedo", "count": 2 }
+  ]
+}

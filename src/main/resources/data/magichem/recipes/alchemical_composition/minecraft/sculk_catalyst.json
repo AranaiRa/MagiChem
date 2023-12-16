@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:sculk_catalyst" },
+  "components": [
+    { "item": "magichem:admixture_darkness", "count": 40 },
+    { "item": "magichem:admixture_alien", "count": 12 },
+    { "item": "magichem:admixture_trap", "count": 12 },
+    { "item": "magichem:essentia_verdant", "count": 6 },
+    { "item": "magichem:essentia_albedo", "count": 12 }
+  ]
+}

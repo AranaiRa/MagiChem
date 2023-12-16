@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:slime_block" },
+  "components": [
+    { "item": "magichem:admixture_blood", "count": 54 },
+    { "item": "magichem:admixture_filth", "count": 54 },
+    { "item": "magichem:admixture_trap", "count": 9 },
+    { "item": "magichem:essentia_fleshy", "count": 54 },
+    { "item": "magichem:essentia_rotten", "count": 18 }
+  ]
+}

@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": false,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:white_dye" },
+  "object": { "item": "minecraft:green_dye" },
   "components": [
     { "item": "magichem:admixture_change", "count": 2 }
   ]

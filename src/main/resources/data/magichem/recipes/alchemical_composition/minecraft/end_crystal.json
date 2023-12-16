@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:end_crystal" },
+  "components": [
+    { "item": "magichem:admixture_alien", "count": 64 },
+    { "item": "magichem:admixture_trap", "count": 24 },
+    { "item": "magichem:admixture_curse", "count": 18 },
+    { "item": "magichem:admixture_sorcery", "count": 12 },
+    { "item": "magichem:essentia_precious", "count": 4 }
+  ]
+}

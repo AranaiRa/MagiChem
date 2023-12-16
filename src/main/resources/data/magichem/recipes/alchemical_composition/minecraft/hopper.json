@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:hopper" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 20 },
+    { "item": "magichem:admixture_motion", "count": 7 },
+    { "item": "magichem:admixture_vessel", "count": 4 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

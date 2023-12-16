@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:eye_of_ender" },
+  "components": [
+    { "item": "magichem:admixture_alien", "count": 48 },
+    { "item": "magichem:admixture_travel", "count": 24 },
+    { "item": "magichem:admixture_crystal", "count": 8 },
+    { "item": "magichem:admixture_instrument", "count": 6 },
+    { "item": "magichem:essentia_precious", "count": 4 }
+  ]
+}

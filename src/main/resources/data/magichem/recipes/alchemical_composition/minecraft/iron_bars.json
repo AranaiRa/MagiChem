@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.375,
+  "object": { "item": "minecraft:iron_bars" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 6 }
+  ]
+}

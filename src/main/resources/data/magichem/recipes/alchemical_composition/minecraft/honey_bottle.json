@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:honey_bottle" },
+  "components": [
+    { "item": "magichem:admixture_nectar", "count": 9 },
+    { "item": "magichem:admixture_crystal", "count": 1 },
+    { "item": "magichem:essentia_nourishing", "count": 6 }
+  ]
+}

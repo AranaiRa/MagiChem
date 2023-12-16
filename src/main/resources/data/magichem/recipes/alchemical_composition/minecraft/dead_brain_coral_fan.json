@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:dead_brain_coral_fan" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 2 },
+    { "item": "magichem:admixture_bone", "count": 3 },
+    { "item": "magichem:admixture_creature", "count": 1 },
+    { "item": "magichem:admixture_death", "count": 1 }
+  ]
+}

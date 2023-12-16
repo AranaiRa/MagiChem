@@ -6,7 +6,7 @@
   "components": [
     { "item": "magichem:admixture_memory", "count": 2 },
     { "item": "magichem:admixture_stone", "count": 4 },
-    { "item": "magichem:admixture_mineral", "count": 2 },
-    { "item": "magichem:admixture_precious", "count": 1 }
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 1 }
   ]
 }

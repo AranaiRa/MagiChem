@@ -5,7 +5,7 @@
   "object": { "item": "minecraft:mycelium" },
   "components": [
     { "item": "magichem:essentia_earth", "count": 4 },
-    { "item": "magichem:essentia_nourishing", "count": 8 },
-    { "item": "magichem:essentia_rotten", "count": 8 }
+    { "item": "magichem:admixture_fungus", "count": 8 },
+    { "item": "magichem:essentia_nourishing", "count": 8 }
   ]
 }

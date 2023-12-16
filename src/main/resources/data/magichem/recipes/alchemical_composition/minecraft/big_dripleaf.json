@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:big_dripleaf" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 4 },
+    { "item": "magichem:admixture_travel", "count": 2 },
+    { "item": "magichem:admixture_plant", "count": 1 }
+  ]
+}

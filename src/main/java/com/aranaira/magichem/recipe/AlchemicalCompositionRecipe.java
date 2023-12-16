@@ -141,6 +141,7 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public AlchemicalCompositionRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
+
             ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
 
             boolean distillOnly = GsonHelper.getAsBoolean(pSerializedRecipe, "distill_only");

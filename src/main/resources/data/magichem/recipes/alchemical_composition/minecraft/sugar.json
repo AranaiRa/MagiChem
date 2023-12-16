@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:sugar_cane" },
+  "components": [
+    { "item": "magichem:admixture_delight", "count": 1 }
+  ]
+}

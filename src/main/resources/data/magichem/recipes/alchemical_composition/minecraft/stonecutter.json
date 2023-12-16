@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:stonecutter" },
+  "components": [
+    { "item": "magichem:essentia_earth", "count": 6 },
+    { "item": "magichem:admixture_stone", "count": 8 },
+    { "item": "magichem:admixture_change", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

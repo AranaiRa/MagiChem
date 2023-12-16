@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:zombie_head" },
+  "components": [
+    { "item": "magichem:admixture_death", "count": 8 },
+    { "item": "magichem:admixture_creature", "count": 6 },
+    { "item": "magichem:essentia_fleshy", "count": 4 },
+    { "item": "magichem:essentia_precious", "count": 2 }
+  ]
+}

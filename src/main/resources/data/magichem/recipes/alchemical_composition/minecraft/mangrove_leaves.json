@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:oak_leaves" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 1 },
+    { "item": "magichem:admixture_plant", "count": 1 }
+  ]
+}

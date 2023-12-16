@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:shroomlight" },
+  "components": [
+    { "item": "magichem:admixture_fungus", "count": 8 },
+    { "item": "magichem:admixture_light", "count": 8 },
+    { "item": "magichem:admixture_demon", "count": 4 },
+    { "item": "magichem:essentia_verdant", "count": 12 }
+  ]
+}

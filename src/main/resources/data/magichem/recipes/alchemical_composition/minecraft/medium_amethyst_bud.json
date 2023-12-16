@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:medium_amethyst_bud" },
+  "components": [
+    { "item": "magichem:essentia_arcane", "count": 2 },
+    { "item": "magichem:essentia_crystal", "count": 2 },
+    { "item": "magichem:essentia_darkness", "count": 1 }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "minecraft:snowball" },
+  "components": [
+    { "item": "magichem:admixture_cold", "count": 4 }
+  ]
+}

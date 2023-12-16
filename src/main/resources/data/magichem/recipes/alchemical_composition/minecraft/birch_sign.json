@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:birch_sign" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

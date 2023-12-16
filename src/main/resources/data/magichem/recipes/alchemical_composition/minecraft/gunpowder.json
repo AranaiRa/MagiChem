@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:gunpowder" },
+  "components": [
+    { "item": "magichem:admixture_dust", "count": 2 },
+    { "item": "magichem:admixture_violence", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 2 }
+  ]
+}

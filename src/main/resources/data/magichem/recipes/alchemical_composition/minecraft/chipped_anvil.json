@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:chipped_anvil" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 64 },
+    { "item": "magichem:admixture_instrument", "count": 6 },
+    { "item": "magichem:admixture_erosion", "count": 6 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

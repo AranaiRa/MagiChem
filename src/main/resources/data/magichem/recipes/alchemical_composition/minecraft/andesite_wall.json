@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:andesite_wall" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 3 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

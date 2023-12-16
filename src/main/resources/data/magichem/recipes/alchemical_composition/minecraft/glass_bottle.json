@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 0.333,
+  "object": { "item": "minecraft:glass_bottle" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 2 }
+  ]
+}

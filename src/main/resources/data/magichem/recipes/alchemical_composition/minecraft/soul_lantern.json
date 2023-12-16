@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:lantern" },
+  "components": [
+    { "item": "magichem:admixture_light", "count": 1 },
+    { "item": "magichem:admixture_death", "count": 1 },
+    { "item": "magichem:admixture_demon", "count": 1 },
+    { "item": "magichem:admixture_metal", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

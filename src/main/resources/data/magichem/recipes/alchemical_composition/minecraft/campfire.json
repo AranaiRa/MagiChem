@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:campfire" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 12 },
+    { "item": "magichem:admixture_plant", "count": 3 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

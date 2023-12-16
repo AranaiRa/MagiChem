@@ -100,28 +100,28 @@
     },
     {
       "name": "nigredo",
-      "abbreviation": "\u238F",
+      "abbreviation": "\u2390",
       "wheel": 0,
       "house": "alchemy",
       "color": "222222"
     },
     {
       "name": "albedo",
-      "abbreviation": "\u2391",
+      "abbreviation": "\u2392",
       "wheel": 0,
       "house": "alchemy",
       "color": "FFFFFF"
     },
     {
       "name": "citrinitas",
-      "abbreviation": "\u2390",
+      "abbreviation": "\u238F",
       "wheel": 0,
       "house": "alchemy",
       "color": "FFDD22"
     },
     {
       "name": "rubedo",
-      "abbreviation": "\u2392",
+      "abbreviation": "\u2391",
       "wheel": 0,
       "house": "alchemy",
       "color": "FF2211"

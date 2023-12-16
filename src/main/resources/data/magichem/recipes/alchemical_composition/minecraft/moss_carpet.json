@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.667,
+  "object": { "item": "minecraft:moss_carpet" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 }
+  ]
+}
