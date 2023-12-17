@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:netherite_hoe" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 40 },
+    { "item": "magichem:admixture_demon", "count": 24 },
+    { "item": "magichem:admixture_instrument", "count": 8 },
+    { "item": "magichem:essentia_precious", "count": 48 },
+    { "item": "magichem:essentia_albedo", "count": 12 }
+  ]
+}

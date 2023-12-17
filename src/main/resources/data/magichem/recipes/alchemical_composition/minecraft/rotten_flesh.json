@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:rotten_flesh" },
+  "components": [
+    { "item": "magichem:admixture_death", "count": 2 },
+    { "item": "magichem:essentia_fleshy", "count": 6 },
+    { "item": "magichem:essentia_rotten", "count": 6 }
+  ]
+}

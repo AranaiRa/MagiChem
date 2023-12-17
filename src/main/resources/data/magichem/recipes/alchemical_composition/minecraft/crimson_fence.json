@@ -5,6 +5,6 @@
   "object": { "item": "minecraft:crimson_fence" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:demon_plant", "count": 1 }
+    { "item": "magichem:admixture_demon", "count": 1 }
   ]
 }

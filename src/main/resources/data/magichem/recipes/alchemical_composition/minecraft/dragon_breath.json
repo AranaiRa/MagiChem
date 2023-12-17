@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:dragon_breath" },
+  "components": [
+    { "item": "magichem:essentia_air", "count": 2 },
+    { "item": "magichem:admixture_alien", "count": 14 },
+    { "item": "magichem:admixture_flight", "count": 8 },
+    { "item": "magichem:admixture_darkness", "count": 6 },
+    { "item": "magichem:essentia_albedo", "count": 2 }
+  ]
+}

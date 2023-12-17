@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": false,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:slimeball" },
+  "object": { "item": "minecraft:slime_ball" },
   "components": [
     { "item": "magichem:admixture_blood", "count": 6 },
     { "item": "magichem:admixture_filth", "count": 6 },

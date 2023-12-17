@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:saddle" },
+  "components": [
+    { "item": "magichem:admixture_travel", "count": 4 },
+    { "item": "magichem:admixture_comfort", "count": 2 },
+    { "item": "magichem:admixture_domestication", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

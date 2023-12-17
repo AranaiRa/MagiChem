@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:activator_rail" },
+  "components": [
+    { "item": "magichem:admixture_travel", "count": 4 },
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_trap", "count": 2 },
+    { "item": "magichem:admixture_thought", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

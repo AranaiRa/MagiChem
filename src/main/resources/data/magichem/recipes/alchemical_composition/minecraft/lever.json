@@ -4,6 +4,6 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:lever" },
   "components": [
-    { "item": "magichem:essentia_earth", "count": 2 }
+    { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

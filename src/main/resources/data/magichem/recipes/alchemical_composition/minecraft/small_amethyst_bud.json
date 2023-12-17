@@ -4,7 +4,7 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:small_amethyst_bud" },
   "components": [
-    { "item": "magichem:essentia_crystal", "count": 1 },
-    { "item": "magichem:essentia_darkness", "count": 1 }
+    { "item": "magichem:admixture_crystal", "count": 1 },
+    { "item": "magichem:admixture_darkness", "count": 1 }
   ]
 }

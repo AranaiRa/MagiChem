@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:minecart" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 12 },
+    { "item": "magichem:admixture_metal", "count": 30 },
+    { "item": "magichem:admixture_travel", "count": 8 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

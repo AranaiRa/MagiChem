@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:diamond_chestplate" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 56 },
+    { "item": "magichem:admixture_protection", "count": 16 },
+    { "item": "magichem:essentia_precious", "count": 64 },
+    { "item": "magichem:essentia_nigredo", "count": 16 }
+  ]
+}

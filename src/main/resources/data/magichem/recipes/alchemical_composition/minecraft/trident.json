@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:trident" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 14 },
+    { "item": "magichem:admixture_luck", "count": 8 },
+    { "item": "magichem:admixture_violence", "count": 6 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

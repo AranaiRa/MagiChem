@@ -5,6 +5,6 @@
   "object": { "item": "minecraft:smooth_stone_slab" },
   "components": [
     { "item": "magichem:admixture_stone", "count": 4 },
-    { "item": "magichem:admixture_wrought", "count": 2 }
+    { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

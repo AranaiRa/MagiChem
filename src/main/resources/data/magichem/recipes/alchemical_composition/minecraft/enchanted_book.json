@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:enchanted_book" },
+  "components": [
+    { "item": "magichem:admixture_sorcery", "count": 18 },
+    { "item": "magichem:admixture_thought", "count": 12 },
+    { "item": "magichem:admixture_permanence", "count": 4 },
+    { "item": "magichem:essentia_wrought", "count": 4 },
+    { "item": "magichem:essentia_precious", "count": 2 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:golden_carrot" },
+  "components": [
+    { "item": "magichem:essentia_ender", "count": 8 },
+    { "item": "magichem:admixture_darkness", "count": 1 },
+    { "item": "magichem:essentia_nourishing", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

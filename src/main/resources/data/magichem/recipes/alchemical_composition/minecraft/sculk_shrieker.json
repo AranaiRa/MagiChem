@@ -4,10 +4,10 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:sculk_shrieker" },
   "components": [
+    { "item": "magichem:admixture_sound", "count": 64 },
     { "item": "magichem:admixture_darkness", "count": 60 },
     { "item": "magichem:admixture_alien", "count": 24 },
     { "item": "magichem:admixture_trap", "count": 24 },
-    { "item": "magichem:essentia_precious", "count": 6 },
     { "item": "magichem:essentia_albedo", "count": 18 }
   ]
 }

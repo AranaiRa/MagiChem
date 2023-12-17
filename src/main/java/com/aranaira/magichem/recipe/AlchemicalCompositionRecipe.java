@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -143,6 +144,8 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
         public AlchemicalCompositionRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
 
             ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
+            if(recipeObject.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
+                recipeObject = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:barrier")));
 
             boolean distillOnly = GsonHelper.getAsBoolean(pSerializedRecipe, "distill_only");
             float rate = GsonHelper.getAsFloat(pSerializedRecipe, "output_rate");
@@ -157,6 +160,8 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
                 MateriaItem matQuery = materiaMap.get(key);
                 if(matQuery != null) {
                     ing = new ItemStack(matQuery);
+                } else {
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for recipe \""+pRecipeId);
                 }
 
                 if(element.getAsJsonObject().has("count"))

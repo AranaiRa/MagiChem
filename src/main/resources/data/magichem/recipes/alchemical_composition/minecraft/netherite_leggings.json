@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:netherite_leggings" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 64 },
+    { "item": "magichem:admixture_demon", "count": 64 },
+    { "item": "magichem:essentia_precious", "count": 64 },
+    { "item": "magichem:admixture_protection", "count": 14 },
+    { "item": "magichem:essentia_albedo", "count": 64 }
+  ]
+}

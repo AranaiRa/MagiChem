@@ -5,6 +5,7 @@
   "object": { "item": "minecraft:dead_bush" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:death", "count": 1 }
+    { "item": "magichem:admixture_death", "count": 1 },
+    { "item": "magichem:essentia_verdant", "count": 1 }
   ]
 }

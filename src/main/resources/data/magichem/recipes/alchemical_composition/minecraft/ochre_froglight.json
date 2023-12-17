@@ -7,6 +7,6 @@
     { "item": "magichem:admixture_light", "count": 12 },
     { "item": "magichem:admixture_bargain", "count": 7 },
     { "item": "magichem:admixture_death", "count": 2 },
-    { "item": "magichem:admixture_fleshy", "count": 4 }
+    { "item": "magichem:essentia_fleshy", "count": 4 }
   ]
 }

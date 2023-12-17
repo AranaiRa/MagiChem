@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:pumpkin_pie" },
+  "components": [
+    { "item": "magichem:admixture_delight", "count": 1 },
+    { "item": "magichem:essentia_nourishing", "count": 16 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

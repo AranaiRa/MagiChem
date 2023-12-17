@@ -1,11 +1,10 @@
 {
   "type": "magichem:alchemical_composition",
   "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "minecraft:melon" },
+  "output_rate": 0.111,
+  "object": { "item": "minecraft:melon_slice" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:admixture_healing", "count": 1 },
-    { "item": "magichem:essentia_nourishing", "count": 16 }
+    { "item": "magichem:essentia_nourishing", "count": 2 }
   ]
 }

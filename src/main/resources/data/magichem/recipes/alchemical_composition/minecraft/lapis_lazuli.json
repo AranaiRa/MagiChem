@@ -5,7 +5,7 @@
   "object": { "item": "minecraft:lapis_lazuli" },
   "components": [
     { "item": "magichem:admixture_memory", "count": 2 },
-    { "item": "magichem:admixture_mineral", "count": 2 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
     { "item": "magichem:essentia_precious", "count": 1 }
   ]
 }

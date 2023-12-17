@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:blaze_rod" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 24 },
+    { "item": "magichem:admixture_demon", "count": 4 },
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:essentia_verdant", "count": 4 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

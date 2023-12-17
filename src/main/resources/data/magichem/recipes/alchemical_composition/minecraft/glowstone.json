@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:glowstone_dust" },
+  "object": { "item": "minecraft:glowstone" },
   "components": [
     { "item": "magichem:admixture_light", "count": 40 },
     { "item": "magichem:admixture_crystal", "count": 4 }

@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:cooked_beef" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 4 },
+    { "item": "magichem:essentia_fleshy", "count": 8 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

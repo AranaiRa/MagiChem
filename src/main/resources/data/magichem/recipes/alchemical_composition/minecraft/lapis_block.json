@@ -5,7 +5,7 @@
   "object": { "item": "minecraft:lapis_block" },
   "components": [
     { "item": "magichem:admixture_memory", "count": 18 },
-    { "item": "magichem:admixture_mineral", "count": 18 },
+    { "item": "magichem:essentia_mineral", "count": 18 },
     { "item": "magichem:essentia_precious", "count": 9 }
   ]
 }

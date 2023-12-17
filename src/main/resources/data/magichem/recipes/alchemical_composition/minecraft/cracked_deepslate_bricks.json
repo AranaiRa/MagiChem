@@ -7,6 +7,6 @@
     { "item": "magichem:admixture_stone", "count": 3 },
     { "item": "magichem:admixture_darkness", "count": 1 },
     { "item": "magichem:admixture_erosion", "count": 1 },
-    { "item": "magichem:admixture_wrought", "count": 2 }
+    { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

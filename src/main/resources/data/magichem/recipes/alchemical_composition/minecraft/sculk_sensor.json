@@ -4,9 +4,9 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:sculk_sensor" },
   "components": [
+    { "item": "magichem:admixture_sound", "count": 24 },
     { "item": "magichem:admixture_alien", "count": 12 },
     { "item": "magichem:admixture_trap", "count": 6 },
-    { "item": "magichem:admixture_thought", "count": 4 },
     { "item": "magichem:essentia_verdant", "count": 6 },
     { "item": "magichem:essentia_albedo", "count": 12 }
   ]

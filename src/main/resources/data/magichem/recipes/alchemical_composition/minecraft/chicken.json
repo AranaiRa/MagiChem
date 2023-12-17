@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:chicken" },
+  "components": [
+    { "item": "magichem:essentia_air", "count": 4 },
+    { "item": "magichem:essentia_fleshy", "count": 8 }
+  ]
+}

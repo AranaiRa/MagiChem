@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:cod" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 4 },
+    { "item": "magichem:admixture_poison", "count": 2 },
+    { "item": "magichem:essentia_fleshy", "count": 8 }
+  ]
+}

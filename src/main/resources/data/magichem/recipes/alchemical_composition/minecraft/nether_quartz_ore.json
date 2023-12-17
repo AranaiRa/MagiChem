@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:quartz" },
+  "object": { "item": "minecraft:nether_quartz_ore" },
   "components": [
     { "item": "magichem:admixture_crystal", "count": 2 },
     { "item": "magichem:admixture_light", "count": 2 },

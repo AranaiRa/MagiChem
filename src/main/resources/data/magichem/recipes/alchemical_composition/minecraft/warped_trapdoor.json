@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:warped_trapdoor" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_motion", "count": 1 },
+    { "item": "magichem:admixture_alien", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
+  ]
+}

@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:raw_copper" },
+  "object": { "item": "minecraft:copper_ore" },
   "components": [
     { "item": "magichem:admixture_metal", "count": 7 },
     { "item": "magichem:admixture_energy", "count": 3 },

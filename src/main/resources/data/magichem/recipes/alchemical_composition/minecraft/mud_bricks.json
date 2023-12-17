@@ -6,6 +6,6 @@
   "components": [
     { "item": "magichem:essentia_earth", "count": 4 },
     { "item": "magichem:admixture_filth", "count": 2 },
-    { "item": "magichem:admixture_wrought", "count": 2 }
+    { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

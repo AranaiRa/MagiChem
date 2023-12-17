@@ -4,8 +4,8 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:jukebox" },
   "components": [
+    { "item": "magichem:admixture_sound", "count": 20 },
     { "item": "magichem:admixture_crystal", "count": 4 },
-    { "item": "magichem:admixture_plant", "count": 4 },
     { "item": "magichem:admixture_instrument", "count": 2 },
     { "item": "magichem:essentia_precious", "count": 8 },
     { "item": "magichem:essentia_nigredo", "count": 2 }

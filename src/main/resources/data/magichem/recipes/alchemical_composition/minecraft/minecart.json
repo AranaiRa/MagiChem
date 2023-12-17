@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:minecart" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 30 },
+    { "item": "magichem:admixture_travel", "count": 8 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:elytra" },
+  "components": [
+    { "item": "magichem:admixture_travel", "count": 2 },
+    { "item": "magichem:admixture_alien", "count": 1 },
+    { "item": "magichem:essentia_precious", "count": 1 },
+    { "item": "magichem:essentia_citrinitas", "count": 1 }
+  ]
+}

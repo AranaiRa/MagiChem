@@ -140,6 +140,23 @@
       ]
     },
     {
+      "name": "disaster",
+      "color": "a14b05",
+      "components": [
+        { "admixture": "luck", "count": 1 },
+        { "essentia": "rotten", "count": 2 }
+      ]
+    },
+    {
+      "name": "domestication",
+      "color": "9bb835",
+      "components": [
+        { "admixture": "creature", "count": 1 },
+        { "admixture": "trap", "count": 2 },
+        { "essentia": "conceptual", "count": 2 }
+      ]
+    },
+    {
       "name": "dust",
       "color": "393a3b",
       "components": [
@@ -181,6 +198,15 @@
         { "essentia": "fleshy", "count": 1 },
         { "essentia": "verdant", "count": 1 },
         { "essentia": "rotten", "count": 1 }
+      ]
+    },
+    {
+      "name": "flight",
+      "color": "452607",
+      "components": [
+        { "essentia": "air", "count": 8 },
+        { "admixture": "travel", "count": 1 },
+        { "admixture": "creature", "count": 1 }
       ]
     },
     {
@@ -237,6 +263,15 @@
       ]
     },
     {
+      "name": "luck",
+      "color": "099430",
+      "components": [
+        { "admixture": "fey", "count": 2 },
+        { "admixture": "comfort", "count": 1 },
+        { "essentia": "conceptual", "count": 2 }
+      ]
+    },
+    {
       "name": "mana",
       "color": "23a1d6",
       "components": [
@@ -287,6 +322,14 @@
       ]
     },
     {
+      "name": "potential",
+      "color": "cda2bf",
+      "components": [
+        { "essentia": "energy", "count": 1 },
+        { "essentia": "sleep", "count": 1 }
+      ]
+    },
+    {
       "name": "plant",
       "color": "2f5f3d",
       "components": [
@@ -310,6 +353,24 @@
         { "admixture": "breath", "count": 1 },
         { "admixture": "permanence", "count": 1 },
         { "essentia": "wrought", "count": 2 }
+      ]
+    },
+    {
+      "name": "sleep",
+      "color": "494257",
+      "components": [
+        { "admixture": "creature", "count": 1 },
+        { "admixture": "darkness", "count": 1 },
+        { "essentia": "conceptual", "count": 2 }
+      ]
+    },
+    {
+      "name": "sound",
+      "color": "570b2f",
+      "components": [
+        { "admixture": "thought", "count": 1 },
+        { "admixture": "motion", "count": 2 },
+        { "essentia": "air", "count": 2 }
       ]
     },
     {
@@ -352,6 +413,15 @@
       "components": [
         { "essentia": "rotten", "count": 2 },
         { "admixture": "motion", "count": 1 }
+      ]
+    },
+    {
+      "name": "travel",
+      "color": "478e78",
+      "components": [
+        { "essentia": "earth", "count": 4 },
+        { "admixture": "motion", "count": 2 },
+        { "essentia": "conceptual", "count": 2 }
       ]
     },
     {

@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.25,
+  "object": { "item": "minecraft:chorus_fruit" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_alien", "count": 1 },
+    { "item": "magichem:admixture_travel", "count": 1 },
+    { "item": "magichem:essentia_nourishing", "count": 2 }
+  ]
+}

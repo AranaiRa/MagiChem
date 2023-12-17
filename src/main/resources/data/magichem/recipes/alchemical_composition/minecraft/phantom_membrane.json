@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:phantom_membrane" },
+  "components": [
+    { "item": "magichem:admixture_flight", "count": 4 },
+    { "item": "magichem:admixture_death", "count": 2 },
+    { "item": "magichem:admixture_sleep", "count": 2 },
+    { "item": "magichem:essentia_fleshy", "count": 1 }
+  ]
+}

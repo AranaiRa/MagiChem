@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:rabbit_foot" },
+  "components": [
+    { "item": "magichem:essentia_ender", "count": 6 },
+    { "item": "magichem:admixture_luck", "count": 1 },
+    { "item": "magichem:essentia_fleshy", "count": 4 }
+  ]
+}

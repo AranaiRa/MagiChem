@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:powered_rail" },
+  "components": [
+    { "item": "magichem:admixture_travel", "count": 7 },
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_energy", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 2 }
+  ]
+}

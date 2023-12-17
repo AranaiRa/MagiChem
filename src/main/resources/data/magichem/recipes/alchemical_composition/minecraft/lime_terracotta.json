@@ -2,10 +2,10 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:lime_terracottta" },
+  "object": { "item": "minecraft:lime_terracotta" },
   "components": [
     { "item": "magichem:essentia_fire", "count": 6 },
     { "item": "magichem:admixture_change", "count": 2 },
-    { "item": "magichem:admixture_mineral", "count": 4 }
+    { "item": "magichem:essentia_mineral", "count": 4 }
   ]
 }

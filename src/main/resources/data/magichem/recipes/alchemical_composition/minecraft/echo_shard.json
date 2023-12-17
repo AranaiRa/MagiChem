@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:echo_shard" },
+  "components": [
+    { "item": "magichem:admixture_darkness", "count": 12 },
+    { "item": "magichem:admixture_sound", "count": 4 },
+    { "item": "magichem:admixture_alien", "count": 2 },
+    { "item": "magichem:essentia_albedo", "count": 2 }
+  ]
+}

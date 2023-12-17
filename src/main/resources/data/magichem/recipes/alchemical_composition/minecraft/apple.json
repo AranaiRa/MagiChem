@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:apple" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 2 },
+    { "item": "magichem:essentia_nourishing", "count": 2 }
+  ]
+}

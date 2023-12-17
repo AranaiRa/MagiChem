@@ -5,8 +5,8 @@
   "object": { "item": "minecraft:armor_stand" },
   "components": [
     { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_plant", "count": 1 },
     { "item": "magichem:admixture_stone", "count": 1 },
-    { "item": "magichem:admixture_wood", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

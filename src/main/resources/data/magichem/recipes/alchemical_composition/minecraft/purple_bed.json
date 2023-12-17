@@ -4,6 +4,7 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:purple_bed" },
   "components": [
+    { "item": "magichem:admixture_sleep", "count": 10 },
     { "item": "magichem:admixture_comfort", "count": 8 },
     { "item": "magichem:admixture_protection", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }

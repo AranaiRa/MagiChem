@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:flint" },
+  "components": [
+    { "item": "magichem:admixture_erosion", "count": 1 },
+    { "item": "magichem:admixture_plant", "count": 1 }
+  ]
+}

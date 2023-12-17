@@ -4,6 +4,7 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:note_block" },
   "components": [
+    { "item": "magichem:admixture_sound", "count": 3 },
     { "item": "magichem:admixture_comfort", "count": 1 },
     { "item": "magichem:admixture_industry", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }

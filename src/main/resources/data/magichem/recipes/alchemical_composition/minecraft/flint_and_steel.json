@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:flint_and_steel" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 8 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_destruction", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}
