@@ -10,6 +10,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -240,6 +243,40 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             }
             else
                 entity.resetProgress();
+        }
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        //When the game is already running, client side
+        currentRecipe = ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("currentRecipe")));
+        powerLevel = tag.getInt("powerLevel");
+        craftingProgress = tag.getInt("craftingProgress");
+        ENERGY_STORAGE.setEnergy(tag.getInt("storedPower"));
+        super.handleUpdateTag(tag);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        //Create a compound tag and stuff all the info in it I need on the client side, server side
+        CompoundTag data = new CompoundTag();
+        data.putString("currentRecipe", ForgeRegistries.ITEMS.getKey(currentRecipe).toString());
+        data.putInt("powerLevel", powerLevel);
+        data.putInt("craftingProgress", craftingProgress);
+        data.putInt("storedPower", ENERGY_STORAGE.getEnergyStored());
+        return data;
+    }
+
+    public final void syncAndSave() {
+        if (!this.getLevel().isClientSide()) {
+            this.setChanged();
+            this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
         }
     }
 
