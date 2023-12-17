@@ -4,7 +4,6 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,27 +12,23 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SyncFabricationDataC2SPacket {
+public class FabricationStallOrderS2CPacket {
     private final BlockPos blockPos;
-    private final Item recipeItem;
-    private final byte powerLevel;
+    private final boolean newStallStatus;
 
-    public SyncFabricationDataC2SPacket(BlockPos pBlockPos, Item pRecipeItem, int pPowerLevel) {
+    public FabricationStallOrderS2CPacket(BlockPos pBlockPos, boolean pNewStallStatus) {
         this.blockPos = pBlockPos;
-        this.recipeItem = pRecipeItem;
-        this.powerLevel = (byte)pPowerLevel;
+        this.newStallStatus = pNewStallStatus;
     }
 
-    public SyncFabricationDataC2SPacket(FriendlyByteBuf buf) {
+    public FabricationStallOrderS2CPacket(FriendlyByteBuf buf) {
         this.blockPos = buf.readBlockPos();
-        this.recipeItem = buf.readItem().getItem();
-        this.powerLevel = buf.readByte();
+        this.newStallStatus = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
-        buf.writeItem(new ItemStack(recipeItem, 1));
-        buf.writeByte(powerLevel);
+        buf.writeBoolean(newStallStatus);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -44,10 +39,9 @@ public class SyncFabricationDataC2SPacket {
 
         context.enqueueWork(() -> {
             if(entity instanceof CircleFabricationBlockEntity cfbe) {
-                MagiChemMod.LOGGER.debug("&&&& SERVERSIDE: Item is "+recipeItem+", powerLevel is "+powerLevel);
+                MagiChemMod.LOGGER.debug("&&&& CLIENTSIDE: Setting stalled state to "+newStallStatus);
 
-                cfbe.setCurrentRecipeTarget(recipeItem);
-                cfbe.setPowerLevel(powerLevel);
+                cfbe.setStallState(newStallStatus);
             }
         });
 

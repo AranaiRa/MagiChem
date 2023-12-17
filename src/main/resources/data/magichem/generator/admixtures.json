@@ -202,7 +202,7 @@
     },
     {
       "name": "flight",
-      "color": "452607",
+      "color": "c3d5b5",
       "components": [
         { "essentia": "air", "count": 8 },
         { "admixture": "travel", "count": 1 },
@@ -322,14 +322,6 @@
       ]
     },
     {
-      "name": "potential",
-      "color": "cda2bf",
-      "components": [
-        { "essentia": "energy", "count": 1 },
-        { "essentia": "sleep", "count": 1 }
-      ]
-    },
-    {
       "name": "plant",
       "color": "2f5f3d",
       "components": [
@@ -344,6 +336,14 @@
       "components": [
         { "essentia": "water", "count": 4 },
         { "essentia": "rotten", "count": 2 }
+      ]
+    },
+    {
+      "name": "potential",
+      "color": "cda2bf",
+      "components": [
+        { "admixture": "energy", "count": 1 },
+        { "admixture": "sleep", "count": 1 }
       ]
     },
     {
