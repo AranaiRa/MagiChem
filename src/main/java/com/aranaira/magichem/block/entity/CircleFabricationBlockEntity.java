@@ -3,9 +3,12 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
+import com.aranaira.magichem.networking.FabricationSyncDataS2CPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.mna.tools.math.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +17,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -36,11 +40,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class CircleFabricationBlockEntity extends BlockEntity implements MenuProvider {
     public static final int
+            SLOT_COUNT = 21,
             SLOT_BOTTLES = 0,
             SLOT_INPUT_1 = 1, SLOT_INPUT_2 = 2, SLOT_INPUT_3 = 3, SLOT_INPUT_4 = 4, SLOT_INPUT_5 = 5,
             SLOT_INPUT_6 = 6, SLOT_INPUT_7 = 7, SLOT_INPUT_8 = 8, SLOT_INPUT_9 = 9, SLOT_INPUT_10 = 10,
@@ -60,7 +67,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             19, 15, 12, 9, 7, 5, 4, 3, 2, 1
     };
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(21) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -87,7 +94,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
             @Override
             public int getCount() {
-                return 21;
+                return SLOT_COUNT;
             }
         };
     }
@@ -103,9 +110,27 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     private Item currentRecipe;
     private AlchemicalCompositionRecipe currentRecipeData;
 
-    public void setCurrentRecipeTarget(Item currentRecipe) {
-        this.currentRecipe = currentRecipe;
-        MagiChemMod.LOGGER.debug("current recipe is now "+currentRecipe);
+    public void setCurrentRecipeTarget(Item item) {
+        List<AlchemicalCompositionRecipe> allACRs = level.getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
+        AlchemicalCompositionRecipe targetRecipe = null;
+        for(AlchemicalCompositionRecipe acr : allACRs) {
+            if(acr.getAlchemyObject().getItem() == item) {
+                targetRecipe = acr;
+                break;
+            }
+        }
+
+        if(targetRecipe != null) {
+            setCurrentRecipeTarget(targetRecipe);
+        } else {
+            MagiChemMod.LOGGER.warn("Alchemical Composition recipe for ["+item+"] couldn't be found.");
+        }
+    }
+
+    public void setCurrentRecipeTarget(AlchemicalCompositionRecipe acr) {
+        this.currentRecipe = acr.getAlchemyObject().getItem();
+        this.currentRecipeData = acr;
+        //MagiChemMod.LOGGER.debug("current recipe is now "+currentRecipe);
         this.saveAdditional(this.getUpdateTag());
     }
 
@@ -118,7 +143,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             return currentRecipeData;
         }
         else {
-            List<AlchemicalCompositionRecipe> allACRs = level.getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
+            List<AlchemicalCompositionRecipe> allACRs = getAllRecipesSorted();
             for(AlchemicalCompositionRecipe acr : allACRs) {
                 if(acr.getAlchemyObject().getItem() == currentRecipe)
                     currentRecipeData = acr;
@@ -126,6 +151,28 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             }
         }
         return null;
+    }
+
+    private static List<AlchemicalCompositionRecipe> allRecipesSorted = new ArrayList<>();
+
+    @NotNull
+    private List<AlchemicalCompositionRecipe> getAllRecipesSorted() {
+        if(allRecipesSorted.size() > 0) {
+            return allRecipesSorted;
+        } else {
+            List<AlchemicalCompositionRecipe> allACRs = level.getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
+            HashMap<String, AlchemicalCompositionRecipe> sorter = new HashMap<>();
+
+            for (AlchemicalCompositionRecipe acr : allACRs) {
+                sorter.put(acr.getId().getNamespace() + ":" + acr.getAlchemyObject().getItem(), acr);
+            }
+
+            for(String key : sorter.keySet()) {
+
+            }
+
+            return allRecipesSorted;
+        }
     }
 
     @Override
@@ -136,6 +183,13 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+        if(!player.level.isClientSide()) {
+            PacketRegistry.sendToPlayer(new FabricationSyncDataS2CPacket(
+                    getBlockPos(),
+                    getCurrentRecipeTarget(),
+                    getPowerLevel()
+            ), (ServerPlayer) player);
+        }
         return new CircleFabricationMenu(id, inventory, this);
     }
 
@@ -172,11 +226,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         nbt.putInt("circle_fabrication.powerLevel", this.powerLevel);
         nbt.putInt("circle_fabrication.energy", this.ENERGY_STORAGE.getEnergyStored());
 
-        MagiChemMod.LOGGER.debug("&&&& "+currentRecipe+" is trying to be ["+ForgeRegistries.ITEMS.getKey(currentRecipe).getNamespace()+":"+currentRecipe+"]");
+        //MagiChemMod.LOGGER.debug("&&&& "+currentRecipe+" is trying to be ["+ForgeRegistries.ITEMS.getKey(currentRecipe).getNamespace()+":"+currentRecipe+"]");
 
         nbt.putString("circle_fabrication.recipe", ForgeRegistries.ITEMS.getKey(currentRecipe).getNamespace()+":"+currentRecipe);
 
-        MagiChemMod.LOGGER.debug("&&&& NBT save-state...... Recipe=["+nbt.getString("circle_fabrication.recipe")+"], pl=["+nbt.getInt("circle_fabrication.powerLevel")+"]");
+        //MagiChemMod.LOGGER.debug("&&&& "+(level.isClientSide() ? "CLIENT" : "SERVER")+" NBT save-state...... Recipe=["+nbt.getString("circle_fabrication.recipe")+"], pl=["+nbt.getInt("circle_fabrication.powerLevel")+"]");
         super.saveAdditional(nbt);
     }
 
@@ -184,22 +238,26 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     public void load(CompoundTag nbt) {
         super.load(nbt);
 
-        MagiChemMod.LOGGER.debug("&&&& NBT pre-state...... Recipe=["+currentRecipe+"], pl=["+powerLevel+"]");
+        if(!level.isClientSide()) {
+            //MagiChemMod.LOGGER.debug("&&&& " + (level.isClientSide() ? "CLIENT" : "SERVER") + " NBT pre-state...... Recipe=[" + currentRecipe + "], pl=[" + powerLevel + "]");
 
-        itemHandler.deserializeNBT(nbt.getCompound("circle_fabrication.inventory"));
-        craftingProgress = nbt.getInt("circle_fabrication.progress");
-        powerLevel = nbt.getInt("circle_fabrication.powerLevel");
-        ENERGY_STORAGE.setEnergy(nbt.getInt("circle_fabrication.energy"));
+            itemHandler.deserializeNBT(nbt.getCompound("circle_fabrication.inventory"));
+            craftingProgress = nbt.getInt("circle_fabrication.progress");
+            powerLevel = nbt.getInt("circle_fabrication.powerLevel");
+            ENERGY_STORAGE.setEnergy(nbt.getInt("circle_fabrication.energy"));
 
-        MagiChemMod.LOGGER.debug("&&&& trying to load ["+nbt.getString("circle_fabrication.recipe")+"], pl @ ["+nbt.getInt("circle_fabrication.powerLevel")+"]");
+            //MagiChemMod.LOGGER.debug("&&&& " + (level.isClientSide() ? "CLIENT" : "SERVER") + " trying to load [" + nbt.getString("circle_fabrication.recipe") + "], pl @ [" + nbt.getInt("circle_fabrication.powerLevel") + "]");
 
-        currentRecipe = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("circle_fabrication.recipe")));
+            currentRecipe = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("circle_fabrication.recipe")));
 
-        MagiChemMod.LOGGER.debug("&&&& NBT post-state...... Recipe=["+currentRecipe+"], pl=["+powerLevel+"]");
+            //MagiChemMod.LOGGER.debug("&&&& " + (level.isClientSide() ? "CLIENT" : "SERVER") + " NBT post-state...... Recipe=[" + currentRecipe + "], pl=[" + powerLevel + "]");
+
+            this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
     }
 
     public static int getScaledProgress(CircleFabricationBlockEntity entity) {
-        return entity.getCraftingProgress() * PROGRESS_BAR_WIDTH / OPERATION_TICKS[entity.powerLevel-1];
+        return entity.getCraftingProgress() * PROGRESS_BAR_WIDTH / entity.getOperationTicks();
     }
 
     public int getCraftingProgress(){
@@ -216,33 +274,23 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CircleFabricationBlockEntity entity) {
-        /*if(!level.isClientSide()) {
-            return;
-        }*/
-
-        if(entity.currentRecipe != null && entity.currentRecipe != ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air"))) {
-
-            AlchemicalCompositionRecipe recipe = entity.getCurrentRecipeData();
+        boolean isClientSide = level.isClientSide();
+        AlchemicalCompositionRecipe recipe = entity.getCurrentRecipeData();
+        if(entity.ENERGY_STORAGE.getEnergyStored() >= entity.getPowerDraw() || isClientSide) {
+            //if(!isClientSide && canCraftItem(entity, recipe)) {
             if(canCraftItem(entity, recipe)) {
-                if(level.isClientSide()) MagiChemMod.LOGGER.debug("client side recipe check");
-                if(!level.isClientSide()) MagiChemMod.LOGGER.debug("server side recipe check");
-                if(entity.ENERGY_STORAGE.getEnergyStored() > entity.getPowerDraw()) {
-                    if(level.isClientSide()) MagiChemMod.LOGGER.debug("client side energy check");
-                    if(!level.isClientSide()) MagiChemMod.LOGGER.debug("server side energy check");
-
-                    entity.ENERGY_STORAGE.extractEnergy(entity.getPowerDraw(), false);
-                    if (entity.craftingProgress >= OPERATION_TICKS[entity.powerLevel - 1]) {
-                        if (!level.isClientSide())
-                            craftItem(entity, recipe);
-                        if (!entity.isStalled)
-                            entity.resetProgress();
-                    } else {
-                        entity.incrementProgress();
-                    }
-                }
+                entity.ENERGY_STORAGE.extractEnergy(entity.getPowerDraw(), false);
+                entity.incrementProgress();
             }
-            else
+            else {
                 entity.resetProgress();
+            }
+
+
+            if(entity.getCraftingProgress() > entity.getOperationTicks()) {
+                craftItem(entity, recipe);
+                entity.resetProgress();
+            }
         }
     }
 
@@ -281,41 +329,48 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     private static boolean canCraftItem(CircleFabricationBlockEntity entity, AlchemicalCompositionRecipe recipe){
-        int bottlesToInsert = 0;
-        for(ItemStack is : recipe.getComponentMateria()) {
-            bottlesToInsert += is.getCount();
-        }
+        if(recipe != null) {
+            int bottlesToInsert = 0;
+            for (ItemStack is : recipe.getComponentMateria()) {
+                bottlesToInsert += is.getCount();
+            }
 
-        HashMap<Item, Boolean> inputItemsAvailable = new HashMap<>();
-        for(ItemStack materia : recipe.getComponentMateria()) {
-            int remaining = materia.getCount();
-            boolean result = false;
+            HashMap<Item, Boolean> inputItemsAvailable = new HashMap<>();
+            for (ItemStack materia : recipe.getComponentMateria()) {
+                int remaining = materia.getCount();
+                boolean result = false;
 
-            for(int i=SLOT_INPUT_1; i<=SLOT_INPUT_10; i++) {
-                if(entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
-                    remaining -= entity.itemHandler.getStackInSlot(i).getCount();
+                for (int i = SLOT_INPUT_1; i <= SLOT_INPUT_10; i++) {
+                    if (entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
+                        remaining -= entity.itemHandler.getStackInSlot(i).getCount();
 
-                    if(remaining <= 0) {
-                        result = true;
-                        break;
+                        if (remaining <= 0) {
+                            result = true;
+                            break;
+                        }
                     }
                 }
+
+                inputItemsAvailable.put(materia.getItem(), result);
             }
 
-            inputItemsAvailable.put(materia.getItem(), result);
-        }
+            //Comparisons
+            boolean inventoryCheck = true;
+            for (Item key : inputItemsAvailable.keySet())
+                inventoryCheck &= inputItemsAvailable.get(key);
 
-        //Comparisons
-        boolean inventoryCheck = true;
-        for(Item key : inputItemsAvailable.keySet())
-            inventoryCheck &= inputItemsAvailable.get(key);
+            //MagiChemMod.LOGGER.debug(
+            //        "DATALOG\n...bottlesToInsert=" + bottlesToInsert +
+            //                "\n...inventoryCheck=" + inventoryCheck +
+            //                "\n...recipe=" + recipe.getAlchemyObject() +
+            //                "\n...components=" + recipe.getComponentMateria());
 
-        if(inventoryCheck) {
-            if(entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount() + bottlesToInsert <= 64) {
-                return true;
+            if (inventoryCheck) {
+                if (entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount() + bottlesToInsert <= 64) {
+                    return true;
+                }
             }
         }
-
         return false;
     }
 
@@ -333,9 +388,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         for(ItemStack materia : recipe.getComponentMateria()) {
             int remaining = materia.getCount();
             for(int i=SLOT_INPUT_10; i>=SLOT_INPUT_1; i--) {
-                remaining = remaining - entity.itemHandler.extractItem(i, remaining, false).getCount();
-                if(remaining == 0)
-                    break;
+                if(entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
+                    remaining = remaining - entity.itemHandler.extractItem(i, remaining, false).getCount();
+                    if (remaining == 0)
+                        break;
+                }
             }
         }
 
@@ -380,11 +437,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     public int getPowerDraw() {
-        return POWER_DRAW[powerLevel-1];
+        return POWER_DRAW[MathUtils.clamp(powerLevel, 1, 30)-1];
     }
 
     public int getOperationTicks() {
-        return OPERATION_TICKS[powerLevel-1];
+        return OPERATION_TICKS[MathUtils.clamp(powerLevel, 1, 30)-1];
     }
 
     public int setPowerLevel(int powerLevel) {
