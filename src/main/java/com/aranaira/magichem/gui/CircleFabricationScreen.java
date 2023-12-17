@@ -4,7 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.gui.element.ImageButtonFabricationRecipeSelector;
-import com.aranaira.magichem.networking.SyncFabricationDataC2SPacket;
+import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabricationMenu> {
     private static final ResourceLocation TEXTURE =
@@ -59,7 +60,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private void initializePowerLevelButtons(){
         b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 126, 12, 7, 232, 242, TEXTURE, button -> {
             menu.blockEntity.incrementPowerLevel();
-            PacketRegistry.sendToServer(new SyncFabricationDataC2SPacket(
+            PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     menu.blockEntity.getCurrentRecipeTarget(),
                     menu.blockEntity.getPowerLevel()
@@ -67,7 +68,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         }));
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(180, 126, 12, 7, 244, 242, TEXTURE, button -> {
             menu.blockEntity.decrementPowerLevel();
-            PacketRegistry.sendToServer(new SyncFabricationDataC2SPacket(
+            PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     menu.blockEntity.getCurrentRecipeTarget(),
                     menu.blockEntity.getPowerLevel()
@@ -91,34 +92,29 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
     public void setActiveRecipe(int index) {
         int trueIndex = recipeFilterRow*3 + index;
-        if(trueIndex < filteredRecipeItems.size()) {
-            menu.blockEntity.setCurrentRecipeTarget(filteredRecipeItems.get(trueIndex));
-            PacketRegistry.sendToServer(new SyncFabricationDataC2SPacket(
+        if(trueIndex < filteredRecipes.size()) {
+            menu.blockEntity.setCurrentRecipeTarget(filteredRecipes.get(trueIndex));
+            PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    filteredRecipeItems.get(trueIndex),
+                    filteredRecipes.get(trueIndex).getAlchemyObject().getItem(),
                     menu.blockEntity.getPowerLevel()
             ));
         }
     }
 
-    private static List<Item> filteredRecipeItems = new ArrayList<>();
+    private static List<AlchemicalCompositionRecipe> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
-        List<Item> fabrictionRecipeOutputs = AlchemicalCompositionRecipe.getFabrictionRecipeOutputs(menu.blockEntity.getLevel());
-        filteredRecipeItems.clear();
+        List<AlchemicalCompositionRecipe> fabricationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
+        filteredRecipes.clear();
 
-        if(filter == "" || filter == null) {
-            filteredRecipeItems.addAll(fabrictionRecipeOutputs);
-        }
-        else {
-            for(Item i : fabrictionRecipeOutputs) {
-                if(i.toString().contains(filter)) {
-                    filteredRecipeItems.add(i);
-                }
+        for(AlchemicalCompositionRecipe acr : fabricationRecipeOutputs) {
+            if((Objects.equals(filter, "") || acr.getAlchemyObject().toString().contains(filter)) && !acr.getIsDistillOnly()) {
+                filteredRecipes.add(acr);
             }
         }
 
-        recipeFilterRowTotal = filteredRecipeItems.size() / 3;
+        recipeFilterRowTotal = filteredRecipes.size() / 3;
     }
 
     @Override
@@ -178,7 +174,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             this.blit(poseStack, x, y, 66, 238, 18, 18);
         }
         else
-            Minecraft.getInstance().getItemRenderer().renderGuiItem(new ItemStack(menu.blockEntity.getCurrentRecipeTarget()), x+1, y+1);
+            Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(new ItemStack(menu.blockEntity.getCurrentRecipeTarget()), x+1, y+1);
     }
 
     private void renderProgressBar(PoseStack poseStack, int x, int y) {
@@ -217,9 +213,9 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        List<Item> snipped = new ArrayList<>();
-        for(int i=recipeFilterRow*3; i<Math.min(filteredRecipeItems.size(), recipeFilterRow*3 + 15); i++) {
-            snipped.add(filteredRecipeItems.get(i));
+        List<AlchemicalCompositionRecipe> snipped = new ArrayList<>();
+        for(int i=recipeFilterRow*3; i<Math.min(filteredRecipes.size(), recipeFilterRow*3 + 15); i++) {
+            snipped.add(filteredRecipes.get(i));
         }
 
         int c = 0;
@@ -229,8 +225,8 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             for(int y=0; y<5; y++) {
                 for (int x = 0; x < 3; x++) {
 
-                    Minecraft.getInstance().getItemRenderer().renderGuiItem(
-                            new ItemStack(snipped.get(c)),
+                    Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(
+                            new ItemStack(snipped.get(c).getAlchemyObject().getItem()),
                             xOrigin - 70 + x*18, yOrigin + 43 + y*18
                             );
                     c++;

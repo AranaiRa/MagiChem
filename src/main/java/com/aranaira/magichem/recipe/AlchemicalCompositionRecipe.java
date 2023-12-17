@@ -209,16 +209,4 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
             }
         }
     }
-
-    public static List<Item> fabricationRecipeOutputs = new ArrayList<>();
-    public static List<Item> getFabrictionRecipeOutputs(Level level) {
-        if(fabricationRecipeOutputs.size() == 0) {
-            List<AlchemicalCompositionRecipe> allACRs = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
-            for(AlchemicalCompositionRecipe acr : allACRs) {
-                if(!acr.getIsDistillOnly())
-                    fabricationRecipeOutputs.add(acr.alchemyObject.getItem());
-            }
-        }
-        return fabricationRecipeOutputs;
-    }
 }

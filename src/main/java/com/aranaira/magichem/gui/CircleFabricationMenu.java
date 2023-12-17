@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
@@ -32,10 +34,22 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
 
     public CircleFabricationMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), id);
-        checkContainerSize(inv, 14);
+        checkContainerSize(inv, CircleFabricationBlockEntity.SLOT_COUNT);
         blockEntity = (CircleFabricationBlockEntity) entity;
         this.level = inv.player.level;
+        addSlotListener(new ContainerListener() {
+            @Override
+            public void slotChanged(AbstractContainerMenu pContainerToSend, int pDataSlotIndex, ItemStack pStack) {
+                if(pDataSlotIndex == CircleFabricationBlockEntity.SLOT_COUNT) {
+                    //MagiChemMod.LOGGER.debug("beep");
+                }
+            }
 
+            @Override
+            public void dataChanged(AbstractContainerMenu pContainerMenu, int pDataSlotIndex, int pValue) {
+
+            }
+        });
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

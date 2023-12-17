@@ -1,8 +1,12 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
+import com.aranaira.magichem.networking.FabricationSyncDataS2CPacket;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.PacketRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
