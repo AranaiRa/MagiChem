@@ -1,8 +1,8 @@
 {
   "type": "magichem:alchemical_composition",
-  "distill_only": false,
+  "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:pumpkin" },
+  "object": { "item": "minecraft:jack_o_lantern" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 1 },
     { "item": "magichem:admixture_light", "count": 4 },

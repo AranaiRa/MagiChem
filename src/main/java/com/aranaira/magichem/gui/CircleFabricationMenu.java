@@ -42,19 +42,6 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         checkContainerSize(inv, CircleFabricationBlockEntity.SLOT_COUNT);
         blockEntity = (CircleFabricationBlockEntity) entity;
         this.level = inv.player.level;
-        addSlotListener(new ContainerListener() {
-            @Override
-            public void slotChanged(AbstractContainerMenu pContainerToSend, int pDataSlotIndex, ItemStack pStack) {
-                if(pDataSlotIndex == CircleFabricationBlockEntity.SLOT_COUNT) {
-                    //MagiChemMod.LOGGER.debug("beep");
-                }
-            }
-
-            @Override
-            public void dataChanged(AbstractContainerMenu pContainerMenu, int pDataSlotIndex, int pValue) {
-
-            }
-        });
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

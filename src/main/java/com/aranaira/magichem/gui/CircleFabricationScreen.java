@@ -30,6 +30,8 @@ import java.util.Objects;
 public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabricationMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication.png");
+    private static final ResourceLocation TEXTURE_EXT =
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private ImageButton
             b_powerLevelUp, b_powerLevelDown;
     private ButtonData[] recipeSelectButtons = new ButtonData[15];
@@ -37,7 +39,11 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 192,
             PANEL_RECIPE_X = 176, PANEL_RECIPE_Y = 0, PANEL_RECIPE_W = 80, PANEL_RECIPE_H = 126,
-            PANEL_POWER_X = 176, PANEL_POWER_Y = 126, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
+            PANEL_POWER_X = 176, PANEL_POWER_Y = 126, PANEL_POWER_W = 80, PANEL_POWER_H = 66,
+            PANEL_INGREDIENTS_X = 176, PANEL_INGREDIENTS_Y = 85, PANEL_INGREDIENTS_W = 80,
+            PANEL_INGREDIENTS_U1 = 160, PANEL_INGREDIENTS_U2 = 80, PANEL_INGREDIENTS_U3 = 160, PANEL_INGREDIENTS_U4 = 80, PANEL_INGREDIENTS_U5 = 0,
+            PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
+            PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102;
 
     public CircleFabricationScreen(CircleFabricationMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -150,8 +156,40 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         //RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         renderPowerLevelBar(poseStack, x + 182, y + 37);
+        renderIngredientPanel(poseStack, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
 
         renderSlotGhosts(poseStack);
+    }
+
+    private void renderIngredientPanel(PoseStack poseStack, int x, int y) {
+        RenderSystem.setShaderTexture(0, TEXTURE_EXT);
+
+        if(menu.blockEntity.getCurrentRecipe() != null) {
+            AlchemicalCompositionRecipe recipe = menu.blockEntity.getCurrentRecipe();
+
+            //A switch statement doesn't work here and I have no idea why.
+            if(recipe.getComponentMateria().size() == 1) {
+                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U1, PANEL_INGREDIENTS_V1, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H1);
+            }
+            else if(recipe.getComponentMateria().size() == 2) {
+                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U2, PANEL_INGREDIENTS_V2, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H2);
+            }
+            else if(recipe.getComponentMateria().size() == 3) {
+                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U3, PANEL_INGREDIENTS_V3, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H3);
+            }
+            else if(recipe.getComponentMateria().size() == 4) {
+                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U4, PANEL_INGREDIENTS_V4, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H4);
+            }
+            else if(recipe.getComponentMateria().size() == 5) {
+                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U5, PANEL_INGREDIENTS_V5, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H5);
+            }
+
+            for(int i=0; i<recipe.getComponentMateria().size(); i++) {
+                Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(recipe.getComponentMateria().get(i), x + 4, y + 7 + i * 18);
+            }
+        }
+
+        RenderSystem.setShaderTexture(0, TEXTURE);
     }
 
     private void renderButtons(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
@@ -277,5 +315,16 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
         Minecraft.getInstance().font.draw(poseStack, powerDraw+"/t", 208, 26, 0xff000000);
         Minecraft.getInstance().font.draw(poseStack, secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 45, 0xff000000);
+
+        AlchemicalCompositionRecipe recipe = menu.blockEntity.getCurrentRecipe();
+        if(recipe != null) {
+            for (int i = 0; i < recipe.getComponentMateria().size(); i++) {
+                Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + " x ")
+                        .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipe.getComponentMateria().get(i).getItem()+".short"));
+                poseStack.scale(0.5f, 0.5f, 0.5f);
+                Minecraft.getInstance().font.draw(poseStack, text, 400, 169 + i * 36, 0xff000000);
+                poseStack.scale(2.0f, 2.0f, 2.0f);
+            }
+        }
     }
 }
