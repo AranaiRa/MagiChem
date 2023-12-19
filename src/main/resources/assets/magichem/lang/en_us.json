@@ -1,6 +1,11 @@
 {
-  "item.magichem.silver_dust": "Transmuted Silver Dust",
+  "item.magichem.silver_dust": "Grains of Transmuted Silver",
   "item.magichem.tarnished_silver_lump": "Tarnished Silver Lump",
+  "item.magichem.focusing_catalyst": "Focusing Catalyst",
+  "item.magichem.focusing_catalyst_warped": "Warped Focusing Catalyst",
+  "item.magichem.focusing_catalyst_casing": "Damaged Catalyst Casing",
+  "item.magichem.focusing_catalyst_core_depleted": "Depleted Catalyst Core",
+  "item.magichem.focusing_catalyst_core": "Catalyst Core",
   "item.magichem.iris_argenti": "Iris Argenti",
   "item.magichem.magic_circle": "Magic Circle",
 

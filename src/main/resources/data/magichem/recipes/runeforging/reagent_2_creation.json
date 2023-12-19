@@ -1,0 +1,8 @@
+{
+	"type": "mna:runeforging",
+	"tier": 3,
+	"material": "mna:decoration/transmuted_silver_block",
+	"hits": 10,
+	"pattern": "magichem:focusing_catalyst_core",
+	"output": "magichem:focusing_catalyst"
+}

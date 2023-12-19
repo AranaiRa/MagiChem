@@ -26,6 +26,26 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
+    public static final RegistryObject<Item> FOCUSING_CATALYST = ITEMS.register("focusing_catalyst",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> CATALYST_CORE = ITEMS.register("focusing_catalyst_core",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> CATALYST_CASING = ITEMS.register("focusing_catalyst_casing",
+            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
     public static final RegistryObject<Item> IRIS_ARGENTI = ITEMS.register("iris_argenti",
             () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );

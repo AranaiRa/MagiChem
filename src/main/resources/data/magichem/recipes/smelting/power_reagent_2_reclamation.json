@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "magichem:focusing_catalyst_casing"
+  },
+  "result": "mna:decoration/transmuted_silver_block",
+  "experience": 0.7,
+  "cookingtime": 400
+}
