@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:staff_phylactery" },
+  "components": [
+    { "item": "magichem:essentia_ender", "count": 35 },
+    { "item": "magichem:admixture_death", "count": 18 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 4 },
+    { "item": "magichem:essentia_albedo", "count": 9 }
+  ]
+}

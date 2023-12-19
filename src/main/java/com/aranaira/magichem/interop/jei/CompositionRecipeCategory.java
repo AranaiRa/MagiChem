@@ -59,7 +59,7 @@ public class CompositionRecipeCategory implements IRecipeCategory<AlchemicalComp
         int i=0;
         for(ItemStack stack : recipe.getComponentMateria()) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, 4 + i*18, 90).addItemStack(stack);
-            builder.addSlot(RecipeIngredientRole.INPUT, 0, 40000).addItemStack(stack);
+            builder.addSlot(RecipeIngredientRole.INPUT, 0, 60000).addItemStack(stack);
             i++;
         }
     }

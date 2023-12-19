@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:guide_book" },
+  "components": [
+    { "item": "magichem:admixture_memory", "count": 12 },
+    { "item": "magichem:admixture_wizard", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

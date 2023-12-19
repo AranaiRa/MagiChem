@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "mna:sachet_ender" },
+  "components": [
+    { "item": "magichem:essentia_ender", "count": 14 },
+    { "item": "magichem:admixture_energy", "count": 7 },
+    { "item": "magichem:admixture_mana", "count": 3 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

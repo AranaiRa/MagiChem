@@ -75,6 +75,15 @@
       ]
     },
     {
+      "name": "construct",
+      "color": "385c52",
+      "components": [
+        { "admixture": "stone", "count": 4 },
+        { "admixture": "motion", "count": 2 },
+        { "admixture": "thought", "count": 1 }
+      ]
+    },
+    {
       "name": "crystal",
       "color": "73acaa",
       "components": [
@@ -178,6 +187,15 @@
       "components": [
         { "essentia": "ender", "count": 2 },
         { "essentia": "mineral", "count": 4 },
+        { "essentia": "rotten", "count": 2 }
+      ]
+    },
+    {
+      "name": "exanimate",
+      "color": "252909",
+      "components": [
+        { "admixture": "death", "count": 2 },
+        { "admixture": "motion", "count": 1 },
         { "essentia": "rotten", "count": 2 }
       ]
     },

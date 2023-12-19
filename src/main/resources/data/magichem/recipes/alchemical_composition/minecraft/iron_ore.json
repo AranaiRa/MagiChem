@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:raw_iron" },
+  "object": { "item": "minecraft:iron_ore" },
   "components": [
     { "item": "magichem:admixture_metal", "count": 6 },
     { "item": "magichem:admixture_stone", "count": 4 }

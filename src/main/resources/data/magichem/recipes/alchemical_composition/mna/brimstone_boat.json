@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:brimstone_boat" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 64 },
+    { "item": "magichem:admixture_travel", "count": 16 },
+    { "item": "magichem:admixture_protection", "count": 9 },
+    { "item": "magichem:admixture_instrument", "count": 3 },
+    { "item": "magichem:essentia_rubedo", "count": 3 }
+  ]
+}

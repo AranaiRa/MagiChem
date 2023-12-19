@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:faction_horn_demons" },
+  "components": [
+    { "item": "magichem:admixture_sound", "count": 24 },
+    { "item": "magichem:admixture_protection", "count": 18 },
+    { "item": "magichem:admixture_demon", "count": 12 },
+    { "item": "magichem:essentia_rubedo", "count": 7 }
+  ]
+}

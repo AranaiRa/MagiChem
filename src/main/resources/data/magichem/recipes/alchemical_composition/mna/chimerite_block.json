@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:chimerite_block" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 27 },
+    { "item": "magichem:admixture_change", "count": 18 },
+    { "item": "magichem:admixture_luck", "count": 9 },
+    { "item": "magichem:essentia_mineral", "count": 18 }
+  ]
+}

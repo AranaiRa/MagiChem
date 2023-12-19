@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
@@ -120,7 +121,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 14;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = CircleFabricationBlockEntity.SLOT_COUNT;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
@@ -137,6 +138,12 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;  // EMPTY_ITEM
             }
         } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
+            //Check for bottles
+            if (index >= TE_INVENTORY_FIRST_SLOT_INDEX + CircleFabricationBlockEntity.SLOT_OUTPUT_1 &&
+                    index <= TE_INVENTORY_FIRST_SLOT_INDEX + CircleFabricationBlockEntity.SLOT_OUTPUT_10) {
+                int bottlesAvailable = slots.get(CircleFabricationBlockEntity.SLOT_BOTTLES).getItem().getCount();
+            }
+
             // This is a TE slot so merge the stack into the players inventory
             if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:eldritch_orb" },
+  "components": [
+    { "item": "magichem:admixture_protection", "count": 11 },
+    { "item": "magichem:admixture_crystal", "count": 7 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:essentia_albedo", "count": 5 }
+  ]
+}

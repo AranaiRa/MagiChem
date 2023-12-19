@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:stone_rune_green" },
+  "components": [
+    { "item": "magichem:admixture_mana", "count": 1 },
+    { "item": "magichem:admixture_stone", "count": 1 }
+  ]
+}

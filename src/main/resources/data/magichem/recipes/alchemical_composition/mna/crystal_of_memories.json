@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "mna:crystal_of_memories" },
+  "components": [
+    { "item": "magichem:admixture_memory", "count": 11 },
+    { "item": "magichem:admixture_crystal", "count": 2 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:essentia_nigredo", "count": 4 }
+  ]
+}

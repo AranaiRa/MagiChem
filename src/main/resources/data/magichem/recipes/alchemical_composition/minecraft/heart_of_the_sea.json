@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": false,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:nether_star" },
+  "object": { "item": "minecraft:heart_of_the_sea" },
   "components": [
     { "item": "magichem:essentia_water", "count": 32 },
     { "item": "magichem:admixture_fey", "count": 10 },

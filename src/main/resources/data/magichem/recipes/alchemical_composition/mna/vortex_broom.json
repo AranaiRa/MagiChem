@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:vortex_broom" },
+  "components": [
+    { "item": "magichem:essentia_air", "count": 28 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_fey", "count": 1 },
+    { "item": "magichem:admixture_wizard", "count": 1 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

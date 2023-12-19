@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:animated_quill" },
+  "components": [
+    { "item": "magichem:admixture_thought", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_motion", "count": 1 },
+    { "item": "magichem:admixture_construct", "count": 1 }
+  ]
+}

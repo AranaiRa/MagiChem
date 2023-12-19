@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "mna:improvised_manaweaver_wand" },
+  "components": [
+    { "item": "magichem:admixture_mana", "count": 3 },
+    { "item": "magichem:admixture_sorcery", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

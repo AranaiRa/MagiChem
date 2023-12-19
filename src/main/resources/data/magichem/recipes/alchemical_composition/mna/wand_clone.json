@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:wand_clone" },
+  "components": [
+    { "item": "magichem:admixture_lies", "count": 16 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

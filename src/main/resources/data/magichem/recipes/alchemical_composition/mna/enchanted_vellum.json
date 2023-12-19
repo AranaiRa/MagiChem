@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:enchanted_vellum" },
+  "components": [
+    { "item": "magichem:admixture_sorcery", "count": 12 },
+    { "item": "magichem:admixture_thought", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_fleshy", "count": 4 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

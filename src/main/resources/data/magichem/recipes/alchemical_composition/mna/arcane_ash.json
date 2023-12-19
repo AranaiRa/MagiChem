@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "mna:arcane_ash" },
+  "components": [
+    { "item": "magichem:admixture_dust", "count": 2 },
+    { "item": "magichem:admixture_mana", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

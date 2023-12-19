@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:grimoire_demon" },
+  "components": [
+    { "item": "magichem:admixture_demon", "count": 3 }
+  ]
+}

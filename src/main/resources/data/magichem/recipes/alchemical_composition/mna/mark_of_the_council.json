@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:mark_of_the_council" },
+  "components": [
+    { "item": "magichem:admixture_wizard", "count": 3 },
+    { "item": "magichem:admixture_bargain", "count": 2 }
+  ]
+}

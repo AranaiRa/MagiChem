@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.25,
+  "object": { "item": "mna:healing_poultice" },
+  "components": [
+    { "item": "magichem:essentia_earth", "count": 8 },
+    { "item": "magichem:admixture_healing", "count": 1 },
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}
