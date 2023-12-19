@@ -2,11 +2,13 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.gui.element.ImageButtonFabricationRecipeSelector;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.aranaira.magichem.util.RenderUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -19,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,19 +62,27 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
     private void initializePowerLevelButtons(){
         b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 126, 12, 7, 232, 242, TEXTURE, button -> {
-            menu.blockEntity.incrementPowerLevel();
+            menu.blockEntity.incrementPowerUsageSetting();
+            Item recipeTarget = null;
+            if(menu.blockEntity.getCurrentRecipe() != null) {
+                recipeTarget = menu.blockEntity.getCurrentRecipe().getAlchemyObject().getItem();
+            }
             PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    menu.blockEntity.getCurrentRecipeTarget(),
-                    menu.blockEntity.getPowerLevel()
+                    recipeTarget,
+                    menu.blockEntity.getPowerUsageSetting()
             ));
         }));
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(180, 126, 12, 7, 244, 242, TEXTURE, button -> {
-            menu.blockEntity.decrementPowerLevel();
+            menu.blockEntity.decrementPowerUsageSetting();
+            Item recipeTarget = null;
+            if(menu.blockEntity.getCurrentRecipe() != null) {
+                recipeTarget = menu.blockEntity.getCurrentRecipe().getAlchemyObject().getItem();
+            }
             PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    menu.blockEntity.getCurrentRecipeTarget(),
-                    menu.blockEntity.getPowerLevel()
+                    recipeTarget,
+                    menu.blockEntity.getPowerUsageSetting()
             ));
         }));
     }
@@ -93,12 +104,12 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     public void setActiveRecipe(int index) {
         int trueIndex = recipeFilterRow*3 + index;
         if(trueIndex < filteredRecipes.size()) {
-            menu.blockEntity.setCurrentRecipeTarget(filteredRecipes.get(trueIndex));
             PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     filteredRecipes.get(trueIndex).getAlchemyObject().getItem(),
-                    menu.blockEntity.getPowerLevel()
+                    menu.blockEntity.getPowerUsageSetting()
             ));
+            menu.setInputSlotFilters(filteredRecipes.get(trueIndex));
         }
     }
 
@@ -133,11 +144,14 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
         renderProgressBar(poseStack, x + 55, y + 12);
 
-        RenderSystem.setShader(GameRenderer::getBlockShader);
+        //RenderSystem.setShader(GameRenderer::getBlockShader);
         renderSelectedRecipe(poseStack, x + 79, y + 79);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        //RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, TEXTURE);
         renderPowerLevelBar(poseStack, x + 182, y + 37);
+
+        renderSlotGhosts(poseStack);
     }
 
     private void renderButtons(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
@@ -164,17 +178,18 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     }
 
     private void renderPowerLevelBar(PoseStack poseStack, int x, int y) {
-        int powerLevel = menu.blockEntity.getPowerLevel();
+        int powerLevel = menu.blockEntity.getPowerUsageSetting();
 
         this.blit(poseStack, x, y + (30 - powerLevel), 84, 256 - powerLevel, 8, powerLevel);
     }
 
     private void renderSelectedRecipe(PoseStack poseStack, int x, int y) {
-        if(menu.blockEntity.getCurrentRecipeTarget() == null) {
+        if(menu.blockEntity.getCurrentRecipe() == null) {
             this.blit(poseStack, x, y, 66, 238, 18, 18);
         }
-        else
-            Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(new ItemStack(menu.blockEntity.getCurrentRecipeTarget()), x+1, y+1);
+        else {
+            Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(menu.blockEntity.getCurrentRecipe().getAlchemyObject(), x + 1, y + 1);
+        }
     }
 
     private void renderProgressBar(PoseStack poseStack, int x, int y) {
@@ -207,6 +222,23 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             recipeFilterBox.setSuggestion("");
 
         addRenderableWidget(recipeFilterBox);
+    }
+
+    private void renderSlotGhosts(PoseStack poseStack) {
+        int xOrigin = (width - PANEL_MAIN_W) / 2;
+        int yOrigin = (height - PANEL_MAIN_H) / 2;
+
+        if(menu.blockEntity.getCurrentRecipe() == null)
+            return;
+
+        AlchemicalCompositionRecipe acr = menu.blockEntity.getCurrentRecipe();
+
+        int slotGroup = 0;
+        for(ItemStack stack : acr.getComponentMateria()) {
+            RenderUtils.RenderGhostedItemStack(stack, xOrigin + 8, yOrigin + 8 + (18 * slotGroup), 0.25f);
+            RenderUtils.RenderGhostedItemStack(stack, xOrigin + 26, yOrigin + 8 + (18 * slotGroup), 0.25f);
+            slotGroup++;
+        }
     }
 
     private void renderRecipeOptions() {

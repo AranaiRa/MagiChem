@@ -7,6 +7,8 @@ import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
+import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,6 +19,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BottleItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,6 +31,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
 
     public final CircleFabricationBlockEntity blockEntity;
     private final Level level;
+    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[10];
 
     public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
@@ -58,33 +62,38 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 56, 67, true));
 
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_1, 8, -5));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_2, 26, -5));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_3, 8, 13));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_4, 26, 13));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_5, 8, 31));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_6, 26, 31));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_7, 8, 49));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_8, 26, 49));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_9, 8, 67));
-            this.addSlot(new OnlyMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_INPUT_10, 26, 67));
+            for(int i=CircleFabricationBlockEntity.SLOT_INPUT_START;
+            i < CircleFabricationBlockEntity.SLOT_INPUT_START + CircleFabricationBlockEntity.SLOT_INPUT_COUNT; i++) {
+                int shiftedSlot = i - CircleFabricationBlockEntity.SLOT_INPUT_START;
+                OnlyMateriaInputSlot slot = new OnlyMateriaInputSlot(handler, i, 8 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2)));
+                inputSlots[shiftedSlot] = slot;
+                this.addSlot(slot);
+            }
 
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_1, 134, -5));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_2, 152, -5));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_3, 134, 13));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_4, 152, 13));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_5, 134, 31));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_6, 152, 31));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_7, 134, 49));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_8, 152, 49));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_9, 134, 67));
-            this.addSlot(new NoMateriaInputSlot(handler, CircleFabricationBlockEntity.SLOT_OUTPUT_10, 152, 67));
+            for(int i=CircleFabricationBlockEntity.SLOT_OUTPUT_START;
+                i < CircleFabricationBlockEntity.SLOT_OUTPUT_START + CircleFabricationBlockEntity.SLOT_OUTPUT_COUNT; i++) {
+                int shiftedSlot = i - CircleFabricationBlockEntity.SLOT_OUTPUT_START;
+                this.addSlot(new OnlyMateriaInputSlot(handler, i, 134 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
+            }
+
+            setInputSlotFilters(blockEntity.getCurrentRecipe());
         });
     }
 
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.CIRCLE_FABRICATION.get());
+    }
+
+    public void setInputSlotFilters(AlchemicalCompositionRecipe newRecipe) {
+        if(newRecipe != null) {
+            int slotSet = 0;
+            for (ItemStack stack : newRecipe.getComponentMateria()) {
+                inputSlots[(slotSet * 2)].setSlotFilter((MateriaItem) stack.getItem());
+                inputSlots[(slotSet * 2) + 1].setSlotFilter((MateriaItem) stack.getItem());
+                slotSet++;
+            }
+        }
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
@@ -139,8 +148,8 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
             }
         } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
             //Check for bottles
-            if (index >= TE_INVENTORY_FIRST_SLOT_INDEX + CircleFabricationBlockEntity.SLOT_OUTPUT_1 &&
-                    index <= TE_INVENTORY_FIRST_SLOT_INDEX + CircleFabricationBlockEntity.SLOT_OUTPUT_10) {
+            if (index >= TE_INVENTORY_FIRST_SLOT_INDEX + CircleFabricationBlockEntity.SLOT_OUTPUT_START &&
+                    index < TE_INVENTORY_FIRST_SLOT_INDEX + CircleFabricationBlockEntity.SLOT_OUTPUT_START + CircleFabricationBlockEntity.SLOT_OUTPUT_COUNT) {
                 int bottlesAvailable = slots.get(CircleFabricationBlockEntity.SLOT_BOTTLES).getItem().getCount();
             }
 

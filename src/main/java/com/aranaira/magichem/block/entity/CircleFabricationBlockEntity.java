@@ -3,21 +3,19 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
-import com.aranaira.magichem.networking.FabricationSyncDataS2CPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
-import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.mna.tools.math.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -27,6 +25,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,19 +39,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CircleFabricationBlockEntity extends BlockEntity implements MenuProvider {
     public static final int
             SLOT_COUNT = 21,
             SLOT_BOTTLES = 0,
-            SLOT_INPUT_1 = 1, SLOT_INPUT_2 = 2, SLOT_INPUT_3 = 3, SLOT_INPUT_4 = 4, SLOT_INPUT_5 = 5,
-            SLOT_INPUT_6 = 6, SLOT_INPUT_7 = 7, SLOT_INPUT_8 = 8, SLOT_INPUT_9 = 9, SLOT_INPUT_10 = 10,
-            SLOT_OUTPUT_1 = 11, SLOT_OUTPUT_2 = 12, SLOT_OUTPUT_3 = 13, SLOT_OUTPUT_4 = 14, SLOT_OUTPUT_5 = 15,
-            SLOT_OUTPUT_6 = 16, SLOT_OUTPUT_7 = 17, SLOT_OUTPUT_8 = 18, SLOT_OUTPUT_9 = 19, SLOT_OUTPUT_10 = 20,
+            SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
+            SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10,
             PROGRESS_BAR_WIDTH = 66, PROGRESS_BAR_HEIGHT = 57;
 
     private static final int[] POWER_DRAW = { //TODO: Convert this to config
@@ -67,6 +62,15 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             19, 15, 12, 9, 7, 5, 4, 3, 2, 1
     };
 
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+
+    private int
+            craftingProgress = 0,
+            powerUsageSetting = 1;
+    private AlchemicalCompositionRecipe currentRecipe;
+    private String currentRecipeID = "";
+
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -76,103 +80,28 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
     public CircleFabricationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.CIRCLE_FABRICATION_BE.get(), pos, state);
-        this.data = new ContainerData() {
-            @Override
-            public int get(int index) {
-                return switch (index) {
-                    case 0 -> CircleFabricationBlockEntity.this.craftingProgress;
-                    default -> 0;
-                };
-            }
-
-            @Override
-            public void set(int index, int value) {
-                switch (index) {
-                    case 0 -> CircleFabricationBlockEntity.this.craftingProgress = value;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return SLOT_COUNT;
-            }
-        };
     }
 
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    public void setCurrentRecipeByOutput(Item item) {
+        currentRecipe = null;
+        currentRecipeID = "";
+        level.getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE).stream().filter(
+                acr -> acr.getAlchemyObject().getItem() == item).findFirst().ifPresent(filteredACR -> {
+                    currentRecipe = filteredACR;
+                    currentRecipeID = filteredACR.getId().toString();
+        });
+    }
 
-    protected final ContainerData data;
-    private int
-            craftingProgress = 0,
-            powerLevel = 1;
-    private boolean isStalled = false;
-    private Item currentRecipe;
-    private AlchemicalCompositionRecipe currentRecipeData;
+    private void setCurrentRecipeByRecipeID() {
+        currentRecipe = (AlchemicalCompositionRecipe) level.getRecipeManager().byKey(new ResourceLocation(currentRecipeID)).orElse(null);
+    }
 
-    public void setCurrentRecipeTarget(Item item) {
-        List<AlchemicalCompositionRecipe> allACRs = level.getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
-        AlchemicalCompositionRecipe targetRecipe = null;
-        for(AlchemicalCompositionRecipe acr : allACRs) {
-            if(acr.getAlchemyObject().getItem() == item) {
-                targetRecipe = acr;
-                break;
-            }
+    @Nullable
+    public AlchemicalCompositionRecipe getCurrentRecipe() {
+        if(currentRecipe == null) {
+            setCurrentRecipeByRecipeID();
         }
-
-        if(targetRecipe != null) {
-            setCurrentRecipeTarget(targetRecipe);
-        } else {
-            MagiChemMod.LOGGER.warn("Alchemical Composition recipe for ["+item+"] couldn't be found.");
-        }
-    }
-
-    public void setCurrentRecipeTarget(AlchemicalCompositionRecipe acr) {
-        this.currentRecipe = acr.getAlchemyObject().getItem();
-        this.currentRecipeData = acr;
-        //MagiChemMod.LOGGER.debug("current recipe is now "+currentRecipe);
-        this.saveAdditional(this.getUpdateTag());
-    }
-
-    public Item getCurrentRecipeTarget() {
         return currentRecipe;
-    }
-
-    public AlchemicalCompositionRecipe getCurrentRecipeData() {
-        if(currentRecipeData != null && currentRecipeData.getAlchemyObject().getItem() == currentRecipe){
-            return currentRecipeData;
-        }
-        else {
-            List<AlchemicalCompositionRecipe> allACRs = getAllRecipesSorted();
-            for(AlchemicalCompositionRecipe acr : allACRs) {
-                if(acr.getAlchemyObject().getItem() == currentRecipe)
-                    currentRecipeData = acr;
-                    return acr;
-            }
-        }
-        return null;
-    }
-
-    private static List<AlchemicalCompositionRecipe> allRecipesSorted = new ArrayList<>();
-
-    @NotNull
-    private List<AlchemicalCompositionRecipe> getAllRecipesSorted() {
-        if(allRecipesSorted.size() > 0) {
-            return allRecipesSorted;
-        } else {
-            List<AlchemicalCompositionRecipe> allACRs = level.getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
-            HashMap<String, AlchemicalCompositionRecipe> sorter = new HashMap<>();
-
-            for (AlchemicalCompositionRecipe acr : allACRs) {
-                sorter.put(acr.getId().getNamespace() + ":" + acr.getAlchemyObject().getItem(), acr);
-            }
-
-            for(String key : sorter.keySet()) {
-
-            }
-
-            return allRecipesSorted;
-        }
     }
 
     @Override
@@ -183,13 +112,6 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        if(!player.level.isClientSide()) {
-            PacketRegistry.sendToPlayer(new FabricationSyncDataS2CPacket(
-                    getBlockPos(),
-                    getCurrentRecipeTarget(),
-                    getPowerLevel()
-            ), (ServerPlayer) player);
-        }
         return new CircleFabricationMenu(id, inventory, this);
     }
 
@@ -221,16 +143,14 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.put("circle_fabrication.inventory", itemHandler.serializeNBT());
-        nbt.putInt("circle_fabrication.progress", this.craftingProgress);
-        nbt.putInt("circle_fabrication.powerLevel", this.powerLevel);
-        nbt.putInt("circle_fabrication.energy", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("craftingProgress", this.craftingProgress);
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
+        nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
 
-        //MagiChemMod.LOGGER.debug("&&&& "+currentRecipe+" is trying to be ["+ForgeRegistries.ITEMS.getKey(currentRecipe).getNamespace()+":"+currentRecipe+"]");
+        if(currentRecipeID != null)
+            nbt.putString("currentRecipe", this.currentRecipeID);
 
-        nbt.putString("circle_fabrication.recipe", ForgeRegistries.ITEMS.getKey(currentRecipe).getNamespace()+":"+currentRecipe);
-
-        //MagiChemMod.LOGGER.debug("&&&& "+(level.isClientSide() ? "CLIENT" : "SERVER")+" NBT save-state...... Recipe=["+nbt.getString("circle_fabrication.recipe")+"], pl=["+nbt.getInt("circle_fabrication.powerLevel")+"]");
         super.saveAdditional(nbt);
     }
 
@@ -238,22 +158,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     public void load(CompoundTag nbt) {
         super.load(nbt);
 
-        if(!level.isClientSide()) {
-            //MagiChemMod.LOGGER.debug("&&&& " + (level.isClientSide() ? "CLIENT" : "SERVER") + " NBT pre-state...... Recipe=[" + currentRecipe + "], pl=[" + powerLevel + "]");
-
-            itemHandler.deserializeNBT(nbt.getCompound("circle_fabrication.inventory"));
-            craftingProgress = nbt.getInt("circle_fabrication.progress");
-            powerLevel = nbt.getInt("circle_fabrication.powerLevel");
-            ENERGY_STORAGE.setEnergy(nbt.getInt("circle_fabrication.energy"));
-
-            //MagiChemMod.LOGGER.debug("&&&& " + (level.isClientSide() ? "CLIENT" : "SERVER") + " trying to load [" + nbt.getString("circle_fabrication.recipe") + "], pl @ [" + nbt.getInt("circle_fabrication.powerLevel") + "]");
-
-            currentRecipe = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("circle_fabrication.recipe")));
-
-            //MagiChemMod.LOGGER.debug("&&&& " + (level.isClientSide() ? "CLIENT" : "SERVER") + " NBT post-state...... Recipe=[" + currentRecipe + "], pl=[" + powerLevel + "]");
-
-            this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-        }
+        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        craftingProgress = nbt.getInt("craftingProgress");
+        powerUsageSetting = nbt.getInt("powerUsageSetting");
+        ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
+        currentRecipeID = nbt.getString("currentRecipe");
     }
 
     public static int getScaledProgress(CircleFabricationBlockEntity entity) {
@@ -274,10 +183,8 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CircleFabricationBlockEntity entity) {
-        boolean isClientSide = level.isClientSide();
-        AlchemicalCompositionRecipe recipe = entity.getCurrentRecipeData();
-        if(entity.ENERGY_STORAGE.getEnergyStored() >= entity.getPowerDraw() || isClientSide) {
-            //if(!isClientSide && canCraftItem(entity, recipe)) {
+        AlchemicalCompositionRecipe recipe = entity.getCurrentRecipe();
+        if(entity.ENERGY_STORAGE.getEnergyStored() >= entity.getPowerDraw() || level.isClientSide()) {
             if(canCraftItem(entity, recipe)) {
                 entity.ENERGY_STORAGE.extractEnergy(entity.getPowerDraw(), false);
                 entity.incrementProgress();
@@ -285,7 +192,6 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             else {
                 entity.resetProgress();
             }
-
 
             if(entity.getCraftingProgress() > entity.getOperationTicks()) {
                 craftItem(entity, recipe);
@@ -303,19 +209,28 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     @Override
     public void handleUpdateTag(CompoundTag tag) {
         //When the game is already running, client side
-        currentRecipe = ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("currentRecipe")));
-        powerLevel = tag.getInt("powerLevel");
+        if(currentRecipeID != tag.getString("currentRecipe")) {
+            currentRecipeID = tag.getString("currentRecipe");
+            currentRecipe = null;
+        }
+        powerUsageSetting = tag.getInt("powerUsageSetting");
         craftingProgress = tag.getInt("craftingProgress");
         ENERGY_STORAGE.setEnergy(tag.getInt("storedPower"));
         super.handleUpdateTag(tag);
     }
 
     @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        handleUpdateTag(pkt.getTag());
+        super.onDataPacket(net, pkt);
+    }
+
+    @Override
     public CompoundTag getUpdateTag() {
         //Create a compound tag and stuff all the info in it I need on the client side, server side
         CompoundTag data = new CompoundTag();
-        data.putString("currentRecipe", ForgeRegistries.ITEMS.getKey(currentRecipe).toString());
-        data.putInt("powerLevel", powerLevel);
+        data.putString("currentRecipe", currentRecipeID);
+        data.putInt("powerUsageSetting", powerUsageSetting);
         data.putInt("craftingProgress", craftingProgress);
         data.putInt("storedPower", ENERGY_STORAGE.getEnergyStored());
         return data;
@@ -329,49 +244,47 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     private static boolean canCraftItem(CircleFabricationBlockEntity entity, AlchemicalCompositionRecipe recipe){
-        if(recipe != null) {
-            int bottlesToInsert = 0;
-            for (ItemStack is : recipe.getComponentMateria()) {
-                bottlesToInsert += is.getCount();
-            }
+        if(recipe == null) {
+            return false;
+        }
 
-            HashMap<Item, Boolean> inputItemsAvailable = new HashMap<>();
-            for (ItemStack materia : recipe.getComponentMateria()) {
-                int remaining = materia.getCount();
-                boolean result = false;
+        SimpleContainer outputSlots = getOutputAsContainer(entity, SLOT_OUTPUT_COUNT);
 
-                for (int i = SLOT_INPUT_1; i <= SLOT_INPUT_10; i++) {
-                    if (entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
-                        remaining -= entity.itemHandler.getStackInSlot(i).getCount();
+        //If the output slots can't absorb the output item, don't bother checking anything else
+        if(!outputSlots.canAddItem(recipe.getAlchemyObject())) return false;
 
-                        if (remaining <= 0) {
-                            result = true;
-                            break;
-                        }
+        int bottlesToInsert = 0;
+        for (ItemStack is : recipe.getComponentMateria()) {
+            bottlesToInsert += is.getCount();
+        }
+
+        //If there's not enough space for the bottles to go, don't craft
+        if(entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount() + bottlesToInsert > 64)
+            return false;
+
+        List<Item> inputItemsAvailable = new ArrayList<>();
+        for (ItemStack materia : recipe.getComponentMateria()) {
+            int remaining = materia.getCount();
+
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
+                    remaining -= entity.itemHandler.getStackInSlot(i).getCount();
+
+                    if (remaining <= 0) {
+                        break;
                     }
                 }
-
-                inputItemsAvailable.put(materia.getItem(), result);
             }
 
-            //Comparisons
-            boolean inventoryCheck = true;
-            for (Item key : inputItemsAvailable.keySet())
-                inventoryCheck &= inputItemsAvailable.get(key);
 
-            //MagiChemMod.LOGGER.debug(
-            //        "DATALOG\n...bottlesToInsert=" + bottlesToInsert +
-            //                "\n...inventoryCheck=" + inventoryCheck +
-            //                "\n...recipe=" + recipe.getAlchemyObject() +
-            //                "\n...components=" + recipe.getComponentMateria());
+            //If any of the ingredients are insufficient there's no reason to check more stuff
+            if(remaining > 0) return false;
 
-            if (inventoryCheck) {
-                if (entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount() + bottlesToInsert <= 64) {
-                    return true;
-                }
-            }
+            inputItemsAvailable.add(materia.getItem());
         }
-        return false;
+
+        //Nothing else hit a point of failure, so we must be good to craft
+        return true;
     }
 
     private static void craftItem(CircleFabricationBlockEntity entity, AlchemicalCompositionRecipe recipe) {
@@ -380,14 +293,13 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             bottlesToInsert += is.getCount();
         }
 
-        //Fill bottle slot
-        Item bottle = ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:glass_bottle")).asItem();
-        entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(bottle, bottlesToInsert), false);
+        //Fill Bottle Slot
+        entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
 
-        //Consume materia
+        //Consume Materia
         for(ItemStack materia : recipe.getComponentMateria()) {
             int remaining = materia.getCount();
-            for(int i=SLOT_INPUT_10; i>=SLOT_INPUT_1; i--) {
+            for(int i=SLOT_INPUT_START + SLOT_INPUT_COUNT - 1; i >= SLOT_INPUT_START; i--) {
                 if(entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
                     remaining = remaining - entity.itemHandler.extractItem(i, remaining, false).getCount();
                     if (remaining == 0)
@@ -396,32 +308,28 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             }
         }
 
-        SimpleContainer insert = new SimpleContainer(10);
-        int j = 0;
-        //Add output item
-        for(int i=SLOT_OUTPUT_1; i<=SLOT_OUTPUT_10; i++) {
-            insert.setItem(j, entity.itemHandler.getStackInSlot(i));
-            j++;
-        }
-
+        SimpleContainer insert = getOutputAsContainer(entity, 10);
         insert.addItem(recipe.getAlchemyObject());
-        j = 0;
-        for(int i=SLOT_OUTPUT_1; i<=SLOT_OUTPUT_10; i++) {
-            entity.itemHandler.setStackInSlot(i, insert.getItem(j));
-            j++;
+        replaceOutputSlotsWithContainer(entity, insert);
+    }
+
+    private static void replaceOutputSlotsWithContainer(CircleFabricationBlockEntity entity, SimpleContainer insert) {
+        int slotID = 0;
+        for(int i=SLOT_OUTPUT_START; i < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT; i++) {
+            entity.itemHandler.setStackInSlot(i, insert.getItem(slotID));
+            slotID++;
         }
     }
 
-    private static int nextInputSlotWithItem(CircleFabricationBlockEntity entity) {
-        //Select items bottom-first
-        if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_3).isEmpty())
-            return SLOT_INPUT_3;
-        else if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_2).isEmpty())
-            return SLOT_INPUT_2;
-        else if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_1).isEmpty())
-            return SLOT_INPUT_1;
-        else
-            return -1;
+    @NotNull
+    private static SimpleContainer getOutputAsContainer(CircleFabricationBlockEntity entity, int i2) {
+        SimpleContainer insert = new SimpleContainer(i2);
+        int slotID = 0;
+        //Add output item
+        for (int i = SLOT_OUTPUT_START; i < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT; i++) {
+            insert.setItem(slotID++, entity.itemHandler.getStackInSlot(i));
+        }
+        return insert;
     }
 
     private void resetProgress() {
@@ -432,47 +340,44 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         this.craftingProgress++;
     }
 
-    public int getPowerLevel() {
-        return powerLevel;
+    public int getPowerUsageSetting() {
+        return powerUsageSetting;
     }
 
     public int getPowerDraw() {
-        return POWER_DRAW[MathUtils.clamp(powerLevel, 1, 30)-1];
+        return POWER_DRAW[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
     }
 
     public int getOperationTicks() {
-        return OPERATION_TICKS[MathUtils.clamp(powerLevel, 1, 30)-1];
+        return OPERATION_TICKS[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
     }
 
-    public int setPowerLevel(int powerLevel) {
-        this.powerLevel = powerLevel;
+    public int setPowerUsageSetting(int pPowerUsageSetting) {
+        this.powerUsageSetting = pPowerUsageSetting;
         this.resetProgress();
-        this.saveAdditional(this.getUpdateTag());
         if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
             ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
-        return this.powerLevel;
+        return this.powerUsageSetting;
     }
 
-    public int incrementPowerLevel() {
-        if(powerLevel + 1 < 31) {
-            this.powerLevel++;
+    public int incrementPowerUsageSetting() {
+        if(powerUsageSetting + 1 < 31) {
+            this.powerUsageSetting++;
             this.resetProgress();
-            this.saveAdditional(this.getUpdateTag());
             if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
                 ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
         }
-        return this.powerLevel;
+        return this.powerUsageSetting;
     }
 
-    public int decrementPowerLevel() {
-        if(powerLevel - 1 > 0) {
-            this.powerLevel--;
+    public int decrementPowerUsageSetting() {
+        if(powerUsageSetting - 1 > 0) {
+            this.powerUsageSetting--;
             this.resetProgress();
-            this.saveAdditional(this.getUpdateTag());
             if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
                 ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
         }
-        return this.powerLevel;
+        return this.powerUsageSetting;
     }
 
     private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {

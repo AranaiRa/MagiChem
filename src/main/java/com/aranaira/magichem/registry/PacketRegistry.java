@@ -2,7 +2,6 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
-import com.aranaira.magichem.networking.FabricationSyncDataS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -33,12 +32,6 @@ public class PacketRegistry {
                 .decoder(FabricationSyncDataC2SPacket::new)
                 .encoder(FabricationSyncDataC2SPacket::toBytes)
                 .consumerMainThread(FabricationSyncDataC2SPacket::handle)
-                .add();
-
-        net.messageBuilder(FabricationSyncDataS2CPacket.class, ID(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(FabricationSyncDataS2CPacket::new)
-                .encoder(FabricationSyncDataS2CPacket::toBytes)
-                .consumerMainThread(FabricationSyncDataS2CPacket::handle)
                 .add();
     }
 
