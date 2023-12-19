@@ -46,15 +46,15 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_2_REAGENT = BUILDER
             .comment("How much FE/tick the Circle of Power generates when it has two reagents")
-            .defineInRange("circlePowerGen2", 12, 2, Integer.MAX_VALUE);
+            .defineInRange("circlePowerGen2", 36, 2, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_3_REAGENT = BUILDER
             .comment("How much FE/tick the Circle of Power generates when it has three reagents")
-            .defineInRange("circlePowerGen3", 48, 3, Integer.MAX_VALUE);
+            .defineInRange("circlePowerGen3", 432, 3, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_4_REAGENT = BUILDER
             .comment("How much FE/tick the Circle of Power generates when it has all four reagents")
-            .defineInRange("circlePowerGen4", 200, 4, Integer.MAX_VALUE);
+            .defineInRange("circlePowerGen4", 5184, 4, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_BUFFER = BUILDER
             .comment("How many ticks of activity the Circle of Power stores at once")

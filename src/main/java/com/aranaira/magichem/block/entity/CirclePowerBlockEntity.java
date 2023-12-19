@@ -81,9 +81,9 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             progressReagentTier2 = 0,
             progressReagentTier3 = 0,
             progressReagentTier4 = 0;
-    private static int
-            maxProgressReagentTier1 = 1280,
-            maxProgressReagentTier2 = 1280,
+    private static final int
+            maxProgressReagentTier1 = 640,
+            maxProgressReagentTier2 = 2160,
             maxProgressReagentTier3 = 1280,
             maxProgressReagentTier4 = 1280;
 
@@ -265,11 +265,18 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         switch(reagentCount) {
             case 1: {
                 int cap = Config.circlePowerGen1Reagent * Config.circlePowerBuffer;
-                if(currentEnergy < cap) {
+                if (currentEnergy < cap) {
                     int mod = currentEnergy + Config.circlePowerGen1Reagent;
+                    if (currentEnergy > cap) mod = cap - currentEnergy;
+                    int insert = entity.ENERGY_STORAGE.receiveEnergy(mod, false);
+                }
+            }
+            case 2: {
+                int cap = Config.circlePowerGen2Reagent * Config.circlePowerBuffer;
+                if(currentEnergy < cap) {
+                    int mod = currentEnergy + Config.circlePowerGen2Reagent;
                     if(currentEnergy > cap) mod = cap - currentEnergy;
                     int insert = entity.ENERGY_STORAGE.receiveEnergy(mod,false);
-                    //int insert = entity.ENERGY_STORAGE.setEnergy(ENERGY_GEN_1_REAGENT);
                 }
             }
         }

@@ -46,7 +46,15 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, 1, 62, 32));
+            this.addSlot(new SlotItemHandler(handler, 1, 62, 32) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    if(stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get())
+                        return true;
+                    else
+                        return false;
+                }
+            });
             this.addSlot(new SlotItemHandler(handler, 2, 98, 32));
             this.addSlot(new SlotItemHandler(handler, 3, 134, 32));
         });
