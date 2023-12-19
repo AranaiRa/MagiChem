@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "mna:ritual_focus_minor" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_sorcery", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

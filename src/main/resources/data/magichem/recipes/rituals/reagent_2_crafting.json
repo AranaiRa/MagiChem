@@ -30,9 +30,9 @@
 		"    C    ",
 		"   EIE   ",
 		"  N C S  ",
-		" E  C  E ",
-		" M  A  M ",
-		" E  C  E ",
+		" E  A  E ",
+		" M  C  M ",
+		" E  A  E ",
 		"  S C N  ",
 		"   EIE   ",
 		"    C    "
@@ -47,7 +47,7 @@
 		},
 		"A":
 		{ 
-			"item": "minecraft:amethyst_block",
+			"item": "minecraft:amethyst_shard",
 			"optional": false,
 			"consume": true
 		},

@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:runescribing_recipe_paper" },
+  "components": [
+    { "item": "magichem:admixture_thought", "count": 3 },
+    { "item": "magichem:admixture_metal", "count": 1 }
+  ]
+}

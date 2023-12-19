@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:thaumaturgic_link" },
+  "components": [
+    { "item": "magichem:admixture_travel", "count": 3 },
+    { "item": "magichem:admixture_memory", "count": 1 }
+  ]
+}

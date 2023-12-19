@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:mithions_magnificent_mbag" },
+  "components": [
+    { "item": "magichem:admixture_vessel", "count": 64 },
+    { "item": "magichem:admixture_sorcery", "count": 13 },
+    { "item": "magichem:admixture_instrument", "count": 8 },
+    { "item": "magichem:admixture_legend", "count": 6 },
+    { "item": "magichem:essentia_citrinitas", "count": 16 }
+  ]
+}

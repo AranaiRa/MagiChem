@@ -246,6 +246,16 @@
       ]
     },
     {
+      "name": "history",
+      "color": "8f7f73",
+      "components": [
+        { "admixture": "permanence", "count": 7 },
+        { "admixture": "memory", "count": 4 },
+        { "admixture": "lies", "count": 4 },
+        { "essentia": "conceptual", "count": 4 }
+      ]
+    },
+    {
       "name": "industry",
       "color": "30326e",
       "components": [
@@ -262,6 +272,17 @@
         { "essentia": "wrought", "count": 2 },
         { "admixture": "thought", "count": 1 },
         { "admixture": "permanence", "count": 1 }
+      ]
+    },
+    {
+      "name": "legend",
+      "color": "a2882d",
+      "components": [
+        { "admixture": "history", "count": 48 },
+        { "admixture": "luck", "count": 36 },
+        { "admixture": "sorcery", "count": 24 },
+        { "admixture": "realm", "count": 12 },
+        { "essentia": "precious", "count": 42 }
       ]
     },
     {
@@ -371,6 +392,17 @@
         { "admixture": "breath", "count": 1 },
         { "admixture": "permanence", "count": 1 },
         { "essentia": "wrought", "count": 2 }
+      ]
+    },
+    {
+      "name": "realm",
+      "color": "387293",
+      "components": [
+        { "essentia": "earth", "count": 4 },
+        { "essentia": "water", "count": 4 },
+        { "essentia": "air", "count": 4 },
+        { "essentia": "fire", "count": 4 },
+        { "essentia": "verdant", "count": 8 }
       ]
     },
     {
