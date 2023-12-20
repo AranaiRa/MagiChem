@@ -37,7 +37,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 26, 32) {
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_1, 26, 32) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.SILVER_DUST.get())
@@ -46,7 +46,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, 1, 62, 32) {
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_2, 62, 32) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get())
@@ -55,8 +55,18 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, 2, 98, 32));
-            this.addSlot(new SlotItemHandler(handler, 3, 134, 32));
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_3, 98, 32) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+            });
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_4, 134, 32) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+            });
         });
 
         addDataSlots(data);

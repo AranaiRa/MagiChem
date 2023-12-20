@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.WarpedCatalystItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,8 +31,8 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
-            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<WarpedCatalystItem> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
+            () -> new WarpedCatalystItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
     public static final RegistryObject<Item> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",

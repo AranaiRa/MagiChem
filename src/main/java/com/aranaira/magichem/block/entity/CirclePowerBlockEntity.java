@@ -33,8 +33,20 @@ import org.jetbrains.annotations.Nullable;
 
 public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider {
     public static final String REGISTRY_NAME = "circle_power";
+    public static final int
+        SLOT_REAGENT_1 = 0, SLOT_REAGENT_2 = 1, SLOT_REAGENT_3 = 2, SLOT_REAGENT_4 = 3;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return switch(slot) {
+                case SLOT_REAGENT_1 -> stack.getItem() == ItemRegistry.SILVER_DUST.get();
+                case SLOT_REAGENT_2 -> stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get();
+                case SLOT_REAGENT_3, SLOT_REAGENT_4 -> false;
+                default -> super.isItemValid(slot, stack);
+            };
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -87,9 +99,11 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             maxProgressReagentTier3 = 1280,
             maxProgressReagentTier4 = 1280;
 
-    public static final RegistryObject<Item>
-            REAGENT_TIER1 =  ItemRegistry.SILVER_DUST,
-            WASTE_TIER1 =  ItemRegistry.TARNISHED_SILVER_LUMP;
+    public static final Item
+            REAGENT_TIER1 =  ItemRegistry.SILVER_DUST.get(),
+            REAGENT_TIER2 =  ItemRegistry.FOCUSING_CATALYST.get(),
+            WASTE_TIER1 =  ItemRegistry.TARNISHED_SILVER_LUMP.get(),
+            WASTE_TIER2 =  ItemRegistry.WARPED_FOCUSING_CATALYST.get();
 
     @Override
     public Component getDisplayName() {
@@ -158,7 +172,8 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         }
 
         //Make sure we don't void reagents entirely if the block is broken; always drop waste of a currently "burning" reagent
-        if(progressReagentTier1 > 0) inventory.addItem(new ItemStack(WASTE_TIER1.get(), 1));
+        if(progressReagentTier1 > 0) inventory.addItem(new ItemStack(WASTE_TIER1, 1));
+        if(progressReagentTier2 > 0) inventory.addItem(new ItemStack(WASTE_TIER2, 1));
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
@@ -168,18 +183,24 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             return;
         }
 
-        if(hasReagent(1, entity) || entity.progressReagentTier1 > 0) {
+        for(int tier=1; tier<=2; tier++) {
+            processReagent(level, pos, state, entity, tier);
+        }
+
+        generatePower(entity);
+    }
+
+    private static void processReagent(Level level, BlockPos pos, BlockState state, CirclePowerBlockEntity entity, int tier) {
+        if(hasReagent(tier, entity) || getProgressByTier(entity, tier) > 0) {
             entity.incrementProgress(1);
             setChanged(level, pos, state);
 
-            if(entity.progressReagentTier1 >= entity.maxProgressReagentTier1) {
+            if(getProgressByTier(entity, tier) >= getMaxProgressByTier(tier)) {
                 ejectWaste(1, level, entity);
                 entity.resetProgress(1);
             }
             setChanged(level, pos, state);
         }
-
-        generatePower(entity);
     }
 
     /* GENERATOR REAGENT USE LOGIC */
@@ -189,7 +210,10 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
 
         switch (tier) {
             case 1: {
-                wasteProduct = new ItemStack(WASTE_TIER1.get(), 1);
+                wasteProduct = new ItemStack(WASTE_TIER1, 1);
+            }
+            case 2: {
+                wasteProduct = new ItemStack(WASTE_TIER2, 1);
             }
         }
 
@@ -223,6 +247,16 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         }
     }
 
+    public static int getProgressByTier(CirclePowerBlockEntity entity, int tier) {
+        switch (tier) {
+            case 1: return entity.progressReagentTier1;
+            case 2: return entity.progressReagentTier2;
+            case 3: return entity.progressReagentTier3;
+            case 4: return entity.progressReagentTier4;
+            default: return -1;
+        }
+    }
+
     private static boolean hasReagent(int reagentTier, CirclePowerBlockEntity entity) {
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i=0; i<entity.itemHandler.getSlots(); i++) {
@@ -233,11 +267,19 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
 
         switch(reagentTier) {
             case 1: {
-                query = entity.itemHandler.getStackInSlot(0).getItem() == REAGENT_TIER1.get();
+                query = entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == REAGENT_TIER1;
                 //Consume the reagent if we don't have an existing one "burning"
-                if(query && entity.progressReagentTier1 == 0) {
-                    entity.itemHandler.getStackInSlot(0).setCount(0);
+                if(query && getProgressByTier(entity, 1) == 0) {
+                    entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).setCount(0);
                     entity.incrementProgress(1);
+                }
+            }
+            case 2: {
+                query = entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == REAGENT_TIER2;
+                //Consume the reagent if we don't have an existing one "burning"
+                if(query && getProgressByTier(entity, 2) == 0) {
+                    entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).setCount(0);
+                    entity.incrementProgress(2);
                 }
             }
         }

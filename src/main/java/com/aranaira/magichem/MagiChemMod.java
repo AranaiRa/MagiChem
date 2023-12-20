@@ -4,9 +4,11 @@ import com.aranaira.magichem.gui.CircleFabricationScreen;
 import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.gui.AlembicScreen;
 import com.aranaira.magichem.gui.CirclePowerScreen;
+import com.mna.api.guidebook.RegisterGuidebooksEvent;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -66,6 +68,12 @@ public class MagiChemMod
         });
 
         PacketRegistry.register();
+    }
+
+    @SubscribeEvent
+    public void onRegisterGuidebooks(RegisterGuidebooksEvent event) {
+        event.getRegistry().addGuidebookPath(new ResourceLocation(MODID, "guide/guidebook"));
+        LOGGER.debug("&&&& Hello from guidebook registry!");
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
