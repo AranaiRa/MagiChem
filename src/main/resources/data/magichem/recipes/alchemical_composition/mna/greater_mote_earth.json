@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "mna:greater_mote_earth" },
+  "components": [
+    { "item": "magichem:essentia_earth", "count": 64 },
+    { "item": "magichem:admixture_mana", "count": 34 },
+    { "item": "magichem:admixture_energy", "count": 28 },
+    { "item": "magichem:admixture_sorcery", "count": 11 },
+    { "item": "magichem:essentia_citrinitas", "count": 2 }
+  ]
+}

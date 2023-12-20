@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:patch_void" },
+  "components": [
+    { "item": "magichem:essentia_ender", "count": 12 },
+    { "item": "magichem:admixture_destruction", "count": 14 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_nigredo", "count": 2 }
+  ]
+}

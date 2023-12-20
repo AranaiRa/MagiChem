@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:mana_coffee" },
+  "components": [
+    { "item": "magichem:admixture_mana", "count": 3 },
+    { "item": "magichem:admixture_stone", "count": 2 },
+    { "item": "magichem:admixture_healing", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

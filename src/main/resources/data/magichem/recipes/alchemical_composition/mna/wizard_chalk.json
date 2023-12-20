@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "mna:wizard_chalk" },
+  "components": [
+    { "item": "magichem:admixture_wizard", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

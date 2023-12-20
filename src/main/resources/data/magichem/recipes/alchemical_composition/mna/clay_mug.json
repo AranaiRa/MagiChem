@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:clay_mug" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 2 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

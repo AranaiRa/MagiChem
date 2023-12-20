@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:fluid_jug_infinite_water" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 64 },
+    { "item": "magichem:admixture_vessel", "count": 16 },
+    { "item": "magichem:admixture_sorcery", "count": 4 },
+    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

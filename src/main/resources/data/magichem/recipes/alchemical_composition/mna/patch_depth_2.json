@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:patch_depth_2" },
+  "components": [
+    { "item": "magichem:essentia_ender", "count": 52 },
+    { "item": "magichem:admixture_depth", "count": 64 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_citrinitas", "count": 2 }
+  ]
+}

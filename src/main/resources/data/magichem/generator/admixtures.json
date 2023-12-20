@@ -492,6 +492,15 @@
       ]
     },
     {
+      "name": "witchcraft",
+      "color": "445143",
+      "components": [
+        { "admixture": "plant", "count": 3 },
+        { "admixture": "crystal", "count": 1 },
+        { "admixture": "blood", "count": 1 }
+      ]
+    },
+    {
       "name": "wizard",
       "color": "9959d5",
       "components": [

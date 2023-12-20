@@ -17,6 +17,8 @@
   "itemGroup.magichemtab" : "MagiChem - Blocks and Items",
   "itemGroup.magichemtab.substances" : "MagiChem - Essentia and Admixtures",
 
+  "magichem:rituals/reagent_2_crafting" : "Ritual of the Rod and Circle",
+
   "essentia.house.elements": "House of Elements",
   "essentia.house.qualities": "House of Qualities",
   "essentia.house.alchemy": "House of Alchemy",
@@ -193,6 +195,8 @@
   "item.magichem.admixture_vessel.short": "Vessel",
   "item.magichem.admixture_violence": "Admixture of Violence",
   "item.magichem.admixture_violence.short": "Violence",
+  "item.magichem.admixture_witchcraft": "Admixture of Witchcraft",
+  "item.magichem.admixture_witchcraft.short": "Witchcraft",
   "item.magichem.admixture_wizard": "Admixture of the Wizard",
   "item.magichem.admixture_wizard.short": "Wizard",
 

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:patch_speed_3" },
+  "components": [
+    { "item": "magichem:essentia_air", "count": 36 },
+    { "item": "magichem:essentia_arcane", "count": 12 },
+    { "item": "magichem:admixture_motion", "count": 18 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_citrinitas", "count": 2 }
+  ]
+}

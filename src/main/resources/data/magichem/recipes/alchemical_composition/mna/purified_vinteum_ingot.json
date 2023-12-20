@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:purified_vinteum_ingot" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 4 },
+    { "item": "magichem:admixture_mana", "count": 3 },
+    { "item": "magichem:admixture_construct", "count": 1 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:rune_air" },
+  "components": [
+    { "item": "magichem:essentia_air", "count": 8 },
+    { "item": "magichem:admixture_metal", "count": 4 },
+    { "item": "magichem:admixture_mana", "count": 2 },
+    { "item": "magichem:admixture_sorcery", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:eldrin_sight_unguent" },
+  "components": [
+    { "item": "magichem:admixture_thought", "count": 4 },
+    { "item": "magichem:admixture_mana", "count": 2 },
+    { "item": "magichem:admixture_sorcery", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

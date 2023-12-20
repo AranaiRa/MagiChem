@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:witherbone" },
+  "components": [
+    { "item": "magichem:admixture_exanimate", "count": 2 },
+    { "item": "magichem:admixture_bone", "count": 1 },
+    { "item": "magichem:admixture_poison", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:essentia_albedo", "count": 2 }
+  ]
+}
