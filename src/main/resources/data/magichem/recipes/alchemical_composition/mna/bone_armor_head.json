@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:bone_armor_head" },
+  "components": [
+    { "item": "magichem:admixture_protection", "count": 40 },
+    { "item": "magichem:admixture_exanimate", "count": 20 },
+    { "item": "magichem:admixture_dust", "count": 20 },
+    { "item": "magichem:essentia_rubedo", "count": 12 }
+  ]
+}

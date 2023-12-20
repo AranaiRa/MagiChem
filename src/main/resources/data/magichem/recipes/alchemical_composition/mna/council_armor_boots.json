@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:council_armor_boots" },
+  "components": [
+    { "item": "magichem:admixture_sorcery", "count": 32 },
+    { "item": "magichem:admixture_comfort", "count": 16 },
+    { "item": "magichem:admixture_flight", "count": 16 },
+    { "item": "magichem:essentia_rubedo", "count": 12 }
+  ]
+}

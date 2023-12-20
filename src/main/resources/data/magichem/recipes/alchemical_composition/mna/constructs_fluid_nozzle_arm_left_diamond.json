@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:constructs/construct_fluid_nozzle_arm_left_diamond" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 10 },
+    { "item": "magichem:admixture_construct", "count": 10 },
+    { "item": "magichem:essentia_precious", "count": 15 },
+    { "item": "magichem:essentia_albedo", "count": 6 }
+  ]
+}

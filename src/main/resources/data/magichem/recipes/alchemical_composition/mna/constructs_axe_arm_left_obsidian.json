@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:constructs/construct_axe_arm_left_obsidian" },
+  "components": [
+    { "item": "magichem:admixture_darkness", "count": 8 },
+    { "item": "magichem:admixture_construct", "count": 8 },
+    { "item": "magichem:essentia_mineral", "count": 12 },
+    { "item": "magichem:essentia_nigredo", "count": 6 }
+  ]
+}

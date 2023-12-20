@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:low_health_charm_minor" },
+  "components": [
+    { "item": "magichem:admixture_healing", "count": 6 },
+    { "item": "magichem:admixture_protection", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

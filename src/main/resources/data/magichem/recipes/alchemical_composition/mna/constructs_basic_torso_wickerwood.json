@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:constructs/construct_basic_torso_wickerwood" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_construct", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 3 }
+  ]
+}

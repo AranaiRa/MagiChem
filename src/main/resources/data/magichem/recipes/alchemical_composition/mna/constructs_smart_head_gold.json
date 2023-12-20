@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:constructs/construct_smart_head_gold" },
+  "components": [
+    { "item": "magichem:admixture_sorcery", "count": 6 },
+    { "item": "magichem:admixture_thought", "count": 6 },
+    { "item": "magichem:admixture_construct", "count": 6 },
+    { "item": "magichem:essentia_precious", "count": 9 }
+  ]
+}

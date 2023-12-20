@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:constructs/construct_basic_legs_wood" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 4 },
+    { "item": "magichem:admixture_construct", "count": 4 },
+    { "item": "magichem:essentia_verdant", "count": 6 }
+  ]
+}

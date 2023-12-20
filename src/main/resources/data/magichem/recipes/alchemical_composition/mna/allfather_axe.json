@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:allfather_axe" },
+  "components": [
+    { "item": "magichem:admixture_cold", "count": 58 },
+    { "item": "magichem:admixture_violence", "count": 42 },
+    { "item": "magichem:admixture_motion", "count": 36 },
+    { "item": "magichem:admixture_bargain", "count": 2 },
+    { "item": "magichem:essentia_rubedo", "count": 12 }
+  ]
+}

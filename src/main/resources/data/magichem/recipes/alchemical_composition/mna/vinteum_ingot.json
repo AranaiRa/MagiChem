@@ -4,7 +4,7 @@
   "output_rate": 1.0,
   "object": { "item": "mna:vinteum_ingot" },
   "components": [
-    { "item": "magichem:admixture_mana", "count": 3 },
-    { "item": "magichem:admixture_metal", "count": 4 }
+    { "item": "magichem:admixture_metal", "count": 4 },
+    { "item": "magichem:admixture_mana", "count": 3 }
   ]
 }

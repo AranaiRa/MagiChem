@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:brimstone_charm" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 48 },
+    { "item": "magichem:admixture_potential", "count": 14 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_citrinitas", "count": 2 }
+  ]
+}

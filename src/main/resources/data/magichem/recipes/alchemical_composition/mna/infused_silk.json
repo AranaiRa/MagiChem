@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "mna:infused_silk" },
+  "components": [
+    { "item": "magichem:admixture_comfort", "count": 2 },
+    { "item": "magichem:admixture_mana", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}
