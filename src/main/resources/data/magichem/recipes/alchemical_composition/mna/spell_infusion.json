@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:spell_infusion" },
+  "components": [
+    { "item": "magichem:admixture_sorcery", "count": 31 },
+    { "item": "magichem:admixture_permanence", "count": 27 },
+    { "item": "magichem:admixture_instrument", "count": 21 }
+  ]
+}

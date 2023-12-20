@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:basic_table" },
+  "components": [
+    { "item": "magichem:admixture_comfort", "count": 1 },
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

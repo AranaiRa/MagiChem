@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": false,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:hellfire_trident" },
+  "object": { "item": "mna:hellfire_trident" },
   "components": [
     { "item": "magichem:admixture_demon", "count": 38 },
     { "item": "magichem:admixture_violence", "count": 20 },

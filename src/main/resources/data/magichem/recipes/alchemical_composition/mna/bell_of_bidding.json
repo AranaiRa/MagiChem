@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:bell_of_bidding" },
+  "components": [
+    { "item": "magichem:admixture_construct", "count": 2 },
+    { "item": "magichem:admixture_domestication", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

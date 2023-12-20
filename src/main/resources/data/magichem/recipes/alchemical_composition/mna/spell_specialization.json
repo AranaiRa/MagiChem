@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:spell_specialization" },
+  "components": [
+    { "item": "magichem:admixture_sorcery", "count": 49 },
+    { "item": "magichem:admixture_memory", "count": 42 },
+    { "item": "magichem:admixture_permanence", "count": 35 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_citrinitas", "count": 4 }
+  ]
+}

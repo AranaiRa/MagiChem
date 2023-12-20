@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:disenchanter" },
+  "components": [
+    { "item": "magichem:admixture_memory", "count": 31 },
+    { "item": "magichem:admixture_permanence", "count": 18 },
+    { "item": "magichem:admixture_metal", "count": 11 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_albedo", "count": 2 }
+  ]
+}

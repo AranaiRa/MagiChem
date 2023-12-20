@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:witherguard_amulet" },
+  "components": [
+    { "item": "magichem:admixture_protection", "count": 7 },
+    { "item": "magichem:admixture_curse", "count": 7 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

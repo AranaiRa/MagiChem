@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:stone_bricks_well" },
+  "object": { "item": "minecraft:stone_brick_wall" },
   "components": [
     { "item": "magichem:admixture_stone", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 2 }

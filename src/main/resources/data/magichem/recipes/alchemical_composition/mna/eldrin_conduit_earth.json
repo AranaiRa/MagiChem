@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:eldrin_conduit_earth" },
+  "components": [
+    { "item": "magichem:essentia_earth", "count": 52 },
+    { "item": "magichem:admixture_energy", "count": 21 },
+    { "item": "magichem:admixture_realm", "count": 13 },
+    { "item": "magichem:admixture_instrument", "count": 4 },
+    { "item": "magichem:essentia_citrinitas", "count": 2 }
+  ]
+}

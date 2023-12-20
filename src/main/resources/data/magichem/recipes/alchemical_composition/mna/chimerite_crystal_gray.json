@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "mna:chimerite_crystal_gray" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 24 },
+    { "item": "magichem:admixture_change", "count": 20 },
+    { "item": "magichem:admixture_luck", "count": 8 },
+    { "item": "magichem:admixture_construct", "count": 2 },
+    { "item": "magichem:essentia_mineral", "count": 16 }
+  ]
+}

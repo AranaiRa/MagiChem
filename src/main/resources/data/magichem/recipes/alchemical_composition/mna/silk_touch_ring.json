@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:silk_touch_ring" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 7 },
+    { "item": "magichem:admixture_comfort", "count": 3 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 4 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

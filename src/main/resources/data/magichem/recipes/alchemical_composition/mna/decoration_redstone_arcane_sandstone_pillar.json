@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:decoration/redstone_arcane_sandstone_pillar" },
+  "components": [
+    { "item": "magichem:essentia_arcane", "count": 2 },
+    { "item": "magichem:admixture_stone", "count": 3 },
+    { "item": "magichem:admixture_energy", "count": 1 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:eldrin_fume" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 4 },
+    { "item": "magichem:admixture_energy", "count": 8 },
+    { "item": "magichem:admixture_mana", "count": 6 },
+    { "item": "magichem:admixture_motion", "count": 4 },
+    { "item": "magichem:admixture_vessel", "count": 2 }
+  ]
+}

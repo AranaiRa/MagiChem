@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:lesser_eldrin_conduit_ender" },
+  "components": [
+    { "item": "magichem:essentia_ender", "count": 26 },
+    { "item": "magichem:admixture_energy", "count": 8 },
+    { "item": "magichem:admixture_realm", "count": 6 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

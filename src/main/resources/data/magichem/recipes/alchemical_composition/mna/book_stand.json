@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:book_stand" },
+  "components": [
+    { "item": "magichem:admixture_thought", "count": 24 },
+    { "item": "magichem:admixture_permanence", "count": 12 },
+    { "item": "magichem:essentia_wrought", "count": 6 },
+    { "item": "magichem:essentia_precious", "count": 3 }
+  ]
+}

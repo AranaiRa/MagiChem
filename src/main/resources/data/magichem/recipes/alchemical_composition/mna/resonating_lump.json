@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:resonating_lump" },
+  "object": { "item": "mna:resonating_lump" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 6 },
     { "item": "magichem:admixture_crystal", "count": 6 },

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:turtle_helmet" },
+  "components": [
+    { "item": "magichem:admixture_bone", "count": 20 },
+    { "item": "magichem:admixture_domestication", "count": 5 },
+    { "item": "magichem:admixture_protection", "count": 3 },
+    { "item": "magichem:essentia_fleshy", "count": 30 },
+    { "item": "magichem:essentia_nigredo", "count": 10 }
+  ]
+}

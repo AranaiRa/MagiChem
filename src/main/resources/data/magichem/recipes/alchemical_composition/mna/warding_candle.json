@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:warding_candle" },
+  "components": [
+    { "item": "magichem:admixture_protection", "count": 21 },
+    { "item": "magichem:admixture_light", "count": 6 },
+    { "item": "magichem:admixture_nectar", "count": 3 },
+    { "item": "magichem:admixture_comfort", "count": 2 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

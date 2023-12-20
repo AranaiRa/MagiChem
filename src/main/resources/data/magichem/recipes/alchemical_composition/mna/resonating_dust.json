@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": false,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:resonating_dust" },
+  "object": { "item": "mna:resonating_dust" },
   "components": [
     { "item": "magichem:admixture_alien", "count": 16 },
     { "item": "magichem:admixture_crystal", "count": 8 },

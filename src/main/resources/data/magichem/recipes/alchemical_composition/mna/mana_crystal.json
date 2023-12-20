@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:mana_crystal" },
+  "components": [
+    { "item": "magichem:admixture_mana", "count": 64 },
+    { "item": "magichem:admixture_crystal", "count": 64 },
+    { "item": "magichem:admixture_energy", "count": 32 },
+    { "item": "magichem:admixture_sorcery", "count": 12 },
+    { "item": "magichem:essentia_mineral", "count": 32 }
+  ]
+}

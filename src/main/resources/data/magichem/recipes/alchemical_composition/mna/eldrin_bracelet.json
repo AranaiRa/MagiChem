@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:eldrin_bracelet" },
+  "components": [
+    { "item": "magichem:admixture_mana", "count": 7 },
+    { "item": "magichem:admixture_travel", "count": 7 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:lodestar" },
+  "components": [
+    { "item": "magichem:admixture_construct", "count": 9 },
+    { "item": "magichem:admixture_memory", "count": 7 },
+    { "item": "magichem:admixture_plant", "count": 3 },
+    { "item": "magichem:essentia_fleshy", "count": 4 }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:altar_of_arcana" },
+  "components": [
+    { "item": "magichem:admixture_sorcery", "count": 25 },
+    { "item": "magichem:admixture_thought", "count": 12 },
+    { "item": "magichem:admixture_plant", "count": 6 },
+    { "item": "magichem:essentia_wrought", "count": 24 }
+  ]
+}

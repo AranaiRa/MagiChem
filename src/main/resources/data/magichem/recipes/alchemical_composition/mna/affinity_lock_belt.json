@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:affinity_lock_belt" },
+  "components": [
+    { "item": "magichem:admixture_memory", "count": 7 },
+    { "item": "magichem:admixture_sorcery", "count": 7 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

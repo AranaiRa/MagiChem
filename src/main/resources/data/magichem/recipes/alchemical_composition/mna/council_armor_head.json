@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "mna:comfort_armor_head" },
+  "object": { "item": "mna:council_armor_head" },
   "components": [
     { "item": "magichem:admixture_sorcery", "count": 40 },
     { "item": "magichem:admixture_comfort", "count": 20 },

@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:redstone_trigger" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 4 },
+    { "item": "magichem:admixture_thought", "count": 4 },
+    { "item": "magichem:admixture_sorcery", "count": 1 }
+  ]
+}

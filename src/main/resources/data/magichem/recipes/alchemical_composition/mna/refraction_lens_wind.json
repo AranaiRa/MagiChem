@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:refraction_lens_wind" },
+  "components": [
+    { "item": "magichem:essentia_air", "count": 44 },
+    { "item": "magichem:admixture_energy", "count": 38 },
+    { "item": "magichem:admixture_realm", "count": 26 },
+    { "item": "magichem:admixture_instrument", "count": 6 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

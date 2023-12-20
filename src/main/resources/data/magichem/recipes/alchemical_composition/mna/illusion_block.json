@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 0.375,
+  "object": { "item": "mna:illusion_block" },
+  "components": [
+    { "item": "magichem:admixture_lies", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 2 }
+  ]
+}

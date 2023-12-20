@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:large_fern" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 2 }
+  ]
+}
