@@ -33,15 +33,14 @@ import org.jetbrains.annotations.Nullable;
 
 public class AlembicBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
     public static final int
+        SLOT_COUNT = 14,
         SLOT_BOTTLES = 0,
-        SLOT_INPUT_1 = 1, SLOT_INPUT_2 = 2, SLOT_INPUT_3 = 3,
+        SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_PROCESSING = 4,
-        SLOT_OUTPUT_1 = 5, SLOT_OUTPUT_2  = 6, SLOT_OUTPUT_3  = 7,
-        SLOT_OUTPUT_4 = 8, SLOT_OUTPUT_5  = 9, SLOT_OUTPUT_6  = 10,
-        SLOT_OUTPUT_7 = 11, SLOT_OUTPUT_8 = 12, SLOT_OUTPUT_9 = 13,
+        SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT  = 9,
         PROGRESS_BAR_WIDTH = 22;
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(21) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -50,32 +49,10 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
     public AlembicBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.ALEMBIC_BE.get(), pos, Config.alembicEfficiency, state);
-        this.data = new ContainerData() {
-            @Override
-            public int get(int index) {
-                return switch (index) {
-                    case 0 -> AlembicBlockEntity.this.progress;
-                    default -> 0;
-                };
-            }
-
-            @Override
-            public void set(int index, int value) {
-                switch (index) {
-                    case 0 -> AlembicBlockEntity.this.progress = value;
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return 14;
-            }
-        };
     }
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    protected final ContainerData data;
     private int progress = 0;
 
     @Override
@@ -112,16 +89,16 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.put("alembic.inventory", itemHandler.serializeNBT());
-        nbt.putInt("alembic.progress", this.progress);
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("craftingProgress", this.progress);
         super.saveAdditional(nbt);
     }
 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("alembic.inventory"));
-        progress = nbt.getInt("alembic.progress");
+        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        progress = nbt.getInt("craftingProgress");
     }
 
     public static int getScaledProgress(AlembicBlockEntity entity) {
@@ -196,8 +173,8 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
     private static void craftItem(AlembicBlockEntity entity, AlchemicalCompositionRecipe recipe) {
         SimpleContainer outputSlots = new SimpleContainer(9);
-        for(int i=0; i<9; i++) {
-            outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_1+i));
+        for(int i=0; i<SLOT_OUTPUT_COUNT; i++) {
+            outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
         NonNullList<ItemStack> componentMateria = applyEfficiencyToCraftingResult(recipe.getComponentMateria(),
@@ -215,7 +192,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
         if(!entity.isStalled) {
             for(int i=0; i<9; i++) {
-                entity.itemHandler.setStackInSlot(SLOT_OUTPUT_1+i, outputSlots.getItem(i));
+                entity.itemHandler.setStackInSlot(SLOT_OUTPUT_START + i, outputSlots.getItem(i));
             }
             ItemStack processingSlotContents = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
             processingSlotContents.shrink(1);
@@ -226,12 +203,12 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
     private static int nextInputSlotWithItem(AlembicBlockEntity entity) {
         //Select items bottom-first
-        if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_3).isEmpty())
-            return SLOT_INPUT_3;
-        else if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_2).isEmpty())
-            return SLOT_INPUT_2;
-        else if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_1).isEmpty())
-            return SLOT_INPUT_1;
+        if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_START + 2).isEmpty())
+            return SLOT_INPUT_START + 2;
+        else if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_START + 1).isEmpty())
+            return SLOT_INPUT_START + 1;
+        else if(!entity.itemHandler.getStackInSlot(SLOT_INPUT_START).isEmpty())
+            return SLOT_INPUT_START;
         else
             return -1;
     }

@@ -36,13 +36,14 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
 
         this.blit(poseStack, x, y, 0, 0, w, h);
         renderProgressBar(1, poseStack, x + 23, y + 42);
+        renderProgressBar(2, poseStack, x + 59, y + 42);
     }
 
     private void renderProgressBar(int tier, PoseStack poseStack, int x, int y) {
-        int sp1 = menu.getScaledProgress(tier);
+        int sp = menu.getScaledProgress(tier);
 
-        if(menu.isCrafting(1))
-            blit(poseStack, x, y, 0, 253, sp1, 3);
+        if(menu.isCrafting(tier))
+            blit(poseStack, x, y, 0, 253, sp, 3);
     }
 
     @Override

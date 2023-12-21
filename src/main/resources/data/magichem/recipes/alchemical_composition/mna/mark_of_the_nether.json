@@ -4,7 +4,7 @@
   "output_rate": 1.0,
   "object": { "item": "mna:mark_of_the_nether" },
   "components": [
-    { "item": "magichem:admixture_nether", "count": 3 },
+    { "item": "magichem:admixture_demon", "count": 3 },
     { "item": "magichem:admixture_bargain", "count": 2 }
   ]
 }

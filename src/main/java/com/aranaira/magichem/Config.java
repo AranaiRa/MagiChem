@@ -60,6 +60,8 @@ public class Config
             .comment("How many ticks of activity the Circle of Power stores at once")
             .defineInRange("circlePowerBuffer", 3, 1, 72000);
 
+    //----------------CIRCLE OF FABRICATION
+
     //----------------DISTILLERY
 
     private static final ForgeConfigSpec.IntValue DISTILLERY_EFFICIENCY = BUILDER

@@ -47,9 +47,10 @@ public class AlembicMenu extends AbstractContainerMenu {
             this.addSlot(new BottleStockSlot(handler, AlembicBlockEntity.SLOT_BOTTLES, 134, -5, false));
 
             //Input item slots
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_1, 44, 28));
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_2, 44, 46));
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_INPUT_3, 44, 64));
+            for(int i=AlembicBlockEntity.SLOT_INPUT_START; i<AlembicBlockEntity.SLOT_INPUT_START + AlembicBlockEntity.SLOT_INPUT_COUNT; i++)
+            {
+                this.addSlot(new NoMateriaInputSlot(handler, i, 44, 28 + (i - AlembicBlockEntity.SLOT_INPUT_START) * 18));
+            }
 
             //Processing slot
             this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_PROCESSING, 80, 46) {
@@ -60,15 +61,13 @@ public class AlembicMenu extends AbstractContainerMenu {
             });
 
             //Output item slots
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_1, 116, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_2, 134, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_3, 152, 28, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_4, 116, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_5, 134, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_6, 152, 46, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_7, 116, 64, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_8, 134, 64, 0));
-            this.addSlot(new DistillationResultSlot(handler, AlembicBlockEntity.SLOT_OUTPUT_9, 152, 64, 0));
+            for(int i=AlembicBlockEntity.SLOT_OUTPUT_START; i<AlembicBlockEntity.SLOT_OUTPUT_START + AlembicBlockEntity.SLOT_OUTPUT_COUNT; i++)
+            {
+                int x = (i - AlembicBlockEntity.SLOT_OUTPUT_START) % 3;
+                int y = (i - AlembicBlockEntity.SLOT_OUTPUT_START) / 3;
+
+                this.addSlot(new DistillationResultSlot(handler, i, 116 + (x) * 18, 28 + (y) * 18, AlembicBlockEntity.SLOT_BOTTLES));
+            }
         });
     }
 

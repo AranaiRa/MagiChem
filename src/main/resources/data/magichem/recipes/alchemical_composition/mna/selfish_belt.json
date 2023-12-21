@@ -5,7 +5,7 @@
   "object": { "item": "mna:selfish_belt" },
   "components": [
     { "item": "magichem:admixture_delight", "count": 7 },
-    { "item": "magichem:admixture_man", "count": 7 },
+    { "item": "magichem:admixture_mana", "count": 7 },
     { "item": "magichem:admixture_instrument", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]

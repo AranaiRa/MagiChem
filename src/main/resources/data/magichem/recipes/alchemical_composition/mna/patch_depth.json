@@ -5,7 +5,7 @@
   "object": { "item": "mna:patch_depth" },
   "components": [
     { "item": "magichem:essentia_ender", "count": 26 },
-    { "item": "magichem:admixture_depth", "count": 24 },
+    { "item": "magichem:admixture_vessel", "count": 24 },
     { "item": "magichem:admixture_instrument", "count": 1 },
     { "item": "magichem:essentia_nigredo", "count": 2 }
   ]

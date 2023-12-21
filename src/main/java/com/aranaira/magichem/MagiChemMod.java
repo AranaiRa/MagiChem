@@ -5,6 +5,7 @@ import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.gui.AlembicScreen;
 import com.aranaira.magichem.gui.CirclePowerScreen;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
+import com.mna.api.tools.RLoc;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -72,7 +73,7 @@ public class MagiChemMod
 
     @SubscribeEvent
     public void onRegisterGuidebooks(RegisterGuidebooksEvent event) {
-        event.getRegistry().addGuidebookPath(new ResourceLocation(MODID, "guide/guidebook"));
+        event.getRegistry().addGuidebookPath(RLoc.create("guide"));
         LOGGER.debug("&&&& Hello from guidebook registry!");
     }
 

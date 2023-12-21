@@ -7,6 +7,6 @@
     { "item": "magichem:admixture_vessel", "count": 6 },
     { "item": "magichem:admixture_motion", "count": 4 },
     { "item": "magichem:admixture_instrument", "count": 1 },
-    { "item": "magichem:admixture_nigredo", "count": 2 }
+    { "item": "magichem:essentia_nigredo", "count": 2 }
   ]
 }
