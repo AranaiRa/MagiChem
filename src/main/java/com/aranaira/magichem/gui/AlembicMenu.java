@@ -14,7 +14,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.BottleItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -90,57 +92,77 @@ public class AlembicMenu extends AbstractContainerMenu {
         }
     }
 
-    public boolean isCrafting(int tier) {
-        return false;
-    }
-
-    // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
-    // must assign a slot number to each of the slots used by the GUI.
-    // For this container, we can see both the tile inventory's slots as well as the player inventory slots and the hotbar.
-    // Each time we add a Slot to the container, it automatically increases the slotIndex, which means
-    //  0 - 8 = hotbar slots (which will map to the InventoryPlayer slot numbers 0 - 8)
-    //  9 - 35 = player inventory slots (which map to the InventoryPlayer slot numbers 9 - 35)
-    //  36 - 44 = TileInventory slots, which map to our TileEntity slot numbers 0 - 8)
-    private static final int HOTBAR_SLOT_COUNT = 9;
-    private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
-    private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-    private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-    private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
-    private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
-
-    // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 14;  // must be the number of slots you have!
+    private static final int SLOT_INVENTORY_BEGIN = 0;
+    private static final int SLOT_INVENTORY_COUNT = 36;
+    private static final int SLOT_BOTTLES = 36;
+    private static final int SLOT_INPUT_BEGIN = 37;
+    private static final int SLOT_OUTPUT_BEGIN = 41;
 
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int index) {
-        Slot sourceSlot = slots.get(index);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        ItemStack targetStack = slots.get(pIndex).getItem();
+        ItemStack targetStackCopy = new ItemStack(slots.get(pIndex).getItem().getItem(), slots.get(pIndex).getItem().getCount());
 
-        // Check if the slot clicked is one of the vanilla container slots
-        if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            // This is a vanilla container slot so merge the stack into the tile inventory
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;  // EMPTY_ITEM
+        //If player inventory
+        if(pIndex >= SLOT_INVENTORY_BEGIN && pIndex < SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT) {
+            //try to move to bottle slot first
+            if(targetStack.getItem() == Items.GLASS_BOTTLE) {
+                ItemStack bottleStack = slots.get(SLOT_BOTTLES).getItem();
+                if(bottleStack.getCount() + targetStack.getCount() > 64) {
+                    int amount = 64 - bottleStack.getCount();
+                    bottleStack.grow(amount);
+                    targetStack.shrink(amount);
+                    slots.get(pIndex).set(targetStack);
+                    return ItemStack.EMPTY;
+                }
+                else if(bottleStack.getCount() == 0) {
+                    slots.get(SLOT_BOTTLES).set(targetStackCopy);
+                    slots.get(pIndex).set(ItemStack.EMPTY);
+                    return ItemStack.EMPTY;
+                }
+                else {
+                    bottleStack.grow(targetStack.getCount());
+                    targetStack = ItemStack.EMPTY;
+                    slots.get(pIndex).set(targetStack);
+                    return targetStack;
+                }
             }
-        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
-            // This is a TE slot so merge the stack into the players inventory
-            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
-            }
-        } else {
+            //try to move to input slots
+            moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + AlembicBlockEntity.SLOT_INPUT_COUNT, false);
+            slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
         }
-        // If stack size == 0 (the entire stack was moved) set slot contents to null
-        if (sourceStack.getCount() == 0) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
+        //If bottle slot
+        if(pIndex == SLOT_BOTTLES) {
+            //try to move to player inventory
+            moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
+            slots.get(pIndex).set(targetStackCopy);
+            return ItemStack.EMPTY;
         }
-        sourceSlot.onTake(playerIn, sourceStack);
-        return copyOfSourceStack;
+        //If input slots
+        if(pIndex >= SLOT_INPUT_BEGIN && pIndex < SLOT_INPUT_BEGIN + AlembicBlockEntity.SLOT_INPUT_COUNT) {
+            moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
+            slots.get(pIndex).set(targetStackCopy);
+            return ItemStack.EMPTY;
+        }
+        //If output slots
+        if(pIndex >= SLOT_OUTPUT_BEGIN && pIndex < SLOT_OUTPUT_BEGIN + AlembicBlockEntity.SLOT_OUTPUT_COUNT) {
+            //make sure there's enough bottles first, then try to move to player inventory
+            int itemsToRemove = targetStackCopy.getCount();
+            int bottles = slots.get(SLOT_BOTTLES).getItem().getCount();
+            if(itemsToRemove >= bottles) {
+                slots.get(SLOT_BOTTLES).set(ItemStack.EMPTY);
+                targetStack.setCount(bottles);
+                targetStackCopy.shrink(bottles);
+                moveItemStackTo(targetStack, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
+            } else {
+                slots.get(SLOT_BOTTLES).getItem().shrink(itemsToRemove);
+                moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
+            }
+            slots.get(pIndex).set(targetStackCopy);
+            return ItemStack.EMPTY;
+        }
+
+        return getSlot(pIndex).getItem();
     }
 }

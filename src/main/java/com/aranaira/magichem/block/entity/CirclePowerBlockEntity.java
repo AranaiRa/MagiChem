@@ -189,8 +189,6 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     private static void processReagent(Level level, BlockPos pos, BlockState state, CirclePowerBlockEntity entity, int tier) {
-        MagiChemMod.LOGGER.debug("maxProg @ "+tier+"= "+getMaxProgressByTier(tier));
-
         if(hasReagent(tier, entity) || getProgressByTier(entity, tier) > 0) {
             entity.incrementProgress(tier);
 
