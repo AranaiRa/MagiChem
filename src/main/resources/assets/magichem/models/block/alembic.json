@@ -2,7 +2,7 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "magichem:block/circle_power_breakparticle"
+    "particle": "magichem:block/magic_circle_breakparticle"
   },
   "parts": {
     "part1": {

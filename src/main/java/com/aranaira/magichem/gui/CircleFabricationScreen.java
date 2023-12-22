@@ -44,6 +44,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             PANEL_INGREDIENTS_U1 = 160, PANEL_INGREDIENTS_U2 = 80, PANEL_INGREDIENTS_U3 = 160, PANEL_INGREDIENTS_U4 = 80, PANEL_INGREDIENTS_U5 = 0,
             PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
             PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102;
+    private AlchemicalCompositionRecipe lastClickedRecipe = null;
 
     public CircleFabricationScreen(CircleFabricationMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -99,8 +100,9 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             for(int x=0; x<3; x++) {
                 recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new ImageButtonFabricationRecipeSelector(
                         this, c, this.leftPos, this.topPos, 18, 18, 92, 220, TEXTURE, button -> {
-                    CircleFabricationScreen query = (CircleFabricationScreen) ((ImageButtonFabricationRecipeSelector) button).getScreen();
-                    query.setActiveRecipe(((ImageButtonFabricationRecipeSelector) button).getArrayIndex());
+
+                            CircleFabricationScreen query = (CircleFabricationScreen) ((ImageButtonFabricationRecipeSelector) button).getScreen();
+                            query.setActiveRecipe(((ImageButtonFabricationRecipeSelector) button).getArrayIndex());
                 })), x*18 - 71, y*18 + 42);
                 c++;
             }
@@ -115,7 +117,9 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                     filteredRecipes.get(trueIndex).getAlchemyObject().getItem(),
                     menu.blockEntity.getPowerUsageSetting()
             ));
-            menu.setInputSlotFilters(filteredRecipes.get(trueIndex));
+            lastClickedRecipe = filteredRecipes.get(trueIndex);
+            menu.setInputSlotFilters(lastClickedRecipe);
+            menu.blockEntity.setCurrentRecipeByOutput(lastClickedRecipe.getAlchemyObject().getItem());
         }
     }
 
@@ -245,6 +249,12 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderFilterBox();
         updateDisplayedRecipes(recipeFilterBox.getValue());
         renderRecipeOptions();
+
+        //Check to see if slots need to be re-locked
+        if(menu.dataSlot.get() == 1) {
+            menu.setInputSlotFilters(lastClickedRecipe);
+            menu.dataSlot.set(0);
+        }
     }
 
     private void renderFilterBox() {

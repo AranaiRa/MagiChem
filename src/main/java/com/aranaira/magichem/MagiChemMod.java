@@ -73,8 +73,7 @@ public class MagiChemMod
 
     @SubscribeEvent
     public void onRegisterGuidebooks(RegisterGuidebooksEvent event) {
-        event.getRegistry().addGuidebookPath(RLoc.create("guide"));
-        LOGGER.debug("&&&& Hello from guidebook registry!");
+        event.getRegistry().addGuidebookPath(new ResourceLocation(MODID, "guide"));
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

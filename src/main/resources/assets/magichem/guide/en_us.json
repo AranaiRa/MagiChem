@@ -13,185 +13,284 @@
         "json": [
           {
             "text": "Essentia",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": " is the purified essence of "
+            "text": " is the purified essence of ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "something",
-            "italic": true
+            "italic": true,
+            "color": "black"
           },
           {
-            "text": " distilled from an object or fluid. It's the most fundamental part of the alchemical arts. There are eighteen types of Essentia, each bearing a particular "
+            "text": " distilled from an object or fluid. It's the most fundamental part of the alchemical arts. There are eighteen types of Essentia, each bearing a particular ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Sign",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": " and arranged into three "
+            "text": " and arranged into three ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Houses",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", groupings of Essentia types that share similar themes.\n\nThe "
+            "text": ", groupings of Essentia types that share similar themes.",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The ",
+            "color": "black"
           },
           {
             "text": "House of Elements",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": " contains Essentia that represent the six core affinities of magic that most magicians are already familiar with: "
+            "text": " contains Essentia that represent the six core affinities of magic that most magicians are already familiar with: ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Ender",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Earth",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Water",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Air",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Fire",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", and "
+            "text": ", and ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Arcane",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ".\n\nThe "
+            "text": ".",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The ",
+            "color": "black"
           },
           {
             "text": "House of Qualities",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": " contains Essentia that "
+            "text": " contains Essentia that ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "describe",
-            "italic": true
+            "italic": true,
+            "color": "black"
           },
           {
-            "text": " what something is; if the House of Elements is about nouns, the House of Qualities is about adjectives. There are eight members of the House of Qualities: "
+            "text": " what something is; if the House of Elements is about nouns, the House of Qualities is about adjectives. There are eight members of the House of Qualities: ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Conceptual",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Verdant",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Fleshy",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Nourishing",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Rotten",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Mineral",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Wrought",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", and "
+            "text": ", and ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Precious",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ".\n\nThe "
+            "text": ".",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The ",
+            "color": "black"
           },
           {
             "text": "House of Alchemy",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": " contains four mysterious types of Essentia that represent ascending power and the search for the Philosopher's Stone: "
+            "text": " contains four mysterious types of Essentia that represent ascending power and the search for the Philosopher's Stone: ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Nigredo",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Albedo",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", "
+            "text": ", ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Citrinitas",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": ", and "
+            "text": ", and ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Rubedo",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": "."
+            "text": ".",
+            "bold": false,
+            "color": "black"
           }
         ]
       }
@@ -212,10 +311,44 @@
         "json": [
           {
             "text": "Admixtures",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": " are combinations of different Essentia that represent higher-ordered themes or ideas.\n\nAn Admixture can be composed of two to five different kinds of Essentia, always includes at least one type of Essentia of both the House of Elements and the House of Qualities, and never includes Essentia of the House of Alchemy. Some Admixtures can even include other Admixtures.\n\nAdmixtures can be obtained by distilling objects and fluids, or by combining Essentia through the alchemical process of Fixation."
+            "text": " are combinations of different Essentia that represent higher-ordered themes or ideas.",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "An Admixture can be composed of two to five different kinds of Essentia, always includes at least one type of Essentia of both the House of Elements and the House of Qualities, and never includes Essentia of the House of Alchemy. Some Admixtures can even include other Admixtures.",
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "Admixtures can be obtained by distilling objects and fluids, or by combining Essentia through the alchemical process of Fixation.",
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The term is ",
+            "color": "black"
+          },
+          {
+            "text": "Materia",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " is used to refer to something that could be either Essentia or an Admixture.",
+            "bold": false,
+            "color": "black"
           }
         ]
       }
@@ -223,55 +356,699 @@
     "related_recipes": []
   },
   "Process: Distillation": {
-    "index": "1002",
+    "index": "1100",
     "category": "artifice",
     "sections": [
       {
         "type": "title",
-        "value": "Distillation"
+        "value": "Process: Distillation"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "To "
+            "text": "To ",
+            "color": "black"
           },
           {
             "text": "Distill",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": " is to break an object or fluid down into the Materia (that is, Essentia and Admixtures) that make it up. Basic Distillation is performed at an "
+            "text": " is to break an object or fluid down into the Materia (that is, Essentia and Admixtures) that make it up. Basic Distillation is performed at an ",
+            "bold": false,
+            "color": "black"
           },
           {
             "text": "Alembic",
-            "bold": true
+            "bold": true,
+            "color": "black"
           },
           {
-            "text": "."
-          }
-        ]
-      },
-      {
-        "type": "recipe",
-        "location": ":alembic",
-        "recipeType": "manaweaving_altar"
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
+            "text": ".",
+            "bold": false,
+            "color": "black"
+          },
           {
-            "text": "Place the Alembic over a heat source (such as a campfire or a magma block) and then insert items or fluids into the left side of the interface. Over time, the Alembic will break the objects down one by one into some of the Materia that composes it.\n\nYou can't remove Materia from the right side of the interface unless glass bottles are supplied in the slot in the top right.\n\nAn Alembic is an imperfect device. Only about half of the Materia that makes up an object is actually distilled; the rest is lost, destroyed due to inefficiencies in the machine's design, or simply fails to congeal."
+            "text": "\n\n"
+          },
+          {
+            "text": "Devices capable of Distillation have an ",
+            "color": "black"
+          },
+          {
+            "text": "Efficiency",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " rating that determines the chance that you will successfully distill each dram of Materia that the object or fluid contains. Efficiency is always noted as a percentage, and Efficiency greater than 100% has no additional effect.",
+            "bold": false,
+            "color": "black"
           }
         ]
       }
     ],
     "related_recipes": [
       {
-        "type": "manaweaving_altar",
-        "location": ":alembic::::::"
+        "type": "crafting",
+        "location": "magichem:alembic"
+      }
+    ]
+  },
+  "Alembic": {
+    "index": "1200",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Alembic"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An ",
+            "color": "black"
+          },
+          {
+            "text": "Alembic",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " is a simple device capable of performing ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Distillation",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " at 50% ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Efficiency",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ".",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      },
+      {
+        "type": "recipe",
+        "location": "magichem:alembic",
+        "recipeType": "crafting"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The tall, leftmost slot is for fluids and is currently unimplemented.",
+            "italic": true,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.",
+            "color": "black"
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Magic Circles": {
+    "index": 1201,
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Magic Circles"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The more complex devices of the alchemist’s art require a ",
+            "color": "black"
+          },
+          {
+            "text": "Magic Circle",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ", a ring of ensorcelled silver that focuses creative energy and Materia into a desired outcome.",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "Magic Circles are made of ",
+            "color": "black"
+          },
+          {
+            "text": "Iris Argenti",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ", an alchemical alloy of transmuted silver, chimerite, and some Admixtures made on the Manaweaving Altar.",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      },
+      {
+        "type": "recipe",
+        "location": "magichem:iris_argenti",
+        "recipeType": "manaweaving_altar"
+      },
+      {
+        "type": "recipe",
+        "location": "magichem:magic_circle",
+        "recipeType": "crafting"
+      }
+    ],
+    "related_recipes": []
+  },
+  "Circle of Fabrication": {
+    "index": "1202",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Circle of Fabrication"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The ",
+            "color": "black"
+          },
+          {
+            "text": "Circle of Fabrication",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " uses Materia to create blocks and items. A Circle of Fabrication requires ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "FE (Forge Energy)",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " to function.",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      },
+      {
+        "type": "recipe",
+        "location": "magichem:circle_fabrication",
+        "recipeType": "crafting"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Circle of Fabrication to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical triangle in the center and a second panel appears in the lower right to indicate what Materia are required for each craft.",
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The alchemical triangle in the center represents the progress on the current craft, and fills as the process gets closer to completion.",
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "To the left of the alchemical triangle are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.",
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "In the upper right, you can set the desired FE usage of the Circle of Fabrication; as the power usage goes up, the amount of time the Circle of Fabrication requires to perform each crafting operation goes down. Changing the desired power usage will reset the progress on any current crafting operation.",
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "Whenever the Circle of Fabrication creates a block or item, all of the Materia used is consumed and the bottles are returned into the bottle output slot. If there’s not enough space in the bottle output slot, the Circle of Fabrication won’t begin crafting until there’s enough space.",
+            "color": "black"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:magic_circle"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:circle_power"
+      }
+    ]
+  },
+  "Circle of Power": {
+    "index": "1203",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Circle of Power"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The ",
+            "color": "black"
+          },
+          {
+            "text": "Circle of Power",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " generates ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "FE (Forge Energy)",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " if supplied with at least one ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Reagent",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ".",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      },
+      {
+        "type": "recipe",
+        "location": "magichem:circle_power",
+        "recipeType": "crafting"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product that can be reprocessed back into the reagent with Constructs. One reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.",
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "By default, each additional reagent supplied to the Circle of Power increases its power generation twelvefold. Power is generated based on the ",
+            "color": "black"
+          },
+          {
+            "text": "number",
+            "italic": true,
+            "color": "black"
+          },
+          {
+            "text": " of reagents present, not the ",
+            "italic": false,
+            "color": "black"
+          },
+          {
+            "text": "specific",
+            "italic": true,
+            "color": "black"
+          },
+          {
+            "text": " reagent reagent present. For example, supplying the first two reagents will generate more power than supplying only the fourth reagent.",
+            "italic": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The Circle of Power only generates up to three ticks’ worth of FE.",
+            "color": "black"
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Grains of Transmuted Silver": {
+    "index": "1300",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Grains of Transmuted Silver"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Grains of Transmuted Silver",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " are the most basic energy-generating reagent used in the Circle of Power. Grains of Transmuted Silver can be made at Tier 2 by having a Construct crush a Transmuted Silver ingot.",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The Grains have a very short burn time and eject a ",
+            "color": "black"
+          },
+          {
+            "text": "Tarnished Silver Lump",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " as a waste product.",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Reprocessing"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Tarnished Silver Lump can be crushed by a Construct back into Grains of Transmuted Silver.",
+            "color": "black"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:circle_power"
+      }
+    ]
+  },
+  "Focusing Catalyst": {
+    "index": "1301",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Focusing Catalyst"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A ",
+            "color": "black"
+          },
+          {
+            "text": "Focusing Catalyst",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " is a more advanced energy-generating reagent used in the Circle of Power. Focusing Catalysts can be made at Tier 3 by pounding a block of Transmuted Silver into a ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Catalyst Core",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " on a Runic Anvil, and Catalyst Cores can be made by performing the ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Ritual of the Rod and Circle",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ".",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "The Catalyst has a moderate burn time and ejects a ",
+            "color": "black"
+          },
+          {
+            "text": "Warped Focusing Catalyst",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " as a waste product.",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Reprocessing"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Using the Warped Focusing Catalyst splits it into a ",
+            "color": "black"
+          },
+          {
+            "text": "Depleted Catalyst Core",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " and a ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Catalyst Casing",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ".",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "Creator’s Note: This step is temporary and means that this currently can’t be automated with constructs. A fix is upcoming when MnA updates.",
+            "italic": true,
+            "color": "black"
+          },
+          {
+            "text": "\n\n",
+            "italic": false
+          },
+          {
+            "text": "A Depleted Catalyst Core can be recharged into a Catalyst Core by smelting it in the Runeforge. This operation takes significantly longer than it normally takes to smelt an object.",
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "Once the Catalyst Core is recharged, you can turn it back into a Focusing Catalyst by pounding the Catalyst Casing into it on a Runic Anvil.",
+            "color": "black"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/reagent_2_crafting"
+      }]
+  },
+  "Power Spikes": {
+    "index": "1400",
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Power Spikes"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A ",
+            "color": "black"
+          },
+          {
+            "text": "Power Spike",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " can be used to transfer Forge Energy (FE) from a ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Circle of Power",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " into other devices. You can bind the Power Spike to the Circle by using the Power Spike on the Circle of Power while sneaking.",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "\n\n"
+          },
+          {
+            "text": "Power Spikes can insert power into any device with no range limit as long as the Circle of Power it is bound to is in a loaded chunk. Power Spikes can ",
+            "color": "black"
+          },
+          {
+            "text": "only",
+            "italic": true,
+            "color": "black"
+          },
+          {
+            "text": " draw energy from a Circle of Power.",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:circle_power"
+      }
+    ]
+  },
+  "Ritual of the Rod and Circle": {
+    "index": "1000",
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Ritual of the Rod and Circle"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This ritual binds coal, amethyst, and a few different varieties of Materia together into a ",
+            "color": "black"
+          },
+          {
+            "text": "Catalyst Core",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ", a necessary component of a ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Focusing Catalyst",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ".",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/reagent_2_crafting"
       }
     ]
   },

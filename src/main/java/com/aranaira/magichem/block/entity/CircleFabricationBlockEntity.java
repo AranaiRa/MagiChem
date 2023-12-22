@@ -311,6 +311,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         SimpleContainer insert = getOutputAsContainer(entity, 10);
         insert.addItem(recipe.getAlchemyObject());
         replaceOutputSlotsWithContainer(entity, insert);
+        entity.syncAndSave();
     }
 
     private static void replaceOutputSlotsWithContainer(CircleFabricationBlockEntity entity, SimpleContainer insert) {

@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": false,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:honey_bottle" },
+  "object": { "item": "minecraft:honey_block" },
   "components": [
     { "item": "magichem:admixture_nectar", "count": 36 },
     { "item": "magichem:admixture_trap", "count": 9 },

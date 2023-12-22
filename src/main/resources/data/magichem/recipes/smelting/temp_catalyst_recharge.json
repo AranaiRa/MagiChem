@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "magichem:focusing_catalyst_warped"
+  },
+  "result": "magichem:focusing_catalyst",
+  "experience": 0.7,
+  "cookingtime": 2400
+}

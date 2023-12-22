@@ -14,10 +14,7 @@ import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.ContainerListener;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,6 +29,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
     public final CircleFabricationBlockEntity blockEntity;
     private final Level level;
     public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[10];
+    public DataSlot dataSlot;
 
     public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
@@ -41,6 +39,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         super(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), id);
         checkContainerSize(inv, CircleFabricationBlockEntity.SLOT_COUNT);
         blockEntity = (CircleFabricationBlockEntity) entity;
+
         this.level = inv.player.level;
 
         addPlayerInventory(inv);
@@ -64,6 +63,20 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
             }
 
             setInputSlotFilters(blockEntity.getCurrentRecipe());
+        });
+
+        dataSlot = addDataSlot(new DataSlot() {
+            int doUpdate = 0;
+
+            @Override
+            public int get() {
+                return doUpdate;
+            }
+
+            @Override
+            public void set(int pValue) {
+                doUpdate = pValue;
+            }
         });
     }
 
