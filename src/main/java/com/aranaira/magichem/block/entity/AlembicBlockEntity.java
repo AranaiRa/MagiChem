@@ -7,6 +7,7 @@ import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -120,12 +121,23 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
     }
 
     public void dropInventoryToWorld() {
+        //Drop items in input slots, bottle slot, and processing slot as-is
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
-        for (int i = 0; i< itemHandler.getSlots(); i++) {
+        for (int i = 0; i < SLOT_INPUT_COUNT + 1; i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
+
+
+        //Convert items in the output slots to alchemical waste
+        SimpleContainer waste = new SimpleContainer(itemHandler.getSlots()+4);
+        for (int i = 0; i < SLOT_OUTPUT_COUNT; i++) {
+            ItemStack stack = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+            waste.setItem(i, new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), stack.getCount()));
+        }
+
+        Containers.dropContents(this.level, this.worldPosition, waste);
     }
 
     private static NonNullList<ItemStack> getRecipeComponents(AlembicBlockEntity entity) {

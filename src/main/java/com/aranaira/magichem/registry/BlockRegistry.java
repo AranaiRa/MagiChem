@@ -24,22 +24,22 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> ALEMBIC = registerBlock("alembic",
             () -> new AlembicBlock(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(6f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
+                    .strength(0.75f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 
     public static final RegistryObject<Block> CIRCLE_POWER = registerBlock("circle_power",
             () -> new CirclePowerBlock(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(6f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
+                    .strength(0.75f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 
     public static final RegistryObject<Block> CIRCLE_FABRICATION = registerBlock("circle_fabrication",
             () -> new CircleFabricationBlock(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(6f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
+                    .strength(0.75f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 
     public static final RegistryObject<Block> POWER_SPIKE = registerBlock("power_spike",
             () -> new PowerSpikeBlock(BlockBehaviour.Properties.of(Material.STONE)
-                    .strength(6f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
+                    .strength(0.5f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
