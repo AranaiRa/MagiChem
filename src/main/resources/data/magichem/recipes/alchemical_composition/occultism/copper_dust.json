@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:copper_dust" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_energy", "count": 1 }
+  ]
+}

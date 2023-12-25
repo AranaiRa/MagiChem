@@ -1,6 +1,6 @@
 {
   "type": "magichem:alchemical_composition",
-  "distill_only": false,
+  "distill_only": true,
   "output_rate": 1.0,
   "object": { "item": "mna:decoration/chimerite_arcane_sandstone_chiseled" },
   "components": [

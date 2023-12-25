@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:chalk_white_impure" },
+  "components": [
+    { "item": "magichem:admixture_spirit", "count": 7 },
+    { "item": "magichem:admixture_bargain", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_trap", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 2 }
+  ]
+}

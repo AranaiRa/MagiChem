@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:tallow" },
+  "components": [
+    { "item": "magichem:admixture_blood", "count": 1 },
+    { "item": "magichem:admixture_filth", "count": 1 },
+    { "item": "magichem:essentia_fleshy", "count": 4 }
+  ]
+}

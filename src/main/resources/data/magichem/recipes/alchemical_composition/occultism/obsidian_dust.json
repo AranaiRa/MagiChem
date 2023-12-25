@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:obsidian_dust" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 32 },
+    { "item": "magichem:admixture_stone", "count": 8 },
+    { "item": "magichem:admixture_erosion", "count": 2 },
+    { "item": "magichem:admixture_permanence", "count": 2 },
+    { "item": "magichem:admixture_darkness", "count": 1 }
+  ]
+}

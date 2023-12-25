@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:dimensional_mineshaft" },
+  "components": [
+    { "item": "magichem:admixture_vessel", "count": 35 },
+    { "item": "magichem:admixture_metal", "count": 11 },
+    { "item": "magichem:admixture_stone", "count": 11 },
+    { "item": "magichem:admixture_travel", "count": 8 },
+    { "item": "magichem:essentia_precious", "count": 24 }
+  ]
+}

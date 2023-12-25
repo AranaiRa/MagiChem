@@ -97,7 +97,7 @@ public class Config
         alembicOperationTime = 60;//ALEMBIC_OPERATION_TIME.get();
         alembicNeedsHeat = ALEMBIC_NEEDS_HEAT.get();
         alembicGeneratesWaste = ALEMBIC_GENERATES_WASTE.get();
-        circlePowerGen1Reagent = 25000;//CIRCLE_OF_POWER_GEN_1_REAGENT.get();
+        circlePowerGen1Reagent = CIRCLE_OF_POWER_GEN_1_REAGENT.get();
         circlePowerGen2Reagent = CIRCLE_OF_POWER_GEN_2_REAGENT.get();
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();
         circlePowerGen4Reagent = CIRCLE_OF_POWER_GEN_4_REAGENT.get();

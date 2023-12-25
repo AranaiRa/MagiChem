@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:miner_djinni_ores" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 38 },
+    { "item": "magichem:admixture_spirit", "count": 13 },
+    { "item": "magichem:admixture_trap", "count": 10 },
+    { "item": "magichem:admixture_luck", "count": 6 },
+    { "item": "magichem:essentia_precious", "count": 20 }
+  ]
+}

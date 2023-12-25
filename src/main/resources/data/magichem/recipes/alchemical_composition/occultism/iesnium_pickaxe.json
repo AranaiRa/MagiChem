@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:iesnium_pickaxe" },
+  "components": [
+    { "item": "magichem:admixture_spirit", "count": 12 },
+    { "item": "magichem:admixture_metal", "count": 6 },
+    { "item": "magichem:admixture_luck", "count": 3 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_precious", "count": 18 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:spirit_attuned_crystal" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 28 },
+    { "item": "magichem:admixture_spirit", "count": 4 },
+    { "item": "magichem:essentia_mineral", "count": 16 },
+    { "item": "magichem:essentia_precious", "count": 32 },
+    { "item": "magichem:essentia_nigredo", "count": 8 }
+  ]
+}

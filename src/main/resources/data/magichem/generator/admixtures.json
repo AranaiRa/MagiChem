@@ -433,6 +433,16 @@
       ]
     },
     {
+      "name": "spirit",
+      "color": "5b119d",
+      "components": [
+        { "essentia": "ender", "count": 8 },
+        { "essentia": "fire", "count": 4 },
+        { "admixture": "breath", "count": 3 },
+        { "essentia": "precious", "count": 2 }
+      ]
+    },
+    {
       "name": "stone",
       "color": "4f545c",
       "components": [

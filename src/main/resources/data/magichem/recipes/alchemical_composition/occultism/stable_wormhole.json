@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:stable_wormhole" },
+  "components": [
+    { "item": "magichem:admixture_spirit", "count": 44 },
+    { "item": "magichem:admixture_motion", "count": 35 },
+    { "item": "magichem:admixture_memory", "count": 20 },
+    { "item": "magichem:admixture_stone", "count": 12 },
+    { "item": "magichem:admixture_instrument", "count": 4 }
+  ]
+}

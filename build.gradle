@@ -141,6 +141,9 @@ dependencies {
     implementation fg.deobf("curse.maven:geckolib-388172:4407241")
     implementation fg.deobf("curse.maven:curios-309927:4902099")
     implementation fg.deobf("curse.maven:mna-406360:4918349")
+    implementation fg.deobf("curse.maven:occultism-361026:4948906")
+    implementation fg.deobf("curse.maven:modonomicon-538392:4675974")
+    implementation fg.deobf("curse.maven:smartbrainlib-661293:4458565")
 
     // Apply Mixin AP
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

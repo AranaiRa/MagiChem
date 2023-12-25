@@ -5,6 +5,6 @@
   "object": { "item": "minecraft:flint" },
   "components": [
     { "item": "magichem:admixture_erosion", "count": 1 },
-    { "item": "magichem:admixture_plant", "count": 1 }
+    { "item": "magichem:admixture_stone", "count": 1 }
   ]
 }

@@ -118,7 +118,7 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
         List<AlchemicalCompositionRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 
         for(AlchemicalCompositionRecipe acr : allRecipes) {
-            if(acr.alchemyObject.equals(query, true)) {
+            if(acr.alchemyObject.getItem() == query.getItem()) {
                 result = acr;
                 break;
             }

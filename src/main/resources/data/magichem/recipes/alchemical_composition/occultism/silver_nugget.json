@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.111,
+  "object": { "item": "occultism:silver_nugget" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_trap", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 2 }
+  ]
+}

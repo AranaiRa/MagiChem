@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:otherworld_goggles" },
+  "components": [
+    { "item": "magichem:admixture_spirit", "count": 17 },
+    { "item": "magichem:admixture_crystal", "count": 9 },
+    { "item": "magichem:admixture_permanence", "count": 8 },
+    { "item": "magichem:essentia_precious", "count": 18 },
+    { "item": "magichem:essentia_nigredo", "count": 4 }
+  ]
+}

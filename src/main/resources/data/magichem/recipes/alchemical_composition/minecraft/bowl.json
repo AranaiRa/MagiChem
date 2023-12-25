@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.125,
+  "object": { "item": "minecraft:bowl" },
+  "components": [
+    { "item": "magichem:admixture_vessel", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

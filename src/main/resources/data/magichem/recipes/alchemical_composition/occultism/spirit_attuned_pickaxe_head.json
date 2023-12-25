@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:spirit_attuned_pickaxe_head" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 21 },
+    { "item": "magichem:admixture_spirit", "count": 21 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 24 },
+    { "item": "magichem:essentia_nigredo", "count": 6 }
+  ]
+}

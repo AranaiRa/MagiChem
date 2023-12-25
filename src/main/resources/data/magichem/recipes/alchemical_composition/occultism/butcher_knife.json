@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:butcher_knife" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 8 },
+    { "item": "magichem:admixture_violence", "count": 6 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

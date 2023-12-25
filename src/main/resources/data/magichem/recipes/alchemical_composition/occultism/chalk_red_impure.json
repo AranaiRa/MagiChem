@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:chalk_red_impure" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 58 },
+    { "item": "magichem:admixture_spirit", "count": 23 },
+    { "item": "magichem:admixture_violence", "count": 13 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 2 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:magic_lamp_empty" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 12 },
+    { "item": "magichem:admixture_trap", "count": 10 },
+    { "item": "magichem:admixture_spirit", "count": 4 },
+    { "item": "magichem:admixture_luck", "count": 1 },
+    { "item": "magichem:essentia_precious", "count": 16 }
+  ]
+}

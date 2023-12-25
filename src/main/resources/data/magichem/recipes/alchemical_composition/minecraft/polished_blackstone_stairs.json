@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 0.667,
-  "object": { "item": "minecraft:polished_blackstone_slab" },
+  "object": { "item": "minecraft:polished_blackstone_stairs" },
   "components": [
     { "item": "magichem:admixture_demon", "count": 4 },
     { "item": "magichem:admixture_darkness", "count": 4 },

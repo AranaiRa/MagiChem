@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:spirit_lantern" },
+  "components": [
+    { "item": "magichem:admixture_light", "count": 1 },
+    { "item": "magichem:admixture_metal", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

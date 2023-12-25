@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:candle_white" },
+  "components": [
+    { "item": "magichem:admixture_light", "count": 4 },
+    { "item": "magichem:admixture_blood", "count": 1 },
+    { "item": "magichem:admixture_filth", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_fleshy", "count": 4 }
+  ]
+}

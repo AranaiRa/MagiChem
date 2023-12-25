@@ -358,6 +358,7 @@
   "Process: Distillation": {
     "index": "1100",
     "category": "artifice",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -503,6 +504,7 @@
   "Magic Circles": {
     "index": 1201,
     "category": "artifice",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -561,6 +563,7 @@
   "Circle of Fabrication": {
     "index": "1202",
     "category": "artifice",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -654,6 +657,7 @@
   "Circle of Power": {
     "index": "1203",
     "category": "artifice",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -754,6 +758,7 @@
   "Grains of Transmuted Silver": {
     "index": "1300",
     "category": "artifice",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -817,6 +822,7 @@
   "Focusing Catalyst": {
     "index": "1301",
     "category": "artifice",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -946,6 +952,7 @@
   "Power Spikes": {
     "index": "1400",
     "category": "artifice",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -1009,6 +1016,7 @@
   "Ritual of the Rod and Circle": {
     "index": "1000",
     "category": "rituals",
+    "tier": 2,
     "sections": [
       {
         "type": "title",

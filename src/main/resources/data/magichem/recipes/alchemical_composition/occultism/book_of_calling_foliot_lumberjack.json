@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:book_of_calling_foliot_lumberjack" },
+  "components": [
+    { "item": "magichem:admixture_spirit", "count": 13 },
+    { "item": "magichem:admixture_trap", "count": 11 },
+    { "item": "magichem:admixture_plant", "count": 9 },
+    { "item": "magichem:admixture_permanence", "count": 3 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:chalk_purple" },
+  "components": [
+    { "item": "magichem:admixture_spirit", "count": 23 },
+    { "item": "magichem:admixture_alien", "count": 2 },
+    { "item": "magichem:admixture_darkness", "count": 2 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

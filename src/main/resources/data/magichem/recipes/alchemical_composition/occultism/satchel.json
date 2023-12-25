@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "occultism:satchel" },
+  "components": [
+    { "item": "magichem:admixture_vessel", "count": 47 },
+    { "item": "magichem:admixture_spirit", "count": 11 },
+    { "item": "magichem:admixture_travel", "count": 5 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 2 }
+  ]
+}
