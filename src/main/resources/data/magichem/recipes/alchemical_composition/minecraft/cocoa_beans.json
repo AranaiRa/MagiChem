@@ -4,6 +4,7 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:cocoa_beans" },
   "components": [
+    { "item": "magichem:admixture_odors", "count": 1 },
     { "item": "magichem:admixture_delight", "count": 1 },
     { "item": "magichem:essentia_verdant", "count": 2 }
   ]

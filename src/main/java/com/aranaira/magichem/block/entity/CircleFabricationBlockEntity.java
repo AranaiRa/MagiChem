@@ -258,9 +258,10 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             bottlesToInsert += is.getCount();
         }
 
+        //TODO: Turn this back on after the bottle slot gets expanded
         //If there's not enough space for the bottles to go, don't craft
-        if(entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount() + bottlesToInsert > 64)
-            return false;
+        //if(entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount() + bottlesToInsert > 64)
+        //    return false;
 
         List<Item> inputItemsAvailable = new ArrayList<>();
         for (ItemStack materia : recipe.getComponentMateria()) {
@@ -293,8 +294,18 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             bottlesToInsert += is.getCount();
         }
 
+        //TODO: Uncommment the original line once the bottle slot stack size has been expanded
         //Fill Bottle Slot
-        entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        //TODO: Remove this once the bottle slot stack size has been expanded
+        ItemStack bottles = entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        bottlesToInsert -= bottles.getCount();
+        SimpleContainer bottleSpill = new SimpleContainer(5);
+        while(bottlesToInsert > 0) {
+            bottleSpill.addItem(new ItemStack(Items.GLASS_BOTTLE, Math.min(64, bottlesToInsert)));
+            bottlesToInsert -= 64;
+        }
+        Containers.dropContents(entity.getLevel(), entity.getBlockPos(), bottleSpill);
 
         //Consume Materia
         for(ItemStack materia : recipe.getComponentMateria()) {

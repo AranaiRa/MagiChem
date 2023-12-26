@@ -353,6 +353,15 @@
       ]
     },
     {
+      "name": "odors",
+      "color": "235cbf",
+      "components": [
+        { "essentia": "water", "count": 4 },
+        { "essentia": "air", "count": 8 },
+        { "essentia": "nectar", "count": 1 }
+      ]
+    },
+    {
       "name": "permanence",
       "color": "756f0b",
       "components": [

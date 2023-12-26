@@ -26,7 +26,8 @@ public class PowerSpikeBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.putLong("magichem.powerspike.powerDrawPos", this.powerDrawPos.asLong());
+        if(powerDrawPos != null)
+            nbt.putLong("magichem.powerspike.powerDrawPos", this.powerDrawPos.asLong());
         nbt.putLong("magichem.powerspike.powerTransferPos", this.powerTransferPos.asLong());
         super.saveAdditional(nbt);
     }
