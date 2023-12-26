@@ -63,6 +63,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
+    public static final RegistryObject<Item> SUPERHEATED_GLASS_PANE = ITEMS.register("superheated_glass_pane",
+            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         ESSENTIA.register(eventBus);

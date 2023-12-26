@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "minecraft:glass_pane",
+  "output": "minecraft:glass_bottle",
+  "output_quantity": 1
+}

@@ -358,7 +358,7 @@
       "components": [
         { "essentia": "water", "count": 4 },
         { "essentia": "air", "count": 8 },
-        { "essentia": "nectar", "count": 1 }
+        { "admixture": "nectar", "count": 1 }
       ]
     },
     {

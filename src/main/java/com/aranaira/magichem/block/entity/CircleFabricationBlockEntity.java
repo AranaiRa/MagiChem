@@ -299,11 +299,20 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
         //TODO: Remove this once the bottle slot stack size has been expanded
         ItemStack bottles = entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
-        bottlesToInsert -= bottles.getCount();
         SimpleContainer bottleSpill = new SimpleContainer(5);
-        while(bottlesToInsert > 0) {
-            bottleSpill.addItem(new ItemStack(Items.GLASS_BOTTLE, Math.min(64, bottlesToInsert)));
-            bottlesToInsert -= 64;
+        while(bottles.getCount() > 0) {
+            int count = bottles.getCount();
+            int thisPile;
+            if(count > 64) {
+                thisPile = 64;
+                count -= 64;
+            } else {
+                thisPile = count;
+                count = 0;
+            }
+            ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
+            bottleSpill.addItem(bottlesToDrop);
+            bottles.setCount(count);
         }
         Containers.dropContents(entity.getLevel(), entity.getBlockPos(), bottleSpill);
 
