@@ -7,6 +7,6 @@
     { "item": "magichem:essentia_arcane", "count": 6 },
     { "item": "magichem:admixture_plant", "count": 2 },
     { "item": "magichem:admixture_mana", "count": 1 },
-    { "item": "magichem:essentia_verdant", "count": 2 }
+    { "item": "magichem:admixture_odors", "count": 1 }
   ]
 }
