@@ -184,17 +184,33 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
         AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
         if(processingItem != ItemStack.EMPTY && recipe != null) {
-            if(entity.progress > Config.alembicOperationTime) {
-                if(!level.isClientSide())
-                    craftItem(entity, recipe);
-                if(!entity.isStalled)
-                    entity.resetProgress();
+            if(canCraftItem(entity, recipe)) {
+                if (entity.progress > Config.alembicOperationTime) {
+                    if (!level.isClientSide())
+                        craftItem(entity, recipe);
+                    if (!entity.isStalled)
+                        entity.resetProgress();
+                } else
+                    entity.incrementProgress();
             }
-            else
-                entity.incrementProgress();
         }
         else if(processingItem == ItemStack.EMPTY)
             entity.resetProgress();
+    }
+
+    private static boolean canCraftItem(AlembicBlockEntity entity, AlchemicalCompositionRecipe recipe) {
+        SimpleContainer cont = new SimpleContainer(SLOT_OUTPUT_COUNT);
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            cont.setItem(i-SLOT_OUTPUT_START, entity.itemHandler.getStackInSlot(i).copy());
+        }
+
+        for(int i=0; i<recipe.getComponentMateria().size(); i++) {
+            if(!cont.canAddItem(recipe.getComponentMateria().get(i).copy()))
+                return false;
+            cont.addItem(recipe.getComponentMateria().get(i).copy());
+        }
+
+        return true;
     }
 
     private static void craftItem(AlembicBlockEntity entity, AlchemicalCompositionRecipe recipe) {
@@ -222,7 +238,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             }
             ItemStack processingSlotContents = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
             processingSlotContents.shrink(1);
-            if(processingSlotContents.getCount() == 0);
+            if(processingSlotContents.getCount() == 0)
                 entity.itemHandler.setStackInSlot(SLOT_PROCESSING, ItemStack.EMPTY);
         }
     }
