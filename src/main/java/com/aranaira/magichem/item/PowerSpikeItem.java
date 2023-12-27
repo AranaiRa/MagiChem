@@ -2,6 +2,7 @@ package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,10 +30,18 @@ public class PowerSpikeItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
+        components.add(
+                Component.translatable("tooltip.magichem.powerspike")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
         if(stack.hasTag()) {
             if (stack.getTag().contains("magichem.powerspike.targetpos")) {
                 BlockPos pos = BlockPos.of(stack.getTag().getLong("magichem.powerspike.targetpos"));
-                components.add(Component.literal("Drawing power from (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")"));
+                components.add(
+                        Component.translatable("tooltip.magichem.powerspike.target")
+                        .append (" (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+                );
             }
         }
 
@@ -45,7 +54,7 @@ public class PowerSpikeItem extends BlockItem {
             if(context.getPlayer() != null && context.getPlayer().isCrouching()) {
                 BlockPos pos = context.getClickedPos();
                 if(context.getLevel().getBlockState(pos).getBlock() instanceof CirclePowerBlock) {
-                    context.getPlayer().sendSystemMessage(Component.literal("Used on magic circle @ "+pos));
+                    context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.bind"));
                     CompoundTag tag = new CompoundTag();
                     tag.putLong("magichem.powerspike.targetpos",pos.asLong());
 
@@ -60,21 +69,25 @@ public class PowerSpikeItem extends BlockItem {
 
     @Override
     public InteractionResult place(BlockPlaceContext context) {
+        CompoundTag tag = null;
+        if(context.getItemInHand().hasTag())
+            tag = context.getItemInHand().getTag();
         InteractionResult result = super.place(context);
 
         if(!context.getLevel().isClientSide) {
             BlockPos clickedPos = context.getClickedPos();
-            ItemStack item = context.getItemInHand();
             BlockEntity entity = context.getLevel().getBlockEntity(clickedPos);
 
             if (entity != null) {
-                if (entity instanceof PowerSpikeBlockEntity && item.hasTag()) {
-                    if (item.getTag().contains("magichem.powerspike.targetpos")) {
-                        BlockPos drawPos = BlockPos.of(item.getTag().getLong("magichem.powerspike.targetpos"));
+                if (entity instanceof PowerSpikeBlockEntity && tag != null) {
+                    if (tag.contains("magichem.powerspike.targetpos")) {
+                        BlockPos drawPos = BlockPos.of(tag.getLong("magichem.powerspike.targetpos"));
                         PowerSpikeBlockEntity typedEntity = (PowerSpikeBlockEntity) entity;
 
                         typedEntity.setPowerDrawPos(drawPos);
                     }
+                } else {
+                    context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.nosource"));
                 }
             }
         }

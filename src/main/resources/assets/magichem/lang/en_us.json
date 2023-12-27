@@ -209,6 +209,8 @@
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",
   "tooltip.magichem.admixtureformula": "Formula:",
+  "tooltip.magichem.powerspike": "Transfers energy from a Circle of Power.",
+  "tooltip.magichem.powerspike.target": "Drawing FE from",
 
   "tooltip.magichem.antessence": "A Stranger of no House or Wheel",
   "tooltip.magichem.nulla": "A Stranger of no House or Wheel",
@@ -231,6 +233,9 @@
   "tooltip.magichem.albedo": "Second of the House of Alchemy",
   "tooltip.magichem.citrinitas": "Third of the House of Alchemy",
   "tooltip.magichem.rubedo": "Last of the House of Alchemy",
+
+  "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
+  "log.magichem.powerspike.bind": "Power Spike bound to this Circle of Power.",
 
   "gui.magichem.typetofilter": "Filter...",
 
