@@ -1,7 +1,0 @@
-{
-  "type": "mna:crushing",
-  "tier": 3,
-  "input": "magichem:superheated_glass_pane",
-  "output": "minecraft:glass_bottle",
-  "output_quantity": 2
-}

@@ -1,10 +1,8 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.item.AdmixtureItem;
-import com.aranaira.magichem.item.EssentiaItem;
-import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.item.WarpedCatalystItem;
+import com.aranaira.magichem.item.*;
+import com.mna.items.runes.ItemRunePattern;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -61,6 +59,10 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> ALCHEMICAL_WASTE = ITEMS.register("alchemical_waste",
             () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> BOTTLE_MOLD = ITEMS.register("bottle_mold",
+            BottleMoldItem::new
     );
 
     public static final RegistryObject<Item> SUPERHEATED_GLASS_PANE = ITEMS.register("superheated_glass_pane",

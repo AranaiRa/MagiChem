@@ -1,0 +1,9 @@
+{
+	"type": "mna:runeforging",
+	"tier": 3,
+	"material": "magichem:superheated_glass_pane",
+	"hits": 1,
+	"pattern": "magichem:superheated_glass_pane",
+	"output": "minecraft:glass_bottle",
+	"output_quantity": 2
+}

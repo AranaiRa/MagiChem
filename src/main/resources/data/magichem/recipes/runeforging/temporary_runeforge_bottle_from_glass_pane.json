@@ -1,0 +1,9 @@
+{
+	"type": "mna:runeforging",
+	"tier": 2,
+	"material": "minecraft:glass_pane",
+	"hits": 4,
+	"pattern": "minecraft:glass_pane",
+	"output": "minecraft:glass_bottle",
+	"output_quantity": 2
+}
