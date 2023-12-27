@@ -182,10 +182,12 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             return;
         }
 
-        processReagent(level, pos, state, entity, 1);
-        processReagent(level, pos, state, entity, 2);
+        if(entity.ENERGY_STORAGE.getEnergyStored() < getEnergyLimit(entity)) {
+            processReagent(level, pos, state, entity, 1);
+            processReagent(level, pos, state, entity, 2);
 
-        generatePower(entity);
+            generatePower(entity);
+        }
     }
 
     private static void processReagent(Level level, BlockPos pos, BlockState state, CirclePowerBlockEntity entity, int tier) {
@@ -242,6 +244,18 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         return -1;
     }
 
+    public static int getEnergyLimit(CirclePowerBlockEntity entity) {
+        int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
+
+        int reagentCount = 0;
+        if(entity.progressReagentTier1 > 0) reagentCount++;
+        if(entity.progressReagentTier2 > 0) reagentCount++;
+        if(entity.progressReagentTier3 > 0) reagentCount++;
+        if(entity.progressReagentTier4 > 0) reagentCount++;
+
+        return getGenRate(reagentCount) * Config.circlePowerBuffer;
+    }
+
     private static boolean hasReagent(int reagentTier, CirclePowerBlockEntity entity) {
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i=0; i<entity.itemHandler.getSlots(); i++) {
@@ -289,14 +303,19 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         if(entity.progressReagentTier3 > 0) reagentCount++;
         if(entity.progressReagentTier4 > 0) reagentCount++;
 
+        int genRate = getGenRate(reagentCount);
+
+        cap = genRate * Config.circlePowerBuffer;
+        entity.ENERGY_STORAGE.receiveEnergy(genRate, false);
+        if (currentEnergy + genRate > cap) entity.ENERGY_STORAGE.setEnergy(cap);
+    }
+
+    private static int getGenRate(int reagentCount) {
         int genRate = 0;
         if(reagentCount == 1) genRate = Config.circlePowerGen1Reagent;
         else if(reagentCount == 2) genRate = Config.circlePowerGen2Reagent;
         else if(reagentCount == 3) genRate = Config.circlePowerGen3Reagent;
         else if(reagentCount == 4) genRate = Config.circlePowerGen4Reagent;
-
-        cap = genRate * Config.circlePowerBuffer;
-        entity.ENERGY_STORAGE.receiveEnergy(genRate, false);
-        if (currentEnergy + genRate > cap) entity.ENERGY_STORAGE.setEnergy(cap);
+        return genRate;
     }
 }
