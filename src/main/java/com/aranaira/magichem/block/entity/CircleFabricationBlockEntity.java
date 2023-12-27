@@ -409,10 +409,9 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
-            int actualReceive = maxReceive;
 
-            if (maxReceive > getPowerDraw() * Config.circlePowerBuffer)
-                actualReceive = getPowerDraw() * Config.circlePowerBuffer;
+            int powerToLimit = Math.max(0, (getPowerDraw() * Config.circlePowerBuffer) - getEnergyStored());
+            int actualReceive = Math.min(maxReceive, powerToLimit);
 
             return super.receiveEnergy(actualReceive, simulate);
         }
