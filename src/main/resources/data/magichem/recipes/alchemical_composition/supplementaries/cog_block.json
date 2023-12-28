@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:cog_block" },
+  "components": [
+    { "item": "magichem:admixture_energy", "count": 26 },
+    { "item": "magichem:admixture_metal", "count": 16 },
+    { "item": "magichem:admixture_change", "count": 9 },
+    { "item": "magichem:admixture_industry", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:soap_block" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 18 },
+    { "item": "magichem:admixture_filth", "count": 27 },
+    { "item": "magichem:admixture_odors", "count": 18 },
+    { "item": "magichem:admixture_instrument", "count": 9 },
+    { "item": "magichem:essentia_wrought", "count": 18 }
+  ]
+}

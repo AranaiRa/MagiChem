@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "supplementaries:lapis_bricks_slab" },
+  "components": [
+    { "item": "magichem:admixture_memory", "count": 8 },
+    { "item": "magichem:essentia_mineral", "count": 8 },
+    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 1 }
+  ]
+}

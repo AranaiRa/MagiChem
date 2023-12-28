@@ -2,10 +2,9 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:soul_torch" },
+  "object": { "item": "supplementaries:sconce_lever" },
   "components": [
     { "item": "magichem:admixture_light", "count": 1 },
-    { "item": "magichem:admixture_death", "count": 1 },
-    { "item": "magichem:admixture_demon", "count": 1 }
+    { "item": "magichem:admixture_instrument", "count": 1 }
   ]
 }

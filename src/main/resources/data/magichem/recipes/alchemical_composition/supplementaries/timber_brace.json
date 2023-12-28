@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.25,
+  "object": { "item": "supplementaries:timber_brace" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 }
+  ]
+}

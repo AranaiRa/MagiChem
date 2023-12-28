@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:candle_holder_black" },
+  "components": [
+    { "item": "magichem:admixture_light", "count": 2 },
+    { "item": "magichem:admixture_change", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_nectar", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 4 }
+  ]
+}

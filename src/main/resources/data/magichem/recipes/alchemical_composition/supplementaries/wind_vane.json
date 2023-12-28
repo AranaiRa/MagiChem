@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:wind_vane" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 19 },
+    { "item": "magichem:admixture_storm", "count": 12 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

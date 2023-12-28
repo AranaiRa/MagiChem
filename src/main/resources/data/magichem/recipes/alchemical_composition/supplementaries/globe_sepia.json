@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:globe_sepia" },
+  "components": [
+    { "item": "magichem:admixture_history", "count": 41 },
+    { "item": "magichem:admixture_realm", "count": 33 },
+    { "item": "magichem:admixture_travel", "count": 28 },
+    { "item": "magichem:admixture_change", "count": 5 },
+    { "item": "magichem:essentia_precious", "count": 22 }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:clock_block" },
+  "components": [
+    { "item": "magichem:admixture_sound", "count": 2 },
+    { "item": "magichem:admixture_thought", "count": 2 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_precious", "count": 32 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

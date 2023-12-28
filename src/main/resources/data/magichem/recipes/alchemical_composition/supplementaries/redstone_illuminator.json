@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:redstone_illuminator" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 64 },
+    { "item": "magichem:admixture_light", "count": 42 },
+    { "item": "magichem:admixture_crystal", "count": 40 },
+    { "item": "magichem:admixture_alien", "count": 9 },
+    { "item": "magichem:admixture_industry", "count": 1 }
+  ]
+}

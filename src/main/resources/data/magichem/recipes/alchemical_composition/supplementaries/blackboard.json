@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:blackboard" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 12 },
+    { "item": "magichem:admixture_thought", "count": 3 },
+    { "item": "magichem:admixture_change", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

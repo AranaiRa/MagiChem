@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:pulley_block" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 1 },
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_industry", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

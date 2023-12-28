@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "supplementaries:ash_brick" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 4 },
+    { "item": "magichem:admixture_erosion", "count": 1 },
+    { "item": "magichem:admixture_death", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

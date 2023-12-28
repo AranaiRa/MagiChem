@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "supplementaries:hanging_sign_crimson" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_demon", "count": 1 },
+    { "item": "magichem:admixture_thought", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}
