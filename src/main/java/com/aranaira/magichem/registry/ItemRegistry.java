@@ -21,44 +21,44 @@ public class ItemRegistry {
     public static final DeferredRegister<Item> ESSENTIA = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
 
-    public static final RegistryObject<Item> SILVER_DUST = ITEMS.register("silver_dust",
-            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> SILVER_DUST = ITEMS.register("silver_dust",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> FOCUSING_CATALYST = ITEMS.register("focusing_catalyst",
-            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> FOCUSING_CATALYST = ITEMS.register("focusing_catalyst",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
     public static final RegistryObject<WarpedCatalystItem> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
             () -> new WarpedCatalystItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",
-            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> CATALYST_CORE = ITEMS.register("focusing_catalyst_core",
-            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> CATALYST_CORE = ITEMS.register("focusing_catalyst_core",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> CATALYST_CASING = ITEMS.register("focusing_catalyst_casing",
-            () -> new Item(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> CATALYST_CASING = ITEMS.register("focusing_catalyst_casing",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> IRIS_ARGENTI = ITEMS.register("iris_argenti",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> IRIS_ARGENTI = ITEMS.register("iris_argenti",
+            () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> MAGIC_CIRCLE = ITEMS.register("magic_circle",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> MAGIC_CIRCLE = ITEMS.register("magic_circle",
+            () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> TARNISHED_SILVER_LUMP = ITEMS.register("tarnished_silver_lump",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> TARNISHED_SILVER_LUMP = ITEMS.register("tarnished_silver_lump",
+            () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> ALCHEMICAL_WASTE = ITEMS.register("alchemical_waste",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> ALCHEMICAL_WASTE = ITEMS.register("alchemical_waste",
+            () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
     public static final RegistryObject<Item> BOTTLE_MOLD = ITEMS.register("bottle_mold",

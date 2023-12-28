@@ -3,6 +3,7 @@ package com.aranaira.magichem.item;
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
 import com.aranaira.magichem.registry.ItemRegistry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,6 +36,20 @@ public class WarpedCatalystItem extends Item {
         spawnBrokenParts(level, player);
 
         return super.use(level, player, hand);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.wasteproduct")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
+
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 
     private void spawnBrokenParts(Level level, Player player) {

@@ -6,6 +6,7 @@ import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.PowerSpikeBlock;
 import com.aranaira.magichem.item.PowerSpikeItem;
+import com.aranaira.magichem.item.TooltipLoreBlockItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -51,7 +52,7 @@ public class BlockRegistry {
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab tab) {
         switch(name) {
             case "power_spike": return ItemRegistry.ITEMS.register(name, () -> new PowerSpikeItem(block.get(), new Item.Properties().tab(tab)));
-            default: return ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+            default: return ItemRegistry.ITEMS.register(name, () -> new TooltipLoreBlockItem(block.get(), new Item.Properties().tab(tab)));
         }
     }
 
