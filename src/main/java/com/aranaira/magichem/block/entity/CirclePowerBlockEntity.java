@@ -182,11 +182,24 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             return;
         }
 
+        kickstart(entity);
+
         if(entity.ENERGY_STORAGE.getEnergyStored() < getEnergyLimit(entity)) {
             processReagent(level, pos, state, entity, 1);
             processReagent(level, pos, state, entity, 2);
 
             generatePower(entity);
+        }
+    }
+
+    private static void kickstart(CirclePowerBlockEntity entity) {
+        if(getProgressByTier(entity, 1) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == REAGENT_TIER1) {
+            entity.itemHandler.setStackInSlot(SLOT_REAGENT_1, ItemStack.EMPTY);
+            entity.incrementProgress(1);
+        }
+        if(getProgressByTier(entity, 2) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == REAGENT_TIER2) {
+            entity.itemHandler.setStackInSlot(SLOT_REAGENT_2, ItemStack.EMPTY);
+            entity.incrementProgress(2);
         }
     }
 
