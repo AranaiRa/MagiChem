@@ -3,6 +3,7 @@
 	"tier": 3,
 	"material": "magichem:superheated_glass_pane",
 	"hits": 1,
-	"pattern": "magichem:bottle_mold",
-	"output": "minecraft:glass_bottle"
+	"pattern": "magichem:superheated_glass_pane",
+	"output": "minecraft:glass_bottle",
+	"output_quantity": 2
 }

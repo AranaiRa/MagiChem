@@ -61,10 +61,6 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<Item> BOTTLE_MOLD = ITEMS.register("bottle_mold",
-            BottleMoldItem::new
-    );
-
     public static final RegistryObject<Item> SUPERHEATED_GLASS_PANE = ITEMS.register("superheated_glass_pane",
             () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );
