@@ -1,0 +1,14 @@
+{
+  "type": "mna:crushing",
+  "tier": 3,
+  "input": "magichem:focusing_catalyst_warped",
+  "output": "magichem:focusing_catalyst_core_depleted",
+  "output_quantity": 1,
+  "byproducts": [
+    {
+      "item": "magichem:focusing_catalyst_casing",
+      "chance": 1,
+      "count": 1
+    }
+  ]
+}
