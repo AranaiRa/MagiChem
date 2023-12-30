@@ -13,7 +13,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import joptsimple.util.KeyValuePair;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
@@ -25,8 +24,6 @@ import java.util.*;
 public class MateriaRegistry {
     public static final JsonObject ESSENTIA_JSON = getStreamAsJsonObject("/data/magichem/generator/essentia.json");
     public static final JsonObject ADMIXTURE_JSON = getStreamAsJsonObject("/data/magichem/generator/admixtures.json");
-
-    public static final HashMap<String, List<NameCountPair>> ADMIXTURE_DATAGEN = new HashMap<>();
 
     public static JsonObject getStreamAsJsonObject(String pPath) {
         return JsonParser.parseReader(new BufferedReader(new InputStreamReader(Objects.requireNonNull(MagiChemMod.class.getResourceAsStream(pPath))))).getAsJsonObject();
@@ -59,9 +56,6 @@ public class MateriaRegistry {
             JsonObject object = json.getAsJsonObject();
             String admixtureName = object.get("name").getAsString();
             String color = object.get("color").getAsString();
-
-            List<NameCountPair> datagenComponents = new ArrayList<>();
-
             JsonArray components = object.getAsJsonArray("components");
             List<NameCountPair> formulaE = new ArrayList<>();
             List<NameCountPair> formulaA = new ArrayList<>();
@@ -73,16 +67,13 @@ public class MateriaRegistry {
                 if(componentObject.has("essentia")) {
                     String componentName = componentObject.get("essentia").getAsString();
                     formulaE.add(new NameCountPair(componentName, componentCount));
-                    datagenComponents.add(new NameCountPair("essentia_"+componentName, componentCount));
                 }
                 else if(componentObject.has("admixture")) {
                     String componentName = componentObject.get("admixture").getAsString();
                     formulaA.add(new NameCountPair(componentName, componentCount));
-                    datagenComponents.add(new NameCountPair("admixture_"+componentName, componentCount));
                 }
-            }
 
-            ADMIXTURE_DATAGEN.put("admixture_"+admixtureName, datagenComponents);
+            }
 
             ItemRegistry.ADMIXTURES.register("admixture_"+admixtureName,
                     () -> new AdmixtureItem(admixtureName, color, formulaE, formulaA));
