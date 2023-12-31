@@ -194,7 +194,7 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
             //Parameter 0: Distill Only
             buf.writeBoolean(recipe.distillOnly);
 
-            //Parameter 1: Total number of component materia
+            //Parameter 1: Output Rate
             buf.writeFloat(recipe.outputRate);
 
             //Parameter 2: Alchemy Object
