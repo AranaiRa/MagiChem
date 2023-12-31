@@ -24,6 +24,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import static com.aranaira.magichem.block.entity.AlembicBlockEntity.PROGRESS_BAR_WIDTH;
+import static com.aranaira.magichem.block.entity.AlembicBlockEntity.SLOT_PROCESSING;
 
 public class AlembicMenu extends AbstractContainerMenu {
 
@@ -96,6 +97,7 @@ public class AlembicMenu extends AbstractContainerMenu {
     private static final int SLOT_INVENTORY_COUNT = 36;
     private static final int SLOT_BOTTLES = 36;
     private static final int SLOT_INPUT_BEGIN = 37;
+    private static final int SLOT_PROCESSING = 40;
     private static final int SLOT_OUTPUT_BEGIN = 41;
 
     @Override
@@ -129,6 +131,13 @@ public class AlembicMenu extends AbstractContainerMenu {
             }
             //try to move to input slots
             moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + AlembicBlockEntity.SLOT_INPUT_COUNT, false);
+            slots.get(pIndex).set(targetStackCopy);
+            return ItemStack.EMPTY;
+        }
+        //If processing slot
+        if(pIndex == SLOT_PROCESSING) {
+            //try to move to player inventory
+            moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
         }
