@@ -1,0 +1,18 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_bargain",
+  "components": [
+    {
+      "item": "admixture_fey",
+      "count": 2
+    },
+    {
+      "item": "admixture_instrument",
+      "count": 1
+    },
+    {
+      "item": "essentia_precious",
+      "count": 2
+    }
+  ]
+}

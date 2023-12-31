@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_nectar",
+  "components": [
+    {
+      "item": "essentia_water",
+      "count": 4
+    },
+    {
+      "item": "essentia_verdant",
+      "count": 2
+    }
+  ]
+}

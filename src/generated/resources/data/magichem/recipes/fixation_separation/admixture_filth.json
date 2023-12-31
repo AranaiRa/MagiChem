@@ -1,0 +1,26 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_filth",
+  "components": [
+    {
+      "item": "essentia_water",
+      "count": 2
+    },
+    {
+      "item": "essentia_earth",
+      "count": 2
+    },
+    {
+      "item": "essentia_fleshy",
+      "count": 1
+    },
+    {
+      "item": "essentia_verdant",
+      "count": 1
+    },
+    {
+      "item": "essentia_rotten",
+      "count": 1
+    }
+  ]
+}

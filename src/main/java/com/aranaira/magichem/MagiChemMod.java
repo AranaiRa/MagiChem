@@ -1,18 +1,17 @@
 package com.aranaira.magichem;
 
+import com.aranaira.magichem.datagen.FixationSeparationRecipeGenerator;
 import com.aranaira.magichem.gui.CircleFabricationScreen;
 import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.gui.AlembicScreen;
 import com.aranaira.magichem.gui.CirclePowerScreen;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
-import com.mna.api.tools.RLoc;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -60,6 +59,10 @@ public class MagiChemMod
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        //Only uncomment this nonsense if we need to generate the custom JSON files again
+        FixationSeparationRecipeGenerator.parseRecipeTable();
+        FixationSeparationRecipeGenerator.generateRecipes();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

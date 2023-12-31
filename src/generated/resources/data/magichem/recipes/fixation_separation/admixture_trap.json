@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_trap",
+  "components": [
+    {
+      "item": "essentia_rotten",
+      "count": 2
+    },
+    {
+      "item": "admixture_motion",
+      "count": 1
+    }
+  ]
+}

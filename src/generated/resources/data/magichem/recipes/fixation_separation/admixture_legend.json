@@ -1,0 +1,26 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_legend",
+  "components": [
+    {
+      "item": "admixture_history",
+      "count": 48
+    },
+    {
+      "item": "admixture_luck",
+      "count": 36
+    },
+    {
+      "item": "admixture_sorcery",
+      "count": 24
+    },
+    {
+      "item": "admixture_realm",
+      "count": 12
+    },
+    {
+      "item": "essentia_precious",
+      "count": 42
+    }
+  ]
+}

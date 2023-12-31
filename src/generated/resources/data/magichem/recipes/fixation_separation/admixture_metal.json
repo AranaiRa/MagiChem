@@ -1,0 +1,22 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_metal",
+  "components": [
+    {
+      "item": "essentia_earth",
+      "count": 4
+    },
+    {
+      "item": "essentia_fire",
+      "count": 4
+    },
+    {
+      "item": "essentia_wrought",
+      "count": 2
+    },
+    {
+      "item": "essentia_mineral",
+      "count": 2
+    }
+  ]
+}

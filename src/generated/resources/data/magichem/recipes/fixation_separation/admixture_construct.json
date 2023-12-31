@@ -1,0 +1,18 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_construct",
+  "components": [
+    {
+      "item": "admixture_stone",
+      "count": 4
+    },
+    {
+      "item": "admixture_motion",
+      "count": 2
+    },
+    {
+      "item": "admixture_thought",
+      "count": 1
+    }
+  ]
+}

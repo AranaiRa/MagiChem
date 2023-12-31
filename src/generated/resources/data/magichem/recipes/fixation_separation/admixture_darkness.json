@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_darkness",
+  "components": [
+    {
+      "item": "essentia_rotten",
+      "count": 2
+    },
+    {
+      "item": "admixture_light",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_protection",
+  "components": [
+    {
+      "item": "admixture_breath",
+      "count": 1
+    },
+    {
+      "item": "admixture_permanence",
+      "count": 1
+    },
+    {
+      "item": "essentia_wrought",
+      "count": 2
+    }
+  ]
+}

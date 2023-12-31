@@ -1,0 +1,18 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_vessel",
+  "components": [
+    {
+      "item": "essentia_air",
+      "count": 1
+    },
+    {
+      "item": "essentia_ender",
+      "count": 1
+    },
+    {
+      "item": "essentia_conceptual",
+      "count": 1
+    }
+  ]
+}

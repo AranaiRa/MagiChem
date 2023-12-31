@@ -1,0 +1,18 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_healing",
+  "components": [
+    {
+      "item": "admixture_nectar",
+      "count": 1
+    },
+    {
+      "item": "admixture_blood",
+      "count": 1
+    },
+    {
+      "item": "essentia_nourishing",
+      "count": 8
+    }
+  ]
+}

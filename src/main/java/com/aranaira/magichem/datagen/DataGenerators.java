@@ -1,6 +1,7 @@
 package com.aranaira.magichem.datagen;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -17,6 +18,6 @@ public class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
         generator.addProvider(true, new ItemModelGenerator(generator, existingFileHelper));
-        generator.addProvider(true, new LangGenerator(generator, "en_us"));
+        //generator.addProvider(true, new LangGenerator(generator, "en_us"));
     }
 }

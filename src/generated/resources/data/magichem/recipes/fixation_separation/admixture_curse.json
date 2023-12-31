@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_curse",
+  "components": [
+    {
+      "item": "admixture_sorcery",
+      "count": 1
+    },
+    {
+      "item": "essentia_rotten",
+      "count": 2
+    }
+  ]
+}

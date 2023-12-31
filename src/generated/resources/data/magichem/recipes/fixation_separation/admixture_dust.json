@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_dust",
+  "components": [
+    {
+      "item": "essentia_air",
+      "count": 4
+    },
+    {
+      "item": "essentia_mineral",
+      "count": 2
+    }
+  ]
+}

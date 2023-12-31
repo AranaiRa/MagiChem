@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_disaster",
+  "components": [
+    {
+      "item": "admixture_luck",
+      "count": 1
+    },
+    {
+      "item": "essentia_rotten",
+      "count": 2
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_wizard",
+  "components": [
+    {
+      "item": "essentia_arcane",
+      "count": 4
+    },
+    {
+      "item": "essentia_fleshy",
+      "count": 2
+    }
+  ]
+}

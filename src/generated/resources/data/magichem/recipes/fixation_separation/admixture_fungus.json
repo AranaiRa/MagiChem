@@ -1,0 +1,18 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_fungus",
+  "components": [
+    {
+      "item": "admixture_nectar",
+      "count": 1
+    },
+    {
+      "item": "admixture_filth",
+      "count": 1
+    },
+    {
+      "item": "essentia_nourishing",
+      "count": 2
+    }
+  ]
+}

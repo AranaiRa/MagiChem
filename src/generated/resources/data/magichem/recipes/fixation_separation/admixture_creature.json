@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_creature",
+  "components": [
+    {
+      "item": "admixture_blood",
+      "count": 1
+    },
+    {
+      "item": "admixture_breath",
+      "count": 1
+    }
+  ]
+}

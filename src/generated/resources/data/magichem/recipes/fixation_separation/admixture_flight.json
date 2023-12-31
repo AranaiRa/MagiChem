@@ -1,0 +1,18 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_flight",
+  "components": [
+    {
+      "item": "essentia_air",
+      "count": 8
+    },
+    {
+      "item": "admixture_travel",
+      "count": 1
+    },
+    {
+      "item": "admixture_creature",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_destruction",
+  "components": [
+    {
+      "item": "essentia_fire",
+      "count": 4
+    },
+    {
+      "item": "essentia_conceptual",
+      "count": 2
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": "admixture_potential",
+  "components": [
+    {
+      "item": "admixture_energy",
+      "count": 1
+    },
+    {
+      "item": "admixture_sleep",
+      "count": 1
+    }
+  ]
+}
