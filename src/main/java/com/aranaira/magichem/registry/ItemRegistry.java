@@ -29,8 +29,8 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
-    public static final RegistryObject<WarpedCatalystItem> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
-            () -> new WarpedCatalystItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+    public static final RegistryObject<TooltipLoreItem> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
     public static final RegistryObject<TooltipLoreItem> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",

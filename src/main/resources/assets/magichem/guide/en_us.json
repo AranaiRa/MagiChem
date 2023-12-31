@@ -913,13 +913,9 @@
             "color": "black"
           },
           {
-            "text": ".",
+            "text": ".\n\n",
             "bold": false,
             "color": "black"
-          },
-          {
-            "text": "\n\n",
-            "bold": false
           },
           {
             "text": "A Depleted Catalyst Core can be recharged into a Catalyst Core by smelting it in the Runeforge. This operation takes significantly longer than it normally takes to smelt an object.",

@@ -74,6 +74,16 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.WARPED_FOCUSING_CATALYST.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == ItemRegistry.IRIS_ARGENTI.get()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.irisargenti")
