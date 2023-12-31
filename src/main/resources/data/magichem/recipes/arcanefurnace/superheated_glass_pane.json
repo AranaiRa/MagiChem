@@ -4,5 +4,5 @@
 	"input": "minecraft:glass_pane",
 	"output": "magichem:superheated_glass_pane",
 	"outputQuantity": 1,
-	"burnTime": 200
+	"burnTime": 100
 }

@@ -894,7 +894,7 @@
         "value": "",
         "json": [
           {
-            "text": "Using the Warped Focusing Catalyst splits it into a ",
+            "text": "A Construct can grind apart a Warped Focusing Catalyst, separating the ",
             "color": "black"
           },
           {
@@ -903,7 +903,7 @@
             "color": "black"
           },
           {
-            "text": " and a ",
+            "text": " from the ",
             "bold": false,
             "color": "black"
           },
@@ -918,16 +918,8 @@
             "color": "black"
           },
           {
-            "text": "\n\n"
-          },
-          {
-            "text": "Creator’s Note: This step is temporary and means that this currently can’t be automated with constructs. A fix is upcoming when MnA updates.",
-            "italic": true,
-            "color": "black"
-          },
-          {
             "text": "\n\n",
-            "italic": false
+            "bold": false
           },
           {
             "text": "A Depleted Catalyst Core can be recharged into a Catalyst Core by smelting it in the Runeforge. This operation takes significantly longer than it normally takes to smelt an object.",
@@ -1010,6 +1002,32 @@
       {
         "type": "crafting",
         "location": "magichem:circle_power"
+      }
+    ]
+  },
+  "Superheated Glass Panes": {
+    "index": 0,
+    "category": "artifice",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Superheated Glass Panes"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "While a determined runesmith (or a construct) can create bottles efficiently on a runic anvil, the process could always be improved.\n\nSuperheating glass panes in a Runeforge before working them on the anvil reduces the number of strikes required from four to one."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "arcane_furnace",
+        "location": "magichem:arcanefurnace/superheated_glass_pane"
       }
     ]
   },
