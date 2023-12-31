@@ -28,9 +28,12 @@ public class AdmixtureItem extends MateriaItem {
     private final List<NameCountPair> formulaEssentiaPortions;
     private final List<NameCountPair> formulaAdmixturePortions;
 
-    public AdmixtureItem(String pName, String pColor, List<NameCountPair> pFormulaEssentia, List<NameCountPair> pFormulaAdmixtures) {
+    private final int depth;
+
+    public AdmixtureItem(String pName, String pColor, int pDepth, List<NameCountPair> pFormulaEssentia, List<NameCountPair> pFormulaAdmixtures) {
         super(pName, pColor, new Properties().tab(CreativeModeTabs.MAGICHEM_MATERIA_TAB));
         this.name = pName;
+        this.depth = depth;
         this.formulaEssentiaPortions = pFormulaEssentia;
         this.formulaAdmixturePortions = pFormulaAdmixtures;
     }
@@ -60,6 +63,10 @@ public class AdmixtureItem extends MateriaItem {
         } else {
             return constructDisplayFormula();
         }
+    }
+
+    public int getDepth() {
+        return depth;
     }
 
     @NotNull

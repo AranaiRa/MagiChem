@@ -3,6 +3,7 @@
     {
       "name": "alcohol",
       "color": "859c9b",
+      "depth": 2,
       "components": [
         { "essentia": "nourishing", "count": 2 },
         { "essentia": "wrought", "count": 2 },
@@ -12,6 +13,7 @@
     {
       "name": "alien",
       "color": "605175",
+      "depth": 1,
       "components": [
         { "essentia": "ender", "count": 4 },
         { "essentia": "fleshy", "count": 2 }
@@ -20,6 +22,7 @@
     {
       "name": "bargain",
       "color": "72b036",
+      "depth": 2,
       "components": [
         { "admixture": "fey", "count": 2 },
         { "admixture": "instrument", "count": 1 },
@@ -29,6 +32,7 @@
     {
       "name": "blood",
       "color": "711814",
+      "depth": 1,
       "components": [
         { "essentia": "water", "count": 4 },
         { "essentia": "fleshy", "count": 2 }
@@ -37,6 +41,7 @@
     {
       "name": "bone",
       "color": "a6a391",
+      "depth": 1,
       "components": [
         { "essentia": "earth", "count": 4 },
         { "essentia": "fleshy", "count": 2 }
@@ -45,6 +50,7 @@
     {
       "name": "breath",
       "color": "94d1da",
+      "depth": 1,
       "components": [
         { "essentia": "air", "count": 4 },
         { "essentia": "nourishing", "count": 2 }
@@ -53,6 +59,7 @@
     {
       "name": "change",
       "color": "4f987a",
+      "depth": 1,
       "components": [
         { "essentia": "water", "count": 4 },
         { "essentia": "conceptual", "count": 2 }
@@ -61,6 +68,7 @@
     {
       "name": "cold",
       "color": "b9d5d5",
+      "depth": 1,
       "components": [
         { "essentia": "fire", "count": 4 },
         { "essentia": "rotten", "count": 2 }
@@ -69,6 +77,7 @@
     {
       "name": "comfort",
       "color": "77536c",
+      "depth": 1,
       "components": [
         { "essentia": "water", "count": 4 },
         { "essentia": "nourishing", "count": 2 }
@@ -77,6 +86,7 @@
     {
       "name": "construct",
       "color": "385c52",
+      "depth": 2,
       "components": [
         { "admixture": "stone", "count": 4 },
         { "admixture": "motion", "count": 2 },
@@ -84,24 +94,27 @@
       ]
     },
     {
-      "name": "crystal",
-      "color": "73acaa",
-      "components": [
-        { "essentia": "arcane", "count": 4 },
-        { "essentia": "mineral", "count": 2 }
-      ]
-    },
-    {
       "name": "creature",
       "color": "b28383",
+      "depth": 2,
       "components": [
         { "admixture": "blood", "count": 1 },
         { "admixture": "breath", "count": 1 }
       ]
     },
     {
+      "name": "crystal",
+      "color": "73acaa",
+      "depth": 1,
+      "components": [
+        { "essentia": "arcane", "count": 4 },
+        { "essentia": "mineral", "count": 2 }
+      ]
+    },
+    {
       "name": "curse",
       "color": "140523",
+      "depth": 3,
       "components": [
         { "admixture": "sorcery", "count": 1 },
         { "essentia": "rotten", "count": 2 }
@@ -110,6 +123,7 @@
     {
       "name": "darkness",
       "color": "131418",
+      "depth": 2,
       "components": [
         { "essentia": "rotten", "count": 2 },
         { "admixture": "light", "count": 1 }
@@ -118,6 +132,7 @@
     {
       "name": "death",
       "color": "262b29",
+      "depth": 2,
       "components": [
         { "essentia": "rotten", "count": 2 },
         { "admixture": "breath", "count": 1 }
@@ -126,6 +141,7 @@
     {
       "name": "delight",
       "color": "f6ade2",
+      "depth": 2,
       "components": [
         { "admixture": "vessel", "count": 1 },
         { "essentia": "nourishing", "count": 2 },
@@ -135,6 +151,7 @@
     {
       "name": "demon",
       "color": "452e25",
+      "depth": 1,
       "components": [
         { "essentia": "fire", "count": 4 },
         { "essentia": "fleshy", "count": 2 }
@@ -143,6 +160,7 @@
     {
       "name": "destruction",
       "color": "370944",
+      "depth": 1,
       "components": [
         { "essentia": "fire", "count": 4 },
         { "essentia": "conceptual", "count": 2 }
@@ -151,6 +169,7 @@
     {
       "name": "disaster",
       "color": "a14b05",
+      "depth": 3,
       "components": [
         { "admixture": "luck", "count": 1 },
         { "essentia": "rotten", "count": 2 }
@@ -159,6 +178,7 @@
     {
       "name": "domestication",
       "color": "9bb835",
+      "depth": 3,
       "components": [
         { "admixture": "creature", "count": 1 },
         { "admixture": "trap", "count": 2 },
@@ -168,6 +188,7 @@
     {
       "name": "dust",
       "color": "393a3b",
+      "depth": 1,
       "components": [
         { "essentia": "air", "count": 4 },
         { "essentia": "mineral", "count": 2 }
@@ -176,6 +197,7 @@
     {
       "name": "energy",
       "color": "f6c95f",
+      "depth": 2,
       "components": [
         { "essentia": "wrought", "count": 2 },
         { "admixture": "storm", "count": 1 }
@@ -184,6 +206,7 @@
     {
       "name": "erosion",
       "color": "3a3c2d",
+      "depth": 1,
       "components": [
         { "essentia": "ender", "count": 2 },
         { "essentia": "mineral", "count": 4 },
@@ -193,6 +216,7 @@
     {
       "name": "exanimate",
       "color": "252909",
+      "depth": 3,
       "components": [
         { "admixture": "death", "count": 2 },
         { "admixture": "motion", "count": 1 },
@@ -202,6 +226,7 @@
     {
       "name": "fey",
       "color": "5ff6a2",
+      "depth": 1,
       "components": [
         { "essentia": "air", "count": 4 },
         { "essentia": "fleshy", "count": 2 }
@@ -210,6 +235,7 @@
     {
       "name": "filth",
       "color": "452607",
+      "depth": 1,
       "components": [
         { "essentia": "water", "count": 2 },
         { "essentia": "earth", "count": 2 },
@@ -221,6 +247,7 @@
     {
       "name": "flight",
       "color": "c3d5b5",
+      "depth": 3,
       "components": [
         { "essentia": "air", "count": 8 },
         { "admixture": "travel", "count": 1 },
@@ -230,6 +257,7 @@
     {
       "name": "fungus",
       "color": "ae8866",
+      "depth": 2,
       "components": [
         { "admixture": "nectar", "count": 1 },
         { "admixture": "filth", "count": 1 },
@@ -239,6 +267,7 @@
     {
       "name": "healing",
       "color": "f54c4c",
+      "depth": 2,
       "components": [
         { "admixture": "nectar", "count": 1 },
         { "admixture": "blood", "count": 1 },
@@ -248,6 +277,7 @@
     {
       "name": "history",
       "color": "8f7f73",
+      "depth": 3,
       "components": [
         { "admixture": "permanence", "count": 7 },
         { "admixture": "memory", "count": 4 },
@@ -258,6 +288,7 @@
     {
       "name": "industry",
       "color": "30326e",
+      "depth": 3,
       "components": [
         { "admixture": "thought", "count": 1 },
         { "admixture": "instrument", "count": 1 },
@@ -268,6 +299,7 @@
     {
       "name": "instrument",
       "color": "6a6dd4",
+      "depth": 2,
       "components": [
         { "essentia": "wrought", "count": 2 },
         { "admixture": "thought", "count": 1 },
@@ -277,6 +309,7 @@
     {
       "name": "legend",
       "color": "a2882d",
+      "depth": 4,
       "components": [
         { "admixture": "history", "count": 48 },
         { "admixture": "luck", "count": 36 },
@@ -288,6 +321,7 @@
     {
       "name": "lies",
       "color": "a57994",
+      "depth": 2,
       "components": [
         { "essentia": "rotten", "count": 2 },
         { "admixture": "thought", "count": 1 }
@@ -296,6 +330,7 @@
     {
       "name": "light",
       "color": "fff7a1",
+      "depth": 1,
       "components": [
         { "essentia": "fire", "count": 4 },
         { "essentia": "nourishing", "count": 2 }
@@ -304,6 +339,7 @@
     {
       "name": "luck",
       "color": "099430",
+      "depth": 2,
       "components": [
         { "admixture": "fey", "count": 2 },
         { "admixture": "comfort", "count": 1 },
@@ -313,6 +349,7 @@
     {
       "name": "mana",
       "color": "23a1d6",
+      "depth": 1,
       "components": [
         { "essentia": "arcane", "count": 4 },
         { "essentia": "nourishing", "count": 2 }
@@ -321,6 +358,7 @@
     {
       "name": "memory",
       "color": "7cd623",
+      "depth": 2,
       "components": [
         { "essentia": "precious", "count": 2 },
         { "admixture": "thought", "count": 1 }
@@ -329,6 +367,7 @@
     {
       "name": "metal",
       "color": "9e9ea5",
+      "depth": 1,
       "components": [
         { "essentia": "earth", "count": 4 },
         { "essentia": "fire", "count": 4 },
@@ -339,6 +378,7 @@
     {
       "name": "motion",
       "color": "6786bf",
+      "depth": 1,
       "components": [
         { "essentia": "air", "count": 4 },
         { "essentia": "conceptual", "count": 2 }
@@ -347,6 +387,7 @@
     {
       "name": "nectar",
       "color": "90731c",
+      "depth": 1,
       "components": [
         { "essentia": "water", "count": 4 },
         { "essentia": "verdant", "count": 2 }
@@ -355,6 +396,7 @@
     {
       "name": "odors",
       "color": "235cbf",
+      "depth": 2,
       "components": [
         { "essentia": "water", "count": 4 },
         { "essentia": "air", "count": 8 },
@@ -364,6 +406,7 @@
     {
       "name": "permanence",
       "color": "756f0b",
+      "depth": 1,
       "components": [
         { "essentia": "earth", "count": 4 },
         { "essentia": "conceptual", "count": 2 }
@@ -372,6 +415,7 @@
     {
       "name": "plant",
       "color": "2f5f3d",
+      "depth": 2,
       "components": [
         { "essentia": "verdant", "count": 2 },
         { "admixture": "nectar", "count": 1 },
@@ -381,6 +425,7 @@
     {
       "name": "poison",
       "color": "475c3b",
+      "depth": 1,
       "components": [
         { "essentia": "water", "count": 4 },
         { "essentia": "rotten", "count": 2 }
@@ -389,6 +434,7 @@
     {
       "name": "potential",
       "color": "cda2bf",
+      "depth": 4,
       "components": [
         { "admixture": "energy", "count": 1 },
         { "admixture": "sleep", "count": 1 }
@@ -397,6 +443,7 @@
     {
       "name": "protection",
       "color": "566b88",
+      "depth": 2,
       "components": [
         { "admixture": "breath", "count": 1 },
         { "admixture": "permanence", "count": 1 },
@@ -406,6 +453,7 @@
     {
       "name": "realm",
       "color": "387293",
+      "depth": 1,
       "components": [
         { "essentia": "earth", "count": 4 },
         { "essentia": "water", "count": 4 },
@@ -417,6 +465,7 @@
     {
       "name": "sleep",
       "color": "494257",
+      "depth": 3,
       "components": [
         { "admixture": "creature", "count": 1 },
         { "admixture": "darkness", "count": 1 },
@@ -424,17 +473,9 @@
       ]
     },
     {
-      "name": "sound",
-      "color": "570b2f",
-      "components": [
-        { "admixture": "thought", "count": 1 },
-        { "admixture": "motion", "count": 2 },
-        { "essentia": "air", "count": 2 }
-      ]
-    },
-    {
       "name": "sorcery",
       "color": "af50d7",
+      "depth": 2,
       "components": [
         { "admixture": "wizard", "count": 1 },
         { "admixture": "mana", "count": 6 },
@@ -442,8 +483,19 @@
       ]
     },
     {
+      "name": "sound",
+      "color": "570b2f",
+      "depth": 2,
+      "components": [
+        { "admixture": "thought", "count": 1 },
+        { "admixture": "motion", "count": 2 },
+        { "essentia": "air", "count": 2 }
+      ]
+    },
+    {
       "name": "spirit",
       "color": "5b119d",
+      "depth": 2,
       "components": [
         { "essentia": "ender", "count": 8 },
         { "essentia": "fire", "count": 4 },
@@ -454,6 +506,7 @@
     {
       "name": "stone",
       "color": "4f545c",
+      "depth": 1,
       "components": [
         { "essentia": "earth", "count": 4 },
         { "essentia": "mineral", "count": 2 }
@@ -462,6 +515,7 @@
     {
       "name": "storm",
       "color": "394149",
+      "depth": 1,
       "components": [
         { "essentia": "fire", "count": 6 },
         { "essentia": "air", "count": 2 },
@@ -471,6 +525,7 @@
     {
       "name": "thought",
       "color": "786cb2",
+      "depth": 1,
       "components": [
         { "essentia": "arcane", "count": 4 },
         { "essentia": "conceptual", "count": 2 }
@@ -479,6 +534,7 @@
     {
       "name": "trap",
       "color": "4a4842",
+      "depth": 2,
       "components": [
         { "essentia": "rotten", "count": 2 },
         { "admixture": "motion", "count": 1 }
@@ -487,6 +543,7 @@
     {
       "name": "travel",
       "color": "478e78",
+      "depth": 2,
       "components": [
         { "essentia": "earth", "count": 4 },
         { "admixture": "motion", "count": 2 },
@@ -496,6 +553,7 @@
     {
       "name": "vessel",
       "color": "798873",
+      "depth": 1,
       "components": [
         { "essentia": "air", "count": 1 },
         { "essentia": "ender", "count": 1 },
@@ -505,6 +563,7 @@
     {
       "name": "violence",
       "color": "683b1e",
+      "depth": 2,
       "components": [
         { "admixture": "thought", "count": 1 },
         { "admixture": "destruction", "count": 1 }
@@ -513,6 +572,7 @@
     {
       "name": "witchcraft",
       "color": "445143",
+      "depth": 3,
       "components": [
         { "admixture": "plant", "count": 3 },
         { "admixture": "crystal", "count": 1 },
@@ -522,6 +582,7 @@
     {
       "name": "wizard",
       "color": "9959d5",
+      "depth": 1,
       "components": [
         { "essentia": "arcane", "count": 4 },
         { "essentia": "fleshy", "count": 2 }

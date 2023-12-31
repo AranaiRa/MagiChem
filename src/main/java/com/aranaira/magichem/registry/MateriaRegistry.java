@@ -56,6 +56,7 @@ public class MateriaRegistry {
             JsonObject object = json.getAsJsonObject();
             String admixtureName = object.get("name").getAsString();
             String color = object.get("color").getAsString();
+            int depth = object.get("depth").getAsInt();
             JsonArray components = object.getAsJsonArray("components");
             List<NameCountPair> formulaE = new ArrayList<>();
             List<NameCountPair> formulaA = new ArrayList<>();
@@ -76,7 +77,7 @@ public class MateriaRegistry {
             }
 
             ItemRegistry.ADMIXTURES.register("admixture_"+admixtureName,
-                    () -> new AdmixtureItem(admixtureName, color, formulaE, formulaA));
+                    () -> new AdmixtureItem(admixtureName, color, depth, formulaE, formulaA));
             RegistryObject<Item> registryObject = ItemRegistry.getRegistryObject(ItemRegistry.ADMIXTURES, "admixture_"+admixtureName);
         }
     }
