@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_sound",
+  "object": {
+    "item": "magichem:admixture_sound"
+  },
   "components": [
     {
-      "item": "admixture_thought",
+      "item": "magichem:admixture_thought",
       "count": 1
     },
     {
-      "item": "admixture_motion",
+      "item": "magichem:admixture_motion",
       "count": 2
     },
     {
-      "item": "essentia_air",
+      "item": "magichem:essentia_air",
       "count": 2
     }
   ]

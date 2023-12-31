@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_exanimate",
+  "object": {
+    "item": "magichem:admixture_exanimate"
+  },
   "components": [
     {
-      "item": "admixture_death",
+      "item": "magichem:admixture_death",
       "count": 2
     },
     {
-      "item": "admixture_motion",
+      "item": "magichem:admixture_motion",
       "count": 1
     },
     {
-      "item": "essentia_rotten",
+      "item": "magichem:essentia_rotten",
       "count": 2
     }
   ]

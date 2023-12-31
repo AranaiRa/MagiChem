@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_plant",
+  "object": {
+    "item": "magichem:admixture_plant"
+  },
   "components": [
     {
-      "item": "essentia_verdant",
+      "item": "magichem:essentia_verdant",
       "count": 2
     },
     {
-      "item": "admixture_nectar",
+      "item": "magichem:admixture_nectar",
       "count": 1
     },
     {
-      "item": "admixture_breath",
+      "item": "magichem:admixture_breath",
       "count": 1
     }
   ]

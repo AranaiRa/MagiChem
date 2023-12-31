@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_storm",
+  "object": {
+    "item": "magichem:admixture_storm"
+  },
   "components": [
     {
-      "item": "essentia_fire",
+      "item": "magichem:essentia_fire",
       "count": 6
     },
     {
-      "item": "essentia_air",
+      "item": "magichem:essentia_air",
       "count": 2
     },
     {
-      "item": "essentia_verdant",
+      "item": "magichem:essentia_verdant",
       "count": 2
     }
   ]

@@ -65,7 +65,7 @@ public class FixationSeparationRecipeGenerator {
             JsonArrayBuilder componentsArray = Json.createArrayBuilder();
             for(NameCountPair ncp : ard.getComponents()) {
                 componentsArray.add(Json.createObjectBuilder()
-                        .add("item", ncp.getName())
+                        .add("item", MagiChemMod.MODID + ":" + ncp.getName())
                         .add("count", ncp.getCount())
                         .build()
                 );
@@ -74,7 +74,8 @@ public class FixationSeparationRecipeGenerator {
             JsonBuilderFactory factory = Json.createBuilderFactory(config);
             javax.json.JsonObject output = factory.createObjectBuilder()
                     .add("type", "magichem:fixation_separation")
-                    .add("object", ard.getAdmixture())
+                    .add("object", Json.createObjectBuilder()
+                            .add("item", MagiChemMod.MODID + ":" + ard.getAdmixture()))
                     .add("components", componentsArray.build())
                     .build();
 

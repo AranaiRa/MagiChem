@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_comfort",
+  "object": {
+    "item": "magichem:admixture_comfort"
+  },
   "components": [
     {
-      "item": "essentia_water",
+      "item": "magichem:essentia_water",
       "count": 4
     },
     {
-      "item": "essentia_nourishing",
+      "item": "magichem:essentia_nourishing",
       "count": 2
     }
   ]

@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_stone",
+  "object": {
+    "item": "magichem:admixture_stone"
+  },
   "components": [
     {
-      "item": "essentia_earth",
+      "item": "magichem:essentia_earth",
       "count": 4
     },
     {
-      "item": "essentia_mineral",
+      "item": "magichem:essentia_mineral",
       "count": 2
     }
   ]

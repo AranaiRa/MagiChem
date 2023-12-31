@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_witchcraft",
+  "object": {
+    "item": "magichem:admixture_witchcraft"
+  },
   "components": [
     {
-      "item": "admixture_plant",
+      "item": "magichem:admixture_plant",
       "count": 3
     },
     {
-      "item": "admixture_crystal",
+      "item": "magichem:admixture_crystal",
       "count": 1
     },
     {
-      "item": "admixture_blood",
+      "item": "magichem:admixture_blood",
       "count": 1
     }
   ]

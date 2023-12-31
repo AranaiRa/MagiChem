@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_memory",
+  "object": {
+    "item": "magichem:admixture_memory"
+  },
   "components": [
     {
-      "item": "essentia_precious",
+      "item": "magichem:essentia_precious",
       "count": 2
     },
     {
-      "item": "admixture_thought",
+      "item": "magichem:admixture_thought",
       "count": 1
     }
   ]

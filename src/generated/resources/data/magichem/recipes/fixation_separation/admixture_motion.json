@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_motion",
+  "object": {
+    "item": "magichem:admixture_motion"
+  },
   "components": [
     {
-      "item": "essentia_air",
+      "item": "magichem:essentia_air",
       "count": 4
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 2
     }
   ]

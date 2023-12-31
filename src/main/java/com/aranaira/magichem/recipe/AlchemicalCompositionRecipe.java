@@ -161,7 +161,7 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
                 if(matQuery != null) {
                     ing = new ItemStack(matQuery);
                 } else {
-                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for recipe \""+pRecipeId);
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for alchemical_composition recipe \""+pRecipeId);
                 }
 
                 if(element.getAsJsonObject().has("count"))

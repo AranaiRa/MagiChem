@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_odors",
+  "object": {
+    "item": "magichem:admixture_odors"
+  },
   "components": [
     {
-      "item": "essentia_water",
+      "item": "magichem:essentia_water",
       "count": 4
     },
     {
-      "item": "essentia_air",
+      "item": "magichem:essentia_air",
       "count": 8
     },
     {
-      "item": "admixture_nectar",
+      "item": "magichem:admixture_nectar",
       "count": 1
     }
   ]

@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_domestication",
+  "object": {
+    "item": "magichem:admixture_domestication"
+  },
   "components": [
     {
-      "item": "admixture_creature",
+      "item": "magichem:admixture_creature",
       "count": 1
     },
     {
-      "item": "admixture_trap",
+      "item": "magichem:admixture_trap",
       "count": 2
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 2
     }
   ]

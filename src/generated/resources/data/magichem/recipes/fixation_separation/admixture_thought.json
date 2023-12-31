@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_thought",
+  "object": {
+    "item": "magichem:admixture_thought"
+  },
   "components": [
     {
-      "item": "essentia_arcane",
+      "item": "magichem:essentia_arcane",
       "count": 4
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 2
     }
   ]

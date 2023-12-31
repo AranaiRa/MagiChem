@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_blood",
+  "object": {
+    "item": "magichem:admixture_blood"
+  },
   "components": [
     {
-      "item": "essentia_water",
+      "item": "magichem:essentia_water",
       "count": 4
     },
     {
-      "item": "essentia_fleshy",
+      "item": "magichem:essentia_fleshy",
       "count": 2
     }
   ]

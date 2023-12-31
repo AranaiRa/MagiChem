@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_death",
+  "object": {
+    "item": "magichem:admixture_death"
+  },
   "components": [
     {
-      "item": "essentia_rotten",
+      "item": "magichem:essentia_rotten",
       "count": 2
     },
     {
-      "item": "admixture_breath",
+      "item": "magichem:admixture_breath",
       "count": 1
     }
   ]

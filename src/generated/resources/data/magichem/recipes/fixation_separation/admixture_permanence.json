@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_permanence",
+  "object": {
+    "item": "magichem:admixture_permanence"
+  },
   "components": [
     {
-      "item": "essentia_earth",
+      "item": "magichem:essentia_earth",
       "count": 4
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 2
     }
   ]

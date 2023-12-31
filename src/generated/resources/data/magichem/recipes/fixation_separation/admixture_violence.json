@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_violence",
+  "object": {
+    "item": "magichem:admixture_violence"
+  },
   "components": [
     {
-      "item": "admixture_thought",
+      "item": "magichem:admixture_thought",
       "count": 1
     },
     {
-      "item": "admixture_destruction",
+      "item": "magichem:admixture_destruction",
       "count": 1
     }
   ]

@@ -1,25 +1,27 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_realm",
+  "object": {
+    "item": "magichem:admixture_realm"
+  },
   "components": [
     {
-      "item": "essentia_earth",
+      "item": "magichem:essentia_earth",
       "count": 4
     },
     {
-      "item": "essentia_water",
+      "item": "magichem:essentia_water",
       "count": 4
     },
     {
-      "item": "essentia_air",
+      "item": "magichem:essentia_air",
       "count": 4
     },
     {
-      "item": "essentia_fire",
+      "item": "magichem:essentia_fire",
       "count": 4
     },
     {
-      "item": "essentia_verdant",
+      "item": "magichem:essentia_verdant",
       "count": 8
     }
   ]

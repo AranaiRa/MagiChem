@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_poison",
+  "object": {
+    "item": "magichem:admixture_poison"
+  },
   "components": [
     {
-      "item": "essentia_water",
+      "item": "magichem:essentia_water",
       "count": 4
     },
     {
-      "item": "essentia_rotten",
+      "item": "magichem:essentia_rotten",
       "count": 2
     }
   ]

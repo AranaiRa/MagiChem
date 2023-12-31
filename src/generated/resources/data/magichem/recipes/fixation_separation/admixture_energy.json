@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_energy",
+  "object": {
+    "item": "magichem:admixture_energy"
+  },
   "components": [
     {
-      "item": "essentia_wrought",
+      "item": "magichem:essentia_wrought",
       "count": 2
     },
     {
-      "item": "admixture_storm",
+      "item": "magichem:admixture_storm",
       "count": 1
     }
   ]

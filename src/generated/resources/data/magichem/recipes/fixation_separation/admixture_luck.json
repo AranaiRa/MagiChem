@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_luck",
+  "object": {
+    "item": "magichem:admixture_luck"
+  },
   "components": [
     {
-      "item": "admixture_fey",
+      "item": "magichem:admixture_fey",
       "count": 2
     },
     {
-      "item": "admixture_comfort",
+      "item": "magichem:admixture_comfort",
       "count": 1
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 2
     }
   ]

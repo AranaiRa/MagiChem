@@ -1,21 +1,23 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_metal",
+  "object": {
+    "item": "magichem:admixture_metal"
+  },
   "components": [
     {
-      "item": "essentia_earth",
+      "item": "magichem:essentia_earth",
       "count": 4
     },
     {
-      "item": "essentia_fire",
+      "item": "magichem:essentia_fire",
       "count": 4
     },
     {
-      "item": "essentia_wrought",
+      "item": "magichem:essentia_wrought",
       "count": 2
     },
     {
-      "item": "essentia_mineral",
+      "item": "magichem:essentia_mineral",
       "count": 2
     }
   ]

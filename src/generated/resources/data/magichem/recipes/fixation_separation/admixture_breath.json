@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_breath",
+  "object": {
+    "item": "magichem:admixture_breath"
+  },
   "components": [
     {
-      "item": "essentia_air",
+      "item": "magichem:essentia_air",
       "count": 4
     },
     {
-      "item": "essentia_nourishing",
+      "item": "magichem:essentia_nourishing",
       "count": 2
     }
   ]

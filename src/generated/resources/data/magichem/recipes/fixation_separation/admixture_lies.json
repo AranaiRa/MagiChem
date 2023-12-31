@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_lies",
+  "object": {
+    "item": "magichem:admixture_lies"
+  },
   "components": [
     {
-      "item": "essentia_rotten",
+      "item": "magichem:essentia_rotten",
       "count": 2
     },
     {
-      "item": "admixture_thought",
+      "item": "magichem:admixture_thought",
       "count": 1
     }
   ]

@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_alcohol",
+  "object": {
+    "item": "magichem:admixture_alcohol"
+  },
   "components": [
     {
-      "item": "essentia_nourishing",
+      "item": "magichem:essentia_nourishing",
       "count": 2
     },
     {
-      "item": "essentia_wrought",
+      "item": "magichem:essentia_wrought",
       "count": 2
     },
     {
-      "item": "admixture_poison",
+      "item": "magichem:admixture_poison",
       "count": 1
     }
   ]

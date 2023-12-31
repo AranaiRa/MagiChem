@@ -100,13 +100,13 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
     public static class Type implements RecipeType<FixationSeparationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "fixation";
+        public static final String ID = "fixation_separation";
     }
 
     public static class Serializer implements RecipeSerializer<FixationSeparationRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(MagiChemMod.MODID, "fixation");
+                new ResourceLocation(MagiChemMod.MODID, "fixation_separation");
         private static final HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(true, true);
 
         @Override
@@ -127,7 +127,7 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
                 if(matQuery != null) {
                     ing = new ItemStack(matQuery);
                 } else {
-                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for recipe \""+pRecipeId);
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for fixation_separation recipe \""+pRecipeId);
                 }
 
                 if(element.getAsJsonObject().has("count"))
@@ -155,13 +155,13 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
         @Override
         public void toNetwork(FriendlyByteBuf buf, FixationSeparationRecipe recipe) {
 
-            //Parameter 2: Alchemy Object
+            //Parameter 1: Alchemy Object
             buf.writeItemStack(recipe.resultAdmixture, true);
 
-            //Parameter 3: Total number of component materia
+            //Parameter 2: Total number of component materia
             buf.writeFloat(recipe.componentMateria.size());
 
-            //Parameter 4...: Component materia
+            //Parameter 3...: Component materia
             for(ItemStack stack : recipe.componentMateria) {
                 buf.writeItemStack(stack, true);
             }

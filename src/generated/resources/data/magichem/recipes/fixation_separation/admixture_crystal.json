@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_crystal",
+  "object": {
+    "item": "magichem:admixture_crystal"
+  },
   "components": [
     {
-      "item": "essentia_arcane",
+      "item": "magichem:essentia_arcane",
       "count": 4
     },
     {
-      "item": "essentia_mineral",
+      "item": "magichem:essentia_mineral",
       "count": 2
     }
   ]

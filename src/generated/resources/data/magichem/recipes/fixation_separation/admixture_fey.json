@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_fey",
+  "object": {
+    "item": "magichem:admixture_fey"
+  },
   "components": [
     {
-      "item": "essentia_air",
+      "item": "magichem:essentia_air",
       "count": 4
     },
     {
-      "item": "essentia_fleshy",
+      "item": "magichem:essentia_fleshy",
       "count": 2
     }
   ]

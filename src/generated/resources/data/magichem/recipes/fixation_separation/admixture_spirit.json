@@ -1,21 +1,23 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_spirit",
+  "object": {
+    "item": "magichem:admixture_spirit"
+  },
   "components": [
     {
-      "item": "essentia_ender",
+      "item": "magichem:essentia_ender",
       "count": 8
     },
     {
-      "item": "essentia_fire",
+      "item": "magichem:essentia_fire",
       "count": 4
     },
     {
-      "item": "admixture_breath",
+      "item": "magichem:admixture_breath",
       "count": 3
     },
     {
-      "item": "essentia_precious",
+      "item": "magichem:essentia_precious",
       "count": 2
     }
   ]

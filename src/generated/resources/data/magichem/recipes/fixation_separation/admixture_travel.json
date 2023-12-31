@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_travel",
+  "object": {
+    "item": "magichem:admixture_travel"
+  },
   "components": [
     {
-      "item": "essentia_earth",
+      "item": "magichem:essentia_earth",
       "count": 4
     },
     {
-      "item": "admixture_motion",
+      "item": "magichem:admixture_motion",
       "count": 2
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 2
     }
   ]

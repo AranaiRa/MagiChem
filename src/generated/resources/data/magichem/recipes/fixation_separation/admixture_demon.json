@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_demon",
+  "object": {
+    "item": "magichem:admixture_demon"
+  },
   "components": [
     {
-      "item": "essentia_fire",
+      "item": "magichem:essentia_fire",
       "count": 4
     },
     {
-      "item": "essentia_fleshy",
+      "item": "magichem:essentia_fleshy",
       "count": 2
     }
   ]

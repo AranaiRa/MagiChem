@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_sorcery",
+  "object": {
+    "item": "magichem:admixture_sorcery"
+  },
   "components": [
     {
-      "item": "admixture_wizard",
+      "item": "magichem:admixture_wizard",
       "count": 1
     },
     {
-      "item": "admixture_mana",
+      "item": "magichem:admixture_mana",
       "count": 6
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 2
     }
   ]

@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_alien",
+  "object": {
+    "item": "magichem:admixture_alien"
+  },
   "components": [
     {
-      "item": "essentia_ender",
+      "item": "magichem:essentia_ender",
       "count": 4
     },
     {
-      "item": "essentia_fleshy",
+      "item": "magichem:essentia_fleshy",
       "count": 2
     }
   ]

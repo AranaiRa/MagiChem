@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_cold",
+  "object": {
+    "item": "magichem:admixture_cold"
+  },
   "components": [
     {
-      "item": "essentia_fire",
+      "item": "magichem:essentia_fire",
       "count": 4
     },
     {
-      "item": "essentia_rotten",
+      "item": "magichem:essentia_rotten",
       "count": 2
     }
   ]

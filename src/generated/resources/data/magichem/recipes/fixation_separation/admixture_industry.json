@@ -1,21 +1,23 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_industry",
+  "object": {
+    "item": "magichem:admixture_industry"
+  },
   "components": [
     {
-      "item": "admixture_thought",
+      "item": "magichem:admixture_thought",
       "count": 1
     },
     {
-      "item": "admixture_instrument",
+      "item": "magichem:admixture_instrument",
       "count": 1
     },
     {
-      "item": "admixture_energy",
+      "item": "magichem:admixture_energy",
       "count": 1
     },
     {
-      "item": "essentia_wrought",
+      "item": "magichem:essentia_wrought",
       "count": 4
     }
   ]

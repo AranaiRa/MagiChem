@@ -1,21 +1,23 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_history",
+  "object": {
+    "item": "magichem:admixture_history"
+  },
   "components": [
     {
-      "item": "admixture_permanence",
+      "item": "magichem:admixture_permanence",
       "count": 7
     },
     {
-      "item": "admixture_memory",
+      "item": "magichem:admixture_memory",
       "count": 4
     },
     {
-      "item": "admixture_lies",
+      "item": "magichem:admixture_lies",
       "count": 4
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 4
     }
   ]

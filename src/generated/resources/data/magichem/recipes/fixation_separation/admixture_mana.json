@@ -1,13 +1,15 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_mana",
+  "object": {
+    "item": "magichem:admixture_mana"
+  },
   "components": [
     {
-      "item": "essentia_arcane",
+      "item": "magichem:essentia_arcane",
       "count": 4
     },
     {
-      "item": "essentia_nourishing",
+      "item": "magichem:essentia_nourishing",
       "count": 2
     }
   ]

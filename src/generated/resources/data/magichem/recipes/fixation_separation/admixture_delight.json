@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_delight",
+  "object": {
+    "item": "magichem:admixture_delight"
+  },
   "components": [
     {
-      "item": "admixture_vessel",
+      "item": "magichem:admixture_vessel",
       "count": 1
     },
     {
-      "item": "essentia_nourishing",
+      "item": "magichem:essentia_nourishing",
       "count": 2
     },
     {
-      "item": "essentia_rotten",
+      "item": "magichem:essentia_rotten",
       "count": 2
     }
   ]

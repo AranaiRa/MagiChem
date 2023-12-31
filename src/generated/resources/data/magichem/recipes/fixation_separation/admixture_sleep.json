@@ -1,17 +1,19 @@
 {
   "type": "magichem:fixation_separation",
-  "object": "admixture_sleep",
+  "object": {
+    "item": "magichem:admixture_sleep"
+  },
   "components": [
     {
-      "item": "admixture_creature",
+      "item": "magichem:admixture_creature",
       "count": 1
     },
     {
-      "item": "admixture_darkness",
+      "item": "magichem:admixture_darkness",
       "count": 1
     },
     {
-      "item": "essentia_conceptual",
+      "item": "magichem:essentia_conceptual",
       "count": 2
     }
   ]
