@@ -61,8 +61,8 @@ public class MagiChemMod
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         //Only uncomment this nonsense if we need to generate the custom JSON files again
-        FixationSeparationRecipeGenerator.parseRecipeTable();
-        FixationSeparationRecipeGenerator.generateRecipes();
+        //FixationSeparationRecipeGenerator.parseRecipeTable();
+        //FixationSeparationRecipeGenerator.generateRecipes();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
