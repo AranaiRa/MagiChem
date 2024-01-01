@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:fabulous_pool" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 15 },
+    { "item": "magichem:admixture_vessel", "count": 9 },
+    { "item": "magichem:admixture_mana", "count": 3 },
+    { "item": "magichem:admixture_change", "count": 1 },
+    { "item": "magichem:essentia_verdant", "count": 10 }
+  ]
+}

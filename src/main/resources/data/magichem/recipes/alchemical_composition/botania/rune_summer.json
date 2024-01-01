@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:rune_summer" },
+  "components": [
+    { "item": "magichem:essentia_earth", "count": 36 },
+    { "item": "magichem:essentia_air", "count": 36 },
+    { "item": "magichem:admixture_storm", "count": 8 },
+    { "item": "magichem:admixture_mana", "count": 4 },
+    { "item": "magichem:admixture_stone", "count": 3 }
+  ]
+}

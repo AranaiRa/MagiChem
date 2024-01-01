@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:mana_diamond" },
+  "components": [
+    { "item": "magichem:admixture_mana", "count": 8 },
+    { "item": "magichem:admixture_crystal", "count": 6 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:essentia_precious", "count": 6 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

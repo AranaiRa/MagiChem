@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:runic_altar" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 15 },
+    { "item": "magichem:admixture_mana", "count": 10 },
+    { "item": "magichem:admixture_instrument", "count": 4 },
+    { "item": "magichem:essentia_verdant", "count": 10 }
+  ]
+}

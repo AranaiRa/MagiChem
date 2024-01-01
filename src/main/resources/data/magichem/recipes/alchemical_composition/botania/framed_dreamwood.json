@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.25,
+  "object": { "item": "botania:framed_dreamwood" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_fey", "count": 1 },
+    { "item": "magichem:essentia_verdant", "count": 2 }
+  ]
+}

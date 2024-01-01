@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:metamorphic_desert_stone_bricks" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 4 },
+    { "item": "magichem:admixture_change", "count": 1 },
+    { "item": "magichem:admixture_realm", "count": 1 },
+    { "item": "magichem:admixture_wrought", "count": 2 }
+  ]
+}

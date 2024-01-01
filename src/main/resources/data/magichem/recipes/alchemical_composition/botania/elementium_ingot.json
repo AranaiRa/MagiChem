@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "botania:elementium_ingot" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 6 },
+    { "item": "magichem:admixture_mana", "count": 5 },
+    { "item": "magichem:admixture_bargain", "count": 1 },
+    { "item": "magichem:essentia_verdant", "count": 2 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

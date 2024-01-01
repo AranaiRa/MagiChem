@@ -6,6 +6,7 @@
   "components": [
     { "item": "magichem:essentia_fire", "count": 22 },
     { "item": "magichem:admixture_violence", "count": 10 },
+    { "item": "magichem:admixture_disaster", "count": 6 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:mana_pearl" },
+  "components": [
+    { "item": "magichem:admixture_alien", "count": 16 },
+    { "item": "magichem:admixture_mana", "count": 13 },
+    { "item": "magichem:admixture_crystal", "count": 11 },
+    { "item": "magichem:essentia_precious", "count": 14 }
+  ]
+}
