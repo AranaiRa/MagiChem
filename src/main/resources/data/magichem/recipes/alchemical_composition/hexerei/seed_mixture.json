@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:seed_mixture" },
+  "components": [
+    { "item": "magichem:admixture_domestication", "count": 8 },
+    { "item": "magichem:admixture_witchcraft", "count": 6 },
+    { "item": "magichem:admixture_plant", "count": 4 },
+    { "item": "magichem:essentia_nourishing", "count": 2 }
+  ]
+}

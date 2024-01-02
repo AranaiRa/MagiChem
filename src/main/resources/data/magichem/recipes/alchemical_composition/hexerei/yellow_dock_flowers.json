@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:yellow_dock_flowers" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_change", "count": 1 },
+    { "item": "magichem:essentia_precious", "count": 2 }
+  ]
+}

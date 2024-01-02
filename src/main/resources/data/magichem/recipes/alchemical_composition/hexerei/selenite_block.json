@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:selenite_block" },
+  "components": [
+    { "item": "magichem:essentia_arcane", "count": 24 },
+    { "item": "magichem:admixture_crystal", "count": 8 },
+    { "item": "magichem:admixture_darkness", "count": 4 },
+    { "item": "magichem:admixture_light", "count": 4 }
+  ]
+}

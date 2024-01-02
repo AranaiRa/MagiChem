@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:brewery" },
+  "components": [
+    { "item": "magichem:admixture_mana", "count": 40 },
+    { "item": "magichem:admixture_stone", "count": 18 },
+    { "item": "magichem:admixture_sorcery", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 3 },
+    { "item": "magichem:essentia_verdant", "count": 2 }
+  ]
+}

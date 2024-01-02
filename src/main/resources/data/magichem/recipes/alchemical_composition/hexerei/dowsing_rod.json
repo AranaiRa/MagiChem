@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:dowsing_rod" },
+  "components": [
+    { "item": "magichem:admixture_travel", "count": 10 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

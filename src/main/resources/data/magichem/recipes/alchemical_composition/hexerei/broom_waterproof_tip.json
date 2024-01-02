@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:broom_waterproof_tip" },
+  "components": [
+    { "item": "magichem:essentia_water", "count": 64 },
+    { "item": "magichem:admixture_witchcraft", "count": 12 },
+    { "item": "magichem:admixture_crystal", "count": 32 },
+    { "item": "magichem:admixture_flight", "count": 8 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}

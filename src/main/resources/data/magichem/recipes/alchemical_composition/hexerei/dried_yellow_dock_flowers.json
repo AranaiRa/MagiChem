@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:dried_yellow_dock_flowers" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_change", "count": 1 },
+    { "item": "magichem:admixture_precious", "count": 1 },
+    { "item": "magichem:admixture_witchcraft", "count": 1 }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:herb_drying_rack" },
+  "components": [
+    { "item": "magichem:admixture_change", "count": 10 },
+    { "item": "magichem:admixture_instrument", "count": 8 },
+    { "item": "magichem:admixture_rotten", "count": 4 },
+    { "item": "magichem:admixture_wrought", "count": 4 }
+  ]
+}

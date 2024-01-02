@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:mandrake_flower" },
+  "components": [
+    { "item": "magichem:essentia_arcane", "count": 10 },
+    { "item": "magichem:admixture_plant", "count": 20 },
+    { "item": "magichem:admixture_creature", "count": 10 },
+    { "item": "magichem:admixture_witchcraft", "count": 5 }
+  ]
+}

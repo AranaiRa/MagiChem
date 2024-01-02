@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:book_of_shadows_altar" },
+  "components": [
+    { "item": "magichem:admixture_thought", "count": 24 },
+    { "item": "magichem:admixture_permanence", "count": 12 },
+    { "item": "magichem:admixture_plant", "count": 8 },
+    { "item": "magichem:essentia_wrought", "count": 6 }
+  ]
+}

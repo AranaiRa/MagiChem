@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:mahogany_fence_gate" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_motion", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

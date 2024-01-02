@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.25,
+  "object": { "item": "hexerei:willow_pressure_plate" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_trap", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

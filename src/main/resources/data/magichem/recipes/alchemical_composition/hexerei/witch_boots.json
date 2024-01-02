@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:witch_boots" },
+  "components": [
+    { "item": "magichem:admixture_witchcraft", "count": 24 },
+    { "item": "magichem:admixture_protection", "count": 16 },
+    { "item": "magichem:essentia_fleshy", "count": 12 },
+    { "item": "magichem:essentia_wrought", "count": 16 }
+  ]
+}

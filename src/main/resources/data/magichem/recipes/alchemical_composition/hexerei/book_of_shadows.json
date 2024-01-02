@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:book_of_shadows" },
+  "components": [
+    { "item": "magichem:admixture_memory", "count": 12 },
+    { "item": "magichem:admixture_witchcraft", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

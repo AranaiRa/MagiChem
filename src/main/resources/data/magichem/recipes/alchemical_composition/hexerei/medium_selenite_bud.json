@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:medium_selenite_bud" },
+  "components": [
+    { "item": "magichem:essentia_arcane", "count": 2 },
+    { "item": "magichem:admixture_crystal", "count": 2 },
+    { "item": "magichem:admixture_darkness", "count": 1 },
+    { "item": "magichem:admixture_light", "count": 1 }
+  ]
+}

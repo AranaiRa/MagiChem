@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:herb_jar" },
+  "components": [
+    { "item": "magichem:admixture_vessel", "count": 12 },
+    { "item": "magichem:admixture_crystal", "count": 8 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

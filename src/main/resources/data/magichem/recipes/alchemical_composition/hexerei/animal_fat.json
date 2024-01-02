@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "hexerei:animal_fat" },
+  "components": [
+    { "item": "magichem:admixture_blood", "count": 3 },
+    { "item": "magichem:admixture_witchcraft", "count": 1 },
+    { "item": "magichem:essentia_fleshy", "count": 8 }
+  ]
+}
