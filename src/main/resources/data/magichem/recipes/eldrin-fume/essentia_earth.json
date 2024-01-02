@@ -1,0 +1,9 @@
+{
+  "type": "mna:eldrin-fume",
+  "item": "magichem:essentia_earth",
+  "power_provided":
+  {
+    "affinity": "EARTH",
+    "amount": 400
+  }
+}

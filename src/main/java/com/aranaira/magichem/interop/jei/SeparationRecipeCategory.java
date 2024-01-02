@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -19,14 +20,14 @@ import net.minecraft.world.item.ItemStack;
 public class SeparationRecipeCategory implements IRecipeCategory<FixationSeparationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "separation");
     public static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/fixation_separation.png");
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/alchemical_composition.png");
 
     private final IDrawable background;
     private final IDrawable icon;
 
     public SeparationRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 96, 110);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockRegistry.ALEMBIC.get()));
+        this.background = helper.createDrawable(TEXTURE, 0, 110, 96, 110);
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemRegistry.DUMMY_PROCESS_SEPARATION.get()));
     }
 
     @Override

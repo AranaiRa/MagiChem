@@ -1,0 +1,9 @@
+{
+  "type": "mna:eldrin-fume",
+  "item": "magichem:essentia_air",
+  "power_provided":
+  {
+    "affinity": "WIND",
+    "amount": 400
+  }
+}

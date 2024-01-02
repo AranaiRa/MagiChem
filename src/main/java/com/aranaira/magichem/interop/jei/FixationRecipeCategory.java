@@ -5,6 +5,7 @@ import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -20,14 +21,14 @@ import net.minecraft.world.item.ItemStack;
 public class FixationRecipeCategory implements IRecipeCategory<FixationSeparationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "fixation");
     public static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/fixation_separation.png");
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/alchemical_composition.png");
 
     private final IDrawable background;
     private final IDrawable icon;
 
     public FixationRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 96, 110);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BlockRegistry.ALEMBIC.get()));
+        this.background = helper.createDrawable(TEXTURE, 96, 110, 96, 110);
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemRegistry.DUMMY_PROCESS_FIXATION.get()));
     }
 
     @Override
@@ -53,11 +54,11 @@ public class FixationRecipeCategory implements IRecipeCategory<FixationSeparatio
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, FixationSeparationRecipe recipe, IFocusGroup group) {
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT,40,6).addItemStack(recipe.getResultAdmixture());
+        builder.addSlot(RecipeIngredientRole.OUTPUT,40,88).addItemStack(recipe.getResultAdmixture());
 
         int i=0;
         for(ItemStack stack : recipe.getComponentMateria()) {
-            builder.addSlot(RecipeIngredientRole.INPUT, 4 + i*18, 90).addItemStack(stack);
+            builder.addSlot(RecipeIngredientRole.INPUT, 4 + i*18, 4).addItemStack(stack);
             i++;
         }
     }

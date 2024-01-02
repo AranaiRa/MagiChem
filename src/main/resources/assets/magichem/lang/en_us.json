@@ -12,6 +12,11 @@
   "item.magichem.superheated_glass_pane": "Superheated Glass Pane",
   "item.magichem.bottle_mold": "Bottle Mold",
 
+  "item.magichem.dummy.process_fixation": "Alchemical Fixation",
+  "item.magichem.dummy.process_separation": "Alchemical Separation",
+  "item.magichem.dummy.process_distillation": "Alchemical Distillation",
+  "item.magichem.dummy.process_fabrication": "Alchemical Fabrication",
+
   "block.magichem.alembic": "Alembic",
   "block.magichem.circle_fabrication": "Circle of Fabrication",
   "block.magichem.circle_power": "Circle of Power",

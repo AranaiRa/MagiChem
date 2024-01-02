@@ -1,0 +1,9 @@
+{
+  "type": "mna:eldrin-fume",
+  "item": "magichem:essentia_ender",
+  "power_provided":
+  {
+    "affinity": "ENDER",
+    "amount": 400
+  }
+}

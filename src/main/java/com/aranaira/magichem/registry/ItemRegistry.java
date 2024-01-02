@@ -65,6 +65,22 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
     );
 
+    public static final RegistryObject<Item> DUMMY_PROCESS_FIXATION = ITEMS.register("dummy/process_fixation",
+            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> DUMMY_PROCESS_SEPARATION = ITEMS.register("dummy/process_separation",
+            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> DUMMY_PROCESS_DISTILLATION = ITEMS.register("dummy/process_distillation",
+            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
+    public static final RegistryObject<Item> DUMMY_PROCESS_FABRICATION = ITEMS.register("dummy/process_fabrication",
+            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+    );
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         ESSENTIA.register(eventBus);

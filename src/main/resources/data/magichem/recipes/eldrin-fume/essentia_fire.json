@@ -1,0 +1,9 @@
+{
+  "type": "mna:eldrin-fume",
+  "item": "magichem:essentia_fire",
+  "power_provided":
+  {
+    "affinity": "FIRE",
+    "amount": 400
+  }
+}
