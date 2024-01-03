@@ -1,8 +1,8 @@
 {
   "type": "magichem:alchemical_composition",
   "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:chiseled_elven_quartz" },
+  "output_rate": 0.5,
+  "object": { "item": "botania:elf_quartz_slab" },
   "components": [
     { "item": "magichem:admixture_crystal", "count": 12 },
     { "item": "magichem:admixture_bargain", "count": 8 }
