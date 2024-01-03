@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:abstruse_platform" },
+  "components": [
+    { "item": "magichem:admixture_lies", "count": 5 },
+    { "item": "magichem:admixture_fey", "count": 4 },
+    { "item": "magichem:admixture_plant", "count": 3 }
+  ]
+}

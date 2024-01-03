@@ -570,6 +570,16 @@
       ]
     },
     {
+      "name": "whimsy",
+      "color": "db3597",
+      "depth": 2,
+      "components": [
+        { "admixture": "fey", "count": 2 },
+        { "admixture": "thought", "count": 1 },
+        { "essentia": "conceptual", "count": 1 }
+      ]
+    },
+    {
       "name": "witchcraft",
       "color": "445143",
       "depth": 3,

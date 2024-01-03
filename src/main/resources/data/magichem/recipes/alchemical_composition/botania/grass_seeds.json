@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:grass_seeds" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:essentia_verdant", "count": 2 }
+  ]
+}

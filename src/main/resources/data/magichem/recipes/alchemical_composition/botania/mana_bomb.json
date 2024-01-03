@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:mana_bomb" },
+  "components": [
+    { "item": "magichem:admixture_violence", "count": 51 },
+    { "item": "magichem:admixture_disaster", "count": 24 },
+    { "item": "magichem:admixture_potential", "count": 13 },
+    { "item": "magichem:admixture_fey", "count": 10 },
+    { "item": "magichem:essentia_citrinitas", "count": 2 }
+  ]
+}

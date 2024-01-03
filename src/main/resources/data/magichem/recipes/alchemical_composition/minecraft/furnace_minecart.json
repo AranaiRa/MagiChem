@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:minecart" },
+  "object": { "item": "minecraft:furnace_minecart" },
   "components": [
     { "item": "magichem:essentia_fire", "count": 12 },
     { "item": "magichem:admixture_metal", "count": 30 },

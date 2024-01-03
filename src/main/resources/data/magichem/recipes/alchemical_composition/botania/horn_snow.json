@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:horn_snow" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 10 },
+    { "item": "magichem:admixture_cold", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_verdant", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

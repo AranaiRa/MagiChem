@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:blaze_block" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 64 },
+    { "item": "magichem:admixture_demon", "count": 36 },
+    { "item": "magichem:admixture_metal", "count": 18 },
+    { "item": "magichem:essentia_verdant", "count": 36 },
+    { "item": "magichem:essentia_nigredo", "count": 18 }
+  ]
+}

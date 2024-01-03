@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:fel_pumpkin" },
+  "components": [
+    { "item": "magichem:admixture_exanimate", "count": 4 },
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_disaster", "count": 1 },
+    { "item": "magichem:admixture_sorcery", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

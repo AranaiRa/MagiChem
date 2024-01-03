@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:red_quartz" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 12 },
+    { "item": "magichem:admixture_energy", "count": 8 }
+  ]
+}

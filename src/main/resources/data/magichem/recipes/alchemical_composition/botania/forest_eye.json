@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:forest_eye" },
+  "components": [
+    { "item": "magichem:admixture_creature", "count": 15 },
+    { "item": "magichem:admixture_stone", "count": 12 },
+    { "item": "magichem:admixture_mana", "count": 12 },
+    { "item": "magichem:admixture_thought", "count": 7 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

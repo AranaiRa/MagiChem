@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:prism" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 23 },
+    { "item": "magichem:admixture_lies", "count": 3 },
+    { "item": "magichem:admixture_alien", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 10 }
+  ]
+}

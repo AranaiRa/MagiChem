@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:azulejo_10" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 12 },
+    { "item": "magichem:admixture_light", "count": 4 },
+    { "item": "magichem:admixture_change", "count": 2 }
+  ]
+}

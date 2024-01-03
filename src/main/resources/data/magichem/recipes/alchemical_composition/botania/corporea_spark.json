@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "botania:corporea_spark" },
+  "components": [
+    { "item": "magichem:admixture_memory", "count": 2 },
+    { "item": "magichem:admixture_vessel", "count": 2 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

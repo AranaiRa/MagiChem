@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:teru_teru_bozu" },
+  "components": [
+    { "item": "magichem:admixture_storm", "count": 5 },
+    { "item": "magichem:admixture_protection", "count": 2 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

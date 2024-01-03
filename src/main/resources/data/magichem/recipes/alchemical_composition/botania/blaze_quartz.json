@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:blaze_quartz" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 8 },
+    { "item": "magichem:admixture_crystal", "count": 12 },
+    { "item": "magichem:admixture_demon", "count": 8 }
+  ]
+}

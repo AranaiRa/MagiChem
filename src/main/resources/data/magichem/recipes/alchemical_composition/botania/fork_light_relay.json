@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:fork_light_relay" },
+  "components": [
+    { "item": "magichem:admixture_travel", "count": 5 },
+    { "item": "magichem:admixture_thought", "count": 2 },
+    { "item": "magichem:admixture_flight", "count": 1 },
+    { "item": "magichem:admixture_light", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

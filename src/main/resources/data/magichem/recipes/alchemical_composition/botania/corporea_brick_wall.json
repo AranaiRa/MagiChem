@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.375,
+  "object": { "item": "botania:corporea_brick_wall" },
+  "components": [
+    { "item": "magichem:admixture_stone", "count": 1 },
+    { "item": "magichem:admixture_alien", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

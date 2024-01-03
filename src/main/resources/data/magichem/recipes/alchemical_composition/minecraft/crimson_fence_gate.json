@@ -1,7 +1,7 @@
 {
   "type": "magichem:alchemical_composition",
   "distill_only": true,
-  "output_rate": 1.0,
+  "output_rate": 0.5,
   "object": { "item": "minecraft:crimson_fence_gate" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 1 },

@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.5,
+  "object": { "item": "botania:sunny_quartz_slab" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 12 },
+    { "item": "magichem:admixture_light", "count": 8 }
+  ]
+}

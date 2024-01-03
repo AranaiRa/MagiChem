@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 0.875,
+  "object": { "item": "botania:cell_block" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_realm", "count": 1 },
+    { "item": "magichem:admixture_thought", "count": 1 }
+  ]
+}

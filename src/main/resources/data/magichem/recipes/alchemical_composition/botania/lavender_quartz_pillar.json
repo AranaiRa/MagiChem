@@ -1,0 +1,10 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:lavender_quartz_pillar" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 12 },
+    { "item": "magichem:admixture_change", "count": 8 }
+  ]
+}

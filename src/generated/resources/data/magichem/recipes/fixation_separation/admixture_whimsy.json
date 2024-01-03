@@ -1,0 +1,20 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_whimsy"
+  },
+  "components": [
+    {
+      "item": "magichem:admixture_fey",
+      "count": 2
+    },
+    {
+      "item": "magichem:admixture_thought",
+      "count": 1
+    },
+    {
+      "item": "magichem:essentia_conceptual",
+      "count": 1
+    }
+  ]
+}

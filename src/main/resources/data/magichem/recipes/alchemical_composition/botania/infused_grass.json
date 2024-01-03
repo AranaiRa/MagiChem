@@ -1,0 +1,12 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:infused_grass" },
+  "components": [
+    { "item": "magichem:admixture_crystal", "count": 1 },
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_dust", "count": 1 },
+    { "item": "magichem:essentia_rotten", "count": 2 }
+  ]
+}
