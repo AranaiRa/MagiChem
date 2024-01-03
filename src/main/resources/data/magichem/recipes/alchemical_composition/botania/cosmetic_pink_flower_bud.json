@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "botania:cosmetic_pink_flower_bud" },
+  "components": [
+    { "item": "magichem:admixture_whimsy", "count": 2 },
+    { "item": "magichem:admixture_lies", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}
