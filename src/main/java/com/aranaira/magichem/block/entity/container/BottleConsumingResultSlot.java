@@ -5,10 +5,10 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class DistillationResultSlot extends SlotItemHandler {
+public class BottleConsumingResultSlot extends SlotItemHandler {
     private final int bottleIndex;
 
-    public DistillationResultSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, int bottleSlotIndex) {
+    public BottleConsumingResultSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, int bottleSlotIndex) {
         super(itemHandler, index, xPosition, yPosition);
         bottleIndex = bottleSlotIndex;
     }

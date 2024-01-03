@@ -30,13 +30,23 @@ public class Config
             .comment("The time, in ticks, that it takes for an Alembic to process one object.")
             .defineInRange("alembicOperationTime", 1200, 1, Integer.MAX_VALUE);
 
-    private static final ForgeConfigSpec.BooleanValue ALEMBIC_NEEDS_HEAT = BUILDER
-            .comment("The time, in ticks, that it takes for an Alembic to process one object.")
-            .define("alembicNeedsHeat", true);
-
     private static final ForgeConfigSpec.BooleanValue ALEMBIC_GENERATES_WASTE = BUILDER
             .comment("Whether the Alembic creates Alchemical Waste on failed rolls.")
             .define("alembicGeneratesWaste", false);
+
+    //----------------CENTRIFUGE
+
+    private static final ForgeConfigSpec.IntValue CENTRIFUGE_EFFICIENCY = BUILDER
+            .comment("The baseline efficiency of a Centrifuge.")
+            .defineInRange("centrifugeEfficiency", 50, 1, 100);
+
+    private static final ForgeConfigSpec.IntValue CENTRIFUGE_OPERATION_TIME = BUILDER
+            .comment("The time, in ticks, that it takes for an Centrifuge to separate one admixture into component materia.")
+            .defineInRange("centrifugeOperationTime", 1200, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.BooleanValue CENTRIFUGE_GENERATES_WASTE = BUILDER
+            .comment("Whether the Centrifuge creates Alchemical Waste on failed rolls.")
+            .define("centrifugeGeneratesWaste", false);
 
     //----------------CIRCLE OF POWER
 
@@ -73,6 +83,8 @@ public class Config
     public static int
         alembicEfficiency,
         alembicOperationTime,
+        centrifugeEfficiency,
+        centrifugeOperationTime,
         circlePowerGen1Reagent,
         circlePowerGen2Reagent,
         circlePowerGen3Reagent,
@@ -81,8 +93,8 @@ public class Config
         distilleryEfficiency;
 
     public static boolean
-        alembicNeedsHeat,
-        alembicGeneratesWaste;
+        alembicGeneratesWaste,
+        centrifugeGeneratesWaste;
 
 
     private static boolean validateItemName(final Object obj)
@@ -95,8 +107,10 @@ public class Config
     {
         alembicEfficiency = ALEMBIC_EFFICIENCY.get();
         alembicOperationTime = 60;//ALEMBIC_OPERATION_TIME.get();
-        alembicNeedsHeat = ALEMBIC_NEEDS_HEAT.get();
         alembicGeneratesWaste = ALEMBIC_GENERATES_WASTE.get();
+        centrifugeEfficiency = CENTRIFUGE_EFFICIENCY.get();
+        centrifugeOperationTime = 60;//CENTRIFUGE_OPERATION_TIME.get();
+        centrifugeGeneratesWaste = CENTRIFUGE_GENERATES_WASTE.get();
         circlePowerGen1Reagent = CIRCLE_OF_POWER_GEN_1_REAGENT.get();
         circlePowerGen2Reagent = CIRCLE_OF_POWER_GEN_2_REAGENT.get();
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();

@@ -17,7 +17,9 @@
   "item.magichem.dummy.process_distillation": "Alchemical Distillation",
   "item.magichem.dummy.process_fabrication": "Alchemical Fabrication",
 
+  "block.magichem.admixer": "Admixer",
   "block.magichem.alembic": "Alembic",
+  "block.magichem.centrifuge": "Centrifuge",
   "block.magichem.circle_fabrication": "Circle of Fabrication",
   "block.magichem.circle_power": "Circle of Power",
   "block.magichem.power_spike": "Power Spike",

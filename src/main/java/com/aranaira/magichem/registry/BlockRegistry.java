@@ -1,10 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.AlembicBlock;
-import com.aranaira.magichem.block.CircleFabricationBlock;
-import com.aranaira.magichem.block.CirclePowerBlock;
-import com.aranaira.magichem.block.PowerSpikeBlock;
+import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.item.PowerSpikeItem;
 import com.aranaira.magichem.item.TooltipLoreBlockItem;
 import net.minecraft.world.item.BlockItem;
@@ -25,6 +22,11 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> ALEMBIC = registerBlock("alembic",
             () -> new AlembicBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(0.75f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
+    );
+
+    public static final RegistryObject<Block> CENTRIFUGE = registerBlock("centrifuge",
+            () -> new CentrifugeBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(0.75f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 

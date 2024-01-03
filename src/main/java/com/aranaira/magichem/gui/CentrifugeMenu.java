@@ -1,15 +1,16 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.container.BottleStockSlot;
-import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
-import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
-import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.container.*;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -17,19 +18,19 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.NotNull;
 
-public class AlembicMenu extends AbstractContainerMenu {
+public class CentrifugeMenu extends AbstractContainerMenu {
 
-    public final AlembicBlockEntity blockEntity;
+    public final CentrifugeBlockEntity blockEntity;
     private final Level level;
 
-    public AlembicMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+    public CentrifugeMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
     }
 
-    public AlembicMenu(int id, Inventory inv, BlockEntity entity) {
+    public CentrifugeMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.ALEMBIC_MENU.get(), id);
         checkContainerSize(inv, 14);
-        blockEntity = (AlembicBlockEntity) entity;
+        blockEntity = (CentrifugeBlockEntity) entity;
         this.level = inv.player.level;
 
         addPlayerInventory(inv);
@@ -38,16 +39,16 @@ public class AlembicMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slot
-            this.addSlot(new BottleStockSlot(handler, AlembicBlockEntity.SLOT_BOTTLES, 134, -5, false));
+            this.addSlot(new BottleStockSlot(handler, CentrifugeBlockEntity.SLOT_BOTTLES, 134, -5, false));
 
             //Input item slots
-            for(int i=AlembicBlockEntity.SLOT_INPUT_START; i<AlembicBlockEntity.SLOT_INPUT_START + AlembicBlockEntity.SLOT_INPUT_COUNT; i++)
+            for(int i=CentrifugeBlockEntity.SLOT_INPUT_START; i<CentrifugeBlockEntity.SLOT_INPUT_START + CentrifugeBlockEntity.SLOT_INPUT_COUNT; i++)
             {
-                this.addSlot(new NoMateriaInputSlot(handler, i, 44, 28 + (i - AlembicBlockEntity.SLOT_INPUT_START) * 18));
+                this.addSlot(new OnlyAdmixtureInputSlot(handler, i, 44, 28 + (i - CentrifugeBlockEntity.SLOT_INPUT_START) * 18));
             }
 
             //Processing slot
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_PROCESSING, 80, 46) {
+            this.addSlot(new NoMateriaInputSlot(handler, CentrifugeBlockEntity.SLOT_PROCESSING, 80, 46) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     return false;
@@ -55,12 +56,12 @@ public class AlembicMenu extends AbstractContainerMenu {
             });
 
             //Output item slots
-            for(int i=AlembicBlockEntity.SLOT_OUTPUT_START; i<AlembicBlockEntity.SLOT_OUTPUT_START + AlembicBlockEntity.SLOT_OUTPUT_COUNT; i++)
+            for(int i=CentrifugeBlockEntity.SLOT_OUTPUT_START; i<CentrifugeBlockEntity.SLOT_OUTPUT_START + CentrifugeBlockEntity.SLOT_OUTPUT_COUNT; i++)
             {
-                int x = (i - AlembicBlockEntity.SLOT_OUTPUT_START) % 3;
-                int y = (i - AlembicBlockEntity.SLOT_OUTPUT_START) / 3;
+                int x = (i - CentrifugeBlockEntity.SLOT_OUTPUT_START) % 3;
+                int y = (i - CentrifugeBlockEntity.SLOT_OUTPUT_START) / 3;
 
-                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 28 + (y) * 18, AlembicBlockEntity.SLOT_BOTTLES));
+                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 28 + (y) * 18, CentrifugeBlockEntity.SLOT_BOTTLES));
             }
         });
     }
@@ -121,7 +122,7 @@ public class AlembicMenu extends AbstractContainerMenu {
                 }
             }
             //try to move to input slots
-            moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + AlembicBlockEntity.SLOT_INPUT_COUNT, false);
+            moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + CentrifugeBlockEntity.SLOT_INPUT_COUNT, false);
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
         }
@@ -140,13 +141,13 @@ public class AlembicMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         }
         //If input slots
-        if(pIndex >= SLOT_INPUT_BEGIN && pIndex < SLOT_INPUT_BEGIN + AlembicBlockEntity.SLOT_INPUT_COUNT) {
+        if(pIndex >= SLOT_INPUT_BEGIN && pIndex < SLOT_INPUT_BEGIN + CentrifugeBlockEntity.SLOT_INPUT_COUNT) {
             moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
         }
         //If output slots
-        if(pIndex >= SLOT_OUTPUT_BEGIN && pIndex < SLOT_OUTPUT_BEGIN + AlembicBlockEntity.SLOT_OUTPUT_COUNT) {
+        if(pIndex >= SLOT_OUTPUT_BEGIN && pIndex < SLOT_OUTPUT_BEGIN + CentrifugeBlockEntity.SLOT_OUTPUT_COUNT) {
             //make sure there's enough bottles first, then try to move to player inventory
             int itemsToRemove = targetStackCopy.getCount();
             int bottles = slots.get(SLOT_BOTTLES).getItem().getCount();
