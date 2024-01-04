@@ -1,6 +1,7 @@
 package com.aranaira.magichem;
 
 import com.aranaira.magichem.datagen.FixationSeparationRecipeGenerator;
+import com.aranaira.magichem.gui.CentrifugeScreen;
 import com.aranaira.magichem.gui.CircleFabricationScreen;
 import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.gui.AlembicScreen;
@@ -101,6 +102,7 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), CircleFabricationScreen::new);
             MenuScreens.register(MenuRegistry.CIRCLE_POWER_MENU.get(), CirclePowerScreen::new);
             MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
+            MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
         }
     }
 }

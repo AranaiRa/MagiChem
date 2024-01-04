@@ -29,7 +29,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         RenderSystem.setShaderTexture(0, TEXTURE);
 
         int w = 176;
-        int h = 175;
+        int h = 189;
 
         int x = (width - w) / 2;
         int y = (height - h) / 2;
@@ -38,7 +38,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
 
         int sp = menu.blockEntity.getScaledProgress(menu.blockEntity);
         if(sp > 0)
-            this.blit(poseStack, x+77, y+83, 0, 253, sp, 3);
+            this.blit(poseStack, x+59, y+83, 0, 253, sp, 3);
     }
 
     @Override

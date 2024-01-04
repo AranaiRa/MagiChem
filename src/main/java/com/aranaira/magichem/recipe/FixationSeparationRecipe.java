@@ -17,6 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * This recipe type is used by the Admixer/Fusion Crucible in a straightforward manner and the Centrifuge/Excision Engine in reverse.
@@ -95,6 +96,20 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
     @Override
     public RecipeType<?> getType() {
         return Type.INSTANCE;
+    }
+
+    public static FixationSeparationRecipe getSeparatingRecipe(Level level, ItemStack query) {
+        FixationSeparationRecipe result = null;
+        List<FixationSeparationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE);
+
+        for(FixationSeparationRecipe fsr : allRecipes) {
+            if(fsr.resultAdmixture.getItem() == query.getItem()) {
+                result = fsr;
+                break;
+            }
+        }
+
+        return result;
     }
 
     public static class Type implements RecipeType<FixationSeparationRecipe> {

@@ -2,9 +2,10 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
-import com.aranaira.magichem.gui.AlembicMenu;
+import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
@@ -32,8 +33,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
     public static final int
-        SLOT_COUNT = 14,
-        SLOT_BOTTLES = 0,
+        SLOT_COUNT = 15,
+        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 14,
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_PROCESSING = 4,
         SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT  = 9,
@@ -74,7 +75,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new AlembicMenu(id, inventory, this);
+        return new CentrifugeMenu(id, inventory, this);
     }
 
     @Override
@@ -113,7 +114,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     }
 
     public static int getScaledProgress(CentrifugeBlockEntity entity) {
-        return PROGRESS_BAR_WIDTH * entity.progress / Config.alembicOperationTime;
+        return PROGRESS_BAR_WIDTH * entity.progress / Config.centrifugeOperationTime;
     }
 
     public void dropInventoryToWorld() {
@@ -136,25 +137,10 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         Containers.dropContents(this.level, this.worldPosition, waste);
     }
 
-    private static NonNullList<ItemStack> getRecipeComponents(CentrifugeBlockEntity entity) {
-        Level level = entity.level;
-        NonNullList<ItemStack> result = NonNullList.create();
-
-        AlchemicalCompositionRecipe recipe = AlchemicalCompositionRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(SLOT_PROCESSING));
-
-        if(recipe != null) {
-            recipe.getComponentMateria().forEach(item -> {
-                result.add(new ItemStack(item.getItem(), item.getCount()));
-            });
-        }
-
-        return result;
-    }
-
-    private static AlchemicalCompositionRecipe getRecipeInSlot(CentrifugeBlockEntity entity) {
+    private static FixationSeparationRecipe getRecipeInSlot(CentrifugeBlockEntity entity) {
         Level level = entity.level;
 
-        AlchemicalCompositionRecipe recipe = AlchemicalCompositionRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(SLOT_PROCESSING));
+        FixationSeparationRecipe recipe = FixationSeparationRecipe.getSeparatingRecipe(level, entity.itemHandler.getStackInSlot(SLOT_PROCESSING));
 
         if(recipe != null) {
             return recipe;
@@ -178,10 +164,10 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             }
         }
 
-        AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
+        FixationSeparationRecipe recipe = getRecipeInSlot(entity);
         if(processingItem != ItemStack.EMPTY && recipe != null) {
             if(canCraftItem(entity, recipe)) {
-                if (entity.progress > Config.alembicOperationTime) {
+                if (entity.progress > Config.centrifugeOperationTime) {
                     if (!level.isClientSide())
                         craftItem(entity, recipe);
                     if (!entity.isStalled)
@@ -194,7 +180,10 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             entity.resetProgress();
     }
 
-    private static boolean canCraftItem(CentrifugeBlockEntity entity, AlchemicalCompositionRecipe recipe) {
+    private static boolean canCraftItem(CentrifugeBlockEntity entity, FixationSeparationRecipe recipe) {
+        if(entity.itemHandler.getStackInSlot(CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT).getCount() == 64)
+            return false;
+
         SimpleContainer cont = new SimpleContainer(SLOT_OUTPUT_COUNT);
         for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
             cont.setItem(i-SLOT_OUTPUT_START, entity.itemHandler.getStackInSlot(i).copy());
@@ -209,14 +198,14 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         return true;
     }
 
-    private static void craftItem(CentrifugeBlockEntity entity, AlchemicalCompositionRecipe recipe) {
+    private static void craftItem(CentrifugeBlockEntity entity, FixationSeparationRecipe recipe) {
         SimpleContainer outputSlots = new SimpleContainer(9);
         for(int i=0; i<SLOT_OUTPUT_COUNT; i++) {
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
         NonNullList<ItemStack> componentMateria = applyEfficiencyToCraftingResult(recipe.getComponentMateria(),
-                baseEfficiency + entity.efficiencyMod, recipe.getOutputRate());
+                baseEfficiency + entity.efficiencyMod, 1.0f);
 
         for(ItemStack item : componentMateria) {
             if(outputSlots.canAddItem(item)) {
@@ -236,6 +225,14 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             processingSlotContents.shrink(1);
             if(processingSlotContents.getCount() == 0)
                 entity.itemHandler.setStackInSlot(SLOT_PROCESSING, ItemStack.EMPTY);
+
+            ItemStack outputBottles = entity.itemHandler.getStackInSlot(CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT);
+            if(outputBottles.getItem() == Items.GLASS_BOTTLE) {
+                outputBottles.grow(1);
+            } else {
+                outputBottles = new ItemStack(Items.GLASS_BOTTLE, 1);
+            }
+            entity.itemHandler.setStackInSlot(CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, outputBottles);
         }
     }
 
