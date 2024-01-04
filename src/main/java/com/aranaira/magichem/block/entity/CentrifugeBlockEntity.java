@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.gui.CentrifugeMenu;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -51,7 +52,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             if(slot == SLOT_BOTTLES)
                 return stack.getItem() == Items.GLASS_BOTTLE;
             if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
-                return !(stack.getItem() instanceof MateriaItem);
+                return stack.getItem() instanceof AdmixtureItem;
             if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
                 return false;
 
