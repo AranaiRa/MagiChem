@@ -1,0 +1,21 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:centrifuge",
+  "tier": 3,
+  "items": [
+    "magichem:admixture_change",
+    "magichem:alembic",
+    "magichem:admixture_change",
+    "minecraft:piston",
+    "minecraft:glass_bottle",
+    "minecraft:piston",
+    "mna:decoration/transmuted_silver_block",
+    "magichem:essentia_nigredo",
+    "mna:decoration/transmuted_silver_block"
+  ],
+  "patterns": [
+    "mna:inverted_triangle",
+    "mna:bolt",
+    "mna:split_triangle"
+  ]
+}

@@ -2,6 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
+import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.item.PowerSpikeItem;
 import com.aranaira.magichem.item.TooltipLoreBlockItem;
 import net.minecraft.world.item.BlockItem;
@@ -42,6 +43,11 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> POWER_SPIKE = registerBlock("power_spike",
             () -> new PowerSpikeBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(0.5f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
+    );
+
+    public static final RegistryObject<Block> MATERIA_VESSEL = registerBlock("materia_vessel",
+            () -> new MateriaVesselBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(0.5f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 

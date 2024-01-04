@@ -22,6 +22,7 @@
   "block.magichem.centrifuge": "Centrifuge",
   "block.magichem.circle_fabrication": "Circle of Fabrication",
   "block.magichem.circle_power": "Circle of Power",
+  "block.magichem.materia_vessel": "Materia Vessel",
   "block.magichem.power_spike": "Power Spike",
 
   "itemGroup.magichemtab" : "MagiChem - Blocks and Items",
