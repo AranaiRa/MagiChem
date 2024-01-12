@@ -6,7 +6,7 @@
   "components": [
     { "item": "magichem:admixture_plant", "count": 2 },
     { "item": "magichem:admixture_change", "count": 1 },
-    { "item": "magichem:admixture_precious", "count": 1 },
-    { "item": "magichem:admixture_witchcraft", "count": 1 }
+    { "item": "magichem:admixture_witchcraft", "count": 1 },
+    { "item": "magichem:essentia_precious", "count": 2 }
   ]
 }

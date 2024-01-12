@@ -6,6 +6,6 @@
   "components": [
     { "item": "magichem:admixture_plant", "count": 10 },
     { "item": "magichem:admixture_witchcraft", "count": 8 },
-    { "item": "magichem:admixture_wrought", "count": 4 }
+    { "item": "magichem:essentia_wrought", "count": 4 }
   ]
 }

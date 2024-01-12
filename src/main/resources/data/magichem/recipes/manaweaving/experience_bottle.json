@@ -1,0 +1,13 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:experience_bottle",
+  "tier": 3,
+  "items": [
+    "magichem:alchemical_waste",
+    "magichem:admixture_memory",
+    "magichem:alchemical_waste"
+  ],
+  "patterns": [
+    "mna:bolt"
+  ]
+}

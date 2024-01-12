@@ -1,0 +1,9 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:hat_tall_cowboy" },
+  "components": [
+    { "item": "magichem:admixture_whimsy", "count": 27 }
+  ]
+}
