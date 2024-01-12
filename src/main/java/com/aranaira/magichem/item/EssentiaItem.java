@@ -126,4 +126,6 @@ public class EssentiaItem extends MateriaItem {
     public String getAbbreviation() {
         return this.abbreviation;
     }
+
+    public String getDisplayFormula() { return getAbbreviation(); }
 }

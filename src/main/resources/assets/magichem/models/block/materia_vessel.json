@@ -2,11 +2,12 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "minecraft:block/terracotta"
+    "particle": "minecraft:block/glass"
   },
   "parts": {
     "part1": {
       "loader": "forge:obj",
+      "render_type": "cutout",
       "detectCullableFaces": false,
       "diffuseLighting": true,
       "flip-v": true,

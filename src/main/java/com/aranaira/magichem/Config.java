@@ -78,6 +78,12 @@ public class Config
             .comment("The baseline efficiency of an Distillery.")
             .defineInRange("distilleryEfficiency", 75, 1, 100);
 
+    //----------------MATERIA VESSEL
+
+    private static final ForgeConfigSpec.IntValue MATERIA_VESSEL_CAPACITY = BUILDER
+            .comment("How much materia can be stored inside of a Materia Vessel.")
+            .defineInRange("materiaVesselCapacity", 1800, 64, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -90,7 +96,8 @@ public class Config
         circlePowerGen3Reagent,
         circlePowerGen4Reagent,
         circlePowerBuffer,
-        distilleryEfficiency;
+        distilleryEfficiency,
+        materiaVesselCapacity;
 
     public static boolean
         alembicGeneratesWaste,
@@ -117,6 +124,7 @@ public class Config
         circlePowerGen4Reagent = CIRCLE_OF_POWER_GEN_4_REAGENT.get();
         circlePowerBuffer = CIRCLE_OF_POWER_BUFFER.get();
         distilleryEfficiency = DISTILLERY_EFFICIENCY.get();
+        materiaVesselCapacity = MATERIA_VESSEL_CAPACITY.get();
 
         // convert the list of strings into a set of items
         /*items = ITEM_STRINGS.get().stream()

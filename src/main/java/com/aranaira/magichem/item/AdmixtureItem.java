@@ -57,7 +57,7 @@ public class AdmixtureItem extends MateriaItem {
         return subscriptNumbers[num];
     }
 
-    private String getDisplayFormula() {
+    public String getDisplayFormula() {
         if(displayFormula != "") {
             return displayFormula;
         } else {
