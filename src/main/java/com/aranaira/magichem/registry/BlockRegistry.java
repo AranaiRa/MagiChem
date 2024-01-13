@@ -3,6 +3,7 @@ package com.aranaira.magichem.registry;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
+import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.item.PowerSpikeItem;
 import com.aranaira.magichem.item.TooltipLoreBlockItem;
 import net.minecraft.world.item.BlockItem;
@@ -58,10 +59,11 @@ public class BlockRegistry {
     }
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab tab) {
-        switch(name) {
-            case "power_spike": return ItemRegistry.ITEMS.register(name, () -> new PowerSpikeItem(block.get(), new Item.Properties().tab(tab)));
-            default: return ItemRegistry.ITEMS.register(name, () -> new TooltipLoreBlockItem(block.get(), new Item.Properties().tab(tab)));
-        }
+        return switch (name) {
+            case "materia_vessel" -> ItemRegistry.ITEMS.register(name, () -> new MateriaVesselItem(block.get(), new Item.Properties().tab(tab)));
+            case "power_spike" -> ItemRegistry.ITEMS.register(name, () -> new PowerSpikeItem(block.get(), new Item.Properties().tab(tab)));
+            default -> ItemRegistry.ITEMS.register(name, () -> new TooltipLoreBlockItem(block.get(), new Item.Properties().tab(tab)));
+        };
     }
 
     public static void register(IEventBus eventBus) {

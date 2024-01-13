@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -48,6 +49,12 @@ public class MagiChemMod
         BlockEntitiesRegistry.register(modEventBus);
         MenuRegistry.register(modEventBus);
         MateriaRegistry.register(modEventBus);
+
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> {
+            return () -> {
+                modEventBus.register(BlockEntitiesClientRegistry.class);
+            };
+        });
 
         RecipeRegistry.register(modEventBus);
 

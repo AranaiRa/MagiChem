@@ -1,0 +1,21 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:materia_vessel",
+  "tier": 2,
+  "items": [
+    "magichem:admixture_vessel",
+    "minecraft:wooden_slabs",
+    "magichem:admixture_vessel",
+    "minecraft:glass_pane",
+    "minecraft:amethyst_shard",
+    "minecraft:glass_pane",
+    "magichem:admixture_instrument",
+    "minecraft:glass_pane",
+    "magichem:admixture_instrument"
+  ],
+  "patterns": [
+    "mna:knot3",
+    "mna:diamond",
+    "mna:knot2"
+  ]
+}
