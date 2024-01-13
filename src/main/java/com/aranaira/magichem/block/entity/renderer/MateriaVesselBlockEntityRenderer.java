@@ -38,9 +38,9 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
 
     private static final float
         FLUID_START_XZ = 0.25F,
-        FLUID_START_Y = 0.0625F,
+        FLUID_START_Y = 0.1875F,
         FLUID_WIDTH = 0.5F,
-        FLUID_HEIGHT_MAX = 0.75F;
+        FLUID_HEIGHT_MAX = 0.625F;
 
     private void renderFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color) {
         float height = FLUID_HEIGHT_MAX * fillAmount;

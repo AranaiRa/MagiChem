@@ -80,13 +80,15 @@ public class MateriaVesselBlock extends BaseEntityBlock {
     public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
         ItemStack stack = new ItemStack(BlockRegistry.MATERIA_VESSEL.get(), 1);
         MateriaVesselBlockEntity mvbe = (MateriaVesselBlockEntity) pBuilder.getParameter(LootContextParams.BLOCK_ENTITY);
-
-        CompoundTag tag = new CompoundTag();
-        tag.putString("type", mvbe.getMateriaType().getMateriaName());
-        tag.putInt("amount", mvbe.getCurrentStock());
-        stack.setTag(tag);
-
         List<ItemStack> output = new ArrayList<>();
+
+        if(mvbe.getMateriaType() != null) {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("type", mvbe.getMateriaType().getMateriaName());
+            tag.putInt("amount", mvbe.getCurrentStock());
+            stack.setTag(tag);
+        }
+
         output.add(stack);
         return output;
     }
