@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:golden_apple" },
+  "object": { "item": "minecraft:enchanted_golden_apple" },
   "components": [
     { "item": "magichem:admixture_metal", "count": 16 },
     { "item": "magichem:admixture_healing", "count": 32 },

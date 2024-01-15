@@ -9,6 +9,7 @@ import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.RenderUtils;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -59,12 +60,25 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         initializeRecipeFilterBox();
     }
 
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if(pKeyCode == InputConstants.KEY_ESCAPE) {
+            this.onClose();
+            return true;
+        }
+        return this.getFocused() != null && this.getFocused().keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
+
     private void initializeRecipeFilterBox() {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 67, 18, Component.empty());
-        this.addWidget(recipeFilterBox);
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 67, 18, Component.empty());
+        this.recipeFilterBox.setMaxLength(60);
+        this.recipeFilterBox.setFocus(false);
+        this.recipeFilterBox.setCanLoseFocus(false);
+        this.recipeFilterBox.changeFocus(true);
+        this.setFocused(this.recipeFilterBox);
     }
 
     private void initializePowerLevelButtons(){
