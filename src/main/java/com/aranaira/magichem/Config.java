@@ -41,12 +41,26 @@ public class Config
             .defineInRange("centrifugeEfficiency", 50, 1, 100);
 
     private static final ForgeConfigSpec.IntValue CENTRIFUGE_OPERATION_TIME = BUILDER
-            .comment("The time, in ticks, that it takes for an Centrifuge to separate one admixture into component materia.")
+            .comment("The time, in ticks, that it takes for a Centrifuge to separate one admixture into component materia.")
             .defineInRange("centrifugeOperationTime", 1200, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.BooleanValue CENTRIFUGE_GENERATES_WASTE = BUILDER
             .comment("Whether the Centrifuge creates Alchemical Waste on failed rolls.")
             .define("centrifugeGeneratesWaste", false);
+
+    //----------------CENTRIFUGE
+
+    private static final ForgeConfigSpec.IntValue ADMIXER_EFFICIENCY = BUILDER
+            .comment("The baseline efficiency of an Admixer.")
+            .defineInRange("admixerEfficiency", 50, 1, 100);
+
+    private static final ForgeConfigSpec.IntValue ADMIXER_OPERATION_TIME = BUILDER
+            .comment("The time, in ticks, that it takes for an Admixer to make one admixture from its component materia.")
+            .defineInRange("admixerOperationTime", 1200, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.BooleanValue ADMIXER_GENERATES_WASTE = BUILDER
+            .comment("Whether the Admixer creates Alchemical Waste on failed rolls.")
+            .define("admixerGeneratesWaste", false);
 
     //----------------CIRCLE OF POWER
 
@@ -91,6 +105,8 @@ public class Config
         alembicOperationTime,
         centrifugeEfficiency,
         centrifugeOperationTime,
+        admixerEfficiency,
+        admixerOperationTime,
         circlePowerGen1Reagent,
         circlePowerGen2Reagent,
         circlePowerGen3Reagent,
@@ -101,7 +117,8 @@ public class Config
 
     public static boolean
         alembicGeneratesWaste,
-        centrifugeGeneratesWaste;
+        centrifugeGeneratesWaste,
+        admixerGeneratesWaste;
 
 
     private static boolean validateItemName(final Object obj)
@@ -118,6 +135,9 @@ public class Config
         centrifugeEfficiency = CENTRIFUGE_EFFICIENCY.get();
         centrifugeOperationTime = 60;//CENTRIFUGE_OPERATION_TIME.get();
         centrifugeGeneratesWaste = CENTRIFUGE_GENERATES_WASTE.get();
+        admixerEfficiency = CENTRIFUGE_EFFICIENCY.get();
+        admixerOperationTime = 60;//CENTRIFUGE_OPERATION_TIME.get();
+        admixerGeneratesWaste = CENTRIFUGE_GENERATES_WASTE.get();
         circlePowerGen1Reagent = CIRCLE_OF_POWER_GEN_1_REAGENT.get();
         circlePowerGen2Reagent = CIRCLE_OF_POWER_GEN_2_REAGENT.get();
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();

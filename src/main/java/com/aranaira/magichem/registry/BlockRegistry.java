@@ -32,6 +32,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
     );
 
+    public static final RegistryObject<Block> ADMIXER = registerBlock("admixer",
+            () -> new AdmixerBlock(BlockBehaviour.Properties.of(Material.STONE)
+                    .strength(0.75f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB
+    );
+
     public static final RegistryObject<Block> CIRCLE_POWER = registerBlock("circle_power",
             () -> new CirclePowerBlock(BlockBehaviour.Properties.of(Material.STONE)
                     .strength(0.75f).noOcclusion()), CreativeModeTabs.MAGICHEM_TAB

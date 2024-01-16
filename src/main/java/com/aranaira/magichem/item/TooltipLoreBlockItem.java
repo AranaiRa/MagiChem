@@ -40,6 +40,18 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.CENTRIFUGE.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.centrifuge")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.ADMIXER.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.admixer")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

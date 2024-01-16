@@ -223,6 +223,8 @@
   "tooltip.magichem.powerspike": "Transfers energy from a Circle of Power.",
   "tooltip.magichem.powerspike.target": "Drawing FE from",
   "tooltip.magichem.alembic": "Breaks down blocks and items into their component Materia.",
+  "tooltip.magichem.centrifuge": "Breaks down Admixtures into their component Materia.",
+  "tooltip.magichem.admixer": "Combines component Materia into Admixtures.",
   "tooltip.magichem.circlefabrication": "Uses Materia and FE to create a wide variety of items and blocks.",
   "tooltip.magichem.irisargenti": "Used to create complex alchemical paraphernalia.",
   "tooltip.magichem.irisargenti.ext": "Otherwise known as \"Rainbow Silver\".",

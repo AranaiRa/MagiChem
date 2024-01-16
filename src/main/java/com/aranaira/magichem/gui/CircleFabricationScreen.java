@@ -2,9 +2,8 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
-import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
 import com.aranaira.magichem.foundation.ButtonData;
-import com.aranaira.magichem.gui.element.ImageButtonFabricationRecipeSelector;
+import com.aranaira.magichem.gui.element.ImageButtonRecipeSelector;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -22,7 +21,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,11 +110,11 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int c = 0;
         for(int y=0; y<5; y++) {
             for(int x=0; x<3; x++) {
-                recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new ImageButtonFabricationRecipeSelector(
+                recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new ImageButtonRecipeSelector(
                         this, c, this.leftPos, this.topPos, 18, 18, 92, 220, TEXTURE, button -> {
 
-                            CircleFabricationScreen query = (CircleFabricationScreen) ((ImageButtonFabricationRecipeSelector) button).getScreen();
-                            query.setActiveRecipe(((ImageButtonFabricationRecipeSelector) button).getArrayIndex());
+                            CircleFabricationScreen query = (CircleFabricationScreen) ((ImageButtonRecipeSelector) button).getScreen();
+                            query.setActiveRecipe(((ImageButtonRecipeSelector) button).getArrayIndex());
                 })), x*18 - 71, y*18 + 42);
                 c++;
             }

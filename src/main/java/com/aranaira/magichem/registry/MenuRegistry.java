@@ -1,10 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.gui.AlembicMenu;
-import com.aranaira.magichem.gui.CentrifugeMenu;
-import com.aranaira.magichem.gui.CircleFabricationMenu;
-import com.aranaira.magichem.gui.CirclePowerMenu;
+import com.aranaira.magichem.gui.*;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -29,6 +26,9 @@ public class MenuRegistry {
 
     public static final RegistryObject<MenuType<CentrifugeMenu>> CENTRIFUGE_MENU =
             registerMenuType(CentrifugeMenu::new, "centrifuge");
+
+    public static final RegistryObject<MenuType<AdmixerMenu>> ADMIXER_MENU =
+            registerMenuType(AdmixerMenu::new, "admixer");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
