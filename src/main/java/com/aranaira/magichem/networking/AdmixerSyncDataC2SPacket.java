@@ -1,8 +1,7 @@
 package com.aranaira.magichem.networking;
 
+import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
-import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
-import com.aranaira.magichem.item.MateriaItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -13,30 +12,26 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class MateriaVesselSyncDataS2CPacket {
+public class AdmixerSyncDataC2SPacket {
     private final BlockPos blockPos;
-    private final Item materiaType;
-    private final int materiaCount;
+    private final Item recipeItem;
 
-    public MateriaVesselSyncDataS2CPacket(BlockPos pBlockPos, Item pMateriaType, int pMateriaCount) {
+    public AdmixerSyncDataC2SPacket(BlockPos pBlockPos, Item pRecipeItem) {
         this.blockPos = pBlockPos;
-        this.materiaType = pMateriaType;
-        this.materiaCount = pMateriaCount;
+        this.recipeItem = pRecipeItem;
     }
 
-    public MateriaVesselSyncDataS2CPacket(FriendlyByteBuf buf) {
+    public AdmixerSyncDataC2SPacket(FriendlyByteBuf buf) {
         this.blockPos = buf.readBlockPos();
-        this.materiaType = buf.readItem().getItem();
-        this.materiaCount = buf.readInt();
+        this.recipeItem = buf.readItem().getItem();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
-        if(materiaType == null)
+        if(recipeItem == null)
             buf.writeItem(ItemStack.EMPTY);
         else
-            buf.writeItem(new ItemStack(materiaType, 1));
-        buf.writeInt(materiaCount);
+            buf.writeItem(new ItemStack(recipeItem, 1));
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -46,8 +41,9 @@ public class MateriaVesselSyncDataS2CPacket {
         BlockEntity entity = player.level.getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
-            if(entity instanceof MateriaVesselBlockEntity mvbe) {
-                mvbe.setContents((MateriaItem) materiaType, materiaCount);
+            if(entity instanceof AdmixerBlockEntity abe) {
+                abe.setCurrentRecipeByOutput(recipeItem);
+                abe.syncAndSave();
             }
         });
 

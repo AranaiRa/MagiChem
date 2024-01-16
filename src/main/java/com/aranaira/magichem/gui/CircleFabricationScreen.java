@@ -3,7 +3,7 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
-import com.aranaira.magichem.gui.element.ImageButtonRecipeSelector;
+import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -110,11 +110,11 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int c = 0;
         for(int y=0; y<5; y++) {
             for(int x=0; x<3; x++) {
-                recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new ImageButtonRecipeSelector(
+                recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new FabricationButtonRecipeSelector(
                         this, c, this.leftPos, this.topPos, 18, 18, 92, 220, TEXTURE, button -> {
 
-                            CircleFabricationScreen query = (CircleFabricationScreen) ((ImageButtonRecipeSelector) button).getScreen();
-                            query.setActiveRecipe(((ImageButtonRecipeSelector) button).getArrayIndex());
+                            CircleFabricationScreen query = (CircleFabricationScreen) ((FabricationButtonRecipeSelector) button).getScreen();
+                            query.setActiveRecipe(((FabricationButtonRecipeSelector) button).getArrayIndex());
                 })), x*18 - 71, y*18 + 42);
                 c++;
             }
@@ -175,6 +175,23 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderIngredientPanel(poseStack, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
 
         renderSlotGhosts(poseStack);
+    }
+
+    @Override
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+        renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, delta);
+        renderTooltip(poseStack, mouseX, mouseY);
+        renderButtons(poseStack, delta, mouseX, mouseY);
+        renderFilterBox();
+        updateDisplayedRecipes(recipeFilterBox.getValue());
+        renderRecipeOptions();
+
+        //Check to see if slots need to be re-locked
+        if(menu.dataSlot.get() == 1) {
+            menu.setInputSlotFilters(lastClickedRecipe);
+            menu.dataSlot.set(0);
+        }
     }
 
     private void renderIngredientPanel(PoseStack poseStack, int x, int y) {
@@ -250,23 +267,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int sp = CircleFabricationBlockEntity.getScaledProgress(menu.blockEntity);
         if(sp > 0)
             this.blit(poseStack, x, y , 0, 199, sp, CircleFabricationBlockEntity.PROGRESS_BAR_HEIGHT);
-    }
-
-    @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, delta);
-        renderTooltip(poseStack, mouseX, mouseY);
-        renderButtons(poseStack, delta, mouseX, mouseY);
-        renderFilterBox();
-        updateDisplayedRecipes(recipeFilterBox.getValue());
-        renderRecipeOptions();
-
-        //Check to see if slots need to be re-locked
-        if(menu.dataSlot.get() == 1) {
-            menu.setInputSlotFilters(lastClickedRecipe);
-            menu.dataSlot.set(0);
-        }
     }
 
     private void renderFilterBox() {

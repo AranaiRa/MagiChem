@@ -5,6 +5,9 @@ import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.OnlyAdmixtureInputSlot;
 import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
+import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,6 +27,7 @@ public class AdmixerMenu extends AbstractContainerMenu {
 
     public final AdmixerBlockEntity blockEntity;
     private final Level level;
+    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[10];
 
     public AdmixerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
@@ -48,7 +52,9 @@ public class AdmixerMenu extends AbstractContainerMenu {
             for(int i=AdmixerBlockEntity.SLOT_INPUT_START; i<AdmixerBlockEntity.SLOT_INPUT_START + AdmixerBlockEntity.SLOT_INPUT_COUNT; i++)
             {
                 int j = i - AdmixerBlockEntity.SLOT_INPUT_START;
-                this.addSlot(new OnlyMateriaInputSlot(handler, i, 26 + 18 * (j % 2), 3 + 18 * (j / 2)));
+                OnlyMateriaInputSlot slot = new OnlyMateriaInputSlot(handler, i, 26 + 18 * (j % 2), 3 + 18 * (j / 2));
+                this.addSlot(slot);
+                inputSlots[j] = slot;
             }
 
             //Output item slots
@@ -65,6 +71,17 @@ public class AdmixerMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.ADMIXER.get());
+    }
+
+    public void setInputSlotFilters(FixationSeparationRecipe newRecipe) {
+        if(newRecipe != null) {
+            int slotSet = 0;
+            for (ItemStack stack : newRecipe.getComponentMateria()) {
+                inputSlots[(slotSet * 2)].setSlotFilter((MateriaItem) stack.getItem());
+                inputSlots[(slotSet * 2) + 1].setSlotFilter((MateriaItem) stack.getItem());
+                slotSet++;
+            }
+        }
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

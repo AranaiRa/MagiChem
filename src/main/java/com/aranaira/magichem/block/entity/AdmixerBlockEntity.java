@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.gui.AdmixerMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -13,12 +14,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -64,7 +67,32 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
+    private FixationSeparationRecipe currentRecipe;
+    private String currentRecipeID = "";
+
     private int progress = 0;
+
+    public void setCurrentRecipeByOutput(Item item) {
+        currentRecipe = null;
+        currentRecipeID = "";
+        level.getRecipeManager().getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE).stream().filter(
+                fsr -> fsr.getResultAdmixture().getItem() == item).findFirst().ifPresent(filteredFSR -> {
+            currentRecipe = filteredFSR;
+            currentRecipeID = filteredFSR.getId().toString();
+        });
+    }
+
+    private void setCurrentRecipeByRecipeID() {
+        currentRecipe = (FixationSeparationRecipe) level.getRecipeManager().byKey(new ResourceLocation(currentRecipeID)).orElse(null);
+    }
+
+    @Nullable
+    public FixationSeparationRecipe getCurrentRecipe() {
+        if(currentRecipe == null) {
+            setCurrentRecipeByRecipeID();
+        }
+        return currentRecipe;
+    }
 
     @Override
     public Component getDisplayName() {
@@ -110,6 +138,13 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
+    }
+
+    public final void syncAndSave() {
+        if (!this.getLevel().isClientSide()) {
+            this.setChanged();
+            this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
     }
 
     public static int getScaledProgress(AdmixerBlockEntity entity) {
