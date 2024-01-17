@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.gui.element.AdmixerButtonRecipeSelector;
 import com.aranaira.magichem.networking.AdmixerSyncDataC2SPacket;
@@ -126,9 +127,9 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
         this.blit(poseStack, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
         this.blit(poseStack, x+PANEL_RECIPE_X, y+PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
-        int sp = menu.blockEntity.getScaledProgress(menu.blockEntity);
+        int sp = AdmixerBlockEntity.getScaledProgress(menu.blockEntity);
         if(sp > 0)
-            this.blit(poseStack, x+59, y+83, 0, 253, sp, 3);
+            this.blit(poseStack, x+74, y+53, 0, 228, sp, AdmixerBlockEntity.PROGRESS_BAR_SIZE);
 
         renderSelectedRecipe(poseStack, x + 79, y + 94);
 

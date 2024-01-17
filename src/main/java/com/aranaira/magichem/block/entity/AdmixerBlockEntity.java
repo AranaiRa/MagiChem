@@ -34,6 +34,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
     public static final int
         SLOT_COUNT = 21,
@@ -147,6 +150,10 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
         }
     }
 
+    public int getCraftingProgress(){
+        return progress;
+    }
+
     public static int getScaledProgress(AdmixerBlockEntity entity) {
         return PROGRESS_BAR_SIZE * entity.progress / Config.admixerOperationTime;
     }
@@ -172,91 +179,117 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, AdmixerBlockEntity entity) {
-        /*if(level.isClientSide()) {
-            return;
+        FixationSeparationRecipe recipe = entity.getCurrentRecipe();
+        if(canCraftItem(entity, recipe)) {
+            entity.incrementProgress();
+        } else {
+            entity.resetProgress();
         }
 
-        ItemStack processingItem = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
-        if(processingItem == ItemStack.EMPTY) {
-            //Move an item into the processing slot
-            int targetSlot = nextInputSlotWithItem(entity);
-            if (targetSlot != -1) {
-                ItemStack stack = entity.itemHandler.extractItem(targetSlot, 1, false);
-                entity.itemHandler.insertItem(SLOT_PROCESSING, stack, false);
-            }
+        if(entity.getCraftingProgress() > Config.admixerOperationTime) {
+            craftItem(entity, recipe);
+            entity.resetProgress();
         }
-
-        FixationSeparationRecipe recipe = getRecipeInSlot(entity);
-        if(processingItem != ItemStack.EMPTY && recipe != null) {
-            if(canCraftItem(entity, recipe)) {
-                if (entity.progress > Config.admixerOperationTime) {
-                    if (!level.isClientSide())
-                        craftItem(entity, recipe);
-                    if (!entity.isStalled)
-                        entity.resetProgress();
-                } else
-                    entity.incrementProgress();
-            }
-        }
-        else if(processingItem == ItemStack.EMPTY)
-            entity.resetProgress();*/
     }
 
     private static boolean canCraftItem(AdmixerBlockEntity entity, FixationSeparationRecipe recipe) {
-        //TODO: should eject bottles
-        if(entity.itemHandler.getStackInSlot(AdmixerBlockEntity.SLOT_BOTTLES_OUTPUT).getCount() == 64)
+        if(recipe == null)
             return false;
 
-        SimpleContainer cont = new SimpleContainer(SLOT_OUTPUT_COUNT);
-        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
-            cont.setItem(i-SLOT_OUTPUT_START, entity.itemHandler.getStackInSlot(i).copy());
-        }
+        SimpleContainer outputSlots = getOutputAsContainer(entity);
 
-        for(int i=0; i<recipe.getComponentMateria().size(); i++) {
-            if(!cont.canAddItem(recipe.getComponentMateria().get(i).copy()))
-                return false;
-            cont.addItem(recipe.getComponentMateria().get(i).copy());
+        //If the output slots can't absorb the output item, don't bother checking anything else
+        if(!outputSlots.canAddItem(recipe.getResultAdmixture())) return false;
+
+        //TODO: Turn this back on after the bottle slot gets expanded
+        //If there's not enough space for the bottles to go, don't craft
+        //if(entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount() + bottlesToInsert > 64)
+        //    return false;
+
+        for (ItemStack materia : recipe.getComponentMateria()) {
+            int remaining = materia.getCount();
+
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
+                    remaining -= entity.itemHandler.getStackInSlot(i).getCount();
+
+                    if (remaining <= 0) {
+                        break;
+                    }
+                }
+            }
+
+
+            //If any of the ingredients are insufficient there's no reason to check more stuff
+            if(remaining > 0) return false;
         }
 
         return true;
     }
 
     private static void craftItem(AdmixerBlockEntity entity, FixationSeparationRecipe recipe) {
-        /*SimpleContainer outputSlots = new SimpleContainer(9);
-        for(int i=0; i<SLOT_OUTPUT_COUNT; i++) {
-            outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
+        int bottlesToInsert = 0;
+        for(ItemStack is : recipe.getComponentMateria()) {
+            bottlesToInsert += is.getCount();
         }
 
-        NonNullList<ItemStack> componentMateria = applyEfficiencyToCraftingResult(recipe.getComponentMateria(),
-                baseEfficiency + entity.efficiencyMod, 1.0f);
-
-        for(ItemStack item : componentMateria) {
-            if(outputSlots.canAddItem(item)) {
-                outputSlots.addItem(item);
-            }
-            else {
-                entity.isStalled = true;
-                break;
-            }
-        }
-
-        if(!entity.isStalled) {
-            for(int i=0; i<9; i++) {
-                entity.itemHandler.setStackInSlot(SLOT_OUTPUT_START + i, outputSlots.getItem(i));
-            }
-            ItemStack processingSlotContents = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
-            processingSlotContents.shrink(1);
-            if(processingSlotContents.getCount() == 0)
-                entity.itemHandler.setStackInSlot(SLOT_PROCESSING, ItemStack.EMPTY);
-
-            ItemStack outputBottles = entity.itemHandler.getStackInSlot(AdmixerBlockEntity.SLOT_BOTTLES_OUTPUT);
-            if(outputBottles.getItem() == Items.GLASS_BOTTLE) {
-                outputBottles.grow(1);
+        //TODO: Uncommment the original line once the bottle slot stack size has been expanded
+        //Fill Bottle Slot
+        //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        //TODO: Remove this once the bottle slot stack size has been expanded
+        ItemStack bottles = entity.itemHandler.insertItem(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        SimpleContainer bottleSpill = new SimpleContainer(5);
+        while(bottles.getCount() > 0) {
+            int count = bottles.getCount();
+            int thisPile;
+            if(count > 64) {
+                thisPile = 64;
+                count -= 64;
             } else {
-                outputBottles = new ItemStack(Items.GLASS_BOTTLE, 1);
+                thisPile = count;
+                count = 0;
             }
-            entity.itemHandler.setStackInSlot(AdmixerBlockEntity.SLOT_BOTTLES_OUTPUT, outputBottles);
-        }*/
+            ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
+            bottleSpill.addItem(bottlesToDrop);
+            bottles.setCount(count);
+        }
+        Containers.dropContents(entity.getLevel(), entity.getBlockPos(), bottleSpill);
+
+        //Consume Materia
+        for(ItemStack materia : recipe.getComponentMateria()) {
+            int remaining = materia.getCount();
+            for(int i=SLOT_INPUT_START + SLOT_INPUT_COUNT - 1; i >= SLOT_INPUT_START; i--) {
+                if(entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
+                    remaining = remaining - entity.itemHandler.extractItem(i, remaining, false).getCount();
+                    if (remaining == 0)
+                        break;
+                }
+            }
+        }
+
+        SimpleContainer insert = getOutputAsContainer(entity);
+        insert.addItem(recipe.getResultAdmixture());
+        replaceOutputSlotsWithContainer(entity, insert);
+        entity.syncAndSave();
+    }
+
+    @NotNull
+    private static SimpleContainer getOutputAsContainer(AdmixerBlockEntity entity) {
+        SimpleContainer insert = new SimpleContainer(SLOT_OUTPUT_COUNT);
+        int slotID = 0;
+        //Add output item
+        for (int i = SLOT_OUTPUT_START; i < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT; i++) {
+            insert.setItem(slotID++, entity.itemHandler.getStackInSlot(i));
+        }
+        return insert;
+    }
+
+    private static void replaceOutputSlotsWithContainer(AdmixerBlockEntity entity, SimpleContainer insert) {
+        int slotID = 0;
+        for(int i=SLOT_OUTPUT_START; i < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT; i++) {
+            entity.itemHandler.setStackInSlot(i, insert.getItem(slotID));
+            slotID++;
+        }
     }
 
     private void resetProgress() {

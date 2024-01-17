@@ -248,15 +248,10 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             return false;
         }
 
-        SimpleContainer outputSlots = getOutputAsContainer(entity, SLOT_OUTPUT_COUNT);
+        SimpleContainer outputSlots = getOutputAsContainer(entity);
 
         //If the output slots can't absorb the output item, don't bother checking anything else
         if(!outputSlots.canAddItem(recipe.getAlchemyObject())) return false;
-
-        int bottlesToInsert = 0;
-        for (ItemStack is : recipe.getComponentMateria()) {
-            bottlesToInsert += is.getCount();
-        }
 
         //TODO: Turn this back on after the bottle slot gets expanded
         //If there's not enough space for the bottles to go, don't craft
@@ -328,7 +323,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             }
         }
 
-        SimpleContainer insert = getOutputAsContainer(entity, 10);
+        SimpleContainer insert = getOutputAsContainer(entity);
         insert.addItem(recipe.getAlchemyObject());
         replaceOutputSlotsWithContainer(entity, insert);
         entity.syncAndSave();
@@ -343,8 +338,8 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     @NotNull
-    private static SimpleContainer getOutputAsContainer(CircleFabricationBlockEntity entity, int i2) {
-        SimpleContainer insert = new SimpleContainer(i2);
+    private static SimpleContainer getOutputAsContainer(CircleFabricationBlockEntity entity) {
+        SimpleContainer insert = new SimpleContainer(SLOT_OUTPUT_COUNT);
         int slotID = 0;
         //Add output item
         for (int i = SLOT_OUTPUT_START; i < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT; i++) {
