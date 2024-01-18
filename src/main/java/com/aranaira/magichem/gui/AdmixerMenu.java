@@ -27,7 +27,7 @@ public class AdmixerMenu extends AbstractContainerMenu {
 
     public final AdmixerBlockEntity blockEntity;
     private final Level level;
-    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[10];
+    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[AdmixerBlockEntity.SLOT_INPUT_COUNT];
 
     public AdmixerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
@@ -65,6 +65,8 @@ public class AdmixerMenu extends AbstractContainerMenu {
 
                 this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 21 + (y) * 18, AdmixerBlockEntity.SLOT_BOTTLES));
             }
+
+            setInputSlotFilters(blockEntity.getCurrentRecipe());
         });
     }
 

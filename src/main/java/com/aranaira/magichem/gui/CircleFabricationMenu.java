@@ -28,8 +28,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
 
     public final CircleFabricationBlockEntity blockEntity;
     private final Level level;
-    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[10];
-    public DataSlot dataSlot;
+    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[CircleFabricationBlockEntity.SLOT_INPUT_COUNT];
 
     public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
@@ -63,20 +62,6 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
             }
 
             setInputSlotFilters(blockEntity.getCurrentRecipe());
-        });
-
-        dataSlot = addDataSlot(new DataSlot() {
-            int doUpdate = 0;
-
-            @Override
-            public int get() {
-                return doUpdate;
-            }
-
-            @Override
-            public void set(int pValue) {
-                doUpdate = pValue;
-            }
         });
     }
 

@@ -3,17 +3,18 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.gui.AdmixerMenu;
-import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -34,9 +35,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
     public static final int
         SLOT_COUNT = 21,
@@ -55,6 +53,8 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             if(slot == SLOT_BOTTLES)
                 return stack.getItem() == Items.GLASS_BOTTLE;
+            if(slot == SLOT_BOTTLES_OUTPUT)
+                return false;
             if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
                 return stack.getItem() instanceof MateriaItem;
             if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
@@ -73,7 +73,7 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     private FixationSeparationRecipe currentRecipe;
     private String currentRecipeID = "";
 
-    private int progress = 0;
+    private int craftingProgress = 0;
 
     public void setCurrentRecipeByOutput(Item item) {
         currentRecipe = null;
@@ -87,6 +87,12 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
 
     private void setCurrentRecipeByRecipeID() {
         currentRecipe = (FixationSeparationRecipe) level.getRecipeManager().byKey(new ResourceLocation(currentRecipeID)).orElse(null);
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        handleUpdateTag(pkt.getTag());
+        super.onDataPacket(net, pkt);
     }
 
     @Nullable
@@ -132,7 +138,11 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("craftingProgress", this.craftingProgress);
+
+        if(currentRecipeID != null)
+            nbt.putString("currentRecipe", this.currentRecipeID);
+
         super.saveAdditional(nbt);
     }
 
@@ -140,7 +150,33 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        progress = nbt.getInt("craftingProgress");
+        craftingProgress = nbt.getInt("craftingProgress");
+        currentRecipeID = nbt.getString("currentRecipe");
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag data = new CompoundTag();
+        data.putString("currentRecipe", currentRecipeID);
+        data.putInt("craftingProgress", craftingProgress);
+        return data;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        //When the game is already running, client side
+        if(currentRecipeID != tag.getString("currentRecipe")) {
+            currentRecipeID = tag.getString("currentRecipe");
+            currentRecipe = null;
+        }
+        craftingProgress = tag.getInt("craftingProgress");
+        super.handleUpdateTag(tag);
     }
 
     public final void syncAndSave() {
@@ -151,11 +187,11 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     }
 
     public int getCraftingProgress(){
-        return progress;
+        return craftingProgress;
     }
 
     public static int getScaledProgress(AdmixerBlockEntity entity) {
-        return PROGRESS_BAR_SIZE * entity.progress / Config.admixerOperationTime;
+        return PROGRESS_BAR_SIZE * entity.craftingProgress / Config.admixerOperationTime;
     }
 
     public void dropInventoryToWorld() {
@@ -293,10 +329,10 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     }
 
     private void resetProgress() {
-        progress = 0;
+        craftingProgress = 0;
     }
 
     private void incrementProgress() {
-        progress++;
+        craftingProgress++;
     }
 }

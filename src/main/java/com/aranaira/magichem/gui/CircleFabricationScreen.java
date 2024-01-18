@@ -188,10 +188,10 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderRecipeOptions();
 
         //Check to see if slots need to be re-locked
-        if(menu.dataSlot.get() == 1) {
+        /*if(menu.dataSlot.get() == 1) {
             menu.setInputSlotFilters(lastClickedRecipe);
             menu.dataSlot.set(0);
-        }
+        }*/
     }
 
     private void renderIngredientPanel(PoseStack poseStack, int x, int y) {

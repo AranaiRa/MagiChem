@@ -6,7 +6,7 @@
   "components": [
     { "item": "magichem:admixture_change", "count": 10 },
     { "item": "magichem:admixture_instrument", "count": 8 },
-    { "item": "magichem:admixture_rotten", "count": 4 },
+    { "item": "magichem:essentia_rotten", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 4 }
   ]
 }
