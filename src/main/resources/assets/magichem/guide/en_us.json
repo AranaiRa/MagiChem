@@ -356,7 +356,7 @@
     "related_recipes": []
   },
   "Process: Distillation": {
-    "index": "1100",
+    "index": "1106",
     "category": "artifice",
     "tier": 2,
     "sections": [
@@ -415,7 +415,7 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:alembic"
+        "location": "magichem:shaped/alembic"
       }
     ]
   },
@@ -468,11 +468,6 @@
         ]
       },
       {
-        "type": "recipe",
-        "location": "magichem:alembic",
-        "recipeType": "crafting"
-      },
-      {
         "type": "text",
         "value": "",
         "json": [
@@ -499,10 +494,15 @@
         ]
       }
     ],
-    "related_recipes": []
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/alembic"
+      }
+    ]
   },
   "Magic Circles": {
-    "index": 1201,
+    "index": 1251,
     "category": "artifice",
     "tier": 2,
     "sections": [
@@ -546,22 +546,21 @@
             "color": "black"
           }
         ]
-      },
-      {
-        "type": "recipe",
-        "location": "magichem:iris_argenti",
-        "recipeType": "manaweaving_altar"
-      },
-      {
-        "type": "recipe",
-        "location": "magichem:magic_circle",
-        "recipeType": "crafting"
       }
     ],
-    "related_recipes": []
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/iris_argenti"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/magic_circle"
+      }
+    ]
   },
   "Circle of Fabrication": {
-    "index": "1202",
+    "index": "1252",
     "category": "artifice",
     "tier": 2,
     "sections": [
@@ -601,7 +600,7 @@
       },
       {
         "type": "recipe",
-        "location": "magichem:circle_fabrication",
+        "location": "magichem:shaped/circle_fabrication",
         "recipeType": "crafting"
       },
       {
@@ -646,16 +645,16 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:magic_circle"
+        "location": "magichem:shaped/magic_circle"
       },
       {
         "type": "crafting",
-        "location": "magichem:circle_power"
+        "location": "magichem:shaped/circle_power"
       }
     ]
   },
   "Circle of Power": {
-    "index": "1203",
+    "index": "1253",
     "category": "artifice",
     "tier": 2,
     "sections": [
@@ -705,7 +704,7 @@
       },
       {
         "type": "recipe",
-        "location": "magichem:circle_power",
+        "location": "magichem:shaped/circle_power",
         "recipeType": "crafting"
       },
       {
@@ -815,7 +814,7 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:circle_power"
+        "location": "magichem:shaped/circle_power"
       }
     ]
   },
@@ -997,7 +996,7 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:circle_power"
+        "location": "magichem:shaped/circle_power"
       }
     ]
   },
@@ -1071,6 +1070,211 @@
       {
         "type": "ritual",
         "location": "magichem:rituals/reagent_2_crafting"
+      }
+    ]
+  },
+
+  "Centrifuge": {
+    "index": "1201",
+    "category": "artifice",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Centrifuge"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Centrifuge ",
+            "bold": true
+          },
+          {
+            "text": "is a simple device capable of performing "
+          },
+          {
+            "text": "Separation ",
+            "bold": true
+          },
+          {
+            "text": "at 50% "
+          },
+          {
+            "text": "Efficiency",
+            "bold": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The large slot in the center of the device holds the current Admixture being processed. The three slots to the left of that are for input items, which can be any Admixture.\n\nDirectly above the processing slot is a slot for bottles. Each time the centrifuge processes an Admixture, its bottle will be inserted into this slot. If there's not enough space for another bottle, the machine will stall until space is made.\n\nThe nine slots to the right of the processing slot hold separated Materia, which can only be extracted from the machine if bottles are present in the single slot above the output slots."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/centrifuge"
+      }
+    ]
+  },
+  "Process: Fixation": {
+    "index": "1103",
+    "category": "artifice",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Fixation"
+      },
+      {
+        "type": "image",
+        "location": ":dummy/process_fixation",
+        "width": 128,
+        "height": 128
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Fix",
+            "bold": true
+          },
+          {
+            "text": " is to take component Materia and combine them into a new Admixture. Basic Fixation is performed at an "
+          },
+          {
+            "text": "Admixer",
+            "bold": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/admixer"
+      }
+    ]
+  },
+  "Process: Separation": {
+    "index": "1108",
+    "category": "artifice",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Separation"
+      },
+      {
+        "type": "image",
+        "location": ":dummy/process_fixation",
+        "width": 128,
+        "height": 128
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Separate",
+            "bold": true
+          },
+          {
+            "text": " is to break an Admixture into the Materia (that is, Essentia or other Admixtures) that make it up. Basic Separation is performed at a "
+          },
+          {
+            "text": "Centrifuge",
+            "bold": true
+          },
+          {
+            "text": ".\n\nDevices capable of Separation have an "
+          },
+          {
+            "text": "Efficiency",
+            "bold": true
+          },
+          {
+            "text": " rating that determines the chance that you will successfully separate each dram of Materia that the Admixture is composed of. Efficiency is always noted as a percentage, and Efficiency greater than 100% has no additional effect."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/centrifuge"
+      }
+    ]
+  },
+  "Admixer": {
+    "index": "1202",
+    "category": "artifice",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Admixer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Admixer ",
+            "bold": true
+          },
+          {
+            "text": "is a simple device capable of performing "
+          },
+          {
+            "text": "Fixation",
+            "bold": true
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Admixer to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Admixer creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/admixer"
       }
     ]
   },
