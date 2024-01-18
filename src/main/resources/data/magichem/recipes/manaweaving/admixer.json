@@ -1,0 +1,24 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:admixer",
+  "tier": 3,
+  "items": [
+    "magichem:alembic",
+    "minecraft:sticky_piston",
+    "magichem:alembic",
+    "magichem:admixture_industry",
+    "minecraft:glass_bottle",
+    "magichem:admixture_industry",
+    "magichem:alembic",
+    "magichem:essentia_nigredo",
+    "magichem:alembic"
+  ],
+  "patterns": [
+    "mna:circle",
+    "mna:circle",
+    "mna:circle",
+    "mna:circle",
+    "mna:bolt",
+    "mna:split_triangle"
+  ]
+}

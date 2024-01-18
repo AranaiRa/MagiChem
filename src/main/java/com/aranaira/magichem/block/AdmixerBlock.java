@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,9 @@ public class AdmixerBlock extends BaseEntityBlock {
         super(properties);
     }
 
-    private static final VoxelShape VOXEL_SHAPE = Block.box(4,0,4,12,10,12);
+    private static final VoxelShape SHAPE_BASE;
+    private static final VoxelShape SHAPE_CENTER;
+    private static final VoxelShape SHAPE_AGGREGATE;
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
@@ -36,7 +39,7 @@ public class AdmixerBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return VOXEL_SHAPE;
+        return SHAPE_AGGREGATE;
     }
 
     /* BLOCK ENTITY STUFF BELOW THIS POINT*/
@@ -82,5 +85,11 @@ public class AdmixerBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BlockEntitiesRegistry.ADMIXER_BE.get(),
                 AdmixerBlockEntity::tick);
+    }
+
+    static {
+        SHAPE_BASE = Block.box(0.0D, 0.0D,  0.0D, 16.0D, 11.5D, 16.0D);
+        SHAPE_CENTER = Block.box(5.5D, 0.0D, 5.5D, 10.5D, 15.0D, 10.5D);
+        SHAPE_AGGREGATE = Shapes.or(SHAPE_BASE, new VoxelShape[]{SHAPE_CENTER});
     }
 }
