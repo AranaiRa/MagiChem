@@ -4,13 +4,13 @@
   "tier": 2,
   "items": [
     "magichem:admixture_mana",
-    "magichem:silver_dust",
+    "mna:transmuted_silver",
     "magichem:admixture_change",
-    "magichem:silver_dust",
+    "mna:transmuted_silver",
     "mna:chimerite_gem",
-    "magichem:silver_dust",
+    "mna:transmuted_silver",
     "magichem:admixture_change",
-    "magichem:silver_dust",
+    "mna:transmuted_silver",
     "magichem:admixture_mana"
   ],
   "patterns": [
