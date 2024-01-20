@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "magichem:block/alembic"
+    },
+    "facing=east": {
+      "model": "magichem:block/alembic",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/alembic",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/alembic",
+      "y": 270
     }
   }
 }
