@@ -6,6 +6,7 @@ import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.registry.MenuRegistry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -95,6 +96,11 @@ public class AlembicMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         ItemStack targetStack = slots.get(pIndex).getItem();
         ItemStack targetStackCopy = new ItemStack(slots.get(pIndex).getItem().getItem(), slots.get(pIndex).getItem().getCount());
+        CompoundTag nbt = slots.get(pIndex).getItem().getTag();
+        if(nbt != null) {
+            targetStack.setTag(nbt);
+            targetStackCopy.setTag(nbt);
+        }
 
         //If player inventory
         if(pIndex >= SLOT_INVENTORY_BEGIN && pIndex < SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT) {
