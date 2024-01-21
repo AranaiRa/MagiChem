@@ -78,7 +78,7 @@ public class CommonEventHandler {
                     int y = event.getWindow().getGuiScaledHeight() / 2;
 
                     MutableComponent textRow1 = Component.translatable("item.magichem."+type.toString());
-                    MutableComponent textRow2 = Component.literal("   " + mvbe.getCurrentStock() + " / " + Config.materiaVesselCapacity);
+                    MutableComponent textRow2 = Component.literal("   " + mvbe.getCurrentStock() + " / " + mvbe.getStorageLimit());
                     MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
 
                     Minecraft.getInstance().font.drawShadow(event.getPoseStack(), textRow1, x+4, y+4, 0xffffff);

@@ -94,9 +94,13 @@ public class Config
 
     //----------------MATERIA VESSEL
 
-    private static final ForgeConfigSpec.IntValue MATERIA_VESSEL_CAPACITY = BUILDER
-            .comment("How much materia can be stored inside of a Materia Vessel.")
-            .defineInRange("materiaVesselCapacity", 1800, 64, Integer.MAX_VALUE);
+    private static final ForgeConfigSpec.IntValue MATERIA_VESSEL_ESSENTIA_CAPACITY = BUILDER
+            .comment("How much of one type of Essentia can be stored inside of a Materia Vessel.")
+            .defineInRange("materiaVesselEssentiaCapacity", 3600, 64, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue MATERIA_VESSEL_ADMIXTURE_CAPACITY = BUILDER
+            .comment("How much of one type of Admixture can be stored inside of a Materia Vessel.")
+            .defineInRange("materiaVesselAdmixtureCapacity", 1800, 64, Integer.MAX_VALUE);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
@@ -113,7 +117,8 @@ public class Config
         circlePowerGen4Reagent,
         circlePowerBuffer,
         distilleryEfficiency,
-        materiaVesselCapacity;
+        materiaVesselEssentiaCapacity,
+        materiaVesselAdmixtureCapacity;
 
     public static boolean
         alembicGeneratesWaste,
@@ -144,7 +149,8 @@ public class Config
         circlePowerGen4Reagent = CIRCLE_OF_POWER_GEN_4_REAGENT.get();
         circlePowerBuffer = CIRCLE_OF_POWER_BUFFER.get();
         distilleryEfficiency = DISTILLERY_EFFICIENCY.get();
-        materiaVesselCapacity = MATERIA_VESSEL_CAPACITY.get();
+        materiaVesselEssentiaCapacity = MATERIA_VESSEL_ESSENTIA_CAPACITY.get();
+        materiaVesselAdmixtureCapacity = MATERIA_VESSEL_ADMIXTURE_CAPACITY.get();
 
         // convert the list of strings into a set of items
         /*items = ITEM_STRINGS.get().stream()

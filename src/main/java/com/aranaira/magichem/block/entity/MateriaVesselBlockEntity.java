@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -30,7 +31,7 @@ public class MateriaVesselBlockEntity extends BlockEntity {
     }
 
     public float getCurrentStockPercent() {
-        return (float) currentStock / (float) Config.materiaVesselCapacity;
+        return (float) currentStock / (float) getStorageLimit();
     }
 
     public MateriaItem getMateriaType() {
@@ -114,8 +115,8 @@ public class MateriaVesselBlockEntity extends BlockEntity {
         } else {
             int tryStock = currentStock + stack.getCount();
 
-            int increase = tryStock - Config.materiaVesselCapacity >= 0 ?
-                    tryStock - Config.materiaVesselCapacity :
+            int increase = tryStock - getStorageLimit() >= 0 ?
+                    tryStock - getStorageLimit() :
                     stack.getCount();
 
             currentStock += increase;
@@ -141,5 +142,12 @@ public class MateriaVesselBlockEntity extends BlockEntity {
 
         this.syncAndSave();
         return extractedMateria;
+    }
+
+    public int getStorageLimit() {
+        if(currentMateriaType instanceof EssentiaItem) {
+            return Config.materiaVesselEssentiaCapacity;
+        }
+        return Config.materiaVesselAdmixtureCapacity;
     }
 }

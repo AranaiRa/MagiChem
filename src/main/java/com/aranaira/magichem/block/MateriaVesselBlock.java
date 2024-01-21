@@ -3,6 +3,7 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.item.AdmixtureItem;
+import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -66,7 +67,7 @@ public class MateriaVesselBlock extends BaseEntityBlock {
                                 .withStyle(ChatFormatting.GRAY)
                 );
                 pTooltip.add(
-                        Component.literal(count + " / " + Config.materiaVesselCapacity)
+                        Component.literal(count + " / " + (materia instanceof EssentiaItem ? Config.materiaVesselEssentiaCapacity : Config.materiaVesselAdmixtureCapacity))
                                 .withStyle(ChatFormatting.DARK_GRAY)
                 );
                 pTooltip.add(
