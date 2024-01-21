@@ -106,6 +106,17 @@ public class RenderUtils {
         }
     }
 
+    public static void renderFaceWithUV(Direction face, Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, float x, float y, float z, float w, float h, float u, float uw, float v, float vh, int color) {
+        switch (face) {
+            case DOWN -> renderFace(pose, normal, consumer, texture, color, x, x + w, 1.0f - z, 1.0f - z, y, y, y + h, y + h, u, uw, v, vh);
+            case UP -> renderFace(pose, normal, consumer, texture, color, x, x + w, z, z, y + h, y + h, y, y, u, uw, v, vh);
+            case NORTH -> renderFace(pose, normal, consumer, texture, color, x, x + w, y + h, y, z, z, z, z, u, uw, v, vh);
+            case SOUTH -> renderFace(pose, normal, consumer, texture, color, x, x + w, y, y + h, 1.0f - z, 1.0f - z, 1.0f - z, 1.0f - z, u, uw, v, vh);
+            case WEST -> renderFace(pose, normal, consumer, texture, color, 1.0f - z, 1.0f - z, y + h, y, x, x + w, x + w, x, u, uw, v, vh);
+            case EAST -> renderFace(pose, normal, consumer, texture, color, z, z, y, y + h, x, x + w, x + w, x, u, uw, v, vh);
+        }
+    }
+
     //This function taken from EnderIO. See the original here: https://github.com/Team-EnderIO/EnderIO/blob/dev/1.19.x/src/core/java/com/enderio/core/client/RenderUtil.java
     private static void renderFace(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, int color, float x0, float x1, float y0, float y1, float z0, float z1, float z2, float z3, float u0, float u1, float v0, float v1) {
         float minU = u0 * texture.getWidth();

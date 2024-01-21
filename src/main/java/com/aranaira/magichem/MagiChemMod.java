@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -100,13 +101,26 @@ public class MagiChemMod
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
             MenuScreens.register(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), CircleFabricationScreen::new);
             MenuScreens.register(MenuRegistry.CIRCLE_POWER_MENU.get(), CirclePowerScreen::new);
             MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
             MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
             MenuScreens.register(MenuRegistry.ADMIXER_MENU.get(), AdmixerScreen::new);
+        }
+
+        @SubscribeEvent
+        public static void onTextureStitch(TextureStitchEvent.Pre event) {
+            //Jar labels
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_ender-arcane"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_earth-nigredo"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_water-albedo"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_air-citrinitas"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_fire-rubedo"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_conceptual-verdant"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_fleshy-nourishing"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_rotten-mineral"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_wrought-precious"));
+            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_bookends"));
         }
     }
 }
