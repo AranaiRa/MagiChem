@@ -1,11 +1,35 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 0.5,
-  "object": { "item": "botania:spark" },
-  "components": [
-    { "item": "magichem:admixture_change", "count": 2 },
-    { "item": "magichem:admixture_mana", "count": 2 },
-    { "item": "magichem:admixture_instrument", "count": 1 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 0.5,
+        "object": {
+          "item": "botania:spark"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_change",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
 }

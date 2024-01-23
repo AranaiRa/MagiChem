@@ -1,11 +1,35 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:cosmetic_devil_horns" },
-  "components": [
-    { "item": "magichem:admixture_whimsy", "count": 2 },
-    { "item": "magichem:admixture_lies", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:cosmetic_devil_horns"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_lies",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

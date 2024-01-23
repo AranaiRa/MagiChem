@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "botania:pixie_dust" },
-  "components": [
-    { "item": "magichem:admixture_fey", "count": 7 },
-    { "item": "magichem:admixture_dust", "count": 5 },
-    { "item": "magichem:admixture_bone", "count": 3 },
-    { "item": "magichem:admixture_bargain", "count": 1 },
-    { "item": "magichem:essentia_nigredo", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:pixie_dust"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_fey",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_dust",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_bone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

@@ -1,12 +1,41 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "botania:terrasteel_ingot" },
-  "components": [
-    { "item": "magichem:admixture_mana", "count": 64 },
-    { "item": "magichem:admixture_metal", "count": 8 },
-    { "item": "magichem:essentia_precious", "count": 2 },
-    { "item": "magichem:essentia_albedo", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:terrasteel_ingot"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_mana",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_albedo",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }
+
+

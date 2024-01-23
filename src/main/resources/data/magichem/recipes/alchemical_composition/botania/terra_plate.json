@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:terra_plate" },
-  "components": [
-    { "item": "magichem:admixture_mana", "count": 64 },
-    { "item": "magichem:admixture_realm", "count": 40 },
-    { "item": "magichem:admixture_change", "count": 9 },
-    { "item": "magichem:admixture_instrument", "count": 2 },
-    { "item": "magichem:essentia_precious", "count": 27 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:terra_plate"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_mana",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_realm",
+            "count": 40
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 27
+          }
+        ]
+      }
+    }
   ]
 }

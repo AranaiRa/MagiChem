@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:alfheim_portal" },
-  "components": [
-    { "item": "magichem:admixture_bargain", "count": 26 },
-    { "item": "magichem:admixture_travel", "count": 18 },
-    { "item": "magichem:admixture_fey", "count": 13 },
-    { "item": "magichem:admixture_plant", "count": 6 },
-    { "item": "magichem:essentia_verdant", "count": 12 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:alfheim_portal"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 26
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_fey",
+            "count": 13
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 6
+          },
+          {
+            "item": "magichem:essentia_verdant",
+            "count": 12
+          }
+        ]
+      }
+    }
   ]
 }

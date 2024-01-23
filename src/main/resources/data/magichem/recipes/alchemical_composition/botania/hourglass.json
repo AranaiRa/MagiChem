@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:hourglass" },
-  "components": [
-    { "item": "magichem:admixture_metal", "count": 11 },
-    { "item": "magichem:admixture_energy", "count": 4 },
-    { "item": "magichem:admixture_mana", "count": 4 },
-    { "item": "magichem:admixture_memory", "count": 2 },
-    { "item": "magichem:essentia_precious", "count": 16 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:hourglass"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 11
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_memory",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 16
+          }
+        ]
+      }
+    }
   ]
 }

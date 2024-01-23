@@ -1,12 +1,39 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:apothecary_forest" },
-  "components": [
-    { "item": "magichem:essentia_water", "count": 4 },
-    { "item": "magichem:admixture_stone", "count": 18 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:apothecary_forest"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_water",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

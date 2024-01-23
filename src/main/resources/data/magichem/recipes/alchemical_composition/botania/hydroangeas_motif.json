@@ -1,12 +1,39 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:hydroangeas_motif" },
-  "components": [
-    { "item": "magichem:essentia_water", "count": 2 },
-    { "item": "magichem:admixture_plant", "count": 2 },
-    { "item": "magichem:admixture_lies", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:hydroangeas_motif"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_water",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_lies",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

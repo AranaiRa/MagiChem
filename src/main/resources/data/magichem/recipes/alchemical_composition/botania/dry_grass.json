@@ -1,12 +1,39 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:dry_grass" },
-  "components": [
-    { "item": "magichem:admixture_death", "count": 1 },
-    { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:admixture_dust", "count": 1 },
-    { "item": "magichem:essentia_rotten", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:dry_grass"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_death",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_dust",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_rotten",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:gaia_pylon" },
-  "components": [
-    { "item": "magichem:admixture_fey", "count": 18 },
-    { "item": "magichem:admixture_curse", "count": 14 },
-    { "item": "magichem:admixture_crystal", "count": 12 },
-    { "item": "magichem:essentia_precious", "count": 18 },
-    { "item": "magichem:essentia_nigredo", "count": 10 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:gaia_pylon"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_fey",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_curse",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 12
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 18
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 10
+          }
+        ]
+      }
+    }
   ]
 }

@@ -1,10 +1,31 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "theoneprobe:probenote" },
-  "components": [
-    { "item": "magichem:admixture_thought", "count": 1 },
-    { "item": "magichem:admixture_instrument", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "theoneprobe:probenote"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_thought",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

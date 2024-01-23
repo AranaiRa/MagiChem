@@ -1,10 +1,31 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:chiseled_livingrock_bricks" },
-  "components": [
-    { "item": "magichem:admixture_stone", "count": 3 },
-    { "item": "magichem:essentia_verdant", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:chiseled_livingrock_bricks"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_verdant",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

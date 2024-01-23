@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:tiny_planet_block" },
-  "components": [
-    { "item": "magichem:essentia_ender", "count": 8 },
-    { "item": "magichem:admixture_stone", "count": 60 },
-    { "item": "magichem:admixture_motion", "count": 6 },
-    { "item": "magichem:admixture_mana", "count": 2 },
-    { "item": "magichem:admixture_instrument", "count": 1 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:tiny_planet_block"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_ender",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 60
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
 }

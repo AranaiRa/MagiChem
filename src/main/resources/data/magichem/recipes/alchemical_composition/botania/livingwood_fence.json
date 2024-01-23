@@ -1,10 +1,31 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 0.75,
-  "object": { "item": "botania:livingwood_fence" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:essentia_verdant", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 0.75,
+        "object": {
+          "item": "botania:livingwood_fence"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_verdant",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

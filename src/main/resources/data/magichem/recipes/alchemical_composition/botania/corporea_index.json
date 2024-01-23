@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:corporea_index" },
-  "components": [
-    { "item": "magichem:admixture_motion", "count": 18 },
-    { "item": "magichem:admixture_thought", "count": 15 },
-    { "item": "magichem:admixture_sound", "count": 11 },
-    { "item": "magichem:admixture_instrument", "count": 4 },
-    { "item": "magichem:admixture_bargain", "count": 3 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:corporea_index"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_motion",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_thought",
+            "count": 15
+          },
+          {
+            "item": "magichem:admixture_sound",
+            "count": 11
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 3
+          }
+        ]
+      }
+    }
   ]
 }

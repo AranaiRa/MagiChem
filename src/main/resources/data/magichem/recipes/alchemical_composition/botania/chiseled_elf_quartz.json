@@ -1,10 +1,31 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:chiseled_elf_quartz" },
-  "components": [
-    { "item": "magichem:admixture_crystal", "count": 12 },
-    { "item": "magichem:admixture_bargain", "count": 8 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:chiseled_elf_quartz"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 8
+          }
+        ]
+      }
+    }
   ]
 }

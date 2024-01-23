@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:cocoon" },
-  "components": [
-    { "item": "magichem:admixture_exanimate", "count": 4 },
-    { "item": "magichem:admixture_realm", "count": 2 },
-    { "item": "magichem:admixture_luck", "count": 2 },
-    { "item": "magichem:admixture_sorcery", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:cocoon"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_exanimate",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_realm",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_luck",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

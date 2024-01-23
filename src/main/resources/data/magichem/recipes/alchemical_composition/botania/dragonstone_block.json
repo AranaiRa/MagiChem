@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:dragonstone" },
-  "components": [
-    { "item": "magichem:admixture_bargain", "count": 64 },
-    { "item": "magichem:admixture_crystal", "count": 54 },
-    { "item": "magichem:essentia_mineral", "count": 18 },
-    { "item": "magichem:essentia_precious", "count": 54 },
-    { "item": "magichem:essentia_nigredo", "count": 18 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:dragonstone"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 54
+          },
+          {
+            "item": "magichem:essentia_mineral",
+            "count": 18
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 54
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 18
+          }
+        ]
+      }
+    }
   ]
 }

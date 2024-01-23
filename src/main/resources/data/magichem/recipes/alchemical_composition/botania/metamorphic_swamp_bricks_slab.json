@@ -1,12 +1,39 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 0.5,
-  "object": { "item": "botania:metamorphic_swamp_bricks_slab" },
-  "components": [
-    { "item": "magichem:admixture_stone", "count": 4 },
-    { "item": "magichem:admixture_change", "count": 1 },
-    { "item": "magichem:admixture_realm", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 0.5,
+        "object": {
+          "item": "botania:metamorphic_swamp_bricks_slab"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_realm",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

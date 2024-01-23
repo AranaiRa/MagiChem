@@ -1,12 +1,39 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "botania:ender_air_bottle" },
-  "components": [
-    { "item": "magichem:essentia_ender", "count": 22 },
-    { "item": "magichem:essentia_air", "count": 8 },
-    { "item": "magichem:admixture_alien", "count": 2 },
-    { "item": "magichem:admixture_crystal", "count": 1 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:ender_air_bottle"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_ender",
+            "count": 22
+          },
+          {
+            "item": "magichem:essentia_air",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
 }

@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:gaia_spreader" },
-  "components": [
-    { "item": "magichem:admixture_realm", "count": 64 },
-    { "item": "magichem:admixture_fey", "count": 41 },
-    { "item": "magichem:admixture_mana", "count": 32 },
-    { "item": "magichem:admixture_instrument", "count": 3 },
-    { "item": "magichem:essentia_citrinitas", "count": 4 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:gaia_spreader"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_realm",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_fey",
+            "count": 41
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 32
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_citrinitas",
+            "count": 4
+          }
+        ]
+      }
+    }
   ]
 }

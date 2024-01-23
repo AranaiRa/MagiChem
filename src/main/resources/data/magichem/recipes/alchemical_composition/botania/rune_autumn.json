@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:rune_autumn" },
-  "components": [
-    { "item": "magichem:essentia_air", "count": 36 },
-    { "item": "magichem:essentia_fire", "count": 36 },
-    { "item": "magichem:admixture_death", "count": 8 },
-    { "item": "magichem:admixture_mana", "count": 4 },
-    { "item": "magichem:admixture_stone", "count": 3 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:rune_autumn"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_air",
+            "count": 36
+          },
+          {
+            "item": "magichem:essentia_fire",
+            "count": 36
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          }
+        ]
+      }
+    }
   ]
 }

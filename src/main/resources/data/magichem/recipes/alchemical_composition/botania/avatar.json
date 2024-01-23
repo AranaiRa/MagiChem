@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:avatar" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 5 },
-    { "item": "magichem:admixture_thought", "count": 3 },
-    { "item": "magichem:admixture_mana", "count": 2 },
-    { "item": "magichem:admixture_permanence", "count": 1 },
-    { "item": "magichem:essentia_nigredo", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:avatar"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_thought",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_mana",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

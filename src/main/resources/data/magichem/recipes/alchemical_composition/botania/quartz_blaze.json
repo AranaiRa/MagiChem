@@ -1,11 +1,35 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "botania:quartz_blaze" },
-  "components": [
-    { "item": "magichem:essentia_fire", "count": 2 },
-    { "item": "magichem:admixture_crystal", "count": 3 },
-    { "item": "magichem:admixture_demon", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "botania:quartz_blaze"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_fire",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }
