@@ -108,7 +108,7 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
 
         for(FixationSeparationRecipe fsr : fabricationRecipeOutputs) {
             String display = fsr.getResultAdmixture().getDisplayName().getString();
-            if((Objects.equals(filter, "") || fsr.getResultAdmixture().toString().toLowerCase().contains(filter.toLowerCase()))) {
+            if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
                 filteredRecipes.add(fsr);
             }
         }
