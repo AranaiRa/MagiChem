@@ -142,7 +142,8 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         filteredRecipes.clear();
 
         for(AlchemicalCompositionRecipe acr : fabricationRecipeOutputs) {
-            if((Objects.equals(filter, "") || acr.getAlchemyObject().toString().contains(filter)) && !acr.getIsDistillOnly()) {
+            String display = acr.getAlchemyObject().getDisplayName().getString();
+            if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase())) && !acr.getIsDistillOnly()) {
                 filteredRecipes.add(acr);
             }
         }
