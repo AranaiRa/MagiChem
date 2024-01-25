@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:storage_stabilizer_tier3" },
-  "components": [
-    { "item": "magichem:admixture_vessel", "count": 48 },
-    { "item": "magichem:admixture_spirit", "count": 9 },
-    { "item": "magichem:admixture_instrument", "count": 6 },
-    { "item": "magichem:essentia_precious", "count": 64 },
-    { "item": "magichem:essentia_rubedo", "count": 38 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:storage_stabilizer_tier3"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 48
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 6
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 64
+          },
+          {
+            "item": "magichem:essentia_rubedo",
+            "count": 38
+          }
+        ]
+      }
+    }
   ]
 }

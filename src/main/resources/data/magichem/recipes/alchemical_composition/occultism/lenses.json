@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:lenses" },
-  "components": [
-    { "item": "magichem:admixture_crystal", "count": 7 },
-    { "item": "magichem:admixture_permanence", "count": 4 },
-    { "item": "magichem:admixture_spirit", "count": 2 },
-    { "item": "magichem:essentia_precious", "count": 8 },
-    { "item": "magichem:essentia_nigredo", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:lenses"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

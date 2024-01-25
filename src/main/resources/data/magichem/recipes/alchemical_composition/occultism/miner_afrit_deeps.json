@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:miner_djinni_ores" },
-  "components": [
-    { "item": "magichem:admixture_metal", "count": 43 },
-    { "item": "magichem:admixture_spirit", "count": 17 },
-    { "item": "magichem:admixture_luck", "count": 12 },
-    { "item": "magichem:admixture_trap", "count": 10 },
-    { "item": "magichem:essentia_precious", "count": 32 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:miner_djinni_ores"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 43
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 17
+          },
+          {
+            "item": "magichem:admixture_luck",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 10
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 32
+          }
+        ]
+      }
+    }
   ]
 }

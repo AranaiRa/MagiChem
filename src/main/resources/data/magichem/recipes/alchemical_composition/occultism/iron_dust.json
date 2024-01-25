@@ -1,9 +1,27 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:iron_dust" },
-  "components": [
-    { "item": "magichem:admixture_metal", "count": 6 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:iron_dust"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 6
+          }
+        ]
+      }
+    }
   ]
 }

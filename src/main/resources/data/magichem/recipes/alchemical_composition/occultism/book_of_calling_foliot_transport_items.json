@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:book_of_calling_foliot_transport_items" },
-  "components": [
-    { "item": "magichem:admixture_spirit", "count": 13 },
-    { "item": "magichem:admixture_trap", "count": 11 },
-    { "item": "magichem:admixture_travel", "count": 9 },
-    { "item": "magichem:admixture_permanence", "count": 3 },
-    { "item": "magichem:admixture_instrument", "count": 1 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:book_of_calling_foliot_transport_items"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 13
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 11
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
 }

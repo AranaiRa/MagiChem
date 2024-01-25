@@ -1,12 +1,39 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:crushed_end_stone" },
-  "components": [
-    { "item": "magichem:admixture_alien", "count": 2 },
-    { "item": "magichem:admixture_stone", "count": 2 },
-    { "item": "magichem:admixture_erosion", "count": 2 },
-    { "item": "magichem:essentia_nigredo", "count": 1 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:crushed_end_stone"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_alien",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_erosion",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
 }

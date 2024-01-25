@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:familiar_ring" },
-  "components": [
-    { "item": "magichem:admixture_trap", "count": 64 },
-    { "item": "magichem:admixture_bargain", "count": 31 },
-    { "item": "magichem:admixture_spirit", "count": 19 },
-    { "item": "magichem:admixture_crystal", "count": 12 },
-    { "item": "magichem:essentia_precious", "count": 26 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:familiar_ring"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_trap",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 31
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 19
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 12
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 26
+          }
+        ]
+      }
+    }
   ]
 }

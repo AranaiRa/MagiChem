@@ -1,11 +1,35 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:raw_silver" },
-  "components": [
-    { "item": "magichem:admixture_metal", "count": 2 },
-    { "item": "magichem:admixture_trap", "count": 2 },
-    { "item": "magichem:essentia_precious", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:raw_silver"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

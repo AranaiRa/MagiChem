@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:golden_sacrificial_bowl" },
-  "components": [
-    { "item": "magichem:admixture_stone", "count": 15 },
-    { "item": "magichem:admixture_spirit", "count": 5 },
-    { "item": "magichem:admixture_bargain", "count": 3 },
-    { "item": "magichem:admixture_instrument", "count": 3 },
-    { "item": "magichem:essentia_precious", "count": 32 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:golden_sacrificial_bowl"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 15
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 32
+          }
+        ]
+      }
+    }
   ]
 }

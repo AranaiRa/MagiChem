@@ -1,11 +1,35 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:otherstone_pedestal" },
-  "components": [
-    { "item": "magichem:admixture_stone", "count": 10 },
-    { "item": "magichem:admixture_instrument", "count": 3 },
-    { "item": "magichem:admixture_spirit", "count": 3 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:otherstone_pedestal"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 3
+          }
+        ]
+      }
+    }
   ]
 }

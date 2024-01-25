@@ -1,12 +1,39 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:soul_gem" },
-  "components": [
-    { "item": "magichem:admixture_trap", "count": 64 },
-    { "item": "magichem:admixture_spirit", "count": 14 },
-    { "item": "magichem:admixture_crystal", "count": 12 },
-    { "item": "magichem:essentia_precious", "count": 14 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:soul_gem"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_trap",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 12
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 14
+          }
+        ]
+      }
+    }
   ]
 }

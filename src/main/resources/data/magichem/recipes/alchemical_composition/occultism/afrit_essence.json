@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:afrit_essence" },
-  "components": [
-    { "item": "magichem:essentia_fire", "count": 58 },
-    { "item": "magichem:admixture_spirit", "count": 17 },
-    { "item": "magichem:admixture_violence", "count": 13 },
-    { "item": "magichem:admixture_death", "count": 4 },
-    { "item": "magichem:essentia_precious", "count": 4 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:afrit_essence"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_fire",
+            "count": 58
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 17
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 13
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 4
+          }
+        ]
+      }
+    }
   ]
 }

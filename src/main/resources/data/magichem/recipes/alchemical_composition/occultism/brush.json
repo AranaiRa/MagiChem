@@ -1,12 +1,39 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:brush" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:admixture_filth", "count": 1 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:brush"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_filth",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

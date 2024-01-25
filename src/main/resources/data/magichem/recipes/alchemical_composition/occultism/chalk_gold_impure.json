@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:chalk_gold_impure" },
-  "components": [
-    { "item": "magichem:admixture_spirit", "count": 17 },
-    { "item": "magichem:admixture_light", "count": 10 },
-    { "item": "magichem:admixture_lies", "count": 3 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
-    { "item": "magichem:essentia_precious", "count": 2 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:chalk_gold_impure"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 17
+          },
+          {
+            "item": "magichem:admixture_light",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_lies",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
 }

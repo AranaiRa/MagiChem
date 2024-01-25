@@ -1,13 +1,43 @@
 {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "occultism:storage_controller" },
-  "components": [
-    { "item": "magichem:admixture_vessel", "count": 64 },
-    { "item": "magichem:admixture_spirit", "count": 47 },
-    { "item": "magichem:admixture_memory", "count": 25 },
-    { "item": "magichem:admixture_stone", "count": 12 },
-    { "item": "magichem:admixture_instrument", "count": 34 }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "occultism:storage_controller"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 47
+          },
+          {
+            "item": "magichem:admixture_memory",
+            "count": 25
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 34
+          }
+        ]
+      }
+    }
   ]
 }
