@@ -5,17 +5,22 @@ import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
 
 public class DistillationRecipeCategory implements IRecipeCategory<AlchemicalCompositionRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "distillation");
@@ -60,5 +65,25 @@ public class DistillationRecipeCategory implements IRecipeCategory<AlchemicalCom
             builder.addSlot(RecipeIngredientRole.OUTPUT, 4 + i*18, 90).addItemStack(stack);
             i++;
         }
+    }
+
+    @Override
+    public List<Component> getTooltipStrings(AlchemicalCompositionRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+
+        return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+    }
+
+    @Override
+    public void draw(AlchemicalCompositionRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.font != null) {
+            if(recipe.getOutputRate() < 1.0f) {
+                String oRateFormatted = String.format("%.1f", recipe.getOutputRate()*100.0f);
+                Component oRateComponent = Component.literal(oRateFormatted+"%");
+
+                mc.font.draw(poseStack, oRateComponent, 64, 34, 0x000000);
+            }
+        }
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
     }
 }
