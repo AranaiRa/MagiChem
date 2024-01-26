@@ -11,7 +11,7 @@
       "recipe": {
         "type": "magichem:alchemical_composition",
         "distill_only": true,
-        "output_rate": 1.0,
+        "output_rate": 0.5,
         "object": {
           "item": "occultism:crushed_end_stone"
         },

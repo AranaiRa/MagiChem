@@ -6,24 +6,19 @@ import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.util.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
 
 public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<MateriaVesselBlockEntity> {
     public MateriaVesselBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -43,9 +38,9 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
     public static final ResourceLocation LABEL_TEXTURE_BOOKENDS = new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_bookends");
 
     @Override
-    public void render(MateriaVesselBlockEntity mvbe, float pPartialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(MateriaVesselBlockEntity mvbe, float pPartialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if(mvbe.getCurrentStockPercent() > 0) {
-            VertexConsumer buffer = bufferSource.getBuffer(RenderType.solid());
+            VertexConsumer buffer = bufferSource.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
 
             PoseStack.Pose last = poseStack.last();
             renderFluidContents(last.pose(), last.normal(), buffer, mvbe.getCurrentStockPercent(), mvbe.getMateriaType().getMateriaColor());
@@ -101,7 +96,7 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         float v = coords.v;
         float vh = coords.vh;
 
-        Coords bookendLeft = getLeftBookend(ei.getMateriaName(), false);
+        Coords bookendLeft = getLeftBookend(ei.getMateriaName());
         float blx = bookendLeft.x;
         float bly = bookendLeft.y;
         float blz = 0.171875f;
@@ -112,7 +107,7 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         float blv = bookendLeft.v;
         float blvh = bookendLeft.vh;
 
-        Coords bookendRight = getRightBookend(ei.getMateriaName(), false);
+        Coords bookendRight = getRightBookend(ei.getMateriaName());
         float brx = bookendRight.x;
         float bry = bookendRight.y;
         float brz = 0.171875f;
@@ -148,15 +143,15 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         }
 
         RenderUtils.renderFaceWithUV(dir.getOpposite(), pose, normal, consumer, textureMain,
-                x, y, z, w, h, u, uw, v, vh, 0xFFFFFF
+                x, y, z, w, h, u, uw, v, vh, 0xFFFFFFFF
                 );
 
         RenderUtils.renderFaceWithUV(dir.getOpposite(), pose, normal, consumer, textureBookend,
-                blx, bly, blz, blw, blh, blu, bluw, blv, blvh, 0xFFFFFF
+                blx, bly, blz, blw, blh, blu, bluw, blv, blvh, 0xFFFFFFFF
                 );
 
         RenderUtils.renderFaceWithUV(dir.getOpposite(), pose, normal, consumer, textureBookend,
-                brx, bry, brz, brw, brh, bru, bruw, brv, brvh, 0xFFFFFF
+                brx, bry, brz, brw, brh, bru, bruw, brv, brvh, 0xFFFFFFFF
                 );
 
 
@@ -192,7 +187,7 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         return out;
     }
 
-    private static Coords getLeftBookend(String in, boolean flipV) {
+    private static Coords getLeftBookend(String in) {
         Coords out = switch(in) {
             case "nigredo", "albedo", "citrinitas", "rubedo" -> new Coords(0.265625f, 0.359375f, 0.09375f, 0.28125f);
             default -> new Coords(0.265625f, 0.359375f, 0.125f, 0.28125f);
@@ -206,7 +201,7 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         return out;
     }
 
-    private static Coords getRightBookend(String in, boolean flipV) {
+    private static Coords getRightBookend(String in) {
         Coords out = switch(in) {
             case "nigredo", "albedo", "citrinitas", "rubedo" -> new Coords(0.640625f, 0.359375f, 0.09375f, 0.28125f);
             default -> new Coords(0.609375f, 0.359375f, 0.125f, 0.28125f);

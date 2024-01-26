@@ -2,6 +2,7 @@ package com.aranaira.magichem;
 
 import com.aranaira.magichem.datagen.FixationSeparationRecipeGenerator;
 import com.aranaira.magichem.gui.*;
+import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.registry.*;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
 import com.mojang.logging.LogUtils;
@@ -11,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -121,6 +123,11 @@ public class MagiChemMod
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_rotten-mineral"));
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_wrought-precious"));
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_bookends"));
+        }
+
+        @SubscribeEvent
+        public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
+            event.register(MateriaVesselItemRenderer.MATERIA_VESSEL);
         }
     }
 }
