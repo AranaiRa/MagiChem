@@ -60,6 +60,11 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
         return null;
     }
 
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     public NonNullList<ItemStack> getComponentMateria() {
         return componentMateria;
     }
