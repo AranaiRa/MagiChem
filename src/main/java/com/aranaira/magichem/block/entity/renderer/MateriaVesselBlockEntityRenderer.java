@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
+import com.aranaira.magichem.foundation.BlockRendererCoords;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.util.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -85,7 +86,7 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         TextureAtlasSprite textureMain = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(getTextureByEssentiaName(ei.getMateriaName()));
         TextureAtlasSprite textureBookend = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(LABEL_TEXTURE_BOOKENDS);
 
-        Coords coords = getCoordsByEssentiaName(ei.getMateriaName());
+        BlockRendererCoords coords = getCoordsByEssentiaName(ei.getMateriaName());
         float x = coords.x;
         float y = coords.y;
         float z = 0.171875f;
@@ -96,7 +97,7 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         float v = coords.v;
         float vh = coords.vh;
 
-        Coords bookendLeft = getLeftBookend(ei.getMateriaName());
+        BlockRendererCoords bookendLeft = getLeftBookend(ei.getMateriaName());
         float blx = bookendLeft.x;
         float bly = bookendLeft.y;
         float blz = 0.171875f;
@@ -107,7 +108,7 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         float blv = bookendLeft.v;
         float blvh = bookendLeft.vh;
 
-        Coords bookendRight = getRightBookend(ei.getMateriaName());
+        BlockRendererCoords bookendRight = getRightBookend(ei.getMateriaName());
         float brx = bookendRight.x;
         float bry = bookendRight.y;
         float brz = 0.171875f;
@@ -172,10 +173,10 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         };
     }
 
-    private static Coords getCoordsByEssentiaName(String in) {
-        Coords out = switch(in) {
-            case "nigredo", "albedo", "citrinitas", "rubedo" -> new Coords(0.359375f, 0.359375f, 0.28125f, 0.28125f);
-            default -> new Coords(0.390625f, 0.359375f, 0.21875f, 0.28125f);
+    private static BlockRendererCoords getCoordsByEssentiaName(String in) {
+        BlockRendererCoords out = switch(in) {
+            case "nigredo", "albedo", "citrinitas", "rubedo" -> new BlockRendererCoords(0.359375f, 0.359375f, 0.28125f, 0.28125f);
+            default -> new BlockRendererCoords(0.390625f, 0.359375f, 0.21875f, 0.28125f);
         };
 
         switch(in) {
@@ -187,10 +188,10 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         return out;
     }
 
-    private static Coords getLeftBookend(String in) {
-        Coords out = switch(in) {
-            case "nigredo", "albedo", "citrinitas", "rubedo" -> new Coords(0.265625f, 0.359375f, 0.09375f, 0.28125f);
-            default -> new Coords(0.265625f, 0.359375f, 0.125f, 0.28125f);
+    private static BlockRendererCoords getLeftBookend(String in) {
+        BlockRendererCoords out = switch(in) {
+            case "nigredo", "albedo", "citrinitas", "rubedo" -> new BlockRendererCoords(0.265625f, 0.359375f, 0.09375f, 0.28125f);
+            default -> new BlockRendererCoords(0.265625f, 0.359375f, 0.125f, 0.28125f);
         };
 
         switch(in) {
@@ -201,10 +202,10 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         return out;
     }
 
-    private static Coords getRightBookend(String in) {
-        Coords out = switch(in) {
-            case "nigredo", "albedo", "citrinitas", "rubedo" -> new Coords(0.640625f, 0.359375f, 0.09375f, 0.28125f);
-            default -> new Coords(0.609375f, 0.359375f, 0.125f, 0.28125f);
+    private static BlockRendererCoords getRightBookend(String in) {
+        BlockRendererCoords out = switch(in) {
+            case "nigredo", "albedo", "citrinitas", "rubedo" -> new BlockRendererCoords(0.640625f, 0.359375f, 0.09375f, 0.28125f);
+            default -> new BlockRendererCoords(0.609375f, 0.359375f, 0.125f, 0.28125f);
         };
 
         switch(in) {
@@ -213,31 +214,5 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         }
 
         return out;
-    }
-}
-class Coords {
-    public float x, y, w, h, u, uw, v, vh;
-    public Coords(float pX, float pY, float pW, float pH) {
-        this.x = pX;
-        this.y = pY;
-        this.w = pW;
-        this.h = pH;
-    }
-    public Coords(float pX, float pY, float pW, float pH, float pU, float pUW, float pV, float pVH) {
-        this.x = pX;
-        this.y = pY;
-        this.w = pW;
-        this.h = pH;
-        this.u = pU;
-        this.uw = pUW;
-        this.v = pV;
-        this.vh = pVH;
-    }
-
-    public void setUV(float pU, float pUW, float pV, float pVH) {
-        this.u = pU;
-        this.uw = pUW;
-        this.v = pV;
-        this.vh = pVH;
     }
 }
