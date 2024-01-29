@@ -9,14 +9,31 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:dried_mugwort_leaves" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 2 },
-    { "item": "magichem:admixture_sleep", "count": 1 },
-    { "item": "magichem:admixture_protection", "count": 1 },
-    { "item": "magichem:admixture_witchcraft", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:dried_mugwort_leaves"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_sleep",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_protection",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_witchcraft",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

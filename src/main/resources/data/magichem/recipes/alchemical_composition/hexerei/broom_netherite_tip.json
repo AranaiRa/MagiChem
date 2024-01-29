@@ -9,15 +9,35 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:broom_netherite_tip" },
-  "components": [
-    { "item": "magichem:admixture_metal", "count": 64 },
-    { "item": "magichem:admixture_witchcraft", "count": 16 },
-    { "item": "magichem:admixture_flight", "count": 8 },
-    { "item": "magichem:essentia_precious", "count": 64 },
-    { "item": "magichem:essentia_albedo", "count": 48 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:broom_netherite_tip"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_witchcraft",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_flight",
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 64
+          },
+          {
+            "item": "magichem:essentia_albedo",
+            "count": 48
+          }
+        ]
+      }
+    }
   ]
-},
+}

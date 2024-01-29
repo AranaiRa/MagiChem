@@ -9,12 +9,23 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 0.1,
-  "object": { "item": "hexerei:willow_sapling" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:admixture_witchcraft", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 0.1,
+        "object": {
+          "item": "hexerei:willow_sapling"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_witchcraft",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

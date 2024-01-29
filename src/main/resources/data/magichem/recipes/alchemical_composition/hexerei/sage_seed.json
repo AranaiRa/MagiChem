@@ -9,13 +9,27 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 0.25,
-  "object": { "item": "hexerei:sage_seed" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 2 },
-    { "item": "magichem:admixture_healing", "count": 1 },
-    { "item": "magichem:admixture_protection", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 0.25,
+        "object": {
+          "item": "hexerei:sage_seed"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_healing",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_protection",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

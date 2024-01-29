@@ -9,15 +9,35 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:budding_selenite" },
-  "components": [
-    { "item": "magichem:essentia_arcane", "count": 64 },
-    { "item": "magichem:admixture_crystal", "count": 24 },
-    { "item": "magichem:admixture_darkness", "count": 12 },
-    { "item": "magichem:admixture_permanence", "count": 20 },
-    { "item": "magichem:essentia_albedo", "count": 10 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:budding_selenite"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_arcane",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 20
+          },
+          {
+            "item": "magichem:essentia_albedo",
+            "count": 10
+          }
+        ]
+      }
+    }
   ]
-},
+}

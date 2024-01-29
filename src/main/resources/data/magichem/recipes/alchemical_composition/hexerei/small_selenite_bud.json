@@ -9,13 +9,27 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:small_selenite_bud" },
-  "components": [
-    { "item": "magichem:admixture_crystal", "count": 1 },
-    { "item": "magichem:admixture_darkness", "count": 1 },
-    { "item": "magichem:admixture_light", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:small_selenite_bud"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_light",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

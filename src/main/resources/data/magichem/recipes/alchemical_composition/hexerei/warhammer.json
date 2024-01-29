@@ -9,15 +9,35 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:warhammer" },
-  "components": [
-    { "item": "magichem:admixture_metal", "count": 40 },
-    { "item": "magichem:admixture_violence", "count": 6 },
-    { "item": "magichem:admixture_witchcraft", "count": 12 },
-    { "item": "magichem:essentia_precious", "count": 48 },
-    { "item": "magichem:essentia_albedo", "count": 24 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:warhammer"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 40
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_witchcraft",
+            "count": 12
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 48
+          },
+          {
+            "item": "magichem:essentia_albedo",
+            "count": 24
+          }
+        ]
+      }
+    }
   ]
-},
+}

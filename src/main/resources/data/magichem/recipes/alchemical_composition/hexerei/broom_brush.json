@@ -9,14 +9,31 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:broom_brush" },
-  "components": [
-    { "item": "magichem:admixture_flight", "count": 12 },
-    { "item": "magichem:admixture_witchcraft", "count": 4 },
-    { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:broom_brush"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_flight",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_witchcraft",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

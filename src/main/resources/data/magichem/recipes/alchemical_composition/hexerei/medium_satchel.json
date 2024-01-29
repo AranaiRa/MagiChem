@@ -9,13 +9,27 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:medium_satchel" },
-  "components": [
-    { "item": "magichem:admixture_vessel", "count": 32 },
-    { "item": "magichem:essentia_fleshy", "count": 48 },
-    { "item": "magichem:essentia_wrought", "count": 6 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:medium_satchel"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 32
+          },
+          {
+            "item": "magichem:essentia_fleshy",
+            "count": 48
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 6
+          }
+        ]
+      }
+    }
   ]
-},
+}

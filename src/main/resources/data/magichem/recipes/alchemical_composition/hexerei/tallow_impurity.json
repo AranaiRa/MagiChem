@@ -9,14 +9,31 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:tallow_impurity" },
-  "components": [
-    { "item": "magichem:admixture_witchcraft", "count": 2 },
-    { "item": "magichem:essentia_fleshy", "count": 8 },
-    { "item": "magichem:essentia_nourishing", "count": 4 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:tallow_impurity"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_witchcraft",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_fleshy",
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

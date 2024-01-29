@@ -9,11 +9,19 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:willow_log" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:willow_log"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

@@ -9,15 +9,35 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "hexerei:mahogany_broom" },
-  "components": [
-    { "item": "magichem:admixture_flight", "count": 64 },
-    { "item": "magichem:admixture_witchcraft", "count": 20 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 },
-    { "item": "magichem:essentia_albedo", "count": 6 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "hexerei:mahogany_broom"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_flight",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_witchcraft",
+            "count": 20
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_albedo",
+            "count": 6
+          }
+        ]
+      }
+    }
   ]
-},
+}
