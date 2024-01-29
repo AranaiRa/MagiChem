@@ -1,4 +1,14 @@
 {
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
   "type": "magichem:alchemical_composition",
   "distill_only": false,
   "output_rate": 0.5,
@@ -6,4 +16,4 @@
   "components": [
     { "item": "magichem:admixture_nectar", "count": 1 }
   ]
-}
+},
