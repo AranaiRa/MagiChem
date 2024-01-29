@@ -1,12 +1,10 @@
 package com.aranaira.magichem;
 
-import com.aranaira.magichem.datagen.FixationSeparationRecipeGenerator;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.registry.*;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -127,7 +125,7 @@ public class MagiChemMod
 
         @SubscribeEvent
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
-            event.register(MateriaVesselItemRenderer.MATERIA_VESSEL);
+            event.register(MateriaVesselItemRenderer.SPECIAL_RENDERER);
         }
     }
 }

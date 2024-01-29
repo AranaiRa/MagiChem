@@ -7,7 +7,7 @@ import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
-import com.aranaira.magichem.util.RenderUtils;
+import com.aranaira.magichem.util.render.RenderUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
