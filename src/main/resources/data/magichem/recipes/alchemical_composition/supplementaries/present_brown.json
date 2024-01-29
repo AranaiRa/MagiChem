@@ -9,14 +9,31 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:present_brown" },
-  "components": [
-    { "item": "magichem:admixture_vessel", "count": 2 },
-    { "item": "magichem:admixture_delight", "count": 1 },
-    { "item": "magichem:admixture_change", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:present_brown"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

@@ -9,13 +9,27 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:antique_ink" },
-  "components": [
-    { "item": "magichem:admixture_history", "count": 21 },
-    { "item": "magichem:admixture_change", "count": 5 },
-    { "item": "magichem:admixture_filth", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:antique_ink"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_history",
+            "count": 21
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_filth",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

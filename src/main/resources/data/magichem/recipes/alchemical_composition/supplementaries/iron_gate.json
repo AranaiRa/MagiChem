@@ -9,13 +9,27 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 0.5,
-  "object": { "item": "supplementaries:iron_gate" },
-  "components": [
-    { "item": "magichem:admixture_metal", "count": 13 },
-    { "item": "magichem:admixture_motion", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 0.5,
+        "object": {
+          "item": "supplementaries:iron_gate"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 13
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

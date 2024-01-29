@@ -9,15 +9,35 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:slice_map" },
-  "components": [
-    { "item": "magichem:admixture_travel", "count": 36 },
-    { "item": "magichem:admixture_metal", "count": 12 },
-    { "item": "magichem:admixture_thought", "count": 8 },
-    { "item": "magichem:admixture_instrument", "count": 2 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:slice_map"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_travel",
+            "count": 36
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_thought",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

@@ -9,15 +9,35 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:bellows" },
-  "components": [
-    { "item": "magichem:essentia_air", "count": 8 },
-    { "item": "magichem:admixture_storm", "count": 2 },
-    { "item": "magichem:admixture_industry", "count": 1 },
-    { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:bellows"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_air",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_storm",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_industry",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

@@ -9,14 +9,31 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 0.5,
-  "object": { "item": "supplementaries:blackstone_tile_slab" },
-  "components": [
-    { "item": "magichem:admixture_demon", "count": 4 },
-    { "item": "magichem:admixture_darkness", "count": 4 },
-    { "item": "magichem:admixture_stone", "count": 4 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 0.5,
+        "object": {
+          "item": "supplementaries:blackstone_tile_slab"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_demon",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

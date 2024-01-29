@@ -9,13 +9,27 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 0.5,
-  "object": { "item": "supplementaries:hanging_sign_spruce" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 2 },
-    { "item": "magichem:admixture_thought", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 0.5,
+        "object": {
+          "item": "supplementaries:hanging_sign_spruce"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_thought",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

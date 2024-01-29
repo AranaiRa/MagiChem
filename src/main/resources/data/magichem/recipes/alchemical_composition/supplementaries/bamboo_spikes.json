@@ -9,13 +9,27 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:bamboo_spikes" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 3 },
-    { "item": "magichem:admixture_violence", "count": 2 },
-    { "item": "magichem:admixture_trap", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:bamboo_spikes"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

@@ -9,14 +9,31 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:daub_cross_brace" },
-  "components": [
-    { "item": "magichem:essentia_earth", "count": 2 },
-    { "item": "magichem:admixture_plant", "count": 1 },
-    { "item": "magichem:admixture_stone", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:daub_cross_brace"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_earth",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

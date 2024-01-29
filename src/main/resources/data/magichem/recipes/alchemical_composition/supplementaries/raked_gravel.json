@@ -9,13 +9,27 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:raked_gravel" },
-  "components": [
-    { "item": "magichem:admixture_stone", "count": 2 },
-    { "item": "magichem:admixture_erosion", "count": 2 },
-    { "item": "magichem:admixture_dust", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:raked_gravel"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_erosion",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_dust",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

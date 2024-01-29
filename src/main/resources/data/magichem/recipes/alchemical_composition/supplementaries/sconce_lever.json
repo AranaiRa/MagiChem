@@ -9,12 +9,23 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:sconce_lever" },
-  "components": [
-    { "item": "magichem:admixture_light", "count": 1 },
-    { "item": "magichem:admixture_instrument", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:sconce_lever"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_light",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}

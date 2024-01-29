@@ -9,15 +9,35 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:planter" },
-  "components": [
-    { "item": "magichem:essentia_fire", "count": 28 },
-    { "item": "magichem:admixture_stone", "count": 14 },
-    { "item": "magichem:essentia_rotten", "count": 4 },
-    { "item": "magichem:essentia_verdant", "count": 4 },
-    { "item": "magichem:essentia_wrought", "count": 14 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:planter"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_fire",
+            "count": 28
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 14
+          },
+          {
+            "item": "magichem:essentia_rotten",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_verdant",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 14
+          }
+        ]
+      }
+    }
   ]
-},
+}

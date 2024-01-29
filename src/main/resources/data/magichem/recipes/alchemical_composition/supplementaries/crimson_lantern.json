@@ -9,15 +9,35 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": true,
-  "output_rate": 1.0,
-  "object": { "item": "supplementaries:crimson_lantern" },
-  "components": [
-    { "item": "magichem:admixture_plant", "count": 4 },
-    { "item": "magichem:admixture_fungus", "count": 4 },
-    { "item": "magichem:admixture_light", "count": 4 },
-    { "item": "magichem:admixture_demon", "count": 2 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": true,
+        "output_rate": 1.0,
+        "object": {
+          "item": "supplementaries:crimson_lantern"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_fungus",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_light",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
   ]
-},
+}

@@ -9,11 +9,19 @@
         }
       ],
       "recipe": {
-  "type": "magichem:alchemical_composition",
-  "distill_only": false,
-  "output_rate": 0.5,
-  "object": { "item": "supplementaries:flax_seeds" },
-  "components": [
-    { "item": "magichem:admixture_nectar", "count": 1 }
+        "type": "magichem:alchemical_composition",
+        "distill_only": false,
+        "output_rate": 0.5,
+        "object": {
+          "item": "supplementaries:flax_seeds"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 1
+          }
+        ]
+      }
+    }
   ]
-},
+}
