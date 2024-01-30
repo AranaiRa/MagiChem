@@ -3,9 +3,9 @@
   "output": "minecraft:experience_bottle",
   "tier": 3,
   "items": [
-    "magichem:essentia_nourishing",
+    "magichem:alchemical_waste",
     "magichem:admixture_memory",
-    "magichem:essentia_nourishing"
+    "magichem:alchemical_waste"
   ],
   "patterns": [
     "mna:bolt"
