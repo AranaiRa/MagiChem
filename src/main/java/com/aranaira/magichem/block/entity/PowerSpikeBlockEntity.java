@@ -28,15 +28,18 @@ public class PowerSpikeBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag nbt) {
         if(powerDrawPos != null)
             nbt.putLong("magichem.powerspike.powerDrawPos", this.powerDrawPos.asLong());
-        nbt.putLong("magichem.powerspike.powerTransferPos", this.powerTransferPos.asLong());
+        if(powerTransferPos != null)
+            nbt.putLong("magichem.powerspike.powerTransferPos", this.powerTransferPos.asLong());
         super.saveAdditional(nbt);
     }
 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        powerDrawPos = BlockPos.of(nbt.getLong("magichem.powerspike.powerDrawPos"));
-        powerTransferPos = BlockPos.of(nbt.getLong("magichem.powerspike.powerTransferPos"));
+        if(nbt.contains("magichem.powerspike.powerDrawPos"))
+            powerDrawPos = BlockPos.of(nbt.getLong("magichem.powerspike.powerDrawPos"));
+        if(nbt.contains("magichem.powerspike.powerTransferPos"))
+            powerTransferPos = BlockPos.of(nbt.getLong("magichem.powerspike.powerTransferPos"));
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PowerSpikeBlockEntity entity) {
