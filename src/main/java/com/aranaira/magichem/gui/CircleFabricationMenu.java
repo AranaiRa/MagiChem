@@ -1,11 +1,7 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.CircleFabricationBlock;
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
-import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
@@ -15,23 +11,20 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.BottleItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 
 public class CircleFabricationMenu extends AbstractContainerMenu {
 
     public final CircleFabricationBlockEntity blockEntity;
     private final Level level;
     public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[CircleFabricationBlockEntity.SLOT_INPUT_COUNT];
+    private DataSlot dataHasSufficientPower;
 
     public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, ((CircleFabricationBlockEntity)inv.player.level.getBlockEntity(extraData.readBlockPos())).readFrom(extraData));
     }
 
     public CircleFabricationMenu(int id, Inventory inv, BlockEntity entity) {
@@ -63,6 +56,8 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
 
             setInputSlotFilters(blockEntity.getCurrentRecipe());
         });
+
+        this.dataHasSufficientPower = this.addDataSlot(DataSlot.forContainer(blockEntity, CircleFabricationBlockEntity.DATA_HAS_SUFFICIENT_POWER));
     }
 
     @Override
@@ -93,10 +88,6 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         for(int i=0; i<9; i++) {
             this.addSlot((new Slot(playerInventory, i, 8 + i*18, 155)));
         }
-    }
-
-    public boolean isCrafting(int tier) {
-        return false;
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
@@ -153,5 +144,13 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         }
         sourceSlot.onTake(playerIn, sourceStack);
         return copyOfSourceStack;
+    }
+
+    // --------------------------------------
+    // Data slot accessors
+    // --------------------------------------
+
+    public boolean getHasSufficientPower(){
+        return this.dataHasSufficientPower.get() == 1;
     }
 }

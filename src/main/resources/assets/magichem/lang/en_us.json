@@ -270,6 +270,7 @@
   "log.magichem.powerspike.bind": "Power Spike bound to this Circle of Power.",
 
   "gui.magichem.typetofilter": "Filter...",
+  "gui.magichem.insufficientpower": "Insufficient power!",
 
   "jei.magichem.distillation": "Alchemical Distillation",
   "jei.magichem.fabrication": "Alchemical Fabrication",

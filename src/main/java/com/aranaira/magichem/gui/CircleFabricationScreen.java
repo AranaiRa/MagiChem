@@ -17,6 +17,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
@@ -176,6 +177,11 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderIngredientPanel(poseStack, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
 
         renderSlotGhosts(poseStack);
+
+        if(!menu.getHasSufficientPower()) {
+            RenderSystem.setShaderTexture(0, TEXTURE_EXT);
+            renderPowerWarning(poseStack, x, y);
+        }
     }
 
     @Override
@@ -330,6 +336,16 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         }
     }
 
+    protected void renderPowerWarning(PoseStack poseStack, int x, int y) {
+        long cycle = Minecraft.getInstance().level.getGameTime() % 20;
+
+        this.blit(poseStack, x+10, y-30, 0, 230, 156, 26);
+        if(cycle < 10) {
+            this.blit(poseStack, x + 17, y - 23, 156, 244, 12, 12);
+            this.blit(poseStack, x + 147, y - 23, 156, 244, 12, 12);
+        }
+    }
+
     @Override
     protected void renderLabels(PoseStack poseStack, int x, int y) {
         int powerDraw = menu.blockEntity.getPowerDraw();
@@ -348,6 +364,12 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                 Minecraft.getInstance().font.draw(poseStack, text, 400, 169 + i * 36, 0xff000000);
                 poseStack.scale(2.0f, 2.0f, 2.0f);
             }
+        }
+
+        if(!menu.getHasSufficientPower()) {
+            MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            Minecraft.getInstance().font.draw(poseStack, warningText, 89 - (float)width/2, -33, 0xff000000);
         }
     }
 }

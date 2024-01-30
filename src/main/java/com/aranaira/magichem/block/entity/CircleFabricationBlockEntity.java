@@ -1,7 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -11,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -35,14 +35,14 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class CircleFabricationBlockEntity extends BlockEntity implements MenuProvider {
+public class CircleFabricationBlockEntity extends BlockEntity implements MenuProvider, ContainerData, Consumer<FriendlyByteBuf> {
     public static final int
             SLOT_COUNT = 21,
             SLOT_BOTTLES = 0,
@@ -70,6 +70,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             powerUsageSetting = 1;
     private AlchemicalCompositionRecipe currentRecipe;
     private String currentRecipeID = "";
+    private boolean hasSufficientPower = false;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -183,8 +184,14 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CircleFabricationBlockEntity entity) {
+        //Power check
+        if(!level.isClientSide()) {
+            //entity.set(DATA_HAS_SUFFICIENT_POWER, );
+            entity.hasSufficientPower = entity.ENERGY_STORAGE.getEnergyStored() >= entity.getPowerDraw();
+        }
+
         AlchemicalCompositionRecipe recipe = entity.getCurrentRecipe();
-        if(entity.ENERGY_STORAGE.getEnergyStored() >= entity.getPowerDraw() || level.isClientSide()) {
+        if(entity.hasSufficientPower) {
             if(canCraftItem(entity, recipe)) {
                 entity.ENERGY_STORAGE.extractEnergy(entity.getPowerDraw(), false);
                 entity.incrementProgress();
@@ -197,6 +204,8 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
                 craftItem(entity, recipe);
                 entity.resetProgress();
             }
+        } else {
+            entity.resetProgress();
         }
     }
 
@@ -411,4 +420,59 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             return super.receiveEnergy(actualReceive, simulate);
         }
     };
+
+    public void setHasSufficientPower(boolean hasSufficientPower) {
+        this.hasSufficientPower = hasSufficientPower;
+    }
+
+    public boolean getHasSufficientPower() {
+        return this.hasSufficientPower;
+    }
+
+    // --------------------------------------
+    // Data Slot Interface Stuff
+    // --------------------------------------
+
+    public static final int
+            DATA_SLOT_COUNT = 1,
+            DATA_HAS_SUFFICIENT_POWER = 0;
+
+    @Override
+    public int get(int pIndex) {
+        switch(pIndex) {
+            case DATA_HAS_SUFFICIENT_POWER: return hasSufficientPower ? 1 : 0;
+        }
+
+        return -1;
+    }
+
+    @Override
+    public void set(int pIndex, int pValue) {
+        switch(pIndex) {
+            case DATA_HAS_SUFFICIENT_POWER:
+                hasSufficientPower = pValue == 1;
+                break;
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return DATA_SLOT_COUNT;
+    }
+
+    // --------------------------------------
+    // Consumer Interface Stuff
+    // --------------------------------------
+
+    @Override
+    public void accept(FriendlyByteBuf friendlyByteBuf) {
+        friendlyByteBuf.writeBlockPos(this.getBlockPos());
+        friendlyByteBuf.writeBoolean(this.hasSufficientPower);
+    }
+
+    //client side, needs to be the same order as above
+    public CircleFabricationBlockEntity readFrom(FriendlyByteBuf friendlyByteBuf){
+        this.hasSufficientPower = friendlyByteBuf.readBoolean();
+        return this;
+    }
 }

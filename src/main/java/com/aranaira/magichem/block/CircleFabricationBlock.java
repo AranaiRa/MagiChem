@@ -1,11 +1,15 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -62,8 +66,10 @@ public class CircleFabricationBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof CircleFabricationBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (CircleFabricationBlockEntity)entity, pos);
+            if(entity instanceof CircleFabricationBlockEntity cfbe) {
+                NetworkHooks.openScreen((ServerPlayer)player, new SimpleMenuProvider((id, playerInventory, user) -> {
+                    return new CircleFabricationMenu(id, playerInventory, cfbe);
+                }, Component.empty()), cfbe);
             } else {
                 throw new IllegalStateException("CircleFabricationBlockEntity container provider is missing!");
             }
