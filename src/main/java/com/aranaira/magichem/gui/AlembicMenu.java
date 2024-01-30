@@ -157,13 +157,13 @@ public class AlembicMenu extends AbstractContainerMenu {
             int itemsToRemove = targetStackCopy.getCount();
             int bottles = slots.get(SLOT_BOTTLES).getItem().getCount();
             if(itemsToRemove >= bottles) {
-                slots.get(SLOT_BOTTLES).set(ItemStack.EMPTY);
                 targetStack.setCount(bottles);
                 targetStackCopy.shrink(bottles);
-                moveItemStackTo(targetStack, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
+                if(moveItemStackTo(targetStack, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false))
+                    slots.get(SLOT_BOTTLES).set(ItemStack.EMPTY);
             } else {
-                slots.get(SLOT_BOTTLES).getItem().shrink(itemsToRemove);
-                moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
+                if(moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false))
+                    slots.get(SLOT_BOTTLES).getItem().shrink(itemsToRemove);
             }
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
