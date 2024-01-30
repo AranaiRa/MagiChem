@@ -15,9 +15,17 @@
     }
   },
   "display": {
+    "thirdperson_righthand": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 5, -0.5]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 5, -0.5]
+    },
     "gui": {
-      "rotation": [29, 45, 0],
-      "scale": [0.6, 0.6, 0.6],
+      "rotation": [0, -60, 45],
+      "scale": [3.0, 3.0, 3.0],
       "translation": [0, 0, 0]
     }
   }
