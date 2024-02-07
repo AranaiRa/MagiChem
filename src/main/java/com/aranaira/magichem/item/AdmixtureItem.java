@@ -3,7 +3,6 @@ package com.aranaira.magichem.item;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.NameCountPair;
 import com.aranaira.magichem.foundation.enums.EEssentiaHouse;
-import com.aranaira.magichem.registry.CreativeModeTabs;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

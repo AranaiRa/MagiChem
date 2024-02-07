@@ -84,6 +84,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties())
     );
 
+    public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
+            DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION
+    );
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         ESSENTIA.register(eventBus);
@@ -154,27 +158,5 @@ public class ItemRegistry {
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, getEssentia().toArray(new EssentiaItem[0]));
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, getAdmixtures().toArray(new AdmixtureItem[0]));
-    }
-
-    @SubscribeEvent
-    public static void fillCreativeTabs(BuildCreativeModeTabContentsEvent event) {
-        List<Item> excludedItems = Arrays.asList(
-                (Item)DUMMY_PROCESS_SEPARATION.get(),
-                (Item)DUMMY_PROCESS_FIXATION.get(),
-                (Item)DUMMY_PROCESS_DISTILLATION.get(),
-                (Item)DUMMY_PROCESS_FABRICATION.get()
-        );
-
-        if(event.getTab() == CreativeModeTabs.MAGICHEM_TAB) {
-            ITEMS.getEntries().stream().map(RegistryObject::get).filter((item) -> isInCreativeTab(item, excludedItems)).forEach((event::accept));
-        }
-        else if(event.getTab() == CreativeModeTabs.MAGICHEM_MATERIA_TAB) {
-            ESSENTIA.getEntries().stream().map(RegistryObject::get).filter((item) -> isInCreativeTab(item, excludedItems)).forEach((event::accept));
-            ADMIXTURES.getEntries().stream().map(RegistryObject::get).filter((item) -> isInCreativeTab(item, excludedItems)).forEach((event::accept));
-        }
-    }
-
-    private static boolean isInCreativeTab(Item item, List<Item> excluded) {
-        return !(item instanceof INoCreativeTab) && !excluded.contains(item);
     }
 }

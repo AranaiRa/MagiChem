@@ -1,7 +1,6 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.foundation.enums.EEssentiaHouse;
-import com.aranaira.magichem.registry.CreativeModeTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -14,7 +13,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.List;
 
 public class EssentiaItem extends MateriaItem {

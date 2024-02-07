@@ -12,6 +12,10 @@ pluginManagement {
             }
         }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven {
+            name = 'SpongePowered'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
     }
 }
 

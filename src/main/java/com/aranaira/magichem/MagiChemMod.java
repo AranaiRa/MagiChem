@@ -4,6 +4,7 @@ import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.registry.*;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
+import com.mna.items.base.INoCreativeTab;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
@@ -14,7 +15,6 @@ import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -27,7 +27,11 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+
+import java.util.Arrays;
+import java.util.List;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MagiChemMod.MODID)
@@ -42,28 +46,31 @@ public class MagiChemMod
 
     public MagiChemMod()
     {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        ItemRegistry.register(modEventBus);
-        BlockRegistry.register(modEventBus);
-        BlockEntitiesRegistry.register(modEventBus);
-        MenuRegistry.register(modEventBus);
-        MateriaRegistry.register(modEventBus);
+        CreativeTabsRegistry.register(eventBus);
+        ItemRegistry.register(eventBus);
+        BlockRegistry.register(eventBus);
+        BlockEntitiesRegistry.register(eventBus);
+        MenuRegistry.register(eventBus);
+        MateriaRegistry.register(eventBus);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> {
             return () -> {
-                modEventBus.register(BlockEntitiesClientRegistry.class);
+                eventBus.register(BlockEntitiesClientRegistry.class);
             };
         });
 
-        RecipeRegistry.register(modEventBus);
+        RecipeRegistry.register(eventBus);
 
-        modEventBus.addListener(this::commonSetup);
-
-        BLOCKS.register(modEventBus);
-        ITEMS.register(modEventBus);
-
+        eventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
+
+        eventBus.addListener(this::fillCreativeTabs);
+
+        BLOCKS.register(eventBus);
+        ITEMS.register(eventBus);
+
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -80,6 +87,27 @@ public class MagiChemMod
         });
 
         PacketRegistry.register();
+    }
+
+    private void fillCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        /*if(event.getTab() == CreativeTabsRegistry.MAGICHEM_TAB.get()) {
+            ITEMS.getEntries().stream().map(RegistryObject::get).forEach((item) -> {
+                if(!ItemRegistry.ITEMS_EXCLUDED_FROM_TABS.contains(item))
+                    event.accept(item);
+            });
+        }
+        else if(event.getTab() == CreativeTabsRegistry.MAGICHEM_MATERIA_TAB.get()) {
+            ItemRegistry.ESSENTIA.getEntries().stream().map(RegistryObject::get).forEach((item) -> {
+                event.accept(item);
+            });
+            ItemRegistry.ADMIXTURES.getEntries().stream().map(RegistryObject::get).forEach((item) -> {
+                event.accept(item);
+            });
+        }*/
+    }
+
+    private static boolean isInCreativeTab(Item item, List<Item> excluded) {
+        return !(item instanceof INoCreativeTab) && !excluded.contains(item);
     }
 
     @SubscribeEvent
