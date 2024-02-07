@@ -28,7 +28,7 @@ If you prefer to use IntelliJ:
 
 If at any point you are missing libraries in your IDE, or you've run into problems you can 
 run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+(this does not affect your code) and then start the process again.
 
 Mapping Names:
 =============================
@@ -40,7 +40,7 @@ https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
 
 Additional Resources: 
 =========================
-Community Documentation: https://docs.minecraftforge.net/en/1.19.x/gettingstarted/
+Community Documentation: https://docs.minecraftforge.net/en/latest/gettingstarted/
 LexManos' Install Video: https://youtu.be/8VEdtQLuLO0
 Forge Forums: https://forums.minecraftforge.net/
 Forge Discord: https://discord.minecraftforge.net/

@@ -2,6 +2,7 @@ package com.aranaira.magichem.networking;
 
 import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -37,8 +38,7 @@ public class AdmixerSyncDataC2SPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
-        Player player = context.getSender();
-        BlockEntity entity = player.level.getBlockEntity(blockPos);
+        BlockEntity entity = Minecraft.getInstance().level.getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
             if(entity instanceof AdmixerBlockEntity abe) {

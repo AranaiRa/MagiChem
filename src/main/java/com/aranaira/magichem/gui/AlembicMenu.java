@@ -6,6 +6,7 @@ import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.registry.MenuRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,14 +25,14 @@ public class AlembicMenu extends AbstractContainerMenu {
     private final Level level;
 
     public AlembicMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()));
     }
 
     public AlembicMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.ALEMBIC_MENU.get(), id);
         checkContainerSize(inv, 14);
         blockEntity = (AlembicBlockEntity) entity;
-        this.level = inv.player.level;
+        this.level = Minecraft.getInstance().level;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

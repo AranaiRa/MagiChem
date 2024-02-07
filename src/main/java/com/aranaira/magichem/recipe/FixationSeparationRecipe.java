@@ -6,6 +6,7 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -50,6 +51,11 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
         return false;
     }
 
+    @Override
+    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {
+        return resultAdmixture;
+    }
+
     /**
      * Unused by this recipe type, use getComponentMateria() instead
      * @return always null
@@ -74,18 +80,13 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer pContainer) {
-        return resultAdmixture;
-    }
-
-    @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
     }
 
     @Override
-    public ItemStack getResultItem() {
-        return resultAdmixture.copy();
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+        return null;
     }
 
     @Override

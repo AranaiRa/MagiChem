@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -26,6 +27,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.ForgeRenderTypes;
@@ -50,7 +52,7 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     @Override
-    public void renderByItem(ItemStack pStack, ItemTransforms.TransformType pTransformType, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    public void renderByItem(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
 
         if(this.bakedModel == null)
             this.bakedModel = Minecraft.getInstance().getModelManager().getModel(SPECIAL_RENDERER);
@@ -64,12 +66,12 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
         if (jarModel == null)
             jarModel = bakedModel;
 
-        boolean leftHand = (pTransformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND)
-                || (pTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND);
+        //TODO: Figure out how to get handedness from a displaycontext
+        boolean leftHand = false;
 
         pPoseStack.pushPose();
         pPoseStack.translate(0.5D, 0.5D, 0.5D);
-        jarModel = ForgeHooksClient.handleCameraTransforms(pPoseStack, jarModel, pTransformType, leftHand);
+        jarModel = ForgeHooksClient.handleCameraTransforms(pPoseStack, jarModel, pDisplayContext, leftHand);
 
         CompoundTag nbt = pStack.getTag();
         if(nbt != null) {
@@ -100,6 +102,6 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
 
         pPoseStack.popPose();
 
-        super.renderByItem(pStack, pTransformType, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        super.renderByItem(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
     }
 }

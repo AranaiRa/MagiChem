@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -80,7 +81,7 @@ public class MateriaVesselBlock extends BaseEntityBlock {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
         ItemStack stack = new ItemStack(BlockRegistry.MATERIA_VESSEL.get(), 1);
         MateriaVesselBlockEntity mvbe = (MateriaVesselBlockEntity) pBuilder.getParameter(LootContextParams.BLOCK_ENTITY);
         List<ItemStack> output = new ArrayList<>();

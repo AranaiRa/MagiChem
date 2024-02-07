@@ -6,6 +6,7 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -89,7 +90,7 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
     public float getOutputRate() { return outputRate; }
 
     @Override
-    public ItemStack assemble(SimpleContainer pContainer) {
+    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {
         return alchemyObject;
     }
 
@@ -99,8 +100,8 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem() {
-        return alchemyObject.copy();
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+        return alchemyObject;
     }
 
     @Override

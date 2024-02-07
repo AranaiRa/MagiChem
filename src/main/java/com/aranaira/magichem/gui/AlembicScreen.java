@@ -4,6 +4,7 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -24,7 +25,7 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1,1,1,1);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -35,22 +36,22 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         int x = (width - w) / 2;
         int y = (height - h) / 2;
 
-        this.blit(poseStack, x, y, 0, 0, w, h);
+        gui.blit(TEXTURE, x, y, 0, 0, w, h);
 
         int sp = menu.blockEntity.getScaledProgress(menu.blockEntity);
         if(sp > 0)
-            this.blit(poseStack, x+77, y+83, 0, 253, sp, 3);
+            gui.blit(TEXTURE, x+77, y+83, 0, 253, sp, 3);
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, delta);
-        renderTooltip(poseStack, mouseX, mouseY);
+    public void render(GuiGraphics gui, int mouseX, int mouseY, float delta) {
+        renderBackground(gui);
+        super.render(gui, mouseX, mouseY, delta);
+        renderTooltip(gui, mouseX, mouseY);
     }
 
     @Override
-    protected void renderLabels(PoseStack p_97808_, int p_97809_, int p_97810_) {
-
+    protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
+        super.renderLabels(pGuiGraphics, pMouseX, pMouseY);
     }
 }

@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.container.*;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -23,14 +24,14 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     private final Level level;
 
     public CentrifugeMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()));
     }
 
     public CentrifugeMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.CENTRIFUGE_MENU.get(), id);
         checkContainerSize(inv, CentrifugeBlockEntity.SLOT_COUNT);
         blockEntity = (CentrifugeBlockEntity) entity;
-        this.level = inv.player.level;
+        this.level = Minecraft.getInstance().level;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

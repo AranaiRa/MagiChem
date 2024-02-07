@@ -13,6 +13,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -109,8 +111,9 @@ public class MagiChemMod
         }
 
         @SubscribeEvent
-        public static void onTextureStitch(TextureStitchEvent.Pre event) {
+        public static void onTextureStitch(TextureStitchEvent event) {
             //Jar labels
+            /*
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_ender-arcane"));
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_earth-nigredo"));
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_water-albedo"));
@@ -121,6 +124,7 @@ public class MagiChemMod
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_rotten-mineral"));
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_wrought-precious"));
             event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_bookends"));
+             */
         }
 
         @SubscribeEvent

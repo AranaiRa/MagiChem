@@ -31,7 +31,7 @@ public class AdmixtureItem extends MateriaItem {
     private final int depth;
 
     public AdmixtureItem(String pName, String pColor, int pDepth, List<NameCountPair> pFormulaEssentia, List<NameCountPair> pFormulaAdmixtures) {
-        super(pName, pColor, new Properties().tab(CreativeModeTabs.MAGICHEM_MATERIA_TAB));
+        super(pName, pColor, new Properties());
         this.name = pName;
         this.depth = pDepth;
         this.formulaEssentiaPortions = pFormulaEssentia;
@@ -41,10 +41,10 @@ public class AdmixtureItem extends MateriaItem {
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         tooltipComponents.add(MutableComponent.create(
-                new TranslatableContents("tooltip.magichem.admixturegeneral")).withStyle(ChatFormatting.DARK_GRAY)
+                new TranslatableContents("tooltip.magichem.admixturegeneral", "?", new Object[]{})).withStyle(ChatFormatting.DARK_GRAY)
         );
         tooltipComponents.add(MutableComponent.create(
-                new TranslatableContents("tooltip.magichem.admixtureformula")).withStyle(ChatFormatting.DARK_GRAY)
+                new TranslatableContents("tooltip.magichem.admixtureformula", "?", new Object[]{})).withStyle(ChatFormatting.DARK_GRAY)
                 .append(" [ ")
                 .append(Component.literal(getDisplayFormula()).withStyle(ChatFormatting.DARK_AQUA))
                 .append(" ]")

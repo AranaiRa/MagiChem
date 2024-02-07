@@ -1,6 +1,5 @@
 # eclipse
 bin
-run
 *.launch
 .settings
 .metadata
@@ -24,5 +23,3 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
-src/generated/resources/.cache
-libs

@@ -16,6 +16,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -73,17 +74,16 @@ public class DistillationRecipeCategory implements IRecipeCategory<AlchemicalCom
         return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
     }
 
-    @Override
-    public void draw(AlchemicalCompositionRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
+    public void draw(AlchemicalCompositionRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.font != null) {
             if(recipe.getOutputRate() < 1.0f) {
                 String oRateFormatted = String.format("%.1f", recipe.getOutputRate()*100.0f);
                 Component oRateComponent = Component.literal(oRateFormatted+"%");
 
-                mc.font.draw(poseStack, oRateComponent, 64, 34, 0x000000);
+                gui.drawString(mc.font, oRateComponent, 64, 34, 0x000000, false);
             }
         }
-        IRecipeCategory.super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, gui, mouseX, mouseY);
     }
 }

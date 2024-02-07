@@ -5,6 +5,7 @@ import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -23,14 +24,14 @@ public class CirclePowerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public CirclePowerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        this(id, inv, Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     public CirclePowerMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuRegistry.CIRCLE_POWER_MENU.get(), id);
         checkContainerSize(inv, 4);
         blockEntity = (CirclePowerBlockEntity) entity;
-        this.level = inv.player.level;
+        this.level = Minecraft.getInstance().level;
         this.data = data;
 
         addPlayerInventory(inv);

@@ -39,7 +39,7 @@ public class EssentiaItem extends MateriaItem {
     private final int wheel;
 
     public EssentiaItem(String essentiaName, String essentiaAbbreviation, String essentiaHouse, int essentiaWheel, String essentiaColor) {
-        super(essentiaName, essentiaColor, new Item.Properties().tab(CreativeModeTabs.MAGICHEM_MATERIA_TAB));
+        super(essentiaName, essentiaColor, new Item.Properties());
         this.name = essentiaName;
         this.abbreviation = essentiaAbbreviation;
         this.house = parseStringToHouse(essentiaHouse, essentiaName);
@@ -105,10 +105,10 @@ public class EssentiaItem extends MateriaItem {
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         tooltipComponents.add(MutableComponent.create(
-                new TranslatableContents("tooltip.magichem."+getMateriaName())).withStyle(ChatFormatting.DARK_GRAY)
+                new TranslatableContents("tooltip.magichem."+getMateriaName(), "?", new Object[]{})).withStyle(ChatFormatting.DARK_GRAY)
         );
         tooltipComponents.add(MutableComponent.create(
-                new TranslatableContents("tooltip.magichem.sign")).withStyle(ChatFormatting.DARK_GRAY)
+                new TranslatableContents("tooltip.magichem.sign", "?", new Object[]{})).withStyle(ChatFormatting.DARK_GRAY)
                 .append(" [ ")
                 .append(Component.literal(getAbbreviation()).withStyle(ChatFormatting.DARK_AQUA))
                 .append(" ]")

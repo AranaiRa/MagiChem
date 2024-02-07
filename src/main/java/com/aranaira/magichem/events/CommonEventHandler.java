@@ -6,9 +6,11 @@ import com.aranaira.magichem.block.MateriaVesselBlock;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.MathHelper;
 import com.mna.tools.math.Vector3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -69,7 +71,7 @@ public class CommonEventHandler {
         if(hitResult == null) return;
 
         if(hitResult.getType() == HitResult.Type.BLOCK) {
-            BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(hitResult.getLocation()));
+            BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(MathHelper.V3toV3i(hitResult.getLocation())));
             if(blockEntity == null) return;
             if(blockEntity instanceof MateriaVesselBlockEntity mvbe) {
                 MateriaItem type = mvbe.getMateriaType();
@@ -81,12 +83,10 @@ public class CommonEventHandler {
                     MutableComponent textRow2 = Component.literal("   " + mvbe.getCurrentStock() + " / " + mvbe.getStorageLimit());
                     MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
 
-                    Minecraft.getInstance().font.drawShadow(event.getPoseStack(), textRow1, x+4, y+4, 0xffffff);
-                    Minecraft.getInstance().font.draw(event.getPoseStack(),       textRow1, x+4, y+4, 0xffffff);
-                    Minecraft.getInstance().font.drawShadow(event.getPoseStack(), textRow2, x+4, y+14, 0xffffff);
-                    Minecraft.getInstance().font.draw(event.getPoseStack(),       textRow2, x+4, y+14, 0xffffff);
-                    Minecraft.getInstance().font.drawShadow(event.getPoseStack(), textRow3, x+4, y+24, 0xffffff);
-                    Minecraft.getInstance().font.draw(event.getPoseStack(),       textRow3, x+4, y+24, 0xffffff);
+                    Font font = Minecraft.getInstance().font;
+                    event.getGuiGraphics().drawString(font, textRow1, x+4, y+4, 0xffffff, true);
+                    event.getGuiGraphics().drawString(font, textRow2, x+4, y+14, 0xffffff, true);
+                    event.getGuiGraphics().drawString(font, textRow3, x+4, y+24, 0xffffff, true);
                 }
             }
         }

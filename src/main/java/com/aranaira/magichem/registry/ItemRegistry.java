@@ -2,9 +2,12 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.*;
+import com.mna.items.base.INoCreativeTab;
 import com.mna.items.runes.ItemRunePattern;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,63 +25,63 @@ public class ItemRegistry {
     public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
 
     public static final RegistryObject<TooltipLoreItem> SILVER_DUST = ITEMS.register("silver_dust",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> FOCUSING_CATALYST = ITEMS.register("focusing_catalyst",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> CATALYST_CORE = ITEMS.register("focusing_catalyst_core",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> CATALYST_CASING = ITEMS.register("focusing_catalyst_casing",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1).tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> IRIS_ARGENTI = ITEMS.register("iris_argenti",
-            () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> MAGIC_CIRCLE = ITEMS.register("magic_circle",
-            () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> TARNISHED_SILVER_LUMP = ITEMS.register("tarnished_silver_lump",
-            () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> ALCHEMICAL_WASTE = ITEMS.register("alchemical_waste",
-            () -> new TooltipLoreItem(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<Item> SUPERHEATED_GLASS_PANE = ITEMS.register("superheated_glass_pane",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new Item(new Item.Properties())
     );
 
     public static final RegistryObject<Item> DUMMY_PROCESS_FIXATION = ITEMS.register("dummy/process_fixation",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new Item(new Item.Properties())
     );
 
     public static final RegistryObject<Item> DUMMY_PROCESS_SEPARATION = ITEMS.register("dummy/process_separation",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new Item(new Item.Properties())
     );
 
     public static final RegistryObject<Item> DUMMY_PROCESS_DISTILLATION = ITEMS.register("dummy/process_distillation",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new Item(new Item.Properties())
     );
 
     public static final RegistryObject<Item> DUMMY_PROCESS_FABRICATION = ITEMS.register("dummy/process_fabrication",
-            () -> new Item(new Item.Properties().tab(CreativeModeTabs.MAGICHEM_TAB))
+            () -> new Item(new Item.Properties())
     );
 
     public static void register(IEventBus eventBus) {
@@ -151,5 +154,27 @@ public class ItemRegistry {
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, getEssentia().toArray(new EssentiaItem[0]));
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, getAdmixtures().toArray(new AdmixtureItem[0]));
+    }
+
+    @SubscribeEvent
+    public static void fillCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        List<Item> excludedItems = Arrays.asList(
+                (Item)DUMMY_PROCESS_SEPARATION.get(),
+                (Item)DUMMY_PROCESS_FIXATION.get(),
+                (Item)DUMMY_PROCESS_DISTILLATION.get(),
+                (Item)DUMMY_PROCESS_FABRICATION.get()
+        );
+
+        if(event.getTab() == CreativeModeTabs.MAGICHEM_TAB) {
+            ITEMS.getEntries().stream().map(RegistryObject::get).filter((item) -> isInCreativeTab(item, excludedItems)).forEach((event::accept));
+        }
+        else if(event.getTab() == CreativeModeTabs.MAGICHEM_MATERIA_TAB) {
+            ESSENTIA.getEntries().stream().map(RegistryObject::get).filter((item) -> isInCreativeTab(item, excludedItems)).forEach((event::accept));
+            ADMIXTURES.getEntries().stream().map(RegistryObject::get).filter((item) -> isInCreativeTab(item, excludedItems)).forEach((event::accept));
+        }
+    }
+
+    private static boolean isInCreativeTab(Item item, List<Item> excluded) {
+        return !(item instanceof INoCreativeTab) && !excluded.contains(item);
     }
 }

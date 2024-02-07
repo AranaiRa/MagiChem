@@ -12,6 +12,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -81,9 +82,8 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
 
         this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 18, Component.empty());
         this.recipeFilterBox.setMaxLength(60);
-        this.recipeFilterBox.setFocus(false);
+        this.recipeFilterBox.setFocused(false);
         this.recipeFilterBox.setCanLoseFocus(false);
-        this.recipeFilterBox.changeFocus(true);
         this.setFocused(this.recipeFilterBox);
     }
 
@@ -117,7 +117,7 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1,1,1,1);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -125,58 +125,60 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.blit(poseStack, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
-        this.blit(poseStack, x+PANEL_RECIPE_X, y+PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
+        gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
+        gui.blit(TEXTURE, x+PANEL_RECIPE_X, y+PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
         int sp = AdmixerBlockEntity.getScaledProgress(menu.blockEntity);
         if(sp > 0)
-            this.blit(poseStack, x+74, y+53, 0, 228, sp, AdmixerBlockEntity.PROGRESS_BAR_SIZE);
+            gui.blit(TEXTURE, x+74, y+53, 0, 228, sp, AdmixerBlockEntity.PROGRESS_BAR_SIZE);
 
-        renderSelectedRecipe(poseStack, x + 79, y + 94);
+        renderSelectedRecipe(gui, x + 79, y + 94);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        renderIngredientPanel(poseStack, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
-        renderSlotGhosts(poseStack);
+        renderIngredientPanel(gui, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
+        renderSlotGhosts(gui);
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(poseStack);
-        super.render(poseStack, mouseX, mouseY, delta);
-        renderTooltip(poseStack, mouseX, mouseY);
-        renderButtons(poseStack, delta, mouseX, mouseY);
+    public void render(GuiGraphics gui, int mouseX, int mouseY, float delta) {
+        renderBackground(gui);
+        super.render(gui, mouseX, mouseY, delta);
+        renderTooltip(gui, mouseX, mouseY);
+        renderButtons(gui, delta, mouseX, mouseY);
         renderFilterBox();
         updateDisplayedRecipes(recipeFilterBox.getValue());
-        renderRecipeOptions();
+        renderRecipeOptions(gui);
     }
 
-    private void renderSlotGhosts(PoseStack poseStack) {
+    private void renderSlotGhosts(GuiGraphics gui) {
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
         if(menu.blockEntity.getCurrentRecipe() == null)
             return;
 
-        FixationSeparationRecipe acr = menu.blockEntity.getCurrentRecipe();
+        FixationSeparationRecipe fsr = menu.blockEntity.getCurrentRecipe();
 
+        gui.setColor(1f, 1f, 1f, 0.25f);
         int slotGroup = 0;
-        for(ItemStack stack : acr.getComponentMateria()) {
-            RenderUtils.RenderGhostedItemStack(stack, xOrigin + 26, yOrigin + 23 + (18 * slotGroup), 0.25f);
-            RenderUtils.RenderGhostedItemStack(stack, xOrigin + 44, yOrigin + 23 + (18 * slotGroup), 0.25f);
+        for(ItemStack stack : fsr.getComponentMateria()) {
+            gui.renderItem(stack, xOrigin+26, yOrigin+23 + (18*slotGroup));
+            gui.renderItem(stack, xOrigin+44, yOrigin+23 + (18*slotGroup));
             slotGroup++;
         }
+        gui.setColor(1f, 1f, 1f, 1f);
     }
 
-    private void renderSelectedRecipe(PoseStack poseStack, int x, int y) {
+    private void renderSelectedRecipe(GuiGraphics gui, int x, int y) {
         if(menu.blockEntity.getCurrentRecipe() == null) {
-            this.blit(poseStack, x, y, 28, 238, 18, 18);
+            gui.blit(TEXTURE, x, y, 28, 238, 18, 18);
         }
         else {
-            Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(menu.blockEntity.getCurrentRecipe().getResultAdmixture(), x + 1, y + 1);
+            gui.renderFakeItem(menu.blockEntity.getCurrentRecipe().getResultAdmixture(), x+1, y+1);
         }
     }
 
-    private void renderIngredientPanel(PoseStack poseStack, int x, int y) {
+    private void renderIngredientPanel(GuiGraphics gui, int x, int y) {
         RenderSystem.setShaderTexture(0, TEXTURE_EXT);
 
         if(menu.blockEntity.getCurrentRecipe() != null) {
@@ -184,37 +186,37 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
 
             //A switch statement doesn't work here and I have no idea why.
             if(recipe.getComponentMateria().size() == 1) {
-                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U1, PANEL_INGREDIENTS_V1, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H1);
+                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U1, PANEL_INGREDIENTS_V1, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H1);
             }
             else if(recipe.getComponentMateria().size() == 2) {
-                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U2, PANEL_INGREDIENTS_V2, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H2);
+                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U2, PANEL_INGREDIENTS_V2, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H2);
             }
             else if(recipe.getComponentMateria().size() == 3) {
-                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U3, PANEL_INGREDIENTS_V3, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H3);
+                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U3, PANEL_INGREDIENTS_V3, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H3);
             }
             else if(recipe.getComponentMateria().size() == 4) {
-                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U4, PANEL_INGREDIENTS_V4, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H4);
+                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U4, PANEL_INGREDIENTS_V4, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H4);
             }
             else if(recipe.getComponentMateria().size() == 5) {
-                this.blit(poseStack, x, y, PANEL_INGREDIENTS_U5, PANEL_INGREDIENTS_V5, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H5);
+                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U5, PANEL_INGREDIENTS_V5, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H5);
             }
 
             for(int i=0; i<recipe.getComponentMateria().size(); i++) {
-                Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(recipe.getComponentMateria().get(i), x + 4, y + 7 + i * 18);
+                gui.renderFakeItem(recipe.getComponentMateria().get(i), x+4, y+7 + i*18);
             }
         }
 
         RenderSystem.setShaderTexture(0, TEXTURE);
     }
 
-    private void renderButtons(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
+    private void renderButtons(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
 
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
         for(ButtonData bd : recipeSelectButtons) {
             bd.getButton().setPosition(x+bd.getXOffset(), y+bd.getYOffset());
-            bd.getButton().renderButton(poseStack, mouseX, mouseY, partialTick);
+            bd.getButton().renderWidget(gui, mouseX, mouseY, partialTick);
             bd.getButton().active = true;
             bd.getButton().visible = true;
         }
@@ -224,8 +226,8 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        recipeFilterBox.x = xOrigin - 58;
-        recipeFilterBox.y = yOrigin - 7;
+        recipeFilterBox.setX(xOrigin - 58);
+        recipeFilterBox.setY(yOrigin - 7);
 
         if(recipeFilterBox.getValue().isEmpty())
             recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
@@ -235,7 +237,7 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
         addRenderableWidget(recipeFilterBox);
     }
 
-    private void renderRecipeOptions() {
+    private void renderRecipeOptions(GuiGraphics gui) {
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
@@ -251,10 +253,7 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
             for(int y=0; y<5; y++) {
                 for (int x = 0; x < 3; x++) {
 
-                    Minecraft.getInstance().getItemRenderer().renderAndDecorateFakeItem(
-                            new ItemStack(snipped.get(c).getResultAdmixture().getItem()),
-                            xOrigin - 58 + x*18, yOrigin + 17 + y*18
-                    );
+                    gui.renderItem(snipped.get(c).getResultAdmixture(), xOrigin - 58 + x*18, yOrigin + 17 + y*18);
                     c++;
                     if(c >= cLimit) break;
                 }
@@ -264,15 +263,16 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int x, int y) {
+    protected void renderLabels(GuiGraphics gui, int x, int y) {
         FixationSeparationRecipe recipe = menu.blockEntity.getCurrentRecipe();
         if(recipe != null) {
             for (int i = 0; i < recipe.getComponentMateria().size(); i++) {
                 Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + " x ")
                         .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipe.getComponentMateria().get(i).getItem()+".short"));
-                poseStack.scale(0.5f, 0.5f, 0.5f);
-                Minecraft.getInstance().font.draw(poseStack, text, 400, 153 + i * 36, 0xff000000);
-                poseStack.scale(2.0f, 2.0f, 2.0f);
+                gui.pose().scale(0.5f, 0.5f, 0.5f);
+
+                gui.drawString(Minecraft.getInstance().font, text, 400, 153 + i*36, 0xff000000);
+                gui.pose().scale(2.0f, 2.0f, 2.0f);
             }
         }
     }

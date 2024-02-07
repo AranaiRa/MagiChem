@@ -12,13 +12,13 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
+import net.minecraft.world.item.ItemDisplayContext;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -37,7 +37,7 @@ public class RenderUtils {
     public static final ItemRenderer ITEM_RENDERER = MINECRAFT_REF.getItemRenderer();
     public static final TextureManager TEXTURE_MANAGER = MINECRAFT_REF.getTextureManager();
 
-    public static void RenderGhostedItemStack(ItemStack stack, int x, int y, float a) {
+    public static void RenderGhostedItemStack(ItemStack stack, int x, int y, float a, ItemDisplayContext itemDisplayContext) {
         BakedModel bakedModel = getBakedModel(stack);
 
         TEXTURE_MANAGER.getTexture(InventoryMenu.BLOCK_ATLAS).setFilter(true, false);
@@ -58,7 +58,7 @@ public class RenderUtils {
 
         MultiBufferSource.BufferSource bufferSource = MINECRAFT_REF.renderBuffers().bufferSource();
         ITEM_RENDERER.render(stack,
-                ItemTransforms.TransformType.GUI,
+                itemDisplayContext,
                 false,
                 new PoseStack(),
                 getWrappedBuffer(bufferSource, a),
@@ -120,10 +120,10 @@ public class RenderUtils {
 
     //This function taken from EnderIO. See the original here: https://github.com/Team-EnderIO/EnderIO/blob/dev/1.19.x/src/core/java/com/enderio/core/client/RenderUtil.java
     private static void renderFace(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, int color, float x0, float x1, float y0, float y1, float z0, float z1, float z2, float z3, float u0, float u1, float v0, float v1) {
-        float minU = u0 * texture.getWidth();
-        float maxU = u1 * texture.getWidth();
-        float minV = v0 * texture.getHeight();
-        float maxV = v1 * texture.getHeight();
+        float minU = u0 * texture.getU0();
+        float maxU = u1 * texture.getU1();
+        float minV = v0 * texture.getV0();
+        float maxV = v1 * texture.getV1();
 
         consumer.vertex(pose, x0, y0, z0).color(color).uv(texture.getU(minU), texture.getV(minV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(normal, 0.0f, 0.0f, 0.0f).endVertex();
         consumer.vertex(pose, x1, y0, z1).color(color).uv(texture.getU(maxU), texture.getV(minV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(normal, 0.0f, 0.0f, 0.0f).endVertex();
