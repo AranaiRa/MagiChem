@@ -3,6 +3,7 @@ package com.aranaira.magichem.util.render;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.BlockRendererCoords;
 import com.aranaira.magichem.item.EssentiaItem;
+import com.enderio.core.client.RenderUtil;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -31,30 +32,30 @@ public class MateriaVesselContentsRenderUtil {
             FLUID_WIDTH = 0.5F,
             FLUID_HEIGHT_MAX = 0.625F;
 
-    public static void renderFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color) {
+    public static void renderFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {
         float height = FLUID_HEIGHT_MAX * fillAmount;
         TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FLUID_TEXTURE);
 
         RenderUtils.renderFace(Direction.UP, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_XZ, FLUID_START_Y+height, FLUID_WIDTH, FLUID_WIDTH, color);
+                FLUID_START_XZ, FLUID_START_XZ, FLUID_START_Y+height, FLUID_WIDTH, FLUID_WIDTH, color, packedLight);
 
         RenderUtils.renderFace(Direction.DOWN, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_XZ, 1.0f - FLUID_START_Y, FLUID_WIDTH, FLUID_WIDTH, color);
+                FLUID_START_XZ, FLUID_START_XZ, 1.0f - FLUID_START_Y, FLUID_WIDTH, FLUID_WIDTH, color, packedLight);
 
         RenderUtils.renderFace(Direction.NORTH, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color);
+                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color, packedLight);
 
         RenderUtils.renderFace(Direction.EAST, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color);
+                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color, packedLight);
 
         RenderUtils.renderFace(Direction.SOUTH, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color);
+                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color, packedLight);
 
         RenderUtils.renderFace(Direction.WEST, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color);
+                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color, packedLight);
     }
 
-    public static void renderEssentiaLabel(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, EssentiaItem ei, Direction dir) {
+    public static void renderEssentiaLabel(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, EssentiaItem ei, Direction dir, int packedLight) {
 
         TextureAtlasSprite textureMain = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(getTextureByEssentiaName(ei.getMateriaName()));
         TextureAtlasSprite textureBookend = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(LABEL_TEXTURE_BOOKENDS);
@@ -117,18 +118,16 @@ public class MateriaVesselContentsRenderUtil {
         }
 
         RenderUtils.renderFaceWithUV(dir.getOpposite(), pose, normal, consumer, textureMain,
-                x, y, z, w, h, u, uw, v, vh, 0xFFFFFFFF
+                x, y, z, w, h, u, uw, v, vh, 0xFFFFFFFF, packedLight
         );
 
         RenderUtils.renderFaceWithUV(dir.getOpposite(), pose, normal, consumer, textureBookend,
-                blx, bly, blz, blw, blh, blu, bluw, blv, blvh, 0xFFFFFFFF
+                blx, bly, blz, blw, blh, blu, bluw, blv, blvh, 0xFFFFFFFF, packedLight
         );
 
         RenderUtils.renderFaceWithUV(dir.getOpposite(), pose, normal, consumer, textureBookend,
-                brx, bry, brz, brw, brh, bru, bruw, brv, brvh, 0xFFFFFFFF
+                brx, bry, brz, brw, brh, bru, bruw, brv, brvh, 0xFFFFFFFF, packedLight
         );
-
-
     }
 
     private static ResourceLocation getTextureByEssentiaName(String in) {

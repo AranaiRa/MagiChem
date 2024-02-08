@@ -16,9 +16,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransform;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -32,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.ForgeRenderTypes;
 import net.minecraftforge.client.model.data.ModelData;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +56,14 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
         if(this.bakedModel == null)
             this.bakedModel = Minecraft.getInstance().getModelManager().getModel(SPECIAL_RENDERER);
 
+        /*FaceBakery bakery = new FaceBakery();
+        Vector3f from = new Vector3f(0, 0.5f, 0);
+        Vector3f to = new Vector3f(1, 0.5f, 1);
+        BlockFaceUV uv = new BlockFaceUV(new float[]{0f,0f,1f,1f}, 0);
+
+        BlockElementFace face = new BlockElementFace(Direction.UP, -1, "", uv);
+        bakery.bakeQuad(from, to, face)
+        */
         PoseStack.Pose last = pPoseStack.last();
         //VertexConsumer buffer = pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
         VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());
@@ -81,9 +88,9 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
                 int cap = materia instanceof EssentiaItem ? Config.materiaVesselEssentiaCapacity : Config.materiaVesselAdmixtureCapacity;
                 float fill = (float)nbt.getInt("amount") / (float)cap;
 
-                MateriaVesselContentsRenderUtil.renderFluidContents(last.pose(), last.normal(), buffer, fill, materia.getMateriaColor());
+                MateriaVesselContentsRenderUtil.renderFluidContents(last.pose(), last.normal(), buffer, fill, materia.getMateriaColor(), pPackedLight);
                 if(materia instanceof EssentiaItem ei)
-                    MateriaVesselContentsRenderUtil.renderEssentiaLabel(last.pose(), last.normal(), buffer, ei, Direction.NORTH);
+                    MateriaVesselContentsRenderUtil.renderEssentiaLabel(last.pose(), last.normal(), buffer, ei, Direction.NORTH, pPackedLight);
             }
         }
 

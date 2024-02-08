@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -24,11 +25,13 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
             VertexConsumer buffer = bufferSource.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
 
             PoseStack.Pose last = poseStack.last();
-            MateriaVesselContentsRenderUtil.renderFluidContents(last.pose(), last.normal(), buffer, mvbe.getCurrentStockPercent(), mvbe.getMateriaType().getMateriaColor());
+            MateriaVesselContentsRenderUtil.renderFluidContents(last.pose(), last.normal(), buffer, mvbe.getCurrentStockPercent(), mvbe.getMateriaType().getMateriaColor(), packedLight);
 
             if(mvbe.getMateriaType() instanceof EssentiaItem ei) {
-                MateriaVesselContentsRenderUtil.renderEssentiaLabel(last.pose(), last.normal(), buffer, ei, mvbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+                MateriaVesselContentsRenderUtil.renderEssentiaLabel(last.pose(), last.normal(), buffer, ei, mvbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), packedLight);
             }
         }
+
+        FaceBakery fb = new FaceBakery();
     }
 }

@@ -35,51 +35,6 @@ public class RenderUtils {
 
     public static final Minecraft MINECRAFT_REF = Minecraft.getInstance();
     public static final ItemRenderer ITEM_RENDERER = MINECRAFT_REF.getItemRenderer();
-    public static final TextureManager TEXTURE_MANAGER = MINECRAFT_REF.getTextureManager();
-
-    public static void RenderGhostedItemStack(ItemStack stack, int x, int y, float a, ItemDisplayContext itemDisplayContext) {
-        BakedModel bakedModel = getBakedModel(stack);
-
-        TEXTURE_MANAGER.getTexture(InventoryMenu.BLOCK_ATLAS).setFilter(true, false);
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.enableBlend();
-
-        PoseStack modelViewStack = RenderSystem.getModelViewStack();
-        modelViewStack.pushPose();
-        modelViewStack.translate(x + 8.0D, y + 8.0D, 0f);
-        modelViewStack.scale(16.0f, -16.0f, 16.0f);
-        RenderSystem.applyModelViewMatrix();
-
-        if (!bakedModel.usesBlockLight()) {
-            Lighting.setupForFlatItems();
-        }
-
-        MultiBufferSource.BufferSource bufferSource = MINECRAFT_REF.renderBuffers().bufferSource();
-        ITEM_RENDERER.render(stack,
-                itemDisplayContext,
-                false,
-                new PoseStack(),
-                getWrappedBuffer(bufferSource, a),
-                LightTexture.FULL_BRIGHT,
-                OverlayTexture.NO_OVERLAY,
-                bakedModel);
-        bufferSource.endBatch();
-        RenderSystem.enableDepthTest();
-
-        if (!bakedModel.usesBlockLight()) {
-            Lighting.setupFor3DItems();
-        }
-
-        modelViewStack.popPose();
-        RenderSystem.applyModelViewMatrix();
-    }
-
-    private static BakedModel getBakedModel(ItemStack stack) {
-        ModelResourceLocation resourceLocation = getResourceLocation(stack);
-        return ITEM_RENDERER.getItemModelShaper().getModelManager().getModel(resourceLocation);
-    }
 
     private static ModelResourceLocation getResourceLocation(ItemStack stack) {
         ModelResourceLocation output = null;
@@ -91,112 +46,46 @@ public class RenderUtils {
         return output;
     }
 
-    private static MultiBufferSource getWrappedBuffer(MultiBufferSource bufferSource, float a) {
-        return renderType -> new WrappedVertexConsumer(bufferSource.getBuffer(RenderType.entityTranslucent(InventoryMenu.BLOCK_ATLAS)), 1f, 1f, 1f, a);
-    }
-
     //This function taken from EnderIO. See the original here: https://github.com/Team-EnderIO/EnderIO/blob/dev/1.19.x/src/core/java/com/enderio/core/client/RenderUtil.java
-    public static void renderFace(Direction face, Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, float x, float y, float z, float w, float h, int color) {
+    public static void renderFace(Direction face, Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture,
+                                  float x, float y, float z, float w, float h, int tint, int packedLight) {
         switch (face) {
-            case DOWN -> renderFace(pose, normal, consumer, texture, color, x, x + w, 1.0f - z, 1.0f - z, y, y, y + h, y + h, x, x + w, y, y + h);
-            case UP -> renderFace(pose, normal, consumer, texture, color, x, x + w, z, z, y + h, y + h, y, y, x, x + w, y, y + h);
-            case NORTH -> renderFace(pose, normal, consumer, texture, color, x, x + w, y + h, y, z, z, z, z, x, x + w, y, y + h);
-            case SOUTH -> renderFace(pose, normal, consumer, texture, color, x, x + w, y, y + h, 1.0f - z, 1.0f - z, 1.0f - z, 1.0f - z, x + w, x, y + h, y);
-            case WEST -> renderFace(pose, normal, consumer, texture, color, 1.0f - z, 1.0f - z, y + h, y, x, x + w, x + w, x, x, x + w, y, y + h);
-            case EAST -> renderFace(pose, normal, consumer, texture, color, z, z, y, y + h, x, x + w, x + w, x, x + w, x, y + h, y);
+            case DOWN -> renderFace(pose, normal, consumer, texture, tint, packedLight, x, x + w, 1.0f - z, 1.0f - z, y, y, y + h, y + h, x, x + w, y, y + h, 0, -1, 0);
+            case UP -> renderFace(pose, normal, consumer, texture, tint, packedLight, x, x + w, z, z, y + h, y + h, y, y, x, x + w, y, y + h, 0, 1, 0);
+            case NORTH -> renderFace(pose, normal, consumer, texture, tint, packedLight, x, x + w, y + h, y, z, z, z, z, x, x + w, y, y + h, 0, 0, -1);
+            case SOUTH -> renderFace(pose, normal, consumer, texture, tint, packedLight, x, x + w, y, y + h, 1.0f - z, 1.0f - z, 1.0f - z, 1.0f - z, x + w, x, y + h, y, 0, 0, 1);
+            case WEST -> renderFace(pose, normal, consumer, texture, tint, packedLight, 1.0f - z, 1.0f - z, y + h, y, x, x + w, x + w, x, x, x + w, y, y + h, 1, 0, 0);
+            case EAST -> renderFace(pose, normal, consumer, texture, tint, packedLight, z, z, y, y + h, x, x + w, x + w, x, x + w, x, y + h, y, -1, 0, 0);
         }
     }
 
-    public static void renderFaceWithUV(Direction face, Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, float x, float y, float z, float w, float h, float u, float uw, float v, float vh, int color) {
+    public static void renderFaceWithUV(Direction face, Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture,
+                                        float x, float y, float z, float w, float h,
+                                        float u, float uw, float v, float vh,
+                                        int tint, int packedLight) {
         switch (face) {
-            case DOWN -> renderFace(pose, normal, consumer, texture, color, x, x + w, 1.0f - z, 1.0f - z, y, y, y + h, y + h, u, uw, v, vh);
-            case UP -> renderFace(pose, normal, consumer, texture, color, x, x + w, z, z, y + h, y + h, y, y, u, uw, v, vh);
-            case NORTH -> renderFace(pose, normal, consumer, texture, color, x, x + w, y + h, y, z, z, z, z, u, uw, v, vh);
-            case SOUTH -> renderFace(pose, normal, consumer, texture, color, x, x + w, y, y + h, 1.0f - z, 1.0f - z, 1.0f - z, 1.0f - z, u, uw, v, vh);
-            case WEST -> renderFace(pose, normal, consumer, texture, color, 1.0f - z, 1.0f - z, y + h, y, x, x + w, x + w, x, u, uw, v, vh);
-            case EAST -> renderFace(pose, normal, consumer, texture, color, z, z, y, y + h, x, x + w, x + w, x, u, uw, v, vh);
+            case DOWN -> renderFace(pose, normal, consumer, texture, tint, packedLight, x, x + w, 1.0f - z, 1.0f - z, y, y, y + h, y + h, u, uw, v, vh, 0, -1, 0);
+            case UP -> renderFace(pose, normal, consumer, texture, tint, packedLight, x, x + w, z, z, y + h, y + h, y, y, u, uw, v, vh, 0, 1, 0);
+            case NORTH -> renderFace(pose, normal, consumer, texture, tint, packedLight, x, x + w, y + h, y, z, z, z, z, u, uw, v, vh, 0, 0, -1);
+            case SOUTH -> renderFace(pose, normal, consumer, texture, tint, packedLight, x, x + w, y, y + h, 1.0f - z, 1.0f - z, 1.0f - z, 1.0f - z, u, uw, v, vh, 0, 0, 1);
+            case WEST -> renderFace(pose, normal, consumer, texture, tint, packedLight, 1.0f - z, 1.0f - z, y + h, y, x, x + w, x + w, x, u, uw, v, vh, 1, 0, 0);
+            case EAST -> renderFace(pose, normal, consumer, texture, tint, packedLight, z, z, y, y + h, x, x + w, x + w, x, u, uw, v, vh, -1, 0, 0);
         }
     }
 
-    //This function taken from EnderIO. See the original here: https://github.com/Team-EnderIO/EnderIO/blob/dev/1.19.x/src/core/java/com/enderio/core/client/RenderUtil.java
-    private static void renderFace(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, int color, float x0, float x1, float y0, float y1, float z0, float z1, float z2, float z3, float u0, float u1, float v0, float v1) {
-        float minU = u0 * texture.getU0();
-        float maxU = u1 * texture.getU1();
-        float minV = v0 * texture.getV0();
-        float maxV = v1 * texture.getV1();
+    //This function taken from EnderIO. See the original here: https://github.com/Team-EnderIO/EnderIO/blob/dev/1.20.1/src/core/java/com/enderio/core/client/RenderUtil.java
+    private static void renderFace(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, TextureAtlasSprite texture, int tint, int packedLight,
+                                   float x0, float x1, float y0, float y1, float z0, float z1, float z2,
+                                   float z3, float u0, float u1, float v0, float v1,
+                                   float normalX, float normalY, float normalZ) {
+        float minU = u0 * (float)texture.contents().width();
+        float maxU = u1 * (float)texture.contents().width();
+        float minV = v0 * (float)texture.contents().height();
+        float maxV = v1 * (float)texture.contents().height();
 
-        consumer.vertex(pose, x0, y0, z0).color(color).uv(texture.getU(minU), texture.getV(minV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(normal, 0.0f, 0.0f, 0.0f).endVertex();
-        consumer.vertex(pose, x1, y0, z1).color(color).uv(texture.getU(maxU), texture.getV(minV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(normal, 0.0f, 0.0f, 0.0f).endVertex();
-        consumer.vertex(pose, x1, y1, z2).color(color).uv(texture.getU(maxU), texture.getV(maxV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(normal, 0.0f, 0.0f, 0.0f).endVertex();
-        consumer.vertex(pose, x0, y1, z3).color(color).uv(texture.getU(minU), texture.getV(maxV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(normal, 0.0f, 0.0f, 0.0f).endVertex();
-    }
-}
-
-/**
- * This class taken directly from AlchemyLib, see link below for the original.
- * https://github.com/SmashingMods/AlchemyLib/blob/1.19.x/src/main/java/com/smashingmods/alchemylib/api/blockentity/container/FakeItemRenderer.java
- *
- * This is a custom wrapper implementation of {@link VertexConsumer} for the purpose of adding an alpha channel for optional
- * transparency when rendering ItemStacks.
- */
-class WrappedVertexConsumer implements VertexConsumer {
-
-    protected final VertexConsumer consumer;
-    protected final float red;
-    protected final float green;
-    protected final float blue;
-    protected final float alpha;
-
-    public WrappedVertexConsumer(VertexConsumer pConsumer, float pRed, float pGreen, float pBlue, float pAlpha) {
-        this.consumer = pConsumer;
-        this.red = pRed;
-        this.green = pGreen;
-        this.blue = pBlue;
-        this.alpha = pAlpha;
-    }
-
-    @Override
-    public VertexConsumer vertex(double pX, double pY, double pZ) {
-        return consumer.vertex(pX, pY, pZ);
-    }
-
-    @Override
-    public VertexConsumer color(int pRed, int pGreen, int pBlue, int pAlpha) {
-        return consumer.color((int)(pRed * red), (int)(pGreen * green), (int)(pBlue * blue), (int)(pAlpha * alpha));
-    }
-
-    @Override
-    public VertexConsumer uv(float pU, float pV) {
-        return consumer.uv(pU, pV);
-    }
-
-    @Override
-    public VertexConsumer overlayCoords(int pU, int pV) {
-        return consumer.overlayCoords(pU, pV);
-    }
-
-    @Override
-    public VertexConsumer uv2(int pU, int pV) {
-        return consumer.uv2(pU, pV);
-    }
-
-    @Override
-    public VertexConsumer normal(float pX, float pY, float pZ) {
-        return consumer.normal(pX, pY, pZ);
-    }
-
-    @Override
-    public void endVertex() {
-        consumer.endVertex();
-    }
-
-    @Override
-    public void defaultColor(int pDefaultR, int pDefaultG, int pDefaultB, int pDefaultA) {
-        consumer.defaultColor(pDefaultR, pDefaultG, pDefaultB, pDefaultA);
-    }
-
-    @Override
-    public void unsetDefaultColor() {
-        consumer.unsetDefaultColor();
+        consumer.vertex(pose, x0, y0, z0).color(tint).uv(texture.getU(minU), texture.getV(minV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, normalX, normalY, normalZ).endVertex();
+        consumer.vertex(pose, x1, y0, z1).color(tint).uv(texture.getU(maxU), texture.getV(minV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, normalX, normalY, normalZ).endVertex();
+        consumer.vertex(pose, x1, y1, z2).color(tint).uv(texture.getU(maxU), texture.getV(maxV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, normalX, normalY, normalZ).endVertex();
+        consumer.vertex(pose, x0, y1, z3).color(tint).uv(texture.getU(minU), texture.getV(maxV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, normalX, normalY, normalZ).endVertex();
     }
 }
