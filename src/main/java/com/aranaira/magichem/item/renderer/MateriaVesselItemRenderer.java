@@ -56,16 +56,7 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
         if(this.bakedModel == null)
             this.bakedModel = Minecraft.getInstance().getModelManager().getModel(SPECIAL_RENDERER);
 
-        /*FaceBakery bakery = new FaceBakery();
-        Vector3f from = new Vector3f(0, 0.5f, 0);
-        Vector3f to = new Vector3f(1, 0.5f, 1);
-        BlockFaceUV uv = new BlockFaceUV(new float[]{0f,0f,1f,1f}, 0);
-
-        BlockElementFace face = new BlockElementFace(Direction.UP, -1, "", uv);
-        bakery.bakeQuad(from, to, face)
-        */
         PoseStack.Pose last = pPoseStack.last();
-        //VertexConsumer buffer = pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
         VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());
 
         //ghz version

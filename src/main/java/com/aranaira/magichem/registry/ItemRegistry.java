@@ -153,10 +153,4 @@ public class ItemRegistry {
         });
         return output;
     }
-
-    @SubscribeEvent
-    public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, getEssentia().toArray(new EssentiaItem[0]));
-        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, getAdmixtures().toArray(new AdmixtureItem[0]));
-    }
 }

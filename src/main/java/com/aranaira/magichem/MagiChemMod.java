@@ -66,8 +66,6 @@ public class MagiChemMod
         eventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
 
-        eventBus.addListener(this::fillCreativeTabs);
-
         BLOCKS.register(eventBus);
         ITEMS.register(eventBus);
 
@@ -87,23 +85,6 @@ public class MagiChemMod
         });
 
         PacketRegistry.register();
-    }
-
-    private void fillCreativeTabs(BuildCreativeModeTabContentsEvent event) {
-        /*if(event.getTab() == CreativeTabsRegistry.MAGICHEM_TAB.get()) {
-            ITEMS.getEntries().stream().map(RegistryObject::get).forEach((item) -> {
-                if(!ItemRegistry.ITEMS_EXCLUDED_FROM_TABS.contains(item))
-                    event.accept(item);
-            });
-        }
-        else if(event.getTab() == CreativeTabsRegistry.MAGICHEM_MATERIA_TAB.get()) {
-            ItemRegistry.ESSENTIA.getEntries().stream().map(RegistryObject::get).forEach((item) -> {
-                event.accept(item);
-            });
-            ItemRegistry.ADMIXTURES.getEntries().stream().map(RegistryObject::get).forEach((item) -> {
-                event.accept(item);
-            });
-        }*/
     }
 
     private static boolean isInCreativeTab(Item item, List<Item> excluded) {
@@ -138,23 +119,6 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
             MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
             MenuScreens.register(MenuRegistry.ADMIXER_MENU.get(), AdmixerScreen::new);
-        }
-
-        @SubscribeEvent
-        public static void onTextureStitch(TextureStitchEvent event) {
-            //Jar labels
-            /*
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_ender-arcane"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_earth-nigredo"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_water-albedo"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_air-citrinitas"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_fire-rubedo"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_conceptual-verdant"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_fleshy-nourishing"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_rotten-mineral"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_wrought-precious"));
-            event.addSprite(new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_bookends"));
-             */
         }
 
         @SubscribeEvent
