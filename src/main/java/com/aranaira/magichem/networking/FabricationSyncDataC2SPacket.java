@@ -41,7 +41,8 @@ public class FabricationSyncDataC2SPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
-        BlockEntity entity = Minecraft.getInstance().level.getBlockEntity(blockPos);
+        Player player = context.getSender();
+        BlockEntity entity = player.level().getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
             if(entity instanceof CircleFabricationBlockEntity cfbe) {

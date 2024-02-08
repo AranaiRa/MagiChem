@@ -3,7 +3,6 @@ package com.aranaira.magichem.util.render;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.BlockRendererCoords;
 import com.aranaira.magichem.item.EssentiaItem;
-import com.enderio.core.client.RenderUtil;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;

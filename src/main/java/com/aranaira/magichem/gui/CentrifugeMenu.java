@@ -24,14 +24,14 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     private final Level level;
 
     public CentrifugeMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
     public CentrifugeMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.CENTRIFUGE_MENU.get(), id);
         checkContainerSize(inv, CentrifugeBlockEntity.SLOT_COUNT);
         blockEntity = (CentrifugeBlockEntity) entity;
-        this.level = Minecraft.getInstance().level;
+        this.level = inv.player.level();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

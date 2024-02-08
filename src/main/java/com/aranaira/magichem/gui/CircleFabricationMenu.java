@@ -25,7 +25,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
     private DataSlot dataHasSufficientPower;
 
     public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, ((CircleFabricationBlockEntity) Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos())).readFrom(extraData));
+        this(id, inv, ((CircleFabricationBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos())).readFrom(extraData));
     }
 
     public CircleFabricationMenu(int id, Inventory inv, BlockEntity entity) {
@@ -33,7 +33,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         checkContainerSize(inv, CircleFabricationBlockEntity.SLOT_COUNT);
         blockEntity = (CircleFabricationBlockEntity) entity;
 
-        this.level = Minecraft.getInstance().level;
+        this.level = inv.player.level();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

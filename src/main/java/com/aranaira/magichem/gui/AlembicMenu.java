@@ -25,14 +25,14 @@ public class AlembicMenu extends AbstractContainerMenu {
     private final Level level;
 
     public AlembicMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
     public AlembicMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.ALEMBIC_MENU.get(), id);
         checkContainerSize(inv, 14);
         blockEntity = (AlembicBlockEntity) entity;
-        this.level = Minecraft.getInstance().level;
+        this.level = inv.player.level();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

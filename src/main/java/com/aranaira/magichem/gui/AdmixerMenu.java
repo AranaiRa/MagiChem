@@ -31,14 +31,14 @@ public class AdmixerMenu extends AbstractContainerMenu {
     public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[AdmixerBlockEntity.SLOT_INPUT_COUNT];
 
     public AdmixerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
     public AdmixerMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.ADMIXER_MENU.get(), id);
         checkContainerSize(inv, AdmixerBlockEntity.SLOT_COUNT);
         blockEntity = (AdmixerBlockEntity) entity;
-        this.level = Minecraft.getInstance().level;
+        this.level = inv.player.level();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

@@ -24,14 +24,14 @@ public class CirclePowerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public CirclePowerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, Minecraft.getInstance().level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     public CirclePowerMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuRegistry.CIRCLE_POWER_MENU.get(), id);
         checkContainerSize(inv, 4);
         blockEntity = (CirclePowerBlockEntity) entity;
-        this.level = Minecraft.getInstance().level;
+        this.level = inv.player.level();
         this.data = data;
 
         addPlayerInventory(inv);
