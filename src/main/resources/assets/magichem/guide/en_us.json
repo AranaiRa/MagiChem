@@ -1,7 +1,7 @@
 {
   "Essentia": {
     "index": "1000",
-    "category": "artifice",
+    "category": "magichem",
     "sections": [
       {
         "type": "title",
@@ -299,7 +299,7 @@
   },
   "Admixtures": {
     "index": "1001",
-    "category": "artifice",
+    "category": "magichem",
     "sections": [
       {
         "type": "title",
@@ -357,7 +357,7 @@
   },
   "Process: Distillation": {
     "index": "1106",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 2,
     "sections": [
       {
@@ -421,7 +421,7 @@
   },
   "Alembic": {
     "index": "1200",
-    "category": "artifice",
+    "category": "magichem",
     "sections": [
       {
         "type": "title",
@@ -503,7 +503,7 @@
   },
   "Magic Circles": {
     "index": 1251,
-    "category": "artifice",
+    "category": "magichem",
     "tier": 2,
     "sections": [
       {
@@ -561,7 +561,7 @@
   },
   "Circle of Fabrication": {
     "index": "1252",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 2,
     "sections": [
       {
@@ -655,7 +655,7 @@
   },
   "Circle of Power": {
     "index": "1253",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 2,
     "sections": [
       {
@@ -756,7 +756,7 @@
   },
   "Grains of Transmuted Silver": {
     "index": "1300",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 2,
     "sections": [
       {
@@ -820,7 +820,7 @@
   },
   "Focusing Catalyst": {
     "index": "1301",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 2,
     "sections": [
       {
@@ -938,7 +938,7 @@
   },
   "Power Spikes": {
     "index": "1400",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 2,
     "sections": [
       {
@@ -1076,7 +1076,7 @@
 
   "Centrifuge": {
     "index": "1201",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 3,
     "sections": [
       {
@@ -1132,7 +1132,7 @@
   },
   "Process: Fixation": {
     "index": "1103",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 3,
     "sections": [
       {
@@ -1178,7 +1178,7 @@
   },
   "Process: Separation": {
     "index": "1108",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 3,
     "sections": [
       {
@@ -1231,7 +1231,7 @@
   },
   "Admixer": {
     "index": "1202",
-    "category": "artifice",
+    "category": "magichem",
     "tier": 3,
     "sections": [
       {

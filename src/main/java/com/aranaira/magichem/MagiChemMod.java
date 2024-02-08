@@ -113,6 +113,8 @@ public class MagiChemMod
     @SubscribeEvent
     public void onRegisterGuidebooks(RegisterGuidebooksEvent event) {
         event.getRegistry().addGuidebookPath(new ResourceLocation(MODID, "guide"));
+
+        event.getRegistry().registerGuidebookCategory("magichem", new ResourceLocation(MagiChemMod.MODID, "iris_argenti"));
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
