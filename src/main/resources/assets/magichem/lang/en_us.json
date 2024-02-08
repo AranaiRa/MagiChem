@@ -275,6 +275,8 @@
   "gui.magichem.typetofilter": "Filter...",
   "gui.magichem.insufficientpower": "Insufficient power!",
 
+  "mechanic.mna:magichem": "Alchemy",
+
   "jei.magichem.distillation": "Alchemical Distillation",
   "jei.magichem.fabrication": "Alchemical Fabrication",
   "jei.magichem.fixation": "Alchemical Fixation",
