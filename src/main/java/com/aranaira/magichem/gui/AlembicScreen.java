@@ -52,6 +52,6 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-        super.renderLabels(pGuiGraphics, pMouseX, pMouseY);
+
     }
 }

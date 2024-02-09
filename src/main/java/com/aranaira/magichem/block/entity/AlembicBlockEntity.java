@@ -1,8 +1,8 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.interfaces.IMateriaProcessingDevice;
 import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
@@ -19,12 +19,9 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -34,7 +31,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AlembicBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
+public class AlembicBlockEntity extends BlockEntityWithEfficiency implements MenuProvider, IMateriaProcessingDevice {
     public static final int
         SLOT_COUNT = 14,
         SLOT_BOTTLES = 0,
@@ -263,5 +260,23 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
     private void incrementProgress() {
         progress++;
+    }
+
+    @Override
+    public SimpleContainer getContentsOfOutputSlots() {
+        SimpleContainer output = new SimpleContainer(SLOT_OUTPUT_COUNT);
+
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            output.setItem(i-SLOT_OUTPUT_START, itemHandler.getStackInSlot(i));
+        }
+
+        return output;
+    }
+
+    @Override
+    public void setContentsOfOutputSlots(SimpleContainer replacementInventory) {
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            itemHandler.setStackInSlot(i, replacementInventory.getItem(i-SLOT_OUTPUT_START));
+        }
     }
 }

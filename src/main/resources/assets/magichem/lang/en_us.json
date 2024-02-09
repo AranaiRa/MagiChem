@@ -275,6 +275,12 @@
   "gui.magichem.typetofilter": "Filter...",
   "gui.magichem.insufficientpower": "Insufficient power!",
 
+  "construct.magichem:sort_materia": "Sort Materia",
+
+  "gui.mna.parameter.sort_materia.point": "What alchemical device should the construct remove materia from?",
+  "gui.mna.parameter.sort_materia.area": "What area should the construct look for Materia Vessels inside of?",
+  "gui.mna.parameter.sort_materia.boolean": "Should the construct void excess materia that won't fit inside of a Materia Vessel?",
+
   "mechanic.mna:magichem": "Alchemy",
 
   "jei.magichem.distillation": "Alchemical Distillation",

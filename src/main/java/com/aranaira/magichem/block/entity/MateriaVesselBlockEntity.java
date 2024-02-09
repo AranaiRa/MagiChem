@@ -43,6 +43,33 @@ public class MateriaVesselBlockEntity extends BlockEntity {
         currentStock = count;
     }
 
+    public int fill(int amount, boolean voidExcess) {
+        int test = currentStock + amount;
+        int actual = amount;
+        if(test > getStorageLimit()) {
+            if(!voidExcess) {
+                actual = getStorageLimit() - currentStock;
+            }
+            currentStock = getStorageLimit();
+        } else {
+            currentStock = test;
+        }
+        return actual;
+    }
+
+    public int drain(int amount) {
+        int test = currentStock - amount;
+        int actual = amount;
+        if(test < 0) {
+            actual = currentStock;
+            currentStock = 0;
+            currentMateriaType = null;
+        } else {
+            currentStock = test;
+        }
+        return actual;
+    }
+
     @Override
     public void load(CompoundTag nbt) {
         String regName = nbt.getString("type");
