@@ -276,10 +276,14 @@
   "gui.magichem.insufficientpower": "Insufficient power!",
 
   "construct.magichem:sort_materia": "Sort Materia",
+  "construct.magichem:query_check_vessel": "Condition: Check Vessel Fill",
 
   "gui.mna.parameter.sort_materia.point": "What alchemical device should the construct remove materia from?",
   "gui.mna.parameter.sort_materia.area": "What area should the construct look for Materia Vessels inside of?",
   "gui.mna.parameter.sort_materia.boolean": "Should the construct void excess materia that won't fit inside of a Materia Vessel?",
+
+  "gui.mna.parameter.query_check_vessel.point": "What Materia Vessel should the construct look at?",
+  "gui.mna.parameter.query_check_vessel.int": "What percentage full must the Materia Vessel be?",
 
   "mechanic.mna:magichem": "Alchemy",
 

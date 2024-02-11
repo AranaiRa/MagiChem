@@ -234,7 +234,6 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
 
     @Override
     public void readNBT(CompoundTag compoundTag) {
-
     }
 
     @Override
