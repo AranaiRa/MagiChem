@@ -39,11 +39,13 @@ public class MateriaVesselBlockEntity extends BlockEntity {
     }
 
     public void setContents(MateriaItem item, int count) {
+        syncAndSave();
         currentMateriaType = item;
         currentStock = count;
     }
 
     public int fill(int amount, boolean voidExcess) {
+        syncAndSave();
         int test = currentStock + amount;
         int actual = amount;
         if(test > getStorageLimit()) {
@@ -58,6 +60,7 @@ public class MateriaVesselBlockEntity extends BlockEntity {
     }
 
     public int drain(int amount) {
+        syncAndSave();
         int test = currentStock - amount;
         int actual = amount;
         if(test < 0) {

@@ -21,7 +21,7 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
 
     @Override
     public void render(MateriaVesselBlockEntity mvbe, float pPartialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        if(mvbe.getCurrentStockPercent() > 0) {
+        if(mvbe.getCurrentStockPercent() > 0 && mvbe.getMateriaType() != null) {
             VertexConsumer buffer = bufferSource.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
 
             PoseStack.Pose last = poseStack.last();
@@ -31,7 +31,5 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
                 MateriaVesselContentsRenderUtil.renderEssentiaLabel(last.pose(), last.normal(), buffer, ei, mvbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), packedLight);
             }
         }
-
-        FaceBakery fb = new FaceBakery();
     }
 }
