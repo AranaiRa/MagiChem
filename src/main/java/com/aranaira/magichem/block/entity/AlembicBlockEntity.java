@@ -8,6 +8,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -38,7 +39,8 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_PROCESSING = 4,
         SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT  = 9,
-        PROGRESS_BAR_WIDTH = 22;
+        PROGRESS_BAR_WIDTH = 22,
+        GRIME_BAR_WIDTH = 50;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -103,6 +105,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("grime", this.grime);
         super.saveAdditional(nbt);
     }
 
@@ -111,10 +114,23 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
+        grime = nbt.getInt("grime");
+    }
+
+    public int getOperationTicks() {
+        return Math.round(Config.alembicOperationTime * getTimeScalar());
     }
 
     public static int getScaledProgress(AlembicBlockEntity entity) {
-        return PROGRESS_BAR_WIDTH * entity.progress / Config.alembicOperationTime;
+        return PROGRESS_BAR_WIDTH * entity.progress / entity.getOperationTicks();
+    }
+
+    public static int getScaledGrime(AlembicBlockEntity entity) {
+        int o = GRIME_BAR_WIDTH;
+        o *= entity.grime;
+        o /= Config.alembicMaximumGrime;
+        return o;
+        //return GRIME_BAR_WIDTH * entity.grime / Config.alembicMaximumGrime;
     }
 
     public void dropInventoryToWorld() {
@@ -168,6 +184,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         /*if(level.isClientSide()) {
             return;
         }*/
+        entity.grime+=10;
 
         ItemStack processingItem = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
         if(processingItem == ItemStack.EMPTY) {
@@ -184,7 +201,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
         if(processingItem != ItemStack.EMPTY && recipe != null) {
             if(canCraftItem(entity, recipe)) {
-                if (entity.progress > Config.alembicOperationTime) {
+                if (entity.progress > entity.getOperationTicks()) {
                     if (!level.isClientSide())
                         craftItem(entity, recipe);
                     if (!entity.isStalled)
@@ -218,8 +235,9 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
-        NonNullList<ItemStack> componentMateria = applyEfficiencyToCraftingResult(recipe.getComponentMateria(),
-                baseEfficiency + entity.efficiencyMod, recipe.getOutputRate());
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), entity.getActualEfficiency(), recipe.getOutputRate(), Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
+        int grimeToAdd = Math.round(pair.getFirst() * recipe.getOutputRate());
+        NonNullList<ItemStack> componentMateria = pair.getSecond();
 
         for(ItemStack item : componentMateria) {
             if(outputSlots.canAddItem(item)) {
@@ -240,6 +258,8 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             if(processingSlotContents.getCount() == 0)
                 entity.itemHandler.setStackInSlot(SLOT_PROCESSING, ItemStack.EMPTY);
         }
+
+        entity.grime = Math.min(Math.max(entity.grime + grimeToAdd, 0), Config.alembicMaximumGrime);
     }
 
     private static int nextInputSlotWithItem(AlembicBlockEntity entity) {

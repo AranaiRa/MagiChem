@@ -157,7 +157,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1,1,1,1);
-        RenderSystem.setShaderTexture(0, TEXTURE);
 
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
@@ -173,7 +172,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderSelectedRecipe(gui, x + 79, y + 79);
 
         //RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, TEXTURE);
         renderPowerLevelBar(gui, x + 182, y + 37);
         renderIngredientPanel(gui, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
 
@@ -203,8 +201,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     }
 
     private void renderIngredientPanel(GuiGraphics gui, int x, int y) {
-        RenderSystem.setShaderTexture(0, TEXTURE_EXT);
-
         if(menu.blockEntity.getCurrentRecipe() != null) {
             AlchemicalCompositionRecipe recipe = menu.blockEntity.getCurrentRecipe();
 
@@ -335,13 +331,20 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         }
     }
 
+    @Override
+    protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
+        super.renderTooltip(pGuiGraphics, pX, pY);
+
+        //do special tooltips here
+    }
+
     protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
         long cycle = Minecraft.getInstance().level.getGameTime() % 20;
 
-        gui.blit(TEXTURE, x+10, y-30, 0, 230, 156, 26);
+        gui.blit(TEXTURE_EXT, x+10, y-30, 0, 230, 156, 26);
         if(cycle < 10) {
-            gui.blit(TEXTURE, x + 17, y - 23, 156, 244, 12, 12);
-            gui.blit(TEXTURE, x + 147, y - 23, 156, 244, 12, 12);
+            gui.blit(TEXTURE_EXT, x + 17, y - 23, 156, 244, 12, 12);
+            gui.blit(TEXTURE_EXT, x + 147, y - 23, 156, 244, 12, 12);
         }
     }
 
@@ -352,8 +355,8 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int secPartial = (menu.blockEntity.getOperationTicks() % 20) * 5;
 
         Font font = Minecraft.getInstance().font;
-        gui.drawString(font ,powerDraw+"/t", 208, 26, 0xff000000);
-        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 45, 0xff000000);
+        gui.drawString(font ,powerDraw+"/t", 208, 26, 0xff000000, false);
+        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 45, 0xff000000, false);
 
         AlchemicalCompositionRecipe recipe = menu.blockEntity.getCurrentRecipe();
         if(recipe != null) {
@@ -361,7 +364,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                 Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + " x ")
                         .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipe.getComponentMateria().get(i).getItem()+".short"));
                 gui.pose().scale(0.5f, 0.5f, 0.5f);
-                gui.drawString(font, text, 400, 169 + i * 36, 0xff000000);
+                gui.drawString(font, text, 400, 169 + i * 36, 0xff000000, false);
                 gui.pose().scale(2.0f, 2.0f, 2.0f);
             }
         }
@@ -369,7 +372,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         if(!menu.getHasSufficientPower()) {
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
             int width = Minecraft.getInstance().font.width(warningText.getString());
-            gui.drawString(font, warningText, 89 - width/2, -33, 0xff000000);
+            gui.drawString(font, warningText, 89 - width/2, -33, 0xff000000, false);
         }
     }
 }

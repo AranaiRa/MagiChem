@@ -52,6 +52,7 @@ public class MagiChemMod
         ItemRegistry.register(eventBus);
         BlockRegistry.register(eventBus);
         BlockEntitiesRegistry.register(eventBus);
+        FluidRegistry.register(eventBus);
         MenuRegistry.register(eventBus);
         MateriaRegistry.register(eventBus);
 

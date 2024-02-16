@@ -4,11 +4,10 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
-import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -205,8 +204,9 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
-        NonNullList<ItemStack> componentMateria = applyEfficiencyToCraftingResult(recipe.getComponentMateria(),
-                baseEfficiency + entity.efficiencyMod, 1.0f);
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), entity.getActualEfficiency(), 1.0f, Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
+        int grimeToAdd = pair.getFirst();
+        NonNullList<ItemStack> componentMateria = pair.getSecond();
 
         for(ItemStack item : componentMateria) {
             if(outputSlots.canAddItem(item)) {

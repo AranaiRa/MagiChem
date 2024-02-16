@@ -271,7 +271,7 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
                         .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipe.getComponentMateria().get(i).getItem()+".short"));
                 gui.pose().scale(0.5f, 0.5f, 0.5f);
 
-                gui.drawString(Minecraft.getInstance().font, text, 400, 153 + i*36, 0xff000000);
+                gui.drawString(Minecraft.getInstance().font, text, 400, 153 + i*36, 0xff000000, false);
                 gui.pose().scale(2.0f, 2.0f, 2.0f);
             }
         }

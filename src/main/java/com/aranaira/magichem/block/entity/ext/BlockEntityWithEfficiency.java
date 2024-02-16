@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
-import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.Config;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -9,13 +10,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Random;
 
 public class BlockEntityWithEfficiency extends BlockEntity {
     public static int baseEfficiency;
-    protected int efficiencyMod, modTimeRemaining, modTimeUntilBoostable;
+    protected int efficiencyMod, grime;
     protected boolean isStalled = false;
     protected static final Random r = new Random();
 
@@ -24,7 +23,8 @@ public class BlockEntityWithEfficiency extends BlockEntity {
         baseEfficiency = efficiency;
     }
 
-    public static NonNullList<ItemStack> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate) {
+    public static Pair<Integer, NonNullList<ItemStack>> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate, int grimeSuccess, int grimeFail) {
+        int grime = 0;
         if(efficiency < 100) {
             ArrayList<ItemStack> modifiableQuery = new ArrayList<>();
             for (ItemStack stack : query) {
@@ -43,7 +43,12 @@ public class BlockEntityWithEfficiency extends BlockEntity {
                             doShrink = true;
                     }
 
-                    if(doShrink) stack.shrink(1);
+                    if(doShrink) {
+                        stack.shrink(1);
+                        grime += grimeFail;
+                    } else {
+                        grime += grimeSuccess;
+                    }
                 }
             }
 
@@ -51,9 +56,28 @@ public class BlockEntityWithEfficiency extends BlockEntity {
                 if(stack.getCount() > 0)
                     output.add(stack);
             }
-            return output;
+            return new Pair<>(grime, output);
         }
-        else
-            return query;
+        else {
+            int count = 0;
+            for(ItemStack stack : query) {
+                count += stack.getCount();
+            }
+            return new Pair<>(count*grimeSuccess, query);
+        }
+    }
+
+    public float getGrimePercent() {
+        return (float)this.grime / (float) Config.alembicMaximumGrime;
+    }
+
+    public int getActualEfficiency(){
+        float grimeScalar = 1f - Math.min(Math.max(Math.min(Math.max(getGrimePercent() - 0.5f, 0f), 1f) * 2f, 0f), 1f);
+        return Math.round((baseEfficiency + this.efficiencyMod) * grimeScalar);
+    }
+
+    public float getTimeScalar(){
+        float grimeScalar = Math.min(Math.max(Math.min(Math.max(getGrimePercent() - 0.5f, 0f), 1f) * 2f, 0f), 1f);
+        return 1f + grimeScalar * 3f;
     }
 }

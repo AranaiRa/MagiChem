@@ -4,16 +4,30 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_alembic.png");
+    private static final int
+            PANEL_MAIN_W = 176, PANEL_MAIN_H = 192,
+            PANEL_GRIME_X = 176, PANEL_GRIME_Y = 53, PANEL_GRIME_W = 64, PANEL_GRIME_H = 59, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
+            TOOLTIP_EFFICIENCY_X = 178, TOOLTIP_EFFICIENCY_Y = 58, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
+            TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 77, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
+            TOOLTIP_GRIME_X = 179, TOOLTIP_GRIME_Y = 93, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14;
 
     public AlembicScreen(AlembicMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -30,17 +44,24 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         RenderSystem.setShaderColor(1,1,1,1);
         RenderSystem.setShaderTexture(0, TEXTURE);
 
-        int w = 176;
-        int h = 192;
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
 
-        int x = (width - w) / 2;
-        int y = (height - h) / 2;
+        gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
-        gui.blit(TEXTURE, x, y, 0, 0, w, h);
+        renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 
-        int sp = menu.blockEntity.getScaledProgress(menu.blockEntity);
-        if(sp > 0)
-            gui.blit(TEXTURE, x+77, y+83, 0, 253, sp, 3);
+        int sProg = menu.blockEntity.getScaledProgress(menu.blockEntity);
+        if(sProg > 0)
+            gui.blit(TEXTURE, x+77, y+83, 0, 253, sProg, 3);
+
+        int sGrime = menu.blockEntity.getScaledGrime(menu.blockEntity);
+        if(sGrime > 0)
+            gui.blit(TEXTURE, x+182, y+96, 22, 248, sGrime, 8);
+    }
+
+    private void renderGrimePanel(GuiGraphics gui, int x, int y) {
+        gui.blit(TEXTURE, x, y, PANEL_GRIME_U, PANEL_GRIME_V, PANEL_GRIME_W, PANEL_GRIME_H);
     }
 
     @Override
@@ -51,7 +72,70 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     }
 
     @Override
-    protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
+    protected void renderTooltip(GuiGraphics gui, int mouseX, int mouseY) {
+        super.renderTooltip(gui, mouseX, mouseY);
 
+        Font font = Minecraft.getInstance().font;
+        List<Component> tooltipContents = new ArrayList<>();
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        //Efficiency
+        if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
+            mouseY >= y+TOOLTIP_EFFICIENCY_Y && mouseY <= y+TOOLTIP_EFFICIENCY_Y+TOOLTIP_EFFICIENCY_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.efficiency").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.efficiency.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.efficiency.line2"));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Operation Time
+        if(mouseX >= x+TOOLTIP_OPERATIONTIME_X && mouseX <= x+TOOLTIP_OPERATIONTIME_X+TOOLTIP_OPERATIONTIME_W &&
+            mouseY >= y+TOOLTIP_OPERATIONTIME_Y && mouseY <= y+TOOLTIP_OPERATIONTIME_Y+TOOLTIP_OPERATIONTIME_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Grime Bar
+        if(mouseX >= x+TOOLTIP_GRIME_X && mouseX <= x+TOOLTIP_GRIME_X+TOOLTIP_GRIME_W &&
+            mouseY >= y+TOOLTIP_GRIME_Y && mouseY <= y+TOOLTIP_GRIME_Y+TOOLTIP_GRIME_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.grime").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.grime.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.grime.line2.1")
+                    .append(Component.literal(Config.grimePenaltyPoint+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.grime.line2.2")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(" ")
+                    .append(Component.literal(String.format("%.1f", menu.blockEntity.getGrimePercent()*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
+        Font font = Minecraft.getInstance().font;
+
+        float actualEfficiency = menu.blockEntity.getActualEfficiency();
+        gui.drawString(font, Component.literal(actualEfficiency+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 4, 0xff000000, false);
+
+        int secWhole = menu.blockEntity.getOperationTicks() / 20;
+        int secPartial = (menu.blockEntity.getOperationTicks() % 20) * 5;
+        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 15, 0xff000000, false);
     }
 }
