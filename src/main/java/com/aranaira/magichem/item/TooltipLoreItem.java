@@ -110,6 +110,12 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.cleaningbrush")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

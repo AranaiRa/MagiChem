@@ -2,7 +2,9 @@ package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
+import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -10,7 +12,10 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.Containers;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -53,6 +58,24 @@ public class CommonEventHandler {
                         event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(),
                         new ItemStack(Items.GLASS_BOTTLE, inserted));
                 event.getLevel().addFreshEntity(ie);
+            }
+        } else if(target instanceof BlockEntityWithEfficiency bewe) {
+            if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
+                if(bewe.getGrime() > 0) {
+                    int wasteCount = bewe.clean();
+                    stack.setDamageValue(stack.getDamageValue() + 1);
+
+                    SimpleContainer wasteItems = new SimpleContainer(wasteCount / 64 + 1);
+                    for (int i = 0; i < wasteCount / 64 + 1; i++) {
+                        int thisAmount = Math.min(wasteCount, 64);
+                        wasteItems.setItem(i, new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), thisAmount));
+                        wasteCount -= thisAmount;
+                        if(wasteCount <= 0)
+                            break;
+                    }
+
+                    Containers.dropContents(event.getEntity().level(), bewe.getBlockPos(), wasteItems);
+                }
             }
         }
     }

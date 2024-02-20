@@ -204,7 +204,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), entity.getActualEfficiency(), 1.0f, Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), /*CentrifugeBlockEntity.getActualEfficiency(0)*/100, 1.0f, Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
         int grimeToAdd = pair.getFirst();
         NonNullList<ItemStack> componentMateria = pair.getSecond();
 
@@ -255,5 +255,15 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
 
     private void incrementProgress() {
         progress++;
+    }
+
+    @Override
+    public int getGrime() {
+        return 0;
+    }
+
+    @Override
+    public int clean() {
+        return 0;
     }
 }

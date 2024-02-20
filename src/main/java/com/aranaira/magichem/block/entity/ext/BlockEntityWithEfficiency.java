@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class BlockEntityWithEfficiency extends BlockEntity {
+public abstract class BlockEntityWithEfficiency extends BlockEntity {
     public static int baseEfficiency;
     protected int efficiencyMod, grime;
     protected boolean isStalled = false;
@@ -67,17 +67,7 @@ public class BlockEntityWithEfficiency extends BlockEntity {
         }
     }
 
-    public float getGrimePercent() {
-        return (float)this.grime / (float) Config.alembicMaximumGrime;
-    }
+    public abstract int getGrime();
 
-    public int getActualEfficiency(){
-        float grimeScalar = 1f - Math.min(Math.max(Math.min(Math.max(getGrimePercent() - 0.5f, 0f), 1f) * 2f, 0f), 1f);
-        return Math.round((baseEfficiency + this.efficiencyMod) * grimeScalar);
-    }
-
-    public float getTimeScalar(){
-        float grimeScalar = Math.min(Math.max(Math.min(Math.max(getGrimePercent() - 0.5f, 0f), 1f) * 2f, 0f), 1f);
-        return 1f + grimeScalar * 3f;
-    }
+    public abstract int clean();
 }

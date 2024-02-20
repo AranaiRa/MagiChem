@@ -335,4 +335,14 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     private void incrementProgress() {
         craftingProgress++;
     }
+
+    @Override
+    public int getGrime() {
+        return 0;
+    }
+
+    @Override
+    public int clean() {
+        return 0;
+    }
 }

@@ -66,6 +66,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> CLEANING_BRUSH = ITEMS.register("cleaning_brush",
+            () -> new TooltipLoreItem(new Item.Properties().durability(10))
+    );
+
     public static final RegistryObject<Item> SUPERHEATED_GLASS_PANE = ITEMS.register("superheated_glass_pane",
             () -> new Item(new Item.Properties())
     );

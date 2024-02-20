@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -51,11 +52,11 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
 
         renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 
-        int sProg = menu.blockEntity.getScaledProgress(menu.blockEntity);
+        int sProg = AlembicBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime());
         if(sProg > 0)
             gui.blit(TEXTURE, x+77, y+83, 0, 253, sProg, 3);
 
-        int sGrime = menu.blockEntity.getScaledGrime(menu.blockEntity);
+        int sGrime = AlembicBlockEntity.getScaledGrime(menu.getGrime());
         if(sGrime > 0)
             gui.blit(TEXTURE, x+182, y+96, 22, 248, sGrime, 8);
     }
@@ -122,7 +123,7 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
                     .append(" ")
-                    .append(Component.literal(String.format("%.1f", menu.blockEntity.getGrimePercent()*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
+                    .append(Component.literal(String.format("%.1f", AlembicBlockEntity.getGrimePercent(menu.getGrime())*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }
@@ -131,11 +132,10 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
 
-        float actualEfficiency = menu.blockEntity.getActualEfficiency();
-        gui.drawString(font, Component.literal(actualEfficiency+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 4, 0xff000000, false);
+        gui.drawString(font, Component.literal(AlembicBlockEntity.getActualEfficiency(menu.getGrime())+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 4, 0xff000000, false);
 
-        int secWhole = menu.blockEntity.getOperationTicks() / 20;
-        int secPartial = (menu.blockEntity.getOperationTicks() % 20) * 5;
+        int secWhole = AlembicBlockEntity.getOperationTicks(menu.getGrime()) / 20;
+        int secPartial = (AlembicBlockEntity.getOperationTicks(menu.getGrime()) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 15, 0xff000000, false);
     }
 }

@@ -13,6 +13,7 @@
   "item.magichem.magic_circle": "Magic Circle",
   "item.magichem.alchemical_waste": "Alchemical Waste",
   "item.magichem.superheated_glass_pane": "Superheated Glass Pane",
+  "item.magichem.cleaning_brush": "Cleaning Brush",
   "item.magichem.academic_slurry_bucket": "Academic Slurry Bucket",
 
   "item.magichem.dummy.process_fixation": "Alchemical Fixation",
@@ -235,6 +236,7 @@
   "tooltip.magichem.irisargenti.ext": "Otherwise known as \"Rainbow Silver\".",
   "tooltip.magichem.alchemicalwaste": "A mistake, or perhaps a failure. It smells unbelievably foul.",
   "tooltip.magichem.alchemicalwaste.ext": "Created by breaking devices without extracting materia first.",
+  "tooltip.magichem.cleaningbrush": "Used to clean the Grime out of alchemical devices.",
   "tooltip.magichem.magiccircle": "The heart of a device that uses an alchemical circle.",
 
   "tooltip.magichem.circlepower": "Uses mystical reagents to generate energy.",

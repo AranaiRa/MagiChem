@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
@@ -23,16 +24,18 @@ public class AlembicMenu extends AbstractContainerMenu {
 
     public final AlembicBlockEntity blockEntity;
     private final Level level;
+    private final ContainerData data;
 
     public AlembicMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(AlembicBlockEntity.DATA_COUNT));
     }
 
-    public AlembicMenu(int id, Inventory inv, BlockEntity entity) {
+    public AlembicMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuRegistry.ALEMBIC_MENU.get(), id);
         checkContainerSize(inv, 14);
         blockEntity = (AlembicBlockEntity) entity;
         this.level = inv.player.level();
+        this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -65,6 +68,8 @@ public class AlembicMenu extends AbstractContainerMenu {
                 this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 28 + (y) * 18, AlembicBlockEntity.SLOT_BOTTLES));
             }
         });
+
+        addDataSlots(data);
     }
 
     @Override
@@ -171,5 +176,13 @@ public class AlembicMenu extends AbstractContainerMenu {
         }
 
         return getSlot(pIndex).getItem();
+    }
+
+    public int getProgress() {
+        return data.get(AlembicBlockEntity.DATA_PROGRESS);
+    }
+
+    public int getGrime() {
+        return data.get(AlembicBlockEntity.DATA_GRIME);
     }
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PW",
+    "PF"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "W": {
+      "item": "minecraft:hay_block"
+    },
+    "F": {
+      "tag": "mna:ma_flowers"
+    }
+  },
+  "result": {
+    "item": "magichem:cleaning_brush"
+  }
+}
