@@ -3,6 +3,8 @@ package com.aranaira.magichem.events;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -22,6 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -105,6 +108,13 @@ public class CommonEventHandler {
                     event.getGuiGraphics().drawString(font, textRow3, x+4, y+24, 0xffffff, true);
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onAttachCapability(AttachCapabilitiesEvent<?> event) {
+        if(event.getObject() instanceof BlockEntityWithEfficiency) {
+            event.addCapability(IGrimeCapability.GRIME, new GrimeProvider());
         }
     }
 }

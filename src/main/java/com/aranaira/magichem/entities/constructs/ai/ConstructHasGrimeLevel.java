@@ -2,6 +2,7 @@ package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.IConstruct;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
 public class ConstructHasGrimeLevel extends ConstructConditional<ConstructHasGrimeLevel> {
-    private BlockEntityWithEfficiency targetApparatus = null;
+    private BlockPos targetApparatus = null;
     private float targetPercentage = 1;
 
     public ConstructHasGrimeLevel(IConstruct<?> construct, ResourceLocation guiIcon) {
@@ -30,13 +31,12 @@ public class ConstructHasGrimeLevel extends ConstructConditional<ConstructHasGri
         if(targetApparatus == null)
             return false;
 
-        float a = (float)((AlembicBlockEntity)targetApparatus).getGrime();
-        float a1 = (float)targetApparatus.getGrimeFromData();
-        float b = (float)targetApparatus.getMaximumGrime();
-        float c = a/b;
-        boolean d = c >= targetPercentage;
+        BlockEntityWithEfficiency bewe = (BlockEntityWithEfficiency) construct.asEntity().level().getBlockEntity(targetApparatus);
 
-        return ((float)targetApparatus.getGrimeFromData() / (float)targetApparatus.getMaximumGrime()) >= targetPercentage;
+        if(bewe == null)
+            return false;
+
+        return ((float)GrimeProvider.getCapability(bewe).getGrime() / (float)bewe.getMaximumGrime()) >= targetPercentage;
     }
 
     @Override
@@ -56,14 +56,9 @@ public class ConstructHasGrimeLevel extends ConstructConditional<ConstructHasGri
     public void inflateParameters() {
         this.getParameter("query_has_grime_level.point").ifPresent((param) -> {
             if (param instanceof ConstructTaskPointParameter pointParam) {
-                BlockPos targetVesselPos = pointParam.getPosition();
-                if(targetVesselPos != null) {
-                    BlockEntity be = Minecraft.getInstance().level.getBlockEntity(targetVesselPos);
-                    if (be != null) {
-                        if (be instanceof BlockEntityWithEfficiency bewe) {
-                            targetApparatus = bewe;
-                        }
-                    }
+                BlockPos targetPos = pointParam.getPosition();
+                if(targetPos != null) {
+                    targetApparatus = targetPos;
                 }
             }
         });

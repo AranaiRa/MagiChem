@@ -1,8 +1,11 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.interfaces.IMateriaProcessingDevice;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
@@ -17,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -32,6 +36,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class AlembicBlockEntity extends BlockEntityWithEfficiency implements MenuProvider, IMateriaProcessingDevice {
     public static final int
@@ -78,18 +84,30 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
-                return switch(pIndex) {
-                    case DATA_PROGRESS -> AlembicBlockEntity.this.progress;
-                    case DATA_GRIME -> AlembicBlockEntity.this.grime;
-                    default -> 0;
-                };
+                switch(pIndex) {
+                    case DATA_PROGRESS: {
+                        return AlembicBlockEntity.this.progress;
+                    }
+                    case DATA_GRIME: {
+                        IGrimeCapability grime = GrimeProvider.getCapability(AlembicBlockEntity.this);
+                        return grime.getGrime();
+                    }
+                    default: return 0;
+                }
             }
 
             @Override
             public void set(int pIndex, int pValue) {
                 switch(pIndex) {
-                    case DATA_PROGRESS -> AlembicBlockEntity.this.progress = pValue;
-                    case DATA_GRIME -> AlembicBlockEntity.this.grime = pValue;
+                    case DATA_PROGRESS: {
+                        AlembicBlockEntity.this.progress = pValue;
+                        break;
+                    }
+                    case DATA_GRIME: {
+                        IGrimeCapability grime = GrimeProvider.getCapability(AlembicBlockEntity.this);
+                        grime.setGrime(pValue);
+                        break;
+                    }
                 }
             }
 
@@ -140,7 +158,6 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
-        nbt.putInt("grime", this.grime);
         super.saveAdditional(nbt);
     }
 
@@ -149,7 +166,6 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
-        grime = nbt.getInt("grime");
     }
 
     public void dropInventoryToWorld() {
@@ -187,13 +203,13 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             }
         }
 
-        if(entity.getGrimeFromData() >= Config.alembicMaximumGrime)
+        if(GrimeProvider.getCapability(entity).getGrime() >= Config.alembicMaximumGrime)
             return;
 
         AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
         if(processingItem != ItemStack.EMPTY && recipe != null) {
             if(canCraftItem(entity, recipe)) {
-                if (entity.progress > getOperationTicks(entity.getGrimeFromData())) {
+                if (entity.progress > getOperationTicks(GrimeProvider.getCapability(entity).getGrime())) {
                     if (!level.isClientSide()) {
                         craftItem(entity, recipe);
                         entity.pushData();
@@ -236,9 +252,10 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
     @Override
     public int clean() {
-        int grimeDetected = getGrimeFromData();
-        grime = 0;
-        data.set(DATA_GRIME, grime);
+        int grimeDetected = GrimeProvider.getCapability(this).getGrime();
+        IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
+        grimeCapability.setGrime(0);
+        data.set(DATA_GRIME, 0);
         return grimeDetected / Config.grimePerWaste;
     }
 
@@ -262,7 +279,12 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
     private void pushData() {
         this.data.set(DATA_PROGRESS, progress);
-        this.data.set(DATA_GRIME, grime);
+
+        int a = GrimeProvider.getCapability(this).getGrime();
+
+        this.data.set(DATA_GRIME, a);
+
+        int b = GrimeProvider.getCapability(this).getGrime();
     }
 
     ////////////////////
@@ -317,7 +339,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), AlembicBlockEntity.getActualEfficiency(entity.getGrimeFromData()), recipe.getOutputRate(), Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), AlembicBlockEntity.getActualEfficiency(GrimeProvider.getCapability(entity).getGrime()), recipe.getOutputRate(), Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
         int grimeToAdd = Math.round(pair.getFirst() * recipe.getOutputRate());
         NonNullList<ItemStack> componentMateria = pair.getSecond();
 
@@ -341,7 +363,8 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
                 entity.itemHandler.setStackInSlot(SLOT_PROCESSING, ItemStack.EMPTY);
         }
 
-        entity.grime = Math.min(Math.max(entity.grime + grimeToAdd, 0), Config.alembicMaximumGrime);
+        IGrimeCapability grimeCapability = GrimeProvider.getCapability(entity);
+        grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.alembicMaximumGrime));
     }
 
     private static int nextInputSlotWithItem(AlembicBlockEntity entity) {

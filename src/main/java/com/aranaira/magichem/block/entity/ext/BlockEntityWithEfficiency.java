@@ -14,9 +14,11 @@ import java.util.Random;
 
 public abstract class BlockEntityWithEfficiency extends BlockEntity {
     public static int baseEfficiency;
-    protected int efficiencyMod, grime;
+    protected int efficiencyMod;
     protected boolean isStalled = false;
     protected static final Random r = new Random();
+
+
 
     public BlockEntityWithEfficiency(BlockEntityType<?> blockEntityType, BlockPos blockPos, int efficiency, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -68,10 +70,6 @@ public abstract class BlockEntityWithEfficiency extends BlockEntity {
     }
 
     public abstract int getGrimeFromData();
-
-    public int getGrime() {
-        return grime;
-    }
 
     public abstract int getMaximumGrime();
 
