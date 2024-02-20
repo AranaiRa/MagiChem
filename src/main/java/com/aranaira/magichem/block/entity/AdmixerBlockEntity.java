@@ -337,7 +337,12 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     }
 
     @Override
-    public int getGrime() {
+    public int getGrimeFromData() {
+        return 0;
+    }
+
+    @Override
+    public int getMaximumGrime() {
         return 0;
     }
 

@@ -187,13 +187,13 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             }
         }
 
-        if(entity.getGrime() >= Config.alembicMaximumGrime)
+        if(entity.getGrimeFromData() >= Config.alembicMaximumGrime)
             return;
 
         AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
         if(processingItem != ItemStack.EMPTY && recipe != null) {
             if(canCraftItem(entity, recipe)) {
-                if (entity.progress > getOperationTicks(entity.getGrime())) {
+                if (entity.progress > getOperationTicks(entity.getGrimeFromData())) {
                     if (!level.isClientSide()) {
                         craftItem(entity, recipe);
                         entity.pushData();
@@ -216,7 +216,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         return Math.round(Config.alembicOperationTime * getTimeScalar(grime));
     }
 
-    public int getProgress() {
+    public int getProgressFromData() {
         return data.get(DATA_PROGRESS);
     }
 
@@ -225,13 +225,18 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
     }
 
     @Override
-    public int getGrime() {
+    public int getGrimeFromData() {
         return data.get(DATA_GRIME);
     }
 
     @Override
+    public int getMaximumGrime() {
+        return Config.alembicMaximumGrime;
+    }
+
+    @Override
     public int clean() {
-        int grimeDetected = getGrime();
+        int grimeDetected = getGrimeFromData();
         grime = 0;
         data.set(DATA_GRIME, grime);
         return grimeDetected / Config.grimePerWaste;
@@ -312,7 +317,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), AlembicBlockEntity.getActualEfficiency(entity.getGrime()), recipe.getOutputRate(), Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), AlembicBlockEntity.getActualEfficiency(entity.getGrimeFromData()), recipe.getOutputRate(), Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
         int grimeToAdd = Math.round(pair.getFirst() * recipe.getOutputRate());
         NonNullList<ItemStack> componentMateria = pair.getSecond();
 

@@ -258,7 +258,12 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     }
 
     @Override
-    public int getGrime() {
+    public int getGrimeFromData() {
+        return 0;
+    }
+
+    @Override
+    public int getMaximumGrime() {
         return 0;
     }
 

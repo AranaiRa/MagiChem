@@ -67,7 +67,13 @@ public abstract class BlockEntityWithEfficiency extends BlockEntity {
         }
     }
 
-    public abstract int getGrime();
+    public abstract int getGrimeFromData();
+
+    public int getGrime() {
+        return grime;
+    }
+
+    public abstract int getMaximumGrime();
 
     public abstract int clean();
 }

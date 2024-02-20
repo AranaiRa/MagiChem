@@ -15,7 +15,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -61,7 +60,7 @@ public class CommonEventHandler {
             }
         } else if(target instanceof BlockEntityWithEfficiency bewe) {
             if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
-                if(bewe.getGrime() > 0) {
+                if(bewe.getGrimeFromData() > 0) {
                     int wasteCount = bewe.clean();
                     stack.setDamageValue(stack.getDamageValue() + 1);
 
