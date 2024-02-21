@@ -2,6 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.entities.constructs.ai.ConstructCheckVessel;
+import com.aranaira.magichem.entities.constructs.ai.ConstructCleanAlchemicalApparatus;
 import com.aranaira.magichem.entities.constructs.ai.ConstructHasGrimeLevel;
 import com.aranaira.magichem.entities.constructs.ai.ConstructSortMateria;
 import com.mna.api.ManaAndArtificeMod;
@@ -19,7 +20,7 @@ public class ConstructTasksRegistry {
 
     public static final ConstructTask SORT_MATERIA = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/sort_materia.png"), ConstructSortMateria.class, true, false);
     public static final ConstructTask QUERY_CHECK_VESSEL = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_materia_vessel_fill.png"), ConstructCheckVessel.class, true, false);
-    public static final ConstructTask CLEAN_ALCHEMICAL_APPARATUS = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/clean_alchemical_apparatus.png"), ConstructCheckVessel.class, true, false);
+    public static final ConstructTask CLEAN_ALCHEMICAL_APPARATUS = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/clean_alchemical_apparatus.png"), ConstructCleanAlchemicalApparatus.class, true, false);
     public static final ConstructTask QUERY_HAS_GRIME_LEVEL = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_has_grime_level.png"), ConstructHasGrimeLevel.class, true, false);
 
     @SubscribeEvent

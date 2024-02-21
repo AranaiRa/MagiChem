@@ -64,19 +64,7 @@ public class CommonEventHandler {
         } else if(target instanceof BlockEntityWithEfficiency bewe) {
             if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
                 if(bewe.getGrimeFromData() > 0) {
-                    int wasteCount = bewe.clean();
-                    stack.setDamageValue(stack.getDamageValue() + 1);
-
-                    SimpleContainer wasteItems = new SimpleContainer(wasteCount / 64 + 1);
-                    for (int i = 0; i < wasteCount / 64 + 1; i++) {
-                        int thisAmount = Math.min(wasteCount, 64);
-                        wasteItems.setItem(i, new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), thisAmount));
-                        wasteCount -= thisAmount;
-                        if(wasteCount <= 0)
-                            break;
-                    }
-
-                    Containers.dropContents(event.getEntity().level(), bewe.getBlockPos(), wasteItems);
+                    CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), bewe, stack);
                 }
             }
         }

@@ -1,0 +1,15 @@
+{
+  "type": "magichem:materia_infusion",
+  "apparatus_only": false,
+  "object": { "item": "mna:thunderstone" },
+  "stages": [
+    {
+      "ingredient": "mna:stone_rune_blank",
+      "experience": 10,
+      "components": [
+        { "item": "magichem:admixture_storm", "count": 12 },
+        { "item": "magichem:admixture_violence", "count": 3 }
+      ]
+    }
+  ]
+}

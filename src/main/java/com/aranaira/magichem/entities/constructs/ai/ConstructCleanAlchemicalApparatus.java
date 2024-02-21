@@ -2,6 +2,7 @@ package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.interfaces.IMateriaProcessingDevice;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
@@ -22,8 +23,7 @@ import java.util.List;
 
 public class ConstructCleanAlchemicalApparatus extends ConstructAITask<ConstructCleanAlchemicalApparatus> {
     private static final ConstructCapability[] requiredCaps;
-    private BlockPos targetApparatusPos;
-    private BlockEntityWithEfficiency targetApparatus = null;
+    private BlockPos targetApparatus;
     private ECleanTaskPhase phase = ECleanTaskPhase.SETUP;
     private int waitTimer;
 
@@ -42,26 +42,32 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
         if(isFullyConfigured()) {
             switch (this.phase) {
                 case SETUP -> {
-                    this.setMoveTarget(targetApparatusPos);
+                    this.setMoveTarget(targetApparatus);
                     this.phase = ECleanTaskPhase.MOVE_TO_DEVICE;
                 }
                 case MOVE_TO_DEVICE -> {
                     if (doMove(2.0F)) {
                         this.phase = ECleanTaskPhase.WAIT_AT_DEVICE;
                         this.waitTimer = 21;
-                        if(construct.getFluidInTank(0).getFluid() == Fluids.WATER) {
-                            if(construct.getStoredFluidAmount() > 100) {
-                                this.pushDiagnosticMessage("Sploosh! That's one squeaky clean apparatus, boss!", false);
-                                this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
-                                //construct.fluid
-                                this.targetApparatus.clean();
+                        BlockEntity be = construct.asEntity().level().getBlockEntity(targetApparatus);
+                        if (be instanceof BlockEntityWithEfficiency bewe) {
+                            if (construct.getFluidInTank(0).getFluid() == Fluids.WATER) {
+                                if (construct.getStoredFluidAmount() > 100) {
+                                    this.pushDiagnosticMessage("Sploosh! That's one squeaky clean apparatus, boss!", false);
+                                    this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
+                                    this.construct.getFluidInTank(0).shrink(100);
+                                    CommonEventHelper.generateWasteFromCleanedApparatus(construct.asEntity().level(), bewe, null);
+                                } else {
+                                    this.phase = ECleanTaskPhase.WAIT_TO_FAIL;
+                                    this.pushDiagnosticMessage("I don't have enough water to clean the apparatus. Sorry, boss!", false);
+                                }
                             } else {
                                 this.phase = ECleanTaskPhase.WAIT_TO_FAIL;
-                                this.pushDiagnosticMessage("I don't have enough water to clean the apparatus. Sorry, boss!", false);
+                                this.pushDiagnosticMessage("I don't have any water. I need some to clean the apparatus, boss!", false);
                             }
                         } else {
                             this.phase = ECleanTaskPhase.WAIT_TO_FAIL;
-                            this.pushDiagnosticMessage("I don't have any water. I need some to clean the apparatus, boss!", false);
+                            this.pushDiagnosticMessage("I couldn't find a device to clean there, boss.", false);
                         }
                     }
                 }
@@ -94,7 +100,7 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
     @Override
     public ConstructCleanAlchemicalApparatus copyFrom(ConstructAITask<?> other) {
         if(other instanceof ConstructCleanAlchemicalApparatus task) {
-            this.targetApparatusPos = task.targetApparatusPos;
+            this.targetApparatus = task.targetApparatus;
         }
 
         return this;
@@ -120,10 +126,7 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
     public void inflateParameters() {
         this.getParameter("clean_alchemical_apparatus.point").ifPresent((param) -> {
             if (param instanceof ConstructTaskPointParameter pointParam) {
-                this.targetApparatusPos = pointParam.getPosition();
-                BlockEntity be = construct.asEntity().level().getBlockEntity(this.targetApparatusPos);
-                if(be instanceof BlockEntityWithEfficiency bewe)
-                    this.targetApparatus = bewe;
+                this.targetApparatus = pointParam.getPosition();
             }
         });
     }
