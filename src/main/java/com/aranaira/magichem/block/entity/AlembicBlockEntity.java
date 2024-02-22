@@ -41,12 +41,11 @@ import java.util.Optional;
 
 public class AlembicBlockEntity extends BlockEntityWithEfficiency implements MenuProvider, IMateriaProcessingDevice {
     public static final int
-        SLOT_COUNT = 14,
+        SLOT_COUNT = 13,
         SLOT_BOTTLES = 0,
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
-        SLOT_PROCESSING = 4,
-        SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT  = 9,
-        PROGRESS_BAR_WIDTH = 22,
+        SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 8,
+        PROGRESS_BAR_WIDTH = 24,
         GRIME_BAR_WIDTH = 50,
         DATA_COUNT = 2, DATA_PROGRESS = 0, DATA_GRIME = 1;
 
@@ -188,30 +187,39 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         Containers.dropContents(this.level, this.worldPosition, waste);
     }
 
+    private static Pair<Integer, ItemStack> getProcessingItem(AlembicBlockEntity entity) {
+        int processingSlot = SLOT_INPUT_START+SLOT_INPUT_COUNT-1;
+        ItemStack processingItem = entity.itemHandler.getStackInSlot(processingSlot);
 
-
-    public static void tick(Level level, BlockPos pos, BlockState state, AlembicBlockEntity entity) {
-        ItemStack processingItem = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
         if(processingItem == ItemStack.EMPTY) {
-            //Move an item into the processing slot
-            int targetSlot = nextInputSlotWithItem(entity);
-            if (targetSlot != -1) {
-                CompoundTag nbt = entity.itemHandler.getStackInSlot(targetSlot).getTag();
-                ItemStack stack = entity.itemHandler.extractItem(targetSlot, 1, false);
-                if(nbt != null) stack.setTag(nbt);
-                entity.itemHandler.insertItem(SLOT_PROCESSING, stack, false);
-            }
+            processingSlot--;
+            processingItem = entity.itemHandler.getStackInSlot(processingSlot);
         }
 
+        if(processingItem == ItemStack.EMPTY) {
+            processingSlot--;
+            processingItem = entity.itemHandler.getStackInSlot(processingSlot);
+        }
+
+        return new Pair<>(processingSlot, processingItem);
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, AlembicBlockEntity entity) {
+        //skip all of this if grime is full
         if(GrimeProvider.getCapability(entity).getGrime() >= Config.alembicMaximumGrime)
             return;
 
-        AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity);
+        //figure out what slot and stack to target
+        Pair<Integer, ItemStack> processing = getProcessingItem(entity);
+        int processingSlot = processing.getFirst();
+        ItemStack processingItem = processing.getSecond();
+
+        AlchemicalCompositionRecipe recipe = getRecipeInSlot(entity, processingSlot);
         if(processingItem != ItemStack.EMPTY && recipe != null) {
             if(canCraftItem(entity, recipe)) {
                 if (entity.progress > getOperationTicks(GrimeProvider.getCapability(entity).getGrime())) {
                     if (!level.isClientSide()) {
-                        craftItem(entity, recipe);
+                        craftItem(entity, recipe, processingSlot);
                         entity.pushData();
                     }
                     if (!entity.isStalled)
@@ -291,25 +299,10 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
     // RECIPE HANDLING
     ////////////////////
 
-    private static NonNullList<ItemStack> getRecipeComponents(AlembicBlockEntity entity) {
-        Level level = entity.level;
-        NonNullList<ItemStack> result = NonNullList.create();
-
-        AlchemicalCompositionRecipe recipe = AlchemicalCompositionRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(SLOT_PROCESSING));
-
-        if(recipe != null) {
-            recipe.getComponentMateria().forEach(item -> {
-                result.add(new ItemStack(item.getItem(), item.getCount()));
-            });
-        }
-
-        return result;
-    }
-
-    private static AlchemicalCompositionRecipe getRecipeInSlot(AlembicBlockEntity entity) {
+    private static AlchemicalCompositionRecipe getRecipeInSlot(AlembicBlockEntity entity, int slot) {
         Level level = entity.level;
 
-        AlchemicalCompositionRecipe recipe = AlchemicalCompositionRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(SLOT_PROCESSING));
+        AlchemicalCompositionRecipe recipe = AlchemicalCompositionRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(slot));
 
         if(recipe != null) {
             return recipe;
@@ -333,7 +326,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         return true;
     }
 
-    private static void craftItem(AlembicBlockEntity entity, AlchemicalCompositionRecipe recipe) {
+    private static void craftItem(AlembicBlockEntity entity, AlchemicalCompositionRecipe recipe, int processingSlot) {
         SimpleContainer outputSlots = new SimpleContainer(9);
         for(int i=0; i<SLOT_OUTPUT_COUNT; i++) {
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
@@ -357,10 +350,10 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
             for(int i=0; i<9; i++) {
                 entity.itemHandler.setStackInSlot(SLOT_OUTPUT_START + i, outputSlots.getItem(i));
             }
-            ItemStack processingSlotContents = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
+            ItemStack processingSlotContents = entity.itemHandler.getStackInSlot(processingSlot);
             processingSlotContents.shrink(1);
             if(processingSlotContents.getCount() == 0)
-                entity.itemHandler.setStackInSlot(SLOT_PROCESSING, ItemStack.EMPTY);
+                entity.itemHandler.setStackInSlot(processingSlot, ItemStack.EMPTY);
         }
 
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(entity);

@@ -54,11 +54,11 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
 
         int sProg = AlembicBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime());
         if(sProg > 0)
-            gui.blit(TEXTURE, x+77, y+83, 0, 253, sProg, 3);
+            gui.blit(TEXTURE, x+76, y+53, 0, 228, sProg, 28);
 
         int sGrime = AlembicBlockEntity.getScaledGrime(menu.getGrime());
         if(sGrime > 0)
-            gui.blit(TEXTURE, x+182, y+96, 22, 248, sGrime, 8);
+            gui.blit(TEXTURE, x+182, y+96, 24, 248, sGrime, 8);
     }
 
     private void renderGrimePanel(GuiGraphics gui, int x, int y) {

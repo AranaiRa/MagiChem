@@ -51,14 +51,6 @@ public class AlembicMenu extends AbstractContainerMenu {
                 this.addSlot(new NoMateriaInputSlot(handler, i, 44, 28 + (i - AlembicBlockEntity.SLOT_INPUT_START) * 18));
             }
 
-            //Processing slot
-            this.addSlot(new NoMateriaInputSlot(handler, AlembicBlockEntity.SLOT_PROCESSING, 80, 46) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-            });
-
             //Output item slots
             for(int i=AlembicBlockEntity.SLOT_OUTPUT_START; i<AlembicBlockEntity.SLOT_OUTPUT_START + AlembicBlockEntity.SLOT_OUTPUT_COUNT; i++)
             {

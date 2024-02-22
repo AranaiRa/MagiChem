@@ -24,7 +24,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue GRIME_PER_WASTE = BUILDER
             .comment("How much Grime is consumed to make a single unit of Alchemical Waste when cleaning an alchemical device.")
-            .defineInRange("grimePerWaste", 150, 1, Integer.MAX_VALUE);
+            .defineInRange("grimePerWaste", 250, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue GRIME_PENALTY_POINT = BUILDER
             .comment("At what percent full of Grime that alchemical devices start to lose Efficiency and gain Operation Time.")
