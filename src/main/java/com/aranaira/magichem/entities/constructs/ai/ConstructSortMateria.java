@@ -35,6 +35,7 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
     private MateriaItem filter;
     private ESortTaskPhase phase = ESortTaskPhase.SETUP;
     private int waitTimer;
+    private ItemStack materiaInTransit;
 
     public ConstructSortMateria(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
@@ -46,6 +47,7 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
         filter = null;
         jarTargetEntity = null;
         jarTargetPos = null;
+        materiaInTransit = null;
     }
 
     @Override
@@ -55,15 +57,16 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
             switch (this.phase) {
                 case SETUP -> {
                     this.setMoveTarget(takeFromTarget);
-                    this.filter = chooseTargetJarFilter();
-                    this.setTargetVessel(this.filter);
                     this.phase = ESortTaskPhase.MOVE_TO_DEVICE;
                 }
                 case MOVE_TO_DEVICE -> {
                     if (doMove(2.0F)) {
                         this.phase = ESortTaskPhase.WAIT_AT_DEVICE;
                         this.waitTimer = 21;
-                        if(this.filter == null) {
+                        this.selectMateriaStackFromSource();
+                        if(this.filter != null) {
+                            this.setTargetVessel(this.filter);
+                        } else {
                             this.pushDiagnosticMessage("The device I'm monitoring is empty right now. I'll just wait for a bit!", false);
                             this.phase = ESortTaskPhase.WAIT_TO_FAIL;
                             this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
@@ -107,63 +110,43 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
         }
     }
 
-    private MateriaItem chooseTargetJarFilter() {
-        BlockEntity be = construct.asEntity().level().getBlockEntity(takeFromTarget);
-        if (be instanceof IMateriaProcessingDevice mpd) {
-            SimpleContainer contents = mpd.getContentsOfOutputSlots();
-            if (!contents.isEmpty()) {
-                int slot = 0;
-                ItemStack stack;
-                MateriaItem type = null;
-                while (type == null) {
-                    stack = contents.getItem(slot);
-                    if (stack != ItemStack.EMPTY && stack.getItem() instanceof MateriaItem mi) {
-                        type = mi;
-                    }
-                    slot++;
-                }
-                return type;
-            }
-        }
-        return null;
-    }
-
-    private int doMateriaTransfer() {
-        int transferredAmount = 0;
+    private void selectMateriaStackFromSource() {
         BlockEntity be = construct.asEntity().level().getBlockEntity(this.takeFromTarget);
         if(be instanceof IMateriaProcessingDevice mpd) {
             SimpleContainer contents = mpd.getContentsOfOutputSlots();
             if(!contents.isEmpty()) {
+                int largestStackSize = -1;
                 ItemStack stack = null;
                 for(int i=0; i< contents.getContainerSize(); i++) {
                     if(contents.getItem(i) != ItemStack.EMPTY && contents.getItem(i).getItem() instanceof MateriaItem mi) {
-                        if(mi == filter)
+                        if(contents.getItem(i).getCount() > largestStackSize) {
                             stack = contents.getItem(i);
+                            largestStackSize = stack.getCount();
+                        }
                     }
                 }
 
-                if(stack != null) {
+                if(stack != ItemStack.EMPTY) {
+                    this.filter = (MateriaItem) stack.getItem();
 
-                    if (this.jarTargetEntity == null) {
-                        this.pushDiagnosticMessage("I couldn't find a jar to put the materia in. Sorry, boss!", true);
-                        this.forceFail();
-                        this.stop();
-                        return 0;
-                    }
-
-                    int transferLimit = Math.min(construct.getCarrySize(), stack.getCount());
-
-                    stack.shrink(transferLimit);
-                    if (this.jarTargetEntity.getMateriaType() == null) {
-                        this.jarTargetEntity.setContents(filter, transferLimit);
-                        transferredAmount = transferLimit;
-                    } else {
-                        transferredAmount = jarTargetEntity.fill(transferLimit, this.voidExcess);
-                    }
+                    int amountToShrink = Math.min(construct.getCarrySize()*4, stack.getCount());
+                    stack.shrink(amountToShrink);
+                    this.materiaInTransit = new ItemStack(filter, amountToShrink);
                 } else
                     stop();
             }
         }
+    }
+
+    private int doMateriaTransfer() {
+        int transferredAmount;
+        if (this.jarTargetEntity.getMateriaType() == null) {
+            this.jarTargetEntity.setContents(filter, materiaInTransit.getCount());
+            transferredAmount = materiaInTransit.getCount();
+        } else {
+            transferredAmount = jarTargetEntity.fill(materiaInTransit.getCount(), this.voidExcess);
+        }
+        materiaInTransit = ItemStack.EMPTY;
         return transferredAmount;
     }
 

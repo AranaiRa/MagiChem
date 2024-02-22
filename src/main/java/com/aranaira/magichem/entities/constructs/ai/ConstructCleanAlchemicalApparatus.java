@@ -18,6 +18,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
 
@@ -55,7 +56,9 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
                                 if (construct.getStoredFluidAmount() > 100) {
                                     this.pushDiagnosticMessage("Sploosh! That's one squeaky clean apparatus, boss!", false);
                                     this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
-                                    this.construct.getFluidInTank(0).shrink(100);
+                                    if(construct.asEntity() instanceof IFluidHandler ifh) {
+                                        ifh.drain(100, IFluidHandler.FluidAction.EXECUTE);
+                                    }
                                     CommonEventHelper.generateWasteFromCleanedApparatus(construct.asEntity().level(), bewe, null);
                                 } else {
                                     this.phase = ECleanTaskPhase.WAIT_TO_FAIL;
