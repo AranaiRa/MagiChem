@@ -2,7 +2,7 @@ package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.NameCountPair;
-import com.aranaira.magichem.foundation.enums.EEssentiaHouse;
+import com.aranaira.magichem.foundation.enums.EssentiaHouse;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -83,7 +83,7 @@ public class AdmixtureItem extends MateriaItem {
                 output += "?";
                 continue;
             }
-            if(e.getEssentiaHouse() == EEssentiaHouse.ELEMENTS) {
+            if(e.getEssentiaHouse() == EssentiaHouse.ELEMENTS) {
                 output += e.getAbbreviation();
                 if(formulaEssentiaPortion.getCount() > 1)
                     output += sub(formulaEssentiaPortion.getCount());
@@ -111,7 +111,7 @@ public class AdmixtureItem extends MateriaItem {
                 output += "?";
                 continue;
             }
-            if(e.getEssentiaHouse() != EEssentiaHouse.ELEMENTS) {
+            if(e.getEssentiaHouse() != EssentiaHouse.ELEMENTS) {
                 output += e.getAbbreviation();
                 if(formulaEssentiaPortion.getCount() > 1)
                     output += sub(formulaEssentiaPortion.getCount());

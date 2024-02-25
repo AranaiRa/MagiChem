@@ -1,0 +1,89 @@
+package com.aranaira.magichem.block;
+
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
+
+public class CentrifugeRouterBlock extends BaseEntityBlock {
+    public CentrifugeRouterBlock(Properties pProperties) {
+        super(pProperties);
+    }
+
+    public static VoxelShape
+            VOXEL_SHAPE_LEFT_BASE_NORTH, VOXEL_SHAPE_LEFT_PLUG_NORTH, VOXEL_SHAPE_LEFT_AGGREGATE_NORTH,
+            VOXEL_SHAPE_RIGHT_BASE_NORTH, VOXEL_SHAPE_RIGHT_PLUG_NORTH, VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH,
+            VOXEL_SHAPE_COG_BASE_NORTH, VOXEL_SHAPE_COG_COG_NORTH, VOXEL_SHAPE_COG_AGGREGATE_NORTH;
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new CentrifugeRouterBlockEntity(pPos, pState);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        CentrifugeRouterBlockEntity crbe = (CentrifugeRouterBlockEntity) pLevel.getBlockEntity(pPos);
+        if(crbe != null) {
+            CentrifugeRouterType routerType = crbe.getRouterType();
+            Direction facing = crbe.getFacing();
+
+            //Again, switch statements always default here and I have no idea why
+            if(routerType == CentrifugeRouterType.PLUG_LEFT) {
+                if(facing == Direction.NORTH) return VOXEL_SHAPE_LEFT_AGGREGATE_NORTH;
+            } else if(crbe.getRouterType() == CentrifugeRouterType.PLUG_RIGHT) {
+                if(facing == Direction.NORTH) return VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH;
+            } else if(crbe.getRouterType() == CentrifugeRouterType.COG) {
+                if(facing == Direction.NORTH) return VOXEL_SHAPE_COG_AGGREGATE_NORTH;
+            }
+        }
+        return super.getShape(pState, pLevel, pPos, pContext);
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof CentrifugeRouterBlockEntity crbe) {
+            CentrifugeBlockEntity master = crbe.getMaster();
+            return master.getBlockState().getBlock().use(master.getBlockState(), pLevel, master.getBlockPos(), pPlayer, pHand, pHit);
+        }
+        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.INVISIBLE;
+    }
+
+    static {
+        VOXEL_SHAPE_LEFT_BASE_NORTH = Block.box(2.0D, 0.0D,  0.0D, 16.0D, 8.0D, 16.0D);
+        VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);
+        VOXEL_SHAPE_LEFT_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_LEFT_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_LEFT_PLUG_NORTH});
+
+        VOXEL_SHAPE_RIGHT_BASE_NORTH = Block.box(0.0D, 0.0D,  2.0D, 16.0D, 8.0D, 16.0D);
+        VOXEL_SHAPE_RIGHT_PLUG_NORTH = Block.box(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+        VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_RIGHT_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_RIGHT_PLUG_NORTH});
+
+        VOXEL_SHAPE_COG_BASE_NORTH = Block.box(2.0D, 0.0D,  2.0D, 16.0D, 8.0D, 16.0D);
+        VOXEL_SHAPE_COG_COG_NORTH = Block.box(4.0D, 8.0D, 4.0D, 19.0D, 15.0D, 5.0D);
+        VOXEL_SHAPE_COG_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_COG_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_COG_COG_NORTH});
+    }
+}

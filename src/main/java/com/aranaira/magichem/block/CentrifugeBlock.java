@@ -1,7 +1,10 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -25,6 +29,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CentrifugeBlock extends BaseEntityBlock {
     public CentrifugeBlock(Properties properties) {
         super(properties);
@@ -33,7 +40,12 @@ public class CentrifugeBlock extends BaseEntityBlock {
         );
     }
 
-    private static final VoxelShape VOXEL_SHAPE = Block.box(4,0,4,12,10,12);
+    private static final VoxelShape
+            VOXEL_SHAPE_NORTH = Block.box(0,0,0,14,8,14),
+            VOXEL_SHAPE_SOUTH = Block.box(2,0,2,16,8,16),
+            VOXEL_SHAPE_EAST = Block.box(2,0,0,16,8,14),
+            VOXEL_SHAPE_WEST = Block.box(0,0,2,14,8,16),
+            VOXEL_SHAPE_ERROR = Block.box(4,4,4,12,12,12);;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Override
@@ -42,14 +54,63 @@ public class CentrifugeBlock extends BaseEntityBlock {
     }
 
     @Override
+    public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
+        BlockState state = BlockRegistry.CENTRIFUGE_ROUTER.get().defaultBlockState();
+        Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        BlockPos targetPos = pPos.west();
+        pLevel.setBlock(targetPos, state, 3);
+        ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, CentrifugeRouterType.PLUG_LEFT, facing);
+
+        targetPos = pPos.north();
+        pLevel.setBlock(targetPos, state, 3);
+        ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, CentrifugeRouterType.PLUG_RIGHT, facing);
+
+        targetPos = pPos.west().north();
+        pLevel.setBlock(targetPos, state, 3);
+        ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, CentrifugeRouterType.COG, pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
+    @Override
+    public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
+        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        for(BlockPos offset : getRouterOffsets(facing)) {
+            pLevel.destroyBlock(pPos.offset(offset), true);
+        }
+
+        super.destroy(pLevel, pPos, pState);
+    }
+
+    public static List<BlockPos> getRouterOffsets(Direction pFacing) {
+        List<BlockPos> offsets = new ArrayList<>();
+        BlockPos origin = new BlockPos(0,0,0);
+        if(pFacing == Direction.NORTH) {
+            offsets.add(origin.west());
+            offsets.add(origin.north());
+            offsets.add(origin.west().north());
+        }
+        return offsets;
+    }
+
+    @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return VOXEL_SHAPE;
+        return switch(state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            default -> VOXEL_SHAPE_ERROR;
+            case NORTH -> VOXEL_SHAPE_NORTH;
+            case SOUTH -> VOXEL_SHAPE_SOUTH;
+            case WEST -> VOXEL_SHAPE_WEST;
+            case EAST -> VOXEL_SHAPE_EAST;
+        };
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+        return this.defaultBlockState().setValue(FACING, Direction.NORTH);
+        //TODO: restore dynamic facing
+        //return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
     @Override

@@ -31,6 +31,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion())
     );
 
+    public static final RegistryObject<Block> CENTRIFUGE_ROUTER = registerBlock("centrifuge_router",
+            () -> new CentrifugeRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
     public static final RegistryObject<Block> ADMIXER = registerBlock("admixer",
             () -> new AdmixerBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())

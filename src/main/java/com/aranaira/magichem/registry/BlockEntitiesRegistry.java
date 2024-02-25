@@ -3,6 +3,7 @@ package com.aranaira.magichem.registry;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.renderer.MateriaVesselBlockEntityRenderer;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,6 +24,10 @@ public class BlockEntitiesRegistry {
 
     public static final RegistryObject<BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE_BE = BLOCK_ENTITIES.register("centrifuge", () ->
             BlockEntityType.Builder.of(CentrifugeBlockEntity::new, BlockRegistry.CENTRIFUGE.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<CentrifugeRouterBlockEntity>> CENTRIFUGE_ROUTER_BE = BLOCK_ENTITIES.register("centrifuge_router", () ->
+            BlockEntityType.Builder.of(CentrifugeRouterBlockEntity::new, BlockRegistry.CENTRIFUGE_ROUTER.get()).build(null)
     );
 
     public static final RegistryObject<BlockEntityType<AdmixerBlockEntity>> ADMIXER_BE = BLOCK_ENTITIES.register("admixer", () ->

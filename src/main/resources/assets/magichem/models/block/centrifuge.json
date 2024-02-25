@@ -11,7 +11,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/centrifuge.obj"
+      "model": "magichem:models/obj/centrifuge_inventory.obj"
     }
   },
   "display": {

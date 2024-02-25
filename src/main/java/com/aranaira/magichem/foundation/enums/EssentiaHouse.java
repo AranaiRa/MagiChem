@@ -1,6 +1,6 @@
 package com.aranaira.magichem.foundation.enums;
 
-public enum EEssentiaHouse {
+public enum EssentiaHouse {
     NONE,
     ELEMENTS,
     QUALITIES,

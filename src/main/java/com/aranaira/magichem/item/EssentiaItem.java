@@ -1,6 +1,6 @@
 package com.aranaira.magichem.item;
 
-import com.aranaira.magichem.foundation.enums.EEssentiaHouse;
+import com.aranaira.magichem.foundation.enums.EssentiaHouse;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -33,7 +33,7 @@ public class EssentiaItem extends MateriaItem {
 
     private final String name;
     private final String abbreviation;
-    private final EEssentiaHouse house;
+    private final EssentiaHouse house;
     private final int wheel;
 
     public EssentiaItem(String essentiaName, String essentiaAbbreviation, String essentiaHouse, int essentiaWheel, String essentiaColor) {
@@ -55,7 +55,7 @@ public class EssentiaItem extends MateriaItem {
         return result;
     }
 
-    public static boolean isInHouse(String query, EEssentiaHouse houseQuery) {
+    public static boolean isInHouse(String query, EssentiaHouse houseQuery) {
         boolean result = false;
 
         switch(houseQuery) {
@@ -87,15 +87,15 @@ public class EssentiaItem extends MateriaItem {
         return result;
     }
 
-    private EEssentiaHouse parseStringToHouse(String input, String nameForErrorHandling) {
+    private EssentiaHouse parseStringToHouse(String input, String nameForErrorHandling) {
         switch(input) {
-            case "elements": return EEssentiaHouse.ELEMENTS;
-            case "qualities": return EEssentiaHouse.QUALITIES;
-            case "alchemy": return EEssentiaHouse.ALCHEMY;
-            case "none": return EEssentiaHouse.NONE;
+            case "elements": return EssentiaHouse.ELEMENTS;
+            case "qualities": return EssentiaHouse.QUALITIES;
+            case "alchemy": return EssentiaHouse.ALCHEMY;
+            case "none": return EssentiaHouse.NONE;
             default: {
                 System.out.println("Essentia entry \""+nameForErrorHandling+"\" has an invalid House, defaulting to NONE. Was something misspelled?");
-                return EEssentiaHouse.NONE;
+                return EssentiaHouse.NONE;
             }
         }
     }
@@ -117,7 +117,7 @@ public class EssentiaItem extends MateriaItem {
         return this.wheel;
     }
 
-    public EEssentiaHouse getEssentiaHouse() {
+    public EssentiaHouse getEssentiaHouse() {
         return this.house;
     }
 
