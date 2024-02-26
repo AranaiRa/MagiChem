@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -58,38 +59,43 @@ public class CentrifugeBlock extends BaseEntityBlock {
         super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
         BlockState state = BlockRegistry.CENTRIFUGE_ROUTER.get().defaultBlockState();
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-
-        BlockPos targetPos = pPos.west();
-        pLevel.setBlock(targetPos, state, 3);
-        ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, CentrifugeRouterType.PLUG_LEFT, facing);
-
-        targetPos = pPos.north();
-        pLevel.setBlock(targetPos, state, 3);
-        ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, CentrifugeRouterType.PLUG_RIGHT, facing);
-
-        targetPos = pPos.west().north();
-        pLevel.setBlock(targetPos, state, 3);
-        ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, CentrifugeRouterType.COG, pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+        for(Pair<BlockPos, CentrifugeRouterType> posAndType : getRouterOffsets(facing)) {
+            BlockPos targetPos = pPos.offset(posAndType.getFirst());
+            pLevel.setBlock(targetPos, state, 3);
+            ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing);
+        }
     }
 
     @Override
     public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
         Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-        for(BlockPos offset : getRouterOffsets(facing)) {
-            pLevel.destroyBlock(pPos.offset(offset), true);
+        for(Pair<BlockPos, CentrifugeRouterType> posAndType : getRouterOffsets(facing)) {
+            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
         }
 
         super.destroy(pLevel, pPos, pState);
     }
 
-    public static List<BlockPos> getRouterOffsets(Direction pFacing) {
-        List<BlockPos> offsets = new ArrayList<>();
+    public static List<Pair<BlockPos, CentrifugeRouterType>> getRouterOffsets(Direction pFacing) {
+        List<Pair<BlockPos, CentrifugeRouterType>> offsets = new ArrayList<>();
         BlockPos origin = new BlockPos(0,0,0);
         if(pFacing == Direction.NORTH) {
-            offsets.add(origin.west());
-            offsets.add(origin.north());
-            offsets.add(origin.west().north());
+            offsets.add(new Pair<>(origin.west(), CentrifugeRouterType.PLUG_LEFT));
+            offsets.add(new Pair<>(origin.north(), CentrifugeRouterType.PLUG_RIGHT));
+            offsets.add(new Pair<>(origin.west().north(), CentrifugeRouterType.COG));
+        } else if(pFacing == Direction.SOUTH) {
+            offsets.add(new Pair<>(origin.east(), CentrifugeRouterType.PLUG_LEFT));
+            offsets.add(new Pair<>(origin.south(), CentrifugeRouterType.PLUG_RIGHT));
+            offsets.add(new Pair<>(origin.east().south(), CentrifugeRouterType.COG));
+        } else if(pFacing == Direction.EAST) {
+            offsets.add(new Pair<>(origin.north(), CentrifugeRouterType.PLUG_LEFT));
+            offsets.add(new Pair<>(origin.east(), CentrifugeRouterType.PLUG_RIGHT));
+            offsets.add(new Pair<>(origin.north().east(), CentrifugeRouterType.COG));
+        } else if(pFacing == Direction.WEST) {
+            offsets.add(new Pair<>(origin.south(), CentrifugeRouterType.PLUG_LEFT));
+            offsets.add(new Pair<>(origin.west(), CentrifugeRouterType.PLUG_RIGHT));
+            offsets.add(new Pair<>(origin.south().west(), CentrifugeRouterType.COG));
         }
         return offsets;
     }
@@ -108,9 +114,7 @@ public class CentrifugeBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, Direction.NORTH);
-        //TODO: restore dynamic facing
-        //return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
     @Override

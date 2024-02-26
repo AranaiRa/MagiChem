@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -91,8 +92,8 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
 
     @Override
     public void setRemoved() {
-        for(BlockPos offset : CentrifugeBlock.getRouterOffsets(facing)) {
-            getLevel().destroyBlock(masterPos.offset(offset), true);
+        for(Pair<BlockPos, CentrifugeRouterType> posAndType : CentrifugeBlock.getRouterOffsets(facing)) {
+            getLevel().destroyBlock(masterPos.offset(posAndType.getFirst()), true);
         }
         getLevel().destroyBlock(masterPos, true);
         super.setRemoved();

@@ -3,6 +3,7 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -29,9 +30,13 @@ public class CentrifugeRouterBlock extends BaseEntityBlock {
     }
 
     public static VoxelShape
-            VOXEL_SHAPE_LEFT_BASE_NORTH, VOXEL_SHAPE_LEFT_PLUG_NORTH, VOXEL_SHAPE_LEFT_AGGREGATE_NORTH,
-            VOXEL_SHAPE_RIGHT_BASE_NORTH, VOXEL_SHAPE_RIGHT_PLUG_NORTH, VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH,
-            VOXEL_SHAPE_COG_BASE_NORTH, VOXEL_SHAPE_COG_COG_NORTH, VOXEL_SHAPE_COG_AGGREGATE_NORTH;
+            VOXEL_SHAPE_LEFT_BASE_NORTH, VOXEL_SHAPE_LEFT_PLUG_NORTH,
+            VOXEL_SHAPE_RIGHT_BASE_NORTH, VOXEL_SHAPE_RIGHT_PLUG_NORTH,
+            VOXEL_SHAPE_COG_BASE_NORTH, VOXEL_SHAPE_COG_COG_NORTH,
+            VOXEL_SHAPE_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_COG_AGGREGATE_NORTH,
+            VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_COG_AGGREGATE_SOUTH,
+            VOXEL_SHAPE_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_COG_AGGREGATE_EAST,
+            VOXEL_SHAPE_LEFT_AGGREGATE_WEST, VOXEL_SHAPE_RIGHT_AGGREGATE_WEST, VOXEL_SHAPE_COG_AGGREGATE_WEST;
 
     @Nullable
     @Override
@@ -49,10 +54,19 @@ public class CentrifugeRouterBlock extends BaseEntityBlock {
             //Again, switch statements always default here and I have no idea why
             if(routerType == CentrifugeRouterType.PLUG_LEFT) {
                 if(facing == Direction.NORTH) return VOXEL_SHAPE_LEFT_AGGREGATE_NORTH;
+                else if(facing == Direction.EAST) return VOXEL_SHAPE_LEFT_AGGREGATE_EAST;
+                else if(facing == Direction.SOUTH) return VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH;
+                else if(facing == Direction.WEST) return VOXEL_SHAPE_LEFT_AGGREGATE_WEST;
             } else if(crbe.getRouterType() == CentrifugeRouterType.PLUG_RIGHT) {
                 if(facing == Direction.NORTH) return VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH;
+                else if(facing == Direction.EAST) return VOXEL_SHAPE_RIGHT_AGGREGATE_EAST;
+                else if(facing == Direction.SOUTH) return VOXEL_SHAPE_RIGHT_AGGREGATE_SOUTH;
+                else if(facing == Direction.WEST) return VOXEL_SHAPE_RIGHT_AGGREGATE_WEST;
             } else if(crbe.getRouterType() == CentrifugeRouterType.COG) {
                 if(facing == Direction.NORTH) return VOXEL_SHAPE_COG_AGGREGATE_NORTH;
+                else if(facing == Direction.EAST) return VOXEL_SHAPE_COG_AGGREGATE_EAST;
+                else if(facing == Direction.SOUTH) return VOXEL_SHAPE_COG_AGGREGATE_SOUTH;
+                else if(facing == Direction.WEST) return VOXEL_SHAPE_COG_AGGREGATE_WEST;
             }
         }
         return super.getShape(pState, pLevel, pPos, pContext);
@@ -77,13 +91,40 @@ public class CentrifugeRouterBlock extends BaseEntityBlock {
         VOXEL_SHAPE_LEFT_BASE_NORTH = Block.box(2.0D, 0.0D,  0.0D, 16.0D, 8.0D, 16.0D);
         VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);
         VOXEL_SHAPE_LEFT_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_LEFT_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_LEFT_PLUG_NORTH});
+        VOXEL_SHAPE_LEFT_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 1), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 1)});
+        VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 2), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 2)});
+        VOXEL_SHAPE_LEFT_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 3), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 3)});
 
         VOXEL_SHAPE_RIGHT_BASE_NORTH = Block.box(0.0D, 0.0D,  2.0D, 16.0D, 8.0D, 16.0D);
         VOXEL_SHAPE_RIGHT_PLUG_NORTH = Block.box(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
         VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_RIGHT_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_RIGHT_PLUG_NORTH});
+        VOXEL_SHAPE_RIGHT_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_BASE_NORTH, 1), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_PLUG_NORTH, 1)});
+        VOXEL_SHAPE_RIGHT_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_BASE_NORTH, 2), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_PLUG_NORTH, 2)});
+        VOXEL_SHAPE_RIGHT_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_BASE_NORTH, 3), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_PLUG_NORTH, 3)});
 
         VOXEL_SHAPE_COG_BASE_NORTH = Block.box(2.0D, 0.0D,  2.0D, 16.0D, 8.0D, 16.0D);
         VOXEL_SHAPE_COG_COG_NORTH = Block.box(4.0D, 8.0D, 4.0D, 19.0D, 15.0D, 5.0D);
         VOXEL_SHAPE_COG_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_COG_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_COG_COG_NORTH});
+        VOXEL_SHAPE_COG_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_BASE_NORTH, 1), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_COG_NORTH, 1)});
+        VOXEL_SHAPE_COG_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_BASE_NORTH, 2), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_COG_NORTH, 2)});
+        VOXEL_SHAPE_COG_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_BASE_NORTH, 3), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_COG_NORTH, 3)});
     }
 }
