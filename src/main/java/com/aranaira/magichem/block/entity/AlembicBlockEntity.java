@@ -45,8 +45,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
         SLOT_BOTTLES = 0,
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 8,
-        PROGRESS_BAR_WIDTH = 24,
-        GRIME_BAR_WIDTH = 50,
+        PROGRESS_BAR_WIDTH = 24, GRIME_BAR_WIDTH = 50,
         DATA_COUNT = 2, DATA_PROGRESS = 0, DATA_GRIME = 1;
 
 
@@ -91,7 +90,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
                         IGrimeCapability grime = GrimeProvider.getCapability(AlembicBlockEntity.this);
                         return grime.getGrime();
                     }
-                    default: return 0;
+                    default: return -1;
                 }
             }
 
@@ -112,7 +111,7 @@ public class AlembicBlockEntity extends BlockEntityWithEfficiency implements Men
 
             @Override
             public int getCount() {
-                return 2;
+                return DATA_COUNT;
             }
         };
     }

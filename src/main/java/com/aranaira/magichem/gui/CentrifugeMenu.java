@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.container.*;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -8,9 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -22,16 +21,18 @@ public class CentrifugeMenu extends AbstractContainerMenu {
 
     public final CentrifugeBlockEntity blockEntity;
     private final Level level;
+    private final ContainerData data;
 
     public CentrifugeMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(CentrifugeBlockEntity.DATA_COUNT));
     }
 
-    public CentrifugeMenu(int id, Inventory inv, BlockEntity entity) {
+    public CentrifugeMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuRegistry.CENTRIFUGE_MENU.get(), id);
         checkContainerSize(inv, CentrifugeBlockEntity.SLOT_COUNT);
         blockEntity = (CentrifugeBlockEntity) entity;
         this.level = inv.player.level();
+        this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -48,14 +49,6 @@ public class CentrifugeMenu extends AbstractContainerMenu {
                 this.addSlot(new OnlyAdmixtureInputSlot(handler, i, 26, 30 + (i - CentrifugeBlockEntity.SLOT_INPUT_START) * 18));
             }
 
-            //Processing slot
-            this.addSlot(new OnlyAdmixtureInputSlot(handler, CentrifugeBlockEntity.SLOT_PROCESSING, 62, 48) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-            });
-
             //Output item slots
             for(int i=CentrifugeBlockEntity.SLOT_OUTPUT_START; i<CentrifugeBlockEntity.SLOT_OUTPUT_START + CentrifugeBlockEntity.SLOT_OUTPUT_COUNT; i++)
             {
@@ -65,6 +58,8 @@ public class CentrifugeMenu extends AbstractContainerMenu {
                 this.addSlot(new BottleConsumingResultSlot(handler, i, 98 + (x) * 18, 30 + (y) * 18, CentrifugeBlockEntity.SLOT_BOTTLES));
             }
         });
+
+        addDataSlots(data);
     }
 
     @Override
@@ -166,5 +161,13 @@ public class CentrifugeMenu extends AbstractContainerMenu {
         }
 
         return getSlot(pIndex).getItem();
+    }
+
+    public int getProgress() {
+        return data.get(CentrifugeBlockEntity.DATA_PROGRESS);
+    }
+
+    public int getGrime() {
+        return data.get(CentrifugeBlockEntity.DATA_GRIME);
     }
 }

@@ -2,6 +2,8 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -19,6 +21,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -33,12 +36,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
     public static final int
-        SLOT_COUNT = 15,
-        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 14,
+        SLOT_COUNT = 14,
+        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 13,
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
-        SLOT_PROCESSING = 4,
-        SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT  = 9,
-        PROGRESS_BAR_WIDTH = 22;
+        SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 9,
+        GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 24,
+        DATA_COUNT = 2, DATA_PROGRESS = 0, DATA_GRIME = 1;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -61,11 +64,47 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
 
     public CentrifugeBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.CENTRIFUGE_BE.get(), pos, Config.centrifugeEfficiency, state);
+        this.data = new ContainerData() {
+            @Override
+            public int get(int pIndex) {
+                switch(pIndex) {
+                    case DATA_PROGRESS: {
+                        return CentrifugeBlockEntity.this.progress;
+                    }
+                    case DATA_GRIME: {
+                        IGrimeCapability grime = GrimeProvider.getCapability(CentrifugeBlockEntity.this);
+                        return grime.getGrime();
+                    }
+                    default: return -1;
+                }
+            }
+
+            @Override
+            public void set(int pIndex, int pValue) {
+                switch(pIndex) {
+                    case DATA_PROGRESS: {
+                        CentrifugeBlockEntity.this.progress = pValue;
+                        break;
+                    }
+                    case DATA_GRIME: {
+                        IGrimeCapability grime = GrimeProvider.getCapability(CentrifugeBlockEntity.this);
+                        grime.setGrime(pValue);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return DATA_COUNT;
+            }
+        };
     }
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     private int progress = 0;
+    protected ContainerData data;
 
     @Override
     public Component getDisplayName() {
@@ -75,7 +114,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new CentrifugeMenu(id, inventory, this);
+        return new CentrifugeMenu(id, inventory, this, this.data);
     }
 
     @Override
@@ -137,10 +176,10 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         Containers.dropContents(this.level, this.worldPosition, waste);
     }
 
-    private static FixationSeparationRecipe getRecipeInSlot(CentrifugeBlockEntity entity) {
+    private static FixationSeparationRecipe getRecipeInSlot(CentrifugeBlockEntity entity, int slot) {
         Level level = entity.level;
 
-        FixationSeparationRecipe recipe = FixationSeparationRecipe.getSeparatingRecipe(level, entity.itemHandler.getStackInSlot(SLOT_PROCESSING));
+        FixationSeparationRecipe recipe = FixationSeparationRecipe.getSeparatingRecipe(level, entity.itemHandler.getStackInSlot(slot));
 
         if(recipe != null) {
             return recipe;
@@ -150,26 +189,21 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CentrifugeBlockEntity entity) {
-        /*if(level.isClientSide()) {
+        //skip all of this if grime is full
+        if(GrimeProvider.getCapability(entity).getGrime() >= Config.centrifugeMaximumGrime)
             return;
-        }*/
 
-        ItemStack processingItem = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
-        if(processingItem == ItemStack.EMPTY) {
-            //Move an item into the processing slot
-            int targetSlot = nextInputSlotWithItem(entity);
-            if (targetSlot != -1) {
-                ItemStack stack = entity.itemHandler.extractItem(targetSlot, 1, false);
-                entity.itemHandler.insertItem(SLOT_PROCESSING, stack, false);
-            }
-        }
+        //figure out what slot and stack to target
+        Pair<Integer, ItemStack> processing = getProcessingItem(entity);
+        int processingSlot = processing.getFirst();
+        ItemStack processingItem = processing.getSecond();
 
-        FixationSeparationRecipe recipe = getRecipeInSlot(entity);
+        FixationSeparationRecipe recipe = getRecipeInSlot(entity, processingSlot);
         if(processingItem != ItemStack.EMPTY && recipe != null) {
             if(canCraftItem(entity, recipe)) {
                 if (entity.progress > Config.centrifugeOperationTime) {
                     if (!level.isClientSide())
-                        craftItem(entity, recipe);
+                        craftItem(entity, recipe, processingSlot);
                     if (!entity.isStalled)
                         entity.resetProgress();
                 } else
@@ -178,6 +212,23 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         }
         else if(processingItem == ItemStack.EMPTY)
             entity.resetProgress();
+    }
+
+    private static Pair<Integer, ItemStack> getProcessingItem(CentrifugeBlockEntity entity) {
+        int processingSlot = SLOT_INPUT_START+SLOT_INPUT_COUNT-1;
+        ItemStack processingItem = entity.itemHandler.getStackInSlot(processingSlot);
+
+        if(processingItem == ItemStack.EMPTY) {
+            processingSlot--;
+            processingItem = entity.itemHandler.getStackInSlot(processingSlot);
+        }
+
+        if(processingItem == ItemStack.EMPTY) {
+            processingSlot--;
+            processingItem = entity.itemHandler.getStackInSlot(processingSlot);
+        }
+
+        return new Pair<>(processingSlot, processingItem);
     }
 
     private static boolean canCraftItem(CentrifugeBlockEntity entity, FixationSeparationRecipe recipe) {
@@ -198,14 +249,14 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         return true;
     }
 
-    private static void craftItem(CentrifugeBlockEntity entity, FixationSeparationRecipe recipe) {
+    private static void craftItem(CentrifugeBlockEntity entity, FixationSeparationRecipe recipe, int processingSlot) {
         SimpleContainer outputSlots = new SimpleContainer(9);
         for(int i=0; i<SLOT_OUTPUT_COUNT; i++) {
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), /*CentrifugeBlockEntity.getActualEfficiency(0)*/100, 1.0f, Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
-        int grimeToAdd = pair.getFirst();
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), CentrifugeBlockEntity.getActualEfficiency(GrimeProvider.getCapability(entity).getGrime()), 1.0f, Config.centrifugeGrimeOnSuccess, Config.centrifugeGrimeOnFailure);
+        int grimeToAdd = Math.round(pair.getFirst());
         NonNullList<ItemStack> componentMateria = pair.getSecond();
 
         for(ItemStack item : componentMateria) {
@@ -222,19 +273,14 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             for(int i=0; i<9; i++) {
                 entity.itemHandler.setStackInSlot(SLOT_OUTPUT_START + i, outputSlots.getItem(i));
             }
-            ItemStack processingSlotContents = entity.itemHandler.getStackInSlot(SLOT_PROCESSING);
+            ItemStack processingSlotContents = entity.itemHandler.getStackInSlot(processingSlot);
             processingSlotContents.shrink(1);
             if(processingSlotContents.getCount() == 0)
-                entity.itemHandler.setStackInSlot(SLOT_PROCESSING, ItemStack.EMPTY);
-
-            ItemStack outputBottles = entity.itemHandler.getStackInSlot(CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT);
-            if(outputBottles.getItem() == Items.GLASS_BOTTLE) {
-                outputBottles.grow(1);
-            } else {
-                outputBottles = new ItemStack(Items.GLASS_BOTTLE, 1);
-            }
-            entity.itemHandler.setStackInSlot(CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, outputBottles);
+                entity.itemHandler.setStackInSlot(processingSlot, ItemStack.EMPTY);
         }
+
+        IGrimeCapability grimeCapability = GrimeProvider.getCapability(entity);
+        grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
     }
 
     private static int nextInputSlotWithItem(CentrifugeBlockEntity entity) {
@@ -267,8 +313,34 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         return 0;
     }
 
+    public static int getOperationTicks(int grime) {
+        return Math.round(Config.centrifugeOperationTime * getTimeScalar(grime));
+    }
+
+    public static int getScaledProgress(int progress, int grime) {
+        return PROGRESS_BAR_WIDTH * progress / getOperationTicks(grime);
+    }
+
     @Override
     public int clean() {
         return 0;
+    }
+
+    public static int getScaledGrime(int grime) {
+        return (GRIME_BAR_WIDTH * grime) / Config.centrifugeMaximumGrime;
+    }
+
+    public static float getGrimePercent(int grime) {
+        return (float)grime / (float)Config.centrifugeMaximumGrime;
+    }
+
+    public static int getActualEfficiency(int grime) {
+        float grimeScalar = 1f - Math.min(Math.max(Math.min(Math.max(getGrimePercent(grime) - 0.5f, 0f), 1f) * 2f, 0f), 1f);
+        return Math.round(baseEfficiency * grimeScalar);
+    }
+
+    public static float getTimeScalar(int grime) {
+        float grimeScalar = Math.min(Math.max(Math.min(Math.max(getGrimePercent(grime) - 0.5f, 0f), 1f) * 2f, 0f), 1f);
+        return 1f + grimeScalar * 3f;
     }
 }

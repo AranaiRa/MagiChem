@@ -2,10 +2,11 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,7 +47,7 @@ public class CentrifugeBlock extends BaseEntityBlock {
             VOXEL_SHAPE_SOUTH = Block.box(2,0,2,16,8,16),
             VOXEL_SHAPE_EAST = Block.box(2,0,0,16,8,14),
             VOXEL_SHAPE_WEST = Block.box(0,0,2,14,8,16),
-            VOXEL_SHAPE_ERROR = Block.box(4,4,4,12,12,12);;
+            VOXEL_SHAPE_ERROR = Block.box(4,4,4,12,12,12);
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Override
@@ -59,10 +60,10 @@ public class CentrifugeBlock extends BaseEntityBlock {
         super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
         BlockState state = BlockRegistry.CENTRIFUGE_ROUTER.get().defaultBlockState();
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        for(Pair<BlockPos, CentrifugeRouterType> posAndType : getRouterOffsets(facing)) {
+        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             pLevel.setBlock(targetPos, state, 3);
-            ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing);
+            ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
         }
     }
 
@@ -70,32 +71,32 @@ public class CentrifugeBlock extends BaseEntityBlock {
     public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
         Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-        for(Pair<BlockPos, CentrifugeRouterType> posAndType : getRouterOffsets(facing)) {
+        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
         }
 
         super.destroy(pLevel, pPos, pState);
     }
 
-    public static List<Pair<BlockPos, CentrifugeRouterType>> getRouterOffsets(Direction pFacing) {
-        List<Pair<BlockPos, CentrifugeRouterType>> offsets = new ArrayList<>();
+    public static List<Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection>> getRouterOffsets(Direction pFacing) {
+        List<Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection>> offsets = new ArrayList<>();
         BlockPos origin = new BlockPos(0,0,0);
         if(pFacing == Direction.NORTH) {
-            offsets.add(new Pair<>(origin.west(), CentrifugeRouterType.PLUG_LEFT));
-            offsets.add(new Pair<>(origin.north(), CentrifugeRouterType.PLUG_RIGHT));
-            offsets.add(new Pair<>(origin.west().north(), CentrifugeRouterType.COG));
+            offsets.add(new Triplet<>(origin.west(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.SOUTH));
+            offsets.add(new Triplet<>(origin.north(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.EAST));
+            offsets.add(new Triplet<>(origin.west().north(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.SOUTH) {
-            offsets.add(new Pair<>(origin.east(), CentrifugeRouterType.PLUG_LEFT));
-            offsets.add(new Pair<>(origin.south(), CentrifugeRouterType.PLUG_RIGHT));
-            offsets.add(new Pair<>(origin.east().south(), CentrifugeRouterType.COG));
+            offsets.add(new Triplet<>(origin.east(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.NORTH));
+            offsets.add(new Triplet<>(origin.south(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.WEST));
+            offsets.add(new Triplet<>(origin.east().south(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.EAST) {
-            offsets.add(new Pair<>(origin.north(), CentrifugeRouterType.PLUG_LEFT));
-            offsets.add(new Pair<>(origin.east(), CentrifugeRouterType.PLUG_RIGHT));
-            offsets.add(new Pair<>(origin.north().east(), CentrifugeRouterType.COG));
+            offsets.add(new Triplet<>(origin.north(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.WEST));
+            offsets.add(new Triplet<>(origin.east(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.SOUTH));
+            offsets.add(new Triplet<>(origin.north().east(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.WEST) {
-            offsets.add(new Pair<>(origin.south(), CentrifugeRouterType.PLUG_LEFT));
-            offsets.add(new Pair<>(origin.west(), CentrifugeRouterType.PLUG_RIGHT));
-            offsets.add(new Pair<>(origin.south().west(), CentrifugeRouterType.COG));
+            offsets.add(new Triplet<>(origin.south(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.EAST));
+            offsets.add(new Triplet<>(origin.west(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.NORTH));
+            offsets.add(new Triplet<>(origin.south().west(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
         }
         return offsets;
     }
@@ -155,7 +156,7 @@ public class CentrifugeBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof CentrifugeBlockEntity) {
+            if(entity instanceof CentrifugeBlockEntity cfbe) {
                 NetworkHooks.openScreen((ServerPlayer)player, (CentrifugeBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("CentrifugeBlockEntity container provider is missing!");

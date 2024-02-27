@@ -2,7 +2,9 @@ package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -29,58 +31,31 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
     private CentrifugeBlockEntity master;
     private CentrifugeRouterType routerType = CentrifugeRouterType.NONE;
     private Direction facing;
+    private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
     private int packedData;
-
-    public ContainerData data;
 
     public CentrifugeRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.CENTRIFUGE_ROUTER_BE.get(), pPos, pBlockState);
-
-        this.data = new ContainerData() {
-            @Override
-            public int get(int pIndex) {
-                if(pIndex == 0) {
-                    return CentrifugeRouterBlockEntity.this.packedData;
-                    //return (byte)(mapFacingToByte(facing) << 4 | mapTypeToByte(routerType));
-                }
-                return -1;
-            }
-
-            @Override
-            public void set(int pIndex, int pValue) {
-                if(pIndex == 0) {
-                    CentrifugeRouterBlockEntity.this.packedData = pValue;
-                    /*
-                    routerType = unmapTypeFromByte((byte)(pValue << 4));
-                    facing = unmapFacingFromByte((byte) (pValue & 0x1111));*/
-                }
-            }
-
-            @Override
-            public int getCount() {
-                return 1;
-            }
-        };
     }
 
     public Direction getFacing() {
-        //return unmapFacingFromByte((byte)(packedData & 0x1111));
         return this.facing;
     }
 
     public CentrifugeRouterType getRouterType() {
-        //return unmapTypeFromByte((byte)(packedData >> 4));
         return this.routerType;
     }
 
-    public void configure(BlockPos pMasterPos, CentrifugeRouterType pRouterType, Direction pFacing) {
+    public DevicePlugDirection getPlugDirection() {
+        return this.plugDirection;
+    }
+
+    public void configure(BlockPos pMasterPos, CentrifugeRouterType pRouterType, Direction pFacing, DevicePlugDirection pPlugDirection) {
         this.masterPos = pMasterPos;
         this.routerType = pRouterType;
         this.facing = pFacing;
+        this.plugDirection = pPlugDirection;
         getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
-//        byte packedData = (byte)(mapFacingToByte(pFacing) << 4 | mapTypeToByte(pType));
-//        data.set(0, packedData);
-//        setChanged();
     }
 
     public CentrifugeBlockEntity getMaster(){
@@ -92,7 +67,7 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
 
     @Override
     public void setRemoved() {
-        for(Pair<BlockPos, CentrifugeRouterType> posAndType : CentrifugeBlock.getRouterOffsets(facing)) {
+        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : CentrifugeBlock.getRouterOffsets(facing)) {
             getLevel().destroyBlock(masterPos.offset(posAndType.getFirst()), true);
         }
         getLevel().destroyBlock(masterPos, true);
@@ -126,7 +101,7 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putByte("typeAndFacing", (byte)(mapFacingToByte(facing) << 4 | mapTypeToByte(routerType)));
+        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8 | mapFacingToBitpack(facing) << 4 | mapTypeToBitpack(routerType));
         super.saveAdditional(nbt);
     }
 
@@ -134,9 +109,10 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
     public void load(CompoundTag nbt) {
         super.load(nbt);
         masterPos = BlockPos.of(nbt.getLong("masterPos"));
-        byte typeAndFacing = nbt.getByte("typeAndFacing");
-        routerType = unmapTypeFromByte((byte) (typeAndFacing & 15));
-        facing = unmapFacingFromByte((byte) (typeAndFacing >> 4));
+        int typeAndFacing = nbt.getInt("typeAndFacing");
+        routerType = unmapTypeFromBitpack(typeAndFacing & 15);
+        facing = unmapFacingFromBitpack((typeAndFacing >> 4) & 15);
+        plugDirection = unmapPlugDirFromBitpack(typeAndFacing >> 8);
     }
 
     @Nullable
@@ -150,16 +126,16 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
         CompoundTag nbt = new CompoundTag();
 
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putByte("typeAndFacing", (byte)(mapFacingToByte(facing) << 4 | mapTypeToByte(routerType)));
+        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8 | mapFacingToBitpack(facing) << 4 | mapTypeToBitpack(routerType));
 
         return nbt;
     }
 
-    private byte mapTypeToByte(CentrifugeRouterType pRouterType) {
+    private int mapTypeToBitpack(CentrifugeRouterType pRouterType) {
         if(pRouterType == null)
             return 0;
 
-        return (byte)switch(pRouterType) {
+        return switch(pRouterType) {
             case PLUG_LEFT -> 1;
             case PLUG_RIGHT -> 2;
             case COG -> 3;
@@ -167,8 +143,8 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
         };
     }
 
-    private CentrifugeRouterType unmapTypeFromByte(byte input) {
-        return switch(input) {
+    private CentrifugeRouterType unmapTypeFromBitpack(int pBitpack) {
+        return switch(pBitpack) {
             case 1 -> CentrifugeRouterType.PLUG_LEFT;
             case 2 -> CentrifugeRouterType.PLUG_RIGHT;
             case 3 -> CentrifugeRouterType.COG;
@@ -176,11 +152,11 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
         };
     }
 
-    private byte mapFacingToByte(Direction pFacing) {
+    private int mapFacingToBitpack(Direction pFacing) {
         if(pFacing == null)
             return 0;
 
-        return (byte)switch(pFacing) {
+        return switch(pFacing) {
             case NORTH -> 1;
             case SOUTH -> 2;
             case EAST -> 3;
@@ -189,13 +165,36 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
         };
     }
 
-    private Direction unmapFacingFromByte(byte input) {
-        return switch(input) {
+    private Direction unmapFacingFromBitpack(int pBitpack) {
+        return switch(pBitpack) {
             case 1 -> Direction.NORTH;
             case 2 -> Direction.SOUTH;
             case 3 -> Direction.EAST;
             case 4 -> Direction.WEST;
             default -> null;
+        };
+    }
+
+    private int mapPlugDirToBitpack(DevicePlugDirection pPlugDirection) {
+        if(pPlugDirection == null)
+            return 0;
+
+        return switch(pPlugDirection) {
+            case NORTH -> 1;
+            case SOUTH -> 2;
+            case EAST -> 3;
+            case WEST -> 4;
+            default -> 0;
+        };
+    }
+
+    private DevicePlugDirection unmapPlugDirFromBitpack(int pBitpack) {
+        return switch(pBitpack) {
+            case 1 -> DevicePlugDirection.NORTH;
+            case 2 -> DevicePlugDirection.SOUTH;
+            case 3 -> DevicePlugDirection.EAST;
+            case 4 -> DevicePlugDirection.WEST;
+            default -> DevicePlugDirection.NONE;
         };
     }
 
