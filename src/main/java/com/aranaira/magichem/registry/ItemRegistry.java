@@ -74,6 +74,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties())
     );
 
+    public static final RegistryObject<Item> PERFECTED_ELECTRUM = ITEMS.register("perfected_electrum",
+            () -> new Item(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> ACADEMIC_SLURRY_BUCKET = ITEMS.register("academic_slurry_bucket",
             () -> new BucketItem(FluidRegistry.ACADEMIC_SLURRY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );

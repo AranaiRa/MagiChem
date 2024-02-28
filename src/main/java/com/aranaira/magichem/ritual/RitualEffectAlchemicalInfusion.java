@@ -27,4 +27,11 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
     protected int getApplicationTicks(IRitualContext iRitualContext) {
         return 10;
     }
+
+    @Override
+    protected boolean modifyRitualReagentsAndPatterns(ItemStack dataStack, IRitualContext context) {
+        //context.replaceReagents();
+
+        return super.modifyRitualReagentsAndPatterns(dataStack, context);
+    }
 }

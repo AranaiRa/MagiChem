@@ -41,10 +41,17 @@
 	{
 		"X":
 		{
-			"item": "magichem:dynamic-infusion",
+			"item": "magichem:dynamic_infusion",
 			"optional": true,
 			"consume": true,
 			"is_dynamic": true
+		},
+		"V":
+		{
+			"item": "mna:vinteum_dust",
+			"optional": false,
+			"consume": true,
+			"is_dynamic": false
 		}
 	},
 	"parameters":

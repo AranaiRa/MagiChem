@@ -4,7 +4,7 @@
   "ingredients": [
     { "item": "mna:transmuted_silver" },
     { "item": "minecraft:gold_ingot" }
-  ]
+  ],
   "experience": 24,
   "components": [
     { "item": "magichem:admixture_industry", "count": 30 },

@@ -43,11 +43,6 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
     @Deprecated
     @Override
     public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        /*if(pLevel.isClientSide()) {
-            return false;
-        }
-
-        return componentMateria.get(0).test(pContainer.getItem(1));*/
         return false;
     }
 
@@ -148,7 +143,7 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
                 if(matQuery != null) {
                     ing = new ItemStack(matQuery);
                 } else {
-                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for fixation_separation recipe \""+pRecipeId);
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for fixation_separation recipe \""+pRecipeId+"\"");
                 }
 
                 if(element.getAsJsonObject().has("count"))
@@ -167,7 +162,7 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
             int totalComponents = buf.readInt();
             NonNullList<ItemStack> readComponentMateria = NonNullList.create();
             for(int i=0; i<totalComponents; i++) {
-                buf.readItem();
+                readComponentMateria.add(buf.readItem());
             }
 
             return new FixationSeparationRecipe(id, readAlchemyObject, readComponentMateria);

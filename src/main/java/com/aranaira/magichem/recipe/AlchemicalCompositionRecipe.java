@@ -189,7 +189,7 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
             int totalComponents = buf.readInt();
             NonNullList<ItemStack> readComponentMateria = NonNullList.create();
             for(int i=0; i<totalComponents; i++) {
-                buf.readItem();
+                readComponentMateria.add(buf.readItem());
             }
 
             return new AlchemicalCompositionRecipe(id, readAlchemyObject, readComponentMateria, readDistillOnly, readOutputRate);
