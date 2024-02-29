@@ -4,10 +4,8 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
@@ -18,27 +16,23 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.ForgeRenderTypes;
 import net.minecraftforge.client.model.data.ModelData;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
-    public static final ResourceLocation SPECIAL_RENDERER = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_vessel");
+    public static final ResourceLocation RENDERER_JAR = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_vessel");
     private BakedModel bakedModel;
 
     private final List<Direction> sides = Util.make(new ArrayList<>(), c -> {
@@ -54,7 +48,7 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
     public void renderByItem(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
 
         if(this.bakedModel == null)
-            this.bakedModel = Minecraft.getInstance().getModelManager().getModel(SPECIAL_RENDERER);
+            this.bakedModel = Minecraft.getInstance().getModelManager().getModel(RENDERER_JAR);
 
         PoseStack.Pose last = pPoseStack.last();
         VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());

@@ -43,6 +43,9 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 24,
         DATA_COUNT = 2, DATA_PROGRESS = 0, DATA_GRIME = 1;
 
+    public int remainingTorque = 0;
+    public float wheelAngle, cogAngle;
+
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -189,6 +192,9 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CentrifugeBlockEntity entity) {
+        entity.wheelAngle += 10.0f;
+        entity.cogAngle += 2.5f;
+
         //skip all of this if grime is full
         if(GrimeProvider.getCapability(entity).getGrime() >= Config.centrifugeMaximumGrime)
             return;

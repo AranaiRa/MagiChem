@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.mna.items.base.INoCreativeTab;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +27,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProvider {
+public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private CentrifugeRouterType routerType = CentrifugeRouterType.NONE;

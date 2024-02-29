@@ -1,5 +1,6 @@
 package com.aranaira.magichem;
 
+import com.aranaira.magichem.block.entity.renderer.CentrifugeBlockEntityRenderer;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.registry.*;
@@ -12,9 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -27,10 +26,8 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
-import java.util.Arrays;
 import java.util.List;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -96,7 +93,7 @@ public class MagiChemMod
     public void onRegisterGuidebooks(RegisterGuidebooksEvent event) {
         event.getRegistry().addGuidebookPath(new ResourceLocation(MODID, "guide"));
 
-        event.getRegistry().registerGuidebookCategory("magichem", new ResourceLocation(MagiChemMod.MODID, "iris_argenti"));
+        event.getRegistry().registerGuidebookCategory("magichem", new ResourceLocation(MagiChemMod.MODID, "materia_vessel"));
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -104,7 +101,6 @@ public class MagiChemMod
     public void onServerStarting(ServerStartingEvent event)
     {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
@@ -124,7 +120,9 @@ public class MagiChemMod
 
         @SubscribeEvent
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
-            event.register(MateriaVesselItemRenderer.SPECIAL_RENDERER);
+            event.register(MateriaVesselItemRenderer.RENDERER_JAR);
+            event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_COG);
+            event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_WHEEL);
         }
     }
 }
