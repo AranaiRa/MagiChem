@@ -1,0 +1,5 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 1
+
+newmtl INFERNO_ENGINE
+map_Kd magichem:block/actuator_fire

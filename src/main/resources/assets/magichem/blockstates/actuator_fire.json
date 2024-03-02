@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/actuator_fire"
+    },
+    "facing=east": {
+      "model": "magichem:block/actuator_fire",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/actuator_fire",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/actuator_fire",
+      "y": 270
+    }
+  }
+}

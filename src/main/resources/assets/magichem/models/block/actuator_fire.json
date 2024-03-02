@@ -11,7 +11,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/centrifuge_body.obj"
+      "model": "magichem:models/obj/actuator_fire_body.obj"
     }
   },
   "display": {

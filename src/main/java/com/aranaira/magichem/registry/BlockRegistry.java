@@ -2,12 +2,9 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
-import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.item.PowerSpikeItem;
 import com.aranaira.magichem.item.TooltipLoreBlockItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -59,6 +56,26 @@ public class BlockRegistry {
     public static final RegistryObject<Block> MATERIA_VESSEL = registerBlock("materia_vessel",
             () -> new MateriaVesselBlock(BlockBehaviour.Properties.of()
                     .strength(0.5f).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> ACTUATOR_FIRE = registerBlock("actuator_fire",
+            () -> new ActuatorFireBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> ACTUATOR_WATER = registerBlock("actuator_water",
+            () -> new ActuatorWaterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> BASE_ACTUATOR_ROUTER = registerBlock("base_actuator_router",
+            () -> new BaseActuatorRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> ACTUATOR_WATER_ROUTER = registerBlock("actuator_water_router",
+            () -> new ActuatorWaterRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
     );
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

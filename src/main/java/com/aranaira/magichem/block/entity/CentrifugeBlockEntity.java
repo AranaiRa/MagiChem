@@ -15,6 +15,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -41,10 +44,16 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 9,
         GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 24,
-        DATA_COUNT = 2, DATA_PROGRESS = 0, DATA_GRIME = 1;
+        DATA_COUNT = 4, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3,
+        NO_TORQUE_GRACE_PERIOD = 20, TORQUE_GAIN_ON_COG_ACTIVATION = 36, ANIMUS_GAIN_ON_DUSTING = 12000;
+    public static final float
+        WHEEL_ACCELERATION_RATE = 0.375f, WHEEL_DECELERATION_RATE = 0.625f, WHEEL_TOP_SPEED = 20.0f,
+        COG_ACCELERATION_RATE = 0.5f, COG_DECELERATION_RATE = 0.375f, COG_TOP_SPEED = 10.0f;
 
-    public int remainingTorque = 0;
-    public float wheelAngle, cogAngle;
+    public int
+            remainingTorque = 0, remainingAnimus;
+    public float
+            wheelAngle, wheelSpeed, cogAngle, cogSpeed;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -78,6 +87,12 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                         IGrimeCapability grime = GrimeProvider.getCapability(CentrifugeBlockEntity.this);
                         return grime.getGrime();
                     }
+                    case DATA_TORQUE: {
+                        return CentrifugeBlockEntity.this.remainingTorque;
+                    }
+                    case DATA_ANIMUS: {
+                        return CentrifugeBlockEntity.this.remainingAnimus;
+                    }
                     default: return -1;
                 }
             }
@@ -92,6 +107,14 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                     case DATA_GRIME: {
                         IGrimeCapability grime = GrimeProvider.getCapability(CentrifugeBlockEntity.this);
                         grime.setGrime(pValue);
+                        break;
+                    }
+                    case DATA_TORQUE: {
+                        remainingTorque = pValue;
+                        break;
+                    }
+                    case DATA_ANIMUS: {
+                        remainingAnimus = pValue;
                         break;
                     }
                 }
@@ -145,6 +168,8 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("remainingTorque", this.remainingTorque);
+        nbt.putInt("remainingAnimus", this.remainingAnimus);
         super.saveAdditional(nbt);
     }
 
@@ -153,6 +178,24 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
+        remainingTorque = nbt.getInt("remainingTorque");
+        remainingAnimus = nbt.getInt("remainingAnimus");
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("remainingTorque", this.remainingTorque);
+        nbt.putInt("remainingAnimus", this.remainingAnimus);
+        return nbt;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     public static int getScaledProgress(CentrifugeBlockEntity entity) {
@@ -160,6 +203,8 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     }
 
     public void dropInventoryToWorld() {
+        //TODO: Retain internal inventory and grime
+
         //Drop items in input slots, bottle slot, and processing slot as-is
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
         for (int i = 0; i < SLOT_INPUT_COUNT + 1; i++) {
@@ -192,32 +237,51 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CentrifugeBlockEntity entity) {
-        entity.wheelAngle += 10.0f;
-        entity.cogAngle += 2.5f;
+        if(level.isClientSide()) {
+            entity.handleAnimationDrivers();
+        }
+        entity.remainingTorque = Math.max(-NO_TORQUE_GRACE_PERIOD, entity.remainingTorque - 1);
+        entity.remainingAnimus = Math.max(-NO_TORQUE_GRACE_PERIOD, entity.remainingAnimus - 1);
 
         //skip all of this if grime is full
         if(GrimeProvider.getCapability(entity).getGrime() >= Config.centrifugeMaximumGrime)
             return;
 
-        //figure out what slot and stack to target
-        Pair<Integer, ItemStack> processing = getProcessingItem(entity);
-        int processingSlot = processing.getFirst();
-        ItemStack processingItem = processing.getSecond();
+        //make sure we have enough torque (or animus) to operate
+        if(entity.remainingTorque + entity.remainingAnimus > -NO_TORQUE_GRACE_PERIOD) {
 
-        FixationSeparationRecipe recipe = getRecipeInSlot(entity, processingSlot);
-        if(processingItem != ItemStack.EMPTY && recipe != null) {
-            if(canCraftItem(entity, recipe)) {
-                if (entity.progress > Config.centrifugeOperationTime) {
-                    if (!level.isClientSide())
-                        craftItem(entity, recipe, processingSlot);
-                    if (!entity.isStalled)
-                        entity.resetProgress();
-                } else
-                    entity.incrementProgress();
-            }
+            //figure out what slot and stack to target
+            Pair<Integer, ItemStack> processing = getProcessingItem(entity);
+            int processingSlot = processing.getFirst();
+            ItemStack processingItem = processing.getSecond();
+
+            FixationSeparationRecipe recipe = getRecipeInSlot(entity, processingSlot);
+            if (processingItem != ItemStack.EMPTY && recipe != null) {
+                if (canCraftItem(entity, recipe)) {
+                    if (entity.progress > Config.centrifugeOperationTime) {
+                        if (!level.isClientSide())
+                            craftItem(entity, recipe, processingSlot);
+                        if (!entity.isStalled)
+                            entity.resetProgress();
+                    } else
+                        entity.incrementProgress();
+                }
+            } else if (processingItem == ItemStack.EMPTY)
+                entity.resetProgress();
         }
-        else if(processingItem == ItemStack.EMPTY)
-            entity.resetProgress();
+    }
+
+    private void handleAnimationDrivers() {
+        if(remainingTorque + remainingAnimus > 0) {
+            if(wheelSpeed == 0) wheelSpeed += WHEEL_ACCELERATION_RATE * 4;
+            wheelSpeed = Math.min(wheelSpeed + WHEEL_ACCELERATION_RATE, WHEEL_TOP_SPEED);
+            cogSpeed = Math.min(cogSpeed + COG_ACCELERATION_RATE, COG_TOP_SPEED);
+        } else {
+            wheelSpeed = Math.max(wheelSpeed - WHEEL_DECELERATION_RATE, 0f);
+            cogSpeed = Math.max(cogSpeed - COG_DECELERATION_RATE, 0f);
+        }
+        wheelAngle = (wheelAngle + wheelSpeed) % 360.0f;
+        cogAngle = (cogAngle + cogSpeed) % 360.0f;
     }
 
     private static Pair<Integer, ItemStack> getProcessingItem(CentrifugeBlockEntity entity) {
@@ -256,6 +320,30 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     }
 
     private static void craftItem(CentrifugeBlockEntity entity, FixationSeparationRecipe recipe, int processingSlot) {
+        int bottlesToInsert = 1;
+
+        //TODO: Uncommment the original line once the bottle slot stack size has been expanded
+        //Fill Bottle Slot
+        //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        //TODO: Remove this once the bottle slot stack size has been expanded
+        ItemStack bottles = entity.itemHandler.insertItem(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        SimpleContainer bottleSpill = new SimpleContainer(5);
+        while(bottles.getCount() > 0) {
+            int count = bottles.getCount();
+            int thisPile;
+            if(count > 64) {
+                thisPile = 64;
+                count -= 64;
+            } else {
+                thisPile = count;
+                count = 0;
+            }
+            ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
+            bottleSpill.addItem(bottlesToDrop);
+            bottles.setCount(count);
+        }
+        Containers.dropContents(entity.getLevel(), entity.getBlockPos(), bottleSpill);
+
         SimpleContainer outputSlots = new SimpleContainer(9);
         for(int i=0; i<SLOT_OUTPUT_COUNT; i++) {
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
@@ -348,5 +436,18 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     public static float getTimeScalar(int grime) {
         float grimeScalar = Math.min(Math.max(Math.min(Math.max(getGrimePercent(grime) - 0.5f, 0f), 1f) * 2f, 0f), 1f);
         return 1f + grimeScalar * 3f;
+    }
+
+    public void activateCog(){
+        if(remainingAnimus < TORQUE_GAIN_ON_COG_ACTIVATION) {
+            remainingTorque = Math.max(remainingTorque, TORQUE_GAIN_ON_COG_ACTIVATION);
+            setChanged();
+            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
+    }
+
+    public void dustCog(){
+        remainingAnimus += ANIMUS_GAIN_ON_DUSTING;
+        setChanged();
     }
 }

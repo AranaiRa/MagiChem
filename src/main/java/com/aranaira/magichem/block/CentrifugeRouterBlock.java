@@ -77,11 +77,12 @@ public class CentrifugeRouterBlock extends BaseEntityBlock {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be instanceof CentrifugeRouterBlockEntity crbe) {
             if(crbe.getRouterType() == CentrifugeRouterType.COG) {
-                //do a spin
+                crbe.getMaster().activateCog();
             } else {
                 CentrifugeBlockEntity master = crbe.getMaster();
                 return master.getBlockState().getBlock().use(master.getBlockState(), pLevel, master.getBlockPos(), pPlayer, pHand, pHit);
             }
+            pPlayer.swing(InteractionHand.MAIN_HAND);
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }

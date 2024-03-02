@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl DELUGE_PURIFIER
+map_Kd magichem:block/actuator_water
+
+newmtl GLASS
+map_Kd minecraft:block/glass
+
+newmtl INFERNO_ENGINE
+map_Kd magichem:block/actuator_fire

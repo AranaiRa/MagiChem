@@ -1,6 +1,6 @@
 package com.aranaira.magichem;
 
-import com.aranaira.magichem.block.entity.renderer.CentrifugeBlockEntityRenderer;
+import com.aranaira.magichem.block.entity.renderer.*;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.registry.*;
@@ -123,6 +123,10 @@ public class MagiChemMod
             event.register(MateriaVesselItemRenderer.RENDERER_JAR);
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_COG);
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_WHEEL);
+            event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_LEFT);
+            event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_RIGHT);
+            event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_CENTER);
+            event.register(ActuatorWaterBlockEntityRenderer.RENDERER_MODEL_STEAM_VENTS);
         }
     }
 }

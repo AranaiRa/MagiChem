@@ -1,0 +1,102 @@
+package com.aranaira.magichem.block;
+
+import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.util.MathHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
+
+public class BaseActuatorRouterBlock extends BaseEntityBlock {
+    public BaseActuatorRouterBlock(Properties pProperties) {
+        super(pProperties);
+    }
+
+    public static VoxelShape
+            VOXEL_SHAPE_WATER_PIPES_NORTH, VOXEL_SHAPE_WATER_TUBE_BODY_NORTH, VOXEL_SHAPE_WATER_TUBE_CAP_NORTH,
+
+            VOXEL_SHAPE_WATER_AGGREGATE_NORTH, VOXEL_SHAPE_WATER_AGGREGATE_EAST, VOXEL_SHAPE_WATER_AGGREGATE_SOUTH, VOXEL_SHAPE_WATER_AGGREGATE_WEST;
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new BaseActuatorRouterBlockEntity(pPos, pState);
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof BaseActuatorRouterBlockEntity barbe) {
+            BlockEntity master = barbe.getMaster();
+            pPlayer.swing(InteractionHand.MAIN_HAND);
+            return master.getBlockState().getBlock().use(master.getBlockState(), pLevel, master.getBlockPos(), pPlayer, pHand, pHit);
+        }
+        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be != null) {
+            Direction facing = ((BaseActuatorRouterBlockEntity)be).getFacing();
+
+            if(be instanceof ActuatorWaterRouterBlockEntity) {
+                if (facing == Direction.NORTH) return VOXEL_SHAPE_WATER_AGGREGATE_NORTH;
+                if (facing == Direction.EAST) return VOXEL_SHAPE_WATER_AGGREGATE_EAST;
+                if (facing == Direction.SOUTH) return VOXEL_SHAPE_WATER_AGGREGATE_SOUTH;
+                if (facing == Direction.WEST) return VOXEL_SHAPE_WATER_AGGREGATE_WEST;
+            }
+        }
+        return super.getShape(pState, pLevel, pPos, pContext);
+    }
+
+    static {
+        VOXEL_SHAPE_WATER_TUBE_BODY_NORTH = Block.box(5, 0,  8, 11, 12, 14);
+        VOXEL_SHAPE_WATER_TUBE_CAP_NORTH = Block.box(4, 12,  7, 12, 15, 15);
+        VOXEL_SHAPE_WATER_PIPES_NORTH = Block.box(5.5, 0,  5, 10.5, 11, 8);
+
+        VOXEL_SHAPE_WATER_AGGREGATE_NORTH = Shapes.or(
+                VOXEL_SHAPE_WATER_TUBE_BODY_NORTH,
+                VOXEL_SHAPE_WATER_TUBE_CAP_NORTH,
+                VOXEL_SHAPE_WATER_PIPES_NORTH);
+
+        VOXEL_SHAPE_WATER_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_TUBE_BODY_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_TUBE_CAP_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_PIPES_NORTH, 1));
+
+        VOXEL_SHAPE_WATER_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_TUBE_BODY_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_TUBE_CAP_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_PIPES_NORTH, 2));
+
+        VOXEL_SHAPE_WATER_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_TUBE_BODY_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_TUBE_CAP_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_PIPES_NORTH, 3));
+    }
+}

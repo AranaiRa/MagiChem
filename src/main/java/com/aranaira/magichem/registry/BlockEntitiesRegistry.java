@@ -2,7 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.*;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -44,6 +44,22 @@ public class BlockEntitiesRegistry {
 
     public static final RegistryObject<BlockEntityType<MateriaVesselBlockEntity>> MATERIA_VESSEL_BE = BLOCK_ENTITIES.register("materia_vessel", () ->
             BlockEntityType.Builder.of(MateriaVesselBlockEntity::new, BlockRegistry.MATERIA_VESSEL.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<ActuatorFireBlockEntity>> ACTUATOR_FIRE_BE = BLOCK_ENTITIES.register("actuator_fire", () ->
+            BlockEntityType.Builder.of(ActuatorFireBlockEntity::new, BlockRegistry.ACTUATOR_FIRE.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<ActuatorWaterBlockEntity>> ACTUATOR_WATER_BE = BLOCK_ENTITIES.register("actuator_water", () ->
+            BlockEntityType.Builder.of(ActuatorWaterBlockEntity::new, BlockRegistry.ACTUATOR_WATER.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<BaseActuatorRouterBlockEntity>> BASE_ACTUATOR_ROUTER_BE = BLOCK_ENTITIES.register("actuator_router", () ->
+            BlockEntityType.Builder.of(BaseActuatorRouterBlockEntity::new, BlockRegistry.BASE_ACTUATOR_ROUTER.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<ActuatorWaterRouterBlockEntity>> ACTUATOR_WATER_ROUTER_BE = BLOCK_ENTITIES.register("actuator_water_router", () ->
+            BlockEntityType.Builder.of(ActuatorWaterRouterBlockEntity::new, BlockRegistry.ACTUATOR_WATER_ROUTER.get()).build(null)
     );
 
     public static void register(IEventBus eventBus) {

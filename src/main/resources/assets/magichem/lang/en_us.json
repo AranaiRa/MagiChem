@@ -30,6 +30,18 @@
   "block.magichem.circle_power": "Circle of Power",
   "block.magichem.materia_vessel": "Materia Vessel",
   "block.magichem.power_spike": "Power Spike",
+  "block.magichem.actuator_air": "Gale Pressurizer",
+  "block.magichem.actuator_air_router": "Gale Pressurizer",
+  "block.magichem.actuator_arcane": "Occult Matrix",
+  "block.magichem.actuator_arcane_router": "Occult Matrix",
+  "block.magichem.actuator_earth": "Quake Refinery",
+  "block.magichem.actuator_earth_router": "Quake Refinery",
+  "block.magichem.actuator_ender": "Labyrinthine Navigator",
+  "block.magichem.actuator_ender_router": "Labyrinthine Navigator",
+  "block.magichem.actuator_fire": "Inferno Engine",
+  "block.magichem.actuator_fire_router": "Inferno Engine",
+  "block.magichem.actuator_water": "Deluge Purifier",
+  "block.magichem.actuator_water_router": "Deluge Purifier",
 
   "academic_slurry_fluid_type": "Academic Slurry",
 

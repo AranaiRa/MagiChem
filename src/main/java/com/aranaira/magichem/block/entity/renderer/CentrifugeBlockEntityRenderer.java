@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 public class CentrifugeBlockEntityRenderer implements BlockEntityRenderer<CentrifugeBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_COG = new ResourceLocation(MagiChemMod.MODID, "obj/special/centrifuge_cog");
     public static final ResourceLocation RENDERER_MODEL_WHEEL = new ResourceLocation(MagiChemMod.MODID, "obj/special/centrifuge_wheel");
-    private BakedModel bakedModel;
 
     public CentrifugeBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
@@ -28,35 +27,31 @@ public class CentrifugeBlockEntityRenderer implements BlockEntityRenderer<Centri
 
     @Override
     public void render(CentrifugeBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        this.renderWheel(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        this.renderWheel(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         this.renderCog(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
     }
 
-    private void renderWheel(CentrifugeBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    private void renderWheel(CentrifugeBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
         pPoseStack.pushPose();
-        switch((Direction)state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-            case NORTH: {
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle));
-                break;
+        switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            case NORTH -> {
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle + pPartialTick * (pBlockEntity.wheelSpeed)));
             }
-            case EAST: {
+            case EAST -> {
                 pPoseStack.translate(1.0f, 0.0f, 0.0f);
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle));
-                break;
             }
-            case SOUTH: {
+            case SOUTH -> {
                 pPoseStack.translate(1.0f, 0.0f, 1.0f);
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle));
-                break;
             }
-            case WEST: {
+            case WEST -> {
                 pPoseStack.translate(0.0f, 0.0f, 1.0f);
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle));
-                break;
             }
         }
 
