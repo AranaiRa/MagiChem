@@ -30,6 +30,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<AdmixerMenu>> ADMIXER_MENU =
             registerMenuType(AdmixerMenu::new, "admixer");
 
+    public static final RegistryObject<MenuType<ActuatorWaterMenu>> ACTUATOR_WATER_MENU =
+            registerMenuType(ActuatorWaterMenu::new, "actuator_water");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

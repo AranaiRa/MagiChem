@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +25,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class CentrifugeRouterBlock extends BaseEntityBlock {
+public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativeTab {
     public CentrifugeRouterBlock(Properties pProperties) {
         super(pProperties);
     }

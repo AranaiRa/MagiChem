@@ -8,6 +8,7 @@ import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class ActuatorWaterBlock extends BaseEntityBlock {
@@ -123,14 +125,14 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        /*if(!level.isClientSide()) {
+        if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof ActuatorFireBlockEntity afbe) {
-                NetworkHooks.openScreen((ServerPlayer)player, (ActuatorFireBlockEntity)entity, pos);
+            if(entity instanceof ActuatorWaterBlockEntity awbe) {
+                NetworkHooks.openScreen((ServerPlayer)player, (ActuatorWaterBlockEntity)entity, pos);
             } else {
-                throw new IllegalStateException("ActuatorFireBlockEntity container provider is missing!");
+                throw new IllegalStateException("ActuatorWaterBlockEntity container provider is missing!");
             }
-        }*/
+        }
 
         return InteractionResult.sidedSuccess(level.isClientSide());
     }

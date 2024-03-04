@@ -116,6 +116,7 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
             MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
             MenuScreens.register(MenuRegistry.ADMIXER_MENU.get(), AdmixerScreen::new);
+            MenuScreens.register(MenuRegistry.ACTUATOR_WATER_MENU.get(), ActuatorWaterScreen::new);
         }
 
         @SubscribeEvent

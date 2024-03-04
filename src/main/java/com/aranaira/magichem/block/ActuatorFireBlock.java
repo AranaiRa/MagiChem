@@ -76,12 +76,8 @@ public class ActuatorFireBlock extends BaseEntityBlock {
 
     @Override
     public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
-        /*Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        pLevel.destroyBlock(pPos.offset(0, 1, 0), true);
 
-        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
-            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
-        }
-        */
         super.destroy(pLevel, pPos, pState);
     }
 

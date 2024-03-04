@@ -2,13 +2,14 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.routers.ActuatorFireRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity;
+import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class ActuatorFireRouterBlock extends BaseActuatorRouterBlock {
+public class ActuatorFireRouterBlock extends BaseActuatorRouterBlock implements INoCreativeTab {
 
     public ActuatorFireRouterBlock(Properties pProperties) {
         super(pProperties);

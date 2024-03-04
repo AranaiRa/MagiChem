@@ -298,6 +298,16 @@
   "tooltip.magichem.gui.grime.line2.2": ", the device's Efficiency drops and its Operation Time increases.",
   "tooltip.magichem.gui.grime.line3": "Current Grime: ",
 
+  "tooltip.magichem.gui.eldrin.air": "Eldrin Power (Air)",
+  "tooltip.magichem.gui.eldrin.arcane": "Eldrin Power (Arcane)",
+  "tooltip.magichem.gui.eldrin.earth": "Eldrin Power (Earth)",
+  "tooltip.magichem.gui.eldrin.ender": "Eldrin Power (Ender)",
+  "tooltip.magichem.gui.eldrin.fire": "Eldrin Power (Fire)",
+  "tooltip.magichem.gui.eldrin.water": "Eldrin Power (Water)",
+
+  "tooltip.magichem.gui.actuator.efficiency": "How much the connected device's Efficiency is increased by when the Deluge Purifier is active.",
+  "tooltip.magichem.gui.actuator.eldrin": "How much appropriate Eldrin power is consumed during each processing cycle.",
+
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
   "log.magichem.powerspike.bind": "Power Spike bound to this Circle of Power.",
 
