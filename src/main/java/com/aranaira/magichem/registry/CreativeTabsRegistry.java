@@ -1,8 +1,10 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +20,10 @@ public class CreativeTabsRegistry {
             .title(Component.translatable("tab.magichem"))
             .displayItems((parameters, output) -> {
                 ItemRegistry.ITEMS.getEntries().stream().forEach((item) -> {
-                    if(!ItemRegistry.ITEMS_EXCLUDED_FROM_TABS.contains(item))
+                    if(item.get() instanceof BlockItem bi) {
+                        boolean skip = bi.getBlock() instanceof INoCreativeTab;
+                        if(!skip) output.accept(item.get());
+                    } else if(!ItemRegistry.ITEMS_EXCLUDED_FROM_TABS.contains(item))
                         output.accept(item.get());
                 });
             })
