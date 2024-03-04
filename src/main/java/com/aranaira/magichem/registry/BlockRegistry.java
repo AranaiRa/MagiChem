@@ -73,6 +73,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion())
     );
 
+    public static final RegistryObject<Block> ACTUATOR_FIRE_ROUTER = registerBlock("actuator_fire_router",
+            () -> new ActuatorFireRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
     public static final RegistryObject<Block> ACTUATOR_WATER_ROUTER = registerBlock("actuator_water_router",
             () -> new ActuatorWaterRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())

@@ -58,6 +58,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(BaseActuatorRouterBlockEntity::new, BlockRegistry.BASE_ACTUATOR_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<ActuatorFireRouterBlockEntity>> ACTUATOR_FIRE_ROUTER_BE = BLOCK_ENTITIES.register("actuator_fire_router", () ->
+            BlockEntityType.Builder.of(ActuatorFireRouterBlockEntity::new, BlockRegistry.ACTUATOR_FIRE_ROUTER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<ActuatorWaterRouterBlockEntity>> ACTUATOR_WATER_ROUTER_BE = BLOCK_ENTITIES.register("actuator_water_router", () ->
             BlockEntityType.Builder.of(ActuatorWaterRouterBlockEntity::new, BlockRegistry.ACTUATOR_WATER_ROUTER.get()).build(null)
     );

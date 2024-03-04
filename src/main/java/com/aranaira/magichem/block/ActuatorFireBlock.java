@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
@@ -65,13 +66,12 @@ public class ActuatorFireBlock extends BaseEntityBlock {
     @Override
     public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
-        /*BlockState state = BlockRegistry.CENTRIFUGE_ROUTER.get().defaultBlockState();
+        BlockState state = BlockRegistry.ACTUATOR_FIRE_ROUTER.get().defaultBlockState();
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
-            BlockPos targetPos = pPos.offset(posAndType.getFirst());
-            pLevel.setBlock(targetPos, state, 3);
-            ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
-        }*/
+
+        BlockPos targetPos = pPos.offset(0,1,0);
+        pLevel.setBlock(targetPos, state, 3);
+        ((BaseActuatorRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, facing);
     }
 
     @Override
@@ -182,8 +182,8 @@ public class ActuatorFireBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntitiesRegistry.CENTRIFUGE_BE.get(),
-                CentrifugeBlockEntity::tick);
+        return createTickerHelper(type, BlockEntitiesRegistry.ACTUATOR_FIRE_BE.get(),
+                ActuatorFireBlockEntity::tick);
     }
 
     static {
