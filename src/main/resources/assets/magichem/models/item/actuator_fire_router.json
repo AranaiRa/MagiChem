@@ -8,7 +8,7 @@
 			"shade_quads": true,
 			"flip_v": true,
 			"emissive_ambient": false,
-			"model": "magichem:models/obj/actuator_water_inventory.obj"
+			"model": "magichem:models/obj/actuator_fire_inventory.obj"
 		}
 	},
 	"display": {

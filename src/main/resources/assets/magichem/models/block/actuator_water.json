@@ -13,12 +13,5 @@
       "emissive_ambient": false,
       "model": "magichem:models/obj/actuator_water_body.obj"
     }
-  },
-  "display": {
-    "gui": {
-      "rotation": [29, 315, 0],
-      "scale": [0.3, 0.3, 0.3],
-      "translation": [0, -1.5, 0]
-    }
   }
 }

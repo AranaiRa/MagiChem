@@ -10,5 +10,12 @@
 			"emissive_ambient": false,
 			"model": "magichem:models/obj/centrifuge_inventory.obj"
 		}
+	},
+	"display": {
+		"gui": {
+			"rotation": [29, 315, 0],
+			"scale": [0.45, 0.45, 0.45],
+			"translation": [1, -3, 0]
+		}
 	}
 }
