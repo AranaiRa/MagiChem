@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import com.aranaira.magichem.gui.ActuatorWaterMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
@@ -25,7 +26,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvider {
+public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvider, IBlockWithPowerLevel {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
@@ -115,6 +116,11 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
 
     public void decreasePowerLevel() {
         this.powerLevel = Math.max(1, this.powerLevel - 1);
+    }
+
+    @Override
+    public void setPowerLevel(int pPowerLevel) {
+        this.powerLevel = pPowerLevel;
     }
 
     @Override

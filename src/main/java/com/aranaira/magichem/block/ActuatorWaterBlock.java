@@ -143,13 +143,6 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
         return new ActuatorWaterBlockEntity(pos, state);
     }
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntitiesRegistry.ACTUATOR_WATER_BE.get(),
-                ActuatorWaterBlockEntity::tick);
-    }
-
     static {
         VOXEL_SHAPE_AGGREGATE_NORTH = Shapes.or(
                 VOXEL_SHAPE_NORTH_WIDE, VOXEL_SHAPE_NORTH_LONG,
