@@ -128,6 +128,16 @@ public class Config
             .comment("How much of one type of Admixture can be stored inside of a Materia Vessel.")
             .defineInRange("materiaVesselAdmixtureCapacity", 1800, 64, Integer.MAX_VALUE);
 
+    //----------------DELUGE PURIFIER
+
+    private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_OPERATION_TIME = BUILDER
+            .comment("The amount of time, in ticks, a Deluge Purifier goes between drawing more Eldrin power.")
+            .defineInRange("delugePurifierOperationTime", 21, 1, 200);
+
+    private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_TANK_CAPACITY = BUILDER
+            .comment("The amount of Water and Steam, in mB, the Deluge Purifier's internal tanks can hold.")
+            .defineInRange("delugePurifierTankCapacity", 2000, 500, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -152,7 +162,9 @@ public class Config
         circlePowerBuffer,
         distilleryEfficiency,
         materiaVesselEssentiaCapacity,
-        materiaVesselAdmixtureCapacity;
+        materiaVesselAdmixtureCapacity,
+        delugePurifierOperationTime,
+        delugePurifierTankCapacity;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -182,10 +194,7 @@ public class Config
         distilleryEfficiency = DISTILLERY_EFFICIENCY.get();
         materiaVesselEssentiaCapacity = MATERIA_VESSEL_ESSENTIA_CAPACITY.get();
         materiaVesselAdmixtureCapacity = MATERIA_VESSEL_ADMIXTURE_CAPACITY.get();
-
-        // convert the list of strings into a set of items
-        /*items = ITEM_STRINGS.get().stream()
-                .map(itemName -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName)))
-                .collect(Collectors.toSet());*/
+        delugePurifierOperationTime = DELUGE_PURIFIER_OPERATION_TIME.get();
+        delugePurifierTankCapacity = DELUGE_PURIFIER_TANK_CAPACITY.get();
     }
 }

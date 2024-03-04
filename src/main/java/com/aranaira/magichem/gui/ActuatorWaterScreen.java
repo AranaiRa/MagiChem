@@ -28,6 +28,9 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
             SYMBOL_X = 57, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
             POWER_X = 43, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
+            TOOLTIP_POWER_X = 41, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
+            TOOLTIP_WATER_X = 76, TOOLTIP_WATER_Y = 14, TOOLTIP_WATER_W = 10, TOOLTIP_WATER_H = 35,
+            TOOLTIP_STEAM_X = 88, TOOLTIP_STEAM_Y = 14, TOOLTIP_STEAM_W = 6, TOOLTIP_STEAM_H = 35,
             TOOLTIP_EFFICIENCY_X = 98, TOOLTIP_EFFICIENCY_Y = 17, TOOLTIP_EFFICIENCY_W = 38, TOOLTIP_EFFICIENCY_H = 11,
             TOOLTIP_ELDRIN_X = 98, TOOLTIP_ELDRIN_Y = 36, TOOLTIP_ELDRIN_W = 38, TOOLTIP_ELDRIN_H = 11;
     private ImageButton
@@ -93,6 +96,67 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
+        //Power Level
+        if(mouseX >= x+TOOLTIP_POWER_X && mouseX <= x+TOOLTIP_POWER_X+TOOLTIP_POWER_W &&
+                mouseY >= y+TOOLTIP_POWER_Y && mouseY <= y+TOOLTIP_POWER_Y+TOOLTIP_POWER_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.powerlevel").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.powerlevel.line1")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Water Tank
+        if(mouseX >= x+TOOLTIP_WATER_X && mouseX <= x+TOOLTIP_WATER_X+TOOLTIP_WATER_W &&
+                mouseY >= y+TOOLTIP_WATER_Y && mouseY <= y+TOOLTIP_WATER_Y+TOOLTIP_WATER_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line2")));
+            tooltipContents.add(Component.empty());
+            int fakeFluidLevel = 0;
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    //TODO: replace with actual tank contents
+                    .append(Component.literal(fakeFluidLevel + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                    .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(String.format("%.1f", (float)fakeFluidLevel / Config.delugePurifierTankCapacity)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Steam Tank
+        if(mouseX >= x+TOOLTIP_STEAM_X && mouseX <= x+TOOLTIP_STEAM_X+TOOLTIP_STEAM_W &&
+                mouseY >= y+TOOLTIP_STEAM_Y && mouseY <= y+TOOLTIP_STEAM_Y+TOOLTIP_STEAM_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line2")));
+            tooltipContents.add(Component.empty());
+            int fakeFluidLevel = 0;
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    //TODO: replace with actual tank contents
+                    .append(Component.literal(fakeFluidLevel + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", 0f / Config.delugePurifierTankCapacity)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
         //Efficiency
         if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
                 mouseY >= y+TOOLTIP_EFFICIENCY_Y && mouseY <= y+TOOLTIP_EFFICIENCY_Y+TOOLTIP_EFFICIENCY_H) {
@@ -129,6 +193,6 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
     }
 
     private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / ActuatorWaterBlockEntity.ELDRIN_ACTIVITY_TIME;
+        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.delugePurifierOperationTime;
     }
 }

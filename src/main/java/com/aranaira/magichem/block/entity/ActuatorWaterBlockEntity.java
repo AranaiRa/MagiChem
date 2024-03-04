@@ -34,7 +34,7 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
             STEAM_PER_PROCESS = {0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
             EFFICIENCY_INCREASE = {0, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40};
     public static final int
-            ELDRIN_ACTIVITY_TIME = 21, TANK_WATER = 0, TANK_STEAM = 1,
+            TANK_ID_WATER = 0, TANK_ID_STEAM = 1,
             DATA_COUNT = 2, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1;
     private int
             powerLevel = 1,

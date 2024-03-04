@@ -120,7 +120,6 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(" ")
                     .append(Component.literal(String.format("%.1f", CentrifugeBlockEntity.getGrimePercent(menu.getGrime())*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }

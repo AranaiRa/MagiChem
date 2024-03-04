@@ -307,6 +307,16 @@
 
   "tooltip.magichem.gui.actuator.efficiency": "How much the connected device's Efficiency is increased by when the Deluge Purifier is active.",
   "tooltip.magichem.gui.actuator.eldrin": "How much appropriate Eldrin power is consumed during each processing cycle.",
+  "tooltip.magichem.gui.actuator.powerlevel": "Power Level",
+  "tooltip.magichem.gui.actuator.water.powerlevel.line1": "Increasing this value will boost the Deluge Purifier's effectiveness, but also increase the amount of water and Water Eldrin Power consumed each operation cycle.",
+  "tooltip.magichem.gui.actuator.water.tank1": "Reservoir (Water)",
+  "tooltip.magichem.gui.actuator.water.tank1.line1": "How much water is currently stored inside of the Deluge Purifier.",
+  "tooltip.magichem.gui.actuator.water.tank1.line2": "of water is used every operation cycle.",
+  "tooltip.magichem.gui.actuator.water.tank1.line3": "Current Water: ",
+  "tooltip.magichem.gui.actuator.water.tank2": "Reservoir (Steam)",
+  "tooltip.magichem.gui.actuator.water.tank2.line1": "How much steam is currently stored inside of the Deluge Purifier.",
+  "tooltip.magichem.gui.actuator.water.tank2.line2": "of steam is created every time the linked device completes an operation. Excess steam is vented out of the device.",
+  "tooltip.magichem.gui.actuator.water.tank2.line3": "Current Steam: ",
 
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
   "log.magichem.powerspike.bind": "Power Spike bound to this Circle of Power.",
