@@ -51,16 +51,6 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
         return resultAdmixture;
     }
 
-    /**
-     * Unused by this recipe type, use getComponentMateria() instead
-     * @return always null
-     */
-    @Deprecated
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-        return null;
-    }
-
     @Override
     public boolean isSpecial() {
         return true;
@@ -81,7 +71,7 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
