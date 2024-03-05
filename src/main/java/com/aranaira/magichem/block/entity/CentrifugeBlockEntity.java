@@ -1,9 +1,15 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.ActuatorWaterBlock;
+import com.aranaira.magichem.block.BaseActuatorRouterBlock;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -28,6 +34,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -37,7 +44,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements MenuProvider, ICanTakePlugins {
     public static final int
         SLOT_COUNT = 14,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 13,
@@ -50,6 +60,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         WHEEL_ACCELERATION_RATE = 0.375f, WHEEL_DECELERATION_RATE = 0.625f, WHEEL_TOP_SPEED = 20.0f,
         COG_ACCELERATION_RATE = 0.5f, COG_DECELERATION_RATE = 0.375f, COG_TOP_SPEED = 10.0f;
 
+    private List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     public int
             remainingTorque = 0, remainingAnimus;
     public float
@@ -269,6 +280,23 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             } else if (processingItem == ItemStack.EMPTY)
                 entity.resetProgress();
         }
+
+        //deferred plugin linkage
+        if(!level.isClientSide()) {
+            if (entity.pluginLinkageCountdown == 0) {
+                entity.pluginLinkageCountdown = -1;
+                entity.linkPlugins();
+            } else if (entity.pluginLinkageCountdown > 0) {
+                entity.pluginLinkageCountdown--;
+            }
+        }
+
+        //tick actuators
+        for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
+            if(dpbe instanceof ActuatorWaterBlockEntity water) {
+                ActuatorWaterBlockEntity.tick(level, pos, state, water);
+            }
+        }
     }
 
     private void handleAnimationDrivers() {
@@ -449,5 +477,29 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     public void dustCog(){
         remainingAnimus += ANIMUS_GAIN_ON_DUSTING;
         setChanged();
+    }
+
+    @Override
+    public void linkPlugins() {
+        pluginDevices.clear();
+
+        List<BlockEntity> query = new ArrayList<>();
+        query.add(level.getBlockEntity(getBlockPos().north()));
+        query.add(level.getBlockEntity(getBlockPos().east()));
+        query.add(level.getBlockEntity(getBlockPos().south()));
+        query.add(level.getBlockEntity(getBlockPos().west()));
+
+        for(BlockEntity be : query) {
+            if (be instanceof CentrifugeRouterBlockEntity crbe) {
+                BlockEntity pe = crbe.getPlugEntity();
+                if (be != null) if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            }
+        }
+    }
+
+    int pluginLinkageCountdown = 0;
+    @Override
+    public void linkPluginsDeferred() {
+        pluginLinkageCountdown = 3;
     }
 }

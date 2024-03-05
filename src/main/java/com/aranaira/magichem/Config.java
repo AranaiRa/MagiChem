@@ -132,7 +132,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_OPERATION_TIME = BUILDER
             .comment("The amount of time, in ticks, a Deluge Purifier goes between drawing more Eldrin power.")
-            .defineInRange("delugePurifierOperationTime", 21, 1, 200);
+            .defineInRange("delugePurifierOperationTime", 25, 1, 200);
 
     private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_TANK_CAPACITY = BUILDER
             .comment("The amount of Water and Steam, in mB, the Deluge Purifier's internal tanks can hold.")

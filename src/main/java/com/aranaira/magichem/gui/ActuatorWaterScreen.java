@@ -186,7 +186,10 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         Font font = Minecraft.getInstance().font;
 
         //Efficiency increase
-        gui.drawString(font, Component.literal("+"+ActuatorWaterBlockEntity.getEfficiencyIncrease(menu.getPowerLevel())+"%"), 112, 23, 0xff000000, false);
+        if((menu.getFlags() & ActuatorWaterBlockEntity.FLAG_IS_SATISFIED) == ActuatorWaterBlockEntity.FLAG_IS_SATISFIED)
+            gui.drawString(font, Component.literal("+"+ActuatorWaterBlockEntity.getEfficiencyIncrease(menu.getPowerLevel())+"%"), 112, 23, 0xff000000, false);
+        else
+            gui.drawString(font, Component.literal("   0%"), 112, 23, 0xffaa0000, false);
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 112, 42, 0xff000000, false);

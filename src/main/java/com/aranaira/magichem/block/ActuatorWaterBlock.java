@@ -3,6 +3,7 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -11,11 +12,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -55,6 +59,15 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
     }
 
     @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+        if(pPlacer instanceof Player player) {
+            ActuatorWaterBlockEntity awbe = (ActuatorWaterBlockEntity) pLevel.getBlockEntity(pPos);
+            awbe.setOwner(player);
+        }
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+    }
+
+    @Override
     public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
         BlockState state = BlockRegistry.ACTUATOR_WATER_ROUTER.get().defaultBlockState();
@@ -63,6 +76,11 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
         BlockPos targetPos = pPos.offset(0,1,0);
         pLevel.setBlock(targetPos, state, 3);
         ((BaseActuatorRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, facing);
+
+        ActuatorWaterBlockEntity awbe = (ActuatorWaterBlockEntity) pLevel.getBlockEntity(pPos);
+        ICanTakePlugins ictp = awbe.getTargetMachine();
+        if(ictp != null)
+            ictp.linkPluginsDeferred();
     }
 
     @Override
@@ -114,12 +132,11 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        /*if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof CentrifugeBlockEntity) {
-                ((CentrifugeBlockEntity) blockEntity).dropInventoryToWorld();
-            }
-        }*/
+        ActuatorWaterBlockEntity awbe = (ActuatorWaterBlockEntity) level.getBlockEntity(pos);
+        ICanTakePlugins ictp = awbe.getTargetMachine();
+        if(ictp != null)
+            ictp.linkPlugins();
+
         super.onRemove(state, level, pos, newState, isMoving);
     }
 

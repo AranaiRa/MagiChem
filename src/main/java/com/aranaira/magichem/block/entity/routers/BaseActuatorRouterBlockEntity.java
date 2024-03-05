@@ -24,6 +24,7 @@ public class BaseActuatorRouterBlockEntity extends BlockEntity implements MenuPr
     private BlockPos masterPos;
     private BlockEntity master;
     private Direction facing;
+    protected Player owner;
 
     public BaseActuatorRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.BASE_ACTUATOR_ROUTER_BE.get(), pPos, pBlockState);

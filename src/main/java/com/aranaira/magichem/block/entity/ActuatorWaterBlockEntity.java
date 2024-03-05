@@ -1,8 +1,13 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.Config;
+import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
+import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.ActuatorWaterMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.mna.api.affinity.Affinity;
+import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -26,7 +30,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvider, IBlockWithPowerLevel {
+public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
@@ -35,10 +39,15 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
             EFFICIENCY_INCREASE = {0, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40};
     public static final int
             TANK_ID_WATER = 0, TANK_ID_STEAM = 1,
-            DATA_COUNT = 2, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1;
+            DATA_COUNT = 3, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2;
+    public static final int
+            FLAG_IS_SATISFIED = 1;
     private int
             powerLevel = 1,
-            remainingEldrinTime;
+            remainingEldrinTime,
+            flags;
+    private float
+            remainingEldrinForSatisfaction;
     protected ContainerData data;
     private LazyOptional<IFluidHandler> fluidHandler;
 
@@ -55,6 +64,7 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
                 return switch(pIndex) {
                     case DATA_REMAINING_ELDRIN_TIME -> ActuatorWaterBlockEntity.this.remainingEldrinTime;
                     case DATA_POWER_LEVEL -> ActuatorWaterBlockEntity.this.powerLevel;
+                    case DATA_FLAGS -> ActuatorWaterBlockEntity.this.flags;
                     default -> -1;
                 };
             }
@@ -64,6 +74,7 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
                 switch (pIndex) {
                     case DATA_REMAINING_ELDRIN_TIME -> ActuatorWaterBlockEntity.this.remainingEldrinTime = pValue;
                     case DATA_POWER_LEVEL -> ActuatorWaterBlockEntity.this.powerLevel = pValue;
+                    case DATA_FLAGS -> ActuatorWaterBlockEntity.this.flags = pValue;
                 }
             }
 
@@ -127,6 +138,8 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
+        if(ownerUUID != null)
+            nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
     }
 
@@ -135,6 +148,8 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
         super.load(nbt);
         remainingEldrinTime = nbt.getInt("remainingEldrinTime");
         powerLevel = nbt.getInt("powerLevel");
+        if(nbt.contains("owner"))
+            ownerUUID = nbt.getUUID("owner");
     }
 
     @Override
@@ -142,6 +157,8 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
+        if(ownerUUID != null)
+            nbt.putUUID("owner", ownerUUID);
         return nbt;
     }
 
@@ -151,8 +168,36 @@ public class ActuatorWaterBlockEntity extends BlockEntity implements MenuProvide
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, ActuatorWaterBlockEntity entity) {
+    @Override
+    public void processCompletedOperation() {
+        //TODO: Generate steam
+    }
 
+    public static boolean getIsSatisfied(ActuatorWaterBlockEntity entity) {
+        return entity.remainingEldrinTime > 0;
+    }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, ActuatorWaterBlockEntity entity) {
+        Player ownerCheck = entity.getOwner();
+        int powerDraw = entity.getEldrinPowerUsage();
+
+        if(ownerCheck != null) {
+            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.WATER, Math.min(powerDraw, entity.remainingEldrinForSatisfaction), 1);
+            entity.remainingEldrinForSatisfaction -= consumption;
+
+            if(entity.remainingEldrinTime <= 0) {
+                if(entity.remainingEldrinForSatisfaction <= 0) {
+                    entity.remainingEldrinForSatisfaction = powerDraw;
+                    entity.remainingEldrinTime = Config.delugePurifierOperationTime;
+                }
+            } else {
+                entity.remainingEldrinTime--;
+            }
+
+            if(entity.remainingEldrinTime > 0) entity.flags = entity.flags | ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
+            else if(entity.remainingEldrinForSatisfaction == 0) entity.flags = entity.flags | ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
+            else entity.flags = entity.flags & ~ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
+        }
     }
 
     @Override

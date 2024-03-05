@@ -69,6 +69,10 @@ public class ActuatorWaterMenu extends AbstractContainerMenu {
         return data.get(ActuatorWaterBlockEntity.DATA_POWER_LEVEL);
     }
 
+    public int getFlags() {
+        return data.get(ActuatorWaterBlockEntity.DATA_FLAGS);
+    }
+
     public void incrementPowerLevel() {
         int previous = getPowerLevel();
         int current = Math.min(13, getPowerLevel() + 1);

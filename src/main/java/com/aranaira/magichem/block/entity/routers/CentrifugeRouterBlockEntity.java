@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
@@ -27,7 +28,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab {
+public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private CentrifugeRouterType routerType = CentrifugeRouterType.NONE;
@@ -51,12 +52,33 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
         return this.plugDirection;
     }
 
+    public BlockEntity getPlugEntity() {
+        BlockPos target = getBlockPos();
+
+        if(getPlugDirection() == DevicePlugDirection.NORTH) target = target.north();
+        else if(getPlugDirection() == DevicePlugDirection.EAST) target = target.east();
+        else if(getPlugDirection() == DevicePlugDirection.SOUTH) target = target.south();
+        else if(getPlugDirection() == DevicePlugDirection.WEST) target = target.west();
+
+        return getLevel().getBlockEntity(target);
+    }
+
     public void configure(BlockPos pMasterPos, CentrifugeRouterType pRouterType, Direction pFacing, DevicePlugDirection pPlugDirection) {
         this.masterPos = pMasterPos;
         this.routerType = pRouterType;
         this.facing = pFacing;
         this.plugDirection = pPlugDirection;
         getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+    }
+
+    @Override
+    public void linkPlugins() {
+        getMaster().linkPlugins();
+    }
+
+    @Override
+    public void linkPluginsDeferred() {
+        getMaster().linkPluginsDeferred();
     }
 
     public CentrifugeBlockEntity getMaster(){
