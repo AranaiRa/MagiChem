@@ -170,4 +170,8 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     public int getGrime() {
         return data.get(CentrifugeBlockEntity.DATA_GRIME);
     }
+
+    public int getEfficiencyMod() {
+        return data.get(CentrifugeBlockEntity.DATA_EFFICIENCY_MOD);
+    }
 }

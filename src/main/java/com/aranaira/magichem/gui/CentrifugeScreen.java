@@ -129,7 +129,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
     protected void renderLabels(GuiGraphics gui, int mouseX, int mouseY) {
         Font font = Minecraft.getInstance().font;
 
-        gui.drawString(font, Component.literal(CentrifugeBlockEntity.getActualEfficiency(menu.getGrime())+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 2, 0xff000000, false);
+        gui.drawString(font, Component.literal(CentrifugeBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime())+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 2, 0xff000000, false);
 
         int secWhole = CentrifugeBlockEntity.getOperationTicks(menu.getGrime()) / 20;
         int secPartial = (CentrifugeBlockEntity.getOperationTicks(menu.getGrime()) % 20) * 5;

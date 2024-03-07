@@ -66,6 +66,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         this.containedWater = FluidStack.EMPTY;
         this.containedSteam = FluidStack.EMPTY;
         this.fluidHandler = LazyOptional.of(() -> this);
+        this.flags = FLAG_IS_SATISFIED;
     }
 
     public ActuatorWaterBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -114,6 +115,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         this.containedWater = FluidStack.EMPTY;
         this.containedSteam = FluidStack.EMPTY;
         this.fluidHandler = LazyOptional.of(() -> this);
+        this.flags = FLAG_IS_SATISFIED;
     }
 
     public int getEfficiencyIncrease() {
@@ -256,7 +258,6 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.FLUID_HANDLER) return fluidHandler.cast();
-        if(cap == ForgeCapabilities.FLUID_HANDLER_ITEM) return fluidHandler.cast();
 
         return super.getCapability(cap, side);
     }

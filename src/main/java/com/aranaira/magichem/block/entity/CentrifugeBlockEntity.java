@@ -54,7 +54,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 9,
         GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 24,
-        DATA_COUNT = 4, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3,
+        DATA_COUNT = 5, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3, DATA_EFFICIENCY_MOD = 4,
         NO_TORQUE_GRACE_PERIOD = 20, TORQUE_GAIN_ON_COG_ACTIVATION = 36, ANIMUS_GAIN_ON_DUSTING = 12000;
     public static final float
         WHEEL_ACCELERATION_RATE = 0.375f, WHEEL_DECELERATION_RATE = 0.625f, WHEEL_TOP_SPEED = 20.0f,
@@ -104,6 +104,9 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                     case DATA_ANIMUS: {
                         return CentrifugeBlockEntity.this.remainingAnimus;
                     }
+                    case DATA_EFFICIENCY_MOD: {
+                        return CentrifugeBlockEntity.this.efficiencyMod;
+                    }
                     default: return -1;
                 }
             }
@@ -126,6 +129,10 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                     }
                     case DATA_ANIMUS: {
                         remainingAnimus = pValue;
+                        break;
+                    }
+                    case DATA_EFFICIENCY_MOD: {
+                        efficiencyMod = pValue;
                         break;
                     }
                 }
@@ -191,6 +198,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
+        updateActuatorValues(this);
     }
 
     @Override
@@ -257,6 +265,8 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         //skip all of this if grime is full
         if(GrimeProvider.getCapability(entity).getGrime() >= Config.centrifugeMaximumGrime)
             return;
+        
+        updateActuatorValues(entity);
 
         //make sure we have enough torque (or animus) to operate
         if(entity.remainingTorque + entity.remainingAnimus > -NO_TORQUE_GRACE_PERIOD) {
@@ -270,8 +280,9 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             if (processingItem != ItemStack.EMPTY && recipe != null) {
                 if (canCraftItem(entity, recipe)) {
                     if (entity.progress > Config.centrifugeOperationTime) {
-                        if (!level.isClientSide())
+                        if (!level.isClientSide()) {
                             craftItem(entity, recipe, processingSlot);
+                        }
                         if (!entity.isStalled)
                             entity.resetProgress();
                     } else {
@@ -295,6 +306,14 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                 entity.linkPlugins();
             } else if (entity.pluginLinkageCountdown > 0) {
                 entity.pluginLinkageCountdown--;
+            }
+        }
+    }
+
+    private static void updateActuatorValues(CentrifugeBlockEntity entity) {
+        for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
+            if(dpbe instanceof ActuatorWaterBlockEntity water) {
+                entity.efficiencyMod = ActuatorWaterBlockEntity.getIsSatisfied(water) ? water.getEfficiencyIncrease() : 0;
             }
         }
     }
@@ -377,7 +396,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(SLOT_OUTPUT_START+i));
         }
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), CentrifugeBlockEntity.getActualEfficiency(GrimeProvider.getCapability(entity).getGrime()), 1.0f, Config.centrifugeGrimeOnSuccess, Config.centrifugeGrimeOnFailure);
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), CentrifugeBlockEntity.getActualEfficiency(entity.efficiencyMod, GrimeProvider.getCapability(entity).getGrime()), 1.0f, Config.centrifugeGrimeOnSuccess, Config.centrifugeGrimeOnFailure);
         int grimeToAdd = Math.round(pair.getFirst());
         NonNullList<ItemStack> componentMateria = pair.getSecond();
 
@@ -464,9 +483,9 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         return (float)grime / (float)Config.centrifugeMaximumGrime;
     }
 
-    public static int getActualEfficiency(int grime) {
+    public static int getActualEfficiency(int mod, int grime) {
         float grimeScalar = 1f - Math.min(Math.max(Math.min(Math.max(getGrimePercent(grime) - 0.5f, 0f), 1f) * 2f, 0f), 1f);
-        return Math.round(baseEfficiency * grimeScalar);
+        return Math.round((baseEfficiency + mod) * grimeScalar);
     }
 
     public static float getTimeScalar(int grime) {
