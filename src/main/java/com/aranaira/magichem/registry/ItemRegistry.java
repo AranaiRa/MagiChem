@@ -82,6 +82,14 @@ public class ItemRegistry {
             () -> new BucketItem(FluidRegistry.ACADEMIC_SLURRY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
 
+    public static final RegistryObject<Item> STEAM_BUCKET = ITEMS.register("steam_bucket",
+            () -> new BucketItem(FluidRegistry.STEAM, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> SMOKE_BUCKET = ITEMS.register("smoke_bucket",
+            () -> new BucketItem(FluidRegistry.SMOKE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
     public static final RegistryObject<Item> DUMMY_PROCESS_FIXATION = ITEMS.register("dummy/process_fixation",
             () -> new Item(new Item.Properties())
     );

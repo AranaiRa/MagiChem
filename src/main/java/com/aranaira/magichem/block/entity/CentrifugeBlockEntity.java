@@ -274,8 +274,15 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                             craftItem(entity, recipe, processingSlot);
                         if (!entity.isStalled)
                             entity.resetProgress();
-                    } else
+                    } else {
                         entity.incrementProgress();
+                        //tick actuators
+                        for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
+                            if(dpbe instanceof ActuatorWaterBlockEntity water) {
+                                ActuatorWaterBlockEntity.tick(level, pos, state, water);
+                            }
+                        }
+                    }
                 }
             } else if (processingItem == ItemStack.EMPTY)
                 entity.resetProgress();
@@ -288,13 +295,6 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                 entity.linkPlugins();
             } else if (entity.pluginLinkageCountdown > 0) {
                 entity.pluginLinkageCountdown--;
-            }
-        }
-
-        //tick actuators
-        for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
-            if(dpbe instanceof ActuatorWaterBlockEntity water) {
-                ActuatorWaterBlockEntity.tick(level, pos, state, water);
             }
         }
     }
@@ -403,6 +403,14 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
 
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(entity);
         grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
+
+        resolveActuators(entity);
+    }
+
+    public static void resolveActuators(CentrifugeBlockEntity entity) {
+        for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
+            dpbe.processCompletedOperation();
+        }
     }
 
     private static int nextInputSlotWithItem(CentrifugeBlockEntity entity) {

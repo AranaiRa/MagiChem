@@ -96,4 +96,10 @@ public class ActuatorWaterMenu extends AbstractContainerMenu {
     public int getRemainingEldrinTime() {
         return data.get(ActuatorWaterBlockEntity.DATA_REMAINING_ELDRIN_TIME);
     }
+
+    public int getWaterInTank() {
+        return data.get(ActuatorWaterBlockEntity.DATA_WATER);
+    }
+
+    public int getSteamInTank() { return data.get(ActuatorWaterBlockEntity.DATA_STEAM); }
 }

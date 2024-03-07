@@ -24,15 +24,23 @@ import java.util.Optional;
 public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_actuator_water.png");
+    private static final ResourceLocation TEXTURE_WATER =
+            new ResourceLocation("minecraft", "textures/block/water_still.png");
+    private static final ResourceLocation TEXTURE_STEAM =
+            TEXTURE_WATER;
+            //new ResourceLocation(MagiChemMod.MODID, "textures/block/steam.png");
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
             SYMBOL_X = 57, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
             POWER_X = 43, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
+            WATER_X = 77, WATER_Y = 15, WATER_W = 8, STEAM_X = 89, STEAM_Y = 15, STEAM_W = 4,
             TOOLTIP_POWER_X = 41, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
             TOOLTIP_WATER_X = 76, TOOLTIP_WATER_Y = 14, TOOLTIP_WATER_W = 10, TOOLTIP_WATER_H = 35,
             TOOLTIP_STEAM_X = 88, TOOLTIP_STEAM_Y = 14, TOOLTIP_STEAM_W = 6, TOOLTIP_STEAM_H = 35,
             TOOLTIP_EFFICIENCY_X = 98, TOOLTIP_EFFICIENCY_Y = 17, TOOLTIP_EFFICIENCY_W = 38, TOOLTIP_EFFICIENCY_H = 11,
             TOOLTIP_ELDRIN_X = 98, TOOLTIP_ELDRIN_Y = 36, TOOLTIP_ELDRIN_W = 38, TOOLTIP_ELDRIN_H = 11;
+    public static final int
+            FLUID_GAUGE_H = 33;
     private ImageButton
         b_powerLevelUp, b_powerLevelDown;
 
@@ -78,6 +86,18 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         int sH = getScaledEldrinTime();
         int sY = SYMBOL_H - sH;
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
+
+        //water gauge
+        int waterH = ActuatorWaterBlockEntity.getScaledWater(menu.getWaterInTank());
+        gui.setColor(0.2f, 0.375f, 0.725f, 1.0f);
+        RenderSystem.setShaderTexture(1, TEXTURE_WATER);
+        gui.blit(TEXTURE_WATER, x + WATER_X, y + WATER_Y + FLUID_GAUGE_H - waterH, 0, 0, WATER_W, waterH, 16, 16);
+        gui.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        //steam gauge
+        int steamH = ActuatorWaterBlockEntity.getScaledSteam(menu.getSteamInTank());
+        gui.blit(TEXTURE_WATER, x + STEAM_X, y + STEAM_Y, 11, 0, STEAM_W, steamH, 16, 16);
+
     }
 
     @Override
@@ -120,14 +140,12 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
                     .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line2")));
             tooltipContents.add(Component.empty());
-            int fakeFluidLevel = 0;
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    //TODO: replace with actual tank contents
-                    .append(Component.literal(fakeFluidLevel + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.getWaterInTank() + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                     .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(String.format("%.1f", (float)fakeFluidLevel / Config.delugePurifierTankCapacity)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(String.format("%.1f", ActuatorWaterBlockEntity.getWaterPercent(menu.getWaterInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -145,14 +163,12 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
                     .append(Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line2")));
             tooltipContents.add(Component.empty());
-            int fakeFluidLevel = 0;
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    //TODO: replace with actual tank contents
-                    .append(Component.literal(fakeFluidLevel + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.getSteamInTank() + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(Component.literal(String.format("%.1f", 0f / Config.delugePurifierTankCapacity)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(String.format("%.1f", ActuatorWaterBlockEntity.getSteamPercent(menu.getSteamInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                             .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }

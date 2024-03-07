@@ -5,7 +5,9 @@ import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.ActuatorWaterMenu;
+import com.aranaira.magichem.gui.ActuatorWaterScreen;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import net.minecraft.core.BlockPos;
@@ -21,25 +23,31 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile {
+public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
             WATER_PER_OPERATION = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
-            STEAM_PER_PROCESS = {0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
+            STEAM_PER_PROCESS = {0, 3, 5, 7, 10, 13, 17, 22, 27, 33, 39, 46, 53, 61},
             EFFICIENCY_INCREASE = {0, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40};
     public static final int
             TANK_ID_WATER = 0, TANK_ID_STEAM = 1,
-            DATA_COUNT = 3, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2;
+            DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_WATER = 3, DATA_STEAM = 4;
     public static final int
             FLAG_IS_SATISFIED = 1;
     private int
@@ -49,10 +57,15 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     private float
             remainingEldrinForSatisfaction;
     protected ContainerData data;
-    private LazyOptional<IFluidHandler> fluidHandler;
+    private FluidStack
+            containedWater, containedSteam;
+    private final LazyOptional<IFluidHandler> fluidHandler;
 
     public ActuatorWaterBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
+        this.containedWater = FluidStack.EMPTY;
+        this.containedSteam = FluidStack.EMPTY;
+        this.fluidHandler = LazyOptional.of(() -> this);
     }
 
     public ActuatorWaterBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -65,6 +78,8 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
                     case DATA_REMAINING_ELDRIN_TIME -> ActuatorWaterBlockEntity.this.remainingEldrinTime;
                     case DATA_POWER_LEVEL -> ActuatorWaterBlockEntity.this.powerLevel;
                     case DATA_FLAGS -> ActuatorWaterBlockEntity.this.flags;
+                    case DATA_WATER -> ActuatorWaterBlockEntity.this.containedWater.getAmount();
+                    case DATA_STEAM -> ActuatorWaterBlockEntity.this.containedSteam.getAmount();
                     default -> -1;
                 };
             }
@@ -75,6 +90,18 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
                     case DATA_REMAINING_ELDRIN_TIME -> ActuatorWaterBlockEntity.this.remainingEldrinTime = pValue;
                     case DATA_POWER_LEVEL -> ActuatorWaterBlockEntity.this.powerLevel = pValue;
                     case DATA_FLAGS -> ActuatorWaterBlockEntity.this.flags = pValue;
+                    case DATA_WATER -> {
+                        if(ActuatorWaterBlockEntity.this.containedWater == FluidStack.EMPTY)
+                            ActuatorWaterBlockEntity.this.containedWater = new FluidStack(Fluids.WATER, pValue);
+                        else
+                            ActuatorWaterBlockEntity.this.containedWater.setAmount(pValue);
+                    }
+                    case DATA_STEAM -> {
+                        if(ActuatorWaterBlockEntity.this.containedSteam == FluidStack.EMPTY)
+                            ActuatorWaterBlockEntity.this.containedSteam = new FluidStack(FluidRegistry.STEAM.get(), pValue);
+                        else
+                            ActuatorWaterBlockEntity.this.containedSteam.setAmount(pValue);
+                    }
                 }
             }
 
@@ -83,6 +110,10 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
                 return DATA_COUNT;
             }
         };
+
+        this.containedWater = FluidStack.EMPTY;
+        this.containedSteam = FluidStack.EMPTY;
+        this.fluidHandler = LazyOptional.of(() -> this);
     }
 
     public int getEfficiencyIncrease() {
@@ -138,6 +169,8 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("tankWater", this.containedWater.getAmount());
+        nbt.putInt("tankSteam", this.containedSteam.getAmount());
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -146,8 +179,21 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        remainingEldrinTime = nbt.getInt("remainingEldrinTime");
-        powerLevel = nbt.getInt("powerLevel");
+        this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
+        this.powerLevel = nbt.getInt("powerLevel");
+
+        int nbtWater = nbt.getInt("tankWater");
+        if(nbtWater > 0)
+            this.containedWater = new FluidStack(Fluids.WATER, nbtWater);
+        else
+            this.containedWater = FluidStack.EMPTY;
+
+        int nbtSteam = nbt.getInt("tankSteam");
+        if(nbtSteam > 0)
+            this.containedSteam = new FluidStack(FluidRegistry.STEAM.get(), nbtSteam);
+        else
+            this.containedSteam = FluidStack.EMPTY;
+
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
     }
@@ -157,6 +203,8 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("tankWater", this.containedWater.getAmount());
+        nbt.putInt("tankSteam", this.containedSteam.getAmount());
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;
@@ -170,11 +218,12 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
 
     @Override
     public void processCompletedOperation() {
-        //TODO: Generate steam
+        int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess());
+        containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Math.min(newTotal, Config.delugePurifierTankCapacity));
     }
 
     public static boolean getIsSatisfied(ActuatorWaterBlockEntity entity) {
-        return entity.remainingEldrinTime > 0;
+        return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, ActuatorWaterBlockEntity entity) {
@@ -187,15 +236,19 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
 
             if(entity.remainingEldrinTime <= 0) {
                 if(entity.remainingEldrinForSatisfaction <= 0) {
-                    entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.delugePurifierOperationTime;
+                    int fluidOp = getWaterPerOperation(entity.powerLevel);
+                    if(entity.containedWater.getAmount() >= fluidOp) {
+                        entity.drain(new FluidStack(Fluids.WATER, fluidOp), FluidAction.EXECUTE);
+                        entity.remainingEldrinForSatisfaction = powerDraw;
+                        entity.remainingEldrinTime = Config.delugePurifierOperationTime;
+                    }
                 }
             } else {
                 entity.remainingEldrinTime--;
             }
 
             if(entity.remainingEldrinTime > 0) entity.flags = entity.flags | ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
-            else if(entity.remainingEldrinForSatisfaction == 0) entity.flags = entity.flags | ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
+            else if(entity.remainingEldrinForSatisfaction == 0 && entity.containedWater.getAmount() > getWaterPerOperation(entity.powerLevel)) entity.flags = entity.flags | ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
             else entity.flags = entity.flags & ~ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
         }
     }
@@ -203,8 +256,15 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.FLUID_HANDLER) return fluidHandler.cast();
+        if(cap == ForgeCapabilities.FLUID_HANDLER_ITEM) return fluidHandler.cast();
 
         return super.getCapability(cap, side);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        this.fluidHandler.invalidate();
     }
 
     @Override
@@ -216,5 +276,110 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
         return new ActuatorWaterMenu(i, inventory, this, this.data);
+    }
+
+    public static float getWaterPercent(int pWaterAmount) {
+        return (float)pWaterAmount * 100f / Config.delugePurifierTankCapacity;
+    }
+
+    public static int getScaledWater(int pWaterAmount) {
+        return pWaterAmount * ActuatorWaterScreen.FLUID_GAUGE_H / Config.delugePurifierTankCapacity;
+    }
+
+    public static float getSteamPercent(int pSteamAmount) {
+        return (float)pSteamAmount * 100f / Config.delugePurifierTankCapacity;
+    }
+
+    public static int getScaledSteam(int pSteamAmount) {
+        return pSteamAmount * ActuatorWaterScreen.FLUID_GAUGE_H / Config.delugePurifierTankCapacity;
+    }
+
+    @Override
+    public int getTanks() {
+        return 2;
+    }
+
+    @Override
+    public @NotNull FluidStack getFluidInTank(int i) {
+        if(i == TANK_ID_WATER) return containedWater;
+        if(i == TANK_ID_STEAM) return containedSteam;
+        return FluidStack.EMPTY;
+    }
+
+    @Override
+    public int getTankCapacity(int i) {
+        return Config.delugePurifierTankCapacity;
+    }
+
+    @Override
+    public boolean isFluidValid(int i, @NotNull FluidStack fluidStack) {
+        if(i == TANK_ID_WATER) {
+            return fluidStack.getFluid() == Fluids.WATER;
+        } else if(i == TANK_ID_STEAM) {
+            return fluidStack.getFluid() == FluidRegistry.STEAM.get();
+        }
+        return false;
+    }
+
+    @Override
+    public int fill(FluidStack fluidStack, FluidAction fluidAction) {
+        //Water is insert-only
+        Fluid fluid = fluidStack.getFluid();
+        int incomingAmount = fluidStack.getAmount();
+        if(fluid == Fluids.WATER) {
+            int extantAmount = containedWater.getAmount();
+            int query = Config.delugePurifierTankCapacity - (incomingAmount + extantAmount);
+
+            //Hit capacity
+            if(query < 0) {
+                int actualTransfer = Config.delugePurifierTankCapacity - extantAmount;
+                if(fluidAction == FluidAction.EXECUTE)
+                    this.containedWater = new FluidStack(Fluids.WATER, extantAmount + actualTransfer);
+                return actualTransfer;
+            } else {
+                if(fluidAction == FluidAction.EXECUTE)
+                    this.containedWater = new FluidStack(Fluids.WATER, extantAmount + incomingAmount);
+                return incomingAmount;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
+        //Steam is extract only
+        Fluid fluid = fluidStack.getFluid();
+        int incomingAmount = fluidStack.getAmount();
+        if(fluid == Fluids.WATER) {
+            int extantAmount = containedWater.getAmount();
+            if(extantAmount >= incomingAmount) {
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedWater.shrink(incomingAmount);
+                return new FluidStack(fluid, incomingAmount);
+            } else {
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedWater = FluidStack.EMPTY;
+                return new FluidStack(fluid, incomingAmount - extantAmount);
+            }
+        }
+        else if(fluid == FluidRegistry.STEAM.get()) {
+            int extantAmount = containedSteam.getAmount();
+            if(extantAmount >= incomingAmount) {
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedSteam.shrink(incomingAmount);
+                return new FluidStack(fluid, incomingAmount);
+            } else {
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedSteam = FluidStack.EMPTY;
+                return new FluidStack(fluid, incomingAmount - extantAmount);
+            }
+        }
+        return fluidStack;
+    }
+
+    @Override
+    public @NotNull FluidStack drain(int i, FluidAction fluidAction) {
+        //Assume removed fluid is steam if not specified
+        return drain(new FluidStack(FluidRegistry.STEAM.get(), i), fluidAction);
     }
 }
