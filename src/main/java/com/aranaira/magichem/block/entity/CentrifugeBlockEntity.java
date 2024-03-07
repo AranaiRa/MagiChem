@@ -265,7 +265,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         //skip all of this if grime is full
         if(GrimeProvider.getCapability(entity).getGrime() >= Config.centrifugeMaximumGrime)
             return;
-        
+
         updateActuatorValues(entity);
 
         //make sure we have enough torque (or animus) to operate

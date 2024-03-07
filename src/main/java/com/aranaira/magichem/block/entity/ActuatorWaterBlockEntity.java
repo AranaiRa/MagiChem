@@ -283,6 +283,10 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         return (float)pWaterAmount * 100f / Config.delugePurifierTankCapacity;
     }
 
+    public float getWaterPercent() {
+        return (float)this.data.get(DATA_WATER) / Config.delugePurifierTankCapacity;
+    }
+
     public static int getScaledWater(int pWaterAmount) {
         return pWaterAmount * ActuatorWaterScreen.FLUID_GAUGE_H / Config.delugePurifierTankCapacity;
     }
@@ -324,6 +328,11 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
 
     @Override
     public int fill(FluidStack fluidStack, FluidAction fluidAction) {
+        if(fluidAction.execute()) {
+            setChanged();
+            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
+
         //Water is insert-only
         Fluid fluid = fluidStack.getFluid();
         int incomingAmount = fluidStack.getAmount();
@@ -348,6 +357,11 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
 
     @Override
     public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
+        if(fluidAction.execute()) {
+            setChanged();
+            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
+
         //Steam is extract only
         Fluid fluid = fluidStack.getFluid();
         int incomingAmount = fluidStack.getAmount();
