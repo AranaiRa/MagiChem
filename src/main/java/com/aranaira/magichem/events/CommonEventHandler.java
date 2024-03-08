@@ -1,13 +1,16 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.items.ItemInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -15,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -66,6 +70,22 @@ public class CommonEventHandler {
                 if(bewe.getGrimeFromData() > 0) {
                     CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), bewe, stack);
                 }
+            } else if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
+                if(bewe instanceof CentrifugeBlockEntity cbe) {
+                    event.getEntity().swing(event.getHand());
+                    stack.shrink(1);
+                    cbe.dustCog();
+                }
+            }
+        } else if(target instanceof CentrifugeRouterBlockEntity crbe) {
+            if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
+                if(crbe.getMaster().getGrimeFromData() > 0) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), crbe.getMaster(), stack);
+                }
+            } else if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
+                event.getEntity().swing(event.getHand());
+                stack.shrink(1);
+                crbe.getMaster().dustCog();
             }
         }
     }

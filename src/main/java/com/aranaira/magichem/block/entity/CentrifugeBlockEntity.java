@@ -454,7 +454,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
 
     @Override
     public int getGrimeFromData() {
-        return 0;
+        return data.get(DATA_GRIME);
     }
 
     @Override
@@ -472,7 +472,11 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
 
     @Override
     public int clean() {
-        return 0;
+        int grimeDetected = GrimeProvider.getCapability(this).getGrime();
+        IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
+        grimeCapability.setGrime(0);
+        data.set(DATA_GRIME, 0);
+        return grimeDetected / Config.grimePerWaste;
     }
 
     public static int getScaledGrime(int grime) {
