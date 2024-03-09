@@ -1,6 +1,9 @@
 {
 	"parent": "forge:item/default",
 	"loader": "forge:composite",
+	"textures": {
+		"particle": "magichem:block/breakparticle_arcanesandstone"
+	},
 	"children": {
 		"crystal": {
 			"loader": "forge:obj",
