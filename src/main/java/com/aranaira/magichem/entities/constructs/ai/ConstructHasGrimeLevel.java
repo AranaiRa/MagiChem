@@ -31,12 +31,13 @@ public class ConstructHasGrimeLevel extends ConstructConditional<ConstructHasGri
         if(targetApparatus == null)
             return false;
 
-        BlockEntityWithEfficiency bewe = (BlockEntityWithEfficiency) construct.asEntity().level().getBlockEntity(targetApparatus);
+        BlockEntity be = construct.asEntity().level().getBlockEntity(targetApparatus);
 
-        if(bewe == null)
-            return false;
+        if(be instanceof BlockEntityWithEfficiency bewe) {
+            return ((float)GrimeProvider.getCapability(bewe).getGrime() / (float)bewe.getMaximumGrime()) >= targetPercentage;
+        }
 
-        return ((float)GrimeProvider.getCapability(bewe).getGrime() / (float)bewe.getMaximumGrime()) >= targetPercentage;
+        return false;
     }
 
     @Override

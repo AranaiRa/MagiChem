@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
@@ -28,7 +29,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins {
+public class CentrifugeRouterBlockEntity extends BlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private CentrifugeRouterType routerType = CentrifugeRouterType.NONE;
@@ -37,7 +38,7 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
     private int packedData;
 
     public CentrifugeRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntitiesRegistry.CENTRIFUGE_ROUTER_BE.get(), pPos, pBlockState);
+        super(BlockEntitiesRegistry.CENTRIFUGE_ROUTER_BE.get(), pPos, CentrifugeRouterBlockEntity.baseEfficiency, pBlockState);
     }
 
     public Direction getFacing() {
@@ -225,5 +226,20 @@ public class CentrifugeRouterBlockEntity extends BlockEntity implements MenuProv
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return getMaster().createMenu(pContainerId, pPlayerInventory, pPlayer);
+    }
+
+    @Override
+    public int getGrimeFromData() {
+        return getMaster().getGrimeFromData();
+    }
+
+    @Override
+    public int getMaximumGrime() {
+        return getMaster().getMaximumGrime();
+    }
+
+    @Override
+    public int clean() {
+        return getMaster().clean();
     }
 }
