@@ -63,6 +63,18 @@ public class ActuatorFireBlock extends BaseEntityBlock {
         return true;
     }
 
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        BlockPos pos = pContext.getClickedPos().above();
+
+        if(!pContext.getLevel().isEmptyBlock(pos)) {
+            return null;
+        }
+
+        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+    }
+
     @Override
     public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
@@ -113,12 +125,6 @@ public class ActuatorFireBlock extends BaseEntityBlock {
             case WEST -> VOXEL_SHAPE_AGGREGATE_WEST;
             case EAST -> VOXEL_SHAPE_AGGREGATE_EAST;
         };
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
     @Override

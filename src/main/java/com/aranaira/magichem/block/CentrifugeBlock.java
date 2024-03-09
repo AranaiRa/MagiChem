@@ -55,15 +55,31 @@ public class CentrifugeBlock extends BaseEntityBlock {
         return true;
     }
 
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        BlockPos pos = pContext.getClickedPos();
+
+        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pContext.getHorizontalDirection())) {
+            if(!pContext.getLevel().isEmptyBlock(pos.offset(posAndType.getFirst()))) {
+                return null;
+            }
+        }
+
+        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+    }
+
     @Override
     public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
-        super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
         BlockState state = BlockRegistry.CENTRIFUGE_ROUTER.get().defaultBlockState();
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
+
+        super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
+
+        for (Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             pLevel.setBlock(targetPos, state, 3);
-            ((CentrifugeRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+            ((CentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
         }
     }
 
@@ -110,12 +126,6 @@ public class CentrifugeBlock extends BaseEntityBlock {
             case WEST -> VOXEL_SHAPE_WEST;
             case EAST -> VOXEL_SHAPE_EAST;
         };
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
     @Override

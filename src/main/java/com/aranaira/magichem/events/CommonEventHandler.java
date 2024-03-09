@@ -66,26 +66,21 @@ public class CommonEventHandler {
                 event.getLevel().addFreshEntity(ie);
             }
         } else if(target instanceof BlockEntityWithEfficiency bewe) {
-            if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
-                if(bewe.getGrimeFromData() > 0) {
-                    CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), bewe, stack);
-                }
-            } else if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
+            if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
                 if(bewe instanceof CentrifugeBlockEntity cbe) {
                     event.getEntity().swing(event.getHand());
                     stack.shrink(1);
                     cbe.dustCog();
+                } else if(bewe instanceof CentrifugeRouterBlockEntity crbe) {
+                    event.getEntity().swing(event.getHand());
+                    stack.shrink(1);
+                    crbe.getMaster().dustCog();
                 }
             }
-        } else if(target instanceof CentrifugeRouterBlockEntity crbe) {
-            if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
-                if(crbe.getMaster().getGrimeFromData() > 0) {
-                    CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), crbe.getMaster(), stack);
+            else if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
+                if(bewe.getGrimeFromData() > 0) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), bewe, stack);
                 }
-            } else if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
-                event.getEntity().swing(event.getHand());
-                stack.shrink(1);
-                crbe.getMaster().dustCog();
             }
         }
     }
