@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.ActuatorFireRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
@@ -42,5 +43,14 @@ public class ActuatorWaterRouterBlock extends BaseActuatorRouterBlock implements
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    protected void spawnDestroyParticles(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof ActuatorWaterRouterBlockEntity router) {
+            BlockState masterState = router.getMaster().getBlockState();
+            pLevel.levelEvent(pPlayer, 2001, pPos, getId(masterState));
+        }
     }
 }

@@ -1,3 +1,6 @@
 {
-  "parent": "magichem:block/actuator_water_router"
+  "parent": "magichem:block/actuator_water",
+  "textures": {
+    "particle": "magichem:block/breakparticle_arcanesandstone"
+  }
 }

@@ -117,16 +117,20 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
             MenuScreens.register(MenuRegistry.ADMIXER_MENU.get(), AdmixerScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_WATER_MENU.get(), ActuatorWaterScreen::new);
+            MenuScreens.register(MenuRegistry.ACTUATOR_FIRE_MENU.get(), ActuatorFireScreen::new);
         }
 
         @SubscribeEvent
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
             event.register(MateriaVesselItemRenderer.RENDERER_JAR);
+
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_COG);
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_WHEEL);
+
             event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_LEFT);
             event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_RIGHT);
             event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_CENTER);
+
             event.register(ActuatorWaterBlockEntityRenderer.RENDERER_MODEL_STEAM_VENTS);
         }
     }

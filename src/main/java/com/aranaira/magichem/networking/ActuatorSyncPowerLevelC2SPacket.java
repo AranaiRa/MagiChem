@@ -1,6 +1,5 @@
 package com.aranaira.magichem.networking;
 
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

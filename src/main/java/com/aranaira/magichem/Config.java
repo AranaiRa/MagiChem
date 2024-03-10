@@ -138,6 +138,16 @@ public class Config
             .comment("The amount of Water and Steam, in mB, the Deluge Purifier's internal tanks can hold.")
             .defineInRange("delugePurifierTankCapacity", 2000, 500, Integer.MAX_VALUE);
 
+    //----------------INFERNO ENGINE
+
+    private static final ForgeConfigSpec.IntValue INFERNO_ENGINE_OPERATION_TIME = BUILDER
+            .comment("The amount of time, in ticks, an Inferno Engine goes between drawing more Eldrin power.")
+            .defineInRange("infernoEngineOperationTime", 25, 1, 200);
+
+    private static final ForgeConfigSpec.IntValue INFERNO_ENGINE_TANK_CAPACITY = BUILDER
+            .comment("The amount of Smoke, in mB, the Inferno Engine's internal tank can hold.")
+            .defineInRange("infernoEngineTankCapacity", 2000, 500, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -164,7 +174,9 @@ public class Config
         materiaVesselEssentiaCapacity,
         materiaVesselAdmixtureCapacity,
         delugePurifierOperationTime,
-        delugePurifierTankCapacity;
+        delugePurifierTankCapacity,
+        infernoEngineOperationTime,
+        infernoEngineTankCapacity;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -196,5 +208,7 @@ public class Config
         materiaVesselAdmixtureCapacity = MATERIA_VESSEL_ADMIXTURE_CAPACITY.get();
         delugePurifierOperationTime = DELUGE_PURIFIER_OPERATION_TIME.get();
         delugePurifierTankCapacity = DELUGE_PURIFIER_TANK_CAPACITY.get();
+        infernoEngineOperationTime = INFERNO_ENGINE_OPERATION_TIME.get();
+        infernoEngineTankCapacity = INFERNO_ENGINE_TANK_CAPACITY.get();
     }
 }

@@ -1,13 +1,8 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
-import com.aranaira.magichem.foundation.Triplet;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
-import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
-import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
@@ -22,8 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -84,6 +77,11 @@ public class ActuatorFireBlock extends BaseEntityBlock {
         BlockPos targetPos = pPos.offset(0,1,0);
         pLevel.setBlock(targetPos, state, 3);
         ((BaseActuatorRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, facing);
+
+        ActuatorFireBlockEntity afbe = (ActuatorFireBlockEntity) pLevel.getBlockEntity(pPos);
+        ICanTakePlugins ictp = afbe.getTargetMachine();
+        if(ictp != null)
+            ictp.linkPluginsDeferred();
     }
 
     @Override
@@ -91,29 +89,6 @@ public class ActuatorFireBlock extends BaseEntityBlock {
         pLevel.destroyBlock(pPos.offset(0, 1, 0), true);
 
         super.destroy(pLevel, pPos, pState);
-    }
-
-    public static List<Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection>> getRouterOffsets(Direction pFacing) {
-        List<Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection>> offsets = new ArrayList<>();
-        BlockPos origin = new BlockPos(0,0,0);
-        if(pFacing == Direction.NORTH) {
-            offsets.add(new Triplet<>(origin.west(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.SOUTH));
-            offsets.add(new Triplet<>(origin.north(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.EAST));
-            offsets.add(new Triplet<>(origin.west().north(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
-        } else if(pFacing == Direction.SOUTH) {
-            offsets.add(new Triplet<>(origin.east(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.NORTH));
-            offsets.add(new Triplet<>(origin.south(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.WEST));
-            offsets.add(new Triplet<>(origin.east().south(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
-        } else if(pFacing == Direction.EAST) {
-            offsets.add(new Triplet<>(origin.north(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.WEST));
-            offsets.add(new Triplet<>(origin.east(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.SOUTH));
-            offsets.add(new Triplet<>(origin.north().east(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
-        } else if(pFacing == Direction.WEST) {
-            offsets.add(new Triplet<>(origin.south(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.EAST));
-            offsets.add(new Triplet<>(origin.west(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.NORTH));
-            offsets.add(new Triplet<>(origin.south().west(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
-        }
-        return offsets;
     }
 
     @Override
@@ -152,25 +127,24 @@ public class ActuatorFireBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        /*if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof CentrifugeBlockEntity) {
-                ((CentrifugeBlockEntity) blockEntity).dropInventoryToWorld();
-            }
-        }*/
+        ActuatorFireBlockEntity afbe = (ActuatorFireBlockEntity) level.getBlockEntity(pos);
+        ICanTakePlugins ictp = afbe.getTargetMachine();
+        if(ictp != null)
+            ictp.linkPlugins();
+
         super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        /*if(!level.isClientSide()) {
+        if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof ActuatorFireBlockEntity afbe) {
                 NetworkHooks.openScreen((ServerPlayer)player, (ActuatorFireBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("ActuatorFireBlockEntity container provider is missing!");
             }
-        }*/
+        }
 
         return InteractionResult.sidedSuccess(level.isClientSide());
     }

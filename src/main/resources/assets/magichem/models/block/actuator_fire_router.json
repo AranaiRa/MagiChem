@@ -1,5 +1,5 @@
 {
-  "parent": "magichem:block/actuator_fire_router",
+  "parent": "magichem:block/actuator_fire",
   "textures": {
     "particle": "magichem:block/breakparticle_arcanesandstone"
   }
