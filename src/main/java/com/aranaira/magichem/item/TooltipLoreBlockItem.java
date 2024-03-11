@@ -34,12 +34,6 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.materiavessel")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
         else if(pStack.getItem() == BlockRegistry.ALEMBIC.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.alembic")
