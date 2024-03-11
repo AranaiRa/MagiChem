@@ -248,6 +248,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
 
             if(entity.remainingEldrinTime <= 0) {
                 if(entity.remainingEldrinForSatisfaction <= 0) {
+                    entity.remainingEldrinForSatisfaction = powerDraw;
+                    entity.remainingEldrinTime = Config.infernoEngineOperationTime;
                     //process fuel reduction if present
                 }
             } else {

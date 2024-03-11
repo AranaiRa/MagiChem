@@ -174,4 +174,8 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     public int getEfficiencyMod() {
         return data.get(CentrifugeBlockEntity.DATA_EFFICIENCY_MOD);
     }
+
+    public int getOperationTimeMod() {
+        return data.get(CentrifugeBlockEntity.DATA_OPERATION_TIME_MOD);
+    }
 }

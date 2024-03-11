@@ -195,7 +195,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         if((menu.getFlags() & ActuatorWaterBlockEntity.FLAG_IS_SATISFIED) == ActuatorWaterBlockEntity.FLAG_IS_SATISFIED)
             gui.drawString(font, Component.literal("-"+ ActuatorFireBlockEntity.getReductionRate(menu.getPowerLevel(), menu.getFlags())+"%"), 113, 23, 0xff000000, false);
         else
-            gui.drawString(font, Component.literal("   0%"), 113, 23, 0xffaa0000, false);
+            gui.drawString(font, Component.literal("-"), 113, 23, 0xffaa0000, false);
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 113, 42, 0xff000000, false);

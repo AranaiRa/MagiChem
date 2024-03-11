@@ -50,7 +50,11 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
 
         renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 
-        int sProg = CentrifugeBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime());
+        float a = menu.getOperationTimeMod();
+        int b = menu.getGrime();
+        int c = menu.getProgress();
+
+        int sProg = CentrifugeBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getOperationTimeMod());
         if(sProg > 0)
             gui.blit(TEXTURE, x+58, y+53, 0, 228, sProg, 28);
 
@@ -131,8 +135,8 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
 
         gui.drawString(font, Component.literal(CentrifugeBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime())+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 2, 0xff000000, false);
 
-        int secWhole = CentrifugeBlockEntity.getOperationTicks(menu.getGrime()) / 20;
-        int secPartial = (CentrifugeBlockEntity.getOperationTicks(menu.getGrime()) % 20) * 5;
+        int secWhole = CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod()) / 20;
+        int secPartial = (CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod()) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 17, 0xff000000, false);
     }
 }

@@ -15,6 +15,7 @@ import java.util.Random;
 public abstract class BlockEntityWithEfficiency extends BlockEntity {
     public static int baseEfficiency;
     protected int efficiencyMod;
+    protected float operationTimeMod;
     protected boolean isStalled = false;
     protected static final Random r = new Random();
 

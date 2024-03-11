@@ -54,7 +54,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 9,
         GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 24,
-        DATA_COUNT = 5, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3, DATA_EFFICIENCY_MOD = 4,
+        DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5,
         NO_TORQUE_GRACE_PERIOD = 20, TORQUE_GAIN_ON_COG_ACTIVATION = 36, ANIMUS_GAIN_ON_DUSTING = 12000;
     public static final float
         WHEEL_ACCELERATION_RATE = 0.375f, WHEEL_DECELERATION_RATE = 0.625f, WHEEL_TOP_SPEED = 20.0f,
@@ -107,6 +107,9 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                     case DATA_EFFICIENCY_MOD: {
                         return CentrifugeBlockEntity.this.efficiencyMod;
                     }
+                    case DATA_OPERATION_TIME_MOD: {
+                        return Math.round(CentrifugeBlockEntity.this.operationTimeMod * 100);
+                    }
                     default: return -1;
                 }
             }
@@ -133,6 +136,10 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                     }
                     case DATA_EFFICIENCY_MOD: {
                         efficiencyMod = pValue;
+                        break;
+                    }
+                    case DATA_OPERATION_TIME_MOD: {
+                        operationTimeMod = pValue / 100f;
                         break;
                     }
                 }
@@ -218,7 +225,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
     }
 
     public static int getScaledProgress(CentrifugeBlockEntity entity) {
-        return PROGRESS_BAR_WIDTH * entity.progress / Config.centrifugeOperationTime;
+        return PROGRESS_BAR_WIDTH * entity.progress / getOperationTicks(entity.getGrimeFromData(), entity.operationTimeMod);
     }
 
     public void dropInventoryToWorld() {
@@ -259,6 +266,20 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         if(level.isClientSide()) {
             entity.handleAnimationDrivers();
         }
+        else {
+            for (DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
+                if (dpbe instanceof ActuatorFireBlockEntity fire) {
+                    ActuatorFireBlockEntity.tick(level, pos, state, fire);
+                    if (ActuatorFireBlockEntity.getIsSatisfied(fire) && entity.remainingTorque <= 20) {
+                        entity.remainingTorque = 100;
+                        entity.operationTimeMod = fire.getReductionRate();
+                        entity.setChanged();
+                        entity.level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 3);
+                    }
+                }
+            }
+        }
+
         entity.remainingTorque = Math.max(-NO_TORQUE_GRACE_PERIOD, entity.remainingTorque - 1);
         entity.remainingAnimus = Math.max(-NO_TORQUE_GRACE_PERIOD, entity.remainingAnimus - 1);
 
@@ -279,7 +300,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             FixationSeparationRecipe recipe = getRecipeInSlot(entity, processingSlot);
             if (processingItem != ItemStack.EMPTY && recipe != null) {
                 if (canCraftItem(entity, recipe)) {
-                    if (entity.progress > Config.centrifugeOperationTime) {
+                    if (entity.progress > getOperationTicks(entity.getGrimeFromData(), entity.operationTimeMod)) {
                         if (!level.isClientSide()) {
                             craftItem(entity, recipe, processingSlot);
                         }
@@ -462,12 +483,18 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         return 0;
     }
 
-    public static int getOperationTicks(int grime) {
-        return Math.round(Config.centrifugeOperationTime * getTimeScalar(grime));
+    public int getOperationTimeModFromData() {
+        return data.get(DATA_OPERATION_TIME_MOD);
     }
 
-    public static int getScaledProgress(int progress, int grime) {
-        return PROGRESS_BAR_WIDTH * progress / getOperationTicks(grime);
+
+    public static int getOperationTicks(int grime, float pOperationTimeMod) {
+        float otmScalar = (10000f - pOperationTimeMod) / 10000f;
+        return Math.round(Config.centrifugeOperationTime * getTimeScalar(grime) * otmScalar);
+    }
+
+    public static int getScaledProgress(int progress, int grime, float pOperationTimeMod) {
+        return PROGRESS_BAR_WIDTH * progress / getOperationTicks(grime, pOperationTimeMod);
     }
 
     @Override
@@ -526,6 +553,11 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                 if (be != null) if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
+    }
+
+    @Override
+    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+        this.pluginDevices.remove(pPlugin);
     }
 
     int pluginLinkageCountdown = 0;

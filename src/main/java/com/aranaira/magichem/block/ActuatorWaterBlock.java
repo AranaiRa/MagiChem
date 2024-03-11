@@ -136,7 +136,7 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
         ActuatorWaterBlockEntity awbe = (ActuatorWaterBlockEntity) level.getBlockEntity(pos);
         ICanTakePlugins ictp = awbe.getTargetMachine();
         if(ictp != null)
-            ictp.linkPlugins();
+            ictp.removePlugin(awbe);
 
         super.onRemove(state, level, pos, newState, isMoving);
     }

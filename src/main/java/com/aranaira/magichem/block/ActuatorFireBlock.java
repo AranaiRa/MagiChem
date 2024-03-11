@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
+import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -10,7 +11,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -54,6 +57,15 @@ public class ActuatorFireBlock extends BaseEntityBlock {
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
         return true;
+    }
+
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+        if(pPlacer instanceof Player player) {
+            ActuatorFireBlockEntity awbe = (ActuatorFireBlockEntity) pLevel.getBlockEntity(pPos);
+            awbe.setOwner(player);
+        }
+        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
 
     @Nullable
@@ -130,7 +142,7 @@ public class ActuatorFireBlock extends BaseEntityBlock {
         ActuatorFireBlockEntity afbe = (ActuatorFireBlockEntity) level.getBlockEntity(pos);
         ICanTakePlugins ictp = afbe.getTargetMachine();
         if(ictp != null)
-            ictp.linkPlugins();
+            ictp.removePlugin(afbe);
 
         super.onRemove(state, level, pos, newState, isMoving);
     }

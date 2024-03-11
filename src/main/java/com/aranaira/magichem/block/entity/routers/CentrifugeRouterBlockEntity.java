@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity.routers;
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
@@ -75,6 +76,11 @@ public class CentrifugeRouterBlockEntity extends BlockEntityWithEfficiency imple
     @Override
     public void linkPlugins() {
         getMaster().linkPlugins();
+    }
+
+    @Override
+    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+        getMaster().removePlugin(pPlugin);
     }
 
     @Override
