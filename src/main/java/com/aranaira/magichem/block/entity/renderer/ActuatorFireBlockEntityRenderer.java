@@ -146,6 +146,11 @@ public class ActuatorFireBlockEntityRenderer implements BlockEntityRenderer<Actu
         float mShift = random.nextFloat() * WIGGLE_INTENSITY_CENTER * pBlockEntity.getPipeVibrationIntensity();
         float sShift = random.nextFloat() * WIGGLE_INTENSITY_SIDE * pBlockEntity.getPipeVibrationIntensity();
 
+        if(Minecraft.getInstance().isPaused()) {
+            mShift = 0;
+            sShift = 0;
+        }
+
         pPoseStack.pushPose();
         Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         if(dir == Direction.EAST) {

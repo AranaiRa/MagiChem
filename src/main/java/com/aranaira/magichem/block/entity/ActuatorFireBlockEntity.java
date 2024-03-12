@@ -31,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
@@ -42,6 +43,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler {
 
@@ -113,7 +115,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                     case DATA_FLAGS -> ActuatorFireBlockEntity.this.flags = pValue;
                     case DATA_SMOKE -> {
                         if(ActuatorFireBlockEntity.this.containedSmoke == FluidStack.EMPTY)
-                            ActuatorFireBlockEntity.this.containedSmoke = new FluidStack(FluidRegistry.STEAM.get(), pValue);
+                            ActuatorFireBlockEntity.this.containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), pValue);
                         else
                             ActuatorFireBlockEntity.this.containedSmoke.setAmount(pValue);
                     }
@@ -263,6 +265,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     public void processCompletedOperation() {
         int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSmoke.getAmount() + getSmokePerProcess());
         containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Math.min(newTotal, Config.delugePurifierTankCapacity));
+        setChanged();
+        level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
     public static boolean getIsSatisfied(ActuatorFireBlockEntity entity) {
@@ -272,18 +276,40 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
         if(t instanceof ActuatorFireBlockEntity afbe) {
 
-            float smoke = 0;
-            if(afbe.getFluidInTank(0).getFluid() == FluidRegistry.SMOKE.get()) {
-                smoke = afbe.getFluidInTank(0).getAmount() / (float) Config.infernoEngineTankCapacity;
-
-                float mappedSmokePercent = Math.max(0, (smoke - 0.5f) * 2);
+            float smoke = afbe.data.get(DATA_SMOKE);
+            if(smoke > 0) {
+                float mappedSmokePercent = Math.max(0, ((smoke / Config.infernoEngineTankCapacity) - 0.5f) * 2);
                 if (mappedSmokePercent > 0f) {
                     int spawnModulus = 5 - (int) Math.floor(mappedSmokePercent * 4);
+                    Vector3f mid = new Vector3f(0f, 1.6875f, 0f);
+                    Vector3f left = new Vector3f(0f, 2f, 0f);
+                    Vector3f right = new Vector3f(0f, 2f, 0f);
+
+                    Direction dir = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                    if(dir == Direction.WEST) {
+                        mid.x = 0.1875f;
+                        mid.z = 0.5f;
+                        left.x = 0.0625f;
+                        left.z = 0.6875f;
+                        right.x = 0.0625f;
+                        right.z = 0.3125f;
+                    }
 
                     if (level.getGameTime() % spawnModulus == 0) {
                         level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                        .setPhysics(true),
-                        pos.getX(), pos.getY(), pos.getZ(), 0, 0.03f, 0);
+                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.10f),
+                        pos.getX() + mid.x, pos.getY() + mid.y, pos.getZ() + mid.z,
+                        0, 0.04f, 0);
+
+                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
+                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.05f),
+                        pos.getX() + left.x, pos.getY() + left.y, pos.getZ() + left.z,
+                        0, 0.03f, 0);
+
+                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
+                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.05f),
+                        pos.getX() + right.x, pos.getY() + right.y, pos.getZ() + right.z,
+                        0, 0.03f, 0);
                     }
                 }
             }
