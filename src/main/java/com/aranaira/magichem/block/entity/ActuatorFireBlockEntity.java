@@ -11,6 +11,8 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +25,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -33,6 +38,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,23 +53,41 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
             POWER_REDUCTION_FUEL_NORMAL = {0, 30, 32.5f, 35, 37.5f, 40, 42.5f, 45, 47.5f, 50, 52.5f, 55, 57.5f, 60},
             POWER_REDUCTION_FUEL_SUPER = {0, 36, 39, 42, 45, 48, 51, 54, 57, 60 ,63, 66, 69, 72};
     public static final int
-            DATA_COUNT = 4, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3;
-    public static final int
+            SLOT_COUNT = 1,
+            DATA_COUNT = 4, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3,
             FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_FUEL_SATISFACTION_TYPE = 12, FLAG_FUEL_NORMAL = 4, FLAG_FUEL_SUPER = 8;
+    private static final float
+            PIPE_VIBRATION_ACCELERATION = 0.002f;
     private int
             powerLevel = 1,
-            remainingEldrinTime,
+            remainingEldrinTime = -1,
             flags;
-    private float remainingEldrinForSatisfaction;
+    private float
+            remainingEldrinForSatisfaction,
+            pipeVibrationIntensity = 0;
     protected ContainerData data;
     private FluidStack containedSmoke;
     private final LazyOptional<IFluidHandler> fluidHandler;
+
+    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return stack.getItem().getBurnTime(stack, RecipeType.SMELTING) > 0;
+        }
+    };
+
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     public ActuatorFireBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
         this.containedSmoke = FluidStack.EMPTY;
         this.fluidHandler = LazyOptional.of(() -> this);
-        this.flags = FLAG_IS_SATISFIED;
+        this.flags = 0;
     }
 
     public ActuatorFireBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -212,6 +237,12 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     }
 
     @Override
+    public void onLoad() {
+        super.onLoad();
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+    }
+
+    @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
@@ -238,7 +269,28 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, ActuatorFireBlockEntity entity) {
+    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+        if(t instanceof ActuatorFireBlockEntity afbe) {
+
+            float smoke = 0;
+            if(afbe.getFluidInTank(0).getFluid() == FluidRegistry.SMOKE.get()) {
+                smoke = afbe.getFluidInTank(0).getAmount() / (float) Config.infernoEngineTankCapacity;
+
+                float mappedSmokePercent = Math.max(0, (smoke - 0.5f) * 2);
+                if (mappedSmokePercent > 0f) {
+                    int spawnModulus = 5 - (int) Math.floor(mappedSmokePercent * 4);
+
+                    if (level.getGameTime() % spawnModulus == 0) {
+                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
+                        .setPhysics(true),
+                        pos.getX(), pos.getY(), pos.getZ(), 0, 0.03f, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorFireBlockEntity entity) {
         Player ownerCheck = entity.getOwner();
         int powerDraw = entity.getEldrinPowerUsage();
 
@@ -250,19 +302,35 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                 if(entity.remainingEldrinForSatisfaction <= 0) {
                     entity.remainingEldrinForSatisfaction = powerDraw;
                     entity.remainingEldrinTime = Config.infernoEngineOperationTime;
+                    if(!getIsSatisfied(entity)) {
+                        entity.setChanged();
+                        entity.level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 3);
+                    }
                     //process fuel reduction if present
                 }
-            } else {
-                entity.remainingEldrinTime--;
             }
+            entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
 
-            if(entity.remainingEldrinTime > 0) entity.flags = entity.flags | ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
-            else entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+            if(entity.remainingEldrinTime >= 0) entity.flags = entity.flags | ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+            else {
+                if(getIsSatisfied(entity)) {
+                    entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+                    entity.setChanged();
+                    entity.level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 3);
+                } else
+                    entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+            }
         }
+    }
+
+    public void handleAnimationDrivers() {
+        if(remainingEldrinTime >= 0) pipeVibrationIntensity = Math.min(1.0f, pipeVibrationIntensity + PIPE_VIBRATION_ACCELERATION);
+        else pipeVibrationIntensity = Math.max(0.0f, pipeVibrationIntensity - PIPE_VIBRATION_ACCELERATION * 2.5f);
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
         if(cap == ForgeCapabilities.FLUID_HANDLER) return fluidHandler.cast();
 
         return super.getCapability(cap, side);
@@ -271,6 +339,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
+        this.lazyItemHandler.invalidate();
         this.fluidHandler.invalidate();
     }
 
@@ -295,6 +364,10 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
 
     public static int getScaledSmoke(int pSmokeAmount) {
         return pSmokeAmount * ActuatorFireScreen.FLUID_GAUGE_H / Config.infernoEngineTankCapacity;
+    }
+
+    public float getPipeVibrationIntensity() {
+        return pipeVibrationIntensity;
     }
 
     @Override

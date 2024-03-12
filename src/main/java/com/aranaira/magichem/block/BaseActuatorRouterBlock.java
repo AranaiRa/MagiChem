@@ -101,11 +101,11 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
     static {
         VOXEL_SHAPE_FIRE_LEFT_NUB = Block.box(2, 0, 6, 4, 1, 8);
         VOXEL_SHAPE_FIRE_LEFT_HORIZONTAL = Block.box(4, 0, 2, 6, 1, 8);
-        VOXEL_SHAPE_FIRE_LEFT_VERTICAL = Block.box(4, 0, 0, 6, 16, 2);
+        VOXEL_SHAPE_FIRE_LEFT_VERTICAL = Block.box(4, 0, 0, 6, 15, 2);
         VOXEL_SHAPE_FIRE_RIGHT_NUB = Block.box(12, 0, 6, 14, 1, 8);
         VOXEL_SHAPE_FIRE_RIGHT_HORIZONTAL = Block.box(10, 0, 2, 12, 1, 8);
-        VOXEL_SHAPE_FIRE_RIGHT_VERTICAL = Block.box(10, 0, 0, 12, 16, 2);
-        VOXEL_SHAPE_FIRE_CENTER = Block.box(6, 0, 1, 10, 14, 5);
+        VOXEL_SHAPE_FIRE_RIGHT_VERTICAL = Block.box(10, 0, 0, 12, 15, 2);
+        VOXEL_SHAPE_FIRE_CENTER = Block.box(6, 0, 1, 10, 9, 5);
 
         VOXEL_SHAPE_FIRE_AGGREGATE_NORTH = Shapes.or(
                 VOXEL_SHAPE_FIRE_LEFT_NUB,

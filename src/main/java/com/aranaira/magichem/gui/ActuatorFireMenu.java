@@ -10,8 +10,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class ActuatorFireMenu extends AbstractContainerMenu {
 
@@ -19,18 +22,26 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
     private final Level level;
     private final ContainerData data;
 
+    private static final int
+        SLOT_FUEL_X = 68, SLOT_FUEL_Y = 32;
+
     public ActuatorFireMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorFireBlockEntity.DATA_COUNT));
     }
 
     public ActuatorFireMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuRegistry.ACTUATOR_FIRE_MENU.get(), id);
+        checkContainerSize(inv, ActuatorFireBlockEntity.SLOT_COUNT);
         blockEntity = (ActuatorFireBlockEntity) entity;
         this.level = inv.player.level();
         this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
+
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            this.addSlot(new SlotItemHandler(handler, 0, 0, 0)).set(new ItemStack(Items.COAL, 1));
+        });
 
         addDataSlots(data);
     }

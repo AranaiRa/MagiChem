@@ -1,15 +1,12 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.ActuatorWaterBlock;
-import com.aranaira.magichem.block.BaseActuatorRouterBlock;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -269,7 +266,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         else {
             for (DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
                 if (dpbe instanceof ActuatorFireBlockEntity fire) {
-                    ActuatorFireBlockEntity.tick(level, pos, state, fire);
+                    ActuatorFireBlockEntity.delegatedTick(level, pos, state, fire);
                     if (ActuatorFireBlockEntity.getIsSatisfied(fire) && entity.remainingTorque <= 20) {
                         entity.remainingTorque = 100;
                         entity.operationTimeMod = fire.getReductionRate();
