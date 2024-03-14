@@ -28,7 +28,7 @@ public class CentrifugeBlockEntityRenderer implements BlockEntityRenderer<Centri
     @Override
     public void render(CentrifugeBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         this.renderWheel(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
-        this.renderCog(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        this.renderCog(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
     }
 
     private void renderWheel(CentrifugeBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
@@ -43,15 +43,15 @@ public class CentrifugeBlockEntityRenderer implements BlockEntityRenderer<Centri
             }
             case EAST -> {
                 pPoseStack.translate(1.0f, 0.0f, 0.0f);
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle));
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle + pPartialTick * (pBlockEntity.wheelSpeed)));
             }
             case SOUTH -> {
                 pPoseStack.translate(1.0f, 0.0f, 1.0f);
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle));
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle + pPartialTick * (pBlockEntity.wheelSpeed)));
             }
             case WEST -> {
                 pPoseStack.translate(0.0f, 0.0f, 1.0f);
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle));
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle + pPartialTick * (pBlockEntity.wheelSpeed)));
             }
         }
 
@@ -63,7 +63,7 @@ public class CentrifugeBlockEntityRenderer implements BlockEntityRenderer<Centri
         pPoseStack.popPose();
     }
 
-    private void renderCog(CentrifugeBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    private void renderCog(CentrifugeBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
@@ -72,24 +72,24 @@ public class CentrifugeBlockEntityRenderer implements BlockEntityRenderer<Centri
         switch((Direction)state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case NORTH: {
                 pPoseStack.translate(-0.28125f, 0.5f, -0.71875f);
-                pPoseStack.mulPose(Axis.ZN.rotationDegrees(pBlockEntity.cogAngle));
+                pPoseStack.mulPose(Axis.ZN.rotationDegrees(pBlockEntity.cogAngle + pPartialTick * (pBlockEntity.cogSpeed)));
                 break;
             }
             case EAST: {
                 pPoseStack.translate(1.71875f, 0.5f, -0.28125f);
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(90.0f));
-                pPoseStack.mulPose(Axis.ZP.rotationDegrees(pBlockEntity.cogAngle));
+                pPoseStack.mulPose(Axis.ZP.rotationDegrees(pBlockEntity.cogAngle + pPartialTick * (pBlockEntity.cogSpeed)));
                 break;
             }
             case SOUTH: {
                 pPoseStack.translate(1.28125f, 0.5f, 1.71875f);
-                pPoseStack.mulPose(Axis.ZP.rotationDegrees(pBlockEntity.cogAngle));
+                pPoseStack.mulPose(Axis.ZP.rotationDegrees(pBlockEntity.cogAngle + pPartialTick * (pBlockEntity.cogSpeed)));
                 break;
             }
             case WEST: {
                 pPoseStack.translate(-0.71875f, 0.5f, 1.28125f);
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(90.0f));
-                pPoseStack.mulPose(Axis.ZN.rotationDegrees(pBlockEntity.cogAngle));
+                pPoseStack.mulPose(Axis.ZN.rotationDegrees(pBlockEntity.cogAngle + pPartialTick * (pBlockEntity.cogSpeed)));
                 break;
             }
         }
