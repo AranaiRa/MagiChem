@@ -270,8 +270,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                     if (ActuatorFireBlockEntity.getIsSatisfied(fire) && entity.remainingTorque <= 20) {
                         entity.remainingTorque = 100;
                         entity.operationTimeMod = fire.getReductionRate();
-                        entity.setChanged();
-                        entity.level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 3);
+                        entity.syncAndSave();
                     }
                 }
             }
@@ -297,7 +296,8 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
             FixationSeparationRecipe recipe = getRecipeInSlot(entity, processingSlot);
             if (processingItem != ItemStack.EMPTY && recipe != null) {
                 if (canCraftItem(entity, recipe)) {
-                    if (entity.progress > getOperationTicks(entity.getGrimeFromData(), entity.operationTimeMod)) {
+
+                    if (entity.progress > getOperationTicks(entity.getGrimeFromData(), entity.operationTimeMod*100)) {
                         if (!level.isClientSide()) {
                             craftItem(entity, recipe, processingSlot);
                         }
@@ -326,6 +326,11 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                 entity.pluginLinkageCountdown--;
             }
         }
+    }
+
+    private void syncAndSave() {
+        this.setChanged();
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
     private static void updateActuatorValues(CentrifugeBlockEntity entity) {
