@@ -306,7 +306,31 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                     Vector3f right = new Vector3f(0f, 2f, 0f);
 
                     Direction dir = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                    if(dir == Direction.WEST) {
+                    if(dir == Direction.NORTH) {
+                        mid.x = 0.5f;
+                        mid.z = 0.1875f;
+                        left.x = 0.6875f;
+                        left.z = 0.0625f;
+                        right.x = 0.3125f;
+                        right.z = 0.0625f;
+                    }
+                    if(dir == Direction.EAST) {
+                        mid.x = 0.8125f;
+                        mid.z = 0.5f;
+                        left.x = 0.9375f;
+                        left.z = 0.3125f;
+                        right.x = 0.9375f;
+                        right.z = 0.6875f;
+                    }
+                    else if(dir == Direction.SOUTH) {
+                        mid.x = 0.5f;
+                        mid.z = 0.8125f;
+                        left.x = 0.3125f;
+                        left.z = 0.9375f;
+                        right.x = 0.6875f;
+                        right.z = 0.9375f;
+                    }
+                    else if(dir == Direction.WEST) {
                         mid.x = 0.1875f;
                         mid.z = 0.5f;
                         left.x = 0.0625f;
