@@ -25,6 +25,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -34,6 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -56,13 +58,15 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
             POWER_REDUCTION_FUEL_SUPER = {0, 36, 39, 42, 45, 48, 51, 54, 57, 60 ,63, 66, 69, 72};
     public static final int
             SLOT_COUNT = 1,
-            DATA_COUNT = 4, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3,
-            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_FUEL_SATISFACTION_TYPE = 12, FLAG_FUEL_NORMAL = 4, FLAG_FUEL_SUPER = 8;
+            DATA_COUNT = 6, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3, DATA_REMAINING_FUEL_TIME = 4, DATA_FUEL_DURATION = 5,
+            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_FUEL_NORMAL = 4, FLAG_FUEL_SUPER = 8, FLAG_FUEL_SATISFACTION_TYPE = 12;
     private static final float
             PIPE_VIBRATION_ACCELERATION = 0.002f;
     private int
             powerLevel = 1,
             remainingEldrinTime = -1,
+            remainingFuelTime = -1,
+            fuelDuration = -1,
             flags;
     private float
             remainingEldrinForSatisfaction,
@@ -79,7 +83,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return stack.getItem().getBurnTime(stack, RecipeType.SMELTING) > 0;
+            return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
         }
     };
 
@@ -103,6 +107,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                     case DATA_POWER_LEVEL -> ActuatorFireBlockEntity.this.powerLevel;
                     case DATA_FLAGS -> ActuatorFireBlockEntity.this.flags;
                     case DATA_SMOKE -> ActuatorFireBlockEntity.this.containedSmoke.getAmount();
+                    case DATA_REMAINING_FUEL_TIME -> ActuatorFireBlockEntity.this.remainingFuelTime;
+                    case DATA_FUEL_DURATION -> ActuatorFireBlockEntity.this.fuelDuration;
                     default -> -1;
                 };
             }
@@ -119,6 +125,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                         else
                             ActuatorFireBlockEntity.this.containedSmoke.setAmount(pValue);
                     }
+                    case DATA_REMAINING_FUEL_TIME -> ActuatorFireBlockEntity.this.remainingFuelTime = pValue;
+                    case DATA_FUEL_DURATION -> ActuatorFireBlockEntity.this.fuelDuration = pValue;
                 }
             }
 
@@ -255,6 +263,11 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         return nbt;
     }
 
+    public void syncAndSave() {
+        this.setChanged();
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    }
+
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -265,12 +278,19 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     public void processCompletedOperation() {
         int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSmoke.getAmount() + getSmokePerProcess());
         containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Math.min(newTotal, Config.delugePurifierTankCapacity));
-        setChanged();
-        level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        syncAndSave();
     }
 
     public static boolean getIsSatisfied(ActuatorFireBlockEntity entity) {
         return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+    }
+
+    public static boolean getIsFuelled(ActuatorFireBlockEntity entity) {
+        return (entity.flags & FLAG_FUEL_NORMAL) == FLAG_FUEL_NORMAL;
+    }
+
+    public static boolean getIsSuperFuelled(ActuatorFireBlockEntity entity) {
+        return (entity.flags & FLAG_FUEL_SUPER) == FLAG_FUEL_SUPER;
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
@@ -324,16 +344,40 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
             float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.FIRE, Math.min(powerDraw, entity.remainingEldrinForSatisfaction), 1);
             entity.remainingEldrinForSatisfaction -= consumption;
 
+            //Fuel processing
+            if(entity.remainingFuelTime <= 0) {
+                ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
+                if(!fuelStack.isEmpty()) {
+                    entity.fuelDuration = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem(), 1), RecipeType.SMELTING);
+                    entity.remainingFuelTime = entity.fuelDuration;
+                    entity.itemHandler.setStackInSlot(0, new ItemStack(fuelStack.getItem(), fuelStack.getCount()-1));
+                    entity.flags = entity.flags | FLAG_FUEL_NORMAL;
+                    entity.syncAndSave();
+
+                    //TODO: handle fancy alchemy coal
+                } else {
+                    if(getIsFuelled(entity) || getIsSuperFuelled(entity)) {
+                        entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+                        entity.syncAndSave();
+                    } else {
+                        entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+                    }
+                }
+            } else {
+                entity.remainingFuelTime = Math.max(-1, entity.remainingFuelTime - 1);
+            }
+
+            //Eldrin processing
             if(entity.remainingEldrinTime <= 0) {
                 if(entity.remainingEldrinForSatisfaction <= 0) {
                     entity.remainingEldrinForSatisfaction = powerDraw;
                     entity.remainingEldrinTime = Config.infernoEngineOperationTime;
+                    }
+
                     if(!getIsSatisfied(entity)) {
-                        entity.setChanged();
-                        entity.level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 3);
+                        entity.syncAndSave();
                     }
                     //process fuel reduction if present
-                }
             }
             entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
 
@@ -341,8 +385,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
             else {
                 if(getIsSatisfied(entity)) {
                     entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
-                    entity.setChanged();
-                    entity.level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 3);
+                    entity.syncAndSave();
                 } else
                     entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
             }
@@ -392,6 +435,10 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         return pSmokeAmount * ActuatorFireScreen.FLUID_GAUGE_H / Config.infernoEngineTankCapacity;
     }
 
+    public static int getScaledFuel(int pFuelAmount, int pFuelDuration) {
+        return (int)(((float)pFuelAmount / (float)pFuelDuration) * ActuatorFireScreen.FUEL_GAUGE_H);
+    }
+
     public float getPipeVibrationIntensity() {
         return pipeVibrationIntensity;
     }
@@ -424,10 +471,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
 
     @Override
     public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
-        if(fluidAction.execute()) {
-            setChanged();
-            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-        }
+        boolean doUpdate = false;
+        if(fluidAction.execute()) doUpdate = true;
 
         //Smoke is extract only
         Fluid fluid = fluidStack.getFluid();
@@ -444,6 +489,9 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                 return new FluidStack(fluid, incomingAmount - extantAmount);
             }
         }
+
+        if(doUpdate) syncAndSave();
+
         return fluidStack;
     }
 

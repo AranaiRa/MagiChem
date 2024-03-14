@@ -23,7 +23,7 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     private static final int
-        SLOT_FUEL_X = 68, SLOT_FUEL_Y = 32;
+        SLOT_FUEL_X = 68, SLOT_FUEL_Y = 36;
 
     public ActuatorFireMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorFireBlockEntity.DATA_COUNT));
@@ -40,7 +40,7 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 0, 0)).set(new ItemStack(Items.COAL, 1));
+            this.addSlot(new SlotItemHandler(handler, 0, SLOT_FUEL_X, SLOT_FUEL_Y));
         });
 
         addDataSlots(data);
@@ -103,4 +103,8 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
     }
 
     public int getSmokeInTank() { return data.get(ActuatorFireBlockEntity.DATA_SMOKE); }
+
+    public int getRemainingFuelTime() { return data.get(ActuatorFireBlockEntity.DATA_REMAINING_FUEL_TIME); }
+
+    public int getFuelDuration() { return data.get(ActuatorFireBlockEntity.DATA_FUEL_DURATION); }
 }

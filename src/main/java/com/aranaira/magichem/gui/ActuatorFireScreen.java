@@ -25,11 +25,12 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_actuator_fire.png");
     private static final ResourceLocation TEXTURE_SMOKE =
             new ResourceLocation("minecraft", "textures/block/water_still.png");
-    private static final int
+    public static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
             SYMBOL_X = 48, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
             POWER_X = 34, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
             WATER_X = 77, WATER_Y = 15, WATER_W = 8, STEAM_X = 89, STEAM_Y = 15, STEAM_W = 4,
+            FUEL_GAUGE_X = 67, FUEL_GAUGE_Y = 12, FUEL_GAUGE_U = 176, FUEL_GAUGE_V = 40, FUEL_GAUGE_W = 18, FUEL_GAUGE_H = 16,
             TOOLTIP_POWER_X = 32, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
             TOOLTIP_FUEL_X = 66, TOOLTIP_FUEL_Y = 11, TOOLTIP_FUEL_W = 20, TOOLTIP_FUEL_H = 18,
             TOOLTIP_SMOKE_X = 89, TOOLTIP_SMOKE_Y = 14, TOOLTIP_SMOKE_W = 6, TOOLTIP_SMOKE_H = 35,
@@ -82,6 +83,13 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         int sH = getScaledEldrinTime();
         int sY = SYMBOL_H - sH;
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
+
+        //fuel burn
+        if(menu.getRemainingFuelTime() > 0) {
+            int fH = ActuatorFireBlockEntity.getScaledFuel(menu.getRemainingFuelTime(), menu.getFuelDuration());
+            int fY = FUEL_GAUGE_H - fH;
+            gui.blit(TEXTURE, x + FUEL_GAUGE_X, y + FUEL_GAUGE_Y + fY, FUEL_GAUGE_U, FUEL_GAUGE_V + fY, FUEL_GAUGE_W, fH);
+        }
 
         //Time icon if mode calls for it
         if(!ActuatorFireBlockEntity.getIsPowerReductionMode(menu.getFlags()))
@@ -198,10 +206,12 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             gui.drawString(font, Component.literal("-"), 113, 23, 0xffaa0000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 113, 42, 0xff000000, false);
+        gui.drawString(font, Component.literal(""+ActuatorFireBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 113, 42, 0xff000000, false);
+
+        gui.drawString(font, Component.literal(""+menu.getRemainingFuelTime()+"/"+menu.getFuelDuration()), -30, -30, 0xffffffff, false);
     }
 
     private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.delugePurifierOperationTime;
+        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.infernoEngineOperationTime;
     }
 }
