@@ -271,9 +271,27 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
 
         //TODO: Uncommment the original line once the bottle slot stack size has been expanded
         //Fill Bottle Slot
-        //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
         //TODO: Remove this once the bottle slot stack size has been expanded
-        ItemStack bottles = entity.itemHandler.insertItem(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        ItemStack bottles = ItemStack.EMPTY;
+
+        if(entity.itemHandler.getStackInSlot(SLOT_BOTTLES_OUTPUT) == ItemStack.EMPTY) {
+            if(bottlesToInsert <= 64)
+                entity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert));
+            else {
+                entity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, 64));
+                bottles = new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert - 64);
+            }
+        } else {
+            int existingBottlesInSlot = entity.itemHandler.getStackInSlot(SLOT_BOTTLES_OUTPUT).getCount();
+            if(bottlesToInsert + existingBottlesInSlot > 64) {
+                int remainder = bottlesToInsert + existingBottlesInSlot - 64;
+                entity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, 64));
+                bottles = new ItemStack(Items.GLASS_BOTTLE, remainder);
+            } else {
+                entity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert + existingBottlesInSlot));
+            }
+        }
+
         SimpleContainer bottleSpill = new SimpleContainer(5);
         while(bottles.getCount() > 0) {
             int count = bottles.getCount();
