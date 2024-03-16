@@ -1,17 +1,17 @@
 {
   "type": "mna:manaweaving-recipe",
-  "output": "magichem:centrifuge",
+  "output": "magichem:actuator_fire",
   "tier": 3,
   "items": [
+    "magichem:perfected_electrum",
     "magichem:magic_circle",
     "magichem:perfected_electrum",
+    "magichem:perfected_electrum",
+    "mna:mote_fire",
+    "magichem:perfected_electrum",
     "mna:decoration/arcane_sandstone",
-    "magichem:perfected_electrum",
-    "mna:alembic",
-    "magichem:perfected_electrum",
-    "mna:decoration/arcane_sandstone",
-    "magichem:perfected_electrum",
-    "magichem:magic_circle"
+    "minecraft:furnace",
+    "mna:decoration/arcane_sandstone"
   ],
   "patterns": [
     "mna:inverted_triangle",
