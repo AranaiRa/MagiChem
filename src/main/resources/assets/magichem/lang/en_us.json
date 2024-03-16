@@ -340,7 +340,7 @@
 
   "construct.magichem:sort_materia": "Sort Materia",
   "construct.magichem:query_check_vessel": "Condition: Check Vessel Fill",
-  "construct.magichem:clean_alchemical_apparatus": "Clean Alchemical Apparatus",
+  "construct.magichem:clean_alchemical_apparatus": "Clean Alchemical Device",
   "construct.magichem:query_has_grime_level": "Condition: Has Grime Level",
 
   "gui.mna.parameter.sort_materia.point": "What alchemical device should the construct remove materia from?",
@@ -350,8 +350,8 @@
   "gui.mna.parameter.query_check_vessel.point": "What Materia Vessel should the construct look at?",
   "gui.mna.parameter.query_check_vessel.int": "What percentage full must the Materia Vessel be?",
 
-  "gui.mna.parameter.query_has_grime_level.point": "What apparatus should the construct check the grime level of?",
-  "gui.mna.parameter.query_has_grime_level.int": "What percentage full of grime must the apparatus be?",
+  "gui.mna.parameter.query_has_grime_level.point": "What device should the construct check the grime level of?",
+  "gui.mna.parameter.query_has_grime_level.int": "What percentage full of grime must the device be?",
 
   "mechanic.mna:magichem": "Alchemy",
 

@@ -477,6 +477,7 @@
   "Magic Circles": {
     "index": 1270,
     "category": "magichem",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -534,6 +535,7 @@
   "Circle of Fabrication": {
     "index": "1401",
     "category": "magichem",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -627,6 +629,7 @@
   "Circle of Power": {
     "index": "1402",
     "category": "magichem",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -727,6 +730,7 @@
   "Grains of Transmuted Silver": {
     "index": "1404",
     "category": "magichem",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -790,6 +794,7 @@
   "Focusing Catalyst": {
     "index": "1405",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -908,6 +913,7 @@
   "Power Spikes": {
     "index": "1403",
     "category": "magichem",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -996,6 +1002,7 @@
   "Ritual of the Rod and Circle": {
     "index": "1000",
     "category": "rituals",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1042,6 +1049,7 @@
   "Centrifuge": {
     "index": "1201",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1120,6 +1128,7 @@
   "Process: Fixation": {
     "index": "1103",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1165,6 +1174,7 @@
   "Process: Separation": {
     "index": "1108",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1217,6 +1227,7 @@
   "Admixer": {
     "index": "1202",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1265,6 +1276,7 @@
   "Elemental Actuators": {
     "index": "1300",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1301,6 +1313,7 @@
   "Quake Refinery": {
     "index": "1301",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1322,6 +1335,7 @@
   "Deluge Purifier": {
     "index": "1302",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1384,6 +1398,7 @@
   "Inferno Engine": {
     "index": "1303",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1439,6 +1454,7 @@
   "Gale Pressurizer": {
     "index": "1304",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1666,6 +1682,7 @@
   "Materia Vessel": {
     "index": "1201",
     "category": "magichem",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
