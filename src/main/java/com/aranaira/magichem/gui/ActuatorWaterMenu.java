@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
+import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
@@ -39,11 +40,6 @@ public class ActuatorWaterMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         addDataSlots(data);
-    }
-
-    @Override
-    public ItemStack quickMoveStack(Player player, int i) {
-        return null;
     }
 
     @Override
@@ -102,4 +98,25 @@ public class ActuatorWaterMenu extends AbstractContainerMenu {
     }
 
     public int getSteamInTank() { return data.get(ActuatorWaterBlockEntity.DATA_STEAM); }
+
+    private static final int SLOT_INVENTORY_BEGIN = 0;
+    private static final int SLOT_INVENTORY_COUNT = 36;
+
+    @Override
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        ItemStack targetStack = slots.get(pIndex).getItem();
+        ItemStack targetStackCopy = targetStack.copy();
+
+        //If player inventory
+        if(pIndex >= SLOT_INVENTORY_BEGIN && pIndex < SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT) {
+            //try to move to input slots
+            if(moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT - 1, false)) {
+                slots.get(pIndex).set(targetStackCopy);
+                return ItemStack.EMPTY;
+            } else
+                return targetStack;
+        }
+
+        return getSlot(pIndex).getItem();
+    }
 }

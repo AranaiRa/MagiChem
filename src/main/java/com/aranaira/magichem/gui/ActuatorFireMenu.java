@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
+import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -44,11 +45,6 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
         });
 
         addDataSlots(data);
-    }
-
-    @Override
-    public ItemStack quickMoveStack(Player player, int i) {
-        return null;
     }
 
     @Override
@@ -107,4 +103,25 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
     public int getRemainingFuelTime() { return data.get(ActuatorFireBlockEntity.DATA_REMAINING_FUEL_TIME); }
 
     public int getFuelDuration() { return data.get(ActuatorFireBlockEntity.DATA_FUEL_DURATION); }
+
+    private static final int SLOT_INVENTORY_BEGIN = 0;
+    private static final int SLOT_INVENTORY_COUNT = 36;
+
+    @Override
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        ItemStack targetStack = slots.get(pIndex).getItem();
+        ItemStack targetStackCopy = targetStack.copy();
+
+        //If player inventory
+        if(pIndex >= SLOT_INVENTORY_BEGIN && pIndex < SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT) {
+            //try to move to input slots
+            if(moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT - 1, false)) {
+                slots.get(pIndex).set(targetStackCopy);
+                return ItemStack.EMPTY;
+            } else
+                return targetStack;
+        }
+
+        return getSlot(pIndex).getItem();
+    }
 }
