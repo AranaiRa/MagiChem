@@ -10,6 +10,9 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,8 +27,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
@@ -37,6 +42,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Random;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler {
 
@@ -60,6 +68,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     private FluidStack
             containedWater, containedSteam;
     private final LazyOptional<IFluidHandler> fluidHandler;
+    private static final Random random = new Random();
 
     public ActuatorWaterBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -228,7 +237,100 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, ActuatorWaterBlockEntity entity) {
+    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+        if(t instanceof ActuatorWaterBlockEntity awbe) {
+
+            float water = awbe.getWaterPercent();
+            if(water > 0) {
+                Vector3f mid = new Vector3f(0f, 1.5625f, 0f);
+                Vector3f left = new Vector3f(0f, 1.03125f, 0f);
+                Vector3f right = new Vector3f(0f, 1.03125f, 0f);
+
+                Vector2f leftSpeed = new Vector2f();
+
+                Direction dir = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                if(dir == Direction.NORTH) {
+                    mid.x = 0.5f;
+                    mid.z = 0.6875f;
+                    left.x = 0.09375f;
+                    left.z = 0.3125f;
+                    right.x = 0.90625f;
+                    right.z = 0.3125f;
+                    leftSpeed.x = -0.04f;
+                    leftSpeed.y = 0.0f;
+                }
+                if(dir == Direction.EAST) {
+                    mid.x = 0.3125f;
+                    mid.z = 0.5f;
+                    left.x = 0.6875f;
+                    left.z = 0.09375f;
+                    right.x = 0.6875f;
+                    right.z = 0.90625f;
+                    leftSpeed.x = 0.0f;
+                    leftSpeed.y = -0.04f;
+                }
+                if(dir == Direction.SOUTH) {
+                    mid.x = 0.5f;
+                    mid.z = 0.3125f;
+                    left.x = 0.90625f;
+                    left.z = 0.6875f;
+                    right.x = 0.09375f;
+                    right.z = 0.6875f;
+                    leftSpeed.x = 0.04f;
+                    leftSpeed.y = 0.0f;
+                }
+                if(dir == Direction.WEST) {
+                    mid.x = 0.6875f;
+                    mid.z = 0.5f;
+                    left.x = 0.3125f;
+                    left.z = 0.09375f;
+                    right.x = 0.3125f;
+                    right.z = 0.90625f;
+                    leftSpeed.x = 0.0f;
+                    leftSpeed.y = -0.04f;
+                }
+
+                //Spawn drip particles
+                for(int i=0; i<3; i++) {
+                    Vector2f dripShift = new Vector2f((random.nextFloat() * 2.0f - 1.0f) * 0.05f, (random.nextFloat() * 2.0f - 1.0f) * 0.05f);
+
+                    double dripX = pos.getX() + mid.x + dripShift.x;
+                    double dripY = pos.getY() + mid.y;
+                    double dripZ = pos.getZ() + mid.z + dripShift.y;
+
+                    level.addParticle(new MAParticleType(ParticleInit.DRIP.get()).setMaxAge(13)
+                                .setMover(new ParticleLerpMover(dripX, dripY, dripZ, pos.getX() + mid.x, dripY - 1.0f, pos.getZ() + mid.z)),
+                            dripX, dripY, dripZ,
+                            0, 0, 0);
+                }
+
+                //Spawn steam jets
+                float steam = awbe.data.get(DATA_STEAM);
+                if((int)steam > Config.delugePurifierTankCapacity / 2) {
+                    float mappedSteamPercent = Math.max(0, ((steam / Config.delugePurifierTankCapacity) - 0.5f) * 2) * 2;
+                    int spawnModulus = (int)Math.ceil(mappedSteamPercent * 5);
+
+                    long time = level.getGameTime();
+
+                    if(time % 20 <= spawnModulus) {
+                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
+                                        .setPhysics(true).setScale(0.065f).setMaxAge(10),
+                                pos.getX() + left.x, pos.getY() + left.y, pos.getZ() + left.z,
+                                leftSpeed.x, 0.075f, leftSpeed.y);
+                    }
+
+                    if((time + 10) % 20 <= spawnModulus) {
+                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
+                                        .setPhysics(true).setScale(0.065f).setMaxAge(10),
+                                pos.getX() + right.x, pos.getY() + right.y, pos.getZ() + right.z,
+                                -leftSpeed.x, 0.075f, -leftSpeed.y);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorWaterBlockEntity entity) {
         Player ownerCheck = entity.getOwner();
         int powerDraw = entity.getEldrinPowerUsage();
 

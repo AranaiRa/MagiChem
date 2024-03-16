@@ -308,7 +308,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
                         //tick actuators
                         for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
                             if(dpbe instanceof ActuatorWaterBlockEntity water) {
-                                ActuatorWaterBlockEntity.tick(level, pos, state, water);
+                                ActuatorWaterBlockEntity.delegatedTick(level, pos, state, water);
                             }
                         }
                     }
