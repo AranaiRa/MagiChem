@@ -24,12 +24,6 @@ public class RitualRegistry {
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-reagent2craft"),
                             new RitualEffectCraftPowerReagent2(new ResourceLocation(MagiChemMod.MODID, "rituals/reagent_2_crafting"))
                     );
-
-                    //Ritual of Infusion
-                    helper.register(
-                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-alchemicalinfusion"),
-                            new RitualEffectAlchemicalInfusion(new ResourceLocation(MagiChemMod.MODID, "rituals/alchemical_infusion"))
-                    );
                 });
     }
 

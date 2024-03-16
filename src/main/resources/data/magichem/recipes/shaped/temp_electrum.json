@@ -7,6 +7,12 @@
     },
     {
       "item": "mna:transmuted_silver"
+    },
+    {
+      "item": "magichem:admixture_metal"
+    },
+    {
+      "item": "magichem:essentia_nigredo"
     }
   ],
   "result": {

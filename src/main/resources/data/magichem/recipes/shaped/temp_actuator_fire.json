@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ECE",
+    "EME",
+    "SFS"
+  ],
+  "key": {
+    "C": {
+      "item": "magichem:magic_circle"
+    },
+    "E": {
+      "item": "magichem:perfected_electrum"
+    },
+    "M": {
+      "item": "mna:mote_fire"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "S": {
+      "item": "mna:decoration/arcane_sandstone"
+    }
+  },
+  "result": {
+    "item": "magichem:actuator_fire"
+  }
+}
