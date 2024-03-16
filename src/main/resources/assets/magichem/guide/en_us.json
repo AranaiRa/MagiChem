@@ -18,7 +18,6 @@
           },
           {
             "text": " is the purified essence of ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -28,7 +27,6 @@
           },
           {
             "text": " distilled from an object or fluid. It's the most fundamental part of the alchemical arts. There are eighteen types of Essentia, each bearing a particular ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -38,7 +36,6 @@
           },
           {
             "text": " and arranged into three ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -48,11 +45,10 @@
           },
           {
             "text": ", groupings of Essentia types that share similar themes.",
-            "bold": false,
             "color": "black"
           },
           {
-            "text": "\n\n"
+            "text": "\n\n\n"
           },
           {
             "text": "The ",
@@ -65,7 +61,6 @@
           },
           {
             "text": " contains Essentia that represent the six core affinities of magic that most magicians are already familiar with: ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -75,7 +70,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -85,7 +79,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -95,7 +88,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -105,7 +97,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -115,7 +106,6 @@
           },
           {
             "text": ", and ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -124,12 +114,11 @@
             "color": "black"
           },
           {
-            "text": ".",
-            "bold": false,
+            "text": ". In addition to their uses for alchemy, Essentia of the House of Elements can be burned in an Eldrin Fume Filter to generate small amounts of Eldrin power (though the bottle it's carried in is, unfortunately, destroyed in the process).",
             "color": "black"
           },
           {
-            "text": "\n\n"
+            "text": "\n\n\n"
           },
           {
             "text": "The ",
@@ -142,7 +131,6 @@
           },
           {
             "text": " contains Essentia that ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -152,7 +140,6 @@
           },
           {
             "text": " what something is; if the House of Elements is about nouns, the House of Qualities is about adjectives. There are eight members of the House of Qualities: ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -162,7 +149,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -172,7 +158,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -182,7 +167,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -192,7 +176,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -202,7 +185,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -212,7 +194,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -222,7 +203,6 @@
           },
           {
             "text": ", and ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -232,11 +212,10 @@
           },
           {
             "text": ".",
-            "bold": false,
             "color": "black"
           },
           {
-            "text": "\n\n"
+            "text": "\n\n\n"
           },
           {
             "text": "The ",
@@ -249,7 +228,6 @@
           },
           {
             "text": " contains four mysterious types of Essentia that represent ascending power and the search for the Philosopher's Stone: ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -259,7 +237,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -269,7 +246,6 @@
           },
           {
             "text": ", ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -279,7 +255,6 @@
           },
           {
             "text": ", and ",
-            "bold": false,
             "color": "black"
           },
           {
@@ -289,7 +264,6 @@
           },
           {
             "text": ".",
-            "bold": false,
             "color": "black"
           }
         ]
@@ -358,7 +332,6 @@
   "Process: Distillation": {
     "index": "1106",
     "category": "magichem",
-    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -502,9 +475,8 @@
     ]
   },
   "Magic Circles": {
-    "index": 1251,
+    "index": 1270,
     "category": "magichem",
-    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -560,9 +532,8 @@
     ]
   },
   "Circle of Fabrication": {
-    "index": "1252",
+    "index": "1401",
     "category": "magichem",
-    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -654,9 +625,8 @@
     ]
   },
   "Circle of Power": {
-    "index": "1253",
+    "index": "1402",
     "category": "magichem",
-    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -755,9 +725,8 @@
     "related_recipes": []
   },
   "Grains of Transmuted Silver": {
-    "index": "1300",
+    "index": "1404",
     "category": "magichem",
-    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -819,9 +788,8 @@
     ]
   },
   "Focusing Catalyst": {
-    "index": "1301",
+    "index": "1405",
     "category": "magichem",
-    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -934,12 +902,12 @@
       {
         "type": "ritual",
         "location": "magichem:rituals/reagent_2_crafting"
-      }]
+      }
+    ]
   },
   "Power Spikes": {
-    "index": "1400",
+    "index": "1403",
     "category": "magichem",
-    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -1003,7 +971,6 @@
   "Superheated Glass Panes": {
     "index": 0,
     "category": "artifice",
-    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1029,7 +996,6 @@
   "Ritual of the Rod and Circle": {
     "index": "1000",
     "category": "rituals",
-    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -1073,11 +1039,9 @@
       }
     ]
   },
-
   "Centrifuge": {
     "index": "1201",
     "category": "magichem",
-    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1118,6 +1082,29 @@
         "value": "",
         "json": [
           {
+            "text": "A silver gear on one corner of the device can be cranked to operate the device—either manually, with a construct set to "
+          },
+          {
+            "text": "Activate",
+            "bold": true
+          },
+          {
+            "text": " the block, or for ten minutes by dusting it with Animus Dust.\n\nTwo corners of the device have "
+          },
+          {
+            "text": "Elemental Actuator",
+            "bold": true
+          },
+          {
+            "text": " ports if you wish to enhance the device using Eldrin power."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "The large slot in the center of the device holds the current Admixture being processed. The three slots to the left of that are for input items, which can be any Admixture.\n\nDirectly above the processing slot is a slot for bottles. Each time the centrifuge processes an Admixture, its bottle will be inserted into this slot. If there's not enough space for another bottle, the machine will stall until space is made.\n\nThe nine slots to the right of the processing slot hold separated Materia, which can only be extracted from the machine if bottles are present in the single slot above the output slots."
           }
         ]
@@ -1133,7 +1120,6 @@
   "Process: Fixation": {
     "index": "1103",
     "category": "magichem",
-    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1179,7 +1165,6 @@
   "Process: Separation": {
     "index": "1108",
     "category": "magichem",
-    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1232,7 +1217,6 @@
   "Admixer": {
     "index": "1202",
     "category": "magichem",
-    "tier": 3,
     "sections": [
       {
         "type": "title",
@@ -1275,6 +1259,432 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/admixer"
+      }
+    ]
+  },
+  "Elemental Actuators": {
+    "index": "1300",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Elemental Actuators"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An "
+          },
+          {
+            "text": "Elemental Actuator",
+            "bold": true
+          },
+          {
+            "text": " is a device that consumes Eldrin power (and other reagents) in order to enhance an alchemical device. The Alembic is too simple and crude to make use of Elemental Actuators, but all other devices have at least two ports that an Elemental Actuator can be plugged into.\n\nSlotting multiple copies of an Elemental Actuator into the same device has no effect; only one of the Actuators will have any effect on the target device.\n\nElemental Actuators that use Earth, Water, Air, and Fire Eldrin power can be crafted at Tier 3, while those that use Arcane and Ender Eldrin power can be crafted at Tier 4."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_fire"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_water"
+      }
+    ]
+  },
+  "Quake Refinery": {
+    "index": "1301",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Quake Refinery"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Coming in 0.3.3",
+            "italic": true
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Deluge Purifier": {
+    "index": "1302",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Deluge Purifier"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Deluge Purifier",
+            "bold": true
+          },
+          {
+            "text": " is an Elemental Actuator that uses Water Eldrin power. It must also be supplied with water, some of which is consumed every operation.\n\nThe device the Deluge Purifier is modifying benefits from increased Efficiency."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The leftmost gauge lets you tell the Deluge Purifier how much Eldrin power to use each cycle. The elemental water symbol to its right displays the amount of time remaining until more Eldrin power is consumed.\n\nTo the right of this, a wide and tall gauge acts as a tank for water, which is consumed every Eldrin power cycle. ("
+          },
+          {
+            "text": "Creator's note: You currently can't bucket into/out of the Deluge Purifier manually; use Constructs or some other automated method for the time being.",
+            "italic": true
+          },
+          {
+            "text": ")\n\nTo the right of this, a thin, tall gauge shows how much "
+          },
+          {
+            "text": "Steam",
+            "bold": true
+          },
+          {
+            "text": " has accumulated in the device. Whenever the targeted device finishes an operation, the Deluge Purifier generates some Steam. Steam can be used by a "
+          },
+          {
+            "text": "Gale Pressurizer",
+            "bold": true
+          },
+          {
+            "text": ". There is no negative effect to the machine if the Steam gauge is full, and excess Steam vents out harmlessly.\n\nThe rightmost area of the interface shows you how much the target device's Efficiency is being increased as well as the current amount of Eldrin power consumed every cycle."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_water"
+      }
+    ]
+  },
+  "Inferno Engine": {
+    "index": "1303",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Inferno Engine"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Inferno Engine",
+            "bold": true
+          },
+          {
+            "text": " is an Elemental Actuator that uses Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate an Improved Alembic, Centrifuge, or Admixer."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The leftmost gauge lets you tell the Inferno Engine how much Eldrin power to use each cycle. The elemental fire symbol to its right displays the amount of time remaining until more Eldrin power is consumed.\n\nTo the right of this, a slot can be filled with fuel items to enhance the device's effectiveness. The wavy fumes above the slot show how much time is remaining on the current fuel item, much like a vanilla furnace.\n\nTo the right of this, a thin, tall gauge shows how much "
+          },
+          {
+            "text": "Smoke",
+            "bold": true
+          },
+          {
+            "text": " has accumulated in the device. Whenever the targeted device finishes an operation, the Inferno Engine generates some Smoke. Smoke can be used by a "
+          },
+          {
+            "text": "Gale Pressurizer",
+            "bold": true
+          },
+          {
+            "text": ". There is no negative effect to the machine if the Smoke gauge is full, and excess Smoke vents out harmlessly.\n\nThe rightmost area of the interface shows you how much FE or operation time reduction the Inferno Engine is supplying as well as the current amount of Eldrin power consumed every cycle."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_fire"
+      }
+    ]
+  },
+  "Gale Pressurizer": {
+    "index": "1304",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Gale Pressurizer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Coming in 0.3.4",
+            "italic": true
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Grime": {
+    "index": "1202",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Grime"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "As an alchemical device operates, it builds up "
+          },
+          {
+            "text": "Grime",
+            "bold": true
+          },
+          {
+            "text": ". Successful operations produce more Grime than failed ones, and a device loses efficiency and has longer operation time when it has accumulated more than 50% of its Grime capacity.\n\nA device can be manually cleaned with a "
+          },
+          {
+            "text": "Cleaning Brush",
+            "bold": true
+          },
+          {
+            "text": " or automatically cleaned with a Construct bound to a "
+          },
+          {
+            "text": "Clean Alchemical Apparatus",
+            "bold": true
+          },
+          {
+            "text": " task in a Lodestar.\n\nCleaning a device produces "
+          },
+          {
+            "text": "Alchemical Waste",
+            "bold": true
+          },
+          {
+            "text": ". Alchemical Waste currently has no use, but it "
+          },
+          {
+            "text": "is",
+            "italic": true
+          },
+          {
+            "text": " a favorite snack of Constructs. Do with that information what you will."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/cleaning_brush"
+      }
+    ]
+  },
+  "Command: Sort Materia": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Sort Materia"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause a construct to extract materia from an alchemical device and attempt to place it in Materia Vessels within a specified area.\n\nWhen emptying the alchemical device, the construct will always take materia from the largest stack first.\n\nIt requires a "
+          },
+          {
+            "text": "fluid nozzle arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Command: Clean Alchemical Device": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Clean Alchemical Device"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause the construct to use some internally stored water to clean the Grime off of an alchemical device at the target location.\n\nIt requires a "
+          },
+          {
+            "text": "fluid nozzle arm ",
+            "color": "dark_purple"
+          },
+          {
+            "text": "and a "
+          },
+          {
+            "text": "tank torso filled with water",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Condition: Check Vessel Fill": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Check Vessel Fill"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will "
+          },
+          {
+            "text": "check whether a Materia Vessel's contents are above a given percent",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", returning "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if it is, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it is not."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Condition: Has Grime Level": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Has Grime Level"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will "
+          },
+          {
+            "text": "check whether an alchemical device's internal Grime has reached a certain percent",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", returning ",
+            "color": "black"
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if it has, and ",
+            "color": "black"
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it has not.",
+            "color": "black"
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Materia Vessel": {
+    "index": "1201",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Materia Vessel"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A Materia Vessel is an enchanted glass jar capable of holding large amounts of Materia. You can insert Materia by right clicking it with a Materia bottle, and extract its contents by right clicking with an empty bottle.\n\nLooking at a Materia Vessel will show you the name of its contents, its alchemical formula, the current amount stored, and maximum capacity. With default configs, Materia Vessels containing Essentia can store twice as much as Materia Vessels containing Admixtures.\n\nMateria Vessels containing Essentia also display a physical label on the front of the jar for easy reference."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/materia_vessel"
       }
     ]
   },
