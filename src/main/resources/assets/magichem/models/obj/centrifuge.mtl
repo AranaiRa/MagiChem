@@ -1,8 +1,0 @@
-# Blender MTL File: 'chem devices.blend'
-# Material Count: 2
-
-newmtl ALEMBIC
-map_Kd magichem:block/copper_alembic
-
-newmtl LODESTAR
-map_Kd mna:block/material/lodestar

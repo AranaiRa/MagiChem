@@ -26,6 +26,8 @@
   "block.magichem.alembic": "Alembic",
   "block.magichem.centrifuge": "Centrifuge",
   "block.magichem.centrifuge_router": "Centrifuge",
+  "block.magichem.distillery": "Distillery",
+  "block.magichem.distillery_router": "Distillery",
   "block.magichem.circle_fabrication": "Circle of Fabrication",
   "block.magichem.circle_power": "Circle of Power",
   "block.magichem.materia_vessel": "Materia Vessel",

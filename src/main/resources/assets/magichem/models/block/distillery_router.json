@@ -1,0 +1,6 @@
+{
+  "parent": "magichem:block/distillery",
+  "textures": {
+    "particle": "magichem:block/breakparticle_arcanesandstone"
+  }
+}
