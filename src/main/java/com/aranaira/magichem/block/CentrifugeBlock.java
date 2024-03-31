@@ -78,20 +78,37 @@ public class CentrifugeBlock extends BaseEntityBlock {
 
         for (Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
-            pLevel.setBlock(targetPos, state, 3);
-            ((CentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+            if(pLevel.getBlockState(targetPos).isAir()) {
+                pLevel.setBlock(targetPos, state, 3);
+                ((CentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+            }
         }
     }
 
     @Override
-    public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
         }
 
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
+        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        destroyRouters(pLevel, pPos, facing);
+
         super.destroy(pLevel, pPos, pState);
+    }
+
+    public static void destroyRouters(LevelAccessor pLevel, BlockPos pPos, Direction pFacing) {
+        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pFacing)) {
+            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
+        }
     }
 
     public static List<Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection>> getRouterOffsets(Direction pFacing) {
@@ -140,7 +157,6 @@ public class CentrifugeBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        //super.createBlockStateDefinition(pBuilder);
         pBuilder.add(FACING);
     }
 

@@ -1,6 +1,7 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
@@ -23,13 +24,17 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -83,6 +88,21 @@ public class CommonEventHandler {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onBlockBroken(BlockEvent.BreakEvent event) {
+        BlockState state = event.getState();
+        BlockPos pos = event.getPos();
+        BlockEntity entity = event.getLevel().getBlockEntity(pos);
+
+        if(entity instanceof CentrifugeRouterBlockEntity crbe) {
+            event.getLevel().destroyBlock(crbe.getMasterPos(), true);
+            CentrifugeBlock.destroyRouters(event.getLevel(), crbe.getMasterPos(), crbe.getFacing());
+        }
+
+        Block block = state.getBlock();
+        block.getName();
     }
 
     @OnlyIn(Dist.CLIENT)

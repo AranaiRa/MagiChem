@@ -47,12 +47,6 @@ public class BaseActuatorRouterBlockEntity extends BlockEntity implements MenuPr
         return master;
     }
 
-    @Override
-    public void setRemoved() {
-        getLevel().destroyBlock(masterPos, true);
-        super.setRemoved();
-    }
-
     public BlockPos getMasterPos() {
         return masterPos;
     }

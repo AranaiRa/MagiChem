@@ -97,10 +97,10 @@ public class CentrifugeRouterBlockEntity extends BlockEntityWithEfficiency imple
 
     @Override
     public void setRemoved() {
-        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : CentrifugeBlock.getRouterOffsets(facing)) {
-            getLevel().destroyBlock(masterPos.offset(posAndType.getFirst()), true);
-        }
-        getLevel().destroyBlock(masterPos, true);
+//        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : CentrifugeBlock.getRouterOffsets(facing)) {
+//            getLevel().destroyBlock(masterPos.offset(posAndType.getFirst()), true);
+//        }
+//        getLevel().destroyBlock(masterPos, true);
         super.setRemoved();
     }
 
