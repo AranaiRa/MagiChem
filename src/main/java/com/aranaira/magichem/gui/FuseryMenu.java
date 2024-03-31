@@ -1,16 +1,13 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
+import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
-import com.aranaira.magichem.block.entity.container.OnlyAdmixtureInputSlot;
 import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -22,22 +19,21 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import org.jetbrains.annotations.NotNull;
 
-public class AdmixerMenu extends AbstractContainerMenu {
+public class FuseryMenu extends AbstractContainerMenu {
 
-    public final AdmixerBlockEntity blockEntity;
+    public final FuseryBlockEntity blockEntity;
     private final Level level;
-    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[AdmixerBlockEntity.SLOT_INPUT_COUNT];
+    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[FuseryBlockEntity.SLOT_INPUT_COUNT];
 
-    public AdmixerMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+    public FuseryMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
     }
 
-    public AdmixerMenu(int id, Inventory inv, BlockEntity entity) {
+    public FuseryMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.ADMIXER_MENU.get(), id);
-        checkContainerSize(inv, AdmixerBlockEntity.SLOT_COUNT);
-        blockEntity = (AdmixerBlockEntity) entity;
+        checkContainerSize(inv, FuseryBlockEntity.SLOT_COUNT);
+        blockEntity = (FuseryBlockEntity) entity;
         this.level = inv.player.level();
 
         addPlayerInventory(inv);
@@ -46,25 +42,25 @@ public class AdmixerMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slots
-            this.addSlot(new BottleStockSlot(handler, AdmixerBlockEntity.SLOT_BOTTLES, 134, -12, false));
-            this.addSlot(new BottleStockSlot(handler, AdmixerBlockEntity.SLOT_BOTTLES_OUTPUT, 80, 3, true));
+            this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES, 134, -12, false));
+            this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES_OUTPUT, 80, 3, true));
 
             //Input item slots
-            for(int i=AdmixerBlockEntity.SLOT_INPUT_START; i<AdmixerBlockEntity.SLOT_INPUT_START + AdmixerBlockEntity.SLOT_INPUT_COUNT; i++)
+            for(int i = FuseryBlockEntity.SLOT_INPUT_START; i< FuseryBlockEntity.SLOT_INPUT_START + FuseryBlockEntity.SLOT_INPUT_COUNT; i++)
             {
-                int j = i - AdmixerBlockEntity.SLOT_INPUT_START;
+                int j = i - FuseryBlockEntity.SLOT_INPUT_START;
                 OnlyMateriaInputSlot slot = new OnlyMateriaInputSlot(handler, i, 26 + 18 * (j % 2), 3 + 18 * (j / 2));
                 this.addSlot(slot);
                 inputSlots[j] = slot;
             }
 
             //Output item slots
-            for(int i=AdmixerBlockEntity.SLOT_OUTPUT_START; i<AdmixerBlockEntity.SLOT_OUTPUT_START + AdmixerBlockEntity.SLOT_OUTPUT_COUNT; i++)
+            for(int i = FuseryBlockEntity.SLOT_OUTPUT_START; i< FuseryBlockEntity.SLOT_OUTPUT_START + FuseryBlockEntity.SLOT_OUTPUT_COUNT; i++)
             {
-                int x = (i - AdmixerBlockEntity.SLOT_OUTPUT_START) % 3;
-                int y = (i - AdmixerBlockEntity.SLOT_OUTPUT_START) / 3;
+                int x = (i - FuseryBlockEntity.SLOT_OUTPUT_START) % 3;
+                int y = (i - FuseryBlockEntity.SLOT_OUTPUT_START) / 3;
 
-                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 21 + (y) * 18, AdmixerBlockEntity.SLOT_BOTTLES));
+                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 21 + (y) * 18, FuseryBlockEntity.SLOT_BOTTLES));
             }
 
             setInputSlotFilters(blockEntity.getCurrentRecipe());
@@ -73,7 +69,7 @@ public class AdmixerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.ADMIXER.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.FUSERY.get());
     }
 
     public void setInputSlotFilters(FixationSeparationRecipe newRecipe) {
@@ -137,7 +133,7 @@ public class AdmixerMenu extends AbstractContainerMenu {
                 }
             }
             //try to move to input slots
-            moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + AdmixerBlockEntity.SLOT_INPUT_COUNT, false);
+            moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + FuseryBlockEntity.SLOT_INPUT_COUNT, false);
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
         }
@@ -149,13 +145,13 @@ public class AdmixerMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         }
         //If input slots
-        if(pIndex >= SLOT_INPUT_BEGIN && pIndex < SLOT_INPUT_BEGIN + AdmixerBlockEntity.SLOT_INPUT_COUNT) {
+        if(pIndex >= SLOT_INPUT_BEGIN && pIndex < SLOT_INPUT_BEGIN + FuseryBlockEntity.SLOT_INPUT_COUNT) {
             moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
         }
         //If output slots
-        if(pIndex >= SLOT_OUTPUT_BEGIN && pIndex < SLOT_OUTPUT_BEGIN + AdmixerBlockEntity.SLOT_OUTPUT_COUNT) {
+        if(pIndex >= SLOT_OUTPUT_BEGIN && pIndex < SLOT_OUTPUT_BEGIN + FuseryBlockEntity.SLOT_OUTPUT_COUNT) {
             //make sure there's enough bottles first, then try to move to player inventory
             int itemsToRemove = targetStackCopy.getCount();
             int bottles = slots.get(SLOT_BOTTLES).getItem().getCount();

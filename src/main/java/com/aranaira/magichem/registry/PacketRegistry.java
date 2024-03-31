@@ -2,7 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
-import com.aranaira.magichem.networking.AdmixerSyncDataC2SPacket;
+import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,10 +36,10 @@ public class PacketRegistry {
                 .consumerMainThread(FabricationSyncDataC2SPacket::handle)
                 .add();
 
-        net.messageBuilder(AdmixerSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(AdmixerSyncDataC2SPacket::new)
-                .encoder(AdmixerSyncDataC2SPacket::toBytes)
-                .consumerMainThread(AdmixerSyncDataC2SPacket::handle)
+        net.messageBuilder(FuserySyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(FuserySyncDataC2SPacket::new)
+                .encoder(FuserySyncDataC2SPacket::toBytes)
+                .consumerMainThread(FuserySyncDataC2SPacket::handle)
                 .add();
 
         net.messageBuilder(ActuatorSyncPowerLevelC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)

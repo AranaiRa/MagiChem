@@ -1,11 +1,9 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -46,7 +44,7 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == BlockRegistry.ADMIXER.get().asItem()) {
+        else if(pStack.getItem() == BlockRegistry.FUSERY.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.admixer")
                     .withStyle(ChatFormatting.DARK_GRAY)

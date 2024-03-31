@@ -2,7 +2,7 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
-import com.aranaira.magichem.gui.AdmixerMenu;
+import com.aranaira.magichem.gui.FuseryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -35,7 +35,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
+public class FuseryBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
     public static final int
         SLOT_COUNT = 21,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 20,
@@ -64,8 +64,8 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
         }
     };
 
-    public AdmixerBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesRegistry.ADMIXER_BE.get(), pos, Config.admixerEfficiency, state);
+    public FuseryBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntitiesRegistry.FUSERY_BE.get(), pos, Config.fuseryEfficiency, state);
     }
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -105,13 +105,13 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.magichem.admixer");
+        return Component.translatable("block.magichem.fusery");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new AdmixerMenu(id, inventory, this);
+        return new FuseryMenu(id, inventory, this);
     }
 
     @Override
@@ -190,8 +190,8 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
         return craftingProgress;
     }
 
-    public static int getScaledProgress(AdmixerBlockEntity entity) {
-        return PROGRESS_BAR_SIZE * entity.craftingProgress / Config.admixerOperationTime;
+    public static int getScaledProgress(FuseryBlockEntity entity) {
+        return PROGRESS_BAR_SIZE * entity.craftingProgress / Config.fuseryOperationTime;
     }
 
     public void dropInventoryToWorld() {
@@ -214,7 +214,7 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
         Containers.dropContents(this.level, this.worldPosition, waste);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, AdmixerBlockEntity entity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, FuseryBlockEntity entity) {
         FixationSeparationRecipe recipe = entity.getCurrentRecipe();
         if(canCraftItem(entity, recipe)) {
             entity.incrementProgress();
@@ -222,13 +222,13 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
             entity.resetProgress();
         }
 
-        if(entity.getCraftingProgress() > Config.admixerOperationTime) {
+        if(entity.getCraftingProgress() > Config.fuseryOperationTime) {
             craftItem(entity, recipe);
             entity.resetProgress();
         }
     }
 
-    private static boolean canCraftItem(AdmixerBlockEntity entity, FixationSeparationRecipe recipe) {
+    private static boolean canCraftItem(FuseryBlockEntity entity, FixationSeparationRecipe recipe) {
         if(recipe == null)
             return false;
 
@@ -263,7 +263,7 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
         return true;
     }
 
-    private static void craftItem(AdmixerBlockEntity entity, FixationSeparationRecipe recipe) {
+    private static void craftItem(FuseryBlockEntity entity, FixationSeparationRecipe recipe) {
         int bottlesToInsert = 0;
         for(ItemStack is : recipe.getComponentMateria()) {
             bottlesToInsert += is.getCount();
@@ -328,7 +328,7 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
     }
 
     @NotNull
-    private static SimpleContainer getOutputAsContainer(AdmixerBlockEntity entity) {
+    private static SimpleContainer getOutputAsContainer(FuseryBlockEntity entity) {
         SimpleContainer insert = new SimpleContainer(SLOT_OUTPUT_COUNT);
         int slotID = 0;
         //Add output item
@@ -338,7 +338,7 @@ public class AdmixerBlockEntity extends BlockEntityWithEfficiency implements Men
         return insert;
     }
 
-    private static void replaceOutputSlotsWithContainer(AdmixerBlockEntity entity, SimpleContainer insert) {
+    private static void replaceOutputSlotsWithContainer(FuseryBlockEntity entity, SimpleContainer insert) {
         int slotID = 0;
         for(int i=SLOT_OUTPUT_START; i < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT; i++) {
             entity.itemHandler.setStackInSlot(i, insert.getItem(slotID));

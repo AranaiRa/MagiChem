@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
+import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,8 +23,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class AdmixerBlock extends BaseEntityBlock {
-    public AdmixerBlock(Properties properties) {
+public class FuseryBlock extends BaseEntityBlock {
+    public FuseryBlock(Properties properties) {
         super(properties);
     }
 
@@ -53,8 +53,8 @@ public class AdmixerBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof AdmixerBlockEntity) {
-                ((AdmixerBlockEntity) blockEntity).dropInventoryToWorld();
+            if(blockEntity instanceof FuseryBlockEntity) {
+                ((FuseryBlockEntity) blockEntity).dropInventoryToWorld();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
@@ -64,8 +64,8 @@ public class AdmixerBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof AdmixerBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (AdmixerBlockEntity)entity, pos);
+            if(entity instanceof FuseryBlockEntity) {
+                NetworkHooks.openScreen((ServerPlayer)player, (FuseryBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("AdmixerBlockEntity container provider is missing!");
             }
@@ -77,14 +77,14 @@ public class AdmixerBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new AdmixerBlockEntity(pos, state);
+        return new FuseryBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntitiesRegistry.ADMIXER_BE.get(),
-                AdmixerBlockEntity::tick);
+        return createTickerHelper(type, BlockEntitiesRegistry.FUSERY_BE.get(),
+                FuseryBlockEntity::tick);
     }
 
     static {

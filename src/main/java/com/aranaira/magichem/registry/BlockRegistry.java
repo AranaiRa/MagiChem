@@ -33,8 +33,13 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion())
     );
 
-    public static final RegistryObject<Block> ADMIXER = registerBlock("admixer",
-            () -> new AdmixerBlock(BlockBehaviour.Properties.of()
+    public static final RegistryObject<Block> DISTILLERY = registerBlock("distillery",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> FUSERY = registerBlock("fusery",
+            () -> new FuseryBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())
     );
 

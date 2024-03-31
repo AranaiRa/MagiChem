@@ -27,8 +27,8 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<CentrifugeMenu>> CENTRIFUGE_MENU =
             registerMenuType(CentrifugeMenu::new, "centrifuge");
 
-    public static final RegistryObject<MenuType<AdmixerMenu>> ADMIXER_MENU =
-            registerMenuType(AdmixerMenu::new, "admixer");
+    public static final RegistryObject<MenuType<FuseryMenu>> ADMIXER_MENU =
+            registerMenuType(FuseryMenu::new, "admixer");
 
     public static final RegistryObject<MenuType<ActuatorWaterMenu>> ACTUATOR_WATER_MENU =
             registerMenuType(ActuatorWaterMenu::new, "actuator_water");

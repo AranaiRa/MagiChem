@@ -1,16 +1,14 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
+import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
-import com.aranaira.magichem.gui.element.AdmixerButtonRecipeSelector;
-import com.aranaira.magichem.networking.AdmixerSyncDataC2SPacket;
+import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
+import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
-import com.aranaira.magichem.util.render.RenderUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -25,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
+public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_admixer.png");
     private static final ResourceLocation TEXTURE_EXT =
@@ -41,7 +39,7 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
         PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102;
     private FixationSeparationRecipe lastClickedRecipe = null;
 
-    public AdmixerScreen(AdmixerMenu menu, Inventory inventory, Component component) {
+    public FuseryScreen(FuseryMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
     }
 
@@ -65,11 +63,11 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
         int c = 0;
         for(int y=0; y<5; y++) {
             for(int x=0; x<3; x++) {
-                recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new AdmixerButtonRecipeSelector(
+                recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new FuseryButtonRecipeSelector(
                         this, c, this.leftPos, this.topPos, 18, 18, 46, 220, TEXTURE, button -> {
 
-                    AdmixerScreen query = (AdmixerScreen) ((AdmixerButtonRecipeSelector) button).getScreen();
-                    query.setActiveRecipe(((AdmixerButtonRecipeSelector) button).getArrayIndex());
+                    FuseryScreen query = (FuseryScreen) ((FuseryButtonRecipeSelector) button).getScreen();
+                    query.setActiveRecipe(((FuseryButtonRecipeSelector) button).getArrayIndex());
                 })), x*18 - 59, y*18 + 16);
                 c++;
             }
@@ -90,7 +88,7 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
     public void setActiveRecipe(int index) {
         int trueIndex = recipeFilterRow*3 + index;
         if(trueIndex < filteredRecipes.size()) {
-            PacketRegistry.sendToServer(new AdmixerSyncDataC2SPacket(
+            PacketRegistry.sendToServer(new FuserySyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     filteredRecipes.get(trueIndex).getResultAdmixture().getItem()
             ));
@@ -128,9 +126,9 @@ public class AdmixerScreen extends AbstractContainerScreen<AdmixerMenu> {
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
         gui.blit(TEXTURE, x+PANEL_RECIPE_X, y+PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
-        int sp = AdmixerBlockEntity.getScaledProgress(menu.blockEntity);
+        int sp = FuseryBlockEntity.getScaledProgress(menu.blockEntity);
         if(sp > 0)
-            gui.blit(TEXTURE, x+74, y+53, 0, 228, sp, AdmixerBlockEntity.PROGRESS_BAR_SIZE);
+            gui.blit(TEXTURE, x+74, y+53, 0, 228, sp, FuseryBlockEntity.PROGRESS_BAR_SIZE);
 
         renderSelectedRecipe(gui, x + 79, y + 94);
 

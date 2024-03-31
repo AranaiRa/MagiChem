@@ -1,8 +1,6 @@
 package com.aranaira.magichem.networking;
 
-import com.aranaira.magichem.block.entity.AdmixerBlockEntity;
-import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
-import net.minecraft.client.Minecraft;
+import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -13,16 +11,16 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class AdmixerSyncDataC2SPacket {
+public class FuserySyncDataC2SPacket {
     private final BlockPos blockPos;
     private final Item recipeItem;
 
-    public AdmixerSyncDataC2SPacket(BlockPos pBlockPos, Item pRecipeItem) {
+    public FuserySyncDataC2SPacket(BlockPos pBlockPos, Item pRecipeItem) {
         this.blockPos = pBlockPos;
         this.recipeItem = pRecipeItem;
     }
 
-    public AdmixerSyncDataC2SPacket(FriendlyByteBuf buf) {
+    public FuserySyncDataC2SPacket(FriendlyByteBuf buf) {
         this.blockPos = buf.readBlockPos();
         this.recipeItem = buf.readItem().getItem();
     }
@@ -42,7 +40,7 @@ public class AdmixerSyncDataC2SPacket {
         BlockEntity entity = player.level().getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
-            if(entity instanceof AdmixerBlockEntity abe) {
+            if(entity instanceof FuseryBlockEntity abe) {
                 abe.setCurrentRecipeByOutput(recipeItem);
                 abe.syncAndSave();
             }
