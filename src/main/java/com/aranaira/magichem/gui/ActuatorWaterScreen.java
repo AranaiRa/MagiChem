@@ -2,9 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.ActuatorWaterBlock;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

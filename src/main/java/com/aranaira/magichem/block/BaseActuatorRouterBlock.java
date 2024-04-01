@@ -1,14 +1,8 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorFireRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
-import com.aranaira.magichem.foundation.Triplet;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
-import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -24,7 +18,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;

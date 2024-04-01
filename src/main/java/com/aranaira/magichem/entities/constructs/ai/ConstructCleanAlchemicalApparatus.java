@@ -1,10 +1,7 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
-import com.aranaira.magichem.block.entity.interfaces.IMateriaProcessingDevice;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.events.CommonEventHelper;
-import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.ConstructCapability;
@@ -15,9 +12,6 @@ import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -53,7 +47,7 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
                         this.phase = ECleanTaskPhase.WAIT_AT_DEVICE;
                         this.waitTimer = 21;
                         BlockEntity be = construct.asEntity().level().getBlockEntity(targetApparatus);
-                        if (be instanceof BlockEntityWithEfficiency bewe) {
+                        if (be instanceof AbstractBlockEntityWithEfficiency bewe) {
                             if (construct.getFluidInTank(0).getFluid() == Fluids.WATER) {
                                 if (construct.getStoredFluidAmount() > 100) {
                                     this.pushDiagnosticMessage("Sploosh! That's one squeaky clean apparatus, boss!", false);

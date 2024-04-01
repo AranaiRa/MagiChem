@@ -34,7 +34,7 @@ public class BlockRegistry {
     );
 
     public static final RegistryObject<Block> DISTILLERY = registerBlock("distillery",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new DistilleryBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())
     );
 

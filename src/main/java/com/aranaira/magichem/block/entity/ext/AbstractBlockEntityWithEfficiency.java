@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class BlockEntityWithEfficiency extends BlockEntity {
+public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
     public static int baseEfficiency;
     protected int efficiencyMod;
     protected float operationTimeMod;
@@ -21,7 +21,7 @@ public abstract class BlockEntityWithEfficiency extends BlockEntity {
 
 
 
-    public BlockEntityWithEfficiency(BlockEntityType<?> blockEntityType, BlockPos blockPos, int efficiency, BlockState blockState) {
+    public AbstractBlockEntityWithEfficiency(BlockEntityType<?> blockEntityType, BlockPos blockPos, int efficiency, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         baseEfficiency = efficiency;
     }

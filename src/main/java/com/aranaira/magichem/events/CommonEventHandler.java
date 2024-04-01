@@ -4,8 +4,8 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
-import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterAbstractBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.item.MateriaItem;
@@ -18,16 +18,12 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -70,13 +66,13 @@ public class CommonEventHandler {
                         new ItemStack(Items.GLASS_BOTTLE, inserted));
                 event.getLevel().addFreshEntity(ie);
             }
-        } else if(target instanceof BlockEntityWithEfficiency bewe) {
+        } else if(target instanceof AbstractBlockEntityWithEfficiency bewe) {
             if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
                 if(bewe instanceof CentrifugeBlockEntity cbe) {
                     event.getEntity().swing(event.getHand());
                     stack.shrink(1);
                     cbe.dustCog();
-                } else if(bewe instanceof CentrifugeRouterBlockEntity crbe) {
+                } else if(bewe instanceof CentrifugeRouterAbstractBlockEntity crbe) {
                     event.getEntity().swing(event.getHand());
                     stack.shrink(1);
                     crbe.getMaster().dustCog();
@@ -96,7 +92,7 @@ public class CommonEventHandler {
         BlockPos pos = event.getPos();
         BlockEntity entity = event.getLevel().getBlockEntity(pos);
 
-        if(entity instanceof CentrifugeRouterBlockEntity crbe) {
+        if(entity instanceof CentrifugeRouterAbstractBlockEntity crbe) {
             event.getLevel().destroyBlock(crbe.getMasterPos(), true);
             CentrifugeBlock.destroyRouters(event.getLevel(), crbe.getMasterPos(), crbe.getFacing());
         }
@@ -136,7 +132,7 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onAttachCapability(AttachCapabilitiesEvent<?> event) {
-        if(event.getObject() instanceof BlockEntityWithEfficiency) {
+        if(event.getObject() instanceof AbstractBlockEntityWithEfficiency) {
             event.addCapability(IGrimeCapability.GRIME, new GrimeProvider());
         }
     }

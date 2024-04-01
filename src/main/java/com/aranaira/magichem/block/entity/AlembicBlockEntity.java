@@ -1,8 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.interfaces.IMateriaProcessingDevice;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
@@ -20,7 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -37,9 +35,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
-public class AlembicBlockEntity extends BlockEntityWithEfficiency implements MenuProvider, IMateriaProcessingDevice {
+public class AlembicBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, IMateriaProcessingDevice {
     public static final int
         SLOT_COUNT = 13,
         SLOT_BOTTLES = 0,

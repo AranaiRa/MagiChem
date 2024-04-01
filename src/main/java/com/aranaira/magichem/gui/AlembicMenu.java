@@ -1,13 +1,11 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.registry.MenuRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,7 +16,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import org.jetbrains.annotations.NotNull;
 
 public class AlembicMenu extends AbstractContainerMenu {
 
@@ -46,13 +43,13 @@ public class AlembicMenu extends AbstractContainerMenu {
             this.addSlot(new BottleStockSlot(handler, AlembicBlockEntity.SLOT_BOTTLES, 134, -5, false));
 
             //Input item slots
-            for(int i=AlembicBlockEntity.SLOT_INPUT_START; i<AlembicBlockEntity.SLOT_INPUT_START + AlembicBlockEntity.SLOT_INPUT_COUNT; i++)
+            for(int i = AlembicBlockEntity.SLOT_INPUT_START; i< AlembicBlockEntity.SLOT_INPUT_START + AlembicBlockEntity.SLOT_INPUT_COUNT; i++)
             {
                 this.addSlot(new NoMateriaInputSlot(handler, i, 44, 28 + (i - AlembicBlockEntity.SLOT_INPUT_START) * 18));
             }
 
             //Output item slots
-            for(int i=AlembicBlockEntity.SLOT_OUTPUT_START; i<AlembicBlockEntity.SLOT_OUTPUT_START + AlembicBlockEntity.SLOT_OUTPUT_COUNT; i++)
+            for(int i = AlembicBlockEntity.SLOT_OUTPUT_START; i< AlembicBlockEntity.SLOT_OUTPUT_START + AlembicBlockEntity.SLOT_OUTPUT_COUNT; i++)
             {
                 int x = (i - AlembicBlockEntity.SLOT_OUTPUT_START) % 3;
                 int y = (i - AlembicBlockEntity.SLOT_OUTPUT_START) / 3;

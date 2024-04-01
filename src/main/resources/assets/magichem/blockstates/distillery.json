@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/distillery"
+    },
+    "facing=east": {
+      "model": "magichem:block/distillery",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/distillery",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/distillery",
+      "y": 270
+    }
+  }
+}

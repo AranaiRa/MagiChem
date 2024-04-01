@@ -1,6 +1,6 @@
 package com.aranaira.magichem.events;
 
-import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class CommonEventHelper {
-    public static void generateWasteFromCleanedApparatus(Level level, BlockEntityWithEfficiency bewe, @Nullable ItemStack stackToDamage) {
+    public static void generateWasteFromCleanedApparatus(Level level, AbstractBlockEntityWithEfficiency bewe, @Nullable ItemStack stackToDamage) {
         int wasteCount = bewe.clean();
         if(wasteCount > 0 && stackToDamage != null) {
             stackToDamage.setDamageValue(stackToDamage.getDamageValue() + 1);

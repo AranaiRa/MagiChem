@@ -1,8 +1,8 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterAbstractBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
@@ -44,7 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements MenuProvider, ICanTakePlugins {
+public class CentrifugeBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, ICanTakePlugins {
     public static final int
         SLOT_COUNT = 14,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 13,
@@ -550,7 +550,7 @@ public class CentrifugeBlockEntity extends BlockEntityWithEfficiency implements 
         query.add(level.getBlockEntity(getBlockPos().west()));
 
         for(BlockEntity be : query) {
-            if (be instanceof CentrifugeRouterBlockEntity crbe) {
+            if (be instanceof CentrifugeRouterAbstractBlockEntity crbe) {
                 BlockEntity pe = crbe.getPlugEntity();
                 if (be != null) if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }

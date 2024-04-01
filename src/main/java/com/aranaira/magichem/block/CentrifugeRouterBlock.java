@@ -1,9 +1,7 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterAbstractBlockEntity;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.base.INoCreativeTab;
@@ -11,20 +9,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -48,12 +40,12 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new CentrifugeRouterBlockEntity(pPos, pState);
+        return new CentrifugeRouterAbstractBlockEntity(pPos, pState);
     }
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        CentrifugeRouterBlockEntity crbe = (CentrifugeRouterBlockEntity) pLevel.getBlockEntity(pPos);
+        CentrifugeRouterAbstractBlockEntity crbe = (CentrifugeRouterAbstractBlockEntity) pLevel.getBlockEntity(pPos);
         if(crbe != null) {
             CentrifugeRouterType routerType = crbe.getRouterType();
             Direction facing = crbe.getFacing();
@@ -82,7 +74,7 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
-        if(be instanceof CentrifugeRouterBlockEntity crbe) {
+        if(be instanceof CentrifugeRouterAbstractBlockEntity crbe) {
             if(crbe.getRouterType() == CentrifugeRouterType.COG) {
                 crbe.getMaster().activateCog();
             } else {

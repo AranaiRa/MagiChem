@@ -1,12 +1,10 @@
 package com.aranaira.magichem.capabilities.grime;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
-import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import net.minecraft.nbt.Tag;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -46,7 +44,7 @@ public class GrimeProvider implements ICapabilitySerializable<Tag> {
         }
     }
 
-    public static IGrimeCapability getCapability(BlockEntityWithEfficiency entity) {
+    public static IGrimeCapability getCapability(AbstractBlockEntityWithEfficiency entity) {
         Optional<IGrimeCapability> grimeCapability = entity.getCapability(GrimeProvider.GRIME).resolve();
         if(grimeCapability.isEmpty()) {
             entity.setRemoved();

@@ -1,7 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
-import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
@@ -11,7 +10,6 @@ import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskIntegerParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
 import com.mna.entities.constructs.ai.conditionals.ConstructConditional;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -33,7 +31,7 @@ public class ConstructHasGrimeLevel extends ConstructConditional<ConstructHasGri
 
         BlockEntity be = construct.asEntity().level().getBlockEntity(targetApparatus);
 
-        if(be instanceof BlockEntityWithEfficiency bewe) {
+        if(be instanceof AbstractBlockEntityWithEfficiency bewe) {
             return ((float)GrimeProvider.getCapability(bewe).getGrime() / (float)bewe.getMaximumGrime()) >= targetPercentage;
         }
 

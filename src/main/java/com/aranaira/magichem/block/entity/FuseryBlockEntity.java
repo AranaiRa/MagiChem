@@ -1,7 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ext.BlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.gui.FuseryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -35,7 +35,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FuseryBlockEntity extends BlockEntityWithEfficiency implements MenuProvider {
+public class FuseryBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider {
     public static final int
         SLOT_COUNT = 21,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 20,

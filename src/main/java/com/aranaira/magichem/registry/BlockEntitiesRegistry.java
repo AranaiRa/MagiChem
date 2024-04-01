@@ -22,8 +22,8 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(CentrifugeBlockEntity::new, BlockRegistry.CENTRIFUGE.get()).build(null)
     );
 
-    public static final RegistryObject<BlockEntityType<CentrifugeRouterBlockEntity>> CENTRIFUGE_ROUTER_BE = BLOCK_ENTITIES.register("centrifuge_router", () ->
-            BlockEntityType.Builder.of(CentrifugeRouterBlockEntity::new, BlockRegistry.CENTRIFUGE_ROUTER.get()).build(null)
+    public static final RegistryObject<BlockEntityType<CentrifugeRouterAbstractBlockEntity>> CENTRIFUGE_ROUTER_BE = BLOCK_ENTITIES.register("centrifuge_router", () ->
+            BlockEntityType.Builder.of(CentrifugeRouterAbstractBlockEntity::new, BlockRegistry.CENTRIFUGE_ROUTER.get()).build(null)
     );
 
     public static final RegistryObject<BlockEntityType<FuseryBlockEntity>> FUSERY_BE = BLOCK_ENTITIES.register("admixer", () ->

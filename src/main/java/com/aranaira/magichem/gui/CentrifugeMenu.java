@@ -1,11 +1,9 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.container.*;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +13,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import org.jetbrains.annotations.NotNull;
 
 public class CentrifugeMenu extends AbstractContainerMenu {
 
@@ -44,13 +41,13 @@ public class CentrifugeMenu extends AbstractContainerMenu {
             this.addSlot(new BottleStockSlot(handler, CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, 62, 11, true));
 
             //Input item slots
-            for(int i=CentrifugeBlockEntity.SLOT_INPUT_START; i<CentrifugeBlockEntity.SLOT_INPUT_START + CentrifugeBlockEntity.SLOT_INPUT_COUNT; i++)
+            for(int i = CentrifugeBlockEntity.SLOT_INPUT_START; i< CentrifugeBlockEntity.SLOT_INPUT_START + CentrifugeBlockEntity.SLOT_INPUT_COUNT; i++)
             {
                 this.addSlot(new OnlyAdmixtureInputSlot(handler, i, 26, 30 + (i - CentrifugeBlockEntity.SLOT_INPUT_START) * 18));
             }
 
             //Output item slots
-            for(int i=CentrifugeBlockEntity.SLOT_OUTPUT_START; i<CentrifugeBlockEntity.SLOT_OUTPUT_START + CentrifugeBlockEntity.SLOT_OUTPUT_COUNT; i++)
+            for(int i = CentrifugeBlockEntity.SLOT_OUTPUT_START; i< CentrifugeBlockEntity.SLOT_OUTPUT_START + CentrifugeBlockEntity.SLOT_OUTPUT_COUNT; i++)
             {
                 int x = (i - CentrifugeBlockEntity.SLOT_OUTPUT_START) % 3;
                 int y = (i - CentrifugeBlockEntity.SLOT_OUTPUT_START) / 3;
