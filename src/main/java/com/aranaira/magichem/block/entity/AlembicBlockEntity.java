@@ -134,6 +134,14 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         progress = nbt.getInt("craftingProgress");
     }
 
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("craftingProgress", this.progress);
+        return nbt;
+    }
+
     public void dropInventoryToWorld() {
         //Drop items in input slots, bottle slot, and processing slot as-is
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
@@ -181,6 +189,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         return (GUI_GRIME_BAR_WIDTH * grime) / Config.alembicMaximumGrime;
     }
 
+    @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
         this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
@@ -206,8 +215,8 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
 
-            case DATA_GRIME -> DATA_GRIME;
             case DATA_PROGRESS -> DATA_PROGRESS;
+            case DATA_GRIME -> DATA_GRIME;
 
             case GUI_PROGRESS_BAR_WIDTH -> GUI_PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;

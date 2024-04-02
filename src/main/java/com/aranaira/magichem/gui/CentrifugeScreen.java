@@ -54,7 +54,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         int b = menu.getGrime();
         int c = menu.getProgress();
 
-        int sProg = CentrifugeBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getOperationTimeMod());
+        int sProg = CentrifugeBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getOperationTimeMod(), CentrifugeBlockEntity::getVar);
         if(sProg > 0)
             gui.blit(TEXTURE, x+58, y+53, 0, 228, sProg, 28);
 
@@ -124,7 +124,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(String.format("%.1f", CentrifugeBlockEntity.getGrimePercent(menu.getGrime())*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
+                    .append(Component.literal(String.format("%.1f", CentrifugeBlockEntity.getGrimePercent(menu.getGrime(), CentrifugeBlockEntity::getVar)*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }
@@ -133,10 +133,10 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
     protected void renderLabels(GuiGraphics gui, int mouseX, int mouseY) {
         Font font = Minecraft.getInstance().font;
 
-        gui.drawString(font, Component.literal(CentrifugeBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime())+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 2, 0xff000000, false);
+        gui.drawString(font, Component.literal(CentrifugeBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), CentrifugeBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 2, 0xff000000, false);
 
-        int secWhole = CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod()) / 20;
-        int secPartial = (CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod()) % 20) * 5;
+        int secWhole = CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), CentrifugeBlockEntity::getVar) / 20;
+        int secPartial = (CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), CentrifugeBlockEntity::getVar) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 17, 0xff000000, false);
     }
 }

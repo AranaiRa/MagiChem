@@ -9,6 +9,9 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +26,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.Callable;
 import java.util.function.Function;
 
 public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntityWithEfficiency {
@@ -42,9 +44,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         super(pType, pPos, pEfficiency, pState);
     }
 
-    //////////
+    ////////////////////
     // BOILERPLATE CODE
-    //////////
+    ////////////////////
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -61,9 +63,20 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         lazyItemHandler.invalidate();
     }
 
-    //////////
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    private void syncAndSave() {
+        this.setChanged();
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    ////////////////////
     // CRAFTING HANDLERS
-    //////////
+    ////////////////////
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractDistillationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
         //skip all of this if grime is full
@@ -99,7 +112,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         int outputSlot = processingSlot;
         ItemStack outputItem = ItemStack.EMPTY;
 
-        while(processingSlot > pVarFunc.apply(IDs.SLOT_INPUT_START)) {
+        while(processingSlot > pVarFunc.apply(IDs.SLOT_INPUT_START) - 1) {
             processingItem = entity.itemHandler.getStackInSlot(processingSlot);
 
             if(processingItem == ItemStack.EMPTY)  processingSlot--;

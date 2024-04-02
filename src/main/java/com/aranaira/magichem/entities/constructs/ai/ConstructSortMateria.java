@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.MateriaVesselBlock;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
@@ -117,9 +118,9 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
 
         if(be instanceof AbstractDistillationBlockEntity adbe) {
             contents = adbe.getContentsOfOutputSlots();
-        } /*else if(be instanceof AbstractSeparationBlockEntity asbe) {
+        } else if(be instanceof AbstractSeparationBlockEntity asbe) {
             contents = asbe.getContentsOfOutputSlots();
-        }*/ //TODO: Abstract the centrifuge
+        }
 
         if(!contents.isEmpty()) {
             int largestStackSize = -1;
