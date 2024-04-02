@@ -1,8 +1,9 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.block.MateriaVesselBlock;
+import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
-import com.aranaira.magichem.block.entity.interfaces.IMateriaProcessingDevice;
+import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
@@ -112,29 +113,34 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
 
     private void selectMateriaStackFromSource() {
         BlockEntity be = construct.asEntity().level().getBlockEntity(this.takeFromTarget);
-        if(be instanceof IMateriaProcessingDevice mpd) {
-            SimpleContainer contents = mpd.getContentsOfOutputSlots();
-            if(!contents.isEmpty()) {
-                int largestStackSize = -1;
-                ItemStack stack = null;
-                for(int i=0; i< contents.getContainerSize(); i++) {
-                    if(contents.getItem(i) != ItemStack.EMPTY && contents.getItem(i).getItem() instanceof MateriaItem mi) {
-                        if(contents.getItem(i).getCount() > largestStackSize) {
-                            stack = contents.getItem(i);
-                            largestStackSize = stack.getCount();
-                        }
+        SimpleContainer contents = new SimpleContainer(1);
+
+        if(be instanceof AbstractDistillationBlockEntity adbe) {
+            contents = adbe.getContentsOfOutputSlots();
+        } /*else if(be instanceof AbstractSeparationBlockEntity asbe) {
+            contents = asbe.getContentsOfOutputSlots();
+        }*/ //TODO: Abstract the centrifuge
+
+        if(!contents.isEmpty()) {
+            int largestStackSize = -1;
+            ItemStack stack = null;
+            for(int i=0; i< contents.getContainerSize(); i++) {
+                if(contents.getItem(i) != ItemStack.EMPTY && contents.getItem(i).getItem() instanceof MateriaItem mi) {
+                    if(contents.getItem(i).getCount() > largestStackSize) {
+                        stack = contents.getItem(i);
+                        largestStackSize = stack.getCount();
                     }
                 }
-
-                if(stack != ItemStack.EMPTY) {
-                    this.filter = (MateriaItem) stack.getItem();
-
-                    int amountToShrink = Math.min(construct.getCarrySize()*4, stack.getCount());
-                    stack.shrink(amountToShrink);
-                    this.materiaInTransit = new ItemStack(filter, amountToShrink);
-                } else
-                    stop();
             }
+
+            if(stack != ItemStack.EMPTY) {
+                this.filter = (MateriaItem) stack.getItem();
+
+                int amountToShrink = Math.min(construct.getCarrySize()*4, stack.getCount());
+                stack.shrink(amountToShrink);
+                this.materiaInTransit = new ItemStack(filter, amountToShrink);
+            } else
+                stop();
         }
     }
 
