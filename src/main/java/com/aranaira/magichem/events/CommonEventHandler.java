@@ -5,7 +5,7 @@ import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterAbstractBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.item.MateriaItem;
@@ -72,7 +72,7 @@ public class CommonEventHandler {
                     event.getEntity().swing(event.getHand());
                     stack.shrink(1);
                     cbe.dustCog();
-                } else if(bewe instanceof CentrifugeRouterAbstractBlockEntity crbe) {
+                } else if(bewe instanceof CentrifugeRouterBlockEntity crbe) {
                     event.getEntity().swing(event.getHand());
                     stack.shrink(1);
                     crbe.getMaster().dustCog();
@@ -92,7 +92,7 @@ public class CommonEventHandler {
         BlockPos pos = event.getPos();
         BlockEntity entity = event.getLevel().getBlockEntity(pos);
 
-        if(entity instanceof CentrifugeRouterAbstractBlockEntity crbe) {
+        if(entity instanceof CentrifugeRouterBlockEntity crbe) {
             event.getLevel().destroyBlock(crbe.getMasterPos(), true);
             CentrifugeBlock.destroyRouters(event.getLevel(), crbe.getMasterPos(), crbe.getFacing());
         }

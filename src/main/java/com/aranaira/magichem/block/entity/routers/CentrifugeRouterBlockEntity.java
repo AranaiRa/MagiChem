@@ -26,7 +26,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CentrifugeRouterAbstractBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins {
+public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private CentrifugeRouterType routerType = CentrifugeRouterType.NONE;
@@ -34,8 +34,8 @@ public class CentrifugeRouterAbstractBlockEntity extends AbstractBlockEntityWith
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
     private int packedData;
 
-    public CentrifugeRouterAbstractBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntitiesRegistry.CENTRIFUGE_ROUTER_BE.get(), pPos, CentrifugeRouterAbstractBlockEntity.baseEfficiency, pBlockState);
+    public CentrifugeRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(BlockEntitiesRegistry.CENTRIFUGE_ROUTER_BE.get(), pPos, CentrifugeRouterBlockEntity.baseEfficiency, pBlockState);
     }
 
     public Direction getFacing() {

@@ -1,7 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterAbstractBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.base.INoCreativeTab;
@@ -40,12 +40,12 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new CentrifugeRouterAbstractBlockEntity(pPos, pState);
+        return new CentrifugeRouterBlockEntity(pPos, pState);
     }
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        CentrifugeRouterAbstractBlockEntity crbe = (CentrifugeRouterAbstractBlockEntity) pLevel.getBlockEntity(pPos);
+        CentrifugeRouterBlockEntity crbe = (CentrifugeRouterBlockEntity) pLevel.getBlockEntity(pPos);
         if(crbe != null) {
             CentrifugeRouterType routerType = crbe.getRouterType();
             Direction facing = crbe.getFacing();
@@ -74,7 +74,7 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
-        if(be instanceof CentrifugeRouterAbstractBlockEntity crbe) {
+        if(be instanceof CentrifugeRouterBlockEntity crbe) {
             if(crbe.getRouterType() == CentrifugeRouterType.COG) {
                 crbe.getMaster().activateCog();
             } else {

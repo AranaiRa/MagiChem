@@ -1,27 +1,18 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterAbstractBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
-import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -34,10 +25,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -313,7 +301,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         query.add(level.getBlockEntity(getBlockPos().west()));
 
         for(BlockEntity be : query) {
-            if (be instanceof CentrifugeRouterAbstractBlockEntity crbe) {
+            if (be instanceof CentrifugeRouterBlockEntity crbe) {
                 BlockEntity pe = crbe.getPlugEntity();
                 if (be != null) if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }

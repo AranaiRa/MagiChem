@@ -1,7 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterAbstractBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
@@ -80,7 +80,7 @@ public class CentrifugeBlock extends BaseEntityBlock {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             if(pLevel.getBlockState(targetPos).isAir()) {
                 pLevel.setBlock(targetPos, state, 3);
-                ((CentrifugeRouterAbstractBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+                ((CentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
             }
         }
     }
