@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -129,6 +130,11 @@ public class MateriaVesselBlock extends BaseEntityBlock {
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
         return true;
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+        return false;
     }
 
     static {
