@@ -65,8 +65,8 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     // CONSTRUCTOR
     ////////////////////
 
-    public AbstractSeparationBlockEntity(BlockEntityType<?> pType, BlockPos pPos, int pEfficiency, BlockState pState) {
-        super(pType, pPos, pEfficiency, pState);
+    public AbstractSeparationBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pState) {
+        super(pType, pPos, pState);
     }
 
     ////////////////////
@@ -321,7 +321,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     public static int getActualEfficiency(int pMod, int pGrime, Function<IDs, Integer> pVarFunc) {
         float grimeScalar = 1f - Math.min(Math.max(Math.min(Math.max(getGrimePercent(pGrime, pVarFunc) - 0.5f, 0f), 1f) * 2f, 0f), 1f);
-        return Math.round((baseEfficiency + pMod) * grimeScalar);
+        return Math.round((pVarFunc.apply(IDs.CONFIG_BASE_EFFICIENCY) + pMod) * grimeScalar);
     }
 
     public static float getGrimePercent(int pGrime, Function<IDs, Integer> pVarFunc) {
@@ -375,7 +375,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     public enum IDs {
         SLOT_BOTTLES, SLOT_BOTTLES_OUTPUT, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT,
-        CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_GRIME_ON_SUCCESS, CONFIG_GRIME_ON_FAILURE,
+        CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_GRIME_ON_SUCCESS, CONFIG_GRIME_ON_FAILURE,
         CONFIG_NO_TORQUE_GRACE_PERIOD, CONFIG_TORQUE_GAIN_ON_ACTIVATION, CONFIG_ANIMUS_GAIN_ON_DUSTING,
         DATA_PROGRESS, DATA_GRIME, DATA_TORQUE, DATA_ANIMUS, DATA_EFFICIENCY_MOD, DATA_OPERATION_TIME_MOD,
         GUI_PROGRESS_BAR_WIDTH, GUI_GRIME_BAR_WIDTH

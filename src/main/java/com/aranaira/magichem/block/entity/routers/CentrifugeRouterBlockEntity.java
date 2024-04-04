@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
@@ -35,7 +36,7 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
     private int packedData;
 
     public CentrifugeRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntitiesRegistry.CENTRIFUGE_ROUTER_BE.get(), pPos, CentrifugeRouterBlockEntity.baseEfficiency, pBlockState);
+        super(BlockEntitiesRegistry.CENTRIFUGE_ROUTER_BE.get(), pPos, pBlockState);
     }
 
     public Direction getFacing() {

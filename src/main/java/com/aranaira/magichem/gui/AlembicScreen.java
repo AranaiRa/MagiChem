@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,10 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         int sGrime = AlembicBlockEntity.getScaledGrime(menu.getGrime());
         if(sGrime > 0)
             gui.blit(TEXTURE, x+182, y+96, 24, 248, sGrime, 8);
+
+        int heat = menu.getHeat();
+        if(heat > 0)
+            gui.blit(TEXTURE, x+79, y+87, 24, 232, 18, 16);
     }
 
     private void renderGrimePanel(GuiGraphics gui, int x, int y) {

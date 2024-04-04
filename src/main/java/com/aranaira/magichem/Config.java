@@ -28,11 +28,11 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue ALEMBIC_EFFICIENCY = BUILDER
             .comment("The baseline efficiency of an Alembic.")
-            .defineInRange("alembicEfficiency", 50, 1, 100);
+            .defineInRange("alembicEfficiency", 30, 1, 100);
 
     private static final ForgeConfigSpec.IntValue ALEMBIC_OPERATION_TIME = BUILDER
             .comment("The time, in ticks, that it takes for an Alembic to process one object.")
-            .defineInRange("alembicOperationTime", 1200, 1, Integer.MAX_VALUE);
+            .defineInRange("alembicOperationTime", 200, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue ALEMBIC_MAXIMUM_GRIME = BUILDER
             .comment("The maximum Grime level of the Alembic. ")
@@ -50,11 +50,11 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue CENTRIFUGE_EFFICIENCY = BUILDER
             .comment("The baseline efficiency of a Centrifuge.")
-            .defineInRange("centrifugeEfficiency", 50, 1, 100);
+            .defineInRange("centrifugeEfficiency", 35, 1, 100);
 
     private static final ForgeConfigSpec.IntValue CENTRIFUGE_OPERATION_TIME = BUILDER
             .comment("The time, in ticks, that it takes for a Centrifuge to separate one admixture into component materia.")
-            .defineInRange("centrifugeOperationTime", 1200, 1, Integer.MAX_VALUE);
+            .defineInRange("centrifugeOperationTime", 160, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue CENTRIFUGE_MAXIMUM_GRIME = BUILDER
             .comment("The maximum Grime level of the Centrifuge. ")
@@ -72,11 +72,11 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue FUSERY_EFFICIENCY = BUILDER
             .comment("The baseline efficiency of a Fusery.")
-            .defineInRange("fuseryEfficiency", 50, 1, 100);
+            .defineInRange("fuseryEfficiency", 35, 1, 100);
 
     private static final ForgeConfigSpec.IntValue FUSERY_OPERATION_TIME = BUILDER
             .comment("The time, in ticks, that it takes for an Admixer to make one admixture from its component materia.")
-            .defineInRange("fuseryOperationTime", 1200, 1, Integer.MAX_VALUE);
+            .defineInRange("fuseryOperationTime", 160, 1, Integer.MAX_VALUE);
 
     //----------------CIRCLE OF POWER
 
@@ -179,17 +179,17 @@ public class Config
         grimePerWaste = GRIME_PER_WASTE.get();
         grimePenaltyPoint = GRIME_PENALTY_POINT.get();
         alembicEfficiency = ALEMBIC_EFFICIENCY.get();
-        alembicOperationTime = 60;//ALEMBIC_OPERATION_TIME.get();
+        alembicOperationTime = ALEMBIC_OPERATION_TIME.get();
         alembicMaximumGrime = ALEMBIC_MAXIMUM_GRIME.get();
         alembicGrimeOnSuccess = ALEMBIC_GRIME_ON_SUCCESS.get();
         alembicGrimeOnFailure = ALEMBIC_GRIME_ON_FAILURE.get();
         centrifugeEfficiency = CENTRIFUGE_EFFICIENCY.get();
-        centrifugeOperationTime = 60;//CENTRIFUGE_OPERATION_TIME.get();
+        centrifugeOperationTime = CENTRIFUGE_OPERATION_TIME.get();
         centrifugeMaximumGrime = CENTRIFUGE_MAXIMUM_GRIME.get();
         centrifugeGrimeOnSuccess = CENTRIFUGE_GRIME_ON_SUCCESS.get();
         centrifugeGrimeOnFailure = CENTRIFUGE_GRIME_ON_FAILURE.get();
         fuseryEfficiency = FUSERY_EFFICIENCY.get();
-        fuseryOperationTime = 60;//ADMIXER_OPERATION_TIME.get();
+        fuseryOperationTime = FUSERY_OPERATION_TIME.get();
         circlePowerGen1Reagent = CIRCLE_OF_POWER_GEN_1_REAGENT.get();
         circlePowerGen2Reagent = CIRCLE_OF_POWER_GEN_2_REAGENT.get();
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();

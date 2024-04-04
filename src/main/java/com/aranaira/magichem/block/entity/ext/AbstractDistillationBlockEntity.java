@@ -1,9 +1,13 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
+import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -26,22 +30,26 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
-public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntityWithEfficiency {
+public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
-    protected int progress = 0;
+    protected int
+            progress = 0, remainingHeat = 0, pluginLinkageCountdown = 0;
 
     protected ItemStackHandler itemHandler;
+    protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
 
     ////////////////////
     // CONSTRUCTOR
     ////////////////////
 
-    protected AbstractDistillationBlockEntity(BlockEntityType pType, BlockPos pPos, int pEfficiency, BlockState pState) {
-        super(pType, pPos, pEfficiency, pState);
+    protected AbstractDistillationBlockEntity(BlockEntityType pType, BlockPos pPos, BlockState pState) {
+        super(pType, pPos, pState);
     }
 
     ////////////////////
@@ -79,8 +87,27 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     ////////////////////
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractDistillationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
+        for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+            if (dpbe instanceof ActuatorFireBlockEntity fire) {
+                ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
+                if (ActuatorFireBlockEntity.getIsSatisfied(fire) && pEntity.remainingHeat <= 20) {
+                    pEntity.remainingHeat = 100;
+                    pEntity.operationTimeMod = fire.getReductionRate();
+                    pEntity.syncAndSave();
+                }
+            }
+        }
+
+        pEntity.remainingHeat = Math.max(0, pEntity.remainingHeat - 1);
+
         //skip all of this if grime is full
         if(GrimeProvider.getCapability(pEntity).getGrime() >= Config.alembicMaximumGrime)
+            return;
+
+        updateActuatorValues(pEntity);
+
+        //make sure we have enough torque (or animus) to operate
+        if(pEntity.remainingHeat <= 0)
             return;
 
         //figure out what slot and stack to target
@@ -236,7 +263,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     public static int getActualEfficiency(int pGrime, Function<IDs, Integer> pVarFunc) {
         float grimeScalar = 1f - Math.min(Math.max(Math.min(Math.max(getGrimePercent(pGrime, pVarFunc) - 0.5f, 0f), 1f) * 2f, 0f), 1f);
-        return Math.round(baseEfficiency * grimeScalar);
+        return Math.round(pVarFunc.apply(IDs.CONFIG_BASE_EFFICIENCY) * grimeScalar);
     }
 
     public static float getGrimePercent(int pGrime, Function<IDs, Integer> pVarFunc) {
@@ -245,6 +272,43 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     public static int getScaledProgress(int pProgress, int pGrime, Function<IDs, Integer> pVarFunc) {
         return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pVarFunc);
+    }
+
+    public static int getScaledHeat(int pHeat, int pGrime, Function<IDs, Integer> pVarFunc) {
+        return pVarFunc.apply(IDs.GUI_HEAT_GAUGE_HEIGHT) * pHeat / pVarFunc.apply(IDs.DATA_HEAT_DURATION);
+    }
+
+    ////////////////////
+    // ACTUATOR HANDLING
+    ////////////////////
+
+    protected static void updateActuatorValues(AbstractDistillationBlockEntity entity) {
+        for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
+            if(dpbe instanceof ActuatorWaterBlockEntity water) {
+                entity.efficiencyMod = ActuatorWaterBlockEntity.getIsSatisfied(water) ? water.getEfficiencyIncrease() : 0;
+            }
+        }
+    }
+
+    public static void resolveActuators(AbstractDistillationBlockEntity pEntity) {
+        for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+            dpbe.processCompletedOperation();
+        }
+    }
+
+    @Override
+    public void linkPlugins() {
+        pluginDevices.clear();
+    }
+
+    @Override
+    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+        this.pluginDevices.remove(pPlugin);
+    }
+
+    @Override
+    public void linkPluginsDeferred() {
+        pluginLinkageCountdown = 3;
     }
 
     ////////////////////
@@ -257,8 +321,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     public enum IDs {
         SLOT_BOTTLES, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT,
-        CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_MAX_BURN_TIME,
-        DATA_PROGRESS, DATA_GRIME, DATA_FUEL_TIME, DATA_FUEL_DURATION, DATA_EFFICIENCY_MOD, DATA_OPERATION_TIME_MOD,
-        GUI_PROGRESS_BAR_WIDTH, GUI_BURN_TIME_HEIGHT, GUI_GRIME_BAR_WIDTH
+        CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_MAX_BURN_TIME,
+        DATA_PROGRESS, DATA_GRIME, DATA_REMAINING_HEAT, DATA_HEAT_DURATION, DATA_EFFICIENCY_MOD, DATA_OPERATION_TIME_MOD,
+        GUI_PROGRESS_BAR_WIDTH, GUI_HEAT_GAUGE_HEIGHT, GUI_GRIME_BAR_WIDTH
     }
 }

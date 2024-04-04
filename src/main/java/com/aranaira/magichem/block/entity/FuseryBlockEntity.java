@@ -65,7 +65,7 @@ public class FuseryBlockEntity extends AbstractBlockEntityWithEfficiency impleme
     };
 
     public FuseryBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesRegistry.FUSERY_BE.get(), pos, Config.fuseryEfficiency, state);
+        super(BlockEntitiesRegistry.FUSERY_BE.get(), pos, state);
     }
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();

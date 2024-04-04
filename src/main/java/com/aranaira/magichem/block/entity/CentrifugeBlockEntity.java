@@ -50,7 +50,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             wheelAngle, wheelSpeed, cogAngle, cogSpeed;
 
     public CentrifugeBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesRegistry.CENTRIFUGE_BE.get(), pos, Config.centrifugeEfficiency, state);
+        super(BlockEntitiesRegistry.CENTRIFUGE_BE.get(), pos, state);
 
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
@@ -278,6 +278,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             case GUI_PROGRESS_BAR_WIDTH -> PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GRIME_BAR_WIDTH;
 
+            case CONFIG_BASE_EFFICIENCY -> Config.centrifugeEfficiency;
             case CONFIG_MAX_GRIME -> Config.centrifugeMaximumGrime;
             case CONFIG_GRIME_ON_SUCCESS -> Config.centrifugeGrimeOnSuccess;
             case CONFIG_GRIME_ON_FAILURE -> Config.centrifugeGrimeOnFailure;

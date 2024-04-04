@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
-    public static int baseEfficiency;
     protected int efficiencyMod;
     protected float operationTimeMod;
     protected boolean isStalled = false;
@@ -21,9 +20,8 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
 
 
 
-    public AbstractBlockEntityWithEfficiency(BlockEntityType<?> blockEntityType, BlockPos blockPos, int efficiency, BlockState blockState) {
+    public AbstractBlockEntityWithEfficiency(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
-        baseEfficiency = efficiency;
     }
 
     public static Pair<Integer, NonNullList<ItemStack>> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate, int grimeSuccess, int grimeFail) {
