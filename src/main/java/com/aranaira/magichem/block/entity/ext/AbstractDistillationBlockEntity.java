@@ -77,7 +77,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    private void syncAndSave() {
+    protected void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
@@ -101,7 +101,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         pEntity.remainingHeat = Math.max(0, pEntity.remainingHeat - 1);
 
         //skip all of this if grime is full
-        if(GrimeProvider.getCapability(pEntity).getGrime() >= Config.alembicMaximumGrime)
+        if(GrimeProvider.getCapability(pEntity).getGrime() >= pVarFunc.apply(IDs.CONFIG_MAX_GRIME))
             return;
 
         updateActuatorValues(pEntity);
@@ -213,7 +213,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     protected static void craftItem(AbstractDistillationBlockEntity entity, AlchemicalCompositionRecipe recipe, int processingSlot, Function<IDs, Integer> pVarFunc) {
-        SimpleContainer outputSlots = new SimpleContainer(9);
+        SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
             outputSlots.setItem(i, entity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
         }
@@ -274,8 +274,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pVarFunc);
     }
 
-    public static int getScaledHeat(int pHeat, int pGrime, Function<IDs, Integer> pVarFunc) {
-        return pVarFunc.apply(IDs.GUI_HEAT_GAUGE_HEIGHT) * pHeat / pVarFunc.apply(IDs.DATA_HEAT_DURATION);
+    public static int getScaledHeat(int pHeat, int pHeatDuration, Function<IDs, Integer> pVarFunc) {
+        return pVarFunc.apply(IDs.GUI_HEAT_GAUGE_HEIGHT) * pHeat / pHeatDuration;
     }
 
     ////////////////////
@@ -320,7 +320,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     public enum IDs {
-        SLOT_BOTTLES, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT,
+        SLOT_BOTTLES, SLOT_FUEL, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT,
         CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_MAX_BURN_TIME,
         DATA_PROGRESS, DATA_GRIME, DATA_REMAINING_HEAT, DATA_HEAT_DURATION, DATA_EFFICIENCY_MOD, DATA_OPERATION_TIME_MOD,
         GUI_PROGRESS_BAR_WIDTH, GUI_HEAT_GAUGE_HEIGHT, GUI_GRIME_BAR_WIDTH

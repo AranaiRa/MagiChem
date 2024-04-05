@@ -24,6 +24,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<AlembicMenu>> ALEMBIC_MENU =
             registerMenuType(AlembicMenu::new, "alembic");
 
+    public static final RegistryObject<MenuType<DistilleryMenu>> DISTILLERY_MENU =
+            registerMenuType(DistilleryMenu::new, "distillery");
+
     public static final RegistryObject<MenuType<CentrifugeMenu>> CENTRIFUGE_MENU =
             registerMenuType(CentrifugeMenu::new, "centrifuge");
 

@@ -4,7 +4,7 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.gui.AlembicMenu;
+import com.aranaira.magichem.gui.DistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -20,35 +20,34 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FurnaceBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AlembicBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider {
+public class DistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider {
     public static final int
-        SLOT_COUNT = 13,
-        SLOT_BOTTLES = 0,
-        SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
-        SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 8,
-        GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50,
-        DATA_COUNT = 3, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2;
+        SLOT_COUNT = 26,
+        SLOT_BOTTLES = 0, SLOT_FUEL = 1,
+        SLOT_INPUT_START = 2, SLOT_INPUT_COUNT = 6,
+        SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
+        GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50, GUI_HEAT_GAUGE_HEIGHT = 16,
+        DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2, DATA_HEAT_DURATION = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5;
+    private int heatDuration = 0;
 
     ////////////////////
     // CONSTRUCTOR
     ////////////////////
 
-    public AlembicBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesRegistry.ALEMBIC_BE.get(), pos, state);
+    public DistilleryBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntitiesRegistry.DISTILLERY_BE.get(), pos, state);
 
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
@@ -60,6 +59,8 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if (slot == SLOT_BOTTLES)
                     return stack.getItem() == Items.GLASS_BOTTLE;
+                if (slot == SLOT_FUEL)
+                    return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
                 if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
                     return !(stack.getItem() instanceof MateriaItem);
                 if (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
@@ -74,14 +75,23 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             public int get(int pIndex) {
                 switch(pIndex) {
                     case DATA_PROGRESS: {
-                        return AlembicBlockEntity.this.progress;
+                        return DistilleryBlockEntity.this.progress;
                     }
                     case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(AlembicBlockEntity.this);
+                        IGrimeCapability grime = GrimeProvider.getCapability(DistilleryBlockEntity.this);
                         return grime.getGrime();
                     }
                     case DATA_REMAINING_HEAT: {
-                        return AlembicBlockEntity.this.remainingHeat;
+                        return DistilleryBlockEntity.this.remainingHeat;
+                    }
+                    case DATA_HEAT_DURATION: {
+                        return DistilleryBlockEntity.this.heatDuration;
+                    }
+                    case DATA_EFFICIENCY_MOD: {
+                        return DistilleryBlockEntity.this.efficiencyMod;
+                    }
+                    case DATA_OPERATION_TIME_MOD: {
+                        return Math.round(DistilleryBlockEntity.this.operationTimeMod * 100);
                     }
                     default: return -1;
                 }
@@ -91,16 +101,28 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             public void set(int pIndex, int pValue) {
                 switch(pIndex) {
                     case DATA_PROGRESS: {
-                        AlembicBlockEntity.this.progress = pValue;
+                        DistilleryBlockEntity.this.progress = pValue;
                         break;
                     }
                     case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(AlembicBlockEntity.this);
+                        IGrimeCapability grime = GrimeProvider.getCapability(DistilleryBlockEntity.this);
                         grime.setGrime(pValue);
                         break;
                     }
                     case DATA_REMAINING_HEAT: {
-                        AlembicBlockEntity.this.remainingHeat = pValue;
+                        DistilleryBlockEntity.this.remainingHeat = pValue;
+                        break;
+                    }
+                    case DATA_HEAT_DURATION: {
+                        DistilleryBlockEntity.this.heatDuration = pValue;
+                        break;
+                    }
+                    case DATA_EFFICIENCY_MOD: {
+                        efficiencyMod = pValue;
+                        break;
+                    }
+                    case DATA_OPERATION_TIME_MOD: {
+                        operationTimeMod = pValue / 100f;
                         break;
                     }
                 }
@@ -119,13 +141,13 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.magichem.alembic");
+        return Component.translatable("block.magichem.distillery");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new AlembicMenu(id, inventory, this, this.data);
+        return new DistilleryMenu(id, inventory, this, this.data);
     }
 
     @Override
@@ -187,7 +209,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
 
     @Override
     public int getMaximumGrime() {
-        return Config.alembicMaximumGrime;
+        return Config.distilleryMaximumGrime;
     }
 
     @Override
@@ -200,13 +222,16 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     }
 
     public static int getScaledGrime(int grime) {
-        return (GUI_GRIME_BAR_WIDTH * grime) / Config.alembicMaximumGrime;
+        return (GUI_GRIME_BAR_WIDTH * grime) / Config.distilleryMaximumGrime;
     }
 
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
         this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
+        this.data.set(DATA_REMAINING_HEAT, remainingHeat);
+        this.data.set(DATA_HEAT_DURATION, heatDuration);
+        //TODO: push op time mod
     }
 
     ////////////////////
@@ -214,23 +239,32 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     ////////////////////
 
     public SimpleContainer getContentsOfOutputSlots() {
-        return getContentsOfOutputSlots(AlembicBlockEntity::getVar);
+        return getContentsOfOutputSlots(DistilleryBlockEntity::getVar);
     }
 
-    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AlembicBlockEntity pEntity) {
-        BlockState stateBelow = pLevel.getBlockState(pPos.below());
-        if(stateBelow.getBlock() instanceof AbstractFurnaceBlock) {
-            if(pLevel.getBlockState(pPos.below()).getValue(BlockStateProperties.LIT)) {
-                pEntity.remainingHeat = 5;
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, DistilleryBlockEntity pEntity) {
+        if(pEntity.remainingHeat <= 0) {
+            ItemStack fuelStack = pEntity.itemHandler.getStackInSlot(SLOT_FUEL);
+            if(fuelStack != ItemStack.EMPTY) {
+                int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
+                pEntity.remainingHeat = burnTime;
+                pEntity.heatDuration = burnTime;
+                pEntity.pushData();
+
+                fuelStack.shrink(1);
+                pEntity.itemHandler.setStackInSlot(SLOT_FUEL, fuelStack);
+
+                pEntity.syncAndSave();
             }
         }
 
-        AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, AlembicBlockEntity::getVar);
+        AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, DistilleryBlockEntity::getVar);
     }
 
     public static int getVar(IDs pID) {
         return switch(pID) {
             case SLOT_BOTTLES -> SLOT_BOTTLES;
+            case SLOT_FUEL -> SLOT_FUEL;
             case SLOT_INPUT_START -> SLOT_INPUT_START;
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
@@ -239,13 +273,17 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             case DATA_PROGRESS -> DATA_PROGRESS;
             case DATA_GRIME -> DATA_GRIME;
             case DATA_REMAINING_HEAT -> DATA_REMAINING_HEAT;
+            case DATA_HEAT_DURATION -> DATA_HEAT_DURATION;
+            case DATA_EFFICIENCY_MOD -> DATA_EFFICIENCY_MOD;
+            case DATA_OPERATION_TIME_MOD -> DATA_OPERATION_TIME_MOD;
 
             case GUI_PROGRESS_BAR_WIDTH -> GUI_PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;
+            case GUI_HEAT_GAUGE_HEIGHT -> GUI_HEAT_GAUGE_HEIGHT;
 
-            case CONFIG_BASE_EFFICIENCY -> Config.alembicEfficiency;
-            case CONFIG_MAX_GRIME -> Config.alembicMaximumGrime;
-            case CONFIG_OPERATION_TIME -> Config.alembicOperationTime;
+            case CONFIG_BASE_EFFICIENCY -> Config.distilleryEfficiency;
+            case CONFIG_MAX_GRIME -> Config.distilleryMaximumGrime;
+            case CONFIG_OPERATION_TIME -> Config.distilleryOperationTime;
 
             default -> -1;
         };

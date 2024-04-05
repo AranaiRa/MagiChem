@@ -114,6 +114,7 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), CircleFabricationScreen::new);
             MenuScreens.register(MenuRegistry.CIRCLE_POWER_MENU.get(), CirclePowerScreen::new);
             MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
+            MenuScreens.register(MenuRegistry.DISTILLERY_MENU.get(), DistilleryScreen::new);
             MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
             MenuScreens.register(MenuRegistry.ADMIXER_MENU.get(), FuseryScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_WATER_MENU.get(), ActuatorWaterScreen::new);

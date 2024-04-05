@@ -1,20 +1,32 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class DistilleryBlock extends BaseEntityBlock {
@@ -71,6 +83,33 @@ public class DistilleryBlock extends BaseEntityBlock {
         };
     }
 
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if(!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
+            if(entity instanceof DistilleryBlockEntity) {
+                NetworkHooks.openScreen((ServerPlayer)player, (DistilleryBlockEntity)entity, pos);
+            } else {
+                throw new IllegalStateException("DistilleryBlockEntity container provider is missing!");
+            }
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new DistilleryBlockEntity(pPos, pState);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, BlockEntitiesRegistry.DISTILLERY_BE.get(),
+                DistilleryBlockEntity::tick);
+    }
+
     static {
         VOXEL_SHAPE_ERROR = Block.box(4, 4, 4, 12, 12, 12);
 
@@ -121,11 +160,5 @@ public class DistilleryBlock extends BaseEntityBlock {
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_PIPE_LEFT_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_PIPE_RIGHT_NORTH, 3)
                 );
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new AlembicBlockEntity(pPos, pState);
     }
 }
