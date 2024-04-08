@@ -1,14 +1,18 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.gui.DistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -290,18 +294,19 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         if(getPlugEntity() instanceof DirectionalPluginBlockEntity dpbe)
             pluginDevices.add(dpbe);
 
-        /*List<BlockEntity> query = new ArrayList<>();
-        query.add(level.getBlockEntity(getBlockPos().north()));
-        query.add(level.getBlockEntity(getBlockPos().east()));
-        query.add(level.getBlockEntity(getBlockPos().south()));
-        query.add(level.getBlockEntity(getBlockPos().west()));
+        List<BlockEntity> query = new ArrayList<>();
+        for(Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : DistilleryBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            BlockEntity be = level.getBlockEntity(getBlockPos().offset(posAndType.getFirst()));
+            if(be != null)
+                query.add(be);
+        }
 
         for(BlockEntity be : query) {
             if (be instanceof DistilleryRouterBlockEntity crbe) {
                 BlockEntity pe = crbe.getPlugEntity();
-                if (be != null) if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+                if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
-        }*/
+        }
     }
 
     ////////////////////

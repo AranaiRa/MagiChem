@@ -93,15 +93,6 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
         return master;
     }
 
-    @Override
-    public void setRemoved() {
-//        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : CentrifugeBlock.getRouterOffsets(facing)) {
-//            getLevel().destroyBlock(masterPos.offset(posAndType.getFirst()), true);
-//        }
-//        getLevel().destroyBlock(masterPos, true);
-        super.setRemoved();
-    }
-
     public BlockPos getMasterPos() {
         return masterPos;
     }
