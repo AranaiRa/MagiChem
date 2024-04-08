@@ -3,7 +3,14 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
+import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -28,6 +36,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DistilleryBlock extends BaseEntityBlock {
     public DistilleryBlock(Properties pProperties) {
@@ -49,7 +60,80 @@ public class DistilleryBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        BlockPos pos = pContext.getClickedPos();
+
+        for(Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pContext.getHorizontalDirection())) {
+            if(!pContext.getLevel().isEmptyBlock(pos.offset(posAndType.getFirst()))) {
+                return null;
+            }
+        }
+
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+    }
+
+    @Override
+    public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        BlockState state = BlockRegistry.DISTILLERY_ROUTER.get().defaultBlockState();
+        Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
+
+        for (Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
+            BlockPos targetPos = pPos.offset(posAndType.getFirst());
+            if(pLevel.getBlockState(targetPos).isAir()) {
+                pLevel.setBlock(targetPos, state, 3);
+                ((DistilleryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+            }
+        }
+    }
+
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        for(Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
+            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
+        }
+
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
+        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        destroyRouters(pLevel, pPos, facing);
+
+        super.destroy(pLevel, pPos, pState);
+    }
+
+    public static void destroyRouters(LevelAccessor pLevel, BlockPos pPos, Direction pFacing) {
+        for(Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pFacing)) {
+            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
+        }
+    }
+
+    public static List<Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection>> getRouterOffsets(Direction pFacing) {
+        List<Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection>> offsets = new ArrayList<>();
+        BlockPos origin = new BlockPos(0,0,0);
+        if(pFacing == Direction.NORTH) {
+            offsets.add(new Triplet<>(origin.west(), DistilleryRouterType.PLUG_LEFT, DevicePlugDirection.WEST));
+            offsets.add(new Triplet<>(origin.above(), DistilleryRouterType.ABOVE, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.west().above(), DistilleryRouterType.ABOVE_LEFT, DevicePlugDirection.NONE));
+        } else if(pFacing == Direction.SOUTH) {
+            offsets.add(new Triplet<>(origin.east(), DistilleryRouterType.PLUG_LEFT, DevicePlugDirection.EAST));
+            offsets.add(new Triplet<>(origin.above(), DistilleryRouterType.ABOVE, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.east().above(), DistilleryRouterType.ABOVE_LEFT, DevicePlugDirection.NONE));
+        } else if(pFacing == Direction.EAST) {
+            offsets.add(new Triplet<>(origin.north(), DistilleryRouterType.PLUG_LEFT, DevicePlugDirection.NORTH));
+            offsets.add(new Triplet<>(origin.above(), DistilleryRouterType.ABOVE, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.north().above(), DistilleryRouterType.ABOVE_LEFT, DevicePlugDirection.NONE));
+        } else if(pFacing == Direction.WEST) {
+            offsets.add(new Triplet<>(origin.south(), DistilleryRouterType.PLUG_LEFT, DevicePlugDirection.SOUTH));
+            offsets.add(new Triplet<>(origin.above(), DistilleryRouterType.ABOVE, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.south().above(), DistilleryRouterType.ABOVE_LEFT, DevicePlugDirection.NONE));
+        }
+        return offsets;
     }
 
     @Override

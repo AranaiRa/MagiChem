@@ -38,6 +38,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion())
     );
 
+    public static final RegistryObject<Block> DISTILLERY_ROUTER = registerBlock("distillery_router",
+            () -> new DistilleryRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
     public static final RegistryObject<Block> FUSERY = registerBlock("fusery",
             () -> new FuseryBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())

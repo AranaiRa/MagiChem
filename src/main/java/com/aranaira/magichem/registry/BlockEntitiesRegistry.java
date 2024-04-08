@@ -22,9 +22,9 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(DistilleryBlockEntity::new, BlockRegistry.DISTILLERY.get()).build(null)
     );
 
-    /*public static final RegistryObject<BlockEntityType<DistilleryRouterBlockEntity>> DISTILLERY_ROUTER_BE = BLOCK_ENTITIES.register("distillery_router", () ->
+    public static final RegistryObject<BlockEntityType<DistilleryRouterBlockEntity>> DISTILLERY_ROUTER_BE = BLOCK_ENTITIES.register("distillery_router", () ->
             BlockEntityType.Builder.of(DistilleryRouterBlockEntity::new, BlockRegistry.DISTILLERY_ROUTER.get()).build(null)
-    );*/
+    );
 
     public static final RegistryObject<BlockEntityType<CentrifugeBlockEntity>> CENTRIFUGE_BE = BLOCK_ENTITIES.register("centrifuge", () ->
             BlockEntityType.Builder.of(CentrifugeBlockEntity::new, BlockRegistry.CENTRIFUGE.get()).build(null)
