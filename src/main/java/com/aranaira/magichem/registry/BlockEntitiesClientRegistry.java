@@ -16,6 +16,7 @@ public class BlockEntitiesClientRegistry {
     @SubscribeEvent
     public static void onRegisterBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.CENTRIFUGE_BE.get(), CentrifugeBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.DISTILLERY_BE.get(), DistilleryBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACTUATOR_FIRE_BE.get(), ActuatorFireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACTUATOR_WATER_BE.get(), ActuatorWaterBlockEntityRenderer::new);
     }

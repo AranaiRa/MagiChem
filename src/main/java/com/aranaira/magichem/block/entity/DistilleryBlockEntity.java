@@ -179,6 +179,8 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("remainingHeat", this.remainingHeat);
+        nbt.putInt("heatDuration", this.heatDuration);
         super.saveAdditional(nbt);
     }
 
@@ -187,6 +189,8 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
+        remainingHeat = nbt.getInt("remainingHeat");
+        heatDuration = nbt.getInt("heatDuration");
     }
 
     @Override
@@ -194,6 +198,8 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("remainingHeat", this.remainingHeat);
+        nbt.putInt("heatDuration", this.heatDuration);
         return nbt;
     }
 
@@ -229,6 +235,10 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
     @Override
     public int getMaximumGrime() {
         return Config.distilleryMaximumGrime;
+    }
+
+    public int getHeatFromData() {
+        return data.get(DATA_REMAINING_HEAT);
     }
 
     @Override
