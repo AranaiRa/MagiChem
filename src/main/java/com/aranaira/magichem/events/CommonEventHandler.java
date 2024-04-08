@@ -2,10 +2,12 @@ package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.CentrifugeBlock;
+import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.item.MateriaItem;
@@ -95,6 +97,10 @@ public class CommonEventHandler {
         if(entity instanceof CentrifugeRouterBlockEntity crbe) {
             event.getLevel().destroyBlock(crbe.getMasterPos(), true);
             CentrifugeBlock.destroyRouters(event.getLevel(), crbe.getMasterPos(), crbe.getFacing());
+        }
+        if(entity instanceof DistilleryRouterBlockEntity drbe) {
+            event.getLevel().destroyBlock(drbe.getMasterPos(), true);
+            DistilleryBlock.destroyRouters(event.getLevel(), drbe.getMasterPos(), drbe.getFacing());
         }
 
         Block block = state.getBlock();
