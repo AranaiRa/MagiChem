@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "magichem:block/magic_circle",
-		"particle": "magichem:block/magic_circle_breakparticle"
+		"particle": "magichem:block/breakparticle_dull_iron"
 	},
 	"elements": [
 		{

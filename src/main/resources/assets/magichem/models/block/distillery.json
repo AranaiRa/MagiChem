@@ -2,7 +2,7 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "magichem:block/magic_circle_breakparticle"
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
   },
   "children": {
     "part1": {
