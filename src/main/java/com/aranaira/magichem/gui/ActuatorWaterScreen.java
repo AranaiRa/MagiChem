@@ -29,14 +29,16 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
             //new ResourceLocation(MagiChemMod.MODID, "textures/block/steam.png");
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
-            SYMBOL_X = 57, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
-            POWER_X = 43, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
-            WATER_X = 77, WATER_Y = 15, WATER_W = 8, STEAM_X = 89, STEAM_Y = 15, STEAM_W = 4,
-            TOOLTIP_POWER_X = 41, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
+            SYMBOL_X = 55, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
+            POWER_X = 41, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
+            WATER_X = 75, WATER_Y = 15, WATER_W = 8, STEAM_X = 87, STEAM_Y = 15, STEAM_W = 4,
+            TOOLTIP_POWER_X = 39, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
             TOOLTIP_WATER_X = 76, TOOLTIP_WATER_Y = 14, TOOLTIP_WATER_W = 10, TOOLTIP_WATER_H = 35,
             TOOLTIP_STEAM_X = 88, TOOLTIP_STEAM_Y = 14, TOOLTIP_STEAM_W = 6, TOOLTIP_STEAM_H = 35,
-            TOOLTIP_EFFICIENCY_X = 98, TOOLTIP_EFFICIENCY_Y = 17, TOOLTIP_EFFICIENCY_W = 38, TOOLTIP_EFFICIENCY_H = 11,
-            TOOLTIP_ELDRIN_X = 98, TOOLTIP_ELDRIN_Y = 36, TOOLTIP_ELDRIN_W = 38, TOOLTIP_ELDRIN_H = 11;
+            TOOLTIP_EFFICIENCY_X = 95, TOOLTIP_EFFICIENCY_Y = 5, TOOLTIP_EFFICIENCY_W = 46, TOOLTIP_EFFICIENCY_H = 11,
+            TOOLTIP_WATERCONSUMPTION_X = 95, TOOLTIP_WATERCONSUMPTION_Y = 19, TOOLTIP_WATERCONSUMPTION_W = 46, TOOLTIP_WATERCONSUMPTION_H = 11,
+            TOOLTIP_STEAMGEN_X = 95, TOOLTIP_STEAMGEN_Y = 33, TOOLTIP_STEAMGEN_W = 46, TOOLTIP_STEAMGEN_H = 11,
+            TOOLTIP_ELDRIN_X = 95, TOOLTIP_ELDRIN_Y = 47, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 11;
     public static final int
             FLUID_GAUGE_H = 33;
     private ImageButton
@@ -54,11 +56,11 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
     }
 
     private void initializePowerLevelButtons() {
-        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 41, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 39, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
             menu.incrementPowerLevel();
 
         }));
-        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 41, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 39, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
             menu.decrementPowerLevel();
 
         }));
@@ -182,6 +184,32 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
+        //Water consumption rate
+        if(mouseX >= x+TOOLTIP_WATERCONSUMPTION_X && mouseX <= x+TOOLTIP_WATERCONSUMPTION_X+TOOLTIP_WATERCONSUMPTION_W &&
+                mouseY >= y+TOOLTIP_WATERCONSUMPTION_Y && mouseY <= y+TOOLTIP_WATERCONSUMPTION_Y+TOOLTIP_WATERCONSUMPTION_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.waterconsume").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.waterconsume.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.waterconsume.line2"));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Water consumption rate
+        if(mouseX >= x+TOOLTIP_STEAMGEN_X && mouseX <= x+TOOLTIP_STEAMGEN_X+TOOLTIP_STEAMGEN_W &&
+                mouseY >= y+TOOLTIP_STEAMGEN_Y && mouseY <= y+TOOLTIP_STEAMGEN_Y+TOOLTIP_STEAMGEN_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.steamgen").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.steamgen.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.steamgen.line2"));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
         //Eldrin
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
@@ -201,12 +229,18 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
 
         //Efficiency increase
         if((menu.getFlags() & ActuatorWaterBlockEntity.FLAG_IS_SATISFIED) == ActuatorWaterBlockEntity.FLAG_IS_SATISFIED)
-            gui.drawString(font, Component.literal("+"+ActuatorWaterBlockEntity.getEfficiencyIncrease(menu.getPowerLevel())+"%"), 112, 23, 0xff000000, false);
+            gui.drawString(font, Component.literal("+"+ActuatorWaterBlockEntity.getEfficiencyIncrease(menu.getPowerLevel())+"%"), 109, 12, 0xff000000, false);
         else
-            gui.drawString(font, Component.literal("   0%"), 112, 23, 0xffaa0000, false);
+            gui.drawString(font, Component.literal("   0%"), 109, 12, 0xffaa0000, false);
+
+        //Water consumption rate
+        gui.drawString(font, Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel())+"mB"), 109, 26, 0xff000000, false);
+
+        //Steam production rate
+        gui.drawString(font, Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.getPowerLevel())+"mB"), 109, 40, 0xff000000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 112, 42, 0xff000000, false);
+        gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 109, 54, 0xff000000, false);
     }
 
     private int getScaledEldrinTime() {

@@ -27,15 +27,15 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             new ResourceLocation("minecraft", "textures/block/water_still.png");
     public static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
-            SYMBOL_X = 48, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
-            POWER_X = 34, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
-            WATER_X = 77, WATER_Y = 15, WATER_W = 8, STEAM_X = 89, STEAM_Y = 15, STEAM_W = 4,
-            FUEL_GAUGE_X = 67, FUEL_GAUGE_Y = 12, FUEL_GAUGE_U = 176, FUEL_GAUGE_V = 40, FUEL_GAUGE_W = 18, FUEL_GAUGE_H = 16,
+            SYMBOL_X = 50, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
+            POWER_X = 36, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
+            FUEL_GAUGE_X = 69, FUEL_GAUGE_Y = 12, FUEL_GAUGE_U = 176, FUEL_GAUGE_V = 40, FUEL_GAUGE_W = 18, FUEL_GAUGE_H = 16,
             TOOLTIP_POWER_X = 32, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
             TOOLTIP_FUEL_X = 66, TOOLTIP_FUEL_Y = 11, TOOLTIP_FUEL_W = 20, TOOLTIP_FUEL_H = 18,
-            TOOLTIP_SMOKE_X = 89, TOOLTIP_SMOKE_Y = 14, TOOLTIP_SMOKE_W = 6, TOOLTIP_SMOKE_H = 35,
-            TOOLTIP_REDUCTION_X = 99, TOOLTIP_REDUCTION_Y = 17, TOOLTIP_REDUCTION_W = 46, TOOLTIP_REDUCTION_H = 11,
-            TOOLTIP_ELDRIN_X = 99, TOOLTIP_ELDRIN_Y = 36, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 11;
+            TOOLTIP_SMOKE_X = 91, TOOLTIP_SMOKE_Y = 14, TOOLTIP_SMOKE_W = 6, TOOLTIP_SMOKE_H = 35,
+            TOOLTIP_REDUCTION_X = 100, TOOLTIP_REDUCTION_Y = 10, TOOLTIP_REDUCTION_W = 46, TOOLTIP_REDUCTION_H = 11,
+            TOOLTIP_SMOKEGEN_X = 100, TOOLTIP_SMOKEGEN_Y = 25, TOOLTIP_SMOKEGEN_W = 46, TOOLTIP_SMOKEGEN_H = 11,
+            TOOLTIP_ELDRIN_X = 100, TOOLTIP_ELDRIN_Y = 40, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 11;
     public static final int
             FLUID_GAUGE_H = 33;
     private ImageButton
@@ -53,11 +53,11 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
     }
 
     private void initializePowerLevelButtons() {
-        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 32, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 34, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
             menu.incrementPowerLevel();
 
         }));
-        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 32, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 34, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
             menu.decrementPowerLevel();
 
         }));
@@ -93,7 +93,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
 
         //Time icon if mode calls for it
         if(!ActuatorFireBlockEntity.getIsPowerReductionMode(menu.getFlags()))
-            gui.blit(TEXTURE, x + 99, y + 17, 176, 56, 11, 11);
+            gui.blit(TEXTURE, x + 101, y + 11, 176, 56, 11, 11);
 
     }
 
@@ -182,6 +182,20 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
+        //Smoke Generation
+        if(mouseX >= x+TOOLTIP_SMOKEGEN_X && mouseX <= x+TOOLTIP_SMOKEGEN_X+TOOLTIP_SMOKEGEN_W &&
+                mouseY >= y+TOOLTIP_SMOKEGEN_Y && mouseY <= y+TOOLTIP_SMOKEGEN_Y+TOOLTIP_SMOKEGEN_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.smokegen").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.smokegen.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.smokegen.line2"));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
         //Eldrin
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
@@ -201,14 +215,15 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
 
         //Efficiency increase
         if((menu.getFlags() & ActuatorWaterBlockEntity.FLAG_IS_SATISFIED) == ActuatorWaterBlockEntity.FLAG_IS_SATISFIED)
-            gui.drawString(font, Component.literal("-"+ ActuatorFireBlockEntity.getReductionRate(menu.getPowerLevel(), menu.getFlags())+"%"), 113, 23, 0xff000000, false);
+            gui.drawString(font, Component.literal("-"+ ActuatorFireBlockEntity.getReductionRate(menu.getPowerLevel(), menu.getFlags())+"%"), 114, 17, 0xff000000, false);
         else
-            gui.drawString(font, Component.literal("-"), 113, 23, 0xffaa0000, false);
+            gui.drawString(font, Component.literal("-"), 114, 17, 0xffaa0000, false);
+
+        //Smoke generation
+        gui.drawString(font, Component.literal(ActuatorFireBlockEntity.getSmokePerProcess(menu.getPowerLevel()) + "mB"), 114, 32, 0xff000000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorFireBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 113, 42, 0xff000000, false);
-
-        gui.drawString(font, Component.literal(""+menu.getRemainingFuelTime()+"/"+menu.getFuelDuration()), -30, -30, 0xffffffff, false);
+        gui.drawString(font, Component.literal(""+ActuatorFireBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 114, 47, 0xff000000, false);
     }
 
     private int getScaledEldrinTime() {

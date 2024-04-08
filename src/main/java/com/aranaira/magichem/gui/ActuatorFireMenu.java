@@ -22,7 +22,7 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     private static final int
-        SLOT_FUEL_X = 68, SLOT_FUEL_Y = 36;
+        SLOT_FUEL_X = 70, SLOT_FUEL_Y = 36;
 
     public ActuatorFireMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorFireBlockEntity.DATA_COUNT));
