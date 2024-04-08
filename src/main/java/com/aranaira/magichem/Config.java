@@ -154,6 +154,20 @@ public class Config
             .comment("The amount of Smoke, in mB, the Inferno Engine's internal tank can hold.")
             .defineInRange("infernoEngineTankCapacity", 2000, 500, Integer.MAX_VALUE);
 
+    //----------------QUAKE REFINERY
+
+    private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_OPERATION_TIME = BUILDER
+            .comment("The amount of time, in ticks, a Quake Refinery goes between drawing more Eldrin power.")
+            .defineInRange("quakeRefineryOperationTime", 25, 1, 200);
+
+    private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_SAND_CAPACITY = BUILDER
+            .comment("The amount of sand that can be stored in the Quake Refinery's internal buffer.")
+            .defineInRange("quakeRefinerySandCapacity", 16000, 500, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_GRIME_CAPACITY = BUILDER
+            .comment("The amount of Grime that can be stored in the Quake Refinery's internal buffer.")
+            .defineInRange("quakeRefineryGrimeCapacity", 128000, 500, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -186,7 +200,10 @@ public class Config
         delugePurifierOperationTime,
         delugePurifierTankCapacity,
         infernoEngineOperationTime,
-        infernoEngineTankCapacity;
+        infernoEngineTankCapacity,
+        quakeRefineryOperationTime,
+        quakeRefinerySandCapacity,
+        quakeRefineryGrimeCapacity;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -226,5 +243,8 @@ public class Config
         delugePurifierTankCapacity = DELUGE_PURIFIER_TANK_CAPACITY.get();
         infernoEngineOperationTime = INFERNO_ENGINE_OPERATION_TIME.get();
         infernoEngineTankCapacity = INFERNO_ENGINE_TANK_CAPACITY.get();
+        quakeRefineryOperationTime = QUAKE_REFINERY_OPERATION_TIME.get();
+        quakeRefinerySandCapacity = QUAKE_REFINERY_SAND_CAPACITY.get();
+        quakeRefineryGrimeCapacity = QUAKE_REFINERY_GRIME_CAPACITY.get();
     }
 }

@@ -78,6 +78,11 @@ public class BlockRegistry {
                     .strength(0.5f).noOcclusion())
     );
 
+    public static final RegistryObject<Block> ACTUATOR_EARTH = registerBlock("actuator_earth",
+            () -> new ActuatorEarthBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).noOcclusion())
+    );
+
     public static final RegistryObject<Block> BASE_ACTUATOR_ROUTER = registerBlock("base_actuator_router",
             () -> new BaseActuatorRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())
@@ -90,6 +95,11 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> ACTUATOR_WATER_ROUTER = registerBlock("actuator_water_router",
             () -> new ActuatorWaterRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> ACTUATOR_EARTH_ROUTER = registerBlock("actuator_earth_router",
+            () -> new ActuatorEarthRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())
     );
 

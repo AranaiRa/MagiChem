@@ -30,6 +30,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             SYMBOL_X = 50, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
             POWER_X = 36, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
             FUEL_GAUGE_X = 69, FUEL_GAUGE_Y = 12, FUEL_GAUGE_U = 176, FUEL_GAUGE_V = 40, FUEL_GAUGE_W = 18, FUEL_GAUGE_H = 16,
+            SMOKE_X = 92, SMOKE_Y = 15, SMOKE_W = 4,
             TOOLTIP_POWER_X = 32, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
             TOOLTIP_FUEL_X = 66, TOOLTIP_FUEL_Y = 11, TOOLTIP_FUEL_W = 20, TOOLTIP_FUEL_H = 18,
             TOOLTIP_SMOKE_X = 91, TOOLTIP_SMOKE_Y = 14, TOOLTIP_SMOKE_W = 6, TOOLTIP_SMOKE_H = 35,
@@ -90,6 +91,12 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             int fY = FUEL_GAUGE_H - fH;
             gui.blit(TEXTURE, x + FUEL_GAUGE_X, y + FUEL_GAUGE_Y + fY, FUEL_GAUGE_U, FUEL_GAUGE_V + fY, FUEL_GAUGE_W, fH);
         }
+
+        //smoke gauge
+        int steamH = ActuatorFireBlockEntity.getScaledSmoke(menu.getSmokeInTank());
+        gui.setColor(0.2f, 0.1875f, 0.1875f, 1.0f);
+        gui.blit(TEXTURE_SMOKE, x + SMOKE_X, y + SMOKE_Y, 11, 0, SMOKE_W, steamH, 16, 16);
+        gui.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         //Time icon if mode calls for it
         if(!ActuatorFireBlockEntity.getIsPowerReductionMode(menu.getFlags()))

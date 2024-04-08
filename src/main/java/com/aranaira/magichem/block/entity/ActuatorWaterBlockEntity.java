@@ -50,7 +50,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
-            WATER_PER_OPERATION = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
+            WATER_PER_OPERATION = {0, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440, 470, 500},
             STEAM_PER_PROCESS = {0, 3, 5, 7, 10, 13, 17, 22, 27, 33, 39, 46, 53, 61},
             EFFICIENCY_INCREASE = {0, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40};
     public static final int

@@ -39,6 +39,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<ActuatorFireMenu>> ACTUATOR_FIRE_MENU =
             registerMenuType(ActuatorFireMenu::new, "actuator_fire");
 
+    public static final RegistryObject<MenuType<ActuatorEarthMenu>> ACTUATOR_EARTH_MENU =
+            registerMenuType(ActuatorEarthMenu::new, "actuator_earth");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
