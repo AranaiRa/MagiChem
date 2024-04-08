@@ -2,13 +2,19 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.gui.DistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -23,6 +29,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -32,7 +39,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins {
     public static final int
         SLOT_COUNT = 26,
         SLOT_BOTTLES = 0, SLOT_FUEL = 1,
@@ -40,7 +50,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50, GUI_HEAT_GAUGE_HEIGHT = 16,
         DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2, DATA_HEAT_DURATION = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5;
-    private int heatDuration = 0;
+    private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
 
     ////////////////////
     // CONSTRUCTOR
@@ -133,6 +143,15 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
                 return DATA_COUNT;
             }
         };
+
+        Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        switch(facing) {
+            case NORTH -> plugDirection = DevicePlugDirection.EAST;
+            case EAST -> plugDirection = DevicePlugDirection.SOUTH;
+            case SOUTH -> plugDirection = DevicePlugDirection.WEST;
+            case WEST -> plugDirection = DevicePlugDirection.NORTH;
+        }
     }
 
     //////////
@@ -232,6 +251,47 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         this.data.set(DATA_REMAINING_HEAT, remainingHeat);
         this.data.set(DATA_HEAT_DURATION, heatDuration);
         //TODO: push op time mod
+    }
+
+    ////////////////////
+    // ACTUATOR HANDLERS
+    ////////////////////
+
+    public DevicePlugDirection getPlugDirection() {
+        return this.plugDirection;
+    }
+
+    public BlockEntity getPlugEntity() {
+        BlockPos target = getBlockPos();
+
+        if(getPlugDirection() == DevicePlugDirection.NORTH) target = target.north();
+        else if(getPlugDirection() == DevicePlugDirection.EAST) target = target.east();
+        else if(getPlugDirection() == DevicePlugDirection.SOUTH) target = target.south();
+        else if(getPlugDirection() == DevicePlugDirection.WEST) target = target.west();
+
+        return getLevel().getBlockEntity(target);
+    }
+
+    @Override
+    public void linkPlugins() {
+        pluginDevices.clear();
+
+        //Start by grabbing the actuator plugged into the main block
+        if(getPlugEntity() instanceof DirectionalPluginBlockEntity dpbe)
+            pluginDevices.add(dpbe);
+
+        /*List<BlockEntity> query = new ArrayList<>();
+        query.add(level.getBlockEntity(getBlockPos().north()));
+        query.add(level.getBlockEntity(getBlockPos().east()));
+        query.add(level.getBlockEntity(getBlockPos().south()));
+        query.add(level.getBlockEntity(getBlockPos().west()));
+
+        for(BlockEntity be : query) {
+            if (be instanceof DistilleryRouterBlockEntity crbe) {
+                BlockEntity pe = crbe.getPlugEntity();
+                if (be != null) if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            }
+        }*/
     }
 
     ////////////////////

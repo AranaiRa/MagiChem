@@ -316,7 +316,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     public static int getOperationTicks(int pGrime, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
         float otmScalar = (10000f - pOperationTimeMod) / 10000f;
-        return Math.round(Config.centrifugeOperationTime * getTimeScalar(pGrime, pVarFunc) * otmScalar);
+        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar);
     }
 
     public static int getActualEfficiency(int pMod, int pGrime, Function<IDs, Integer> pVarFunc) {

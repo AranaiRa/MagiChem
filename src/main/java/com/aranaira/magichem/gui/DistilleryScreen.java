@@ -51,7 +51,7 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
 
         renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 
-        int sProg = DistilleryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), DistilleryBlockEntity::getVar);
+        int sProg = DistilleryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar);
         if(sProg > 0)
             gui.blit(TEXTURE, x+76, y+47, 0, 228, sProg, 28);
 
@@ -139,10 +139,10 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
 
-        gui.drawString(font, Component.literal(DistilleryBlockEntity.getActualEfficiency(menu.getGrime(), DistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 10, 0xff000000, false);
+        gui.drawString(font, Component.literal(DistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), DistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 10, 0xff000000, false);
 
-        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), DistilleryBlockEntity::getVar) / 20;
-        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), DistilleryBlockEntity::getVar) % 20) * 5;
+        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar) / 20;
+        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 9, 0xff000000, false);
     }
 }

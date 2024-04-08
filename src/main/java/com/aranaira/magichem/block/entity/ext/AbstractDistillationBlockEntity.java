@@ -39,7 +39,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
     protected int
-            progress = 0, remainingHeat = 0, pluginLinkageCountdown = 0;
+            progress = 0, remainingHeat = 0, heatDuration = 0, pluginLinkageCountdown = 0;
 
     protected ItemStackHandler itemHandler;
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -91,7 +91,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
                 if (ActuatorFireBlockEntity.getIsSatisfied(fire) && pEntity.remainingHeat <= 20) {
-                    pEntity.remainingHeat = 100;
+                    pEntity.remainingHeat = 1000;
+                    pEntity.heatDuration = 1000;
                     pEntity.operationTimeMod = fire.getReductionRate();
                     pEntity.syncAndSave();
                 }
@@ -107,30 +108,39 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         updateActuatorValues(pEntity);
 
         //make sure we have enough torque (or animus) to operate
-        if(pEntity.remainingHeat <= 0)
-            return;
+        if(pEntity.remainingHeat > 0) {
 
-        //figure out what slot and stack to target
-        Pair<Integer, ItemStack> processing = getProcessingItem(pEntity, pVarFunc);
-        int processingSlot = processing.getFirst();
-        ItemStack processingItem = processing.getSecond();
+            //figure out what slot and stack to target
+            Pair<Integer, ItemStack> processing = getProcessingItem(pEntity, pVarFunc);
+            int processingSlot = processing.getFirst();
+            ItemStack processingItem = processing.getSecond();
 
-        AlchemicalCompositionRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
-        if(processingItem != ItemStack.EMPTY && recipe != null) {
-            if(canCraftItem(pEntity, recipe, pVarFunc)) {
-                if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc)) {
-                    if (!pLevel.isClientSide()) {
-                        craftItem(pEntity, recipe, processingSlot, pVarFunc);
-                        pEntity.pushData();
-                    }
-                    if (!pEntity.isStalled)
-                        pEntity.resetProgress();
-                } else
-                    pEntity.incrementProgress();
+            AlchemicalCompositionRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
+            if (processingItem != ItemStack.EMPTY && recipe != null) {
+                if (canCraftItem(pEntity, recipe, pVarFunc)) {
+                    if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.operationTimeMod*100, pVarFunc)) {
+                        if (!pLevel.isClientSide()) {
+                            craftItem(pEntity, recipe, processingSlot, pVarFunc);
+                            pEntity.pushData();
+                        }
+                        if (!pEntity.isStalled)
+                            pEntity.resetProgress();
+                    } else
+                        pEntity.incrementProgress();
+                }
+            } else if (processingItem == ItemStack.EMPTY)
+                pEntity.resetProgress();
+        }
+
+        //deferred plugin linkage
+        if(!pLevel.isClientSide()) {
+            if (pEntity.pluginLinkageCountdown == 0) {
+                pEntity.pluginLinkageCountdown = -1;
+                pEntity.linkPlugins();
+            } else if (pEntity.pluginLinkageCountdown > 0) {
+                pEntity.pluginLinkageCountdown--;
             }
         }
-        else if(processingItem == ItemStack.EMPTY)
-            pEntity.resetProgress();
     }
 
     protected static Pair<Integer, ItemStack> getProcessingItem(AbstractDistillationBlockEntity entity, Function<IDs, Integer> pVarFunc) {
@@ -212,14 +222,14 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return true;
     }
 
-    protected static void craftItem(AbstractDistillationBlockEntity entity, AlchemicalCompositionRecipe recipe, int processingSlot, Function<IDs, Integer> pVarFunc) {
+    protected static void craftItem(AbstractDistillationBlockEntity pEntity, AlchemicalCompositionRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
         SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-            outputSlots.setItem(i, entity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
+            outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
         }
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(recipe.getComponentMateria(), AlembicBlockEntity.getActualEfficiency(GrimeProvider.getCapability(entity).getGrime(), pVarFunc), recipe.getOutputRate(), Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
-        int grimeToAdd = Math.round(pair.getFirst() * recipe.getOutputRate());
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AlembicBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), pRecipe.getOutputRate(), Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
+        int grimeToAdd = Math.round(pair.getFirst() * pRecipe.getOutputRate());
         NonNullList<ItemStack> componentMateria = pair.getSecond();
 
         for(ItemStack item : componentMateria) {
@@ -227,23 +237,25 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 outputSlots.addItem(item);
             }
             else {
-                entity.isStalled = true;
+                pEntity.isStalled = true;
                 break;
             }
         }
 
-        if(!entity.isStalled) {
-            for(int i=0; i<9; i++) {
-                entity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
+        if(!pEntity.isStalled) {
+            for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
             }
-            ItemStack processingSlotContents = entity.itemHandler.getStackInSlot(processingSlot);
+            ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
             processingSlotContents.shrink(1);
             if(processingSlotContents.getCount() == 0)
-                entity.itemHandler.setStackInSlot(processingSlot, ItemStack.EMPTY);
+                pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
         }
 
-        IGrimeCapability grimeCapability = GrimeProvider.getCapability(entity);
+        IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
         grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), pVarFunc.apply(IDs.CONFIG_MAX_GRIME)));
+
+        resolveActuators(pEntity);
     }
 
     ////////////////////
@@ -257,25 +269,26 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return 1f + grimeScalar * 3f;
     }
 
-    public static int getOperationTicks(int pGrime, Function<IDs, Integer> pVarFunc) {
-        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc));
+    public static int getOperationTicks(int pGrime, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
+        float otmScalar = (10000f - pOperationTimeMod) / 10000f;
+        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar);
     }
 
-    public static int getActualEfficiency(int pGrime, Function<IDs, Integer> pVarFunc) {
+    public static int getActualEfficiency(int pMod, int pGrime, Function<IDs, Integer> pVarFunc) {
         float grimeScalar = 1f - Math.min(Math.max(Math.min(Math.max(getGrimePercent(pGrime, pVarFunc) - 0.5f, 0f), 1f) * 2f, 0f), 1f);
-        return Math.round(pVarFunc.apply(IDs.CONFIG_BASE_EFFICIENCY) * grimeScalar);
+        return Math.round((pVarFunc.apply(IDs.CONFIG_BASE_EFFICIENCY) + pMod) * grimeScalar);
     }
 
     public static float getGrimePercent(int pGrime, Function<IDs, Integer> pVarFunc) {
         return (float)pGrime / (float)pVarFunc.apply(IDs.CONFIG_MAX_GRIME);
     }
 
-    public static int getScaledProgress(int pProgress, int pGrime, Function<IDs, Integer> pVarFunc) {
-        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pVarFunc);
+    public static int getScaledProgress(int pProgress, int pGrime, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
+        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pOperationTimeMod, pVarFunc);
     }
 
     public static int getScaledHeat(int pHeat, int pHeatDuration, Function<IDs, Integer> pVarFunc) {
-        return pVarFunc.apply(IDs.GUI_HEAT_GAUGE_HEIGHT) * pHeat / pHeatDuration;
+        return 1 + (pVarFunc.apply(IDs.GUI_HEAT_GAUGE_HEIGHT) * pHeat / pHeatDuration);
     }
 
     ////////////////////

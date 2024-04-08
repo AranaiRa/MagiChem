@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
@@ -185,5 +186,13 @@ public class DistilleryMenu extends AbstractContainerMenu {
 
     public int getHeatDuration() {
         return data.get(DistilleryBlockEntity.DATA_HEAT_DURATION);
+    }
+
+    public int getEfficiencyMod() {
+        return data.get(DistilleryBlockEntity.DATA_EFFICIENCY_MOD);
+    }
+
+    public int getOperationTimeMod() {
+        return data.get(DistilleryBlockEntity.DATA_OPERATION_TIME_MOD);
     }
 }

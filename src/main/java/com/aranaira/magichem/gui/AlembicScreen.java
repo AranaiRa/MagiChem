@@ -51,7 +51,7 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
 
         renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 
-        int sProg = AlembicBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), AlembicBlockEntity::getVar);
+        int sProg = AlembicBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), 0.0f, AlembicBlockEntity::getVar);
         if(sProg > 0)
             gui.blit(TEXTURE, x+76, y+53, 0, 228, sProg, 28);
 
@@ -135,10 +135,10 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
 
-        gui.drawString(font, Component.literal(AlembicBlockEntity.getActualEfficiency(menu.getGrime(), AlembicBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 4, 0xff000000, false);
+        gui.drawString(font, Component.literal(AlembicBlockEntity.getActualEfficiency(0, menu.getGrime(), AlembicBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 4, 0xff000000, false);
 
-        int secWhole = AlembicBlockEntity.getOperationTicks(menu.getGrime(), AlembicBlockEntity::getVar) / 20;
-        int secPartial = (AlembicBlockEntity.getOperationTicks(menu.getGrime(), AlembicBlockEntity::getVar) % 20) * 5;
+        int secWhole = AlembicBlockEntity.getOperationTicks(menu.getGrime(), 0.0f, AlembicBlockEntity::getVar) / 20;
+        int secPartial = (AlembicBlockEntity.getOperationTicks(menu.getGrime(), 0.0f, AlembicBlockEntity::getVar) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 15, 0xff000000, false);
     }
 }
