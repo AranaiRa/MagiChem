@@ -1,0 +1,21 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:distillery",
+  "tier": 2,
+  "items": [
+    "magichem:perfected_electrum",
+    "magichem:magic_circle",
+    "magichem:perfected_electrum",
+    "magichem:alembic",
+    "magichem:perfected_electrum",
+    "magichem:alembic",
+    "mna:decoration/arcane_sandstone",
+    "minecraft:furnace",
+    "mna:decoration/arcane_sandstone"
+  ],
+  "patterns": [
+    "mna:inverted_triangle",
+    "mna:bolt",
+    "mna:split_triangle"
+  ]
+}
