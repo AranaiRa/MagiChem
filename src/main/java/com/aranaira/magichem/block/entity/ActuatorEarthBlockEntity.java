@@ -175,6 +175,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
+        nbt.putInt("flags", flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -188,6 +189,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         this.remainingSand = nbt.getInt("remainingSand");
         this.currentGrime = nbt.getInt("currentGrime");
         this.currentRarefiedGrime = nbt.getInt("currentRarefiedGrime");
+        this.flags = nbt.getInt("flags");
 
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
@@ -207,6 +209,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
+        nbt.putInt("flags", flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;
@@ -286,8 +289,30 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         int powerDraw = entity.getEldrinPowerUsage();
 
         if(ownerCheck != null) {
-            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.FIRE, Math.min(powerDraw, entity.remainingEldrinForSatisfaction), 1);
+            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.EARTH, Math.min(powerDraw, entity.remainingEldrinForSatisfaction), 1);
             entity.remainingEldrinForSatisfaction -= consumption;
+
+            //Eldrin processing
+            if(entity.remainingEldrinTime <= 0) {
+                if(entity.remainingEldrinForSatisfaction <= 0) {
+                    entity.remainingEldrinForSatisfaction = powerDraw;
+                    entity.remainingEldrinTime = Config.quakeRefineryOperationTime;
+                }
+
+                if(!getIsSatisfied(entity)) {
+                    entity.syncAndSave();
+                }
+            }
+            entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
+
+            if(entity.remainingEldrinTime >= 0) entity.flags = entity.flags | ActuatorEarthBlockEntity.FLAG_IS_SATISFIED;
+            else {
+                if(getIsSatisfied(entity)) {
+                    entity.flags = entity.flags & ~ActuatorEarthBlockEntity.FLAG_IS_SATISFIED;
+                    entity.syncAndSave();
+                } else
+                    entity.flags = entity.flags & ~ActuatorEarthBlockEntity.FLAG_IS_SATISFIED;
+            }
         }
     }
 
@@ -326,19 +351,21 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         int overflow = pGrimeToAdd;
 
         //Determine how much grime is being added
-        if(remainingSand >= getSandPerOperation()) {
-            remainingSand -= getSandPerOperation();
+        if((flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED) {
+            if (remainingSand >= getSandPerOperation()) {
+                remainingSand -= getSandPerOperation();
 
-            //Reduce insertion and generate rarefied grime
-            reduction = Math.round((float)pGrimeToAdd * ((float)getGrimeReductionRate()) / 100.0f);
-            insertion = pGrimeToAdd - reduction;
-            rarefied = Math.round(((float)Config.quakeRefineryRarefiedRate / 100.0f) * (float)reduction);
+                //Reduce insertion and generate rarefied grime
+                reduction = Math.round((float) pGrimeToAdd * ((float) getGrimeReductionRate()) / 100.0f);
+                insertion = pGrimeToAdd - reduction;
+                rarefied = Math.round(((float) Config.quakeRefineryRarefiedRate / 100.0f) * (float) reduction);
 
-            if(currentGrime + insertion > Config.quakeRefineryGrimeCapacity) {
-                overflow = insertion - (Config.quakeRefineryGrimeCapacity - currentGrime);
-                insertion = Config.quakeRefineryGrimeCapacity - currentGrime;
-            } else {
-                overflow = 0;
+                if (currentGrime + insertion > Config.quakeRefineryGrimeCapacity) {
+                    overflow = insertion - (Config.quakeRefineryGrimeCapacity - currentGrime);
+                    insertion = Config.quakeRefineryGrimeCapacity - currentGrime;
+                } else {
+                    overflow = 0;
+                }
             }
         }
 

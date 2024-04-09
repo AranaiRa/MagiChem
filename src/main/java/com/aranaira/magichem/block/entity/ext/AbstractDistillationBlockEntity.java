@@ -98,6 +98,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                     pEntity.syncAndSave();
                 }
             }
+            if (dpbe instanceof ActuatorEarthBlockEntity earth) {
+                ActuatorEarthBlockEntity.delegatedTick(pLevel, pPos, pState, earth);
+            }
         }
 
         pEntity.remainingHeat = Math.max(0, pEntity.remainingHeat - 1);

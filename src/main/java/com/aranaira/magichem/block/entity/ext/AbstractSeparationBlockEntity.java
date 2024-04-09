@@ -114,6 +114,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     pEntity.syncAndSave();
                 }
             }
+            if (dpbe instanceof ActuatorEarthBlockEntity earth) {
+                ActuatorEarthBlockEntity.delegatedTick(pLevel, pPos, pState, earth);
+            }
         }
 
         pEntity.remainingTorque = Math.max(-pVarFunc.apply(IDs.CONFIG_NO_TORQUE_GRACE_PERIOD), pEntity.remainingTorque - 1);
