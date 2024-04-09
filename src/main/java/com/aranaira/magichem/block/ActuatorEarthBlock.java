@@ -167,10 +167,8 @@ public class ActuatorEarthBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pLevel.isClientSide) {
-            if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_EARTH_BE.get()) {
-                return ActuatorEarthBlockEntity::tick;
-            }
+        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_EARTH_BE.get()) {
+            return ActuatorEarthBlockEntity::tick;
         }
 
         return null;

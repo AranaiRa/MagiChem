@@ -5,19 +5,31 @@ import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.mna.gui.containers.slots.SingleItemSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class ActuatorEarthMenu extends AbstractContainerMenu {
 
     public final ActuatorEarthBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
+
+    private static final int
+            SLOT_SAND_X = 75, SLOT_SAND_Y = 13,
+            SLOT_WASTE_X = 66, SLOT_WASTE_Y = 43,
+            SLOT_RAREFIED_WASTE_X = 84, SLOT_RAREFIED_WASTE_Y = 43;
 
     public ActuatorEarthMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorEarthBlockEntity.DATA_COUNT));
@@ -31,6 +43,13 @@ public class ActuatorEarthMenu extends AbstractContainerMenu {
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
+
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            //Sand slot
+            this.addSlot(new SlotItemHandler(handler, ActuatorEarthBlockEntity.SLOT_SAND, SLOT_SAND_X, SLOT_SAND_Y));
+            this.addSlot(new SlotItemHandler(handler, ActuatorEarthBlockEntity.SLOT_WASTE, SLOT_WASTE_X, SLOT_WASTE_Y));
+            this.addSlot(new SlotItemHandler(handler, ActuatorEarthBlockEntity.SLOT_RAREFIED_WASTE, SLOT_RAREFIED_WASTE_X, SLOT_RAREFIED_WASTE_Y));
+        });
 
         addDataSlots(data);
     }

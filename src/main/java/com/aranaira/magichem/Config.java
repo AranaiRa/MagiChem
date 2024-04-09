@@ -168,6 +168,10 @@ public class Config
             .comment("The amount of Grime that can be stored in the Quake Refinery's internal buffer.")
             .defineInRange("quakeRefineryGrimeCapacity", 128000, 500, Integer.MAX_VALUE);
 
+    private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_RAREFIED_RATE = BUILDER
+            .comment("What percentage of Grime reduced by a Quake Refinery becomes Rarefied Waste instead of Alchemical Waste.")
+            .defineInRange("quakeRefineryRarefiedRate", 30, 1, 100);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -203,7 +207,8 @@ public class Config
         infernoEngineTankCapacity,
         quakeRefineryOperationTime,
         quakeRefinerySandCapacity,
-        quakeRefineryGrimeCapacity;
+        quakeRefineryGrimeCapacity,
+        quakeRefineryRarefiedRate;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -246,5 +251,6 @@ public class Config
         quakeRefineryOperationTime = QUAKE_REFINERY_OPERATION_TIME.get();
         quakeRefinerySandCapacity = QUAKE_REFINERY_SAND_CAPACITY.get();
         quakeRefineryGrimeCapacity = QUAKE_REFINERY_GRIME_CAPACITY.get();
+        quakeRefineryRarefiedRate = QUAKE_REFINERY_RAREFIED_RATE.get();
     }
 }

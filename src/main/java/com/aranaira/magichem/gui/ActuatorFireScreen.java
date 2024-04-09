@@ -221,7 +221,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         Font font = Minecraft.getInstance().font;
 
         //Efficiency increase
-        if((menu.getFlags() & ActuatorWaterBlockEntity.FLAG_IS_SATISFIED) == ActuatorWaterBlockEntity.FLAG_IS_SATISFIED)
+        if((menu.getFlags() & ActuatorFireBlockEntity.FLAG_IS_SATISFIED) == ActuatorFireBlockEntity.FLAG_IS_SATISFIED)
             gui.drawString(font, Component.literal("-"+ ActuatorFireBlockEntity.getReductionRate(menu.getPowerLevel(), menu.getFlags())+"%"), 114, 17, 0xff000000, false);
         else
             gui.drawString(font, Component.literal("-"), 114, 17, 0xffaa0000, false);

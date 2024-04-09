@@ -3,6 +3,8 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
+import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
+import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -27,15 +29,15 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
             SYMBOL_X = 55, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
-            POWER_X = 41, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
-            WATER_X = 75, WATER_Y = 15, WATER_W = 8, STEAM_X = 87, STEAM_Y = 15, STEAM_W = 4,
-            TOOLTIP_POWER_X = 39, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
-            TOOLTIP_WATER_X = 76, TOOLTIP_WATER_Y = 14, TOOLTIP_WATER_W = 10, TOOLTIP_WATER_H = 35,
-            TOOLTIP_STEAM_X = 88, TOOLTIP_STEAM_Y = 14, TOOLTIP_STEAM_W = 6, TOOLTIP_STEAM_H = 35,
-            TOOLTIP_EFFICIENCY_X = 95, TOOLTIP_EFFICIENCY_Y = 5, TOOLTIP_EFFICIENCY_W = 46, TOOLTIP_EFFICIENCY_H = 11,
-            TOOLTIP_WATERCONSUMPTION_X = 95, TOOLTIP_WATERCONSUMPTION_Y = 19, TOOLTIP_WATERCONSUMPTION_W = 46, TOOLTIP_WATERCONSUMPTION_H = 11,
-            TOOLTIP_STEAMGEN_X = 95, TOOLTIP_STEAMGEN_Y = 33, TOOLTIP_STEAMGEN_W = 46, TOOLTIP_STEAMGEN_H = 11,
-            TOOLTIP_ELDRIN_X = 95, TOOLTIP_ELDRIN_Y = 47, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 11;
+            POWER_X = 22, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
+            GRIME_X = 56, GRIME_Y = 15, GRIME_U = 176, GRIME_V = 40, GRIME_W = 4,
+            SAND_X = 106, SAND_Y = 15, SAND_W = 4,
+            TOOLTIP_POWER_X = 20, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
+            TOOLTIP_GRIME_X = 55, TOOLTIP_GRIME_Y = 14, TOOLTIP_GRIME_W = 6, TOOLTIP_GRIME_H = 35,
+            TOOLTIP_SAND_X = 105, TOOLTIP_SAND_Y = 14, TOOLTIP_SAND_W = 6, TOOLTIP_SAND_H = 35,
+            TOOLTIP_GRIMEREDUCTION_X = 114, TOOLTIP_GRIMEREDUCTION_Y = 10, TOOLTIP_GRIMEREDUCTION_W = 46, TOOLTIP_GRIMEREDUCTION_H = 11,
+            TOOLTIP_SANDCONSUMPTION_X = 114, TOOLTIP_SANDCONSUMPTION_Y = 25, TOOLTIP_SANDCONSUMPTION_W = 46, TOOLTIP_SANDCONSUMPTION_H = 11,
+            TOOLTIP_ELDRIN_X = 114, TOOLTIP_ELDRIN_Y = 40, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 11;
     public static final int
             FLUID_GAUGE_H = 33;
     private ImageButton
@@ -53,11 +55,11 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
     }
 
     private void initializePowerLevelButtons() {
-        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 39, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 20, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
             menu.incrementPowerLevel();
 
         }));
-        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 39, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 20, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
             menu.decrementPowerLevel();
 
         }));
@@ -84,6 +86,17 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         int sY = SYMBOL_H - sH;
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
 
+        //grime gauge
+        if(menu.getGrimeInTank() > 0) {
+            int grimeH = ActuatorEarthBlockEntity.getScaledGrime(menu.getGrimeInTank()) + 1;
+            gui.blit(TEXTURE, x + GRIME_X, y + GRIME_Y + FLUID_GAUGE_H - grimeH, GRIME_U, GRIME_V, GRIME_W, grimeH, 256, 256);
+        }
+
+        //sand gauge
+        int sandH = ActuatorEarthBlockEntity.getScaledSand(menu.getSandInTank());
+        RenderSystem.setShaderTexture(1, TEXTURE_SAND);
+        gui.blit(TEXTURE_SAND, x + SAND_X, y + SAND_Y + FLUID_GAUGE_H - sandH, 0, 0, SAND_W, sandH, 16, 16);
+
     }
 
     @Override
@@ -96,11 +109,120 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
     @Override
     protected void renderTooltip(GuiGraphics gui, int mouseX, int mouseY) {
         super.renderTooltip(gui, mouseX, mouseY);
+
+        Font font = Minecraft.getInstance().font;
+        List<Component> tooltipContents = new ArrayList<>();
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        //Power Level
+        if(mouseX >= x+TOOLTIP_POWER_X && mouseX <= x+TOOLTIP_POWER_X+TOOLTIP_POWER_W &&
+                mouseY >= y+TOOLTIP_POWER_Y && mouseY <= y+TOOLTIP_POWER_Y+TOOLTIP_POWER_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.powerlevel").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.earth.powerlevel.line1")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Grime Tank
+        if(mouseX >= x+ TOOLTIP_GRIME_X && mouseX <= x+ TOOLTIP_GRIME_X + TOOLTIP_GRIME_W &&
+                mouseY >= y+ TOOLTIP_GRIME_Y && mouseY <= y+ TOOLTIP_GRIME_Y + TOOLTIP_GRIME_H) {
+
+            float grimePercent = ((float)menu.getGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity);
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1.line2"));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(String.format("%.1f", grimePercent)+"%")).withStyle(ChatFormatting.DARK_AQUA));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Sand Tank
+        if(mouseX >= x+TOOLTIP_SAND_X && mouseX <= x+TOOLTIP_SAND_X+TOOLTIP_SAND_W &&
+                mouseY >= y+TOOLTIP_SAND_Y && mouseY <= y+TOOLTIP_SAND_Y+TOOLTIP_SAND_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line2")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(menu.getSandInTank() + " / " + Config.quakeRefinerySandCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", ActuatorEarthBlockEntity.getSandPercent(menu.getSandInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Grime Reduction Rate
+        if(mouseX >= x+TOOLTIP_GRIMEREDUCTION_X && mouseX <= x+TOOLTIP_GRIMEREDUCTION_X+TOOLTIP_GRIMEREDUCTION_W &&
+                mouseY >= y+TOOLTIP_GRIMEREDUCTION_Y && mouseY <= y+TOOLTIP_GRIMEREDUCTION_Y+TOOLTIP_GRIMEREDUCTION_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.literal(Config.quakeRefineryRarefiedRate+"% ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction.line2")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Sand Consumption Rate
+        if(mouseX >= x+TOOLTIP_SANDCONSUMPTION_X && mouseX <= x+TOOLTIP_SANDCONSUMPTION_X+TOOLTIP_SANDCONSUMPTION_W &&
+                mouseY >= y+TOOLTIP_SANDCONSUMPTION_Y && mouseY <= y+TOOLTIP_SANDCONSUMPTION_Y+TOOLTIP_SANDCONSUMPTION_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.sandconsume").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.sandconsume.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.sandconsume.line2"));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Eldrin
+        if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
+                mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin.earth").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
     }
 
     @Override
     protected void renderLabels(GuiGraphics gui, int mouseX, int mouseY) {
         Font font = Minecraft.getInstance().font;
+
+        //Grime Reduction
+        if((menu.getFlags() & ActuatorEarthBlockEntity.FLAG_IS_SATISFIED) == ActuatorEarthBlockEntity.FLAG_IS_SATISFIED)
+            gui.drawString(font, Component.literal("-"+ActuatorEarthBlockEntity.getGrimeReductionRate(menu.getPowerLevel())+"%"), 128, 17, 0xff000000, false);
+        else
+            gui.drawString(font, Component.literal("-"), 128, 17, 0xffaa0000, false);
+
+        //Sand per Operation
+        gui.drawString(font, Component.literal(ActuatorEarthBlockEntity.getSandPerOperation(menu.getPowerLevel())+"mB"), 128, 32, 0xff000000, false);
+
+        //Eldrin power usage
+        gui.drawString(font, Component.literal(""+ActuatorEarthBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 128, 47, 0xff000000, false);
     }
 
     private int getScaledEldrinTime() {

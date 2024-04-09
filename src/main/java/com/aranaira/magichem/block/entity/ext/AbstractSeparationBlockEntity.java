@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
@@ -297,8 +298,17 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                 pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
         }
 
-        IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
-        grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
+        //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
+        for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+            if(dpbe instanceof ActuatorEarthBlockEntity aebe) {
+                grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
+            }
+        }
+
+        if(grimeToAdd > 0) {
+            IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
+            grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
+        }
 
         resolveActuators(pEntity);
     }

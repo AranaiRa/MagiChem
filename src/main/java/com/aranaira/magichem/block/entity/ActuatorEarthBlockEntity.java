@@ -25,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -51,16 +52,15 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
             SAND_PER_OPERATION = {0, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440, 470, 500},
             GRIME_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
     public static final int
-            SLOT_COUNT = 1,
-            DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SAND = 3, DATA_GRIME = 4,
-            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_FUEL_NORMAL = 4, FLAG_FUEL_SUPER = 8, FLAG_FUEL_SATISFACTION_TYPE = 12;
-    private static final float
-            PIPE_VIBRATION_ACCELERATION = 0.002f;
+            SLOT_COUNT = 3, SLOT_SAND = 0, SLOT_WASTE = 1, SLOT_RAREFIED_WASTE = 2,
+            DATA_COUNT = 6, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SAND = 3, DATA_GRIME = 4, DATA_RAREFIED_GRIME = 5,
+            FLAG_IS_SATISFIED = 1;
     private int
             powerLevel = 1,
             remainingEldrinTime = -1,
             remainingSand = 0,
             currentGrime = 0,
+            currentRarefiedGrime = 0,
             flags;
     private float
             remainingEldrinForSatisfaction,
@@ -75,7 +75,9 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
+            if(slot == SLOT_SAND)
+                return stack.getItem().equals(Items.SAND);
+            return false;
         }
     };
 
@@ -96,8 +98,9 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
                     case DATA_REMAINING_ELDRIN_TIME -> ActuatorEarthBlockEntity.this.remainingEldrinTime;
                     case DATA_POWER_LEVEL -> ActuatorEarthBlockEntity.this.powerLevel;
                     case DATA_FLAGS -> ActuatorEarthBlockEntity.this.flags;
-                    case DATA_GRIME -> ActuatorEarthBlockEntity.this.currentGrime;
                     case DATA_SAND -> ActuatorEarthBlockEntity.this.remainingSand;
+                    case DATA_GRIME -> ActuatorEarthBlockEntity.this.currentGrime;
+                    case DATA_RAREFIED_GRIME -> ActuatorEarthBlockEntity.this.currentRarefiedGrime;
                     default -> -1;
                 };
             }
@@ -110,6 +113,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
                     case DATA_FLAGS -> ActuatorEarthBlockEntity.this.flags = pValue;
                     case DATA_SAND -> ActuatorEarthBlockEntity.this.remainingSand = pValue;
                     case DATA_GRIME -> ActuatorEarthBlockEntity.this.currentGrime = pValue;
+                    case DATA_RAREFIED_GRIME -> ActuatorEarthBlockEntity.this.currentRarefiedGrime = pValue;
                 }
             }
 
@@ -132,6 +136,18 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
     public int getSandPerOperation() {
         return SAND_PER_OPERATION[this.powerLevel];
+    }
+
+    public static int getSandPerOperation(int pPowerLevel) {
+        return SAND_PER_OPERATION[pPowerLevel];
+    }
+
+    public int getGrimeReductionRate() {
+        return GRIME_REDUCTION[this.powerLevel];
+    }
+
+    public static int getGrimeReductionRate(int pPowerLevel) {
+        return GRIME_REDUCTION[pPowerLevel];
     }
 
     public int getPowerLevel() {
@@ -157,6 +173,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
+        nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -169,6 +186,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         this.powerLevel = nbt.getInt("powerLevel");
         this.remainingSand = nbt.getInt("remainingSand");
         this.currentGrime = nbt.getInt("currentGrime");
+        this.currentRarefiedGrime = nbt.getInt("currentRarefiedGrime");
 
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
@@ -187,6 +205,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
+        nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;
@@ -212,76 +231,15 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
     }
 
-    public static boolean getIsFuelled(ActuatorEarthBlockEntity entity) {
-        return (entity.flags & FLAG_FUEL_NORMAL) == FLAG_FUEL_NORMAL;
-    }
-
-    public static boolean getIsSuperFuelled(ActuatorEarthBlockEntity entity) {
-        return (entity.flags & FLAG_FUEL_SUPER) == FLAG_FUEL_SUPER;
-    }
-
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        if(t instanceof ActuatorEarthBlockEntity afbe) {
-
-            float smoke = afbe.data.get(DATA_SAND);
-            if(smoke > 0) {
-                float mappedSmokePercent = Math.max(0, ((smoke / Config.infernoEngineTankCapacity) - 0.5f) * 2);
-                if (mappedSmokePercent > 0f) {
-                    int spawnModulus = 5 - (int) Math.floor(mappedSmokePercent * 4);
-                    Vector3f mid = new Vector3f(0f, 1.6875f, 0f);
-                    Vector3f left = new Vector3f(0f, 2f, 0f);
-                    Vector3f right = new Vector3f(0f, 2f, 0f);
-
-                    Direction dir = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                    if(dir == Direction.NORTH) {
-                        mid.x = 0.5f;
-                        mid.z = 0.1875f;
-                        left.x = 0.6875f;
-                        left.z = 0.0625f;
-                        right.x = 0.3125f;
-                        right.z = 0.0625f;
-                    }
-                    if(dir == Direction.EAST) {
-                        mid.x = 0.8125f;
-                        mid.z = 0.5f;
-                        left.x = 0.9375f;
-                        left.z = 0.3125f;
-                        right.x = 0.9375f;
-                        right.z = 0.6875f;
-                    }
-                    else if(dir == Direction.SOUTH) {
-                        mid.x = 0.5f;
-                        mid.z = 0.8125f;
-                        left.x = 0.3125f;
-                        left.z = 0.9375f;
-                        right.x = 0.6875f;
-                        right.z = 0.9375f;
-                    }
-                    else if(dir == Direction.WEST) {
-                        mid.x = 0.1875f;
-                        mid.z = 0.5f;
-                        left.x = 0.0625f;
-                        left.z = 0.6875f;
-                        right.x = 0.0625f;
-                        right.z = 0.3125f;
-                    }
-
-                    if (level.getGameTime() % spawnModulus == 0) {
-                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.10f),
-                        pos.getX() + mid.x, pos.getY() + mid.y, pos.getZ() + mid.z,
-                        0, 0.04f, 0);
-
-                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.05f),
-                        pos.getX() + left.x, pos.getY() + left.y, pos.getZ() + left.z,
-                        0, 0.03f, 0);
-
-                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.05f),
-                        pos.getX() + right.x, pos.getY() + right.y, pos.getZ() + right.z,
-                        0, 0.03f, 0);
-                    }
+        if(t instanceof ActuatorEarthBlockEntity aebe) {
+            if(Config.quakeRefinerySandCapacity - aebe.remainingSand >= 1000) {
+                ItemStack sandStack = aebe.itemHandler.getStackInSlot(SLOT_SAND);
+                if(!sandStack.isEmpty()) {
+                    sandStack.shrink(1);
+                    aebe.itemHandler.setStackInSlot(SLOT_SAND, sandStack);
+                    aebe.remainingSand += 1000;
+                    aebe.syncAndSave();
                 }
             }
         }
@@ -323,6 +281,33 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
         return new ActuatorEarthMenu(i, inventory, this, this.data);
+    }
+
+    public int addGrimeToBuffer(int pGrimeToAdd) {
+        int insertion = 0;
+        int reduction;
+        int rarefied = 0;
+        int overflow = 0;
+
+        //Determine how much grime is being added
+        if(remainingSand >= getSandPerOperation()) {
+            remainingSand -= getSandPerOperation();
+
+            //Reduce insertion and generate rarefied grime
+            reduction = Math.round((float)pGrimeToAdd * ((float)getGrimeReductionRate()) / 100.0f);
+            insertion = pGrimeToAdd - reduction;
+            rarefied = Math.round(((float)Config.quakeRefineryRarefiedRate / 100.0f) * (float)reduction);
+
+            if(currentGrime + insertion > Config.quakeRefineryGrimeCapacity) {
+                overflow = insertion - (Config.quakeRefineryGrimeCapacity - currentGrime);
+                insertion = Config.quakeRefineryGrimeCapacity - currentGrime;
+            }
+        }
+
+        //Final application
+        currentGrime += insertion;
+        currentRarefiedGrime += rarefied;
+        return overflow;
     }
 
     public static float getSandPercent(int pSandAmount) {
