@@ -523,8 +523,8 @@
     ],
     "related_recipes": [
       {
-        "type": "crafting",
-        "location": "magichem:shaped/iris_argenti"
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/iris_argenti"
       },
       {
         "type": "crafting",
