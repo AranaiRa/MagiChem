@@ -246,6 +246,8 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             case CONFIG_BASE_EFFICIENCY -> Config.alembicEfficiency;
             case CONFIG_MAX_GRIME -> Config.alembicMaximumGrime;
             case CONFIG_OPERATION_TIME -> Config.alembicOperationTime;
+            case CONFIG_GRIME_ON_SUCCESS -> Config.alembicGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> Config.alembicGrimeOnFailure;
 
             default -> -1;
         };

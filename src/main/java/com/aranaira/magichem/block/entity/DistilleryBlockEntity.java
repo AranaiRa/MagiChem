@@ -359,6 +359,8 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
             case CONFIG_BASE_EFFICIENCY -> Config.distilleryEfficiency;
             case CONFIG_MAX_GRIME -> Config.distilleryMaximumGrime;
             case CONFIG_OPERATION_TIME -> Config.distilleryOperationTime;
+            case CONFIG_GRIME_ON_SUCCESS -> Config.distilleryGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> Config.distilleryGrimeOnFailure;
 
             default -> -1;
         };

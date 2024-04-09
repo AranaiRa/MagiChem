@@ -9,7 +9,11 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.item.AdmixtureItem;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.MateriaRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,7 +36,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
 
 public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins {
@@ -45,12 +51,24 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected ItemStackHandler itemHandler;
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
 
+    private static HashMap<String, AdmixtureItem> admixturesMap = ItemRegistry.getAdmixturesMap(false, true);
+    private static List<AdmixtureItem> admixturesForRandomSelection = new ArrayList();
+    private static Random random = new Random();
+
     ////////////////////
     // CONSTRUCTOR
     ////////////////////
 
     protected AbstractDistillationBlockEntity(BlockEntityType pType, BlockPos pPos, BlockState pState) {
         super(pType, pPos, pState);
+
+        if(admixturesForRandomSelection.stream().count() == 0) {
+            for(AdmixtureItem ai : admixturesMap.values()) {
+                for(int i=0; i < Math.pow(5 - ai.getDepth(), 2); i++) {
+                    admixturesForRandomSelection.add(ai);
+                }
+            }
+        }
     }
 
     ////////////////////
@@ -120,11 +138,23 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             ItemStack processingItem = processing.getSecond();
 
             AlchemicalCompositionRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
-            if (processingItem != ItemStack.EMPTY && recipe != null) {
-                if (canCraftItem(pEntity, recipe, pVarFunc)) {
-                    if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.operationTimeMod*100, pVarFunc)) {
+            if (processingItem != ItemStack.EMPTY) {
+                if(recipe != null) {
+                    if (canCraftItem(pEntity, recipe, pVarFunc)) {
+                        if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.operationTimeMod * 100, pVarFunc)) {
+                            if (!pLevel.isClientSide()) {
+                                craftItem(pEntity, recipe, processingSlot, pVarFunc);
+                                pEntity.pushData();
+                            }
+                            if (!pEntity.isStalled)
+                                pEntity.resetProgress();
+                        } else
+                            pEntity.incrementProgress();
+                    }
+                } else {
+                    if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.operationTimeMod * 100, pVarFunc)) {
                         if (!pLevel.isClientSide()) {
-                            craftItem(pEntity, recipe, processingSlot, pVarFunc);
+                            craftRandomAdmixture(pEntity, processingSlot, pVarFunc);
                             pEntity.pushData();
                         }
                         if (!pEntity.isStalled)
@@ -232,7 +262,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
         }
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AlembicBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), pRecipe.getOutputRate(), Config.alembicGrimeOnSuccess, Config.alembicGrimeOnFailure);
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), pRecipe.getOutputRate(), pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
         int grimeToAdd = Math.round(pair.getFirst() * pRecipe.getOutputRate());
         NonNullList<ItemStack> componentMateria = pair.getSecond();
 
@@ -266,6 +296,43 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         if(grimeToAdd > 0) {
             IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
             grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
+        }
+
+        resolveActuators(pEntity);
+    }
+
+    protected static void craftRandomAdmixture(AbstractDistillationBlockEntity pEntity, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
+        SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
+        for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+            outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
+        }
+
+        NonNullList<ItemStack> randomAdmixtureList = NonNullList.create();
+
+        AdmixtureItem ai = admixturesForRandomSelection.get(random.nextInt(admixturesForRandomSelection.size()));
+        randomAdmixtureList.add(new ItemStack(ai, 1));
+
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(randomAdmixtureList, AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+        NonNullList<ItemStack> componentMateria = pair.getSecond();
+
+        for(ItemStack item : componentMateria) {
+            if(outputSlots.canAddItem(item)) {
+                outputSlots.addItem(item);
+            }
+            else {
+                pEntity.isStalled = true;
+                break;
+            }
+        }
+
+        if(!pEntity.isStalled) {
+            for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
+            }
+            ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
+            processingSlotContents.shrink(1);
+            if(processingSlotContents.getCount() == 0)
+                pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
         }
 
         resolveActuators(pEntity);
@@ -347,7 +414,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     public enum IDs {
         SLOT_BOTTLES, SLOT_FUEL, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT,
-        CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_MAX_BURN_TIME,
+        CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_MAX_BURN_TIME, CONFIG_GRIME_ON_SUCCESS, CONFIG_GRIME_ON_FAILURE,
         DATA_PROGRESS, DATA_GRIME, DATA_REMAINING_HEAT, DATA_HEAT_DURATION, DATA_EFFICIENCY_MOD, DATA_OPERATION_TIME_MOD,
         GUI_PROGRESS_BAR_WIDTH, GUI_HEAT_GAUGE_HEIGHT, GUI_GRIME_BAR_WIDTH
     }
