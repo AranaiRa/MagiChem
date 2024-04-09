@@ -392,11 +392,15 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     @Override
     public void linkPlugins() {
         pluginDevices.clear();
+        pluginLinkageCountdown = 3;
     }
 
     @Override
     public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
         this.pluginDevices.remove(pPlugin);
+        if(pPlugin instanceof ActuatorWaterBlockEntity) {
+            efficiencyMod = 0;
+        }
     }
 
     @Override

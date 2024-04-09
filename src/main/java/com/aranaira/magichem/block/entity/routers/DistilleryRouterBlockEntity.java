@@ -1,11 +1,9 @@
 package com.aranaira.magichem.block.entity.routers;
 
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -37,7 +35,7 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
     private int packedData;
 
     public DistilleryRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntitiesRegistry.CENTRIFUGE_ROUTER_BE.get(), pPos, pBlockState);
+        super(BlockEntitiesRegistry.DISTILLERY_ROUTER_BE.get(), pPos, pBlockState);
     }
 
     public Direction getFacing() {

@@ -371,6 +371,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     @Override
     public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
         this.pluginDevices.remove(pPlugin);
+        if(pPlugin instanceof ActuatorWaterBlockEntity) {
+            efficiencyMod = 0;
+        }
     }
 
     @Override
