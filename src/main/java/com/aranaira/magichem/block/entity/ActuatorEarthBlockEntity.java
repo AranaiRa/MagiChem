@@ -8,6 +8,7 @@ import com.aranaira.magichem.gui.ActuatorEarthMenu;
 import com.aranaira.magichem.gui.ActuatorEarthScreen;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
@@ -233,6 +234,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
         if(t instanceof ActuatorEarthBlockEntity aebe) {
+            //Fill the internal sand buffer
             if(Config.quakeRefinerySandCapacity - aebe.remainingSand >= 1000) {
                 ItemStack sandStack = aebe.itemHandler.getStackInSlot(SLOT_SAND);
                 if(!sandStack.isEmpty()) {
@@ -241,6 +243,40 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
                     aebe.remainingSand += 1000;
                     aebe.syncAndSave();
                 }
+            }
+
+            //Dump grime to waste
+            if(aebe.currentGrime > Config.grimePerWaste) {
+                ItemStack wasteStack = aebe.itemHandler.getStackInSlot(SLOT_WASTE);
+                int maxWasteToAdd = aebe.currentGrime / Config.grimePerWaste;
+                int actualWasteToAdd;
+                if(wasteStack == ItemStack.EMPTY) {
+                    actualWasteToAdd = Math.min(maxWasteToAdd, 64);
+                    wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), actualWasteToAdd);
+                } else {
+                    actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
+                    wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
+                }
+                aebe.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
+                aebe.currentGrime -= actualWasteToAdd * Config.grimePerWaste;
+                aebe.syncAndSave();
+            }
+
+            //Dump rarefied
+            if(aebe.currentRarefiedGrime > Config.grimePerWaste) {
+                ItemStack wasteStack = aebe.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE);
+                int maxWasteToAdd = aebe.currentRarefiedGrime / Config.grimePerWaste;
+                int actualWasteToAdd;
+                if(wasteStack == ItemStack.EMPTY) {
+                    actualWasteToAdd = Math.min(maxWasteToAdd, 64);
+                    wasteStack = new ItemStack(Items.GOLD_INGOT, actualWasteToAdd);
+                } else {
+                    actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
+                    wasteStack = new ItemStack(Items.GOLD_INGOT, wasteStack.getCount() + actualWasteToAdd);
+                }
+                aebe.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
+                aebe.currentRarefiedGrime -= actualWasteToAdd * Config.grimePerWaste;
+                aebe.syncAndSave();
             }
         }
     }
@@ -287,7 +323,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         int insertion = 0;
         int reduction;
         int rarefied = 0;
-        int overflow = 0;
+        int overflow = pGrimeToAdd;
 
         //Determine how much grime is being added
         if(remainingSand >= getSandPerOperation()) {
@@ -301,12 +337,15 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
             if(currentGrime + insertion > Config.quakeRefineryGrimeCapacity) {
                 overflow = insertion - (Config.quakeRefineryGrimeCapacity - currentGrime);
                 insertion = Config.quakeRefineryGrimeCapacity - currentGrime;
+            } else {
+                overflow = 0;
             }
         }
 
         //Final application
         currentGrime += insertion;
         currentRarefiedGrime += rarefied;
+        syncAndSave();
         return overflow;
     }
 

@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.routers.ActuatorEarthRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorFireRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
@@ -34,7 +35,11 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
             VOXEL_SHAPE_FIRE_LEFT_NUB, VOXEL_SHAPE_FIRE_LEFT_HORIZONTAL, VOXEL_SHAPE_FIRE_LEFT_VERTICAL, VOXEL_SHAPE_FIRE_RIGHT_NUB, VOXEL_SHAPE_FIRE_RIGHT_HORIZONTAL, VOXEL_SHAPE_FIRE_RIGHT_VERTICAL, VOXEL_SHAPE_FIRE_CENTER,
 
             VOXEL_SHAPE_WATER_AGGREGATE_NORTH, VOXEL_SHAPE_WATER_AGGREGATE_EAST, VOXEL_SHAPE_WATER_AGGREGATE_SOUTH, VOXEL_SHAPE_WATER_AGGREGATE_WEST,
-            VOXEL_SHAPE_FIRE_AGGREGATE_NORTH, VOXEL_SHAPE_FIRE_AGGREGATE_EAST, VOXEL_SHAPE_FIRE_AGGREGATE_SOUTH, VOXEL_SHAPE_FIRE_AGGREGATE_WEST;
+            VOXEL_SHAPE_FIRE_AGGREGATE_NORTH, VOXEL_SHAPE_FIRE_AGGREGATE_EAST, VOXEL_SHAPE_FIRE_AGGREGATE_SOUTH, VOXEL_SHAPE_FIRE_AGGREGATE_WEST,
+
+            VOXEL_SHAPE_EARTH_CAP_NORTH, VOXEL_SHAPE_EARTH_POST_NW_NORTH, VOXEL_SHAPE_EARTH_POST_NE_NORTH,
+            VOXEL_SHAPE_EARTH_POST_SW_NORTH, VOXEL_SHAPE_EARTH_POST_SE_NORTH, VOXEL_SHAPE_EARTH_HOUSING_NORTH,
+            VOXEL_SHAPE_EARTH_AGGREGATE_NORTH, VOXEL_SHAPE_EARTH_AGGREGATE_EAST, VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH, VOXEL_SHAPE_EARTH_AGGREGATE_WEST;
 
     @Nullable
     @Override
@@ -74,6 +79,11 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
                 if (facing == Direction.EAST) return VOXEL_SHAPE_FIRE_AGGREGATE_EAST;
                 if (facing == Direction.SOUTH) return VOXEL_SHAPE_FIRE_AGGREGATE_SOUTH;
                 if (facing == Direction.WEST) return VOXEL_SHAPE_FIRE_AGGREGATE_WEST;
+            } else if(be instanceof ActuatorEarthRouterBlockEntity) {
+                if (facing == Direction.NORTH) return VOXEL_SHAPE_EARTH_AGGREGATE_NORTH;
+                if (facing == Direction.EAST) return VOXEL_SHAPE_EARTH_AGGREGATE_EAST;
+                if (facing == Direction.SOUTH) return VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH;
+                if (facing == Direction.WEST) return VOXEL_SHAPE_EARTH_AGGREGATE_WEST;
             }
         }
         return super.getShape(pState, pLevel, pPos, pContext);
@@ -159,5 +169,44 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_TUBE_BODY_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_TUBE_CAP_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_WATER_PIPES_NORTH, 3));
+
+        VOXEL_SHAPE_EARTH_CAP_NORTH = Block.box(1, 12, 1, 15, 15, 15);
+        VOXEL_SHAPE_EARTH_POST_NW_NORTH = Block.box(2,0,2,4,12,4);
+        VOXEL_SHAPE_EARTH_POST_NE_NORTH = Block.box(12,0,2,14,12,4);
+        VOXEL_SHAPE_EARTH_POST_SW_NORTH = Block.box(2,0,12,4,12,14);
+        VOXEL_SHAPE_EARTH_POST_SE_NORTH = Block.box(12,0,12,14,12,14);
+        VOXEL_SHAPE_EARTH_HOUSING_NORTH = Block.box(3,5,3,13,12,13);
+
+        VOXEL_SHAPE_EARTH_AGGREGATE_NORTH = Shapes.or(
+                VOXEL_SHAPE_EARTH_CAP_NORTH,
+                VOXEL_SHAPE_EARTH_POST_NW_NORTH,
+                VOXEL_SHAPE_EARTH_POST_NE_NORTH,
+                VOXEL_SHAPE_EARTH_POST_SW_NORTH,
+                VOXEL_SHAPE_EARTH_POST_SE_NORTH,
+                VOXEL_SHAPE_EARTH_HOUSING_NORTH);
+
+        VOXEL_SHAPE_EARTH_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_CAP_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_NW_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_NE_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_SW_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_SE_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_HOUSING_NORTH, 1));
+
+        VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_CAP_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_NW_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_NE_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_SW_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_SE_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_HOUSING_NORTH, 2));
+
+        VOXEL_SHAPE_EARTH_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_CAP_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_NW_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_NE_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_SW_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_SE_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_HOUSING_NORTH, 3));
     }
 }

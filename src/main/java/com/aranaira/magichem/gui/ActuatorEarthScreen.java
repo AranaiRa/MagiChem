@@ -28,7 +28,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
             new ResourceLocation("minecraft", "textures/block/sand.png");
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
-            SYMBOL_X = 55, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
+            SYMBOL_X = 36, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
             POWER_X = 22, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
             GRIME_X = 56, GRIME_Y = 15, GRIME_U = 176, GRIME_V = 40, GRIME_W = 4,
             SAND_X = 106, SAND_Y = 15, SAND_W = 4,
@@ -88,7 +88,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
 
         //grime gauge
         if(menu.getGrimeInTank() > 0) {
-            int grimeH = ActuatorEarthBlockEntity.getScaledGrime(menu.getGrimeInTank()) + 1;
+            int grimeH = ActuatorEarthBlockEntity.getScaledGrime(menu.getGrimeInTank());
             gui.blit(TEXTURE, x + GRIME_X, y + GRIME_Y + FLUID_GAUGE_H - grimeH, GRIME_U, GRIME_V, GRIME_W, grimeH, 256, 256);
         }
 
@@ -126,11 +126,16 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
+        //progress symbol
+        int sH = getScaledEldrinTime();
+        int sY = SYMBOL_H - sH;
+        gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
+
         //Grime Tank
         if(mouseX >= x+ TOOLTIP_GRIME_X && mouseX <= x+ TOOLTIP_GRIME_X + TOOLTIP_GRIME_W &&
                 mouseY >= y+ TOOLTIP_GRIME_Y && mouseY <= y+ TOOLTIP_GRIME_Y + TOOLTIP_GRIME_H) {
 
-            float grimePercent = ((float)menu.getGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity);
+            float grimePercent = ((float)menu.getGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1").withStyle(ChatFormatting.GOLD))
                     .append(": ")
