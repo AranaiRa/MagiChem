@@ -42,7 +42,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
     protected int
-            progress = 0, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 0;
+            progress = 0, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
 
     protected ItemStackHandler itemHandler;
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();

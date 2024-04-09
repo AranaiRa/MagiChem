@@ -40,7 +40,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
     protected int
-            progress = 0, remainingHeat = 0, heatDuration = 0, pluginLinkageCountdown = 0;
+            progress = 0, remainingHeat = 0, heatDuration = 0, pluginLinkageCountdown = 3;
 
     protected ItemStackHandler itemHandler;
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
