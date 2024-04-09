@@ -272,10 +272,10 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
                 int actualWasteToAdd;
                 if(wasteStack == ItemStack.EMPTY) {
                     actualWasteToAdd = Math.min(maxWasteToAdd, 64);
-                    wasteStack = new ItemStack(Items.GOLD_INGOT, actualWasteToAdd);
+                    wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), actualWasteToAdd);
                 } else {
                     actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
-                    wasteStack = new ItemStack(Items.GOLD_INGOT, wasteStack.getCount() + actualWasteToAdd);
+                    wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
                 }
                 aebe.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
                 aebe.currentRarefiedGrime -= actualWasteToAdd * Config.grimePerWaste;

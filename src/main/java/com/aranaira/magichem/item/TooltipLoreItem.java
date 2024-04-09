@@ -110,6 +110,16 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.RAREFIED_WASTE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.rarefiedwaste")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.rarefiedwaste.ext")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.cleaningbrush")
