@@ -31,13 +31,11 @@ public class ActuatorEarthBlockEntityRenderer implements BlockEntityRenderer<Act
 
     @Override
     public void render(ActuatorEarthBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        this.renderPipes(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        this.renderStamper(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         this.renderSandPile(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
-
-
     }
 
-    private void renderPipes(ActuatorEarthBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    private void renderStamper(ActuatorEarthBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
@@ -47,12 +45,6 @@ public class ActuatorEarthBlockEntityRenderer implements BlockEntityRenderer<Act
         pPoseStack.pushPose();
         PoseStack.Pose last = pPoseStack.last();
 
-        this.renderSteamVents(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, state, last, buffer, world, pos);
-
-        pPoseStack.popPose();
-    }
-
-    private void renderSteamVents(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, BlockState state, PoseStack.Pose last, VertexConsumer buffer, Level world, BlockPos pos) {
         switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case NORTH -> {
                 //pPoseStack.mulPose(Axis.YP.rotationDegrees(pBlockEntity.wheelAngle + pPartialTick * (pBlockEntity.wheelSpeed)));
@@ -74,6 +66,8 @@ public class ActuatorEarthBlockEntityRenderer implements BlockEntityRenderer<Act
         pPoseStack.pushPose();
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_STAMPER, pPoseStack, pPackedLight, pPackedOverlay);
         pPoseStack.popPose();
+
+        pPoseStack.popPose();
     }
 
     private void renderSandPile(ActuatorEarthBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
@@ -82,12 +76,12 @@ public class ActuatorEarthBlockEntityRenderer implements BlockEntityRenderer<Act
 
         TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_SAND);
 
-        float width = 0.3125f;
-        float height = 0.875f * pBlockEntity.getSandPercent();
+        float width = 0.5f;
+        float height = 0.5f + 0.15625f * (pBlockEntity.getSandPercent() / 100.0f);
 
         pPoseStack.pushPose();
         RenderUtils.renderFace(Direction.UP, last.pose(), last.normal(), buffer, texture,
-                0, 0, 0 + height, width, width,  0xff2a76d1, pPackedLight);
+                0.25f, 0.25f, height, width, width,  0xffffffff, pPackedLight);
         pPoseStack.popPose();
     }
 

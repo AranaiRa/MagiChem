@@ -19,5 +19,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.DISTILLERY_BE.get(), DistilleryBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACTUATOR_FIRE_BE.get(), ActuatorFireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACTUATOR_WATER_BE.get(), ActuatorWaterBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACTUATOR_EARTH_BE.get(), ActuatorEarthBlockEntityRenderer::new);
     }
 }
