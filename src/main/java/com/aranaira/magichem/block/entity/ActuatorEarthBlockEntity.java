@@ -13,6 +13,7 @@ import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -55,7 +56,8 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
     public static final int
             SLOT_COUNT = 3, SLOT_SAND = 0, SLOT_WASTE = 1, SLOT_RAREFIED_WASTE = 2,
             DATA_COUNT = 6, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SAND = 3, DATA_GRIME = 4, DATA_RAREFIED_GRIME = 5,
-            FLAG_IS_SATISFIED = 1;
+            FLAG_IS_SATISFIED = 1,
+            STAMPER_ANIMATION_PERIOD = 10;
     private int
             powerLevel = 1,
             remainingEldrinTime = -1,
@@ -64,8 +66,10 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
             currentRarefiedGrime = 0,
             flags;
     private float
-            remainingEldrinForSatisfaction,
-            pipeVibrationIntensity = 0;
+            remainingEldrinForSatisfaction;
+    public float
+            stamperDepth = 0,
+            stamperDepthNextTick = 0;
     protected ContainerData data;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
@@ -237,6 +241,10 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
         if(t instanceof ActuatorEarthBlockEntity aebe) {
+            if(level.isClientSide()) {
+                aebe.handleAnimationDrivers();
+            }
+
             //Fill the internal sand buffer
             if(Config.quakeRefinerySandCapacity - aebe.remainingSand >= 1000) {
                 ItemStack sandStack = aebe.itemHandler.getStackInSlot(SLOT_SAND);
@@ -317,7 +325,22 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
     }
 
     public void handleAnimationDrivers() {
+        boolean doDriverUpdate = true;
 
+        if(((flags & FLAG_IS_SATISFIED) != FLAG_IS_SATISFIED) || (remainingSand < getSandPerOperation())) {
+            if(stamperDepth == 0) {
+                doDriverUpdate = false;
+                stamperDepthNextTick = 0;
+            }
+        }
+
+        if(doDriverUpdate) {
+            float loopingTime = (level.getGameTime() % STAMPER_ANIMATION_PERIOD) / (float) STAMPER_ANIMATION_PERIOD;
+            stamperDepth = 1 - (float) Math.sin(loopingTime * Math.PI);
+
+            loopingTime = ((level.getGameTime() + 1) % STAMPER_ANIMATION_PERIOD) / (float) STAMPER_ANIMATION_PERIOD;
+            stamperDepthNextTick = 1 - (float) Math.sin(loopingTime * Math.PI);
+        }
     }
 
     @Override
