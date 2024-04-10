@@ -7,10 +7,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -147,30 +149,42 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
         @Override
         public @Nullable FixationSeparationRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
 
-            ItemStack readAlchemyObject = buf.readItem();
+            CompoundTag nbt = buf.readNbt();
+            if(nbt == null) return null;
 
-            int totalComponents = buf.readInt();
+            ResourceLocation resultAdmixtureRL = new ResourceLocation(nbt.getString("resultAdmixture"));
+            Item resultAdmixtureItem = ForgeRegistries.ITEMS.getValue(resultAdmixtureRL);
+            ItemStack resultAdmixture = ItemStack.EMPTY;
+            if(resultAdmixtureItem != null)
+                resultAdmixture = new ItemStack(resultAdmixtureItem, 1);
+
+            int componentTotal = nbt.getInt("componentCount");
+
             NonNullList<ItemStack> readComponentMateria = NonNullList.create();
-            for(int i=0; i<totalComponents; i++) {
-                readComponentMateria.add(buf.readItem());
+            for(int i=0; i<componentTotal; i++) {
+                ResourceLocation componentItemRL = new ResourceLocation(nbt.getString("component"+i+"Item"));
+                int componentCount = nbt.getInt("component"+i+"Count");
+                Item componentItem = ForgeRegistries.ITEMS.getValue(componentItemRL);
+                ItemStack componentStack = ItemStack.EMPTY;
+                if(componentItem != null)
+                    componentStack = new ItemStack(componentItem, componentCount);
+                readComponentMateria.add(componentStack);
             }
 
-            return new FixationSeparationRecipe(id, readAlchemyObject, readComponentMateria);
+            return new FixationSeparationRecipe(id, resultAdmixture, readComponentMateria);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, FixationSeparationRecipe recipe) {
-
-            //Parameter 1: Alchemy Object
-            buf.writeItemStack(recipe.resultAdmixture, true);
-
-            //Parameter 2: Total number of component materia
-            buf.writeFloat(recipe.componentMateria.size());
-
-            //Parameter 3...: Component materia
-            for(ItemStack stack : recipe.componentMateria) {
-                buf.writeItemStack(stack, true);
+            CompoundTag nbt = new CompoundTag();
+            nbt.putString("resultAdmixture", ForgeRegistries.ITEMS.getKey(recipe.getResultAdmixture().getItem()).toString());
+            nbt.putInt("componentCount", recipe.componentMateria.size());
+            for(int i=0;i<recipe.componentMateria.size(); i++) {
+                nbt.putString("component"+i+"Item", ForgeRegistries.ITEMS.getKey(recipe.componentMateria.get(i).getItem()).toString());
+                nbt.putInt("component"+i+"Count", recipe.componentMateria.get(i).getCount());
             }
+
+            buf.writeNbt(nbt);
         }
     }
 }
