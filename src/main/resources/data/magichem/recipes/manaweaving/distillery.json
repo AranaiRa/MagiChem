@@ -14,8 +14,9 @@
     "mna:decoration/arcane_sandstone"
   ],
   "patterns": [
-    "mna:inverted_triangle",
-    "mna:bolt",
-    "mna:split_triangle"
+    "mna:triangle",
+    "mna:square",
+    "mna:triangle",
+    "mna:slash"
   ]
 }
