@@ -1135,12 +1135,6 @@
         "value": "Process: Fixation"
       },
       {
-        "type": "image",
-        "location": ":dummy/process_fixation",
-        "width": 128,
-        "height": 128
-      },
-      {
         "type": "text",
         "value": "",
         "json": [
@@ -1152,10 +1146,10 @@
             "bold": true
           },
           {
-            "text": " is to take component Materia and combine them into a new Admixture. Basic Fixation is performed at an "
+            "text": " is to take component Materia and combine them into a new Admixture. Basic Fixation is performed at a "
           },
           {
-            "text": "Admixer",
+            "text": "Fusery",
             "bold": true
           },
           {
@@ -1167,7 +1161,7 @@
     "related_recipes": [
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/admixer"
+        "location": "magichem:manaweaving/fusery"
       }
     ]
   },
@@ -1179,12 +1173,6 @@
       {
         "type": "title",
         "value": "Process: Separation"
-      },
-      {
-        "type": "image",
-        "location": ":dummy/process_fixation",
-        "width": 128,
-        "height": 128
       },
       {
         "type": "text",
@@ -1224,14 +1212,14 @@
       }
     ]
   },
-  "Admixer": {
+  "Fusery": {
     "index": "1202",
     "category": "magichem",
     "tier": 3,
     "sections": [
       {
         "type": "title",
-        "value": "Admixer"
+        "value": "Fusery"
       },
       {
         "type": "text",
@@ -1241,7 +1229,7 @@
             "text": "The "
           },
           {
-            "text": "Admixer ",
+            "text": "Fusery ",
             "bold": true
           },
           {
@@ -1261,7 +1249,7 @@
         "value": "",
         "json": [
           {
-            "text": "On the far left side is a panel with fifteen slots used to select what you want the Admixer to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Admixer creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world."
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world."
           }
         ]
       }
@@ -1269,7 +1257,7 @@
     "related_recipes": [
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/admixer"
+        "location": "magichem:manaweaving/fusery"
       }
     ]
   },
@@ -1416,7 +1404,7 @@
             "bold": true
           },
           {
-            "text": " is an Elemental Actuator that uses Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate an Improved Alembic, Centrifuge, or Admixer."
+            "text": " is an Elemental Actuator that uses Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate an Improved Alembic, Centrifuge, or Fusery."
           }
         ]
       },
