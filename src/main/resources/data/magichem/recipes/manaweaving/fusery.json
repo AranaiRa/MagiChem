@@ -1,6 +1,6 @@
 {
   "type": "mna:manaweaving-recipe",
-  "output": "magichem:admixer",
+  "output": "magichem:fusery",
   "tier": 3,
   "items": [
     "magichem:alembic",

@@ -1,6 +1,6 @@
 {
   "type": "mna:manaweaving-recipe",
-  "output": "magichem:actuator_fire",
+  "output": "magichem:actuator_earth",
   "tier": 3,
   "items": [
     "magichem:perfected_electrum",
