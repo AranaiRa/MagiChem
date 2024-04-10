@@ -7,13 +7,17 @@ import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.ActuatorEarthMenu;
 import com.aranaira.magichem.gui.ActuatorEarthScreen;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
-import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleVelocityMover;
+import com.mna.tools.math.Vector3;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.BreakingItemParticle;
+import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,21 +30,17 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -335,11 +335,43 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         }
 
         if(doDriverUpdate) {
+            //Stamper motion
             float loopingTime = (level.getGameTime() % STAMPER_ANIMATION_PERIOD) / (float) STAMPER_ANIMATION_PERIOD;
             stamperDepth = 1 - (float) Math.sin(loopingTime * Math.PI);
 
             loopingTime = ((level.getGameTime() + 1) % STAMPER_ANIMATION_PERIOD) / (float) STAMPER_ANIMATION_PERIOD;
             stamperDepthNextTick = 1 - (float) Math.sin(loopingTime * Math.PI);
+
+            //Particles
+            if(stamperDepth == 1) {
+                spawnSandParticles();
+            }
+        }
+    }
+
+    public void spawnSandParticles() {
+        Vector3f mid = new Vector3f(0.5f, 0.75f, 0.5f);
+
+        int particleCount = 14;
+        for(int i=0; i<particleCount; i++) {
+            double theta = (i / (float)particleCount) * Math.PI * 2;
+            float radius = 0.125f;
+            double pLSpeed = 0.075f;
+            Vector3f offset = new Vector3f((float)Math.cos(theta), 0.0f, (float)Math.sin(theta));
+
+            Vector3 pos = new Vector3(getBlockPos().getX() + mid.x + offset.x * radius,
+                                      getBlockPos().getY() + mid.y + offset.y * radius,
+                                      getBlockPos().getZ() + mid.z + offset.z * radius);
+            Vector3 speed = new Vector3(offset.x * pLSpeed,
+                                        offset.y + 0.05,
+                                        offset.z * pLSpeed);
+
+            level.addParticle(new MAParticleType(ParticleInit.DUST.get())
+                            .setPhysics(true).setScale(0.10f).setGravity(0.02f)
+                            .setMover(new ParticleVelocityMover(speed.x, speed.y, speed.z, true))
+                            .setColor(213, 196, 150, 48),
+                    pos.x, pos.y, pos.z,
+                    0, 0, 0);
         }
     }
 
