@@ -24,6 +24,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
@@ -45,28 +46,21 @@ public class MagiChemMod
     {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        CreativeTabsRegistry.register(eventBus);
         ItemRegistry.register(eventBus);
         BlockRegistry.register(eventBus);
         BlockEntitiesRegistry.register(eventBus);
         FluidRegistry.register(eventBus);
-        MenuRegistry.register(eventBus);
         MateriaRegistry.register(eventBus);
-
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> {
-            return () -> {
-                eventBus.register(BlockEntitiesClientRegistry.class);
-            };
-        });
-
+        MenuRegistry.register(eventBus);
         RecipeRegistry.register(eventBus);
+
+        if(FMLEnvironment.dist.isClient()) {
+            eventBus.register(BlockEntitiesClientRegistry.class);
+            CreativeTabsRegistry.register(eventBus);
+        }
 
         eventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
-
-        BLOCKS.register(eventBus);
-        ITEMS.register(eventBus);
-
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
