@@ -9,6 +9,14 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.affinity.Affinity;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.attributes.Attribute;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellComponent;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.parts.SpellEffect;
+import com.mna.spells.SpellsInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,7 +50,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class ActuatorFireBlock extends BaseEntityBlock {
+public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteractibleBlock<ActuatorFireBlock> {
     public ActuatorFireBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -237,5 +245,21 @@ public class ActuatorFireBlock extends BaseEntityBlock {
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_PIPERIGHTINNER, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_PIPERIGHTOUTER, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_PIPECENTER, 3));
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().getRegistryName().equals(SpellsInit.FIRE_DAMAGE.getRegistryName())) {
+                float damage = isp.getValue(Attribute.DAMAGE);
+                float duration = isp.getValue(Attribute.DURATION);
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof ActuatorFireBlockEntity afbe) {
+                    afbe.setFuelDuration(Math.round(damage * duration * 20), iSpellDefinition.getHighestAffinity() == Affinity.HELLFIRE);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

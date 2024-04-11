@@ -220,6 +220,17 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         this.powerLevel = pPowerLevel;
     }
 
+    public void setFuelDuration(int pNewFuelDuration, boolean superFuel) {
+        fuelDuration = pNewFuelDuration;
+        remainingFuelTime = pNewFuelDuration;
+        flags = flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+        if(superFuel)
+            flags = flags | FLAG_FUEL_SUPER;
+        else
+            flags = flags | FLAG_FUEL_NORMAL;
+        syncAndSave();
+    }
+
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
