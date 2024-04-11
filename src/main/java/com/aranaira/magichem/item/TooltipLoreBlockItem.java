@@ -38,6 +38,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.DISTILLERY.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.distillery")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.CENTRIFUGE.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.centrifuge")
@@ -59,6 +65,12 @@ public class TooltipLoreBlockItem extends BlockItem {
         else if(pStack.getItem() == BlockRegistry.ACTUATOR_FIRE.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.actuator.fire")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.ACTUATOR_EARTH.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.actuator.earth")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
