@@ -17,6 +17,8 @@
   "item.magichem.superheated_glass_pane": "Superheated Glass Pane",
   "item.magichem.cleaning_brush": "Cleaning Brush",
   "item.magichem.academic_slurry_bucket": "Academic Slurry Bucket",
+  "item.magichem.smoke_bucket": "Smoke Bucket",
+  "item.magichem.steam_bucket": "Steam Bucket",
 
   "item.magichem.dummy.process_fixation": "Alchemical Fixation",
   "item.magichem.dummy.process_separation": "Alchemical Separation",
@@ -48,6 +50,8 @@
   "block.magichem.actuator_water_router": "Deluge Purifier",
 
   "academic_slurry_fluid_type": "Academic Slurry",
+  "smoke_fluid_type": "Smoke",
+  "steam_fluid_type": "Steam",
 
   "itemGroup.magichemtab" : "MagiChem - Blocks and Items",
   "itemGroup.magichemtab.substances" : "MagiChem - Essentia and Admixtures",
