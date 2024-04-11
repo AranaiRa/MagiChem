@@ -1,7 +1,13 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
+import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.attributes.Attribute;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.spells.SpellsInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class AlembicBlock extends BaseEntityBlock {
+public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleBlock<AlembicBlock> {
     public AlembicBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -111,5 +117,21 @@ public class AlembicBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BlockEntitiesRegistry.ALEMBIC_BE.get(),
                 AlembicBlockEntity::tick);
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().getRegistryName().equals(SpellsInit.FIRE_DAMAGE.getRegistryName())) {
+                float damage = isp.getValue(Attribute.DAMAGE);
+                float duration = isp.getValue(Attribute.DURATION);
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof AlembicBlockEntity abe) {
+                    abe.setHeat(Math.round(damage * duration * 20));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

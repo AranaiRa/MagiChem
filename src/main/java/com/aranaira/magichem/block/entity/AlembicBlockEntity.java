@@ -221,7 +221,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         BlockState stateBelow = pLevel.getBlockState(pPos.below());
         if(stateBelow.getBlock() instanceof AbstractFurnaceBlock) {
             if(pLevel.getBlockState(pPos.below()).getValue(BlockStateProperties.LIT)) {
-                pEntity.remainingHeat = 5;
+                pEntity.remainingHeat = Math.max(5, pEntity.remainingHeat);
             }
         }
 
