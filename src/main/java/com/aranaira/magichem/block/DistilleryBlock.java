@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
@@ -12,6 +13,12 @@ import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.affinity.Affinity;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.attributes.Attribute;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.spells.SpellsInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -40,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DistilleryBlock extends BaseEntityBlock {
+public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractibleBlock<DistilleryBlock> {
     public DistilleryBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(
@@ -244,5 +251,21 @@ public class DistilleryBlock extends BaseEntityBlock {
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_PIPE_LEFT_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_PIPE_RIGHT_NORTH, 3)
                 );
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().getRegistryName().equals(SpellsInit.FIRE_DAMAGE.getRegistryName())) {
+                float damage = isp.getValue(Attribute.DAMAGE);
+                float duration = isp.getValue(Attribute.DURATION);
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof DistilleryBlockEntity dbe) {
+                    dbe.setHeat(Math.round(damage * duration * 20));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

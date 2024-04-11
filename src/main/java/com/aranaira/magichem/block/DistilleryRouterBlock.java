@@ -1,10 +1,18 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
+import com.aranaira.magichem.block.entity.routers.ActuatorFireRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.affinity.Affinity;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.attributes.Attribute;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
 import com.mna.items.base.INoCreativeTab;
+import com.mna.spells.SpellsInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -23,7 +31,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativeTab {
+public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativeTab, ISpellInteractibleBlock<DistilleryRouterBlock> {
     public DistilleryRouterBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -202,5 +210,24 @@ public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativ
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_BACK_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_FRONT_NORTH, 3)
         );
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().getRegistryName().equals(SpellsInit.FIRE_DAMAGE.getRegistryName())) {
+                float damage = isp.getValue(Attribute.DAMAGE);
+                float duration = isp.getValue(Attribute.DURATION);
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof DistilleryRouterBlockEntity drbe) {
+                    BlockEntity mbe = level.getBlockEntity(drbe.getMasterPos());
+                    if(mbe instanceof DistilleryBlockEntity dbe) {
+                        dbe.setHeat(Math.round(damage * duration * 20));
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

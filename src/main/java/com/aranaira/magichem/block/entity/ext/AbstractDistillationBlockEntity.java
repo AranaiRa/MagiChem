@@ -371,6 +371,12 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return 1 + (pVarFunc.apply(IDs.GUI_HEAT_GAUGE_HEIGHT) * pHeat / pHeatDuration);
     }
 
+    public void setHeat(int pNewHeatTicks) {
+        remainingHeat = pNewHeatTicks;
+        heatDuration = pNewHeatTicks;
+        syncAndSave();
+    }
+
     ////////////////////
     // ACTUATOR HANDLING
     ////////////////////
