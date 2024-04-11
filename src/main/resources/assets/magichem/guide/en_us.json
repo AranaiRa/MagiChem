@@ -389,6 +389,10 @@
       {
         "type": "crafting",
         "location": "magichem:shaped/alembic"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:manaweaving/distillery"
       }
     ]
   },
@@ -424,21 +428,15 @@
             "color": "black"
           },
           {
-            "text": " at 50% ",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "Efficiency",
-            "bold": true,
-            "color": "black"
-          },
-          {
-            "text": ".",
+            "text": ".\n\nThe device will only process items if placed on top of a lit Furnace, Smoker, or Blast Furnace.\n\n",
             "bold": false,
             "color": "black"
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
       },
       {
         "type": "text",
@@ -453,7 +451,7 @@
             "text": "\n\n"
           },
           {
-            "text": "The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.",
+            "text": "The three slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.",
             "bold": false,
             "color": "black"
           },
@@ -1047,7 +1045,7 @@
     ]
   },
   "Centrifuge": {
-    "index": "1201",
+    "index": "1203",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -1070,14 +1068,7 @@
             "text": "is a simple device capable of performing "
           },
           {
-            "text": "Separation ",
-            "bold": true
-          },
-          {
-            "text": "at 50% "
-          },
-          {
-            "text": "Efficiency",
+            "text": "Separation",
             "bold": true
           },
           {
@@ -1104,9 +1095,13 @@
             "bold": true
           },
           {
-            "text": " ports if you wish to enhance the device using Eldrin power."
+            "text": " ports if you wish to enhance the device using Eldrin power.\n\n\n"
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
       },
       {
         "type": "text",
@@ -1213,7 +1208,7 @@
     ]
   },
   "Fusery": {
-    "index": "1202",
+    "index": "1205",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -1295,6 +1290,10 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/temp_actuator_water"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_earth"
       }
     ]
   },
@@ -1312,13 +1311,46 @@
         "value": "",
         "json": [
           {
-            "text": "Coming in 0.3.3",
-            "italic": true
+            "text": "The "
+          },
+          {
+            "text": "Quake Refinery",
+            "bold": true
+          },
+          {
+            "text": " is an Elemental Actuator that uses Earth Eldrin power. It must also be supplied with sand, some of which is consumed every operation.\n\nWhen the device the Quake Refinery is modifying finishes an operation, the Grime produced is reduced and stored inside the Refinery's impressively large internal buffer.\n\nA portion of the reduced Grime becomes Rarefied Waste instead of Alchemical Waste. The Quake Refinery doesn't need to be cleaned; waste can be directly extracted instead."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The leftmost gauge lets you tell the Quake Refinery how much Eldrin power to use each cycle. The elemental earth symbol to its right displays the amount of time remaining until more Eldrin power is consumed."
+          },
+          {
+            "text": "\n\nTo the right of this, a thin, tall gauge shows how much Grime is currently stored inside the Quake Refinery."
+          },
+          {
+            "text": "\n\nIn the center of the interface are three item slots. The top gauge accepts sand, which enter an internal buffer. Sand is consumed every time the linked device completes an operation. Below the sand slot are two slots that will fill with Alchemical Waste and Rarefied Waste from the Quake Refinery's Grime buffer."
+          },
+          {
+            "text": "\n\nTo the right of this, a thin, tall gauge shows how much Sand is currently stored inside the Quake Refinery's internal buffer."
           }
         ]
       }
     ],
-    "related_recipes": []
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_earth"
+      }
+    ]
   },
   "Deluge Purifier": {
     "index": "1302",
@@ -1344,6 +1376,10 @@
             "text": " is an Elemental Actuator that uses Water Eldrin power. It must also be supplied with water, some of which is consumed every operation.\n\nThe device the Deluge Purifier is modifying benefits from increased Efficiency."
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
       },
       {
         "type": "text",
@@ -1404,9 +1440,13 @@
             "bold": true
           },
           {
-            "text": " is an Elemental Actuator that uses Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate an Improved Alembic, Centrifuge, or Fusery."
+            "text": " is an Elemental Actuator that uses Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate a Distillery, Centrifuge, or Fusery."
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
       },
       {
         "type": "text",
@@ -1462,7 +1502,7 @@
     "related_recipes": []
   },
   "Grime": {
-    "index": "1202",
+    "index": "1211",
     "category": "magichem",
     "sections": [
       {
@@ -1668,7 +1708,7 @@
     "related_recipes": []
   },
   "Materia Vessel": {
-    "index": "1201",
+    "index": "1210",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -1690,6 +1730,87 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/materia_vessel"
+      }
+    ]
+  },
+  "Distillery": {
+    "index": "1201",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Distillery"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An improvement on the simple Alembic, a ",
+            "color": "black"
+          },
+          {
+            "text": "Distillery",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " is an advanced form of the Alembic, capable of performing ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Distillation",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": " with slightly improved ",
+            "bold": false,
+            "color": "black"
+          },
+          {
+            "text": "Efficiency",
+            "bold": true,
+            "color": "black"
+          },
+          {
+            "text": ".\n\nUnlike the Alembic, the Distillery has a furnace built in and can supply its own heat if given fuel. The Distillery will burn fuel even if there is no item to process.\n\nThe sides of the device have Elemental Actuator ports if you wish to enhance the device using Eldrin power.\n\n",
+            "bold": false,
+            "color": "black"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The tall, leftmost slot is for fluids and is currently unimplemented.",
+            "italic": true,
+            "color": "black"
+          },
+          {
+            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.",
+            "color": "black"
+          },
+          {
+            "text": "\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top."
+          },
+          {
+            "text": "\n\nAt the bottom is a single slot that fuel items can be inserted into."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:manaweaving/distillery"
       }
     ]
   },
