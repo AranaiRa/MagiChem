@@ -1,10 +1,12 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,11 +28,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ActuatorWaterBlock extends BaseEntityBlock {
@@ -147,14 +156,38 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof ActuatorWaterBlockEntity awbe) {
-                NetworkHooks.openScreen((ServerPlayer)player, (ActuatorWaterBlockEntity)entity, pos);
+            ItemStack heldItem = player.getItemInHand(hand);
+            LazyOptional<IFluidHandlerItem> fluidCap = heldItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+
+            if (fluidCap.isPresent()) {
+                BlockEntity be = level.getBlockEntity(pos);
+                if(be instanceof ActuatorWaterBlockEntity awbe) {
+                    fluidCap.ifPresent(cap -> {
+                        FluidStack fluid = cap.getFluidInTank(0);
+
+                        //If container is empty or has steam
+                        if(fluid.isEmpty() || fluid.getFluid() == FluidRegistry.STEAM.get()) {
+                            int capacity = cap.fill(new FluidStack(FluidRegistry.STEAM.get(), Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                            FluidStack drainedFS = awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), Math.min(capacity, awbe.getFluidInTank(ActuatorWaterBlockEntity.TANK_ID_STEAM).getAmount())), IFluidHandler.FluidAction.EXECUTE);
+                            cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+                        }
+                        //If container has water
+                        else if(fluid.getFluid() == Fluids.WATER) {
+                            int capacity = awbe.fill(new FluidStack(Fluids.WATER, Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                            FluidStack drainedFS = cap.drain(new FluidStack(Fluids.WATER, capacity), IFluidHandler.FluidAction.EXECUTE);
+                            awbe.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+                        }
+                    });
+                }
             } else {
-                throw new IllegalStateException("ActuatorWaterBlockEntity container provider is missing!");
+                BlockEntity entity = level.getBlockEntity(pos);
+                if (entity instanceof ActuatorWaterBlockEntity awbe) {
+                    NetworkHooks.openScreen((ServerPlayer) player, (ActuatorWaterBlockEntity) entity, pos);
+                } else {
+                    throw new IllegalStateException("ActuatorWaterBlockEntity container provider is missing!");
+                }
             }
         }
-
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
