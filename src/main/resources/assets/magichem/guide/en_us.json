@@ -391,7 +391,7 @@
         "location": "magichem:shaped/alembic"
       },
       {
-        "type": "crafting",
+        "type": "manaweaving-altar",
         "location": "magichem:manaweaving/distillery"
       }
     ]
@@ -1386,14 +1386,7 @@
         "value": "",
         "json": [
           {
-            "text": "The leftmost gauge lets you tell the Deluge Purifier how much Eldrin power to use each cycle. The elemental water symbol to its right displays the amount of time remaining until more Eldrin power is consumed.\n\nTo the right of this, a wide and tall gauge acts as a tank for water, which is consumed every Eldrin power cycle. ("
-          },
-          {
-            "text": "Creator's note: You currently can't bucket into/out of the Deluge Purifier manually; use Constructs or some other automated method for the time being.",
-            "italic": true
-          },
-          {
-            "text": ")\n\nTo the right of this, a thin, tall gauge shows how much "
+            "text": "The leftmost gauge lets you tell the Deluge Purifier how much Eldrin power to use each cycle. The elemental water symbol to its right displays the amount of time remaining until more Eldrin power is consumed.\n\nTo the right of this, a wide and tall gauge acts as a tank for water, which is consumed every Eldrin power cycle.\n\nTo the right of this, a thin, tall gauge shows how much "
           },
           {
             "text": "Steam",
@@ -1736,6 +1729,7 @@
   "Distillery": {
     "index": "1201",
     "category": "magichem",
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -1809,8 +1803,90 @@
     ],
     "related_recipes": [
       {
-        "type": "crafting",
+        "type": "manaweaving-altar",
         "location": "magichem:manaweaving/distillery"
+      }
+    ]
+  },
+  "Alchemical Waste": {
+    "index": "1212",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Alchemical Waste"
+      },
+      {
+        "type": "item",
+        "location": "magichem:alchemical_waste",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "When Grime is cleaned out of an alchemical device, it produces an unpleasant, smelly residue called "
+          },
+          {
+            "text": "Alchemical Waste",
+            "bold": true
+          },
+          {
+            "text": ".\n\nThis foul residue has precious few practical uses. Notably, it reacts well with an Admixture of Memories to create an elixir that allows an enterprising alchemist to learn from failures.\n\nThere are few safe ways to dispose of Alchemical Waste, but feeding it to a hungry Construct is known to be safe and effective. It doesn't hurt that Alchemical Waste is a beloved treat for Constructs the worlds over."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/experience_bottle_waste"
+      }
+    ]
+  },
+  "Rarefied Waste": {
+    "index": "1213",
+    "category": "magichem",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Rarefied Waste"
+      },
+      {
+        "type": "item",
+        "location": "magichem:rarefied_waste",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A portion of the Grime reduced by a Quake Refinery becomes "
+          },
+          {
+            "text": "Rarefied Waste",
+            "bold": true
+          },
+          {
+            "text": " instead of Alchemical Waste.\n\nRarefied Waste doesn't display any of the properties of its sibling material. Instead, it can be processed in any alchemical device capable of Distillation to produce a random Admixture.\n\nAdmixtures produced by distilling Rarefied Waste are "
+          },
+          {
+            "text": "heavily",
+            "italic": true
+          },
+          {
+            "text": " weighted towards Admixtures of lower order."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_earth"
       }
     ]
   },
