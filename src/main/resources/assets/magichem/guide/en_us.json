@@ -13,258 +13,185 @@
         "json": [
           {
             "text": "Essentia",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " is the purified essence of ",
-            "color": "black"
+            "text": " is the purified essence of "
           },
           {
             "text": "something",
-            "italic": true,
-            "color": "black"
+            "italic": true
           },
           {
-            "text": " distilled from an object or fluid. It's the most fundamental part of the alchemical arts. There are eighteen types of Essentia, each bearing a particular ",
-            "color": "black"
+            "text": " distilled from an object or fluid. It's the most fundamental part of the alchemical arts. There are eighteen types of Essentia, each bearing a particular "
           },
           {
             "text": "Sign",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " and arranged into three ",
-            "color": "black"
+            "text": " and arranged into three "
           },
           {
             "text": "Houses",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", groupings of Essentia types that share similar themes.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n\n"
-          },
-          {
-            "text": "The ",
-            "color": "black"
+            "text": ", groupings of Essentia types that share similar themes.\n\n\nThe "
           },
           {
             "text": "House of Elements",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " contains Essentia that represent the six core affinities of magic that most magicians are already familiar with: ",
-            "color": "black"
+            "text": " contains Essentia that represent the six core affinities of magic that most magicians are already familiar with: "
           },
           {
             "text": "Ender",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Earth",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Water",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Air",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Fire",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", and ",
-            "color": "black"
+            "text": ", and "
           },
           {
             "text": "Arcane",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ". In addition to their uses for alchemy, Essentia of the House of Elements can be burned in an Eldrin Fume Filter to generate small amounts of Eldrin power (though the bottle it's carried in is, unfortunately, destroyed in the process).",
-            "color": "black"
-          },
-          {
-            "text": "\n\n\n"
-          },
-          {
-            "text": "The ",
-            "color": "black"
+            "text": ". In addition to their uses for alchemy, Essentia of the House of Elements can be burned in an Eldrin Fume Filter to generate small amounts of Eldrin power (though the bottle it's carried in is, unfortunately, destroyed in the process).\n\n\nThe "
           },
           {
             "text": "House of Qualities",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " contains Essentia that ",
-            "color": "black"
+            "text": " contains Essentia that "
           },
           {
             "text": "describe",
-            "italic": true,
-            "color": "black"
+            "italic": true
           },
           {
-            "text": " what something is; if the House of Elements is about nouns, the House of Qualities is about adjectives. There are eight members of the House of Qualities: ",
-            "color": "black"
+            "text": " what something is; if the House of Elements is about nouns, the House of Qualities is about adjectives. There are eight members of the House of Qualities: "
           },
           {
             "text": "Conceptual",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Verdant",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Fleshy",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Nourishing",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Rotten",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Mineral",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Wrought",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", and ",
-            "color": "black"
+            "text": ", and "
           },
           {
             "text": "Precious",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".",
-            "color": "black"
-          },
-          {
-            "text": "\n\n\n"
-          },
-          {
-            "text": "The ",
-            "color": "black"
+            "text": ".\n\n\nThe "
           },
           {
             "text": "House of Alchemy",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " contains four mysterious types of Essentia that represent ascending power and the search for the Philosopher's Stone: ",
-            "color": "black"
+            "text": " contains four mysterious types of Essentia that represent ascending power and the search for the Philosopher's Stone: "
           },
           {
             "text": "Nigredo",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Albedo",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", ",
-            "color": "black"
+            "text": ", "
           },
           {
             "text": "Citrinitas",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", and ",
-            "color": "black"
+            "text": ", and "
           },
           {
             "text": "Rubedo",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".",
-            "color": "black"
+            "text": "."
           }
         ]
       }
@@ -285,44 +212,17 @@
         "json": [
           {
             "text": "Admixtures",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " are combinations of different Essentia that represent higher-ordered themes or ideas.",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "An Admixture can be composed of two to five different kinds of Essentia, always includes at least one type of Essentia of both the House of Elements and the House of Qualities, and never includes Essentia of the House of Alchemy. Some Admixtures can even include other Admixtures.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "Admixtures can be obtained by distilling objects and fluids, or by combining Essentia through the alchemical process of Fixation.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "The term is ",
-            "color": "black"
+            "text": " are combinations of different Essentia that represent higher-ordered themes or ideas.\n\nAn Admixture can be composed of two to five different kinds of Essentia, always includes at least one type of Essentia of both the House of Elements and the House of Qualities, and never includes Essentia of the House of Alchemy. Some Admixtures can even include other Admixtures.\n\nAdmixtures can be obtained by distilling objects and fluids, or by combining Essentia through the alchemical process of Fixation.\n\nThe term "
           },
           {
             "text": "Materia",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " is used to refer to something that could be either Essentia or an Admixture.",
-            "bold": false,
-            "color": "black"
+            "text": " is used to refer to something that could be either Essentia or an Admixture."
           }
         ]
       }
@@ -342,45 +242,28 @@
         "value": "",
         "json": [
           {
-            "text": "To ",
-            "color": "black"
+            "text": "To "
           },
           {
             "text": "Distill",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " is to break an object or fluid down into the Materia (that is, Essentia and Admixtures) that make it up. Basic Distillation is performed at an ",
-            "bold": false,
-            "color": "black"
+            "text": " is to break an object or fluid down into the Materia (that is, Essentia and Admixtures) that make it up. Basic Distillation is performed at an "
           },
           {
             "text": "Alembic",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "Devices capable of Distillation have an ",
-            "color": "black"
+            "text": ".\n\nDevices capable of Distillation have an "
           },
           {
             "text": "Efficiency",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " rating that determines the chance that you will successfully distill each dram of Materia that the object or fluid contains. Efficiency is always noted as a percentage, and Efficiency greater than 100% has no additional effect.",
-            "bold": false,
-            "color": "black"
+            "text": " rating that determines the chance that you will successfully distill each dram of Materia that the object or fluid contains. Efficiency is always noted as a percentage, and Efficiency greater than 100% has no additional effect."
           }
         ]
       }
@@ -409,28 +292,28 @@
         "value": "",
         "json": [
           {
-            "text": "An ",
-            "color": "black"
+            "text": "An "
           },
           {
             "text": "Alembic",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " is a simple device capable of performing ",
-            "bold": false,
-            "color": "black"
+            "text": " is a simple device capable of performing "
           },
           {
             "text": "Distillation",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".\n\nThe device will only process items if placed on top of a lit Furnace, Smoker, or Blast Furnace.\n\n",
-            "bold": false,
-            "color": "black"
+            "text": ".\n\nThe device will only process items if placed on top of a lit Furnace, Smoker, or Blast Furnace.\n\nIf fuel is at a premium, the Alembic can be lit with a "
+          },
+          {
+            "text": "Fire Damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " spell."
           }
         ]
       },
@@ -444,23 +327,11 @@
         "json": [
           {
             "text": "The tall, leftmost slot is for fluids and is currently unimplemented.",
-            "italic": true,
-            "color": "black"
+            "italic": true
           },
           {
-            "text": "\n\n"
-          },
-          {
-            "text": "The three slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "The nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.",
-            "color": "black"
+            "text": "\n\nThe three slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.",
+            "italic": false
           }
         ]
       }
@@ -486,35 +357,21 @@
         "value": "",
         "json": [
           {
-            "text": "The more complex devices of the alchemist’s art require a ",
-            "color": "black"
+            "text": "The more complex devices of the alchemist’s art require a "
           },
           {
             "text": "Magic Circle",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", a ring of ensorcelled silver that focuses creative energy and Materia into a desired outcome.",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "Magic Circles are made of ",
-            "color": "black"
+            "text": ", a ring of ensorcelled silver that focuses creative energy and Materia into a desired outcome.\n\nMagic Circles are made of "
           },
           {
             "text": "Iris Argenti",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", an alchemical alloy of transmuted silver, chimerite, and some Admixtures made on the Manaweaving Altar.",
-            "bold": false,
-            "color": "black"
+            "text": ", an alchemical alloy of transmuted silver, chimerite, and some Admixtures made on the Manaweaving Altar."
           }
         ]
       }
@@ -544,28 +401,21 @@
         "value": "",
         "json": [
           {
-            "text": "The ",
-            "color": "black"
+            "text": "The "
           },
           {
             "text": "Circle of Fabrication",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " uses Materia to create blocks and items. A Circle of Fabrication requires ",
-            "bold": false,
-            "color": "black"
+            "text": " uses Materia to create blocks and items. A Circle of Fabrication requires "
           },
           {
             "text": "FE (Forge Energy)",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " to function.",
-            "bold": false,
-            "color": "black"
+            "text": " to function."
           }
         ]
       },
@@ -575,40 +425,15 @@
         "recipeType": "crafting"
       },
       {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "On the far left side is a panel with fifteen slots used to select what you want the Circle of Fabrication to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical triangle in the center and a second panel appears in the lower right to indicate what Materia are required for each craft.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "The alchemical triangle in the center represents the progress on the current craft, and fills as the process gets closer to completion.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "To the left of the alchemical triangle are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "In the upper right, you can set the desired FE usage of the Circle of Fabrication; as the power usage goes up, the amount of time the Circle of Fabrication requires to perform each crafting operation goes down. Changing the desired power usage will reset the progress on any current crafting operation.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "Whenever the Circle of Fabrication creates a block or item, all of the Materia used is consumed and the bottles are returned into the bottle output slot. If there’s not enough space in the bottle output slot, the Circle of Fabrication won’t begin crafting until there’s enough space.",
-            "color": "black"
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Circle of Fabrication to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical triangle in the center and a second panel appears in the lower right to indicate what Materia are required for each craft.\n\nThe alchemical triangle in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical triangle are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nIn the upper right, you can set the desired FE usage of the Circle of Fabrication; as the power usage goes up, the amount of time the Circle of Fabrication requires to perform each crafting operation goes down. Changing the desired power usage will reset the progress on any current crafting operation.\n\nWhenever the Circle of Fabrication creates a block or item, all of the Materia used is consumed and the bottles are returned into the bottle output slot. If there’s not enough space in the bottle output slot, the Circle of Fabrication won’t begin crafting until there’s enough space."
           }
         ]
       }
@@ -638,38 +463,28 @@
         "value": "",
         "json": [
           {
-            "text": "The ",
-            "color": "black"
+            "text": "The "
           },
           {
             "text": "Circle of Power",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " generates ",
-            "bold": false,
-            "color": "black"
+            "text": " generates "
           },
           {
             "text": "FE (Forge Energy)",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " if supplied with at least one ",
-            "bold": false,
-            "color": "black"
+            "text": " if supplied with at least one "
           },
           {
             "text": "Reagent",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".",
-            "bold": false,
-            "color": "black"
+            "text": "."
           }
         ]
       },
@@ -683,42 +498,21 @@
         "value": "",
         "json": [
           {
-            "text": "A reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product that can be reprocessed back into the reagent with Constructs. One reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "By default, each additional reagent supplied to the Circle of Power increases its power generation twelvefold. Power is generated based on the ",
-            "color": "black"
+            "text": "A reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product that can be reprocessed back into the reagent with Constructs. One reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.\n\nBy default, each additional reagent supplied to the Circle of Power increases its power generation twelvefold. Power is generated based on the "
           },
           {
             "text": "number",
-            "italic": true,
-            "color": "black"
+            "italic": true
           },
           {
-            "text": " of reagents present, not the ",
-            "italic": false,
-            "color": "black"
+            "text": " of reagents present, not the "
           },
           {
             "text": "specific",
-            "italic": true,
-            "color": "black"
+            "italic": true
           },
           {
-            "text": " reagent reagent present. For example, supplying the first two reagents will generate more power than supplying only the fourth reagent.",
-            "italic": false,
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "The Circle of Power only generates up to three ticks’ worth of FE.",
-            "color": "black"
+            "text": " reagent reagent present. For example, supplying the first two reagents will generate more power than supplying only the fourth reagent.\n\nThe Circle of Power only generates up to three ticks’ worth of FE."
           }
         ]
       }
@@ -740,30 +534,17 @@
         "json": [
           {
             "text": "Grains of Transmuted Silver",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " are the most basic energy-generating reagent used in the Circle of Power. Grains of Transmuted Silver can be made at Tier 2 by having a Construct crush a Transmuted Silver ingot.",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "The Grains have a very short burn time and eject a ",
-            "color": "black"
+            "text": " are the most basic energy-generating reagent used in the Circle of Power. Grains of Transmuted Silver can be made at Tier 2 by having a Construct crush a Transmuted Silver ingot.\n\nThe Grains have a very short burn time and eject a "
           },
           {
             "text": "Tarnished Silver Lump",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " as a waste product.",
-            "bold": false,
-            "color": "black"
+            "text": " as a waste product.\n\n\n\n\n"
           }
         ]
       },
@@ -776,8 +557,7 @@
         "value": "",
         "json": [
           {
-            "text": "The Tarnished Silver Lump can be crushed by a Construct back into Grains of Transmuted Silver.",
-            "color": "black"
+            "text": "The Tarnished Silver Lump can be crushed by a Construct back into Grains of Transmuted Silver."
           }
         ]
       }
@@ -803,55 +583,35 @@
         "value": "",
         "json": [
           {
-            "text": "A ",
-            "color": "black"
+            "text": "A "
           },
           {
             "text": "Focusing Catalyst",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " is a more advanced energy-generating reagent used in the Circle of Power. Focusing Catalysts can be made at Tier 3 by pounding a block of Transmuted Silver into a ",
-            "bold": false,
-            "color": "black"
+            "text": " is a more advanced energy-generating reagent used in the Circle of Power. Focusing Catalysts can be made at Tier 3 by pounding a block of Transmuted Silver into a "
           },
           {
             "text": "Catalyst Core",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " on a Runic Anvil, and Catalyst Cores can be made by performing the ",
-            "bold": false,
-            "color": "black"
+            "text": " on a Runic Anvil, and Catalyst Cores can be made by performing the "
           },
           {
             "text": "Ritual of the Rod and Circle",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "The Catalyst has a moderate burn time and ejects a ",
-            "color": "black"
+            "text": ".\n\nThe Catalyst has a moderate burn time and ejects a "
           },
           {
             "text": "Warped Focusing Catalyst",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " as a waste product.",
-            "bold": false,
-            "color": "black"
+            "text": " as a waste product.\n\n\n\n"
           }
         ]
       },
@@ -864,39 +624,21 @@
         "value": "",
         "json": [
           {
-            "text": "A Construct can grind apart a Warped Focusing Catalyst, separating the ",
-            "color": "black"
+            "text": "A Construct can grind apart a Warped Focusing Catalyst, separating the "
           },
           {
             "text": "Depleted Catalyst Core",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " from the ",
-            "bold": false,
-            "color": "black"
+            "text": " from the "
           },
           {
             "text": "Catalyst Casing",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".\n\n",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "A Depleted Catalyst Core can be recharged into a Catalyst Core by smelting it in the Runeforge. This operation takes significantly longer than it normally takes to smelt an object.",
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "Once the Catalyst Core is recharged, you can turn it back into a Focusing Catalyst by pounding the Catalyst Casing into it on a Runic Anvil.",
-            "color": "black"
+            "text": ".\n\nA Depleted Catalyst Core can be recharged into a Catalyst Core by smelting it in the Runeforge. This operation takes significantly longer than it normally takes to smelt an object.\n\nOnce the Catalyst Core is recharged, you can turn it back into a Focusing Catalyst by pounding the Catalyst Casing into it on a Runic Anvil."
           }
         ]
       }
@@ -922,45 +664,28 @@
         "value": "",
         "json": [
           {
-            "text": "A ",
-            "color": "black"
+            "text": "A "
           },
           {
             "text": "Power Spike",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " can be used to transfer Forge Energy (FE) from a ",
-            "bold": false,
-            "color": "black"
+            "text": " can be used to transfer Forge Energy (FE) from a "
           },
           {
             "text": "Circle of Power",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " into other devices. You can bind the Power Spike to the Circle by using the Power Spike on the Circle of Power while sneaking.",
-            "bold": false,
-            "color": "black"
-          },
-          {
-            "text": "\n\n"
-          },
-          {
-            "text": "Power Spikes can insert power into any device with no range limit as long as the Circle of Power it is bound to is in a loaded chunk. Power Spikes can ",
-            "color": "black"
+            "text": " into other devices. You can bind the Power Spike to the Circle by using the Power Spike on the Circle of Power while sneaking.\n\nPower Spikes can insert power into any device with no range limit as long as the Circle of Power it is bound to is in a loaded chunk. Power Spikes can "
           },
           {
             "text": "only",
-            "italic": true,
-            "color": "black"
+            "italic": true
           },
           {
-            "text": " draw energy from a Circle of Power.",
-            "bold": false,
-            "color": "black"
+            "text": " draw energy from a Circle of Power."
           }
         ]
       }
@@ -1011,28 +736,21 @@
         "value": "",
         "json": [
           {
-            "text": "This ritual binds coal, amethyst, and a few different varieties of Materia together into a ",
-            "color": "black"
+            "text": "This ritual binds coal, amethyst, and a few different varieties of Materia together into a "
           },
           {
             "text": "Catalyst Core",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ", a necessary component of a ",
-            "bold": false,
-            "color": "black"
+            "text": ", a necessary component of a "
           },
           {
             "text": "Focusing Catalyst",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".",
-            "bold": false,
-            "color": "black"
+            "text": "."
           }
         ]
       }
@@ -1062,14 +780,14 @@
           },
           {
             "text": "Centrifuge ",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": "is a simple device capable of performing "
           },
           {
             "text": "Separation",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": "."
@@ -1085,17 +803,17 @@
           },
           {
             "text": "Activate",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " the block, or for ten minutes by dusting it with Animus Dust.\n\nTwo corners of the device have "
           },
           {
             "text": "Elemental Actuator",
-            "bold": true
+            "color": "dark_purple"
           },
           {
-            "text": " ports if you wish to enhance the device using Eldrin power.\n\n\n"
+            "text": " ports if you wish to enhance the device using Eldrin power.\n\n\n\n"
           }
         ]
       },
@@ -1138,14 +856,14 @@
           },
           {
             "text": "Fix",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " is to take component Materia and combine them into a new Admixture. Basic Fixation is performed at a "
           },
           {
             "text": "Fusery",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": "."
@@ -1178,21 +896,21 @@
           },
           {
             "text": "Separate",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " is to break an Admixture into the Materia (that is, Essentia or other Admixtures) that make it up. Basic Separation is performed at a "
           },
           {
             "text": "Centrifuge",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": ".\n\nDevices capable of Separation have an "
           },
           {
             "text": "Efficiency",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " rating that determines the chance that you will successfully separate each dram of Materia that the Admixture is composed of. Efficiency is always noted as a percentage, and Efficiency greater than 100% has no additional effect."
@@ -1225,19 +943,23 @@
           },
           {
             "text": "Fusery ",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": "is a simple device capable of performing "
           },
           {
             "text": "Fixation",
-            "bold": true
+            "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ".\n\n\n\n\n\n\n\n"
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
       },
       {
         "type": "text",
@@ -1274,7 +996,7 @@
           },
           {
             "text": "Elemental Actuator",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " is a device that consumes Eldrin power (and other reagents) in order to enhance an alchemical device. The Alembic is too simple and crude to make use of Elemental Actuators, but all other devices have at least two ports that an Elemental Actuator can be plugged into.\n\nSlotting multiple copies of an Elemental Actuator into the same device has no effect; only one of the Actuators will have any effect on the target device.\n\nElemental Actuators that use Earth, Water, Air, and Fire Eldrin power can be crafted at Tier 3, while those that use Arcane and Ender Eldrin power can be crafted at Tier 4."
@@ -1315,10 +1037,10 @@
           },
           {
             "text": "Quake Refinery",
-            "bold": true
+            "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Earth Eldrin power. It must also be supplied with sand, some of which is consumed every operation.\n\nWhen the device the Quake Refinery is modifying finishes an operation, the Grime produced is reduced and stored inside the Refinery's impressively large internal buffer.\n\nA portion of the reduced Grime becomes Rarefied Waste instead of Alchemical Waste. The Quake Refinery doesn't need to be cleaned; waste can be directly extracted instead."
+            "text": " is an Elemental Actuator that uses Earth Eldrin power. It must also be supplied with sand, some of which is consumed every operation.\n\nWhen the device the Quake Refinery is modifying finishes an operation, the Grime produced is reduced and stored inside the Refinery's impressively large internal buffer.\n\nA portion of the reduced Grime becomes Rarefied Waste instead of Alchemical Waste. The Quake Refinery doesn't need to be cleaned; waste can be directly extracted instead.\n\n\n\n\n\n\n\n"
           }
         ]
       },
@@ -1370,7 +1092,7 @@
           },
           {
             "text": "Deluge Purifier",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " is an Elemental Actuator that uses Water Eldrin power. It must also be supplied with water, some of which is consumed every operation.\n\nThe device the Deluge Purifier is modifying benefits from increased Efficiency."
@@ -1390,14 +1112,14 @@
           },
           {
             "text": "Steam",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " has accumulated in the device. Whenever the targeted device finishes an operation, the Deluge Purifier generates some Steam. Steam can be used by a "
           },
           {
             "text": "Gale Pressurizer",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": ". There is no negative effect to the machine if the Steam gauge is full, and excess Steam vents out harmlessly.\n\nThe rightmost area of the interface shows you how much the target device's Efficiency is being increased as well as the current amount of Eldrin power consumed every cycle."
@@ -1430,10 +1152,10 @@
           },
           {
             "text": "Inferno Engine",
-            "bold": true
+            "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate a Distillery, Centrifuge, or Fusery."
+            "text": " is an Elemental Actuator that uses Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate a Distillery, Centrifuge, or Fusery.\n"
           }
         ]
       },
@@ -1450,14 +1172,14 @@
           },
           {
             "text": "Smoke",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " has accumulated in the device. Whenever the targeted device finishes an operation, the Inferno Engine generates some Smoke. Smoke can be used by a "
           },
           {
             "text": "Gale Pressurizer",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": ". There is no negative effect to the machine if the Smoke gauge is full, and excess Smoke vents out harmlessly.\n\nThe rightmost area of the interface shows you how much FE or operation time reduction the Inferno Engine is supplying as well as the current amount of Eldrin power consumed every cycle."
@@ -1511,28 +1233,28 @@
           },
           {
             "text": "Grime",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": ". Successful operations produce more Grime than failed ones, and a device loses efficiency and has longer operation time when it has accumulated more than 50% of its Grime capacity.\n\nA device can be manually cleaned with a "
           },
           {
             "text": "Cleaning Brush",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " or automatically cleaned with a Construct bound to a "
           },
           {
             "text": "Clean Alchemical Apparatus",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " task in a Lodestar.\n\nCleaning a device produces "
           },
           {
             "text": "Alchemical Waste",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": ". Alchemical Waste currently has no use, but it "
@@ -1676,24 +1398,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ", returning ",
-            "color": "black"
+            "text": ", returning "
           },
           {
             "text": "success",
             "color": "dark_green"
           },
           {
-            "text": " if it has, and ",
-            "color": "black"
+            "text": " if it has, and "
           },
           {
             "text": "failure",
             "color": "dark_red"
           },
           {
-            "text": " if it has not.",
-            "color": "black"
+            "text": " if it has not."
           }
         ]
       }
@@ -1740,38 +1459,35 @@
         "value": "",
         "json": [
           {
-            "text": "An improvement on the simple Alembic, a ",
-            "color": "black"
+            "text": "An improvement on the simple Alembic, a "
           },
           {
             "text": "Distillery",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " is an advanced form of the Alembic, capable of performing ",
-            "bold": false,
-            "color": "black"
+            "text": " is an advanced form of the Alembic, capable of performing "
           },
           {
             "text": "Distillation",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": " with slightly improved ",
-            "bold": false,
-            "color": "black"
+            "text": " with slightly improved "
           },
           {
             "text": "Efficiency",
-            "bold": true,
-            "color": "black"
+            "color": "dark_purple"
           },
           {
-            "text": ".\n\nUnlike the Alembic, the Distillery has a furnace built in and can supply its own heat if given fuel. The Distillery will burn fuel even if there is no item to process.\n\nThe sides of the device have Elemental Actuator ports if you wish to enhance the device using Eldrin power.\n\n",
-            "bold": false,
-            "color": "black"
+            "text": ".\n\nUnlike the Alembic, the Distillery has a furnace built in and can supply its own heat if given fuel. The Distillery will burn fuel even if there is no item to process.\n\nThe sides of the device have Elemental Actuator ports if you wish to enhance the device using Eldrin power.\n\nLike an Alembic, the Distillery can be lit with a "
+          },
+          {
+            "text": "Fire Damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": " spell.\n\n\n\n\n\n\n\n\n\n"
           }
         ]
       },
@@ -1785,18 +1501,11 @@
         "json": [
           {
             "text": "The tall, leftmost slot is for fluids and is currently unimplemented.",
-            "italic": true,
-            "color": "black"
+            "italic": true
           },
           {
-            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.",
-            "color": "black"
-          },
-          {
-            "text": "\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top."
-          },
-          {
-            "text": "\n\nAt the bottom is a single slot that fuel items can be inserted into."
+            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nAt the bottom is a single slot that fuel items can be inserted into.",
+            "italic": false
           }
         ]
       }
@@ -1830,7 +1539,7 @@
           },
           {
             "text": "Alchemical Waste",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": ".\n\nThis foul residue has precious few practical uses. Notably, it reacts well with an Admixture of Memories to create an elixir that allows an enterprising alchemist to learn from failures.\n\nThere are few safe ways to dispose of Alchemical Waste, but feeding it to a hungry Construct is known to be safe and effective. It doesn't hurt that Alchemical Waste is a beloved treat for Constructs the worlds over."
@@ -1868,7 +1577,7 @@
           },
           {
             "text": "Rarefied Waste",
-            "bold": true
+            "color": "dark_purple"
           },
           {
             "text": " instead of Alchemical Waste.\n\nRarefied Waste doesn't display any of the properties of its sibling material. Instead, it can be processed in any alchemical device capable of Distillation to produce a random Admixture.\n\nAdmixtures produced by distilling Rarefied Waste are "
