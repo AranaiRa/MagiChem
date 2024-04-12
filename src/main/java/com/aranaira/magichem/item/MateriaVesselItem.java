@@ -46,13 +46,15 @@ public class MateriaVesselItem extends BlockItem {
 
     @Override
     public InteractionResult place(BlockPlaceContext context) {
+        //We need to get the tag BEFORE the interaction result is generated.
+        //If the jar was a single item stack, the tag won't exist to reference after the result is generated.
+        CompoundTag tag = null;
+        if (context.getItemInHand().hasTag()) {
+            tag = context.getItemInHand().getTag();
+        }
         InteractionResult result = super.place(context);
-        if(result == InteractionResult.CONSUME) {
-            CompoundTag tag = null;
-            if (context.getItemInHand().hasTag()) {
-                tag = context.getItemInHand().getTag();
-            }
 
+        if(result == InteractionResult.CONSUME) {
             if (!context.getLevel().isClientSide()) {
                 BlockPos clickedPos = context.getClickedPos();
                 BlockEntity entity = context.getLevel().getBlockEntity(clickedPos);
@@ -64,6 +66,8 @@ public class MateriaVesselItem extends BlockItem {
                                     .get(tag.getString("type"));
 
                             mvbe.setContents(materia, tag.getInt("amount"));
+
+                            boolean fart = true;
                         }
                     }
                 }
