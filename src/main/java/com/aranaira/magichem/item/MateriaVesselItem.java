@@ -46,23 +46,25 @@ public class MateriaVesselItem extends BlockItem {
 
     @Override
     public InteractionResult place(BlockPlaceContext context) {
-        CompoundTag tag = null;
-        if(context.getItemInHand().hasTag()) {
-            tag = context.getItemInHand().getTag();
-        }
         InteractionResult result = super.place(context);
+        if(result == InteractionResult.CONSUME) {
+            CompoundTag tag = null;
+            if (context.getItemInHand().hasTag()) {
+                tag = context.getItemInHand().getTag();
+            }
 
-        if(!context.getLevel().isClientSide()) {
-            BlockPos clickedPos = context.getClickedPos();
-            BlockEntity entity = context.getLevel().getBlockEntity(clickedPos);
+            if (!context.getLevel().isClientSide()) {
+                BlockPos clickedPos = context.getClickedPos();
+                BlockEntity entity = context.getLevel().getBlockEntity(clickedPos);
 
-            if(entity != null) {
-                if(entity instanceof MateriaVesselBlockEntity mvbe && tag != null) {
-                    if(tag.contains("type") && tag.contains("amount")) {
-                        MateriaItem materia = ItemRegistry.getMateriaMap(false, false)
-                                .get(tag.getString("type"));
+                if (entity != null) {
+                    if (entity instanceof MateriaVesselBlockEntity mvbe && tag != null) {
+                        if (tag.contains("type") && tag.contains("amount")) {
+                            MateriaItem materia = ItemRegistry.getMateriaMap(false, false)
+                                    .get(tag.getString("type"));
 
-                        mvbe.setContents(materia, tag.getInt("amount"));
+                            mvbe.setContents(materia, tag.getInt("amount"));
+                        }
                     }
                 }
             }
