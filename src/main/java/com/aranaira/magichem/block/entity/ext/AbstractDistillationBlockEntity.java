@@ -138,23 +138,11 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             ItemStack processingItem = processing.getSecond();
 
             AlchemicalCompositionRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
-            if (processingItem != ItemStack.EMPTY) {
-                if(recipe != null) {
-                    if (canCraftItem(pEntity, recipe, pVarFunc)) {
-                        if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.operationTimeMod * 100, pVarFunc)) {
-                            if (!pLevel.isClientSide()) {
-                                craftItem(pEntity, recipe, processingSlot, pVarFunc);
-                                pEntity.pushData();
-                            }
-                            if (!pEntity.isStalled)
-                                pEntity.resetProgress();
-                        } else
-                            pEntity.incrementProgress();
-                    }
-                } else {
+            if(recipe != null) {
+                if (canCraftItem(pEntity, recipe, pVarFunc)) {
                     if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.operationTimeMod * 100, pVarFunc)) {
                         if (!pLevel.isClientSide()) {
-                            craftRandomAdmixture(pEntity, processingSlot, pVarFunc);
+                            craftItem(pEntity, recipe, processingSlot, pVarFunc);
                             pEntity.pushData();
                         }
                         if (!pEntity.isStalled)
@@ -162,7 +150,18 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                     } else
                         pEntity.incrementProgress();
                 }
-            } else if (processingItem == ItemStack.EMPTY)
+            } else if(processingItem.getItem() == ItemRegistry.RAREFIED_WASTE.get()) {
+                if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.operationTimeMod * 100, pVarFunc)) {
+                    if (!pLevel.isClientSide()) {
+                        craftRandomAdmixture(pEntity, processingSlot, pVarFunc);
+                        pEntity.pushData();
+                    }
+                    if (!pEntity.isStalled)
+                        pEntity.resetProgress();
+                } else
+                    pEntity.incrementProgress();
+            }
+            if (processingItem == ItemStack.EMPTY)
                 pEntity.resetProgress();
         }
 
