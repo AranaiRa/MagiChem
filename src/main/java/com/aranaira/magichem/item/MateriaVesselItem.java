@@ -66,8 +66,6 @@ public class MateriaVesselItem extends BlockItem {
                                     .get(tag.getString("type"));
 
                             mvbe.setContents(materia, tag.getInt("amount"));
-
-                            boolean fart = true;
                         }
                     }
                 }

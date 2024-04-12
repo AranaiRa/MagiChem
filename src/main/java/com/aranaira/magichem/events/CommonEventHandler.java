@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.BaseActuatorRouterBlock;
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.ExperienceExchangerBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
@@ -22,6 +23,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -85,6 +88,17 @@ public class CommonEventHandler {
             else if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
                 if(bewe.getGrimeFromData() > 0) {
                     CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), bewe, stack);
+                }
+            }
+        } else if(target instanceof ExperienceExchangerBlockEntity eebe) {
+            if(!event.getLevel().isClientSide()) {
+                if (stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
+                    eebe.ejectStack();
+                    stack = eebe.setContainedStack(stack);
+                    EquipmentSlot hand = event.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                    event.getEntity().setItemSlot(hand, stack);
+                } else {
+                    eebe.ejectStack();
                 }
             }
         }

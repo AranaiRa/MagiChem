@@ -82,6 +82,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(ActuatorEarthRouterBlockEntity::new, BlockRegistry.ACTUATOR_EARTH_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<ExperienceExchangerBlockEntity>> EXPERIENCE_EXCHANGER_BE = BLOCK_ENTITIES.register("experience_exchanger", () ->
+            BlockEntityType.Builder.of(ExperienceExchangerBlockEntity::new, BlockRegistry.EXPERIENCE_EXCHANGER.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

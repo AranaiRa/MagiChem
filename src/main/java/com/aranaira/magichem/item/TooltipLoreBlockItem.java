@@ -74,6 +74,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.EXPERIENCE_EXCHANGER.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.experienceexchanger")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

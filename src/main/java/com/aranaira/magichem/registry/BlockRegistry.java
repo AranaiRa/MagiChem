@@ -103,6 +103,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion())
     );
 
+    public static final RegistryObject<Block> EXPERIENCE_EXCHANGER = registerBlock("experience_exchanger",
+            () -> new ExperienceExchangerBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
