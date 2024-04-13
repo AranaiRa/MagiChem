@@ -20,5 +20,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACTUATOR_FIRE_BE.get(), ActuatorFireBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACTUATOR_WATER_BE.get(), ActuatorWaterBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACTUATOR_EARTH_BE.get(), ActuatorEarthBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.EXPERIENCE_EXCHANGER_BE.get(), ExperienceExchangerBlockEntityRenderer::new);
     }
 }

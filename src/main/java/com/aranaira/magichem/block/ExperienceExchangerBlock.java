@@ -46,10 +46,8 @@ public class ExperienceExchangerBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(!pLevel.isClientSide()) {
-            if(pBlockEntityType == BlockEntitiesRegistry.EXPERIENCE_EXCHANGER_BE.get()) {
-                return ExperienceExchangerBlockEntity::tick;
-            }
+        if(pBlockEntityType == BlockEntitiesRegistry.EXPERIENCE_EXCHANGER_BE.get()) {
+            return ExperienceExchangerBlockEntity::tick;
         }
 
         return null;

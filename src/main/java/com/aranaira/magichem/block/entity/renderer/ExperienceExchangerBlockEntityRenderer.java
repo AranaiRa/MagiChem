@@ -42,14 +42,38 @@ public class ExperienceExchangerBlockEntityRenderer implements BlockEntityRender
         pPoseStack.pushPose();
         PoseStack.Pose last = pPoseStack.last();
 
-        renderRings(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, state, last, buffer, world, pos);
+        renderRings(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay, state, last, buffer, world, pos);
 
         pPoseStack.popPose();
     }
 
-    private void renderRings(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, BlockState state, PoseStack.Pose last, VertexConsumer buffer, Level world, BlockPos pos) {
+    private void renderRings(ExperienceExchangerBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay, BlockState state, PoseStack.Pose last, VertexConsumer buffer, Level world, BlockPos pos) {
         pPoseStack.pushPose();
+
+        float ringRot = pBlockEntity.ringRotation + ((pBlockEntity.ringRotationNextTick - pBlockEntity.ringRotation) * pPartialTick);
+        float crystalRot = pBlockEntity.crystalRotation + ((pBlockEntity.crystalRotationNextTick - pBlockEntity.crystalRotation) * pPartialTick);
+        float crystalBob = pBlockEntity.crystalBob + ((pBlockEntity.crystalBobNextTick - pBlockEntity.crystalBob) * pPartialTick);
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 0.3125, 0.5);
+        pPoseStack.mulPose(Axis.YP.rotation(ringRot));
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDER_MODEL_RING1, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.popPose();
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 0.8125, 0.5);
+        pPoseStack.mulPose(Axis.YP.rotation(-ringRot));
+        ModelUtils.renderModel(pBuffer, world, pos, state, RENDER_MODEL_RING2, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.popPose();
+
+        pPoseStack.pushPose();
+        pPoseStack.scale(0.5f,0.5f,0.5f);
+        pPoseStack.translate(0.5, 0.59375 + crystalBob, 0.5);
+        pPoseStack.rotateAround(Axis.YP.rotation(-crystalRot), 0.5f, 0, 0.5f);
+        ModelUtils.renderModel(pBuffer, world, pos, state, RENDER_MODEL_COM, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.scale(2.0f,2.0f,2.0f);
+        pPoseStack.popPose();
+
         pPoseStack.popPose();
     }
 }
