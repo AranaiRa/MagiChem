@@ -1,0 +1,5 @@
+# Blender MTL File: 'urns.blend'
+# Material Count: 1
+
+newmtl EXPERIENCE_EXCHANGER
+map_Kd magichem:block/experience_exchanger
