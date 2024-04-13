@@ -130,6 +130,10 @@ public class MagiChemMod
             event.register(ActuatorWaterBlockEntityRenderer.RENDERER_MODEL_STEAM_VENTS);
 
             event.register(ActuatorEarthBlockEntityRenderer.RENDERER_MODEL_STAMPER);
+
+            event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_COM);
+            event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_RING1);
+            event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_RING2);
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.ExperienceExchangerBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
@@ -54,6 +53,16 @@ public class ExperienceExchangerBlock extends BaseEntityBlock {
         }
 
         return null;
+    }
+
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof ExperienceExchangerBlockEntity eebe) {
+            eebe.ejectStack();
+        }
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
     static {
