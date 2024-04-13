@@ -1599,5 +1599,91 @@
       }
     ]
   },
+  "Academic Slurry": {
+    "index": 1500,
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Academic Slurry"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Certain alchemical processes require knowledge as a reagent. Rather than being drawn directly from the alchemist's mind, these processes use "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAcademic Slurry can be thought of as \"liquid experience\". There are several methods of creating Academic Slurry, detailed elsewhere in the Codex."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/experience_exchanger"
+      }
+    ]
+  },
+  "Experience Exchanger": {
+    "index": 1510,
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Experience Exchanger"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Experience Exchanger is a wondrous contraption that converts the experiences stored within a "
+          },
+          {
+            "text": "Crystal of Memories",
+            "color": "dark_purple"
+          },
+          {
+            "text": " into "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". It must be placed on top of a "
+          },
+          {
+            "text": "Brimming Urn",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (or another fluid-storing container).\n\nActivating the Experience Exchanger while holding a Crystal of Memories inserts the crystal, and activating it with an empty hand removes the crystal.\n\nIf the Crystal of Memories is in Take Experience mode, the Experience Exchanger will draw Academic Slurry out of the Brimming Urn and store it within the Crystal of Memories.\n\nIf the Crystal of Memories is in Return Experience mode, the Experience Exchanger will draw experience out of the Crystal of Memories and deposit it as Academic Slurry in the Brimming Urn."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/experience_exchanger"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "mna:manaweaving/crystal_of_memories"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "mna:fluid_jug"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }
