@@ -1,0 +1,18 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:experience_exchanger",
+  "tier": 2,
+  "items": [
+    "magichem:admixture_memory",
+    "mna:transmuted_silver",
+    "magichem:admixture_memory",
+    "mna:transmuted_silver",
+    "minecraft:emerald",
+    "mna:transmuted_silver"
+  ],
+  "patterns": [
+    "mna:circle",
+    "mna:diamond",
+    "mna:diamond"
+  ]
+}

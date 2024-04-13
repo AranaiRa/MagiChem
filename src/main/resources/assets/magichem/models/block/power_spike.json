@@ -15,6 +15,15 @@
     }
   },
   "display": {
+    "ground": {
+      "translation": [0, 7, 0]
+    },
+    "firstperson_righthand": {
+      "translation": [0, 10, 0]
+    },
+    "firstperson_lefthand": {
+      "translation": [0, 10, 0]
+    },
     "thirdperson_righthand": {
       "rotation": [0, 0, 0],
       "translation": [0, 5, -0.5]
