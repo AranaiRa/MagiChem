@@ -102,12 +102,23 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+
+        CompoundTag crystalNBT = itemHandler.getStackInSlot(0).getOrCreateTag();
+        if(crystalNBT.contains("memory_crystal_fragment_mode")) {
+            isPushMode = crystalNBT.getInt("memory_crystal_fragment_mode") == 1;
+        }
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
+
+        CompoundTag crystalNBT = itemHandler.getStackInSlot(0).getOrCreateTag();
+        if(crystalNBT.contains("memory_crystal_fragment_mode")) {
+            isPushMode = crystalNBT.getInt("memory_crystal_fragment_mode") == 1;
+        }
+
         return nbt;
     }
 
@@ -127,18 +138,12 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
     ////////////////////
 
     public ItemStack setContainedStack(ItemStack pNewStack) {
-        if(pNewStack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
-            itemHandler.setStackInSlot(0, pNewStack);
-            CompoundTag tag = pNewStack.getTag();
-            if(tag != null) {
-                if(tag.contains("mode")) {
-                    int mode = tag.getInt("mode");
-                    isPushMode = mode == 1;
-                }
-            } else {
-                isPushMode = false;
+        if(itemHandler.getStackInSlot(0) == ItemStack.EMPTY) {
+            if (pNewStack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
+                itemHandler.setStackInSlot(0, pNewStack);
+                syncAndSave();
+                return ItemStack.EMPTY;
             }
-            return ItemStack.EMPTY;
         }
         return pNewStack;
     }
@@ -147,12 +152,21 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
         if(itemHandler.getStackInSlot(0) != ItemStack.EMPTY) {
             level.addFreshEntity(new ItemEntity(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(0)));
             itemHandler.setStackInSlot(0, ItemStack.EMPTY);
+            syncAndSave();
         }
     }
 
     ////////////////////
     // VFX
     ////////////////////
+
+    public ItemStack getItem() {
+        return itemHandler.getStackInSlot(0);
+    }
+
+    public boolean getIsPushMode() {
+        return isPushMode;
+    }
 
     private static void handleAnimationDrivers(ExperienceExchangerBlockEntity pBlockEntity) {
         long gameTime = pBlockEntity.level.getGameTime();

@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -66,13 +67,15 @@ public class ExperienceExchangerBlockEntityRenderer implements BlockEntityRender
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDER_MODEL_RING2, pPoseStack, pPackedLight, pPackedOverlay);
         pPoseStack.popPose();
 
-        pPoseStack.pushPose();
-        pPoseStack.scale(0.5f,0.5f,0.5f);
-        pPoseStack.translate(0.5, 0.59375 + crystalBob, 0.5);
-        pPoseStack.rotateAround(Axis.YP.rotation(-crystalRot), 0.5f, 0, 0.5f);
-        ModelUtils.renderModel(pBuffer, world, pos, state, RENDER_MODEL_COM, pPoseStack, pPackedLight, pPackedOverlay);
-        pPoseStack.scale(2.0f,2.0f,2.0f);
-        pPoseStack.popPose();
+        if(pBlockEntity.getItem() != ItemStack.EMPTY) {
+            pPoseStack.pushPose();
+            pPoseStack.scale(0.5f, 0.5f, 0.5f);
+            pPoseStack.translate(0.5, 0.59375 + crystalBob, 0.5);
+            pPoseStack.rotateAround(Axis.YP.rotation(pBlockEntity.getIsPushMode() ? -crystalRot : crystalRot), 0.5f, 0, 0.5f);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDER_MODEL_COM, pPoseStack, pPackedLight, pPackedOverlay);
+            pPoseStack.scale(2.0f, 2.0f, 2.0f);
+            pPoseStack.popPose();
+        }
 
         pPoseStack.popPose();
     }
