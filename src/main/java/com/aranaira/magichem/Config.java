@@ -24,6 +24,10 @@ public class Config
             .comment("At what percent full of Grime that alchemical devices start to lose Efficiency and gain Operation Time.")
             .defineInRange("grimePenaltyPoint", 50, 1, 100);
 
+    private static final ForgeConfigSpec.IntValue FLUID_PER_XP_POINT = BUILDER
+            .comment("How many mB of Academic Slurry constitutes one experience point.")
+            .defineInRange("fluidPerXPPoint", 40, 1, 1000);
+
     //----------------ALEMBIC
 
     private static final ForgeConfigSpec.IntValue ALEMBIC_EFFICIENCY = BUILDER
@@ -177,6 +181,7 @@ public class Config
     public static int
         grimePerWaste,
         grimePenaltyPoint,
+        fluidPerXPPoint,
         alembicEfficiency,
         alembicOperationTime,
         alembicMaximumGrime,
@@ -220,6 +225,7 @@ public class Config
     {
         grimePerWaste = GRIME_PER_WASTE.get();
         grimePenaltyPoint = GRIME_PENALTY_POINT.get();
+        fluidPerXPPoint = FLUID_PER_XP_POINT.get();
         alembicEfficiency = ALEMBIC_EFFICIENCY.get();
         alembicOperationTime = ALEMBIC_OPERATION_TIME.get();
         alembicMaximumGrime = ALEMBIC_MAXIMUM_GRIME.get();
