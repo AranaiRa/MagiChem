@@ -57,6 +57,10 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     public float
             wheelAngle, wheelSpeed, cogAngle, cogSpeed;
 
+    ////////////////////
+    // CONSTRUCTOR
+    ////////////////////
+
     public CentrifugeBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.CENTRIFUGE_BE.get(), pos, state);
 
@@ -144,9 +148,9 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         };
     }
 
-    //////////
+    ////////////////////
     // BOILERPLATE CODE
-    //////////
+    ////////////////////
 
     @Override
     public Component getDisplayName() {
