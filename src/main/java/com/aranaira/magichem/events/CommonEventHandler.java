@@ -14,6 +14,7 @@ import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -125,6 +126,9 @@ public class CommonEventHandler {
         else if(entity instanceof DistilleryRouterBlockEntity drbe) {
             event.getLevel().destroyBlock(drbe.getMasterPos(), true);
             DistilleryBlock.destroyRouters(event.getLevel(), drbe.getMasterPos(), drbe.getFacing());
+        }
+        else if(entity instanceof DirectionalPluginBlockEntity dpbe) {
+            DistilleryBlock.destroyRouters(event.getLevel(), dpbe.getBlockPos(), dpbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
         }
         else if(entity instanceof BaseActuatorRouterBlockEntity barbe) {
             event.getLevel().destroyBlock(barbe.getMasterPos(), true);
