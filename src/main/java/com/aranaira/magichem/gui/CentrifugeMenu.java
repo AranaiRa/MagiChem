@@ -80,10 +80,9 @@ public class CentrifugeMenu extends AbstractContainerMenu {
 
     private static final int SLOT_INVENTORY_BEGIN = 0;
     private static final int SLOT_INVENTORY_COUNT = 36;
-    private static final int SLOT_BOTTLES = 36;
-    private static final int SLOT_INPUT_BEGIN = 37;
-    private static final int SLOT_PROCESSING = 40;
-    private static final int SLOT_OUTPUT_BEGIN = 41;
+    private static final int SLOT_BOTTLES = SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_BOTTLES;
+    private static final int SLOT_INPUT_BEGIN = SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_INPUT_START;
+    private static final int SLOT_OUTPUT_BEGIN = SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_OUTPUT_START;
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
@@ -115,14 +114,7 @@ public class CentrifugeMenu extends AbstractContainerMenu {
                 }
             }
             //try to move to input slots
-            moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + CentrifugeBlockEntity.SLOT_INPUT_COUNT, false);
-            slots.get(pIndex).set(targetStackCopy);
-            return ItemStack.EMPTY;
-        }
-        //If processing slot
-        if(pIndex == SLOT_PROCESSING) {
-            //try to move to player inventory
-            moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
+            moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + CentrifugeBlockEntity.SLOT_INPUT_COUNT + 1, false);
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
         }
@@ -134,7 +126,7 @@ public class CentrifugeMenu extends AbstractContainerMenu {
             return ItemStack.EMPTY;
         }
         //If input slots
-        if(pIndex >= SLOT_INPUT_BEGIN && pIndex < SLOT_INPUT_BEGIN + CentrifugeBlockEntity.SLOT_INPUT_COUNT) {
+        if(pIndex >= SLOT_INPUT_BEGIN && pIndex <= SLOT_INPUT_BEGIN + CentrifugeBlockEntity.SLOT_INPUT_COUNT) {
             moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;

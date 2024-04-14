@@ -87,10 +87,9 @@ public class DistilleryMenu extends AbstractContainerMenu {
 
     private static final int SLOT_INVENTORY_BEGIN = 0;
     private static final int SLOT_INVENTORY_COUNT = 36;
-    private static final int SLOT_BOTTLES = 36;
-    private static final int SLOT_INPUT_BEGIN = 37;
-    private static final int SLOT_PROCESSING = 40;
-    private static final int SLOT_OUTPUT_BEGIN = 41;
+    private static final int SLOT_BOTTLES = SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_BOTTLES;
+    private static final int SLOT_INPUT_BEGIN = SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_INPUT_START;
+    private static final int SLOT_OUTPUT_BEGIN = SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_OUTPUT_START;
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
@@ -128,13 +127,6 @@ public class DistilleryMenu extends AbstractContainerMenu {
             }
             //try to move to input slots
             moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + DistilleryBlockEntity.SLOT_INPUT_COUNT, false);
-            slots.get(pIndex).set(targetStackCopy);
-            return ItemStack.EMPTY;
-        }
-        //If processing slot
-        if(pIndex == SLOT_PROCESSING) {
-            //try to move to player inventory
-            moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
             slots.get(pIndex).set(targetStackCopy);
             return ItemStack.EMPTY;
         }
