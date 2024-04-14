@@ -36,7 +36,7 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
     private AABB area;
     private boolean voidExcess;
     private MateriaItem filter;
-    private ESortTaskPhase phase = ESortTaskPhase.SETUP;
+    private ETaskPhase phase = ETaskPhase.SETUP;
     private int waitTimer;
     private ItemStack materiaInTransit;
 
@@ -60,18 +60,18 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
             switch (this.phase) {
                 case SETUP -> {
                     this.setMoveTarget(takeFromTarget);
-                    this.phase = ESortTaskPhase.MOVE_TO_DEVICE;
+                    this.phase = ETaskPhase.MOVE_TO_DEVICE;
                 }
                 case MOVE_TO_DEVICE -> {
                     if (doMove(2.0F)) {
-                        this.phase = ESortTaskPhase.WAIT_AT_DEVICE;
+                        this.phase = ETaskPhase.WAIT_AT_DEVICE;
                         this.waitTimer = 21;
                         this.selectMateriaStackFromSource();
                         if(this.filter != null) {
                             this.setTargetVessel(this.filter);
                         } else {
                             this.pushDiagnosticMessage("The device I'm monitoring is empty right now. I'll just wait for a bit!", false);
-                            this.phase = ESortTaskPhase.WAIT_TO_FAIL;
+                            this.phase = ETaskPhase.WAIT_TO_FAIL;
                             this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
                         }
                     }
@@ -79,7 +79,7 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
                 case WAIT_AT_DEVICE -> {
                     this.waitTimer--;
                     if(this.waitTimer == 0) {
-                        this.phase = ESortTaskPhase.MOVE_TO_VESSEL;
+                        this.phase = ETaskPhase.MOVE_TO_VESSEL;
                         this.setMoveTarget(this.jarTargetPos);
                     }
                 }
@@ -88,10 +88,10 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
                         int amount = doMateriaTransfer();
                         if(amount > 0) {
                             this.pushDiagnosticMessage("I moved some materia to a vessel, boss. Bloop!", true);
-                            this.phase = ESortTaskPhase.WAIT_AT_VESSEL;
+                            this.phase = ETaskPhase.WAIT_AT_VESSEL;
                         } else {
                             this.pushDiagnosticMessage("I couldn't find a jar to put the materia in. Sorry, boss!", true);
-                            this.phase = ESortTaskPhase.WAIT_TO_FAIL;
+                            this.phase = ETaskPhase.WAIT_TO_FAIL;
                         }
                         this.waitTimer = 21;
                         this.swingHandWithCapability(ConstructCapability.FLUID_DISPENSE);
@@ -287,12 +287,13 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
     static {
         requiredCaps = new ConstructCapability[]{ConstructCapability.FLUID_DISPENSE};
     }
-}
-enum ESortTaskPhase {
-    SETUP,
-    MOVE_TO_DEVICE,
-    WAIT_AT_DEVICE,
-    MOVE_TO_VESSEL,
-    WAIT_AT_VESSEL,
-    WAIT_TO_FAIL
+
+    enum ETaskPhase {
+        SETUP,
+        MOVE_TO_DEVICE,
+        WAIT_AT_DEVICE,
+        MOVE_TO_VESSEL,
+        WAIT_AT_VESSEL,
+        WAIT_TO_FAIL
+    }
 }

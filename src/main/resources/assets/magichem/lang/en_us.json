@@ -380,6 +380,8 @@
   "construct.magichem:query_check_vessel": "Condition: Check Vessel Fill",
   "construct.magichem:clean_alchemical_apparatus": "Clean Alchemical Device",
   "construct.magichem:query_has_grime_level": "Condition: Has Grime Level",
+  "construct.magichem:collect_experience": "Collect Experience",
+  "construct.magichem:study": "Study",
 
   "gui.mna.parameter.sort_materia.point": "What alchemical device should the construct remove materia from?",
   "gui.mna.parameter.sort_materia.area": "What area should the construct look for Materia Vessels inside of?",
@@ -390,6 +392,10 @@
 
   "gui.mna.parameter.query_has_grime_level.point": "What device should the construct check the grime level of?",
   "gui.mna.parameter.query_has_grime_level.int": "What percentage full of grime must the device be?",
+
+  "gui.mna.parameter.collect_experience.area": "What area should the construct look for experience orbs within?",
+
+  "gui.mna.parameter.study.point": "Where is the Study Desk that the construct should study at?",
 
   "mechanic.mna:magichem": "Alchemy",
 

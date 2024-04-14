@@ -21,7 +21,7 @@ import java.util.List;
 public class ConstructCleanAlchemicalApparatus extends ConstructAITask<ConstructCleanAlchemicalApparatus> {
     private static final ConstructCapability[] requiredCaps;
     private BlockPos targetApparatus;
-    private ECleanTaskPhase phase = ECleanTaskPhase.SETUP;
+    private ETaskPhase phase = ETaskPhase.SETUP;
     private int waitTimer;
 
     public ConstructCleanAlchemicalApparatus(IConstruct<?> construct, ResourceLocation guiIcon) {
@@ -40,11 +40,11 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
             switch (this.phase) {
                 case SETUP -> {
                     this.setMoveTarget(targetApparatus);
-                    this.phase = ECleanTaskPhase.MOVE_TO_DEVICE;
+                    this.phase = ETaskPhase.MOVE_TO_DEVICE;
                 }
                 case MOVE_TO_DEVICE -> {
                     if (doMove(2.0F)) {
-                        this.phase = ECleanTaskPhase.WAIT_AT_DEVICE;
+                        this.phase = ETaskPhase.WAIT_AT_DEVICE;
                         this.waitTimer = 21;
                         BlockEntity be = construct.asEntity().level().getBlockEntity(targetApparatus);
                         if (be instanceof AbstractBlockEntityWithEfficiency bewe) {
@@ -57,15 +57,15 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
                                     }
                                     CommonEventHelper.generateWasteFromCleanedApparatus(construct.asEntity().level(), bewe, null);
                                 } else {
-                                    this.phase = ECleanTaskPhase.WAIT_TO_FAIL;
+                                    this.phase = ETaskPhase.WAIT_TO_FAIL;
                                     this.pushDiagnosticMessage("I don't have enough water to clean the apparatus. Sorry, boss!", false);
                                 }
                             } else {
-                                this.phase = ECleanTaskPhase.WAIT_TO_FAIL;
+                                this.phase = ETaskPhase.WAIT_TO_FAIL;
                                 this.pushDiagnosticMessage("I don't have any water. I need some to clean the apparatus, boss!", false);
                             }
                         } else {
-                            this.phase = ECleanTaskPhase.WAIT_TO_FAIL;
+                            this.phase = ETaskPhase.WAIT_TO_FAIL;
                             this.pushDiagnosticMessage("I couldn't find a device to clean there, boss.", false);
                         }
                     }
@@ -143,11 +143,11 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
     static {
         requiredCaps = new ConstructCapability[]{ConstructCapability.FLUID_DISPENSE, ConstructCapability.FLUID_STORE};
     }
-}
 
-enum ECleanTaskPhase {
-    SETUP,
-    MOVE_TO_DEVICE,
-    WAIT_AT_DEVICE,
-    WAIT_TO_FAIL
+    enum ETaskPhase {
+        SETUP,
+        MOVE_TO_DEVICE,
+        WAIT_AT_DEVICE,
+        WAIT_TO_FAIL
+    }
 }
