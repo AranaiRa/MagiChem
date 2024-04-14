@@ -1337,6 +1337,95 @@
     ],
     "related_recipes": []
   },
+  "Command: Study": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Study"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause a construct to "
+          },
+          {
+            "text": "study whatever it's holding",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", trying its best to "
+          },
+          {
+            "text": "learn from the supplied materials",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Unfortunately, a construct's little noggin isn't good at retaining information; it simply spills out onto the floor as an "
+          },
+          {
+            "text": "experience orb",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nA construct must be holding appropriate study materials (like a book, a Codex Arcana, a torn journal fragment, or a thesis) in order to Study. The study materials are destroyed in the process. Simple study materials provide smaller experience orbs than rarer or harder to obtain study materials."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Command: Gather Experience": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Gather Experience"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause the construct to seek out "
+          },
+          {
+            "text": "experience orbs",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in a defined area, sucking them up with a fluid nozzle and storing them as "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nIt requires a "
+          },
+          {
+            "text": "fluid nozzle arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and a "
+          },
+          {
+            "text": "tank torso",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Condition: Check Vessel Fill": {
     "index": "4",
     "category": "constructs",
