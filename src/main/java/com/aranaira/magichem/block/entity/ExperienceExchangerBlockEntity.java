@@ -4,7 +4,11 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
+import com.mna.tools.math.Vector3;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -30,6 +34,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 public class ExperienceExchangerBlockEntity extends BlockEntity {
     private boolean isPushMode = false;
@@ -77,6 +82,29 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
             }
 
             if(eebe.itemHandler.getStackInSlot(0) == ItemStack.EMPTY) return;
+
+            //particles
+            BlockPos pos = eebe.getBlockPos();
+            int loopingTime = (int)(pLevel.getGameTime() % 12);
+            double theta = ((double) loopingTime / 6.0) * Math.PI + Math.PI / 4.0;
+            double scale = 0.2;
+
+            if(eebe.getIsPushMode()) {
+                Vector3 shift = new Vector3(Math.cos(theta) * scale, 0, Math.sin(theta) * scale);
+
+                eebe.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                        .setColor(188, 232, 95).setScale(0.2f),
+                        pos.getX() + shift.x + 0.5, pos.getY() + 0.8125, pos.getZ() + shift.z + 0.5,
+                        0, -0.02f, 0);
+            } else {
+                Vector3 shift = new Vector3(Math.cos(-theta) * scale, 0, Math.sin(-theta) * scale);
+
+                eebe.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setColor(188, 232, 95).setScale(0.2f),
+                        pos.getX() + shift.x + 0.5, pos.getY() + 0.3125, pos.getZ() + shift.z + 0.5,
+                        0, 0.02f, 0);
+            }
+
             BlockEntity be = pLevel.getBlockEntity(pPos.below());
             if(be != null) {
                 LazyOptional<IFluidHandler> fluidCap = be.getCapability(ForgeCapabilities.FLUID_HANDLER);
