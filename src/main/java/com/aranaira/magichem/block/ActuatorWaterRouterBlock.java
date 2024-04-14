@@ -4,10 +4,12 @@ import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import org.jetbrains.annotations.Nullable;
 
 public class ActuatorWaterRouterBlock extends BaseActuatorRouterBlock implements INoCreativeTab {
@@ -34,5 +36,10 @@ public class ActuatorWaterRouterBlock extends BaseActuatorRouterBlock implements
             BlockState masterState = router.getMaster().getBlockState();
             pLevel.levelEvent(pPlayer, 2001, pPos, getId(masterState));
         }
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+        return false;
     }
 }
