@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.BaseActuatorRouterBlock;
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ExperienceExchangerBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
@@ -31,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -110,15 +112,21 @@ public class CommonEventHandler {
         BlockPos pos = event.getPos();
         BlockEntity entity = event.getLevel().getBlockEntity(pos);
 
-        if(entity instanceof CentrifugeRouterBlockEntity crbe) {
+        if(entity instanceof CentrifugeBlockEntity cbe) {
+            CentrifugeBlock.destroyRouters(event.getLevel(), cbe.getBlockPos(), cbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+        }
+        else if(entity instanceof CentrifugeRouterBlockEntity crbe) {
             event.getLevel().destroyBlock(crbe.getMasterPos(), true);
             CentrifugeBlock.destroyRouters(event.getLevel(), crbe.getMasterPos(), crbe.getFacing());
         }
-        if(entity instanceof DistilleryRouterBlockEntity drbe) {
+        else if(entity instanceof DistilleryBlockEntity dbe) {
+            DistilleryBlock.destroyRouters(event.getLevel(), dbe.getBlockPos(), dbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+        }
+        else if(entity instanceof DistilleryRouterBlockEntity drbe) {
             event.getLevel().destroyBlock(drbe.getMasterPos(), true);
             DistilleryBlock.destroyRouters(event.getLevel(), drbe.getMasterPos(), drbe.getFacing());
         }
-        if(entity instanceof BaseActuatorRouterBlockEntity barbe) {
+        else if(entity instanceof BaseActuatorRouterBlockEntity barbe) {
             event.getLevel().destroyBlock(barbe.getMasterPos(), true);
         }
 
