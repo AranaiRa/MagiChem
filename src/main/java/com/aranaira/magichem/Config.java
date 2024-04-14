@@ -28,6 +28,18 @@ public class Config
             .comment("How many mB of Academic Slurry constitutes one experience point.")
             .defineInRange("fluidPerXPPoint", 40, 1, 1000);
 
+    private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_SIMPLE = BUILDER
+            .comment("How many experience points a Studying construct generates from simple study materials.")
+            .defineInRange("constructStudyExperienceSimple", 2, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_ADVANCED = BUILDER
+            .comment("How many experience points a Studying construct generates from advanced study materials.")
+            .defineInRange("constructStudyExperienceAdvanced", 6, 2, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_MASTER = BUILDER
+            .comment("How many experience points a Studying construct generates from master study materials.")
+            .defineInRange("constructStudyExperienceMaster", 18, 4, Integer.MAX_VALUE);
+
     //----------------ALEMBIC
 
     private static final ForgeConfigSpec.IntValue ALEMBIC_EFFICIENCY = BUILDER
@@ -182,6 +194,9 @@ public class Config
         grimePerWaste,
         grimePenaltyPoint,
         fluidPerXPPoint,
+        constructStudyExperienceSimple,
+        constructStudyExperienceAdvanced,
+        constructStudyExperienceMaster,
         alembicEfficiency,
         alembicOperationTime,
         alembicMaximumGrime,
@@ -226,6 +241,9 @@ public class Config
         grimePerWaste = GRIME_PER_WASTE.get();
         grimePenaltyPoint = GRIME_PENALTY_POINT.get();
         fluidPerXPPoint = FLUID_PER_XP_POINT.get();
+        constructStudyExperienceSimple = CONSTRUCT_STUDY_EXPERIENCE_SIMPLE.get();
+        constructStudyExperienceAdvanced = CONSTRUCT_STUDY_EXPERIENCE_ADVANCED.get();
+        constructStudyExperienceMaster = CONSTRUCT_STUDY_EXPERIENCE_MASTER.get();
         alembicEfficiency = ALEMBIC_EFFICIENCY.get();
         alembicOperationTime = ALEMBIC_OPERATION_TIME.get();
         alembicMaximumGrime = ALEMBIC_MAXIMUM_GRIME.get();
