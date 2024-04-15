@@ -4,7 +4,6 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
@@ -46,21 +45,6 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     protected ItemStackHandler itemHandler;
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
-
-    @Override
-    public int getGrimeFromData() {
-        return 0;
-    }
-
-    @Override
-    public int getMaximumGrime() {
-        return 0;
-    }
-
-    @Override
-    public int clean() {
-        return 0;
-    }
 
     ////////////////////
     // CONSTRUCTOR
@@ -123,7 +107,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         pEntity.remainingAnimus = Math.max(-pVarFunc.apply(IDs.CONFIG_NO_TORQUE_GRACE_PERIOD), pEntity.remainingAnimus - 1);
 
         //skip all of this if grime is full
-        if(GrimeProvider.getCapability(pEntity).getGrime() >= Config.centrifugeMaximumGrime)
+        if(GrimeProvider.getCapability(pEntity).getGrime() >= pVarFunc.apply(IDs.CONFIG_MAX_GRIME))
             return;
 
         updateActuatorValues(pEntity);
@@ -277,7 +261,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
         }
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), CentrifugeBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AbstractSeparationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
         int grimeToAdd = Math.round(pair.getFirst());
         NonNullList<ItemStack> componentMateria = pair.getSecond();
 
@@ -310,7 +294,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
         if(grimeToAdd > 0) {
             IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
-            grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
+            grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), pVarFunc.apply(IDs.CONFIG_MAX_GRIME)));
         }
 
         resolveActuators(pEntity);
@@ -343,6 +327,21 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     public static int getScaledProgress(int pProgress, int pGrime, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
         return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pOperationTimeMod, pVarFunc);
+    }
+
+    @Override
+    public int getGrimeFromData() {
+        return 0;
+    }
+
+    @Override
+    public int getMaximumGrime() {
+        return 0;
+    }
+
+    @Override
+    public int clean() {
+        return 0;
     }
 
     ////////////////////
