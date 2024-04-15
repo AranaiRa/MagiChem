@@ -231,7 +231,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
 
     @Override
     public int getMaximumGrime() {
-        return 0;
+        return getVar(IDs.CONFIG_MAX_GRIME);
     }
 
     @Override
