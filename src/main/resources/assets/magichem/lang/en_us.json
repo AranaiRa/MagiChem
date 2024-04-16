@@ -247,6 +247,8 @@
   "item.magichem.admixture_wizard.short": "Wizard",
 
   "tooltip.magichem.noselectedrecipe": "No recipe is selected",
+  "tooltip.magichem.fixationcost.part1": "Fixation will cost ",
+  "tooltip.magichem.fixationcost.part2": " of Academic Slurry",
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",
   "tooltip.magichem.admixtureformula": "Formula:",

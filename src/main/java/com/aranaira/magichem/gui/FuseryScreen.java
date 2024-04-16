@@ -368,6 +368,12 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                     gui.drawString(Minecraft.getInstance().font, "YES", 20, 20, 0xffffffff, false);
                     tooltipContents.add(c);
                 }
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.fixationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(menu.getCurrentRecipe().getSlurryCost()+"mB").withStyle(ChatFormatting.DARK_AQUA))
+                        .append(Component.translatable("tooltip.magichem.fixationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
+                );
             }
         }
 
