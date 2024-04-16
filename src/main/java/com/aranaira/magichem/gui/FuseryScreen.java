@@ -2,7 +2,6 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
@@ -52,7 +51,9 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         TOOLTIP_EFFICIENCY_X = 180, TOOLTIP_EFFICIENCY_Y = 43, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
         TOOLTIP_OPERATIONTIME_X = 180, TOOLTIP_OPERATIONTIME_Y = 62, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
         TOOLTIP_GRIME_X = 181, TOOLTIP_GRIME_Y = 78, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14,
-        TOOLTIP_SELECTED_RECIPE_X = 79, TOOLTIP_SELECTED_RECIPE_Y = 94, TOOLTIP_SELECTED_RECIPE_S = 18;
+        TOOLTIP_SELECTED_RECIPE_X = 79, TOOLTIP_SELECTED_RECIPE_Y = 94, TOOLTIP_SELECTED_RECIPE_S = 18,
+        TOOLTIP_SLURRY_X = 7, TOOLTIP_SLURRY_Y = 22, TOOLTIP_SLURRY_W = 10, TOOLTIP_SLURRY_H = 88,
+        TOOLTIP_RECIPE_ZONE_X = -77, TOOLTIP_RECIPE_ZONE_Y = 22, TOOLTIP_RECIPE_ZONE_W = 54, TOOLTIP_RECIPE_ZONE_H = 90;
     private FixationSeparationRecipe lastRecipe = null;
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
     private ItemStack lastRecipeResultAdmixture = ItemStack.EMPTY;
@@ -63,7 +64,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     }
 
     private Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> getOrUpdateRecipe(){
-        if(!lastRecipeResultAdmixture.equals(menu.blockEntity.getRecipeItem(FuseryBlockEntity::getVar))) {
+        if(lastRecipeResultAdmixture.getItem() != menu.blockEntity.getRecipeItem(FuseryBlockEntity::getVar).getItem()) {
             lastRecipe = menu.getCurrentRecipe();
             lastRecipeResultAdmixture = menu.getCurrentRecipe().getResultAdmixture().copy();
             lastRecipeComponentMateria = NonNullList.create();
@@ -362,18 +363,27 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                 mouseY >= y+TOOLTIP_SELECTED_RECIPE_Y && mouseY <= y+TOOLTIP_SELECTED_RECIPE_Y+TOOLTIP_SELECTED_RECIPE_S) {
             ItemStack recipeItem = menu.getRecipeItem();
             if(recipeItem == ItemStack.EMPTY) {
-                tooltipContents.add(Component.translatable("tooltip.magichem.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             } else {
-                for (Component c : recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL)) {
-                    gui.drawString(Minecraft.getInstance().font, "YES", 20, 20, 0xffffffff, false);
-                    tooltipContents.add(c);
-                }
+                tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.fixationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.gui.fixationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
                         .append(Component.literal(menu.getCurrentRecipe().getSlurryCost()+"mB").withStyle(ChatFormatting.DARK_AQUA))
-                        .append(Component.translatable("tooltip.magichem.fixationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.gui.fixationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
                 );
+            }
+        }
+
+        //Items in recipe picker
+        if(mouseX >= x+TOOLTIP_RECIPE_ZONE_X && mouseX <= x+TOOLTIP_RECIPE_ZONE_X+TOOLTIP_RECIPE_ZONE_W &&
+                mouseY >= y+TOOLTIP_RECIPE_ZONE_Y && mouseY <= y+TOOLTIP_RECIPE_ZONE_Y+TOOLTIP_RECIPE_ZONE_H) {
+            int mx = mouseX - (x+TOOLTIP_RECIPE_ZONE_X);
+            int my = mouseY - (y+TOOLTIP_RECIPE_ZONE_Y);
+            int id = ((my / 18) * 3) + ((mx / 18) % 3);
+            if(id >= 0 && id < 16) {
+                ItemStack stackUnderMouse = filteredRecipeOutputs.get(id);
+                tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
             }
         }
 
@@ -419,6 +429,28 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
                     .append(Component.literal(String.format("%.1f", FuseryBlockEntity.getGrimePercent(menu.getGrime(), FuseryBlockEntity::getVar)*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Slurry Bar
+        if(mouseX >= x+TOOLTIP_SLURRY_X && mouseX <= x+TOOLTIP_SLURRY_X+TOOLTIP_SLURRY_W &&
+                mouseY >= y+TOOLTIP_SLURRY_Y && mouseY <= y+TOOLTIP_SLURRY_Y+TOOLTIP_SLURRY_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line1"))
+                    .append(menu.blockEntity.getDisplayName())
+                    .append("."));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.slurry.tank.line2a")
+                    .append(Component.literal(Config.fixationFailureRefund+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line2b")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(menu.getCurrentRecipe().getSlurryCost()+"mB").withStyle(ChatFormatting.DARK_AQUA)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
