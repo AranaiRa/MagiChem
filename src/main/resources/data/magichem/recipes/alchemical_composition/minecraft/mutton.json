@@ -5,6 +5,7 @@
   "object": { "item": "minecraft:mutton" },
   "components": [
     { "item": "magichem:essentia_air", "count": 4 },
-    { "item": "magichem:essentia_fleshy", "count": 8 }
+    { "item": "magichem:essentia_fleshy", "count": 6 },
+    { "item": "magichem:admixture_blood", "count": 1 }
   ]
 }
