@@ -298,7 +298,9 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         }
 
         //Consume slurry
-        pEntity.containedSlurry.shrink(pEntity.currentRecipe.getSlurryCost());
+        int slurryCost = pEntity.currentRecipe.getSlurryCost();
+        float reducedSlurryCost = (1.0f - (Config.fixationFailureRefund / 100.0f)) * slurryCost;
+        pEntity.containedSlurry.shrink(postEfficiencyOutput.size() == 1 ? slurryCost : (int)reducedSlurryCost);
         pEntity.syncAndSave();
 
         resolveActuators(pEntity);

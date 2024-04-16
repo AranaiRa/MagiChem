@@ -50,6 +50,10 @@ public class Config
             .comment("The percent cost increase over base that higher order Admixtures take to perform Fixation. This cost increase is multiplicative.")
             .defineInRange("fixationSlurryCompoundCost", 300, 10, Integer.MAX_VALUE);
 
+    private static final ForgeConfigSpec.IntValue FIXATION_FAILURE_REFUND = BUILDER
+            .comment("The percent of the experience cost to perform Fixation that is reduced if the process fails.")
+            .defineInRange("fixationFailureRefund", 70, 0, 100);
+
     //----------------ALEMBIC
 
     private static final ForgeConfigSpec.IntValue ALEMBIC_EFFICIENCY = BUILDER
@@ -225,6 +229,7 @@ public class Config
         constructStudyExperienceMaster,
         fixationBaseSlurryCost,
         fixationSlurryCompoundCost,
+        fixationFailureRefund,
         alembicEfficiency,
         alembicOperationTime,
         alembicMaximumGrime,
@@ -278,6 +283,7 @@ public class Config
         constructStudyExperienceMaster = CONSTRUCT_STUDY_EXPERIENCE_MASTER.get();
         fixationBaseSlurryCost = FIXATION_BASE_SLURRY_COST.get();
         fixationSlurryCompoundCost = FIXATION_SLURRY_COMPOUND_COST.get();
+        fixationFailureRefund = FIXATION_FAILURE_REFUND.get();
         alembicEfficiency = ALEMBIC_EFFICIENCY.get();
         alembicOperationTime = ALEMBIC_OPERATION_TIME.get();
         alembicMaximumGrime = ALEMBIC_MAXIMUM_GRIME.get();
