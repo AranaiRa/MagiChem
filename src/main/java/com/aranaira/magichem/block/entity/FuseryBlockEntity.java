@@ -1,20 +1,15 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
-import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.gui.FuseryMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -45,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider {
     public static final int
@@ -275,8 +271,8 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         return grimeDetected / Config.grimePerWaste;
     }
 
-    public static int getScaledGrime(int grime) {
-        return (GRIME_BAR_WIDTH * grime) / Config.centrifugeMaximumGrime;
+    public static int getScaledGrime(int pGrime, Function<IDs, Integer> pVarFunc) {
+        return (GRIME_BAR_WIDTH * pGrime) / pVarFunc.apply(IDs.CONFIG_MAX_GRIME);
     }
 
     @Override

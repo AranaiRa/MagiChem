@@ -1,12 +1,11 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.FuseryBlock;
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
+import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
-import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -19,6 +18,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -45,14 +45,29 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
         PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102,
         PANEL_GRIME_X = 176, PANEL_GRIME_Y = 38, PANEL_GRIME_W = 64, PANEL_GRIME_H = 59, PANEL_GRIME_U = 176, PANEL_GRIME_V = 126,
-        TOOLTIP_EFFICIENCY_X = 160, TOOLTIP_EFFICIENCY_Y = 43, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
-        TOOLTIP_OPERATIONTIME_X = 160, TOOLTIP_OPERATIONTIME_Y = 62, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
-        TOOLTIP_GRIME_X = 161, TOOLTIP_GRIME_Y = 78, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14,
+        TOOLTIP_EFFICIENCY_X = 180, TOOLTIP_EFFICIENCY_Y = 43, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
+        TOOLTIP_OPERATIONTIME_X = 180, TOOLTIP_OPERATIONTIME_Y = 62, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
+        TOOLTIP_GRIME_X = 181, TOOLTIP_GRIME_Y = 78, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14,
         TOOLTIP_SELECTED_RECIPE_X = 79, TOOLTIP_SELECTED_RECIPE_Y = 94, TOOLTIP_SELECTED_RECIPE_S = 18;
-    private FixationSeparationRecipe lastClickedRecipe = null;
+    private FixationSeparationRecipe lastRecipe = null;
+    private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
+    private ItemStack lastRecipeResultAdmixture = ItemStack.EMPTY;
 
     public FuseryScreen(FuseryMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        updateDisplayedRecipes(recipeFilterBox.getValue());
+    }
+
+    private Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> getOrUpdateRecipe(){
+        if(!lastRecipeResultAdmixture.equals(menu.blockEntity.getRecipeItem(FuseryBlockEntity::getVar))) {
+            lastRecipe = menu.getCurrentRecipe();
+            lastRecipeResultAdmixture = menu.getCurrentRecipe().getResultAdmixture().copy();
+            lastRecipeComponentMateria = NonNullList.create();
+            for(ItemStack is : menu.getCurrentRecipe().getComponentMateria()) {
+                lastRecipeComponentMateria.add(is.copy());
+            }
+        }
+        return new Triplet<>(lastRecipe, lastRecipeComponentMateria, lastRecipeResultAdmixture);
     }
 
     @Override
@@ -90,7 +105,13 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty());
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
+            @Override
+            public boolean charTyped(char pCodePoint, int pModifiers) {
+                updateDisplayedRecipes(recipeFilterBox.getValue());
+                return super.charTyped(pCodePoint, pModifiers);
+            }
+        };
         this.recipeFilterBox.setMaxLength(60);
         this.recipeFilterBox.setFocused(false);
         this.recipeFilterBox.setCanLoseFocus(false);
@@ -104,7 +125,6 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                     menu.blockEntity.getBlockPos(),
                     filteredRecipeOutputs.get(trueIndex).getItem()
             ));
-            lastClickedRecipe = FixationSeparationRecipe.getSeparatingRecipe(menu.blockEntity.getLevel(), filteredRecipeOutputs.get(trueIndex));
             menu.setInputSlotFilters(menu.getRecipeItem());
         }
     }
@@ -134,17 +154,26 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
+        //Main BG image
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
+        //Grime panel
         gui.blit(TEXTURE, x + PANEL_GRIME_X, y + PANEL_GRIME_Y, PANEL_GRIME_U, PANEL_GRIME_V, PANEL_GRIME_W, PANEL_GRIME_H);
 
+        //Recipe panel
         gui.blit(TEXTURE, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
+        //Progress bar
         int sp = FuseryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar);
         if(sp > 0)
             gui.blit(TEXTURE, x+74, y+53, 0, 228, sp, FuseryBlockEntity.PROGRESS_BAR_WIDTH);
 
         renderSelectedRecipe(gui, x + 79, y + 94);
+
+        //Grime bar
+        int sGrime = FuseryBlockEntity.getScaledGrime(menu.getGrime(), FuseryBlockEntity::getVar);
+        if(sGrime > 0)
+            gui.blit(TEXTURE, x+164, y+81, 24, 248, sGrime, 8);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         renderIngredientPanel(gui, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
@@ -158,7 +187,6 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         renderTooltip(gui, mouseX, mouseY);
         renderButtons(gui, delta, mouseX, mouseY);
         renderFilterBox();
-        updateDisplayedRecipes(recipeFilterBox.getValue());
         renderRecipeOptions(gui);
     }
 
@@ -166,14 +194,14 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        if(menu.getCurrentRecipe() == null)
-            return;
+        Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> recipeCompound = getOrUpdateRecipe();
 
-        FixationSeparationRecipe fsr = menu.getCurrentRecipe();
+        if(recipeCompound.getFirst() == null)
+            return;
 
         gui.setColor(1f, 1f, 1f, 0.25f);
         int slotGroup = 0;
-        for(ItemStack stack : fsr.getComponentMateria()) {
+        for(ItemStack stack : recipeCompound.getSecond()) {
             gui.renderItem(stack, xOrigin+26, yOrigin+23 + (18*slotGroup));
             gui.renderItem(stack, xOrigin+44, yOrigin+23 + (18*slotGroup));
             slotGroup++;
@@ -195,27 +223,28 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         RenderSystem.setShaderTexture(0, TEXTURE_EXT);
 
         if(menu.getCurrentRecipe() != null) {
-            FixationSeparationRecipe recipe = menu.getCurrentRecipe();
+            Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> recipeCompound = getOrUpdateRecipe();
+            NonNullList<ItemStack> componentMateria = recipeCompound.getSecond();
 
             //A switch statement doesn't work here and I have no idea why.
-            if(recipe.getComponentMateria().size() == 1) {
+            if(componentMateria.size() == 1) {
                 gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U1, PANEL_INGREDIENTS_V1, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H1);
             }
-            else if(recipe.getComponentMateria().size() == 2) {
+            else if(componentMateria.size() == 2) {
                 gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U2, PANEL_INGREDIENTS_V2, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H2);
             }
-            else if(recipe.getComponentMateria().size() == 3) {
+            else if(componentMateria.size() == 3) {
                 gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U3, PANEL_INGREDIENTS_V3, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H3);
             }
-            else if(recipe.getComponentMateria().size() == 4) {
+            else if(componentMateria.size() == 4) {
                 gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U4, PANEL_INGREDIENTS_V4, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H4);
             }
-            else if(recipe.getComponentMateria().size() == 5) {
+            else if(componentMateria.size() == 5) {
                 gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U5, PANEL_INGREDIENTS_V5, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H5);
             }
 
-            for(int i=0; i<recipe.getComponentMateria().size(); i++) {
-                gui.renderFakeItem(recipe.getComponentMateria().get(i), x+4, y+7 + i*18);
+            for(int i=0; i<componentMateria.size(); i++) {
+                gui.renderFakeItem(componentMateria.get(i), x+4, y+7 + i*18);
             }
         }
 
@@ -278,11 +307,11 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     @Override
     protected void renderLabels(GuiGraphics gui, int x, int y) {
         //Recipe selector + current
-        FixationSeparationRecipe recipe = menu.getCurrentRecipe();
-        if(recipe != null) {
-            for (int i = 0; i < recipe.getComponentMateria().size(); i++) {
-                Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + " x ")
-                        .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipe.getComponentMateria().get(i).getItem()+".short"));
+        Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> recipeCompound = getOrUpdateRecipe();
+        if(recipeCompound.getFirst() != null) {
+            for (int i = 0; i < recipeCompound.getSecond().size(); i++) {
+                Component text = Component.literal(recipeCompound.getSecond().get(i).getCount() + " x ")
+                        .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipeCompound.getSecond().get(i).getItem()+".short"));
                 gui.pose().scale(0.5f, 0.5f, 0.5f);
 
                 gui.drawString(Minecraft.getInstance().font, text, 400, 184 + i*36, 0xff000000, false);
@@ -291,10 +320,10 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         }
 
         //Grime panel
-        gui.drawString(font, Component.literal(CentrifugeBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), CentrifugeBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 11, 0xff000000, false);
+        gui.drawString(font, Component.literal(FuseryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), FuseryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 11, 0xff000000, false);
 
-        int secWhole = CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), CentrifugeBlockEntity::getVar) / 20;
-        int secPartial = (CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), CentrifugeBlockEntity::getVar) % 20) * 5;
+        int secWhole = FuseryBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar) / 20;
+        int secPartial = (FuseryBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 8, 0xff000000, false);
     }
 
@@ -320,6 +349,52 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                 }
             }
         }
+
+        //Efficiency
+        if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
+                mouseY >= y+TOOLTIP_EFFICIENCY_Y && mouseY <= y+TOOLTIP_EFFICIENCY_Y+TOOLTIP_EFFICIENCY_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.efficiency").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.efficiency.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.efficiency.line2"));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Operation Time
+        if(mouseX >= x+TOOLTIP_OPERATIONTIME_X && mouseX <= x+TOOLTIP_OPERATIONTIME_X+TOOLTIP_OPERATIONTIME_W &&
+                mouseY >= y+TOOLTIP_OPERATIONTIME_Y && mouseY <= y+TOOLTIP_OPERATIONTIME_Y+TOOLTIP_OPERATIONTIME_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Grime Bar
+        if(mouseX >= x+TOOLTIP_GRIME_X && mouseX <= x+TOOLTIP_GRIME_X+TOOLTIP_GRIME_W &&
+                mouseY >= y+TOOLTIP_GRIME_Y && mouseY <= y+TOOLTIP_GRIME_Y+TOOLTIP_GRIME_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.grime").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.grime.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.grime.line2.1")
+                    .append(Component.literal(Config.grimePenaltyPoint+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.grime.line2.2")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(String.format("%.1f", FuseryBlockEntity.getGrimePercent(menu.getGrime(), FuseryBlockEntity::getVar)*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
         gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
     }
 }

@@ -1,6 +1,5 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
@@ -18,7 +17,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class FuseryMenu extends AbstractContainerMenu {
 
@@ -114,19 +112,19 @@ public class FuseryMenu extends AbstractContainerMenu {
     }
 
     public int getProgress() {
-        return data.get(CentrifugeBlockEntity.DATA_PROGRESS);
+        return data.get(FuseryBlockEntity.DATA_PROGRESS);
     }
 
     public int getGrime() {
-        return data.get(CentrifugeBlockEntity.DATA_GRIME);
+        return data.get(FuseryBlockEntity.DATA_GRIME);
     }
 
     public int getEfficiencyMod() {
-        return data.get(CentrifugeBlockEntity.DATA_EFFICIENCY_MOD);
+        return data.get(FuseryBlockEntity.DATA_EFFICIENCY_MOD);
     }
 
     public int getOperationTimeMod() {
-        return data.get(CentrifugeBlockEntity.DATA_OPERATION_TIME_MOD);
+        return data.get(FuseryBlockEntity.DATA_OPERATION_TIME_MOD);
     }
 
     private static final int SLOT_INVENTORY_BEGIN = 0;

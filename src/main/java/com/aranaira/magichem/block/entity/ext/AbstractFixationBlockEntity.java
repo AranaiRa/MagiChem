@@ -71,6 +71,8 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
+        } else if(cap == ForgeCapabilities.FLUID_HANDLER) {
+            return lazyFluidHandler.cast();
         }
 
         return super.getCapability(cap, side);
@@ -243,14 +245,20 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         }
         Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
-        //Apply Efficiency and generate Grime amount
+        //Apply Efficiency
         NonNullList<ItemStack> preEfficiencyOutput = NonNullList.create();
         preEfficiencyOutput.add(pEntity.currentRecipe.getResultAdmixture());
         Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(preEfficiencyOutput, AbstractFixationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-        int grimeToAdd = Math.round(pair.getFirst());
         NonNullList<ItemStack> postEfficiencyOutput = pair.getSecond();
 
-        //Update output copy with the potentially-crafted item
+        //Generate grime amount; Fixation uses the inputs to determine Grime rather than the output
+        int grimeToAdd = 0;
+        for(ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
+            grimeToAdd += is.getCount();
+        }
+        grimeToAdd *= postEfficiencyOutput.size() == 1 ? pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS) : pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE);
+
+            //Update output copy with the potentially-crafted item
         SimpleContainer output = pEntity.getContentsOfOutputSlots(pVarFunc);
         for(ItemStack is : postEfficiencyOutput) {
             output.addItem(is);
@@ -321,7 +329,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         int incomingAmount = fluidStack.getAmount();
         if(fluid == FluidRegistry.ACADEMIC_SLURRY.get()) {
             int extantAmount = containedSlurry.getAmount();
-            int query = getVar(IDs.CONFIG_TANK_CAPACITY) - (incomingAmount + extantAmount);
+            int query = getTankCapacity(0) - (incomingAmount + extantAmount);
 
             //Hit capacity
             if(query < 0) {
