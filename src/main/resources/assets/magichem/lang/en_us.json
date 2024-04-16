@@ -323,7 +323,7 @@
   "tooltip.magichem.gui.slurry.tank.line1": "How much Academic Slurry is stored inside the ",
   "tooltip.magichem.gui.slurry.tank.line2a": "Academic Slurry is consumed with each successful Fixation. If Fixation fails, the Academic Slurry cost is reduced by ",
   "tooltip.magichem.gui.slurry.tank.line2b": ".",
-  "tooltip.magichem.gui.slurry.tank.line3": "Current Cost: ",
+  "tooltip.magichem.gui.slurry.tank.line3": "Current Contents: ",
 
   "tooltip.magichem.gui.eldrin.air": "Eldrin Power (Air)",
   "tooltip.magichem.gui.eldrin.arcane": "Eldrin Power (Arcane)",

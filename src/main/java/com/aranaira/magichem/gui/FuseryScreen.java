@@ -152,6 +152,8 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         List<FixationSeparationRecipe> fabricationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE);
         filteredRecipeOutputs.clear();
 
+        recipeFilterRowTotal = (int)Math.ceil(fabricationRecipeOutputs.size() / 3.0f);
+
         for(FixationSeparationRecipe fsr : fabricationRecipeOutputs) {
             String display = fsr.getResultAdmixture().getDisplayName().getString();
             if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
@@ -232,12 +234,13 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     }
 
     private void renderSelectedRecipe(GuiGraphics gui, int x, int y) {
-        ItemStack recipeItem = menu.blockEntity.getRecipeItem(FuseryBlockEntity::getVar);
-        if(recipeItem == ItemStack.EMPTY) {
+        Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> recipeCompound = getOrUpdateRecipe();
+
+        if(recipeCompound.getThird() == ItemStack.EMPTY) {
             gui.blit(TEXTURE, x, y, 28, 238, 18, 18);
         }
         else {
-            gui.renderFakeItem(recipeItem, x+1, y+1);
+            gui.renderFakeItem(recipeCompound.getThird(), x+1, y+1);
         }
     }
 
@@ -450,7 +453,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.getCurrentRecipe().getSlurryCost()+"mB").withStyle(ChatFormatting.DARK_AQUA)));
+                    .append(Component.literal(menu.getSlurryInTank()+"mB").withStyle(ChatFormatting.DARK_AQUA)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
