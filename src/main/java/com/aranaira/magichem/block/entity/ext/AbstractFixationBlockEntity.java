@@ -82,6 +82,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyFluidHandler.invalidate();
     }
 
     @Nullable
@@ -310,7 +311,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
 
     @Override
     public int getTankCapacity(int tank) {
-        return Config.fuseryTankCapacity;
+        return 100;
     }
 
     @Override
@@ -329,13 +330,12 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         int incomingAmount = fluidStack.getAmount();
         if(fluid == FluidRegistry.ACADEMIC_SLURRY.get()) {
             int extantAmount = containedSlurry.getAmount();
-            int query = getTankCapacity(0) - (incomingAmount + extantAmount);
 
             //Hit capacity
-            if(query < 0) {
-                int actualTransfer = getVar(IDs.CONFIG_TANK_CAPACITY) - extantAmount;
+            if(incomingAmount + extantAmount > getTankCapacity(0)) {
+                int actualTransfer = getTankCapacity(0) - extantAmount;
                 if(action == FluidAction.EXECUTE)
-                    this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), extantAmount + actualTransfer);
+                    this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), getTankCapacity(0));
                 return actualTransfer;
             } else {
                 if(action == FluidAction.EXECUTE)
@@ -364,7 +364,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             } else {
                 if(fluidAction == FluidAction.EXECUTE)
                     containedSlurry = FluidStack.EMPTY;
-                return new FluidStack(fluid, incomingAmount - extantAmount);
+                return new FluidStack(fluid, extantAmount);
             }
         }
         return fluidStack;

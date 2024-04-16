@@ -48,7 +48,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 20, SLOT_RECIPE = 21,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT  = 9,
-            GRIME_BAR_WIDTH = 88, PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 50,
+            GRIME_BAR_WIDTH = 88, PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 88,
             DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5,
             NO_TORQUE_GRACE_PERIOD = 20, TORQUE_GAIN_ON_COG_ACTIVATION = 36, ANIMUS_GAIN_ON_DUSTING = 12000;
     public static final float
@@ -182,6 +182,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
+        currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
     }
 
     @Override
@@ -201,30 +202,27 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
-        lazyFluidHandler.ifPresent(cap -> {
-            if(cap.getFluidInTank(0).isEmpty())
-                cap.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), nbt.getInt("fluidContents")), FluidAction.EXECUTE);
-            else
-                cap.getFluidInTank(0).setAmount(nbt.getInt("fluidContents"));
-        });
+        int fluidContents = nbt.getInt("fluidContents");
+        if(fluidContents > 0)
+            containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
+        else
+            containedSlurry = FluidStack.EMPTY;
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
-        currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
-        nbt.putInt("fluidContents", 0);
-        lazyFluidHandler.ifPresent(cap -> {
-            nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
-        });
+        if(containedSlurry.isEmpty())
+            nbt.putInt("fluidContents", 0);
+        else
+            nbt.putInt("fluidContents", containedSlurry.getAmount());
         return nbt;
     }
 
@@ -275,6 +273,10 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
 
     public static int getScaledGrime(int pGrime, Function<IDs, Integer> pVarFunc) {
         return (GRIME_BAR_WIDTH * pGrime) / pVarFunc.apply(IDs.CONFIG_MAX_GRIME);
+    }
+
+    public static int getScaledSlurry(int pSlurry, Function<IDs, Integer> pVarFunc) {
+        return (FLUID_BAR_HEIGHT * pSlurry) / pVarFunc.apply(IDs.CONFIG_TANK_CAPACITY);
     }
 
     @Override
@@ -353,6 +355,15 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
+    }
+
+    ////////////////////
+    // FLUID HANDLING
+    ////////////////////
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return Config.fuseryTankCapacity;
     }
 
     ////////////////////

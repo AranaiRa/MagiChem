@@ -52,7 +52,7 @@ public class TooltipLoreBlockItem extends BlockItem {
         }
         else if(pStack.getItem() == BlockRegistry.FUSERY.get().asItem()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.admixer")
+                    Component.translatable("tooltip.magichem.fusery")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }

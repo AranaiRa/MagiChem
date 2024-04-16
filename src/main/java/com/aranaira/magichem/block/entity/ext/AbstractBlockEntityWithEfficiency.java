@@ -1,6 +1,8 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -17,8 +19,6 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
     protected float operationTimeMod;
     protected boolean isStalled = false;
     protected static final Random r = new Random();
-
-
 
     public AbstractBlockEntityWithEfficiency(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);

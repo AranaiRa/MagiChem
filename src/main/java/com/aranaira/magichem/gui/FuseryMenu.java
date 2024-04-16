@@ -127,6 +127,10 @@ public class FuseryMenu extends AbstractContainerMenu {
         return data.get(FuseryBlockEntity.DATA_OPERATION_TIME_MOD);
     }
 
+    public int getSlurryInTank() {
+        return blockEntity.getFluidInTank(0).getAmount();
+    }
+
     private static final int SLOT_INVENTORY_BEGIN = 0;
     private static final int SLOT_INVENTORY_COUNT = 36;
     private static final int SLOT_BOTTLES = 36;

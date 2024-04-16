@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
@@ -35,6 +36,8 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fusery.png");
     private static final ResourceLocation TEXTURE_EXT =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
+    private static final ResourceLocation TEXTURE_SLURRY =
+            new ResourceLocation(MagiChemMod.MODID, "textures/block/fluid/experience_still.png");
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
     private static final int
@@ -45,6 +48,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
         PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102,
         PANEL_GRIME_X = 176, PANEL_GRIME_Y = 38, PANEL_GRIME_W = 64, PANEL_GRIME_H = 59, PANEL_GRIME_U = 176, PANEL_GRIME_V = 126,
+        SLURRY_X = 8, SLURRY_Y = 23, SLURRY_W = 8, SLURRY_H = 88,
         TOOLTIP_EFFICIENCY_X = 180, TOOLTIP_EFFICIENCY_Y = 43, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
         TOOLTIP_OPERATIONTIME_X = 180, TOOLTIP_OPERATIONTIME_Y = 62, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
         TOOLTIP_GRIME_X = 181, TOOLTIP_GRIME_Y = 78, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14,
@@ -55,7 +59,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
 
     public FuseryScreen(FuseryMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
-        updateDisplayedRecipes(recipeFilterBox.getValue());
+        updateDisplayedRecipes("");
     }
 
     private Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> getOrUpdateRecipe(){
@@ -110,6 +114,18 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             public boolean charTyped(char pCodePoint, int pModifiers) {
                 updateDisplayedRecipes(recipeFilterBox.getValue());
                 return super.charTyped(pCodePoint, pModifiers);
+            }
+
+            @Override
+            public void deleteChars(int pNum) {
+                updateDisplayedRecipes(recipeFilterBox.getValue());
+                super.deleteChars(pNum);
+            }
+
+            @Override
+            public void deleteWords(int pNum) {
+                updateDisplayedRecipes(recipeFilterBox.getValue());
+                super.deleteWords(pNum);
             }
         };
         this.recipeFilterBox.setMaxLength(60);
@@ -174,6 +190,11 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         int sGrime = FuseryBlockEntity.getScaledGrime(menu.getGrime(), FuseryBlockEntity::getVar);
         if(sGrime > 0)
             gui.blit(TEXTURE, x+164, y+81, 24, 248, sGrime, 8);
+
+        //water gauge
+        int slurryH = FuseryBlockEntity.getScaledSlurry(menu.getSlurryInTank(), FuseryBlockEntity::getVar);
+        RenderSystem.setShaderTexture(1, TEXTURE_SLURRY);
+        gui.blit(TEXTURE_SLURRY, x + SLURRY_X, y + SLURRY_Y + SLURRY_H - slurryH, 0, 0, SLURRY_W, slurryH, 16, 16);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         renderIngredientPanel(gui, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
