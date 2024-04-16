@@ -1,6 +1,8 @@
 package com.aranaira.magichem.recipe;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
@@ -73,6 +75,13 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
+    }
+
+    public int getSlurryCost() {
+        float baseCost = Config.fixationBaseSlurryCost;
+        float compoundCost = Config.fixationSlurryCompoundCost / 100.0f;
+        int depth = ((AdmixtureItem)getResultAdmixture().getItem()).getDepth();
+        return (int)(baseCost * Math.pow(compoundCost, depth - 1));
     }
 
     @Override

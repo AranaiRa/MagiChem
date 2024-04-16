@@ -40,6 +40,16 @@ public class Config
             .comment("How many experience points a Studying construct generates from master study materials.")
             .defineInRange("constructStudyExperienceMaster", 18, 4, Integer.MAX_VALUE);
 
+    //----------------FIXATION PROCESS
+
+    private static final ForgeConfigSpec.IntValue FIXATION_BASE_SLURRY_COST = BUILDER
+            .comment("The amount of Academic Slurry, in mB, consumed to perform Fixation on a first-order Admixture.")
+            .defineInRange("fixationBaseSlurryCost", 40, 10, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue FIXATION_SLURRY_COMPOUND_COST = BUILDER
+            .comment("The percent cost increase over base that higher order Admixtures take to perform Fixation. This cost increase is multiplicative.")
+            .defineInRange("fixationSlurryCompoundCost", 300, 10, Integer.MAX_VALUE);
+
     //----------------ALEMBIC
 
     private static final ForgeConfigSpec.IntValue ALEMBIC_EFFICIENCY = BUILDER
@@ -213,6 +223,8 @@ public class Config
         constructStudyExperienceSimple,
         constructStudyExperienceAdvanced,
         constructStudyExperienceMaster,
+        fixationBaseSlurryCost,
+        fixationSlurryCompoundCost,
         alembicEfficiency,
         alembicOperationTime,
         alembicMaximumGrime,
@@ -264,6 +276,8 @@ public class Config
         constructStudyExperienceSimple = CONSTRUCT_STUDY_EXPERIENCE_SIMPLE.get();
         constructStudyExperienceAdvanced = CONSTRUCT_STUDY_EXPERIENCE_ADVANCED.get();
         constructStudyExperienceMaster = CONSTRUCT_STUDY_EXPERIENCE_MASTER.get();
+        fixationBaseSlurryCost = FIXATION_BASE_SLURRY_COST.get();
+        fixationSlurryCompoundCost = FIXATION_SLURRY_COMPOUND_COST.get();
         alembicEfficiency = ALEMBIC_EFFICIENCY.get();
         alembicOperationTime = ALEMBIC_OPERATION_TIME.get();
         alembicMaximumGrime = ALEMBIC_MAXIMUM_GRIME.get();

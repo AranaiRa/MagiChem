@@ -197,6 +197,10 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         if(pEntity.currentRecipe == null)
             return false;
 
+        //Can't craft if there's not enough Academic Slurry
+        if(pEntity.currentRecipe.getSlurryCost() > pEntity.containedSlurry.getAmount())
+            return false;
+
         //Can't craft if the bottle output is full
         if(pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT)).getCount() == 64)
             return false;
@@ -287,10 +291,15 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             }
         }
 
+        //Add grime to this device if there's no Quake Refinery
         if(grimeToAdd > 0) {
             IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
             grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
         }
+
+        //Consume slurry
+        pEntity.containedSlurry.shrink(pEntity.currentRecipe.getSlurryCost());
+        pEntity.syncAndSave();
 
         resolveActuators(pEntity);
     }
