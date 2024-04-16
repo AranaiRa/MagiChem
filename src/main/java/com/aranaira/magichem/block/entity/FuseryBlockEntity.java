@@ -201,6 +201,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
@@ -216,6 +217,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
+        currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
