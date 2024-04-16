@@ -16,7 +16,6 @@ import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -110,7 +109,7 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
             MenuScreens.register(MenuRegistry.DISTILLERY_MENU.get(), DistilleryScreen::new);
             MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
-            MenuScreens.register(MenuRegistry.ADMIXER_MENU.get(), FuseryScreen::new);
+            MenuScreens.register(MenuRegistry.FUSERY_MENU.get(), FuseryScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_WATER_MENU.get(), ActuatorWaterScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_FIRE_MENU.get(), ActuatorFireScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_EARTH_MENU.get(), ActuatorEarthScreen::new);

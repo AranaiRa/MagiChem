@@ -4,14 +4,12 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.BaseActuatorRouterBlock;
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.DistilleryBlock;
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
-import com.aranaira.magichem.block.entity.ExperienceExchangerBlockEntity;
-import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
+import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
@@ -86,6 +84,14 @@ public class CommonEventHandler {
                     event.getEntity().swing(event.getHand());
                     stack.shrink(1);
                     crbe.getMaster().dustCog();
+                } else if(bewe instanceof FuseryBlockEntity fbe) {
+                    event.getEntity().swing(event.getHand());
+                    stack.shrink(1);
+                    fbe.dustCog();
+                } else if(bewe instanceof FuseryRouterBlockEntity frbe) {
+                    event.getEntity().swing(event.getHand());
+                    stack.shrink(1);
+                    frbe.getMaster().dustCog();
                 }
             }
             else if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {

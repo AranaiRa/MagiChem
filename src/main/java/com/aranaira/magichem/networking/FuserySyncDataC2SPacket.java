@@ -40,9 +40,8 @@ public class FuserySyncDataC2SPacket {
         BlockEntity entity = player.level().getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
-            if(entity instanceof FuseryBlockEntity abe) {
-                abe.setCurrentRecipeByOutput(recipeItem);
-                abe.syncAndSave();
+            if(entity instanceof FuseryBlockEntity fbe) {
+                fbe.setRecipeByOutput(new ItemStack(recipeItem));
             }
         });
 

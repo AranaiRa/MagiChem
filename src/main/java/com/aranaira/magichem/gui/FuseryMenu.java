@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
@@ -11,30 +12,31 @@ import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class FuseryMenu extends AbstractContainerMenu {
 
     public final FuseryBlockEntity blockEntity;
     private final Level level;
+    private final ContainerData data;
     public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[FuseryBlockEntity.SLOT_INPUT_COUNT];
 
     public FuseryMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(FuseryBlockEntity.DATA_COUNT));
     }
 
-    public FuseryMenu(int id, Inventory inv, BlockEntity entity) {
-        super(MenuRegistry.ADMIXER_MENU.get(), id);
+    public FuseryMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
+        super(MenuRegistry.FUSERY_MENU.get(), id);
         checkContainerSize(inv, FuseryBlockEntity.SLOT_COUNT);
         blockEntity = (FuseryBlockEntity) entity;
         this.level = inv.player.level();
+        this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -44,6 +46,9 @@ public class FuseryMenu extends AbstractContainerMenu {
             //Bottle slots
             this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES, 134, -12, false));
             this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES_OUTPUT, 80, 3, true));
+
+            //Recipe slot
+            //this.addSlot(new SlotItemHandler(handler, FuseryBlockEntity.SLOT_RECIPE, 80, 75));
 
             //Input item slots
             for(int i = FuseryBlockEntity.SLOT_INPUT_START; i< FuseryBlockEntity.SLOT_INPUT_START + FuseryBlockEntity.SLOT_INPUT_COUNT; i++)
@@ -63,8 +68,10 @@ public class FuseryMenu extends AbstractContainerMenu {
                 this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 21 + (y) * 18, FuseryBlockEntity.SLOT_BOTTLES));
             }
 
-            setInputSlotFilters(blockEntity.getCurrentRecipe());
+            setInputSlotFilters(blockEntity.getRecipeItem(FuseryBlockEntity::getVar));
         });
+
+        addDataSlots(data);
     }
 
     @Override
@@ -72,7 +79,8 @@ public class FuseryMenu extends AbstractContainerMenu {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.FUSERY.get());
     }
 
-    public void setInputSlotFilters(FixationSeparationRecipe newRecipe) {
+    public void setInputSlotFilters(ItemStack pQueryStack) {
+        FixationSeparationRecipe newRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, pQueryStack);
         if(newRecipe != null) {
             int slotSet = 0;
             for (ItemStack stack : newRecipe.getComponentMateria()) {
@@ -81,6 +89,14 @@ public class FuseryMenu extends AbstractContainerMenu {
                 slotSet++;
             }
         }
+    }
+
+    public ItemStack getRecipeItem() {
+        return blockEntity.getRecipeItem(FuseryBlockEntity::getVar);
+    }
+
+    public FixationSeparationRecipe getCurrentRecipe() {
+        return FixationSeparationRecipe.getSeparatingRecipe(level, getRecipeItem());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
@@ -95,6 +111,22 @@ public class FuseryMenu extends AbstractContainerMenu {
         for(int i=0; i<9; i++) {
             this.addSlot((new Slot(playerInventory, i, 8 + i*18, 163 )));
         }
+    }
+
+    public int getProgress() {
+        return data.get(CentrifugeBlockEntity.DATA_PROGRESS);
+    }
+
+    public int getGrime() {
+        return data.get(CentrifugeBlockEntity.DATA_GRIME);
+    }
+
+    public int getEfficiencyMod() {
+        return data.get(CentrifugeBlockEntity.DATA_EFFICIENCY_MOD);
+    }
+
+    public int getOperationTimeMod() {
+        return data.get(CentrifugeBlockEntity.DATA_OPERATION_TIME_MOD);
     }
 
     private static final int SLOT_INVENTORY_BEGIN = 0;

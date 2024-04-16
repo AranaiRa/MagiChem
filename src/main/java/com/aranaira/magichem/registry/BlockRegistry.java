@@ -48,6 +48,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion())
     );
 
+    public static final RegistryObject<Block> FUSERY_ROUTER = registerBlock("fusery_router",
+            () -> new FuseryRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
     public static final RegistryObject<Block> CIRCLE_POWER = registerBlock("circle_power",
             () -> new CirclePowerBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())

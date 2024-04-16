@@ -59,11 +59,15 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
     }
 
     public NonNullList<ItemStack> getComponentMateria() {
-        return componentMateria;
+        NonNullList<ItemStack> componentsCopy = NonNullList.create();
+        for(ItemStack is : componentMateria) {
+            componentsCopy.add(is.copy());
+        }
+        return componentsCopy;
     }
 
     public ItemStack getResultAdmixture() {
-        return resultAdmixture;
+        return resultAdmixture.copy();
     }
 
     @Override

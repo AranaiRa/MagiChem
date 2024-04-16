@@ -48,11 +48,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
 
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
-        renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
-
-        float a = menu.getOperationTimeMod();
-        int b = menu.getGrime();
-        int c = menu.getProgress();
+        gui.blit(TEXTURE, x + PANEL_GRIME_X, y + PANEL_GRIME_Y, PANEL_GRIME_U, PANEL_GRIME_V, PANEL_GRIME_W, PANEL_GRIME_H);
 
         int sProg = CentrifugeBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getOperationTimeMod(), CentrifugeBlockEntity::getVar);
         if(sProg > 0)
@@ -61,10 +57,6 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         int sGrime = CentrifugeBlockEntity.getScaledGrime(menu.getGrime());
         if(sGrime > 0)
             gui.blit(TEXTURE, x+164, y+81, 24, 248, sGrime, 8);
-    }
-
-    private void renderGrimePanel(GuiGraphics gui, int x, int y) {
-        gui.blit(TEXTURE, x, y, PANEL_GRIME_U, PANEL_GRIME_V, PANEL_GRIME_W, PANEL_GRIME_H);
     }
 
     @Override

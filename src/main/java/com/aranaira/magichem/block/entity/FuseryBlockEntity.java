@@ -1,107 +1,174 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
+import com.aranaira.magichem.block.CentrifugeBlock;
+import com.aranaira.magichem.block.FuseryBlock;
+import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.FuseryRouterType;
+import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.gui.FuseryMenu;
-import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FuseryBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider {
+import java.util.ArrayList;
+import java.util.List;
+
+public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider {
     public static final int
-        SLOT_COUNT = 21,
-        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 20,
-        SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
-        SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT  = 9,
-        PROGRESS_BAR_SIZE = 28;
+            SLOT_COUNT = 22,
+            SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 20, SLOT_RECIPE = 21,
+            SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
+            SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT  = 9,
+            GRIME_BAR_WIDTH = 88, PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 50,
+            DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5,
+            NO_TORQUE_GRACE_PERIOD = 20, TORQUE_GAIN_ON_COG_ACTIVATION = 36, ANIMUS_GAIN_ON_DUSTING = 12000;
+    public static final float
+            WHEEL_ACCELERATION_RATE = 0.375f, WHEEL_DECELERATION_RATE = 0.625f, WHEEL_TOP_SPEED = 20.0f,
+            COG_ACCELERATION_RATE = 0.5f, COG_DECELERATION_RATE = 0.375f, COG_TOP_SPEED = 10.0f;
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-        }
+    public float
+            wheelAngle, wheelSpeed, cogAngle, cogSpeed;
 
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(slot == SLOT_BOTTLES)
-                return stack.getItem() == Items.GLASS_BOTTLE;
-            if(slot == SLOT_BOTTLES_OUTPUT)
-                return false;
-            if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
-                return stack.getItem() instanceof MateriaItem;
-            if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
-                return false;
-
-            return super.isItemValid(slot, stack);
-        }
-    };
+    ////////////////////
+    // CONSTRUCTOR
+    ////////////////////
 
     public FuseryBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.FUSERY_BE.get(), pos, state);
+
+        this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                if(slot == SLOT_RECIPE)
+                    currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, getStackInSlot(SLOT_RECIPE));
+                setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                if(slot == SLOT_BOTTLES)
+                    return stack.getItem() == Items.GLASS_BOTTLE;
+                if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(currentRecipe != null) {
+                        if(((slot - SLOT_INPUT_START) / 2) >= currentRecipe.getComponentMateria().size())
+                            return false;
+                        ItemStack component = currentRecipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
+                        return stack.getItem().equals(component.getItem());
+                    } else {
+                        return stack.getItem() instanceof AdmixtureItem;
+                    }
+                }
+                if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
+                    return false;
+                if(slot == SLOT_RECIPE)
+                    return false;
+
+                return super.isItemValid(slot, stack);
+            }
+        };
+
+        this.data = new ContainerData() {
+            @Override
+            public int get(int pIndex) {
+                switch(pIndex) {
+                    case DATA_PROGRESS: {
+                        return FuseryBlockEntity.this.progress;
+                    }
+                    case DATA_GRIME: {
+                        IGrimeCapability grime = GrimeProvider.getCapability(FuseryBlockEntity.this);
+                        return grime.getGrime();
+                    }
+                    case DATA_TORQUE: {
+                        return FuseryBlockEntity.this.remainingTorque;
+                    }
+                    case DATA_ANIMUS: {
+                        return FuseryBlockEntity.this.remainingAnimus;
+                    }
+                    case DATA_EFFICIENCY_MOD: {
+                        return FuseryBlockEntity.this.efficiencyMod;
+                    }
+                    case DATA_OPERATION_TIME_MOD: {
+                        return Math.round(FuseryBlockEntity.this.operationTimeMod * 100);
+                    }
+                    default: return -1;
+                }
+            }
+
+            @Override
+            public void set(int pIndex, int pValue) {
+                switch(pIndex) {
+                    case DATA_PROGRESS: {
+                        FuseryBlockEntity.this.progress = pValue;
+                        break;
+                    }
+                    case DATA_GRIME: {
+                        IGrimeCapability grime = GrimeProvider.getCapability(FuseryBlockEntity.this);
+                        grime.setGrime(pValue);
+                        break;
+                    }
+                    case DATA_TORQUE: {
+                        remainingTorque = pValue;
+                        break;
+                    }
+                    case DATA_ANIMUS: {
+                        remainingAnimus = pValue;
+                        break;
+                    }
+                    case DATA_EFFICIENCY_MOD: {
+                        efficiencyMod = pValue;
+                        break;
+                    }
+                    case DATA_OPERATION_TIME_MOD: {
+                        operationTimeMod = pValue / 100f;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return DATA_COUNT;
+            }
+        };
+        this.lazyFluidHandler = LazyOptional.of(() -> this);
     }
 
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-
-    private FixationSeparationRecipe currentRecipe;
-    private String currentRecipeID = "";
-
-    private int craftingProgress = 0;
-
-    public void setCurrentRecipeByOutput(Item item) {
-        currentRecipe = null;
-        currentRecipeID = "";
-        level.getRecipeManager().getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE).stream().filter(
-                fsr -> fsr.getResultAdmixture().getItem() == item).findFirst().ifPresent(filteredFSR -> {
-            currentRecipe = filteredFSR;
-            currentRecipeID = filteredFSR.getId().toString();
-        });
-    }
-
-    private void setCurrentRecipeByRecipeID() {
-        currentRecipe = (FixationSeparationRecipe) level.getRecipeManager().byKey(new ResourceLocation(currentRecipeID)).orElse(null);
-    }
-
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        handleUpdateTag(pkt.getTag());
-        super.onDataPacket(net, pkt);
-    }
-
-    @Nullable
-    public FixationSeparationRecipe getCurrentRecipe() {
-        if(currentRecipe == null) {
-            setCurrentRecipeByRecipeID();
-        }
-        return currentRecipe;
-    }
+    ////////////////////
+    // BOILERPLATE CODE
+    ////////////////////
 
     @Override
     public Component getDisplayName() {
@@ -111,38 +178,26 @@ public class FuseryBlockEntity extends AbstractBlockEntityWithEfficiency impleme
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new FuseryMenu(id, inventory, this);
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
-        }
-
-        return super.getCapability(cap, side);
+        return new FuseryMenu(id, inventory, this, this.data);
     }
 
     @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
-    }
-
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        lazyItemHandler.invalidate();
+        lazyFluidHandler = LazyOptional.of(() -> this);
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("craftingProgress", this.craftingProgress);
-
-        if(currentRecipeID != null)
-            nbt.putString("currentRecipe", this.currentRecipeID);
-
+        nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("remainingTorque", this.remainingTorque);
+        nbt.putInt("remainingAnimus", this.remainingAnimus);
+        nbt.putInt("fluidContents", 0);
+        lazyFluidHandler.ifPresent(cap -> {
+            nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
+        });
         super.saveAdditional(nbt);
     }
 
@@ -150,51 +205,34 @@ public class FuseryBlockEntity extends AbstractBlockEntityWithEfficiency impleme
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        craftingProgress = nbt.getInt("craftingProgress");
-        currentRecipeID = nbt.getString("currentRecipe");
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        progress = nbt.getInt("craftingProgress");
+        remainingTorque = nbt.getInt("remainingTorque");
+        remainingAnimus = nbt.getInt("remainingAnimus");
+        lazyFluidHandler.ifPresent(cap -> {
+            if(cap.getFluidInTank(0).isEmpty())
+                cap.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), nbt.getInt("fluidContents")), FluidAction.EXECUTE);
+            else
+                cap.getFluidInTank(0).setAmount(nbt.getInt("fluidContents"));
+        });
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        CompoundTag data = new CompoundTag();
-        data.putString("currentRecipe", currentRecipeID);
-        data.putInt("craftingProgress", craftingProgress);
-        return data;
-    }
-
-    @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        //When the game is already running, client side
-        if(currentRecipeID != tag.getString("currentRecipe")) {
-            currentRecipeID = tag.getString("currentRecipe");
-            currentRecipe = null;
-        }
-        craftingProgress = tag.getInt("craftingProgress");
-        super.handleUpdateTag(tag);
-    }
-
-    public final void syncAndSave() {
-        if (!this.getLevel().isClientSide()) {
-            this.setChanged();
-            this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-        }
-    }
-
-    public int getCraftingProgress(){
-        return craftingProgress;
-    }
-
-    public static int getScaledProgress(FuseryBlockEntity entity) {
-        return PROGRESS_BAR_SIZE * entity.craftingProgress / Config.fuseryOperationTime;
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("remainingTorque", this.remainingTorque);
+        nbt.putInt("remainingAnimus", this.remainingAnimus);
+        nbt.putInt("fluidContents", 0);
+        lazyFluidHandler.ifPresent(cap -> {
+            nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
+        });
+        return nbt;
     }
 
     public void dropInventoryToWorld() {
+        //TODO: Retain internal inventory and grime
+
         //Drop items in input slots, bottle slot, and processing slot as-is
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
         for (int i = 0; i < SLOT_INPUT_COUNT + 1; i++) {
@@ -214,158 +252,142 @@ public class FuseryBlockEntity extends AbstractBlockEntityWithEfficiency impleme
         Containers.dropContents(this.level, this.worldPosition, waste);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, FuseryBlockEntity entity) {
-        FixationSeparationRecipe recipe = entity.getCurrentRecipe();
-        if(canCraftItem(entity, recipe)) {
-            entity.incrementProgress();
-        } else {
-            entity.resetProgress();
-        }
-
-        if(entity.getCraftingProgress() > Config.fuseryOperationTime) {
-            craftItem(entity, recipe);
-            entity.resetProgress();
-        }
-    }
-
-    private static boolean canCraftItem(FuseryBlockEntity entity, FixationSeparationRecipe recipe) {
-        if(recipe == null)
-            return false;
-
-        SimpleContainer outputSlots = getOutputAsContainer(entity);
-
-        //If the output slots can't absorb the output item, don't bother checking anything else
-        if(!outputSlots.canAddItem(recipe.getResultAdmixture())) return false;
-
-        //TODO: Turn this back on after the bottle slot gets expanded
-        //If there's not enough space for the bottles to go, don't craft
-        //if(entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount() + bottlesToInsert > 64)
-        //    return false;
-
-        for (ItemStack materia : recipe.getComponentMateria()) {
-            int remaining = materia.getCount();
-
-            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
-                if (entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
-                    remaining -= entity.itemHandler.getStackInSlot(i).getCount();
-
-                    if (remaining <= 0) {
-                        break;
-                    }
-                }
-            }
-
-
-            //If any of the ingredients are insufficient there's no reason to check more stuff
-            if(remaining > 0) return false;
-        }
-
-        return true;
-    }
-
-    private static void craftItem(FuseryBlockEntity entity, FixationSeparationRecipe recipe) {
-        int bottlesToInsert = 0;
-        for(ItemStack is : recipe.getComponentMateria()) {
-            bottlesToInsert += is.getCount();
-        }
-
-        //TODO: Uncommment the original line once the bottle slot stack size has been expanded
-        //Fill Bottle Slot
-        //TODO: Remove this once the bottle slot stack size has been expanded
-        ItemStack bottles = ItemStack.EMPTY;
-
-        if(entity.itemHandler.getStackInSlot(SLOT_BOTTLES_OUTPUT) == ItemStack.EMPTY) {
-            if(bottlesToInsert <= 64)
-                entity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert));
-            else {
-                entity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, 64));
-                bottles = new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert - 64);
-            }
-        } else {
-            int existingBottlesInSlot = entity.itemHandler.getStackInSlot(SLOT_BOTTLES_OUTPUT).getCount();
-            if(bottlesToInsert + existingBottlesInSlot > 64) {
-                int remainder = bottlesToInsert + existingBottlesInSlot - 64;
-                entity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, 64));
-                bottles = new ItemStack(Items.GLASS_BOTTLE, remainder);
-            } else {
-                entity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert + existingBottlesInSlot));
-            }
-        }
-
-        SimpleContainer bottleSpill = new SimpleContainer(5);
-        while(bottles.getCount() > 0) {
-            int count = bottles.getCount();
-            int thisPile;
-            if(count > 64) {
-                thisPile = 64;
-                count -= 64;
-            } else {
-                thisPile = count;
-                count = 0;
-            }
-            ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
-            bottleSpill.addItem(bottlesToDrop);
-            bottles.setCount(count);
-        }
-        Containers.dropContents(entity.getLevel(), entity.getBlockPos(), bottleSpill);
-
-        //Consume Materia
-        for(ItemStack materia : recipe.getComponentMateria()) {
-            int remaining = materia.getCount();
-            for(int i=SLOT_INPUT_START + SLOT_INPUT_COUNT - 1; i >= SLOT_INPUT_START; i--) {
-                if(entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
-                    remaining = remaining - entity.itemHandler.extractItem(i, remaining, false).getCount();
-                    if (remaining == 0)
-                        break;
-                }
-            }
-        }
-
-        SimpleContainer insert = getOutputAsContainer(entity);
-        insert.addItem(recipe.getResultAdmixture());
-        replaceOutputSlotsWithContainer(entity, insert);
-        entity.syncAndSave();
-    }
-
-    @NotNull
-    private static SimpleContainer getOutputAsContainer(FuseryBlockEntity entity) {
-        SimpleContainer insert = new SimpleContainer(SLOT_OUTPUT_COUNT);
-        int slotID = 0;
-        //Add output item
-        for (int i = SLOT_OUTPUT_START; i < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT; i++) {
-            insert.setItem(slotID++, entity.itemHandler.getStackInSlot(i));
-        }
-        return insert;
-    }
-
-    private static void replaceOutputSlotsWithContainer(FuseryBlockEntity entity, SimpleContainer insert) {
-        int slotID = 0;
-        for(int i=SLOT_OUTPUT_START; i < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT; i++) {
-            entity.itemHandler.setStackInSlot(i, insert.getItem(slotID));
-            slotID++;
-        }
-    }
-
-    private void resetProgress() {
-        craftingProgress = 0;
-    }
-
-    private void incrementProgress() {
-        craftingProgress++;
-    }
+    ////////////////////
+    // DATA SLOT HANDLING
+    ////////////////////
 
     @Override
     public int getGrimeFromData() {
-        return 0;
+        return data.get(DATA_GRIME);
     }
 
     @Override
     public int getMaximumGrime() {
-        return 0;
+        return getVar(IDs.CONFIG_MAX_GRIME);
     }
 
     @Override
     public int clean() {
-        return 0;
+        int grimeDetected = GrimeProvider.getCapability(this).getGrime();
+        IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
+        grimeCapability.setGrime(0);
+        data.set(DATA_GRIME, 0);
+        return grimeDetected / Config.grimePerWaste;
+    }
+
+    public static int getScaledGrime(int grime) {
+        return (GRIME_BAR_WIDTH * grime) / Config.centrifugeMaximumGrime;
+    }
+
+    @Override
+    protected void pushData() {
+        this.data.set(DATA_PROGRESS, progress);
+        this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
+        this.data.set(DATA_TORQUE, remainingTorque);
+        this.data.set(DATA_ANIMUS, remainingAnimus);
+        //todo: push op time mod
+    }
+
+    ////////////////////
+    // OVERRIDES
+    ////////////////////
+
+    public SimpleContainer getContentsOfOutputSlots() {
+        return getContentsOfOutputSlots(FuseryBlockEntity::getVar);
+    }
+
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, FuseryBlockEntity pEntity) {
+        if(pLevel.isClientSide()) {
+            pEntity.handleAnimationDrivers();
+        }
+        pEntity.remainingTorque = 30;
+        AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, FuseryBlockEntity::getVar);
+    }
+
+    public static int getVar(IDs pID) {
+        return switch(pID) {
+            case SLOT_BOTTLES -> SLOT_BOTTLES;
+            case SLOT_BOTTLES_OUTPUT -> SLOT_BOTTLES_OUTPUT;
+            case SLOT_INPUT_START -> SLOT_INPUT_START;
+            case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
+            case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
+            case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
+            case SLOT_RECIPE -> SLOT_RECIPE;
+
+            case DATA_PROGRESS -> DATA_PROGRESS;
+            case DATA_GRIME -> DATA_GRIME;
+            case DATA_TORQUE -> DATA_TORQUE;
+            case DATA_ANIMUS -> DATA_ANIMUS;
+            case DATA_EFFICIENCY_MOD -> DATA_EFFICIENCY_MOD;
+            case DATA_OPERATION_TIME_MOD -> DATA_OPERATION_TIME_MOD;
+
+            case GUI_PROGRESS_BAR_WIDTH -> PROGRESS_BAR_WIDTH;
+            case GUI_GRIME_BAR_WIDTH -> GRIME_BAR_WIDTH;
+
+            case CONFIG_BASE_EFFICIENCY -> Config.fuseryEfficiency;
+            case CONFIG_MAX_GRIME -> Config.fuseryMaximumGrime;
+            case CONFIG_GRIME_ON_SUCCESS -> Config.fuseryGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> Config.fuseryGrimeOnFailure;
+            case CONFIG_OPERATION_TIME -> Config.fuseryOperationTime;
+            case CONFIG_TORQUE_GAIN_ON_ACTIVATION -> TORQUE_GAIN_ON_COG_ACTIVATION;
+            case CONFIG_ANIMUS_GAIN_ON_DUSTING -> ANIMUS_GAIN_ON_DUSTING;
+            case CONFIG_NO_TORQUE_GRACE_PERIOD -> NO_TORQUE_GRACE_PERIOD;
+            case CONFIG_TANK_CAPACITY -> Config.fuseryTankCapacity;
+
+            default -> -1;
+        };
+    }
+
+    @Override
+    public void linkPlugins() {
+        pluginDevices.clear();
+
+        List<BlockEntity> query = new ArrayList<>();
+        for(Triplet<BlockPos, FuseryRouterType, DevicePlugDirection> posAndType : FuseryBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            BlockEntity be = level.getBlockEntity(getBlockPos().offset(posAndType.getFirst()));
+            if(be != null)
+                query.add(be);
+        }
+
+        for(BlockEntity be : query) {
+            if (be instanceof FuseryRouterBlockEntity frbe) {
+                BlockEntity pe = frbe.getPlugEntity();
+                if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            }
+        }
+    }
+
+    ////////////////////
+    // INTERACTION AND VFX
+    ////////////////////
+
+    private void handleAnimationDrivers() {
+        if(remainingTorque + remainingAnimus > 0) {
+            if(wheelSpeed == 0) wheelSpeed += WHEEL_ACCELERATION_RATE * 4;
+            wheelSpeed = Math.min(wheelSpeed + WHEEL_ACCELERATION_RATE, WHEEL_TOP_SPEED);
+            cogSpeed = Math.min(cogSpeed + COG_ACCELERATION_RATE, COG_TOP_SPEED);
+        } else {
+            wheelSpeed = Math.max(wheelSpeed - WHEEL_DECELERATION_RATE, 0f);
+            cogSpeed = Math.max(cogSpeed - COG_DECELERATION_RATE, 0f);
+        }
+        wheelAngle = (wheelAngle + wheelSpeed) % 360.0f;
+        cogAngle = (cogAngle + cogSpeed) % 360.0f;
+    }
+
+    public void activateCog(){
+        if(remainingAnimus < TORQUE_GAIN_ON_COG_ACTIVATION) {
+            remainingTorque = Math.max(remainingTorque, TORQUE_GAIN_ON_COG_ACTIVATION);
+            syncAndSave();
+        }
+    }
+
+    public void dustCog() {
+        remainingAnimus += ANIMUS_GAIN_ON_DUSTING;
+        syncAndSave();
+    }
+
+    public void setRecipeByOutput(ItemStack pRecipeOutput) {
+        itemHandler.setStackInSlot(SLOT_RECIPE, pRecipeOutput.copy());
+        syncAndSave();
     }
 }
