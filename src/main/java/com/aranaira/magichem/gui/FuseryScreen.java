@@ -189,7 +189,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         //Grime bar
         int sGrime = FuseryBlockEntity.getScaledGrime(menu.getGrime(), FuseryBlockEntity::getVar);
         if(sGrime > 0)
-            gui.blit(TEXTURE, x+164, y+81, 24, 248, sGrime, 8);
+            gui.blit(TEXTURE, x+182, y+81, 64, 248, sGrime, 8);
 
         //water gauge
         int slurryH = FuseryBlockEntity.getScaledSlurry(menu.getSlurryInTank(), FuseryBlockEntity::getVar);
