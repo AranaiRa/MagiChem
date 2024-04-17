@@ -119,14 +119,14 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
 
             @Override
             public void deleteChars(int pNum) {
-                updateDisplayedRecipes(recipeFilterBox.getValue());
                 super.deleteChars(pNum);
+                updateDisplayedRecipes(recipeFilterBox.getValue());
             }
 
             @Override
             public void deleteWords(int pNum) {
-                updateDisplayedRecipes(recipeFilterBox.getValue());
                 super.deleteWords(pNum);
+                updateDisplayedRecipes(recipeFilterBox.getValue());
             }
         };
         this.recipeFilterBox.setMaxLength(60);
@@ -153,6 +153,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         filteredRecipeOutputs.clear();
 
         recipeFilterRowTotal = (int)Math.ceil(fabricationRecipeOutputs.size() / 3.0f);
+        recipeFilterRow = 0;
 
         for(FixationSeparationRecipe fsr : fabricationRecipeOutputs) {
             String display = fsr.getResultAdmixture().getDisplayName().getString();
@@ -160,8 +161,6 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                 filteredRecipeOutputs.add(fsr.getResultAdmixture());
             }
         }
-
-        recipeFilterRowTotal = filteredRecipeOutputs.size() / 3;
     }
 
     @Override

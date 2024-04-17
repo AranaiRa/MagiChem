@@ -2,7 +2,7 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "minecraft:block/copper"
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
   },
   "children": {
     "part1": {
@@ -11,7 +11,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/admixer.obj"
+      "model": "magichem:models/obj/fusery_body.obj"
     }
   },
   "display": {

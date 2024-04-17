@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl CENTRIFUGE
+map_Kd magichem:block/centrifuge
+
+newmtl FUSERY
+map_Kd magichem:block/fusery
+
+newmtl LODESTAR
+map_Kd mna:block/material/lodestar
