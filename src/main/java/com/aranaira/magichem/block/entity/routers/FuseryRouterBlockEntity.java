@@ -156,6 +156,8 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
             case PLUG_LEFT -> 1;
             case PLUG_RIGHT -> 2;
             case COG -> 3;
+            case TANK_RIGHT -> 4;
+            case TANK_ACROSS -> 5;
             default -> 0;
         };
     }
@@ -165,6 +167,8 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
             case 1 -> FuseryRouterType.PLUG_LEFT;
             case 2 -> FuseryRouterType.PLUG_RIGHT;
             case 3 -> FuseryRouterType.COG;
+            case 4 -> FuseryRouterType.TANK_RIGHT;
+            case 5 -> FuseryRouterType.TANK_ACROSS;
             default -> FuseryRouterType.NONE;
         };
     }

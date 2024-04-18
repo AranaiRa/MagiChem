@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.BaseActuatorRouterBlock;
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.DistilleryBlock;
+import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
@@ -133,8 +134,15 @@ public class CommonEventHandler {
             event.getLevel().destroyBlock(drbe.getMasterPos(), true);
             DistilleryBlock.destroyRouters(event.getLevel(), drbe.getMasterPos(), drbe.getFacing());
         }
+        else if(entity instanceof FuseryBlockEntity dbe) {
+            FuseryBlock.destroyRouters(event.getLevel(), dbe.getBlockPos(), dbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+        }
+        else if(entity instanceof FuseryRouterBlockEntity frbe) {
+            event.getLevel().destroyBlock(frbe.getMasterPos(), true);
+            FuseryBlock.destroyRouters(event.getLevel(), frbe.getMasterPos(), frbe.getFacing());
+        }
         else if(entity instanceof DirectionalPluginBlockEntity dpbe) {
-            DistilleryBlock.destroyRouters(event.getLevel(), dpbe.getBlockPos(), dpbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+            event.getLevel().destroyBlock(dpbe.getBlockPos().above(), true);
         }
         else if(entity instanceof BaseActuatorRouterBlockEntity barbe) {
             event.getLevel().destroyBlock(barbe.getMasterPos(), true);

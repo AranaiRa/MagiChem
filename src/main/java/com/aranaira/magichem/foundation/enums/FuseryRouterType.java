@@ -4,5 +4,7 @@ public enum FuseryRouterType {
     NONE,
     PLUG_LEFT,
     PLUG_RIGHT,
-    COG
+    COG,
+    TANK_RIGHT,
+    TANK_ACROSS
 }
