@@ -83,7 +83,7 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
                 else if(facing == Direction.WEST) return VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_WEST;
             }
         }
-        return Shapes.box(4,4,4,12,12,12);
+        return super.getShape(pState, pLevel, pPos, pContext);
     }
 
     @Override
@@ -237,13 +237,13 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
         VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_NORTH = Shapes.or(
                 VOXEL_SHAPE_TANK_ACROSS_BACK,
                 VOXEL_SHAPE_TANK_ACROSS_FORE);
-        VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_EAST = Shapes.or(
+        VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_EAST = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_TANK_ACROSS_BACK, 1),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_TANK_ACROSS_FORE, 1));
-        VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_SOUTH = Shapes.or(
+        VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_SOUTH = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_TANK_ACROSS_BACK, 2),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_TANK_ACROSS_FORE, 2));
-        VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_WEST = Shapes.or(
+        VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_WEST = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_TANK_ACROSS_BACK, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_TANK_ACROSS_FORE, 3));
     }
