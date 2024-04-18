@@ -3,21 +3,18 @@
   "output": "magichem:fusery",
   "tier": 3,
   "items": [
+    "magichem:magic_circle",
+    "magichem:perfected_electrum",
     "magichem:alembic",
-    "minecraft:sticky_piston",
-    "magichem:alembic",
-    "magichem:admixture_industry",
-    "minecraft:glass_bottle",
-    "magichem:admixture_industry",
-    "magichem:alembic",
-    "magichem:essentia_nigredo",
-    "magichem:alembic"
+    "mna:decoration/arcane_sandstone",
+    "magichem:magic_circle",
+    "magichem:perfected_electrum",
+    "mna:fluid_jug",
+    "mna:decoration/arcane_sandstone",
+    "minecraft:cauldron"
   ],
   "patterns": [
-    "mna:circle",
-    "mna:circle",
-    "mna:circle",
-    "mna:circle",
+    "mna:inverted_triangle",
     "mna:bolt",
     "mna:split_triangle"
   ]
