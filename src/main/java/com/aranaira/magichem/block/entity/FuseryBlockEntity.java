@@ -309,41 +309,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         }
 
         //Particles
-        if(pEntity.remainingTorque + pEntity.remainingAnimus > 0 && pEntity.containedSlurry.getAmount() > 0) {
-            int loopingTime = (int)(pLevel.getGameTime() % 8);
-            if(loopingTime % 2 == 0) {
-                Vector3f mid = switch (pEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-                    case NORTH -> new Vector3f(0.25f, 0.125f, 0.25f);
-                    case EAST -> new Vector3f(0.75f, 0.125f, 0.25f);
-                    case SOUTH -> new Vector3f(0.75f, 0.125f, 0.75f);
-                    case WEST -> new Vector3f(0.25f, 0.125f, 0.75f);
-                    default -> new Vector3f(0, 0, 0);
-                };
-
-                int i = loopingTime / 2;
-
-                float shiftDist = 0.125f;
-                Vector2f[] offsets = {
-                        new Vector2f(-shiftDist, -shiftDist),
-                        new Vector2f(-shiftDist, shiftDist),
-                        new Vector2f(shiftDist, shiftDist),
-                        new Vector2f(shiftDist, -shiftDist)
-                };
-                Vector3 pos = new Vector3(
-                        pPos.getX() + mid.x + offsets[loopingTime / 2].x,
-                        pPos.getY() + mid.y,
-                        pPos.getZ() + mid.z + offsets[loopingTime / 2].y);
-
-                Vector2f butt = offsets[loopingTime / 2];
-
-                pLevel.addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
-                                .setScale(0.0875f).setMaxAge(72)
-                                .setMover(new ParticleLerpMover(pos.x, pos.y, pos.z, pos.x, pos.y + 1.375, pos.z))
-                                .setColor(40, 140, 240, 48),
-                        pos.x, pos.y, pos.z,
-                        0, 0, 0);
-            }
-        }
+        generateCauldronSmokeParticles(pLevel, pPos, pEntity);
 
         AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, FuseryBlockEntity::getVar);
     }
@@ -442,5 +408,43 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     public void setRecipeByOutput(ItemStack pRecipeOutput) {
         itemHandler.setStackInSlot(SLOT_RECIPE, pRecipeOutput.copy());
         syncAndSave();
+    }
+
+    private static void generateCauldronSmokeParticles(Level pLevel, BlockPos pPos, FuseryBlockEntity pEntity) {
+        if(pEntity.remainingTorque + pEntity.remainingAnimus > 0 && pEntity.containedSlurry.getAmount() > 0) {
+            int loopingTime = (int)(pLevel.getGameTime() % 8);
+            if(loopingTime % 2 == 0) {
+                Vector3f mid = switch (pEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+                    case NORTH -> new Vector3f(0.25f, 0.125f, 0.25f);
+                    case EAST -> new Vector3f(0.75f, 0.125f, 0.25f);
+                    case SOUTH -> new Vector3f(0.75f, 0.125f, 0.75f);
+                    case WEST -> new Vector3f(0.25f, 0.125f, 0.75f);
+                    default -> new Vector3f(0, 0, 0);
+                };
+
+                int i = loopingTime / 2;
+
+                float shiftDist = 0.125f;
+                Vector2f[] offsets = {
+                        new Vector2f(-shiftDist, -shiftDist),
+                        new Vector2f(-shiftDist, shiftDist),
+                        new Vector2f(shiftDist, shiftDist),
+                        new Vector2f(shiftDist, -shiftDist)
+                };
+                Vector3 pos = new Vector3(
+                        pPos.getX() + mid.x + offsets[loopingTime / 2].x,
+                        pPos.getY() + mid.y,
+                        pPos.getZ() + mid.z + offsets[loopingTime / 2].y);
+
+                Vector2f butt = offsets[loopingTime / 2];
+
+                pLevel.addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                                .setScale(0.0875f).setMaxAge(72)
+                                .setMover(new ParticleLerpMover(pos.x, pos.y, pos.z, pos.x, pos.y + 1.375, pos.z))
+                                .setColor(40, 140, 240, 48),
+                        pos.x, pos.y, pos.z,
+                        0, 0, 0);
+            }
+        }
     }
 }

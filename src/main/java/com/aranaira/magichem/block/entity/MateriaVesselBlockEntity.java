@@ -142,15 +142,18 @@ public class MateriaVesselBlockEntity extends BlockEntity {
             return stack.getCount();
         } else if(stack.getItem() != currentMateriaType) {
             return 0;
+        } else if(currentStock >= getStorageLimit()) {
+            return 0;
         } else {
             int tryStock = currentStock + stack.getCount();
 
-            int increase = tryStock - getStorageLimit() >= 0 ?
-                    tryStock - getStorageLimit() :
-                    stack.getCount();
-
+            int increase = 0;
+            if(getStorageLimit() - tryStock >= 0) {
+                increase = stack.getCount();
+            } else {
+                increase = stack.getCount() - (tryStock - getStorageLimit());
+            }
             currentStock += increase;
-
             this.syncAndSave();
             return increase;
         }
