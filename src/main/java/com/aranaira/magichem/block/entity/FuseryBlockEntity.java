@@ -52,7 +52,7 @@ import java.util.function.Function;
 public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider {
     public static final int
             SLOT_COUNT = 22,
-            SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 20, SLOT_RECIPE = 21,
+            SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 21,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT  = 9,
             GRIME_BAR_WIDTH = 88, PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 88,

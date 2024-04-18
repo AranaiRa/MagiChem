@@ -44,7 +44,7 @@ import java.util.List;
 public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider {
     public static final int
         SLOT_COUNT = 14,
-        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 13,
+        SLOT_BOTTLES = 13, SLOT_BOTTLES_OUTPUT = 0,
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 9,
         GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 24,
