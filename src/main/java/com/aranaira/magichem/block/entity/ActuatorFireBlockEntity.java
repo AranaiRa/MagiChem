@@ -233,6 +233,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
+        nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
@@ -244,6 +245,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
+        this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
         this.powerLevel = nbt.getInt("powerLevel");
 
@@ -266,6 +268,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
