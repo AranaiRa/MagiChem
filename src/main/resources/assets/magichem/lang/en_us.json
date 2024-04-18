@@ -333,7 +333,9 @@
   "tooltip.magichem.gui.eldrin.water": "Eldrin Power (Water)",
 
   "tooltip.magichem.gui.actuator.efficiency": "How much the connected device's Efficiency is increased by when the Deluge Purifier is active.",
-  "tooltip.magichem.gui.actuator.eldrin": "How much appropriate Eldrin power is consumed during each processing cycle.",
+  "tooltip.magichem.gui.actuator.eldrin.line1": "How much appropriate Eldrin power is consumed during each processing cycle.",
+  "tooltip.magichem.gui.actuator.eldrin.line2a": "The device draws Eldrin power every ",
+  "tooltip.magichem.gui.actuator.eldrin.line2b": " seconds.",
   "tooltip.magichem.gui.actuator.energyusage": "How much the connected device's FE cost per second is adjusted by.",
   "tooltip.magichem.gui.actuator.operationtime": "How much the connected device's time to complete one operation is adjusted by.",
   "tooltip.magichem.gui.actuator.powerlevel": "Power Level",

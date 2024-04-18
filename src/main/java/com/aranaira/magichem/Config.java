@@ -184,7 +184,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_OPERATION_TIME = BUILDER
             .comment("The amount of time, in ticks, a Deluge Purifier goes between drawing more Eldrin power.")
-            .defineInRange("delugePurifierOperationTime", 25, 1, 200);
+            .defineInRange("delugePurifierOperationTime", 300, 1, 6000);
 
     private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_TANK_CAPACITY = BUILDER
             .comment("The amount of Water and Steam, in mB, the Deluge Purifier's internal tanks can hold.")
@@ -194,7 +194,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue INFERNO_ENGINE_OPERATION_TIME = BUILDER
             .comment("The amount of time, in ticks, an Inferno Engine goes between drawing more Eldrin power.")
-            .defineInRange("infernoEngineOperationTime", 25, 1, 200);
+            .defineInRange("infernoEngineOperationTime", 300, 1, 6000);
 
     private static final ForgeConfigSpec.IntValue INFERNO_ENGINE_TANK_CAPACITY = BUILDER
             .comment("The amount of Smoke, in mB, the Inferno Engine's internal tank can hold.")
@@ -204,7 +204,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_OPERATION_TIME = BUILDER
             .comment("The amount of time, in ticks, a Quake Refinery goes between drawing more Eldrin power.")
-            .defineInRange("quakeRefineryOperationTime", 25, 1, 200);
+            .defineInRange("quakeRefineryOperationTime", 300, 1, 6000);
 
     private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_SAND_CAPACITY = BUILDER
             .comment("The amount of sand that can be stored in the Quake Refinery's internal buffer.")

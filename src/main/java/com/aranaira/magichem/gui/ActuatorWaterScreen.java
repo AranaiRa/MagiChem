@@ -214,11 +214,19 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
+            float drawTime = Config.quakeRefineryOperationTime / 20.0f;
+
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.eldrin.water").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line1")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add((Component.empty())
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2a"))
+                    .append(Component.literal(String.format("%.1f", drawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2b"))
+            );
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }
