@@ -165,6 +165,7 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("storedXP", storedXP);
         super.saveAdditional(nbt);
     }
 
@@ -177,6 +178,8 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
         if(crystalNBT.contains("memory_crystal_fragment_mode")) {
             isPushMode = crystalNBT.getInt("memory_crystal_fragment_mode") == 1;
         }
+
+        storedXP = nbt.getInt("storedXP");
     }
 
     @Override
@@ -188,6 +191,8 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
         if(crystalNBT.contains("memory_crystal_fragment_mode")) {
             isPushMode = crystalNBT.getInt("memory_crystal_fragment_mode") == 1;
         }
+
+        nbt.putInt("storedXP", storedXP);
 
         return nbt;
     }
