@@ -58,7 +58,7 @@ public class ExperienceExchangerBlock extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be instanceof ExperienceExchangerBlockEntity eebe) {
-            eebe.ejectStack();
+            eebe.ejectStack(pPos);
         }
 
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);

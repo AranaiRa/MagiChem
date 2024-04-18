@@ -230,7 +230,7 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
         return pNewStack;
     }
 
-    public void ejectStack() {
+    public void ejectStack(BlockPos pPlayerPos) {
         ItemStack storedCrystal = itemHandler.getStackInSlot(0).copy();
         if(storedCrystal != ItemStack.EMPTY) {
             CompoundTag crystalNBT = storedCrystal.getOrCreateTag();
@@ -238,7 +238,7 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
             storedCrystal.setTag(crystalNBT);
             storedXP = 0;
 
-            level.addFreshEntity(new ItemEntity(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), storedCrystal));
+            level.addFreshEntity(new ItemEntity(level, pPlayerPos.getX(), pPlayerPos.getY(), pPlayerPos.getZ(), storedCrystal));
             itemHandler.setStackInSlot(0, ItemStack.EMPTY);
             syncAndSave();
         }

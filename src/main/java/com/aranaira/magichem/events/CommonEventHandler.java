@@ -103,12 +103,12 @@ public class CommonEventHandler {
         } else if(target instanceof ExperienceExchangerBlockEntity eebe) {
             if(!event.getLevel().isClientSide()) {
                 if (stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
-                    eebe.ejectStack();
+                    eebe.ejectStack(event.getEntity().getOnPos().above());
                     stack = eebe.setContainedStack(stack);
                     EquipmentSlot hand = event.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
                     event.getEntity().setItemSlot(hand, stack);
                 } else {
-                    eebe.ejectStack();
+                    eebe.ejectStack(event.getEntity().getOnPos().above());
                 }
             }
         }
