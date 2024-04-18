@@ -300,7 +300,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         if(pLevel.isClientSide()) {
             pEntity.handleAnimationDrivers();
         }
-        pEntity.remainingTorque = 30;
         AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, FuseryBlockEntity::getVar);
     }
 
