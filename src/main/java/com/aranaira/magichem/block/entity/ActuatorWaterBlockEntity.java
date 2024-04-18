@@ -335,7 +335,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         int powerDraw = entity.getEldrinPowerUsage();
 
         if(ownerCheck != null) {
-            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.WATER, Math.min(powerDraw, entity.remainingEldrinForSatisfaction), 1);
+            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.WATER, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
             entity.remainingEldrinForSatisfaction -= consumption;
 
             if(entity.remainingEldrinTime <= 0) {
