@@ -5,11 +5,14 @@ import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.gui.containers.slots.SingleItemSlot;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -19,6 +22,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2i;
 
 public class ActuatorEarthMenu extends AbstractContainerMenu {
 
@@ -111,23 +115,24 @@ public class ActuatorEarthMenu extends AbstractContainerMenu {
 
     public int getGrimeInTank() { return data.get(ActuatorEarthBlockEntity.DATA_GRIME); }
 
-    private static final int SLOT_INVENTORY_BEGIN = 0;
-    private static final int SLOT_INVENTORY_COUNT = 36;
+    private static final int
+            SLOT_INVENTORY_BEGIN = 0,
+            SLOT_INVENTORY_COUNT = 36;
+    Pair<Item, Integer>[] DIRSPEC = new Pair[]{
+            new Pair<>(Items.SAND, SLOT_INVENTORY_COUNT + ActuatorEarthBlockEntity.SLOT_SAND)
+    };
+    Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
+            new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
+    };
+    Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
+            new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
+    };
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        ItemStack targetStack = slots.get(pIndex).getItem();
-        ItemStack targetStackCopy = targetStack.copy();
+        ItemStack result = InventoryHelper.quickMoveStackPriorityHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY);
 
-        //If player inventory
-        if(pIndex >= SLOT_INVENTORY_BEGIN && pIndex < SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT) {
-            //try to move to input slots
-            if(moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT - 1, false)) {
-                slots.get(pIndex).set(targetStackCopy);
-                return ItemStack.EMPTY;
-            } else
-                return targetStack;
-        }
+        slots.get(pIndex).set(result);
 
         return getSlot(pIndex).getItem();
     }

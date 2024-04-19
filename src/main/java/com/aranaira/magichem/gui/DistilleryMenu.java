@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
@@ -7,17 +8,21 @@ import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.joml.Vector2i;
 
 public class DistilleryMenu extends AbstractContainerMenu {
 
@@ -87,79 +92,25 @@ public class DistilleryMenu extends AbstractContainerMenu {
 
     private static final int SLOT_INVENTORY_BEGIN = 0;
     private static final int SLOT_INVENTORY_COUNT = 36;
-    private static final int SLOT_BOTTLES = SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_BOTTLES;
-    private static final int SLOT_INPUT_BEGIN = SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_INPUT_START;
-    private static final int SLOT_OUTPUT_BEGIN = SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_OUTPUT_START;
+
+    Pair<Item, Integer>[] DIRSPEC = new Pair[]{
+            new Pair(Items.GLASS_BOTTLE, SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_BOTTLES)
+    };
+    Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
+            new Vector2i( //Input slots
+                    SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_INPUT_START,
+                    SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_INPUT_START + DistilleryBlockEntity.SLOT_INPUT_COUNT),
+            new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
+    };
+    Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
+            new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
+    };
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        ItemStack targetStack = slots.get(pIndex).getItem();
-        ItemStack targetStackCopy = new ItemStack(slots.get(pIndex).getItem().getItem(), slots.get(pIndex).getItem().getCount());
-        CompoundTag nbt = slots.get(pIndex).getItem().getTag();
-        if(nbt != null) {
-            targetStack.setTag(nbt);
-            targetStackCopy.setTag(nbt);
-        }
+        ItemStack result = InventoryHelper.quickMoveStackPriorityHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY);
 
-        //If player inventory
-        if(pIndex >= SLOT_INVENTORY_BEGIN && pIndex < SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT) {
-            //try to move to bottle slot first
-            if(targetStack.getItem() == Items.GLASS_BOTTLE) {
-                ItemStack bottleStack = slots.get(SLOT_BOTTLES).getItem();
-                if(bottleStack.getCount() + targetStack.getCount() > 64) {
-                    int amount = 64 - bottleStack.getCount();
-                    bottleStack.grow(amount);
-                    targetStack.shrink(amount);
-                    slots.get(pIndex).set(targetStack);
-                    return ItemStack.EMPTY;
-                }
-                else if(bottleStack.getCount() == 0) {
-                    slots.get(SLOT_BOTTLES).set(targetStackCopy);
-                    slots.get(pIndex).set(ItemStack.EMPTY);
-                    return ItemStack.EMPTY;
-                }
-                else {
-                    bottleStack.grow(targetStack.getCount());
-                    targetStack = ItemStack.EMPTY;
-                    slots.get(pIndex).set(targetStack);
-                    return targetStack;
-                }
-            }
-            //try to move to input slots
-            moveItemStackTo(targetStackCopy, SLOT_INPUT_BEGIN, SLOT_INPUT_BEGIN + DistilleryBlockEntity.SLOT_INPUT_COUNT, false);
-            slots.get(pIndex).set(targetStackCopy);
-            return ItemStack.EMPTY;
-        }
-        //If bottle slot
-        if(pIndex == SLOT_BOTTLES) {
-            //try to move to player inventory
-            moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
-            slots.get(pIndex).set(targetStackCopy);
-            return ItemStack.EMPTY;
-        }
-        //If input slots
-        if(pIndex >= SLOT_INPUT_BEGIN && pIndex < SLOT_INPUT_BEGIN + DistilleryBlockEntity.SLOT_INPUT_COUNT) {
-            moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false);
-            slots.get(pIndex).set(targetStackCopy);
-            return ItemStack.EMPTY;
-        }
-        //If output slots
-        if(pIndex >= SLOT_OUTPUT_BEGIN && pIndex < SLOT_OUTPUT_BEGIN + DistilleryBlockEntity.SLOT_OUTPUT_COUNT) {
-            //make sure there's enough bottles first, then try to move to player inventory
-            int itemsToRemove = targetStackCopy.getCount();
-            int bottles = slots.get(SLOT_BOTTLES).getItem().getCount();
-            if(itemsToRemove >= bottles) {
-                targetStack.setCount(bottles);
-                targetStackCopy.shrink(bottles);
-                if(moveItemStackTo(targetStack, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false))
-                    slots.get(SLOT_BOTTLES).set(ItemStack.EMPTY);
-            } else {
-                if(moveItemStackTo(targetStackCopy, SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_BEGIN + SLOT_INVENTORY_COUNT, false))
-                    slots.get(SLOT_BOTTLES).getItem().shrink(itemsToRemove);
-            }
-            slots.get(pIndex).set(targetStackCopy);
-            return ItemStack.EMPTY;
-        }
+        slots.get(pIndex).set(result);
 
         return getSlot(pIndex).getItem();
     }
