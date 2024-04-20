@@ -383,9 +383,12 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             int mx = mouseX - (x+TOOLTIP_RECIPE_ZONE_X);
             int my = mouseY - (y+TOOLTIP_RECIPE_ZONE_Y);
             int id = ((my / 18) * 3) + ((mx / 18) % 3);
-            if(id >= 0 && id < 16) {
-                ItemStack stackUnderMouse = filteredRecipeOutputs.get(id);
-                tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            
+            if(id < filteredRecipeOutputs.size()) {
+                if (id >= 0 && id < 16) {
+                    ItemStack stackUnderMouse = filteredRecipeOutputs.get(id);
+                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                }
             }
         }
 
