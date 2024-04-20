@@ -31,6 +31,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
             SYMBOL_X = 36, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
             POWER_X = 22, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
             GRIME_X = 56, GRIME_Y = 15, GRIME_U = 176, GRIME_V = 40, GRIME_W = 4,
+            RAREFIED_GRIME_X = 56, RAREFIED_GRIME_Y = 15, RAREFIED_GRIME_U = 180, RAREFIED_GRIME_V = 40, RAREFIED_GRIME_W = 1,
             SAND_X = 106, SAND_Y = 15, SAND_W = 4,
             TOOLTIP_POWER_X = 20, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
             TOOLTIP_GRIME_X = 55, TOOLTIP_GRIME_Y = 14, TOOLTIP_GRIME_W = 6, TOOLTIP_GRIME_H = 35,
@@ -90,6 +91,12 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         if(menu.getGrimeInTank() > 0) {
             int grimeH = ActuatorEarthBlockEntity.getScaledGrime(menu.getGrimeInTank());
             gui.blit(TEXTURE, x + GRIME_X, y + GRIME_Y + FLUID_GAUGE_H - grimeH, GRIME_U, GRIME_V, GRIME_W, grimeH, 256, 256);
+        }
+
+        //rarefied grime gauge
+        if(menu.getRarefiedGrimeInTank() > 0) {
+            int rarefiedGrimeH = ActuatorEarthBlockEntity.getScaledRarefiedGrime(menu.getRarefiedGrimeInTank());
+            gui.blit(TEXTURE, x + RAREFIED_GRIME_X, y + RAREFIED_GRIME_Y + FLUID_GAUGE_H - rarefiedGrimeH, RAREFIED_GRIME_U, RAREFIED_GRIME_V, RAREFIED_GRIME_W, rarefiedGrimeH, 256, 256);
         }
 
         //sand gauge

@@ -450,7 +450,15 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         return (float)pGrimeAmount * 100f / Config.quakeRefineryGrimeCapacity;
     }
 
+    public static float getRarefiedGrimePercent(int pRarefiedGrimeAmount) {
+        return (float)pRarefiedGrimeAmount * 100f / Config.quakeRefineryGrimeCapacity;
+    }
+
     public static int getScaledGrime(int pGrimeAmount) {
         return pGrimeAmount * ActuatorEarthScreen.FLUID_GAUGE_H / Config.quakeRefineryGrimeCapacity;
+    }
+
+    public static int getScaledRarefiedGrime(int pRarefiedGrimeAmount) {
+        return pRarefiedGrimeAmount * ActuatorEarthScreen.FLUID_GAUGE_H / Config.quakeRefineryGrimeCapacity;
     }
 }

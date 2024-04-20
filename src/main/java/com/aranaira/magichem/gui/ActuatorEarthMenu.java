@@ -111,6 +111,8 @@ public class ActuatorEarthMenu extends AbstractContainerMenu {
 
     public int getGrimeInTank() { return data.get(ActuatorEarthBlockEntity.DATA_GRIME); }
 
+    public int getRarefiedGrimeInTank() { return data.get(ActuatorEarthBlockEntity.DATA_RAREFIED_GRIME); }
+
     private static final int
             SLOT_INVENTORY_BEGIN = 0,
             SLOT_INVENTORY_COUNT = 36;
