@@ -5,6 +5,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -143,6 +144,10 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
                 mouseY >= y+ TOOLTIP_GRIME_Y && mouseY <= y+ TOOLTIP_GRIME_Y + TOOLTIP_GRIME_H) {
 
             float grimePercent = ((float)menu.getGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
+            int grimeWasteCount = menu.getGrimeInTank() / Config.grimePerWaste;
+            float rarefiedPercent = ((float)menu.getRarefiedGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
+            int rarefiedWasteCount = menu.getRarefiedGrimeInTank() / Config.grimePerWaste;
+
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1").withStyle(ChatFormatting.GOLD))
                     .append(": ")
@@ -152,7 +157,25 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(String.format("%.1f", grimePercent)+"%")).withStyle(ChatFormatting.DARK_AQUA));
+            );
+            tooltipContents.add(Component.empty()
+                    .append(Component.literal("   ... ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(String.format("%.1f", grimePercent)+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ( ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(grimeWasteCount + " ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("x ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.translatable("item.magichem.alchemical_waste").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY))
+            );
+            tooltipContents.add(Component.empty()
+                    .append(Component.literal("   ... ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(String.format("%.1f", rarefiedPercent)+"%").withStyle(ChatFormatting.GOLD))
+                    .append(Component.literal("  ( ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(rarefiedWasteCount + " ").withStyle(ChatFormatting.GOLD))
+                    .append(Component.literal("x ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.translatable("item.magichem.rarefied_waste").withStyle(ChatFormatting.GOLD))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY))
+            );
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
