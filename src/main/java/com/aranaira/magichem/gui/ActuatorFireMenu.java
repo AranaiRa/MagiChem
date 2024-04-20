@@ -1,6 +1,5 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -119,13 +117,14 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
     Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
+    Pair<Integer, Vector2i> SPEC_CONTAINER = null;
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        ItemStack result = InventoryHelper.quickMoveStackPriorityHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY);
+        ItemStack result = InventoryHelper.quickMoveStackHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY, SPEC_CONTAINER);
 
         slots.get(pIndex).set(result);
 
-        return getSlot(pIndex).getItem();
+        return ItemStack.EMPTY;
     }
 }

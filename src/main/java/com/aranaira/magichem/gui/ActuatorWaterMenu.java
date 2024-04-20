@@ -106,13 +106,14 @@ public class ActuatorWaterMenu extends AbstractContainerMenu {
     Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
+    Pair<Integer, Vector2i> SPEC_CONTAINER = null;
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        ItemStack result = InventoryHelper.quickMoveStackPriorityHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY);
+        ItemStack result = InventoryHelper.quickMoveStackHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY, SPEC_CONTAINER);
 
         slots.get(pIndex).set(result);
 
-        return getSlot(pIndex).getItem();
+        return ItemStack.EMPTY;
     }
 }

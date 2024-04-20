@@ -22,10 +22,13 @@ public class InventoryHelper {
      * @param pInventoryIncomingSpec If the clicked slot falls outside the inventory range, this determines a prioritized order of slots to try to insert into.
      *                               For each entry, X is the first index and Y is the final index.
      *                               NONE of these should overlap, and they should ONLY be within the inventory ID range.
+     * @param pContainerSpec The first parameter defines a slot to use as containers for extraction.
+     *                       The second parameter defines a range of slots that can only be extracted if sufficient container items are available.
      * @return Ideally ItemStack.EMPTY if everything worked correctly.
      */
-    public static ItemStack quickMoveStackPriorityHandler(int pTargetSlot, NonNullList<Slot> pSlots, Pair<Item, Integer>[] pDirectSpec, Vector2i pInventoryRange, Vector2i[] pInventoryOutgoingSpec, Vector2i[] pInventoryIncomingSpec) {
+    public static ItemStack quickMoveStackHandler(int pTargetSlot, NonNullList<Slot> pSlots, Pair<Item, Integer>[] pDirectSpec, Vector2i pInventoryRange, Vector2i[] pInventoryOutgoingSpec, Vector2i[] pInventoryIncomingSpec, Pair<Integer, Vector2i> pContainerSpec) {
         ItemStack modStack = pSlots.get(pTargetSlot).getItem();
+        boolean doContainerLimiting = pContainerSpec != null;
 
         //First we check to see if the slot was within the provided inventory range.
         if(pTargetSlot >= pInventoryRange.x && pTargetSlot < pInventoryRange.y) {
@@ -53,26 +56,53 @@ public class InventoryHelper {
                 if(modStack.isEmpty())
                     break;
             }
-            return modStack;
         }
         //Next we check to see if the slot was outside the provided inventory range.
         else {
-            for(Vector2i spec : pInventoryIncomingSpec) {
-                if(isInRange(spec.x, spec.y, pTargetSlot)) {
-                    Pair<Vector2i, Vector2i> safeRange = getSafeRange(spec.x, spec.y, pTargetSlot);
-                    if(safeRange.getFirst() != null)
-                        moveItemStackTo(pSlots, modStack, safeRange.getFirst().x, safeRange.getFirst().y, false);
-                    if(safeRange.getSecond() != null)
-                        moveItemStackTo(pSlots, modStack, safeRange.getSecond().x, safeRange.getSecond().y, false);
-                } else {
-                    moveItemStackTo(pSlots, modStack, spec.x, spec.y, false);
+            if(doContainerLimiting && isInRange(pContainerSpec.getSecond().x, pContainerSpec.getSecond().y, pTargetSlot)) {
+                ItemStack containerStack = pSlots.get(pContainerSpec.getFirst()).getItem();
+                ItemStack limitedStack = modStack.copy();
+                limitedStack.setCount(Math.min(containerStack.getCount(), limitedStack.getCount()));
+                int pre = limitedStack.getCount();
+
+                for(Vector2i spec : pInventoryIncomingSpec) {
+                    if(isInRange(spec.x, spec.y, pTargetSlot)) {
+                        Pair<Vector2i, Vector2i> safeRange = getSafeRange(spec.x, spec.y, pTargetSlot);
+                        if(safeRange.getFirst() != null)
+                            moveItemStackTo(pSlots, limitedStack, safeRange.getFirst().x, safeRange.getFirst().y, false);
+                        if(safeRange.getSecond() != null)
+                            moveItemStackTo(pSlots, limitedStack, safeRange.getSecond().x, safeRange.getSecond().y, false);
+                    } else {
+                        moveItemStackTo(pSlots, limitedStack, spec.x, spec.y, false);
+                    }
+
+                    if(limitedStack.isEmpty()) {
+                        break;
+                    }
                 }
 
-                if(modStack.isEmpty())
-                    break;
+                int post = limitedStack.getCount();
+                containerStack.shrink(pre - post);
+                modStack.shrink(pre - post);
+                return modStack;
+            } else {
+                for (Vector2i spec : pInventoryIncomingSpec) {
+                    if (isInRange(spec.x, spec.y, pTargetSlot)) {
+                        Pair<Vector2i, Vector2i> safeRange = getSafeRange(spec.x, spec.y, pTargetSlot);
+                        if (safeRange.getFirst() != null)
+                            moveItemStackTo(pSlots, modStack, safeRange.getFirst().x, safeRange.getFirst().y, false);
+                        if (safeRange.getSecond() != null)
+                            moveItemStackTo(pSlots, modStack, safeRange.getSecond().x, safeRange.getSecond().y, false);
+                    } else {
+                        moveItemStackTo(pSlots, modStack, spec.x, spec.y, false);
+                    }
+
+                    if (modStack.isEmpty())
+                        break;
+                }
             }
-            return modStack;
         }
+        return ItemStack.EMPTY;
     }
 
     /**
