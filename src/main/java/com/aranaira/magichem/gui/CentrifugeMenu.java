@@ -86,19 +86,19 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     private static final int SLOT_INVENTORY_BEGIN = 0;
     private static final int SLOT_INVENTORY_COUNT = 36;
 
-    Pair<Item, Integer>[] DIRSPEC = new Pair[]{
+    private static final Pair<Item, Integer>[] DIRSPEC = new Pair[]{
             new Pair(Items.GLASS_BOTTLE, SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_BOTTLES)
     };
-    Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
+    private static final Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i( //Input slots
                     SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_INPUT_START,
                     SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_INPUT_START + CentrifugeBlockEntity.SLOT_INPUT_COUNT),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
-    Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
+    private static final Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
-    Pair<Integer, Vector2i> SPEC_CONTAINER = new Pair<>(SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_BOTTLES, new Vector2i(
+    private static final Pair<Integer, Vector2i> SPEC_CONTAINER = new Pair<>(SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, new Vector2i(
             SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_OUTPUT_START,
             SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_OUTPUT_START + CentrifugeBlockEntity.SLOT_OUTPUT_COUNT
     ));
