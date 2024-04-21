@@ -1,0 +1,6 @@
+{
+  "parent": "magichem:block/actuator_earth",
+  "textures": {
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
+  }
+}

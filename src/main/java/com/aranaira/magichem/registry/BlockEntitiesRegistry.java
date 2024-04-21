@@ -70,6 +70,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(ActuatorEarthBlockEntity::new, BlockRegistry.ACTUATOR_EARTH.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<ActuatorAirBlockEntity>> ACTUATOR_AIR_BE = BLOCK_ENTITIES.register("actuator_air", () ->
+            BlockEntityType.Builder.of(ActuatorAirBlockEntity::new, BlockRegistry.ACTUATOR_AIR.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<BaseActuatorRouterBlockEntity>> BASE_ACTUATOR_ROUTER_BE = BLOCK_ENTITIES.register("actuator_router", () ->
             BlockEntityType.Builder.of(BaseActuatorRouterBlockEntity::new, BlockRegistry.BASE_ACTUATOR_ROUTER.get()).build(null)
     );
@@ -84,6 +88,10 @@ public class BlockEntitiesRegistry {
 
     public static final RegistryObject<BlockEntityType<ActuatorEarthRouterBlockEntity>> ACTUATOR_EARTH_ROUTER_BE = BLOCK_ENTITIES.register("actuator_earth_router", () ->
             BlockEntityType.Builder.of(ActuatorEarthRouterBlockEntity::new, BlockRegistry.ACTUATOR_EARTH_ROUTER.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<ActuatorAirRouterBlockEntity>> ACTUATOR_AIR_ROUTER_BE = BLOCK_ENTITIES.register("actuator_air_router", () ->
+            BlockEntityType.Builder.of(ActuatorAirRouterBlockEntity::new, BlockRegistry.ACTUATOR_AIR_ROUTER.get()).build(null)
     );
 
     public static final RegistryObject<BlockEntityType<ExperienceExchangerBlockEntity>> EXPERIENCE_EXCHANGER_BE = BLOCK_ENTITIES.register("experience_exchanger", () ->

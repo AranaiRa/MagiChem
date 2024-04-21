@@ -1,0 +1,24 @@
+{
+	"parent": "forge:item/default",
+	"loader": "forge:composite",
+	"textures": {
+		"particle": "magichem:block/breakparticle_arcanesandstone"
+	},
+	"children": {
+		"crystal": {
+			"loader": "forge:obj",
+			"automatic_culling": true,
+			"shade_quads": true,
+			"flip_v": true,
+			"emissive_ambient": false,
+			"model": "magichem:models/obj/actuator_air_inventory.obj"
+		}
+	},
+	"display": {
+		"gui": {
+			"rotation": [29, 315, 0],
+			"scale": [0.45, 0.45, 0.45],
+			"translation": [1, -3, 0]
+		}
+	}
+}

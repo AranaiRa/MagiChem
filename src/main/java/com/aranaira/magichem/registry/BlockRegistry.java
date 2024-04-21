@@ -88,6 +88,11 @@ public class BlockRegistry {
                     .strength(0.5f).noOcclusion())
     );
 
+    public static final RegistryObject<Block> ACTUATOR_AIR = registerBlock("actuator_air",
+            () -> new ActuatorAirBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).noOcclusion())
+    );
+
     public static final RegistryObject<Block> BASE_ACTUATOR_ROUTER = registerBlock("base_actuator_router",
             () -> new BaseActuatorRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())
@@ -105,6 +110,11 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> ACTUATOR_EARTH_ROUTER = registerBlock("actuator_earth_router",
             () -> new ActuatorEarthRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion())
+    );
+
+    public static final RegistryObject<Block> ACTUATOR_AIR_ROUTER = registerBlock("actuator_air_router",
+            () -> new ActuatorAirRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion())
     );
 

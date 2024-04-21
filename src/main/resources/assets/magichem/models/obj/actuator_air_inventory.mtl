@@ -1,0 +1,8 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 2
+
+newmtl GALE_PRESSURIZER
+map_Kd magichem:block/actuator_air
+
+newmtl INFERNO_ENGINE
+map_Kd magichem:block/actuator_fire
