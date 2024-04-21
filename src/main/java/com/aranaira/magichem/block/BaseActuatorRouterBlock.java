@@ -1,9 +1,6 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.routers.ActuatorEarthRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.ActuatorFireRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -39,7 +36,10 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
 
             VOXEL_SHAPE_EARTH_CAP_NORTH, VOXEL_SHAPE_EARTH_POST_NW_NORTH, VOXEL_SHAPE_EARTH_POST_NE_NORTH,
             VOXEL_SHAPE_EARTH_POST_SW_NORTH, VOXEL_SHAPE_EARTH_POST_SE_NORTH, VOXEL_SHAPE_EARTH_HOUSING_NORTH,
-            VOXEL_SHAPE_EARTH_AGGREGATE_NORTH, VOXEL_SHAPE_EARTH_AGGREGATE_EAST, VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH, VOXEL_SHAPE_EARTH_AGGREGATE_WEST;
+            VOXEL_SHAPE_EARTH_AGGREGATE_NORTH, VOXEL_SHAPE_EARTH_AGGREGATE_EAST, VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH, VOXEL_SHAPE_EARTH_AGGREGATE_WEST,
+
+            VOXEL_SHAPE_AIR_SIPHON_BASE, VOXEL_SHAPE_AIR_SIPHON_CONNECTOR, VOXEL_SHAPE_AIR_SIPHON, VOXEL_SHAPE_AIR_TANK, VOXEL_SHAPE_AIR_TANK_MOUNT,
+            VOXEL_SHAPE_AIR_AGGREGATE_NORTH, VOXEL_SHAPE_AIR_AGGREGATE_EAST, VOXEL_SHAPE_AIR_AGGREGATE_SOUTH, VOXEL_SHAPE_AIR_AGGREGATE_WEST;
 
     @Nullable
     @Override
@@ -84,6 +84,11 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
                 if (facing == Direction.EAST) return VOXEL_SHAPE_EARTH_AGGREGATE_EAST;
                 if (facing == Direction.SOUTH) return VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH;
                 if (facing == Direction.WEST) return VOXEL_SHAPE_EARTH_AGGREGATE_WEST;
+            } else if(be instanceof ActuatorAirRouterBlockEntity) {
+                if (facing == Direction.NORTH) return VOXEL_SHAPE_AIR_AGGREGATE_NORTH;
+                if (facing == Direction.EAST) return VOXEL_SHAPE_AIR_AGGREGATE_EAST;
+                if (facing == Direction.SOUTH) return VOXEL_SHAPE_AIR_AGGREGATE_SOUTH;
+                if (facing == Direction.WEST) return VOXEL_SHAPE_AIR_AGGREGATE_WEST;
             }
         }
         return super.getShape(pState, pLevel, pPos, pContext);
@@ -208,5 +213,39 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_SW_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_POST_SE_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_HOUSING_NORTH, 3));
+
+        VOXEL_SHAPE_AIR_SIPHON_BASE      = Block.box(6, 0, 1, 10, 1, 5);
+        VOXEL_SHAPE_AIR_SIPHON_CONNECTOR = Block.box(5.5,6,6,7.5,10,10);
+        VOXEL_SHAPE_AIR_SIPHON           = Block.box(7,0,2,9,9,10);
+        VOXEL_SHAPE_AIR_TANK             = Block.box(4.818,1,7.318,11.182,15,13.682);
+        VOXEL_SHAPE_AIR_TANK_MOUNT       = Block.box(5.5,0,8,10.5,1,13);
+
+        VOXEL_SHAPE_AIR_AGGREGATE_NORTH = Shapes.or(
+                VOXEL_SHAPE_AIR_SIPHON_BASE,
+                VOXEL_SHAPE_AIR_SIPHON_CONNECTOR,
+                VOXEL_SHAPE_AIR_SIPHON,
+                VOXEL_SHAPE_AIR_TANK,
+                VOXEL_SHAPE_AIR_TANK_MOUNT);
+
+        VOXEL_SHAPE_AIR_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON_BASE, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON_CONNECTOR, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_TANK, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_TANK_MOUNT, 1));
+
+        VOXEL_SHAPE_AIR_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON_BASE, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON_CONNECTOR, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_TANK, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_TANK_MOUNT, 2));
+
+        VOXEL_SHAPE_AIR_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON_BASE, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON_CONNECTOR, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_SIPHON, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_TANK, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_TANK_MOUNT, 3));
     }
 }

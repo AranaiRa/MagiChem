@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.routers.ActuatorAirRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorEarthRouterBlockEntity;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,7 @@ public class ActuatorAirRouterBlock extends BaseActuatorRouterBlock implements I
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new ActuatorEarthRouterBlockEntity(pPos, pState);
+        return new ActuatorAirRouterBlockEntity(pPos, pState);
     }
 
     @Override
