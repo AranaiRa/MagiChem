@@ -218,7 +218,7 @@ public class ActuatorAirBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_EARTH_BE.get()) {
+        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_AIR_BE.get()) {
             return ActuatorAirBlockEntity::tick;
         }
 

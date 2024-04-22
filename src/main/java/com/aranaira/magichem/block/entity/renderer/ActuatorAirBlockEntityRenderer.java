@@ -21,9 +21,6 @@ import java.util.Random;
 public class ActuatorAirBlockEntityRenderer implements BlockEntityRenderer<ActuatorAirBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_FANS = new ResourceLocation(MagiChemMod.MODID, "obj/special/actuator_air_fan");
 
-    public static final float
-        WIGGLE_INTENSITY_SIDE = 0.025f, WIGGLE_INTENSITY_CENTER = 0.0125f;
-
     public ActuatorAirBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
     }
@@ -38,19 +35,10 @@ public class ActuatorAirBlockEntityRenderer implements BlockEntityRenderer<Actua
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        pBlockEntity.handleAnimationDrivers();
-
-//        float mShift = random.nextFloat() * WIGGLE_INTENSITY_CENTER * pBlockEntity.getFan();
-//        float sShift = random.nextFloat() * WIGGLE_INTENSITY_SIDE * pBlockEntity.getPipeVibrationIntensity();
-
-        if(Minecraft.getInstance().isPaused()) {
-//            mShift = 0;
-//            sShift = 0;
-        }
-
         pPoseStack.pushPose();
         Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         if(dir == Direction.NORTH) {
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(pBlockEntity.fanAngle + pPartialTick * (pBlockEntity.fanSpeed)));
             pPoseStack.translate(0.5f, 0.59375f, 0.65625f);
         } else if(dir == Direction.EAST) {
             pPoseStack.translate(0.34375f, 0.59375f, 0.5f);
@@ -60,6 +48,7 @@ public class ActuatorAirBlockEntityRenderer implements BlockEntityRenderer<Actua
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
         } else if(dir == Direction.WEST) {
             pPoseStack.translate(0.65625f, 0.59375f, 0.5f);
+            pPoseStack.mulPose(Axis.ZN.rotationDegrees(pBlockEntity.fanAngle + pPartialTick * (pBlockEntity.fanSpeed)));
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
         }
 

@@ -12,6 +12,7 @@ import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleOrbitMover;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -51,14 +52,15 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
             DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3, DATA_STEAM = 4,
             FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2;
     private static final float
-            FAN_ACCELERATION = 0.002f;
+            FAN_ACCELERATION_RATE = 0.09f, FAN_TOP_SPEED = 24.0f;
     private int
             powerLevel = 1,
             remainingEldrinTime = -1,
             flags;
     private float
-            remainingEldrinForSatisfaction,
-            fanSpeed = 0;
+            remainingEldrinForSatisfaction;
+    public float
+            fanAngle = 0, fanSpeed = 0;
     protected ContainerData data;
     private FluidStack containedSmoke, containedSteam;
     private final LazyOptional<IFluidHandler> fluidHandler;
@@ -247,68 +249,53 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
         return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
     }
 
-    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        if(t instanceof ActuatorAirBlockEntity afbe) {
+    public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, T t) {
+        if(t instanceof ActuatorAirBlockEntity aabe) {
+            if(pLevel.isClientSide()) {
+                aabe.handleAnimationDrivers();
+            }
 
-            float smoke = afbe.data.get(DATA_SMOKE);
-            if(smoke > 0) {
-                float mappedSmokePercent = Math.max(0, ((smoke / Config.infernoEngineTankCapacity) - 0.5f) * 2);
-                if (mappedSmokePercent > 0f) {
-                    int spawnModulus = 5 - (int) Math.floor(mappedSmokePercent * 4);
-                    Vector3f mid = new Vector3f(0f, 1.6875f, 0f);
-                    Vector3f left = new Vector3f(0f, 2f, 0f);
-                    Vector3f right = new Vector3f(0f, 2f, 0f);
+            //particle work goes here
+            if (aabe.remainingEldrinTime > 0) {
+                int spawnModulus = 3;
+                Vector3f mid = new Vector3f(0f, 1.125f, 0f);
 
-                    Direction dir = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                    if(dir == Direction.NORTH) {
-                        mid.x = 0.5f;
-                        mid.z = 0.1875f;
-                        left.x = 0.6875f;
-                        left.z = 0.0625f;
-                        right.x = 0.3125f;
-                        right.z = 0.0625f;
-                    }
-                    if(dir == Direction.EAST) {
-                        mid.x = 0.8125f;
-                        mid.z = 0.5f;
-                        left.x = 0.9375f;
-                        left.z = 0.3125f;
-                        right.x = 0.9375f;
-                        right.z = 0.6875f;
-                    }
-                    else if(dir == Direction.SOUTH) {
-                        mid.x = 0.5f;
-                        mid.z = 0.8125f;
-                        left.x = 0.3125f;
-                        left.z = 0.9375f;
-                        right.x = 0.6875f;
-                        right.z = 0.9375f;
-                    }
-                    else if(dir == Direction.WEST) {
-                        mid.x = 0.1875f;
-                        mid.z = 0.5f;
-                        left.x = 0.0625f;
-                        left.z = 0.6875f;
-                        right.x = 0.0625f;
-                        right.z = 0.3125f;
-                    }
+                Direction dir = pBlockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                if(dir == Direction.NORTH) {
+                    mid.x = 0.5f;
+                    mid.z = 0.6563f;
+                }
+                if(dir == Direction.EAST) {
+                    mid.x = 0.3437f;
+                    mid.z = 0.5f;
+                }
+                else if(dir == Direction.SOUTH) {
+                    mid.x = 0.5f;
+                    mid.z = 0.3437f;
+                }
+                else if(dir == Direction.WEST) {
+                    mid.x = 0.6563f;
+                    mid.z = 0.5f;
+                }
 
-                    if (level.getGameTime() % spawnModulus == 0) {
-                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.10f),
-                        pos.getX() + mid.x, pos.getY() + mid.y, pos.getZ() + mid.z,
-                        0, 0.04f, 0);
+                pLevel.addParticle(new MAParticleType(ParticleInit.AIR_ORBIT.get())
+                                .setMaxAge(45).setScale(0.05f).setColor(32, 32, 32, 128)
+                                .setMover(new ParticleOrbitMover(
+                                        pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
+                                        0.875f, 0.0225f, 0.0001f
+                                )),
+                        pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
+                        0, 0, 0);
 
-                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.05f),
-                        pos.getX() + left.x, pos.getY() + left.y, pos.getZ() + left.z,
-                        0, 0.03f, 0);
-
-                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                        .setPhysics(true).setColor(0.2f, 0.2f, 0.2f).setScale(0.05f),
-                        pos.getX() + right.x, pos.getY() + right.y, pos.getZ() + right.z,
-                        0, 0.03f, 0);
-                    }
+                if (pLevel.getGameTime() % spawnModulus == 0) {
+                    pLevel.addParticle(new MAParticleType(ParticleInit.AIR_ORBIT.get())
+                                    .setMaxAge(30).setScale(0.01f).setColor(64, 64, 64, 196)
+                                    .setMover(new ParticleOrbitMover(
+                                            pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
+                                            -0.4375f, 0.0225f, 0.0001f
+                                    )),
+                            pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
+                            0, 0, 0);
                 }
             }
         }
@@ -348,7 +335,13 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     }
 
     public void handleAnimationDrivers() {
-
+        if(remainingEldrinTime >= 0) {
+            if(fanSpeed == 0) fanSpeed += FAN_ACCELERATION_RATE * 4;
+            fanSpeed = Math.min(fanSpeed + FAN_ACCELERATION_RATE, FAN_TOP_SPEED);
+        } else {
+            fanSpeed = Math.max(fanSpeed - FAN_ACCELERATION_RATE * 3.0f, 0f);
+        }
+        fanAngle = (fanAngle + fanSpeed % 360.0f);
     }
 
     @Override
