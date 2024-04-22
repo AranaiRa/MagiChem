@@ -1,11 +1,16 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
+import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -26,11 +32,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -149,11 +161,48 @@ public class ActuatorAirBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof ActuatorAirBlockEntity aabe) {
-                NetworkHooks.openScreen((ServerPlayer)player, (ActuatorAirBlockEntity)entity, pos);
+            ItemStack heldItem = player.getItemInHand(hand);
+            LazyOptional<IFluidHandlerItem> fluidCap = heldItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+
+            if (fluidCap.isPresent()) {
+                BlockEntity be = level.getBlockEntity(pos);
+                if(be instanceof ActuatorAirBlockEntity aabe) {
+                    fluidCap.ifPresent(cap -> {
+                        FluidStack fluid = cap.getFluidInTank(0);
+
+                        if(fluid.getFluid() == FluidRegistry.SMOKE.get()) {
+                            int capacity = aabe.fill(new FluidStack(FluidRegistry.SMOKE.get(), Config.galePressurizerTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                            FluidStack drainedFS;
+                            if(player.isCreative())
+                                drainedFS = new FluidStack(FluidRegistry.SMOKE.get(), fluid.getAmount());
+                            else
+                                drainedFS = cap.drain(new FluidStack(FluidRegistry.SMOKE.get(), capacity), IFluidHandler.FluidAction.EXECUTE);
+                            aabe.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+
+                            if(player.getItemInHand(hand).getItem() == ItemRegistry.SMOKE_BUCKET.get())
+                                player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+                        }
+                        else if(fluid.getFluid() == FluidRegistry.STEAM.get()) {
+                            int capacity = aabe.fill(new FluidStack(FluidRegistry.STEAM.get(), Config.galePressurizerTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                            FluidStack drainedFS;
+                            if(player.isCreative())
+                                drainedFS = new FluidStack(FluidRegistry.STEAM.get(), fluid.getAmount());
+                            else
+                                drainedFS = cap.drain(new FluidStack(FluidRegistry.STEAM.get(), capacity), IFluidHandler.FluidAction.EXECUTE);
+                            aabe.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+
+                            if(player.getItemInHand(hand).getItem() == ItemRegistry.STEAM_BUCKET.get())
+                                player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+                        }
+                    });
+                }
             } else {
-                throw new IllegalStateException("ActuatorAirBlockEntity container provider is missing!");
+                BlockEntity entity = level.getBlockEntity(pos);
+                if (entity instanceof ActuatorAirBlockEntity aabe) {
+                    NetworkHooks.openScreen((ServerPlayer) player, (ActuatorAirBlockEntity) entity, pos);
+                } else {
+                    throw new IllegalStateException("ActuatorAirBlockEntity container provider is missing!");
+                }
             }
         }
 

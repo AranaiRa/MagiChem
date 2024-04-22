@@ -277,11 +277,6 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         return nbt;
     }
 
-    public void syncAndSave() {
-        this.setChanged();
-        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-    }
-
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {

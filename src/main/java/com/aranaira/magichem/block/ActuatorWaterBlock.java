@@ -7,6 +7,7 @@ import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,6 +17,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -164,19 +166,26 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
                 BlockEntity be = level.getBlockEntity(pos);
                 if(be instanceof ActuatorWaterBlockEntity awbe) {
                     fluidCap.ifPresent(cap -> {
-                        FluidStack fluid = cap.getFluidInTank(0);
+                        FluidStack fluidInItem = cap.getFluidInTank(0);
 
+                        //If container has water
+                        if(fluidInItem.getFluid() == Fluids.WATER || heldItem.getItem() == Items.WATER_BUCKET) {
+                            int capacity = awbe.fill(new FluidStack(Fluids.WATER, Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                            FluidStack drainedFS;
+                            if(player.isCreative())
+                                drainedFS = new FluidStack(Fluids.WATER, fluidInItem.getAmount());
+                            else
+                                drainedFS = cap.drain(new FluidStack(Fluids.WATER, capacity), IFluidHandler.FluidAction.EXECUTE);
+                            awbe.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+
+                            if(player.getItemInHand(hand).getItem() == Items.WATER_BUCKET)
+                                player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+                        }
                         //If container is empty or has steam
-                        if(fluid.isEmpty() || fluid.getFluid() == FluidRegistry.STEAM.get()) {
+                        else if(fluidInItem.isEmpty() || fluidInItem.getFluid() == FluidRegistry.STEAM.get()) {
                             int capacity = cap.fill(new FluidStack(FluidRegistry.STEAM.get(), Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
                             FluidStack drainedFS = awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), Math.min(capacity, awbe.getFluidInTank(ActuatorWaterBlockEntity.TANK_ID_STEAM).getAmount())), IFluidHandler.FluidAction.EXECUTE);
                             cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
-                        }
-                        //If container has water
-                        else if(fluid.getFluid() == Fluids.WATER) {
-                            int capacity = awbe.fill(new FluidStack(Fluids.WATER, Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
-                            FluidStack drainedFS = cap.drain(new FluidStack(Fluids.WATER, capacity), IFluidHandler.FluidAction.EXECUTE);
-                            awbe.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
                         }
                     });
                 }

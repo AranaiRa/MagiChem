@@ -30,7 +30,6 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
             SYMBOL_X = 53, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
             POWER_X = 39, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
-            FUEL_GAUGE_X = 69, FUEL_GAUGE_Y = 12, FUEL_GAUGE_U = 176, FUEL_GAUGE_V = 40, FUEL_GAUGE_W = 18, FUEL_GAUGE_H = 16,
             SMOKE_X = 73, STEAM_X = 85, GAS_Y = 15, GAS_W = 8,
             TOOLTIP_POWER_X = 37, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
             TOOLTIP_SMOKE_X = 72, TOOLTIP_STEAM_X = 84, TOOLTIP_GAS_Y = 14, TOOLTIP_GAS_W = 10, TOOLTIP_GAS_H = 35,
@@ -87,14 +86,14 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
 
         //smoke gauge
-        int steamH = ActuatorAirBlockEntity.getScaledSteam(menu.getSteamInTank());
+        int smokeH = ActuatorAirBlockEntity.getScaledSmoke(menu.getSmokeInTank());
         gui.setColor(0.2f, 0.1875f, 0.1875f, 1.0f);
-        gui.blit(TEXTURE_GAS, x + STEAM_X, y + GAS_Y, 11, 0, GAS_W, steamH, 16, 16);
+        gui.blit(TEXTURE_GAS, x + SMOKE_X, y + GAS_Y, 11, 0, GAS_W, smokeH, 16, 16);
         gui.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         //steam gauge
-        int smokeH = ActuatorAirBlockEntity.getScaledSteam(menu.getSteamInTank());
-        gui.blit(TEXTURE_GAS, x + SMOKE_X, y + GAS_Y, 11, 0, GAS_W, smokeH, 16, 16);
+        int steamH = ActuatorAirBlockEntity.getScaledSteam(menu.getSteamInTank());
+        gui.blit(TEXTURE_GAS, x + STEAM_X, y + GAS_Y, 11, 0, GAS_W, steamH, 16, 16);
 
     }
 
@@ -135,10 +134,6 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
                     .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank1.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank1.line2")));
-            tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank1.line3").withStyle(ChatFormatting.DARK_GRAY))
                     .append(Component.literal(menu.getSmokeInTank() + " / " + Config.galePressurizerTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
@@ -156,10 +151,6 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
                     .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank2").withStyle(ChatFormatting.GOLD))
                     .append(": ")
                     .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank2.line1")));
-            tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank2.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank2.line3").withStyle(ChatFormatting.DARK_GRAY))
@@ -238,19 +229,19 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
 
         //Batch size
         if((menu.getFlags() & ActuatorAirBlockEntity.FLAG_IS_SATISFIED) == ActuatorAirBlockEntity.FLAG_IS_SATISFIED)
-            gui.drawString(font, Component.literal("x" + ((int)Math.pow(4,menu.getPowerLevel()))), 114, 12, 0xff000000, false);
+            gui.drawString(font, Component.literal("x" + ((int)Math.pow(4,menu.getPowerLevel()))), 112, 12, 0xff000000, false);
         else
             gui.drawString(font, Component.literal("-"), 114, 17, 0xffaa0000, false);
 
         //Operation time
         float penaltyRate = ActuatorAirBlockEntity.getPenaltyRate(menu.getPowerLevel());
-        gui.drawString(font, Component.literal("x" + String.format("%.1f", penaltyRate)), 114, 26, 0xff000000, false);
+        gui.drawString(font, Component.literal("x" + String.format("%.1f", penaltyRate)), 112, 26, 0xff000000, false);
 
         //Gas usage
-        gui.drawString(font, Component.literal(ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel()) + "mB"), 114, 40, 0xff000000, false);
+        gui.drawString(font, Component.literal(ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel()) + "mB"), 112, 40, 0xff000000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorAirBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 114, 54, 0xff000000, false);
+        gui.drawString(font, Component.literal(""+ActuatorAirBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 112, 54, 0xff000000, false);
     }
 
     private int getScaledEldrinTime() {

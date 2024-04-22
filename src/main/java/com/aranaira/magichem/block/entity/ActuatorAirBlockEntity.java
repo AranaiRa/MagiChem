@@ -220,11 +220,6 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
         return nbt;
     }
 
-    public void syncAndSave() {
-        this.setChanged();
-        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-    }
-
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -413,29 +408,39 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     public int fill(FluidStack fluidStack, FluidAction fluidAction) {
         Fluid fluid = fluidStack.getFluid();
         int incomingAmount = fluidStack.getAmount();
-        FluidStack targetedStack;
+
 
         if(fluid == FluidRegistry.SMOKE.get()) {
-            targetedStack = this.containedSmoke;
+            int extantAmount = this.containedSmoke.getAmount();
+            int query = Config.galePressurizerTankCapacity - incomingAmount - extantAmount;
+
+            if (query < 0) {
+                int actualTransfer = Config.galePressurizerTankCapacity - extantAmount;
+                if(fluidAction == FluidAction.EXECUTE)
+                    this.containedSmoke = new FluidStack(fluid, extantAmount + actualTransfer);
+                return actualTransfer;
+            } else {
+                if (fluidAction == FluidAction.EXECUTE)
+                    this.containedSmoke = new FluidStack(fluid, extantAmount + incomingAmount);
+                return incomingAmount;
+            }
         } else if(fluid == FluidRegistry.STEAM.get()) {
-            targetedStack = this.containedSteam;
+            int extantAmount = this.containedSteam.getAmount();
+            int query = Config.galePressurizerTankCapacity - incomingAmount - extantAmount;
+
+            if (query < 0) {
+                int actualTransfer = Config.galePressurizerTankCapacity - extantAmount;
+                if(fluidAction == FluidAction.EXECUTE) {
+                    this.containedSteam = new FluidStack(fluid, extantAmount + actualTransfer);
+                }
+                return actualTransfer;
+            } else {
+                if (fluidAction == FluidAction.EXECUTE)
+                    this.containedSteam = new FluidStack(fluid, extantAmount + incomingAmount);
+                return incomingAmount;
+            }
         } else {
             return 0;
-        }
-
-        int extantAmount = targetedStack.getAmount();
-        int query = Config.galePressurizerTankCapacity - (incomingAmount - extantAmount);
-
-        //Hit capactiy
-        if (query < 0) {
-            int actualTransfer = Config.galePressurizerTankCapacity - extantAmount;
-            if(fluidAction == FluidAction.EXECUTE)
-                targetedStack = new FluidStack(fluid, extantAmount + actualTransfer);
-            return actualTransfer;
-        } else {
-            if (fluidAction == FluidAction.EXECUTE)
-                targetedStack = new FluidStack(fluid, extantAmount + incomingAmount);
-            return incomingAmount;
         }
     }
 

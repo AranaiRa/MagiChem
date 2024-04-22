@@ -222,11 +222,6 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         return nbt;
     }
 
-    public void syncAndSave() {
-        this.setChanged();
-        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-    }
-
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {

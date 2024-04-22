@@ -41,5 +41,10 @@ public abstract class DirectionalPluginBlockEntity extends BlockEntity {
         return null;
     }
 
+    public void syncAndSave() {
+        this.setChanged();
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    }
+
     public abstract void processCompletedOperation();
 }

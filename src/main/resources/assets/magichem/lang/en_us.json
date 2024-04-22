@@ -392,7 +392,7 @@
   "tooltip.magichem.gui.actuator.air.tank1": "Reservoir (Smoke)",
   "tooltip.magichem.gui.actuator.air.tank1.line1": "How much smoke is currently stored inside of the Gale Pressurizer. Smoke is created as a byproduct in the Inferno Engine.",
   "tooltip.magichem.gui.actuator.air.tank1.line2": "of smoke is used every operation cycle.",
-  "tooltip.magichem.gui.actuator.air.tank1.line3": "Current Water: ",
+  "tooltip.magichem.gui.actuator.air.tank1.line3": "Current Smoke: ",
   "tooltip.magichem.gui.actuator.air.tank2": "Reservoir (Steam)",
   "tooltip.magichem.gui.actuator.air.tank2.line1": "How much steam is currently stored inside of the Gale Pressurizer.",
   "tooltip.magichem.gui.actuator.air.tank2.line2": "of steam is used every operation cycle.",
