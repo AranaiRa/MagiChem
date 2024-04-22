@@ -320,32 +320,37 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
         }
 
-        NonNullList<ItemStack> randomAdmixtureList = NonNullList.create();
+        int totalCycles = 0;
+        for(int batch=0; batch<pEntity.batchSize; batch++) {
+            totalCycles++;
+            NonNullList<ItemStack> randomAdmixtureList = NonNullList.create();
 
-        AdmixtureItem ai = admixturesForRandomSelection.get(random.nextInt(admixturesForRandomSelection.size()));
-        randomAdmixtureList.add(new ItemStack(ai, 1));
+            AdmixtureItem ai = admixturesForRandomSelection.get(random.nextInt(admixturesForRandomSelection.size()));
+            randomAdmixtureList.add(new ItemStack(ai, 1));
 
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(randomAdmixtureList, AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-        NonNullList<ItemStack> componentMateria = pair.getSecond();
+            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(randomAdmixtureList, AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            NonNullList<ItemStack> componentMateria = pair.getSecond();
 
-        for(ItemStack item : componentMateria) {
-            if(outputSlots.canAddItem(item)) {
-                outputSlots.addItem(item);
+            for (ItemStack item : componentMateria) {
+                if (outputSlots.canAddItem(item)) {
+                    outputSlots.addItem(item);
+                } else {
+                    pEntity.isStalled = true;
+                    break;
+                }
             }
-            else {
-                pEntity.isStalled = true;
+
+            if (!pEntity.isStalled) {
+                for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
+                }
+                ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
+                processingSlotContents.shrink(1);
+                if (processingSlotContents.getCount() == 0)
+                    pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
+            } else {
                 break;
             }
-        }
-
-        if(!pEntity.isStalled) {
-            for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
-            }
-            ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
-            processingSlotContents.shrink(1);
-            if(processingSlotContents.getCount() == 0)
-                pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
         }
 
         resolveActuators(pEntity);
