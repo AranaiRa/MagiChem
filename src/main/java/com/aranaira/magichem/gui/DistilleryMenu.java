@@ -140,4 +140,8 @@ public class DistilleryMenu extends AbstractContainerMenu {
     public int getOperationTimeMod() {
         return data.get(DistilleryBlockEntity.DATA_OPERATION_TIME_MOD);
     }
+
+    public int getBatchSize() {
+        return data.get(DistilleryBlockEntity.DATA_BATCH_SIZE);
+    }
 }

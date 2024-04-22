@@ -51,7 +51,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         SLOT_INPUT_START = 2, SLOT_INPUT_COUNT = 6,
         SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50, GUI_HEAT_GAUGE_HEIGHT = 16,
-        DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2, DATA_HEAT_DURATION = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5;
+        DATA_COUNT = 7, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2, DATA_HEAT_DURATION = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5, DATA_BATCH_SIZE = 6;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
 
     ////////////////////
@@ -105,6 +105,9 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
                     case DATA_OPERATION_TIME_MOD: {
                         return Math.round(DistilleryBlockEntity.this.operationTimeMod * 100);
                     }
+                    case DATA_BATCH_SIZE: {
+                        return DistilleryBlockEntity.this.batchSize;
+                    }
                     default: return -1;
                 }
             }
@@ -135,6 +138,10 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
                     }
                     case DATA_OPERATION_TIME_MOD: {
                         operationTimeMod = pValue / 100f;
+                        break;
+                    }
+                    case DATA_BATCH_SIZE: {
+                        batchSize = pValue;
                         break;
                     }
                 }
