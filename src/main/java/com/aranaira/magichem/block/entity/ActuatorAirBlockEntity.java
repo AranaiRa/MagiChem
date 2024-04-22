@@ -55,7 +55,6 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     private int
             powerLevel = 1,
             remainingEldrinTime = -1,
-            remainingFuelTime = -1,
             flags;
     private float
             remainingEldrinForSatisfaction,
@@ -409,7 +408,6 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
         Fluid fluid = fluidStack.getFluid();
         int incomingAmount = fluidStack.getAmount();
 
-
         if(fluid == FluidRegistry.SMOKE.get()) {
             int extantAmount = this.containedSmoke.getAmount();
             int query = Config.galePressurizerTankCapacity - incomingAmount - extantAmount;
@@ -418,10 +416,13 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
                 int actualTransfer = Config.galePressurizerTankCapacity - extantAmount;
                 if(fluidAction == FluidAction.EXECUTE)
                     this.containedSmoke = new FluidStack(fluid, extantAmount + actualTransfer);
+                if(actualTransfer > 0)
+                    setChanged();
                 return actualTransfer;
             } else {
                 if (fluidAction == FluidAction.EXECUTE)
                     this.containedSmoke = new FluidStack(fluid, extantAmount + incomingAmount);
+                setChanged();
                 return incomingAmount;
             }
         } else if(fluid == FluidRegistry.STEAM.get()) {
@@ -433,10 +434,13 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
                 if(fluidAction == FluidAction.EXECUTE) {
                     this.containedSteam = new FluidStack(fluid, extantAmount + actualTransfer);
                 }
+                if(actualTransfer > 0)
+                    setChanged();
                 return actualTransfer;
             } else {
                 if (fluidAction == FluidAction.EXECUTE)
                     this.containedSteam = new FluidStack(fluid, extantAmount + incomingAmount);
+                setChanged();
                 return incomingAmount;
             }
         } else {

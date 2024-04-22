@@ -484,10 +484,13 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
             if(extantAmount >= incomingAmount) {
                 if(fluidAction == FluidAction.EXECUTE)
                     containedSteam.shrink(incomingAmount);
+                setChanged();
                 return new FluidStack(fluid, incomingAmount);
             } else {
                 if(fluidAction == FluidAction.EXECUTE)
                     containedSteam = FluidStack.EMPTY;
+                if(incomingAmount - extantAmount > 0)
+                    setChanged();
                 return new FluidStack(fluid, incomingAmount - extantAmount);
             }
         }
@@ -497,6 +500,8 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public @NotNull FluidStack drain(int i, FluidAction fluidAction) {
         //Assume removed fluid is steam if not specified
+        if(containedSteam.getAmount() > 0)
+            setChanged();
         return drain(new FluidStack(FluidRegistry.STEAM.get(), i), fluidAction);
     }
 }

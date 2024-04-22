@@ -515,10 +515,13 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
             if(extantAmount >= incomingAmount) {
                 if(fluidAction == FluidAction.EXECUTE)
                     containedSmoke.shrink(incomingAmount);
+                setChanged();
                 return new FluidStack(fluid, incomingAmount);
             } else {
                 if(fluidAction == FluidAction.EXECUTE)
                     containedSmoke = FluidStack.EMPTY;
+                if(incomingAmount - extantAmount > 0)
+                    setChanged();
                 return new FluidStack(fluid, incomingAmount - extantAmount);
             }
         }
@@ -530,6 +533,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
 
     @Override
     public @NotNull FluidStack drain(int i, FluidAction fluidAction) {
+        if(containedSmoke.getAmount() > 0)
+            setChanged();
         return drain(new FluidStack(FluidRegistry.SMOKE.get(), i), fluidAction);
     }
 }
