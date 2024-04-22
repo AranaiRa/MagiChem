@@ -270,6 +270,7 @@
   "tooltip.magichem.rarefiedwaste.ext": "Can be Distilled into random Admixtures.",
   "tooltip.magichem.cleaningbrush": "Used to clean the Grime out of alchemical devices.",
   "tooltip.magichem.magiccircle": "The heart of a device that uses an alchemical circle.",
+  "tooltip.magichem.gasbucket": "A simple spell spoken over this bucket keeps the vapor inside from escaping.",
 
   "tooltip.magichem.circlepower": "Uses mystical reagents to generate energy.",
   "tooltip.magichem.powerreagent": "Used to generate FE.",
