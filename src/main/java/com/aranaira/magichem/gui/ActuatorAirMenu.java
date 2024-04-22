@@ -1,6 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
+import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -21,7 +21,7 @@ import org.joml.Vector2i;
 
 public class ActuatorAirMenu extends AbstractContainerMenu {
 
-    public final ActuatorFireBlockEntity blockEntity;
+    public final ActuatorAirBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
@@ -29,13 +29,12 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
         SLOT_FUEL_X = 70, SLOT_FUEL_Y = 36;
 
     public ActuatorAirMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorFireBlockEntity.DATA_COUNT));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorAirBlockEntity.DATA_COUNT));
     }
 
     public ActuatorAirMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(MenuRegistry.ACTUATOR_FIRE_MENU.get(), id);
-        checkContainerSize(inv, ActuatorFireBlockEntity.SLOT_COUNT);
-        blockEntity = (ActuatorFireBlockEntity) entity;
+        super(MenuRegistry.ACTUATOR_AIR_MENU.get(), id);
+        blockEntity = (ActuatorAirBlockEntity) entity;
         this.level = inv.player.level();
         this.data = data;
 
@@ -51,7 +50,7 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.ACTUATOR_FIRE.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.ACTUATOR_AIR.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
@@ -69,16 +68,16 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
     }
 
     public int getPowerLevel() {
-        return data.get(ActuatorFireBlockEntity.DATA_POWER_LEVEL);
+        return data.get(ActuatorAirBlockEntity.DATA_POWER_LEVEL);
     }
 
     public int getFlags() {
-        return data.get(ActuatorFireBlockEntity.DATA_FLAGS);
+        return data.get(ActuatorAirBlockEntity.DATA_FLAGS);
     }
 
     public void incrementPowerLevel() {
         int previous = getPowerLevel();
-        int current = Math.min(13, getPowerLevel() + 1);
+        int current = Math.min(3, getPowerLevel() + 1);
         if(previous != current) {
             PacketRegistry.sendToServer(new ActuatorSyncPowerLevelC2SPacket(
                     blockEntity.getBlockPos(), true
@@ -97,21 +96,18 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
     }
 
     public int getRemainingEldrinTime() {
-        return data.get(ActuatorFireBlockEntity.DATA_REMAINING_ELDRIN_TIME);
+        return data.get(ActuatorAirBlockEntity.DATA_REMAINING_ELDRIN_TIME);
     }
 
-    public int getSmokeInTank() { return data.get(ActuatorFireBlockEntity.DATA_SMOKE); }
+    public int getSmokeInTank() { return data.get(ActuatorAirBlockEntity.DATA_SMOKE); }
 
-    public int getRemainingFuelTime() { return data.get(ActuatorFireBlockEntity.DATA_REMAINING_FUEL_TIME); }
-
-    public int getFuelDuration() { return data.get(ActuatorFireBlockEntity.DATA_FUEL_DURATION); }
+    public int getSteamInTank() { return data.get(ActuatorAirBlockEntity.DATA_STEAM); }
 
     private static final int
             SLOT_INVENTORY_BEGIN = 0,
             SLOT_INVENTORY_COUNT = 36;
     Pair<Item, Integer>[] DIRSPEC = new Pair[]{};
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
-            new Vector2i(SLOT_INVENTORY_COUNT, SLOT_INVENTORY_COUNT + 1), //Fuel slot
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
     Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {

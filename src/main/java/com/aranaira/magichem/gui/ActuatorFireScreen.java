@@ -154,7 +154,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
                     .append(Component.translatable("tooltip.magichem.gui.actuator.fire.tank.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ActuatorFireBlockEntity.getSmokePerProcess(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.fire.tank.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()

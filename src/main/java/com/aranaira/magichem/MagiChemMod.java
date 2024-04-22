@@ -113,6 +113,7 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.ACTUATOR_WATER_MENU.get(), ActuatorWaterScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_FIRE_MENU.get(), ActuatorFireScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_EARTH_MENU.get(), ActuatorEarthScreen::new);
+            MenuScreens.register(MenuRegistry.ACTUATOR_AIR_MENU.get(), ActuatorAirScreen::new);
         }
 
         @SubscribeEvent
@@ -129,6 +130,8 @@ public class MagiChemMod
             event.register(ActuatorWaterBlockEntityRenderer.RENDERER_MODEL_STEAM_VENTS);
 
             event.register(ActuatorEarthBlockEntityRenderer.RENDERER_MODEL_STAMPER);
+
+            event.register(ActuatorAirBlockEntityRenderer.RENDERER_MODEL_FANS);
 
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_COM);
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_RING1);

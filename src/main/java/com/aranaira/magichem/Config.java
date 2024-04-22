@@ -218,6 +218,16 @@ public class Config
             .comment("What percentage of Grime reduced by a Quake Refinery becomes Rarefied Waste instead of Alchemical Waste.")
             .defineInRange("quakeRefineryRarefiedRate", 20, 1, 100);
 
+    //----------------GALE PRESSURIZER
+
+    private static final ForgeConfigSpec.IntValue GALE_PRESSURIZER_OPERATION_TIME = BUILDER
+            .comment("The amount of time, in ticks, a Gale Pressurizer goes between drawing more Eldrin power.")
+            .defineInRange("galePressurizerOperationTime", 300, 1, 6000);
+
+    private static final ForgeConfigSpec.IntValue GALE_PRESSURIZER_TANK_CAPACITY = BUILDER
+            .comment("The amount of Smoke and Steam, in mB, the Gale Pressurizer's internal tanks can hold.")
+            .defineInRange("galePressurizerTankCapacity", 2000, 500, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -265,7 +275,9 @@ public class Config
         quakeRefineryOperationTime,
         quakeRefinerySandCapacity,
         quakeRefineryGrimeCapacity,
-        quakeRefineryRarefiedRate;
+        quakeRefineryRarefiedRate,
+        galePressurizerOperationTime,
+        galePressurizerTankCapacity;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -320,5 +332,7 @@ public class Config
         quakeRefinerySandCapacity = QUAKE_REFINERY_SAND_CAPACITY.get();
         quakeRefineryGrimeCapacity = QUAKE_REFINERY_GRIME_CAPACITY.get();
         quakeRefineryRarefiedRate = QUAKE_REFINERY_RAREFIED_RATE.get();
+        galePressurizerOperationTime = GALE_PRESSURIZER_OPERATION_TIME.get();
+        galePressurizerTankCapacity = GALE_PRESSURIZER_TANK_CAPACITY.get();
     }
 }
