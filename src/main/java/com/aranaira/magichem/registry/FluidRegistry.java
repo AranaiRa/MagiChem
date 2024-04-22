@@ -67,14 +67,14 @@ public class FluidRegistry {
     public static final RegistryObject<FluidType> STEAM_FLUID_TYPE = FLUID_TYPES.register("steam_fluid_type", () ->
             new FluidType(FluidType.Properties.create().descriptionId("steam_fluid_type")
                     .canExtinguish(true).canConvertToSource(false)
-                    .supportsBoating(true).canHydrate(false).viscosity(12)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
                     .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
                     .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
                 @Override
                 public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {
-                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/steam");
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/steam_still");
                         public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/steam_flow");
 
                         @Override
@@ -96,21 +96,22 @@ public class FluidRegistry {
     public static ForgeFlowingFluid.Properties getSteamProperties() {
         return new ForgeFlowingFluid.Properties(STEAM_FLUID_TYPE, STEAM, STEAM_FLOWING).block(STEAM_BLOCK).bucket(ItemRegistry.STEAM_BUCKET);
     }
-//////////////////////
+
+    //////////////////////
     //-----SMOKE
     //////////////////////
 
     public static final RegistryObject<FluidType> SMOKE_FLUID_TYPE = FLUID_TYPES.register("smoke_fluid_type", () ->
             new FluidType(FluidType.Properties.create().descriptionId("smoke_fluid_type")
                     .canExtinguish(true).canConvertToSource(false)
-                    .supportsBoating(true).canHydrate(false).viscosity(12)
+                    .supportsBoating(true).canHydrate(false).viscosity(1).canPushEntity(false)
                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
                     .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
                     .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
                 @Override
                 public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {
-                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/smoke");
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/smoke_still");
                         public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/smoke_flow");
 
                         @Override
