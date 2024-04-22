@@ -155,15 +155,17 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                         pEntity.incrementProgress();
                 }
             } else if(processingItem.getItem() == ItemRegistry.RAREFIED_WASTE.get()) {
-                if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod * 100, pVarFunc)) {
-                    if (!pLevel.isClientSide()) {
-                        craftRandomAdmixture(pEntity, processingSlot, pVarFunc);
-                        pEntity.pushData();
-                    }
-                    if (!pEntity.isStalled)
-                        pEntity.resetProgress();
-                } else
-                    pEntity.incrementProgress();
+                if (canCraftRandom(pEntity, pVarFunc)) {
+                    if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod * 100, pVarFunc)) {
+                        if (!pLevel.isClientSide()) {
+                            craftRandomAdmixture(pEntity, processingSlot, pVarFunc);
+                            pEntity.pushData();
+                        }
+                        if (!pEntity.isStalled)
+                            pEntity.resetProgress();
+                    } else
+                        pEntity.incrementProgress();
+                }
             }
             if (processingItem == ItemStack.EMPTY)
                 pEntity.resetProgress();
@@ -259,6 +261,17 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return true;
     }
 
+    protected static boolean canCraftRandom(AbstractDistillationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
+        boolean hasSpace = false;
+        for(int i=pVarFunc.apply(IDs.SLOT_OUTPUT_START); i<pVarFunc.apply(IDs.SLOT_OUTPUT_START)+pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+            if(pEntity.itemHandler.getStackInSlot(i).isEmpty()) {
+                hasSpace = true;
+                break;
+            }
+        }
+        return hasSpace;
+    }
+
     protected static void craftItem(AbstractDistillationBlockEntity pEntity, AlchemicalCompositionRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
         SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
@@ -331,16 +344,17 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(randomAdmixtureList, AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
             NonNullList<ItemStack> componentMateria = pair.getSecond();
 
+            boolean canCraft = true;
             for (ItemStack item : componentMateria) {
                 if (outputSlots.canAddItem(item)) {
                     outputSlots.addItem(item);
                 } else {
-                    pEntity.isStalled = true;
+                    canCraft = false;
                     break;
                 }
             }
 
-            if (!pEntity.isStalled) {
+            if (!pEntity.isStalled && canCraft) {
                 for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
                     pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
                 }
