@@ -299,7 +299,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
         this.data.set(DATA_TORQUE, remainingTorque);
         this.data.set(DATA_ANIMUS, remainingAnimus);
-        //todo: push op time mod
     }
 
     ////////////////////

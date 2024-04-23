@@ -189,6 +189,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
+        nbt.putInt("flags", this.flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -212,6 +213,8 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
         else
             this.containedSteam = FluidStack.EMPTY;
 
+        this.flags = nbt.getInt("flags");
+
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
     }
@@ -228,6 +231,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
+        nbt.putInt("flags", this.flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;
@@ -256,7 +260,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
             }
 
             //particle work goes here
-            if (aabe.remainingEldrinTime > 0) {
+            if (getIsSatisfied(aabe)) {
                 int spawnModulus = 3;
                 Vector3f mid = new Vector3f(0f, 1.53125f, 0f);
 
@@ -313,7 +317,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
             if(entity.remainingEldrinTime <= 0) {
                 if(entity.remainingEldrinForSatisfaction <= 0) {
                     entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.infernoEngineOperationTime;
+                    entity.remainingEldrinTime = Config.galePressurizerOperationTime;
                     }
 
                     if(!getIsSatisfied(entity)) {
@@ -323,7 +327,13 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
             }
             entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
 
-            if(entity.remainingEldrinTime >= 0) entity.flags = entity.flags | ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
+            if(entity.remainingEldrinTime >= 0) {
+                if(!getIsSatisfied(entity)) {
+                    entity.flags = entity.flags & ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
+                    entity.syncAndSave();
+                } else
+                    entity.flags = entity.flags & ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
+            }
             else {
                 if(getIsSatisfied(entity)) {
                     entity.flags = entity.flags & ~ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
@@ -335,13 +345,13 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     }
 
     public void handleAnimationDrivers() {
-        if(remainingEldrinTime >= 0) {
+        if(getIsSatisfied(this)) {
             if(fanSpeed == 0) fanSpeed += FAN_ACCELERATION_RATE * 4;
             fanSpeed = Math.min(fanSpeed + FAN_ACCELERATION_RATE, FAN_TOP_SPEED);
         } else {
             fanSpeed = Math.max(fanSpeed - FAN_ACCELERATION_RATE * 3.0f, 0f);
         }
-        fanAngle = (fanAngle + fanSpeed % 360.0f);
+        fanAngle = (fanAngle + fanSpeed) % 360.0f;
     }
 
     @Override

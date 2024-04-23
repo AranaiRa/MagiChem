@@ -1,5 +1,5 @@
 {
-  "parent": "magichem:block/actuator_earth",
+  "parent": "magichem:block/actuator_air",
   "textures": {
     "particle": "magichem:block/breakparticle_arcane_sandstone"
   }
