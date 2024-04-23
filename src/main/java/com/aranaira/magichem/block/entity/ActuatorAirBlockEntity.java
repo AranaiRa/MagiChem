@@ -258,7 +258,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
             //particle work goes here
             if (aabe.remainingEldrinTime > 0) {
                 int spawnModulus = 3;
-                Vector3f mid = new Vector3f(0f, 1.125f, 0f);
+                Vector3f mid = new Vector3f(0f, 1.53125f, 0f);
 
                 Direction dir = pBlockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
                 if(dir == Direction.NORTH) {
@@ -279,22 +279,22 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
                 }
 
                 pLevel.addParticle(new MAParticleType(ParticleInit.AIR_ORBIT.get())
-                                .setMaxAge(45).setScale(0.05f).setColor(32, 32, 32, 128)
+                                .setMaxAge(15).setScale(0.0875f).setColor(32, 32, 32, 128)
                                 .setMover(new ParticleOrbitMover(
-                                        pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
-                                        0.875f, 0.0225f, 0.0001f
+                                        pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
+                                        0.425f, 0.01875f, 0.0001f
                                 )),
-                        pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
+                        pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
                         0, 0, 0);
 
                 if (pLevel.getGameTime() % spawnModulus == 0) {
                     pLevel.addParticle(new MAParticleType(ParticleInit.AIR_ORBIT.get())
-                                    .setMaxAge(30).setScale(0.01f).setColor(64, 64, 64, 196)
+                                    .setMaxAge(20).setScale(0.01f).setColor(64, 64, 64, 196)
                                     .setMover(new ParticleOrbitMover(
-                                            pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
-                                            -0.4375f, 0.0225f, 0.0001f
+                                            pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
+                                            -0.4375f, 0.02f, 0.0001f
                                     )),
-                            pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
+                            pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
                             0, 0, 0);
                 }
             }

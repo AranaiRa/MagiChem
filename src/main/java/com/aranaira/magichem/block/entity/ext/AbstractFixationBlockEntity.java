@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
@@ -47,7 +48,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     protected LazyOptional<IFluidHandler> lazyFluidHandler;
     protected ContainerData data;
     protected int
-            progress = 0, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
+            progress = 0, batchSize = 1, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
 
     protected ItemStackHandler itemHandler;
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -112,6 +113,13 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             }
             if (dpbe instanceof ActuatorEarthBlockEntity earth) {
                 ActuatorEarthBlockEntity.delegatedTick(pLevel, pPos, pState, earth);
+            }
+            if (dpbe instanceof ActuatorAirBlockEntity air) {
+                ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
+                if(ActuatorAirBlockEntity.getIsSatisfied(air)) {
+                    pEntity.batchSize = ActuatorAirBlockEntity.getBatchSize(air.getPowerLevel());
+                } else
+                    pEntity.batchSize = 1;
             }
         }
 
@@ -228,80 +236,88 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             bottlesToInsert += is.getCount();
         }
 
-        //TODO: Uncommment the original line once the bottle slot stack size has been expanded
-        //Fill Bottle Slot
-        //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
-        //TODO: Remove this once the bottle slot stack size has been expanded
-        ItemStack bottles = pEntity.itemHandler.insertItem(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
-        SimpleContainer bottleSpill = new SimpleContainer(5);
-        while(bottles.getCount() > 0) {
-            int count = bottles.getCount();
-            int thisPile;
-            if(count > 64) {
-                thisPile = 64;
-                count -= 64;
-            } else {
-                thisPile = count;
-                count = 0;
+        int totalCycles = 0;
+        for(int batch=0; batch<pEntity.batchSize; batch++) {
+            if(!canCraftItem(pEntity, pVarFunc)) {
+                totalCycles = batch;
+                break;
             }
-            ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
-            bottleSpill.addItem(bottlesToDrop);
-            bottles.setCount(count);
-        }
-        Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
-        //Apply Efficiency
-        NonNullList<ItemStack> preEfficiencyOutput = NonNullList.create();
-        preEfficiencyOutput.add(pEntity.currentRecipe.getResultAdmixture());
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(preEfficiencyOutput, AbstractFixationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-        NonNullList<ItemStack> postEfficiencyOutput = pair.getSecond();
+            //TODO: Uncommment the original line once the bottle slot stack size has been expanded
+            //Fill Bottle Slot
+            //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+            //TODO: Remove this once the bottle slot stack size has been expanded
+            ItemStack bottles = pEntity.itemHandler.insertItem(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+            SimpleContainer bottleSpill = new SimpleContainer(5);
+            while (bottles.getCount() > 0) {
+                int count = bottles.getCount();
+                int thisPile;
+                if (count > 64) {
+                    thisPile = 64;
+                    count -= 64;
+                } else {
+                    thisPile = count;
+                    count = 0;
+                }
+                ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
+                bottleSpill.addItem(bottlesToDrop);
+                bottles.setCount(count);
+            }
+            Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
-        //Generate grime amount; Fixation uses the inputs to determine Grime rather than the output
-        int grimeToAdd = 0;
-        for(ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
-            grimeToAdd += is.getCount();
-        }
-        grimeToAdd *= postEfficiencyOutput.size() == 1 ? pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS) : pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE);
+            //Apply Efficiency
+            NonNullList<ItemStack> preEfficiencyOutput = NonNullList.create();
+            preEfficiencyOutput.add(pEntity.currentRecipe.getResultAdmixture());
+            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(preEfficiencyOutput, AbstractFixationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            NonNullList<ItemStack> postEfficiencyOutput = pair.getSecond();
+
+            //Generate grime amount; Fixation uses the inputs to determine Grime rather than the output
+            int grimeToAdd = 0;
+            for (ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
+                grimeToAdd += is.getCount();
+            }
+            grimeToAdd *= postEfficiencyOutput.size() == 1 ? pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS) : pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE);
 
             //Update output copy with the potentially-crafted item
-        SimpleContainer output = pEntity.getContentsOfOutputSlots(pVarFunc);
-        for(ItemStack is : postEfficiencyOutput) {
-            output.addItem(is);
-        }
-
-        //Remove component items from inputs
-        for(ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
-            inputs.removeItemType(is.getItem(), is.getCount());
-        }
-
-        //Overwrite final output slots with the outcome
-        for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, output.getItem(i));
-        }
-
-        //Overwrite final input slots with the outcome
-        for(int i=0; i<pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
-            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START) + i, inputs.getItem(i));
-        }
-
-        //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
-        for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            if(dpbe instanceof ActuatorEarthBlockEntity aebe) {
-                grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
+            SimpleContainer output = pEntity.getContentsOfOutputSlots(pVarFunc);
+            for (ItemStack is : postEfficiencyOutput) {
+                output.addItem(is);
             }
-        }
 
-        //Add grime to this device if there's no Quake Refinery
-        if(grimeToAdd > 0) {
-            IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
-            grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
-        }
+            //Remove component items from inputs
+            for (ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
+                inputs.removeItemType(is.getItem(), is.getCount());
+            }
 
-        //Consume slurry
-        int slurryCost = pEntity.currentRecipe.getSlurryCost();
-        float reducedSlurryCost = (1.0f - (Config.fixationFailureRefund / 100.0f)) * slurryCost;
-        pEntity.containedSlurry.shrink(postEfficiencyOutput.size() == 1 ? slurryCost : (int)reducedSlurryCost);
-        pEntity.syncAndSave();
+            //Overwrite final output slots with the outcome
+            for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, output.getItem(i));
+            }
+
+            //Overwrite final input slots with the outcome
+            for (int i = 0; i < pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
+                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START) + i, inputs.getItem(i));
+            }
+
+            //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
+            for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+                if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
+                    grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
+                }
+            }
+
+            //Add grime to this device if there's no Quake Refinery
+            if (grimeToAdd > 0) {
+                IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
+                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
+            }
+
+            //Consume slurry
+            int slurryCost = pEntity.currentRecipe.getSlurryCost();
+            float reducedSlurryCost = (1.0f - (Config.fixationFailureRefund / 100.0f)) * slurryCost;
+            pEntity.containedSlurry.shrink(postEfficiencyOutput.size() == 1 ? slurryCost : (int) reducedSlurryCost);
+            pEntity.syncAndSave();
+        }
 
         resolveActuators(pEntity);
     }
