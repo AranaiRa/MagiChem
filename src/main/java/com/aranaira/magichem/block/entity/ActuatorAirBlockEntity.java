@@ -329,10 +329,10 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
 
             if(entity.remainingEldrinTime >= 0) {
                 if(!getIsSatisfied(entity)) {
-                    entity.flags = entity.flags & ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
+                    entity.flags = entity.flags | ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
                     entity.syncAndSave();
                 } else
-                    entity.flags = entity.flags & ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
+                    entity.flags = entity.flags | ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
             }
             else {
                 if(getIsSatisfied(entity)) {
