@@ -46,7 +46,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
             ELDRIN_POWER_USAGE = {0, 5, 140, 500},
             GAS_PER_PROCESS = {0, 0, 16, 32};
     private static final float[]
-            POWER_PENALTY = {1.0f, 2.5f, 6.25f, 15.625f};
+            POWER_PENALTY = {1.0f, 1.5f, 2.25f, 3.375f};
     public static final int
             TANK_SMOKE = 0, TANK_STEAM = 1,
             DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3, DATA_STEAM = 4,
@@ -131,7 +131,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     }
 
     public static int getBatchSize(int pPowerLevel) {
-        return new int[]{0, 4, 16, 64}[pPowerLevel];
+        return new int[]{0, 2, 4, 8}[pPowerLevel];
     }
 
     public float getPenaltyRate() {

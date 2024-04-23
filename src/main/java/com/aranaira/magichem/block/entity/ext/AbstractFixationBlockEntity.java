@@ -138,7 +138,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             //figure out what slot and stack to target
             if (canCraftItem(pEntity, pVarFunc)) {
 
-                if (pEntity.progress > getOperationTicks(pEntity.getGrimeFromData(), pEntity.operationTimeMod*100, pVarFunc)) {
+                if (pEntity.progress > getOperationTicks(pEntity.getGrimeFromData(), pEntity.batchSize, pEntity.operationTimeMod*100, pVarFunc)) {
                     if (!pLevel.isClientSide()) {
                         craftItem(pEntity, pVarFunc);
                     }
@@ -238,32 +238,10 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
 
         int totalCycles = 0;
         for(int batch=0; batch<pEntity.batchSize; batch++) {
+            totalCycles++;
             if(!canCraftItem(pEntity, pVarFunc)) {
-                totalCycles = batch;
                 break;
             }
-
-            //TODO: Uncommment the original line once the bottle slot stack size has been expanded
-            //Fill Bottle Slot
-            //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
-            //TODO: Remove this once the bottle slot stack size has been expanded
-            ItemStack bottles = pEntity.itemHandler.insertItem(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
-            SimpleContainer bottleSpill = new SimpleContainer(5);
-            while (bottles.getCount() > 0) {
-                int count = bottles.getCount();
-                int thisPile;
-                if (count > 64) {
-                    thisPile = 64;
-                    count -= 64;
-                } else {
-                    thisPile = count;
-                    count = 0;
-                }
-                ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
-                bottleSpill.addItem(bottlesToDrop);
-                bottles.setCount(count);
-            }
-            Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
             //Apply Efficiency
             NonNullList<ItemStack> preEfficiencyOutput = NonNullList.create();
@@ -318,6 +296,28 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             pEntity.containedSlurry.shrink(postEfficiencyOutput.size() == 1 ? slurryCost : (int) reducedSlurryCost);
             pEntity.syncAndSave();
         }
+
+        //TODO: Uncommment the original line once the bottle slot stack size has been expanded
+        //Fill Bottle Slot
+        //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        //TODO: Remove this once the bottle slot stack size has been expanded
+        ItemStack bottles = pEntity.itemHandler.insertItem(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert * totalCycles), false);
+        SimpleContainer bottleSpill = new SimpleContainer(10);
+        while (bottles.getCount() > 0) {
+            int count = bottles.getCount();
+            int thisPile;
+            if (count > 64) {
+                thisPile = 64;
+                count -= 64;
+            } else {
+                thisPile = count;
+                count = 0;
+            }
+            ItemStack bottlesToDrop = new ItemStack(Items.GLASS_BOTTLE, thisPile);
+            bottleSpill.addItem(bottlesToDrop);
+            bottles.setCount(count);
+        }
+        Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
         resolveActuators(pEntity);
     }
@@ -414,9 +414,10 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         return 1f + grimeScalar * 3f;
     }
 
-    public static int getOperationTicks(int pGrime, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
+    public static int getOperationTicks(int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
         float otmScalar = (10000f - pOperationTimeMod) / 10000f;
-        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar);
+        float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize);
+        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
     }
 
     public static int getActualEfficiency(int pMod, int pGrime, Function<IDs, Integer> pVarFunc) {
@@ -428,8 +429,8 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         return (float)pGrime / (float)pVarFunc.apply(IDs.CONFIG_MAX_GRIME);
     }
 
-    public static int getScaledProgress(int pProgress, int pGrime, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
-        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pOperationTimeMod, pVarFunc);
+    public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
+        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc);
     }
 
     @Override

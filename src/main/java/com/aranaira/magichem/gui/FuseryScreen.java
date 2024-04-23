@@ -182,7 +182,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         gui.blit(TEXTURE, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
         //Progress bar
-        int sp = FuseryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar);
+        int sp = FuseryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar);
         if(sp > 0)
             gui.blit(TEXTURE, x+74, y+53, 0, 228, sp, FuseryBlockEntity.PROGRESS_BAR_WIDTH);
 
@@ -346,8 +346,8 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         //Grime panel
         gui.drawString(font, Component.literal(FuseryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), FuseryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 11, 0xff000000, false);
 
-        int secWhole = FuseryBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar) / 20;
-        int secPartial = (FuseryBlockEntity.getOperationTicks(menu.getGrime(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar) % 20) * 5;
+        int secWhole = FuseryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar) / 20;
+        int secPartial = (FuseryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), FuseryBlockEntity::getVar) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 8, 0xff000000, false);
     }
 
