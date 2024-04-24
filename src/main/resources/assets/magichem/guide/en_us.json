@@ -1208,13 +1208,72 @@
         "value": "",
         "json": [
           {
-            "text": "Coming in 0.3.4",
-            "italic": true
+            "text": "The "
+          },
+          {
+            "text": "Gale Pressurizer",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an Elemental Actuator that uses Air Eldrin Power.\n\nWhen modifying an alchemical device, a Gale Pressurizer increases the "
+          },
+          {
+            "text": "number of items that can be processed simultaneously",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at the cost of increasing the device's operation time (or its power usage, if the device uses FE).\n\nA Gale Pressurizer only has 3 possible power consumption settings. If set to the middle power setting, it must be supplied with either "
+          },
+          {
+            "text": "Steam",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (a byproduct of the Deluge Purifier) or "
+          },
+          {
+            "text": "Smoke",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (a byproduct of the Inferno Engine) in order to function. If set to the highest power setting, it must be supplied with both.\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The leftmost gauge lets you tell the Gale Pressurizer how much Eldrin power to use each cycle. The elemental air symbol to its right displays the amount of time remaining until more Eldrin power is consumed.\n\nTo the right of this, there are two fluid tanks. The left tank holds "
+          },
+          {
+            "text": "Smoke",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and the right tank holds "
+          },
+          {
+            "text": "Steam",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe rightmost area of the interface shows you what the current batch size multiplier is, how much the linked device's FE or operation time is being increased, as well as the current amount of Steam and Smoke consumed whenever the linked device completes an operation and the amount of Eldrin power consumed every cycle."
           }
         ]
       }
     ],
-    "related_recipes": []
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_air"
+      }
+    ]
   },
   "Grime": {
     "index": "1211",
