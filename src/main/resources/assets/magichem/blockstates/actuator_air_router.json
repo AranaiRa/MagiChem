@@ -1,19 +1,7 @@
 {
   "variants": {
-    "facing=north": {
+    "": {
       "model": "magichem:block/actuator_air"
-    },
-    "facing=east": {
-      "model": "magichem:block/actuator_air",
-      "y": 90
-    },
-    "facing=south": {
-      "model": "magichem:block/actuator_air",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "magichem:block/actuator_air",
-      "y": 270
     }
   }
 }
