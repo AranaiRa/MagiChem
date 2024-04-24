@@ -12,6 +12,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -98,6 +99,9 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         int steamH = ActuatorWaterBlockEntity.getScaledSteam(menu.getSteamInTank());
         gui.blit(TEXTURE_WATER, x + STEAM_X, y + STEAM_Y, 11, 0, STEAM_W, steamH, 16, 16);
 
+        if(menu.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel())) {
+            renderPowerWarning(gui, x, y);
+        }
     }
 
     @Override
@@ -105,6 +109,16 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
+    }
+
+    protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
+        long cycle = Minecraft.getInstance().level.getGameTime() % 20;
+
+        gui.blit(TEXTURE, x+10, y-30, 0, 230, 156, 26);
+        if(cycle < 10) {
+            gui.blit(TEXTURE, x + 17, y - 23, 156, 244, 12, 12);
+            gui.blit(TEXTURE, x + 147, y - 23, 156, 244, 12, 12);
+        }
     }
 
     @Override
@@ -249,6 +263,13 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 109, 54, 0xff000000, false);
+
+        //Warning label
+        if(menu.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel())) {
+            MutableComponent warningText = Component.translatable("gui.magichem.insufficientwater");
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
+        }
     }
 
     private int getScaledEldrinTime() {

@@ -403,6 +403,11 @@
 
   "gui.magichem.typetofilter": "Filter...",
   "gui.magichem.insufficientpower": "Insufficient power!",
+  "gui.magichem.insufficientwater": "Insufficient Water!",
+  "gui.magichem.insufficientsand": "Insufficient Sand!",
+  "gui.magichem.insufficientsteam": "Insufficient Steam!",
+  "gui.magichem.insufficientsmoke": "Insufficient Smoke!",
+  "gui.magichem.insufficientsteamsmoke": "Insufficient Steam/Smoke!",
 
   "construct.magichem:sort_materia": "Sort Materia",
   "construct.magichem:query_check_vessel": "Condition: Check Vessel Fill",

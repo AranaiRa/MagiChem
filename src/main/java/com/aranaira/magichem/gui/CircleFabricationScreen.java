@@ -192,12 +192,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderFilterBox();
         updateDisplayedRecipes(recipeFilterBox.getValue());
         renderRecipeOptions(gui);
-
-        //Check to see if slots need to be re-locked
-        /*if(menu.dataSlot.get() == 1) {
-            menu.setInputSlotFilters(lastClickedRecipe);
-            menu.dataSlot.set(0);
-        }*/
     }
 
     private void renderIngredientPanel(GuiGraphics gui, int x, int y) {

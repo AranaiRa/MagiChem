@@ -15,6 +15,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -105,6 +106,9 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         RenderSystem.setShaderTexture(1, TEXTURE_SAND);
         gui.blit(TEXTURE_SAND, x + SAND_X, y + SAND_Y + FLUID_GAUGE_H - sandH, 0, 0, SAND_W, sandH, 16, 16);
 
+        if(menu.getSandInTank() < ActuatorEarthBlockEntity.getSandPerOperation(menu.getPowerLevel())) {
+            renderPowerWarning(gui, x, y);
+        }
     }
 
     @Override
@@ -112,6 +116,16 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
+    }
+
+    protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
+        long cycle = Minecraft.getInstance().level.getGameTime() % 20;
+
+        gui.blit(TEXTURE, x+10, y-30, 0, 230, 156, 26);
+        if(cycle < 10) {
+            gui.blit(TEXTURE, x + 17, y - 23, 156, 244, 12, 12);
+            gui.blit(TEXTURE, x + 147, y - 23, 156, 244, 12, 12);
+        }
     }
 
     @Override
@@ -266,6 +280,13 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorEarthBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 128, 47, 0xff000000, false);
+
+        //Warning label
+        if(menu.getSandInTank() < ActuatorEarthBlockEntity.getSandPerOperation(menu.getPowerLevel())) {
+            MutableComponent warningText = Component.translatable("gui.magichem.insufficientsand");
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
+        }
     }
 
     private int getScaledEldrinTime() {

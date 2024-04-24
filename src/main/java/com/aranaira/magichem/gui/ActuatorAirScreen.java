@@ -12,6 +12,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -22,6 +23,8 @@ import java.util.Optional;
 public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_actuator_air.png");
+    private static final ResourceLocation TEXTURE_EXT =
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private static final ResourceLocation TEXTURE_GAS =
             new ResourceLocation("minecraft", "textures/block/water_still.png");
     public static final int
@@ -93,6 +96,14 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         int steamH = ActuatorAirBlockEntity.getScaledSteam(menu.getSteamInTank());
         gui.blit(TEXTURE_GAS, x + STEAM_X, y + GAS_Y, 11, 0, GAS_W, steamH, 16, 16);
 
+        boolean sufficientSmoke = menu.getSmokeInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel());
+        boolean sufficientSteam = menu.getSteamInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel());
+        //Insufficient input warnings
+        if(menu.getPowerLevel() == 2 && !(sufficientSmoke || sufficientSteam)) {
+            renderPowerWarning(gui, x, y);
+        } else if(menu.getPowerLevel() == 3 && !(sufficientSmoke && sufficientSteam)) {
+            renderPowerWarning(gui, x, y);
+        }
     }
 
     @Override
@@ -100,6 +111,16 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
+    }
+
+    protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
+        long cycle = Minecraft.getInstance().level.getGameTime() % 20;
+
+        gui.blit(TEXTURE, x+3, y-30, 0, 230, 172, 26);
+        if(cycle < 10) {
+            gui.blit(TEXTURE, x + 10, y - 23, 172, 244, 12, 12);
+            gui.blit(TEXTURE, x + 156, y - 23, 172, 244, 12, 12);
+        }
     }
 
     @Override
@@ -240,6 +261,29 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorAirBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 112, 54, 0xff000000, false);
+
+        boolean sufficientSmoke = menu.getSmokeInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel());
+        boolean sufficientSteam = menu.getSteamInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel());
+        //power warning
+        if((menu.getPowerLevel() == 2 && !(sufficientSmoke || sufficientSteam)) || (menu.getPowerLevel() == 3 && !(sufficientSmoke && sufficientSteam))) {
+            MutableComponent warningText;
+            if (menu.getPowerLevel() == 2) {
+                warningText = Component.translatable("gui.magichem.insufficientsteamsmoke");
+            } else if (menu.getPowerLevel() == 3) {
+                if (sufficientSmoke && !sufficientSteam)
+                    warningText = Component.translatable("gui.magichem.insufficientsteam");
+                else if (!sufficientSmoke && sufficientSteam)
+                    warningText = Component.translatable("gui.magichem.insufficientsmoke");
+                else
+
+                    warningText = Component.translatable("gui.magichem.insufficientsteamsmoke");
+            } else {
+                //error state that should never occur
+                warningText = Component.literal("oh no");
+            }
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
+        }
     }
 
     private int getScaledEldrinTime() {
