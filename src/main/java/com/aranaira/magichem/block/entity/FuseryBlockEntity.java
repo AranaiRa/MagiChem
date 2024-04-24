@@ -78,6 +78,9 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 if(slot == SLOT_RECIPE)
                     currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, getStackInSlot(SLOT_RECIPE));
                 setChanged();
+                if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
+                    isStalled = false;
+                }
             }
 
             @Override

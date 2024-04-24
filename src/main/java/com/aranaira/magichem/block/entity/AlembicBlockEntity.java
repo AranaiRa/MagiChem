@@ -54,6 +54,9 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
+                if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
+                    isStalled = false;
+                }
             }
 
             @Override
