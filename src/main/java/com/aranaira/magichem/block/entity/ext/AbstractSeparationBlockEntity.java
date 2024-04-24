@@ -1,6 +1,5 @@
 package com.aranaira.magichem.block.entity.ext;
 
-import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
@@ -105,7 +104,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             if (dpbe instanceof ActuatorAirBlockEntity air) {
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
                 if(ActuatorAirBlockEntity.getIsSatisfied(air)) {
-                    pEntity.batchSize = ActuatorAirBlockEntity.getBatchSize(air.getPowerLevel());
+                    pEntity.batchSize = air.getBatchSize();
                 } else
                     pEntity.batchSize = 1;
             }

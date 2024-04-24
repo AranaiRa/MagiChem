@@ -50,7 +50,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     public static final int
             TANK_SMOKE = 0, TANK_STEAM = 1,
             DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3, DATA_STEAM = 4,
-            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2;
+            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_GAS_SATISFACTION = 4;
     private static final float
             FAN_ACCELERATION_RATE = 0.09f, FAN_TOP_SPEED = 24.0f;
     private int
@@ -130,8 +130,18 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
         return (pFlags & FLAG_REDUCTION_TYPE_POWER) == FLAG_REDUCTION_TYPE_POWER;
     }
 
-    public static int getBatchSize(int pPowerLevel) {
+    public static boolean getIsGasSatsified(int pFlags) {
+        return (pFlags & FLAG_GAS_SATISFACTION) == FLAG_GAS_SATISFACTION;
+    }
+
+    public static int getRawBatchSize(int pPowerLevel) {
         return new int[]{0, 2, 4, 8}[pPowerLevel];
+    }
+
+    public int getBatchSize() {
+        if((flags & FLAG_GAS_SATISFACTION) != FLAG_GAS_SATISFACTION)
+            return 1;
+        return new int[]{0, 2, 4, 8}[powerLevel];
     }
 
     public float getPenaltyRate() {
@@ -245,7 +255,47 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
 
     @Override
     public void processCompletedOperation() {
-        //TODO: consume steam and smoke if necessary
+        consumeGasses();
+    }
+
+    private void consumeGasses() {
+        //Do nothing, there is no gas cost
+        if (powerLevel == 1) {
+            flags = flags | FLAG_GAS_SATISFACTION;
+        }
+        //Consume from the higher of Smoke or Steam
+        else if (powerLevel == 2) {
+            int cost = getGasPerProcess();
+
+            if(containedSteam.getAmount() >= containedSmoke.getAmount()) {
+                if(containedSteam.getAmount() >= cost) {
+                    containedSteam.setAmount(containedSteam.getAmount() - cost);
+                    flags = flags | FLAG_GAS_SATISFACTION;
+                } else {
+                    flags = flags & ~FLAG_GAS_SATISFACTION;
+                }
+            } else {
+                if(containedSmoke.getAmount() >= cost) {
+                    containedSmoke.setAmount(containedSmoke.getAmount() - cost);
+                    flags = flags | FLAG_GAS_SATISFACTION;
+                } else {
+                    flags = flags & ~FLAG_GAS_SATISFACTION;
+                }
+            }
+
+        }
+        //Consume from both Smoke and Steam
+        else if (powerLevel == 3) {
+            int cost = getGasPerProcess();
+
+            if(containedSmoke.getAmount() >= cost && containedSteam.getAmount() >= cost) {
+                containedSmoke.setAmount(containedSmoke.getAmount() - cost);
+                containedSteam.setAmount(containedSteam.getAmount() - cost);
+
+                flags = flags | FLAG_GAS_SATISFACTION;
+            } else
+                flags = flags & ~FLAG_GAS_SATISFACTION;
+        }
         syncAndSave();
     }
 
@@ -258,6 +308,10 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
             if(pLevel.isClientSide()) {
                 aabe.handleAnimationDrivers();
             }
+
+            //try to consume gasses if necessary
+            if((aabe.flags & FLAG_GAS_SATISFACTION) != FLAG_GAS_SATISFACTION)
+                aabe.consumeGasses();
 
             //particle work goes here
             if (getIsSatisfied(aabe)) {

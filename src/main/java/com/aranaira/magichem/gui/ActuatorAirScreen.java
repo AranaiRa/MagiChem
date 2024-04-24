@@ -3,8 +3,6 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -228,10 +226,10 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         Font font = Minecraft.getInstance().font;
 
         //Batch size
-        if((menu.getFlags() & ActuatorAirBlockEntity.FLAG_IS_SATISFIED) == ActuatorAirBlockEntity.FLAG_IS_SATISFIED)
-            gui.drawString(font, Component.literal("x" + (ActuatorAirBlockEntity.getBatchSize(menu.getPowerLevel()))), 112, 12, 0xff000000, false);
+        if(((menu.getFlags() & ActuatorAirBlockEntity.FLAG_IS_SATISFIED) == ActuatorAirBlockEntity.FLAG_IS_SATISFIED) && ((menu.getFlags() & ActuatorAirBlockEntity.FLAG_GAS_SATISFACTION) == ActuatorAirBlockEntity.FLAG_GAS_SATISFACTION))
+            gui.drawString(font, Component.literal("x" + (ActuatorAirBlockEntity.getRawBatchSize(menu.getPowerLevel()))), 112, 12, 0xff000000, false);
         else
-            gui.drawString(font, Component.literal("-"), 112, 12, 0xffaa0000, false);
+            gui.drawString(font, Component.literal("1"), 112, 12, 0xffaa0000, false);
 
         //Operation time
         float penaltyRate = ActuatorAirBlockEntity.getPenaltyRate(menu.getPowerLevel());

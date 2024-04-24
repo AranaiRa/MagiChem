@@ -7,10 +7,8 @@ import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.item.AdmixtureItem;
-import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
-import com.aranaira.magichem.registry.MateriaRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -119,7 +117,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             if (dpbe instanceof ActuatorAirBlockEntity air) {
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
                 if(ActuatorAirBlockEntity.getIsSatisfied(air)) {
-                    pEntity.batchSize = ActuatorAirBlockEntity.getBatchSize(air.getPowerLevel());
+                    pEntity.batchSize = air.getBatchSize();
                 } else
                     pEntity.batchSize = 1;
             }
