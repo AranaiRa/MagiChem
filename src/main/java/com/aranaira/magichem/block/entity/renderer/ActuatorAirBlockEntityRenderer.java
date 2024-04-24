@@ -38,13 +38,15 @@ public class ActuatorAirBlockEntityRenderer implements BlockEntityRenderer<Actua
         pPoseStack.pushPose();
         Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         if(dir == Direction.NORTH) {
-            pPoseStack.mulPose(Axis.XP.rotationDegrees(pBlockEntity.fanAngle + pPartialTick * (pBlockEntity.fanSpeed)));
             pPoseStack.translate(0.5f, 0.59375f, 0.65625f);
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(pBlockEntity.fanAngle + pPartialTick * (pBlockEntity.fanSpeed)));
         } else if(dir == Direction.EAST) {
             pPoseStack.translate(0.34375f, 0.59375f, 0.5f);
+            pPoseStack.mulPose(Axis.ZP.rotationDegrees(pBlockEntity.fanAngle + pPartialTick * (pBlockEntity.fanSpeed)));
             pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
         } else if(dir == Direction.SOUTH) {
             pPoseStack.translate(0.5f, 0.59375f, 0.34375f);
+            pPoseStack.mulPose(Axis.XN.rotationDegrees(pBlockEntity.fanAngle + pPartialTick * (pBlockEntity.fanSpeed)));
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
         } else if(dir == Direction.WEST) {
             pPoseStack.translate(0.65625f, 0.59375f, 0.5f);

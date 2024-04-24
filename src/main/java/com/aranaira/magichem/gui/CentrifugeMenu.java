@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.container.*;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -126,5 +127,9 @@ public class CentrifugeMenu extends AbstractContainerMenu {
 
     public int getOperationTimeMod() {
         return data.get(CentrifugeBlockEntity.DATA_OPERATION_TIME_MOD);
+    }
+
+    public int getBatchSize() {
+        return data.get(CentrifugeBlockEntity.DATA_BATCH_SIZE);
     }
 }

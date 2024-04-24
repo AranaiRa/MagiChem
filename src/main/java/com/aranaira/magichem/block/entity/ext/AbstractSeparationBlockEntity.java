@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
@@ -41,7 +42,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
     protected int
-            progress = 0, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
+            progress = 0, batchSize = 0, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
 
     protected ItemStackHandler itemHandler;
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -101,6 +102,13 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             if (dpbe instanceof ActuatorEarthBlockEntity earth) {
                 ActuatorEarthBlockEntity.delegatedTick(pLevel, pPos, pState, earth);
             }
+            if (dpbe instanceof ActuatorAirBlockEntity air) {
+                ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
+                if(ActuatorAirBlockEntity.getIsSatisfied(air)) {
+                    pEntity.batchSize = ActuatorAirBlockEntity.getBatchSize(air.getPowerLevel());
+                } else
+                    pEntity.batchSize = 1;
+            }
         }
 
         pEntity.remainingTorque = Math.max(-pVarFunc.apply(IDs.CONFIG_NO_TORQUE_GRACE_PERIOD), pEntity.remainingTorque - 1);
@@ -124,7 +132,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             if (processingItem != ItemStack.EMPTY && recipe != null) {
                 if (canCraftItem(pEntity, recipe, pVarFunc)) {
 
-                    if (pEntity.progress > getOperationTicks(pEntity.getGrimeFromData(), pEntity.operationTimeMod*100, pVarFunc)) {
+                    if (pEntity.progress > getOperationTicks(pEntity.getGrimeFromData(), pEntity.batchSize, pEntity.operationTimeMod*100, pVarFunc)) {
                         if (!pLevel.isClientSide()) {
                             craftItem(pEntity, recipe, processingSlot, pVarFunc);
                         }
@@ -234,11 +242,58 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected static void craftItem(AbstractSeparationBlockEntity pEntity, FixationSeparationRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
         int bottlesToInsert = 1;
 
+        SimpleContainer outputSlots = new SimpleContainer(9);
+        for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+            outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
+        }
+
+        int totalCycles = 0;
+        for(int batch=0; batch< pEntity.batchSize; batch++) {
+            totalCycles++;
+            if (!canCraftItem(pEntity, pRecipe, pVarFunc)) {
+                break;
+            }
+            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AbstractSeparationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            int grimeToAdd = Math.round(pair.getFirst());
+            NonNullList<ItemStack> componentMateria = pair.getSecond();
+
+            for (ItemStack item : componentMateria) {
+                if (outputSlots.canAddItem(item)) {
+                    outputSlots.addItem(item);
+                } else {
+                    pEntity.isStalled = true;
+                    break;
+                }
+            }
+
+            if (!pEntity.isStalled) {
+                for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
+                }
+                ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
+                processingSlotContents.shrink(1);
+                if (processingSlotContents.getCount() == 0)
+                    pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
+            }
+
+            //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
+            for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+                if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
+                    grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
+                }
+            }
+
+            if (grimeToAdd > 0) {
+                IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
+                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), pVarFunc.apply(IDs.CONFIG_MAX_GRIME)));
+            }
+        }
+
         //TODO: Uncommment the original line once the bottle slot stack size has been expanded
         //Fill Bottle Slot
         //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
         //TODO: Remove this once the bottle slot stack size has been expanded
-        ItemStack bottles = pEntity.itemHandler.insertItem(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
+        ItemStack bottles = pEntity.itemHandler.insertItem(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert * totalCycles), false);
         SimpleContainer bottleSpill = new SimpleContainer(5);
         while(bottles.getCount() > 0) {
             int count = bottles.getCount();
@@ -256,47 +311,6 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         }
         Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
-        SimpleContainer outputSlots = new SimpleContainer(9);
-        for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-            outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
-        }
-
-        Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AbstractSeparationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
-        int grimeToAdd = Math.round(pair.getFirst());
-        NonNullList<ItemStack> componentMateria = pair.getSecond();
-
-        for(ItemStack item : componentMateria) {
-            if(outputSlots.canAddItem(item)) {
-                outputSlots.addItem(item);
-            }
-            else {
-                pEntity.isStalled = true;
-                break;
-            }
-        }
-
-        if(!pEntity.isStalled) {
-            for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
-            }
-            ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
-            processingSlotContents.shrink(1);
-            if(processingSlotContents.getCount() == 0)
-                pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
-        }
-
-        //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
-        for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            if(dpbe instanceof ActuatorEarthBlockEntity aebe) {
-                grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
-            }
-        }
-
-        if(grimeToAdd > 0) {
-            IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
-            grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), pVarFunc.apply(IDs.CONFIG_MAX_GRIME)));
-        }
-
         resolveActuators(pEntity);
     }
 
@@ -311,9 +325,10 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         return 1f + grimeScalar * 3f;
     }
 
-    public static int getOperationTicks(int pGrime, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
+    public static int getOperationTicks(int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
         float otmScalar = (10000f - pOperationTimeMod) / 10000f;
-        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar);
+        float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize);
+        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
     }
 
     public static int getActualEfficiency(int pMod, int pGrime, Function<IDs, Integer> pVarFunc) {
@@ -325,8 +340,8 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         return (float)pGrime / (float)pVarFunc.apply(IDs.CONFIG_MAX_GRIME);
     }
 
-    public static int getScaledProgress(int pProgress, int pGrime, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
-        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pOperationTimeMod, pVarFunc);
+    public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
+        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc);
     }
 
     @Override
