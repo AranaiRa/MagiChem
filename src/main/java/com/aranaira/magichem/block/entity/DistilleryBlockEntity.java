@@ -190,6 +190,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("remainingHeat", this.remainingHeat);
         nbt.putInt("heatDuration", this.heatDuration);
+        nbt.putInt("batchSize", this.batchSize);
         super.saveAdditional(nbt);
     }
 
@@ -200,6 +201,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         progress = nbt.getInt("craftingProgress");
         remainingHeat = nbt.getInt("remainingHeat");
         heatDuration = nbt.getInt("heatDuration");
+        batchSize = nbt.getInt("batchSize");
     }
 
     @Override
@@ -209,6 +211,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("remainingHeat", this.remainingHeat);
         nbt.putInt("heatDuration", this.heatDuration);
+        nbt.putInt("batchSize", this.batchSize);
         return nbt;
     }
 

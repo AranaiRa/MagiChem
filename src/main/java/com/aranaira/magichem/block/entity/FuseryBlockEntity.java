@@ -206,6 +206,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
         nbt.putInt("fluidContents", 0);
+        nbt.putInt("batchSize", this.batchSize);
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
         });
@@ -219,6 +220,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
+        batchSize = nbt.getInt("batchSize");
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -233,6 +235,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
+        nbt.putInt("batchSize", this.batchSize);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else

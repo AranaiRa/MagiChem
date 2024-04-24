@@ -126,7 +126,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
         Font font = Minecraft.getInstance().font;
 
         gui.drawString(font, Component.literal(CentrifugeBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), CentrifugeBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 2, 0xff000000, false);
-int butt = menu.getBatchSize();
+
         int secWhole = CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), CentrifugeBlockEntity::getVar) / 20;
         int secPartial = (CentrifugeBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), CentrifugeBlockEntity::getVar) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 17, 0xff000000, false);
