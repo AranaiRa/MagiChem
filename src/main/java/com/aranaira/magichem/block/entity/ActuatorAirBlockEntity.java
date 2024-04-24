@@ -139,12 +139,21 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     }
 
     public int getBatchSize() {
-        if((flags & FLAG_GAS_SATISFACTION) != FLAG_GAS_SATISFACTION)
-            return 1;
+        int gpp = getGasPerProcess(powerLevel);
+
+        if(powerLevel == 2) {
+            if(containedSteam.getAmount() < gpp && containedSmoke.getAmount() < gpp)
+                return 1;
+        } else if (powerLevel == 3) {
+            if(containedSteam.getAmount() < gpp || containedSmoke.getAmount() < gpp)
+                return 1;
+        }
         return new int[]{0, 2, 4, 8}[powerLevel];
     }
 
     public float getPenaltyRate() {
+        if((flags & FLAG_GAS_SATISFACTION) != FLAG_GAS_SATISFACTION)
+            return 1;
         return POWER_PENALTY[this.powerLevel];
     }
 
