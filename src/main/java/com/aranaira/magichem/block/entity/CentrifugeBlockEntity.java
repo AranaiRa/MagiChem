@@ -182,6 +182,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
+        nbt.putInt("batchSize", this.batchSize);
         super.saveAdditional(nbt);
     }
 
@@ -192,6 +193,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
+        batchSize = nbt.getInt("batchSize");
         updateActuatorValues(this);
     }
 
@@ -202,6 +204,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
+        nbt.putInt("batchSize", this.batchSize);
         return nbt;
     }
 

@@ -126,18 +126,6 @@ public class TooltipLoreItem extends Item {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == ItemRegistry.STEAM_BUCKET.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.gasbucket")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.SMOKE_BUCKET.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.gasbucket")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

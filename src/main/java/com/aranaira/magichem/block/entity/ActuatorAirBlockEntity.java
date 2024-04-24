@@ -154,9 +154,9 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
 
     public static float getPenaltyRateFromBatchSize(int pBatchSize) {
         int index = 0;
-        if(pBatchSize == 4) index = 1;
-        else if(pBatchSize == 16) index = 2;
-        else if(pBatchSize == 64) index = 3;
+        if(pBatchSize == 2) index = 1;
+        else if(pBatchSize == 4) index = 2;
+        else if(pBatchSize == 8) index = 3;
         return POWER_PENALTY[index];
     }
 

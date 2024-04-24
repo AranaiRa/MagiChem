@@ -116,10 +116,15 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             }
             if (dpbe instanceof ActuatorAirBlockEntity air) {
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
+                int pre = pEntity.batchSize;
+
                 if(ActuatorAirBlockEntity.getIsSatisfied(air)) {
                     pEntity.batchSize = air.getBatchSize();
                 } else
                     pEntity.batchSize = 1;
+
+                if(pre != pEntity.batchSize)
+                    pEntity.syncAndSave();
             }
         }
 
