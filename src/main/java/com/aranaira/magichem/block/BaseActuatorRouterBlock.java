@@ -215,10 +215,10 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_EARTH_HOUSING_NORTH, 3));
 
         VOXEL_SHAPE_AIR_SIPHON_BASE      = Block.box(6, 0, 1, 10, 1, 5);
-        VOXEL_SHAPE_AIR_SIPHON_CONNECTOR = Block.box(5.5,6,6,7.5,10,10);
+        VOXEL_SHAPE_AIR_SIPHON_CONNECTOR = Block.box(6,6,4.5,10,10,6.5);
         VOXEL_SHAPE_AIR_SIPHON           = Block.box(7,0,2,9,9,10);
-        VOXEL_SHAPE_AIR_TANK             = Block.box(4.818,1,7.318,11.182,15,13.682);
-        VOXEL_SHAPE_AIR_TANK_MOUNT       = Block.box(5.5,0,8,10.5,1,13);
+        VOXEL_SHAPE_AIR_TANK             = Block.box(4,2,6.5,12,15,14.5);
+        VOXEL_SHAPE_AIR_TANK_MOUNT       = Block.box(5.5,0,8,10.5,2,13);
 
         VOXEL_SHAPE_AIR_AGGREGATE_NORTH = Shapes.or(
                 VOXEL_SHAPE_AIR_SIPHON_BASE,
