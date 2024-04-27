@@ -1,7 +1,7 @@
 {
   "type": "mna:manaweaving-recipe",
   "output": "magichem:centrifuge",
-  "tier": 3,
+  "tier": 2,
   "items": [
     "magichem:magic_circle",
     "magichem:perfected_electrum",
@@ -14,8 +14,10 @@
     "magichem:magic_circle"
   ],
   "patterns": [
+    "mna:slash",
+    "mna:slash",
     "mna:inverted_triangle",
-    "mna:bolt",
-    "mna:split_triangle"
+    "mna:backslash",
+    "mna:backslash"
   ]
 }

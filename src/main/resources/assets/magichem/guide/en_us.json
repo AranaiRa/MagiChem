@@ -765,7 +765,7 @@
   "Centrifuge": {
     "index": "1203",
     "category": "magichem",
-    "tier": 3,
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -783,7 +783,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "is a simple device capable of performing "
+            "text": "is an advanced device capable of performing "
           },
           {
             "text": "Separation",
@@ -881,7 +881,7 @@
   "Process: Separation": {
     "index": "1108",
     "category": "magichem",
-    "tier": 3,
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -946,7 +946,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "is a simple device capable of performing "
+            "text": "is an advanced device capable of performing "
           },
           {
             "text": "Fixation",
