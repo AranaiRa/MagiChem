@@ -486,6 +486,13 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         if(pPlugin instanceof ActuatorWaterBlockEntity) {
             efficiencyMod = 0;
         }
+        if(pPlugin instanceof ActuatorAirBlockEntity) {
+            batchSize = 1;
+        }
+        if(pPlugin instanceof ActuatorFireBlockEntity) {
+            operationTimeMod = 0;
+        }
+        syncAndSave();
     }
 
     @Override
