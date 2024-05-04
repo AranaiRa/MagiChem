@@ -50,7 +50,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     public static final int
             TANK_SMOKE = 0, TANK_STEAM = 1,
             DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3, DATA_STEAM = 4,
-            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_GAS_SATISFACTION = 4;
+            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_GAS_SATISFACTION = 4, FLAG_IS_PAUSED = 8;
     private static final float
             FAN_ACCELERATION_RATE = 0.09f, FAN_TOP_SPEED = 24.0f;
     private int
@@ -310,6 +310,19 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
 
     public static boolean getIsSatisfied(ActuatorAirBlockEntity entity) {
         return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+    }
+
+    public static boolean getIsPaused(ActuatorAirBlockEntity entity) {
+        return (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
+    }
+
+    public static void setPaused(ActuatorAirBlockEntity entity, boolean pauseState) {
+        if(pauseState) {
+            entity.flags = entity.flags | FLAG_IS_PAUSED;
+        } else {
+            entity.flags = entity.flags & ~FLAG_IS_PAUSED;
+        }
+        entity.syncAndSave();
     }
 
     public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, T t) {
