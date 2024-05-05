@@ -18,6 +18,7 @@ import com.mna.api.blocks.ISpellInteractibleBlock;
 import com.mna.api.spells.attributes.Attribute;
 import com.mna.api.spells.base.IModifiedSpellPart;
 import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
 import com.mna.spells.SpellsInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -262,7 +263,7 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
     @Override
     public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
         for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
-            if(isp.getPart().getRegistryName().equals(SpellsInit.FIRE_DAMAGE.getRegistryName())) {
+            if(isp.getPart().equals(Components.FIRE_DAMAGE)) {
                 float damage = isp.getValue(Attribute.DAMAGE);
                 float duration = isp.getValue(Attribute.DURATION);
                 BlockEntity be = level.getBlockEntity(blockPos);
