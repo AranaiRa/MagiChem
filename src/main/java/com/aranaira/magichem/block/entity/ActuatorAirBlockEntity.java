@@ -309,7 +309,9 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     }
 
     public static boolean getIsSatisfied(ActuatorAirBlockEntity entity) {
-        return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+        boolean satisfied = (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+        boolean paused = (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
+        return satisfied && !paused;
     }
 
     public static boolean getIsPaused(ActuatorAirBlockEntity entity) {
@@ -331,51 +333,51 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
                 aabe.handleAnimationDrivers();
             }
 
-            //try to consume gasses if necessary
-            if((aabe.flags & FLAG_GAS_SATISFACTION) != FLAG_GAS_SATISFACTION)
-                aabe.consumeGasses();
+            if(!getIsPaused(aabe)) {
+                //try to consume gasses if necessary
+                if ((aabe.flags & FLAG_GAS_SATISFACTION) != FLAG_GAS_SATISFACTION)
+                    aabe.consumeGasses();
 
-            //particle work goes here
-            if (getIsSatisfied(aabe)) {
-                int spawnModulus = 3;
-                Vector3f mid = new Vector3f(0f, 1.53125f, 0f);
+                //particle work goes here
+                if (getIsSatisfied(aabe)) {
+                    int spawnModulus = 3;
+                    Vector3f mid = new Vector3f(0f, 1.53125f, 0f);
 
-                Direction dir = pBlockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                if(dir == Direction.NORTH) {
-                    mid.x = 0.5f;
-                    mid.z = 0.6563f;
-                }
-                if(dir == Direction.EAST) {
-                    mid.x = 0.3437f;
-                    mid.z = 0.5f;
-                }
-                else if(dir == Direction.SOUTH) {
-                    mid.x = 0.5f;
-                    mid.z = 0.3437f;
-                }
-                else if(dir == Direction.WEST) {
-                    mid.x = 0.6563f;
-                    mid.z = 0.5f;
-                }
+                    Direction dir = pBlockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                    if (dir == Direction.NORTH) {
+                        mid.x = 0.5f;
+                        mid.z = 0.6563f;
+                    }
+                    if (dir == Direction.EAST) {
+                        mid.x = 0.3437f;
+                        mid.z = 0.5f;
+                    } else if (dir == Direction.SOUTH) {
+                        mid.x = 0.5f;
+                        mid.z = 0.3437f;
+                    } else if (dir == Direction.WEST) {
+                        mid.x = 0.6563f;
+                        mid.z = 0.5f;
+                    }
 
-                pLevel.addParticle(new MAParticleType(ParticleInit.AIR_ORBIT.get())
-                                .setMaxAge(15).setScale(0.0875f).setColor(32, 32, 32, 128)
-                                .setMover(new ParticleOrbitMover(
-                                        pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
-                                        0.425f, 0.01875f, 0.0001f
-                                )),
-                        pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
-                        0, 0, 0);
-
-                if (pLevel.getGameTime() % spawnModulus == 0) {
                     pLevel.addParticle(new MAParticleType(ParticleInit.AIR_ORBIT.get())
-                                    .setMaxAge(20).setScale(0.01f).setColor(64, 64, 64, 196)
+                                    .setMaxAge(15).setScale(0.0875f).setColor(32, 32, 32, 128)
                                     .setMover(new ParticleOrbitMover(
                                             pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
-                                            -0.4375f, 0.02f, 0.0001f
+                                            0.425f, 0.01875f, 0.0001f, 0.1f
                                     )),
                             pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
                             0, 0, 0);
+
+                    if (pLevel.getGameTime() % spawnModulus == 0) {
+                        pLevel.addParticle(new MAParticleType(ParticleInit.AIR_ORBIT.get())
+                                        .setMaxAge(20).setScale(0.01f).setColor(64, 64, 64, 196)
+                                        .setMover(new ParticleOrbitMover(
+                                                pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
+                                                -0.4375f, 0.02f, 0.0001f, 0.125f
+                                        )),
+                                pPos.getX() + mid.x, pPos.getY() + mid.y - 0.325f, pPos.getZ() + mid.z,
+                                0, 0, 0);
+                    }
                 }
             }
         }
@@ -385,7 +387,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
         Player ownerCheck = entity.getOwner();
         int powerDraw = entity.getEldrinPowerUsage();
 
-        if(ownerCheck != null) {
+        if(ownerCheck != null && !getIsPaused(entity)) {
             float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.WIND, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
             entity.remainingEldrinForSatisfaction -= consumption;
 
@@ -421,7 +423,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     }
 
     public void handleAnimationDrivers() {
-        if(getIsSatisfied(this)) {
+        if(getIsSatisfied(this) && !getIsPaused(this)) {
             if(fanSpeed == 0) fanSpeed += FAN_ACCELERATION_RATE * 4;
             fanSpeed = Math.min(fanSpeed + FAN_ACCELERATION_RATE, FAN_TOP_SPEED);
         } else {
