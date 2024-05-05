@@ -423,7 +423,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     }
 
     public void handleAnimationDrivers() {
-        if(getIsSatisfied(this) && !getIsPaused(this)) {
+        if(getIsSatisfied(this)) {
             if(fanSpeed == 0) fanSpeed += FAN_ACCELERATION_RATE * 4;
             fanSpeed = Math.min(fanSpeed + FAN_ACCELERATION_RATE, FAN_TOP_SPEED);
         } else {

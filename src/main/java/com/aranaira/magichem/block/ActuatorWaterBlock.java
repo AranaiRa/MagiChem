@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
@@ -87,6 +88,17 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
         }
 
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be != null) {
+            if(be instanceof ActuatorWaterBlockEntity awbe) {
+                ActuatorWaterBlockEntity.setPaused(awbe, pLevel.hasNeighborSignal(pPos));
+            }
+        }
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
     }
 
     @Override

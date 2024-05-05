@@ -56,7 +56,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
     public static final int
             SLOT_COUNT = 3, SLOT_SAND = 0, SLOT_WASTE = 1, SLOT_RAREFIED_WASTE = 2,
             DATA_COUNT = 6, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SAND = 3, DATA_GRIME = 4, DATA_RAREFIED_GRIME = 5,
-            FLAG_IS_SATISFIED = 1,
+            FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2,
             STAMPER_ANIMATION_PERIOD = 10;
     private int
             powerLevel = 1,
@@ -234,58 +234,75 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
     }
 
     public static boolean getIsSatisfied(ActuatorEarthBlockEntity entity) {
-        return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+        boolean satisfied = (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+        boolean paused = (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
+        return satisfied && !paused;
+    }
+
+    public static boolean getIsPaused(ActuatorEarthBlockEntity entity) {
+        return (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
+    }
+
+    public static void setPaused(ActuatorEarthBlockEntity entity, boolean pauseState) {
+        if(pauseState) {
+            entity.flags = entity.flags | FLAG_IS_PAUSED;
+        } else {
+            entity.flags = entity.flags & ~FLAG_IS_PAUSED;
+        }
+        entity.syncAndSave();
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
         if(t instanceof ActuatorEarthBlockEntity aebe) {
-            if(level.isClientSide()) {
+            if (level.isClientSide()) {
                 aebe.handleAnimationDrivers();
             }
 
-            //Fill the internal sand buffer
-            if(Config.quakeRefinerySandCapacity - aebe.remainingSand >= 1000) {
-                ItemStack sandStack = aebe.itemHandler.getStackInSlot(SLOT_SAND);
-                if(!sandStack.isEmpty()) {
-                    sandStack.shrink(1);
-                    aebe.itemHandler.setStackInSlot(SLOT_SAND, sandStack);
-                    aebe.remainingSand += 1000;
+            if (!getIsPaused(aebe)) {
+                //Fill the internal sand buffer
+                if (Config.quakeRefinerySandCapacity - aebe.remainingSand >= 1000) {
+                    ItemStack sandStack = aebe.itemHandler.getStackInSlot(SLOT_SAND);
+                    if (!sandStack.isEmpty()) {
+                        sandStack.shrink(1);
+                        aebe.itemHandler.setStackInSlot(SLOT_SAND, sandStack);
+                        aebe.remainingSand += 1000;
+                        aebe.syncAndSave();
+                    }
+                }
+
+                //Dump grime to waste
+                if (aebe.currentGrime > Config.grimePerWaste) {
+                    ItemStack wasteStack = aebe.itemHandler.getStackInSlot(SLOT_WASTE);
+                    int maxWasteToAdd = aebe.currentGrime / Config.grimePerWaste;
+                    int actualWasteToAdd;
+                    if (wasteStack == ItemStack.EMPTY) {
+                        actualWasteToAdd = Math.min(maxWasteToAdd, 64);
+                        wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), actualWasteToAdd);
+                    } else {
+                        actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
+                        wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
+                    }
+                    aebe.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
+                    aebe.currentGrime -= actualWasteToAdd * Config.grimePerWaste;
                     aebe.syncAndSave();
                 }
-            }
 
-            //Dump grime to waste
-            if(aebe.currentGrime > Config.grimePerWaste) {
-                ItemStack wasteStack = aebe.itemHandler.getStackInSlot(SLOT_WASTE);
-                int maxWasteToAdd = aebe.currentGrime / Config.grimePerWaste;
-                int actualWasteToAdd;
-                if(wasteStack == ItemStack.EMPTY) {
-                    actualWasteToAdd = Math.min(maxWasteToAdd, 64);
-                    wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), actualWasteToAdd);
-                } else {
-                    actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
-                    wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
+                //Dump rarefied
+                if (aebe.currentRarefiedGrime > Config.grimePerWaste) {
+                    ItemStack wasteStack = aebe.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE);
+                    int maxWasteToAdd = aebe.currentRarefiedGrime / Config.grimePerWaste;
+                    int actualWasteToAdd;
+                    if (wasteStack == ItemStack.EMPTY) {
+                        actualWasteToAdd = Math.min(maxWasteToAdd, 64);
+                        wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), actualWasteToAdd);
+                    } else {
+                        actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
+                        wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
+                    }
+                    aebe.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
+                    aebe.currentRarefiedGrime -= actualWasteToAdd * Config.grimePerWaste;
+                    aebe.syncAndSave();
                 }
-                aebe.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
-                aebe.currentGrime -= actualWasteToAdd * Config.grimePerWaste;
-                aebe.syncAndSave();
-            }
-
-            //Dump rarefied
-            if(aebe.currentRarefiedGrime > Config.grimePerWaste) {
-                ItemStack wasteStack = aebe.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE);
-                int maxWasteToAdd = aebe.currentRarefiedGrime / Config.grimePerWaste;
-                int actualWasteToAdd;
-                if(wasteStack == ItemStack.EMPTY) {
-                    actualWasteToAdd = Math.min(maxWasteToAdd, 64);
-                    wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), actualWasteToAdd);
-                } else {
-                    actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
-                    wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
-                }
-                aebe.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
-                aebe.currentRarefiedGrime -= actualWasteToAdd * Config.grimePerWaste;
-                aebe.syncAndSave();
             }
         }
     }
@@ -294,7 +311,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         Player ownerCheck = entity.getOwner();
         int powerDraw = entity.getEldrinPowerUsage();
 
-        if(ownerCheck != null) {
+        if(ownerCheck != null && !getIsPaused(entity)) {
             float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.EARTH, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
             entity.remainingEldrinForSatisfaction -= consumption;
 
@@ -325,7 +342,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
     public void handleAnimationDrivers() {
         boolean doDriverUpdate = true;
 
-        if(((flags & FLAG_IS_SATISFIED) != FLAG_IS_SATISFIED) || (remainingSand < getSandPerOperation())) {
+        if((!getIsSatisfied(this) || (remainingSand < getSandPerOperation()))) {
             if(stamperDepth == 0) {
                 doDriverUpdate = false;
                 stamperDepthNextTick = 0;

@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
@@ -78,6 +79,17 @@ public class ActuatorEarthBlock extends BaseEntityBlock {
         }
 
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be != null) {
+            if(be instanceof ActuatorEarthBlockEntity aebe) {
+                ActuatorEarthBlockEntity.setPaused(aebe, pLevel.hasNeighborSignal(pPos));
+            }
+        }
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
     }
 
     @Override

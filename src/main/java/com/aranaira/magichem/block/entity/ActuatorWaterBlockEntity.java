@@ -57,7 +57,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
             TANK_ID_WATER = 0, TANK_ID_STEAM = 1,
             DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_WATER = 3, DATA_STEAM = 4;
     public static final int
-            FLAG_IS_SATISFIED = 1;
+            FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2;
     private int
             powerLevel = 1,
             remainingEldrinTime,
@@ -182,6 +182,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("tankWater", this.containedWater.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
+        nbt.putInt("flags", this.flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -192,6 +193,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         super.load(nbt);
         this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
         this.powerLevel = nbt.getInt("powerLevel");
+        this.flags = nbt.getInt("flags");
 
         int nbtWater = nbt.getInt("tankWater");
         if(nbtWater > 0)
@@ -216,6 +218,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("tankWater", this.containedWater.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
+        nbt.putInt("flags", this.flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;
@@ -234,14 +237,29 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     }
 
     public static boolean getIsSatisfied(ActuatorWaterBlockEntity entity) {
-        return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+        boolean satisfied = (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+        boolean paused = (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
+        return satisfied && !paused;
+    }
+
+    public static boolean getIsPaused(ActuatorWaterBlockEntity entity) {
+        return (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
+    }
+
+    public static void setPaused(ActuatorWaterBlockEntity entity, boolean pauseState) {
+        if(pauseState) {
+            entity.flags = entity.flags | FLAG_IS_PAUSED;
+        } else {
+            entity.flags = entity.flags & ~FLAG_IS_PAUSED;
+        }
+        entity.syncAndSave();
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
         if(t instanceof ActuatorWaterBlockEntity awbe) {
 
             float water = awbe.getWaterPercent();
-            if(water > 0) {
+            if(water > 0 && !getIsPaused(awbe)) {
                 Vector3f mid = new Vector3f(0f, 1.5625f, 0f);
                 Vector3f left = new Vector3f(0f, 1.03125f, 0f);
                 Vector3f right = new Vector3f(0f, 1.03125f, 0f);
@@ -334,7 +352,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         Player ownerCheck = entity.getOwner();
         int powerDraw = entity.getEldrinPowerUsage();
 
-        if(ownerCheck != null) {
+        if(ownerCheck != null && !getIsPaused(entity)) {
             float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.WATER, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
             entity.remainingEldrinForSatisfaction -= consumption;
 

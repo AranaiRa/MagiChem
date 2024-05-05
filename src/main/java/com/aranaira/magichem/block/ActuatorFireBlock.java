@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
@@ -96,6 +97,17 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
         }
 
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be != null) {
+            if(be instanceof ActuatorFireBlockEntity afbe) {
+                ActuatorFireBlockEntity.setPaused(afbe, pLevel.hasNeighborSignal(pPos));
+            }
+        }
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
     }
 
     @Override

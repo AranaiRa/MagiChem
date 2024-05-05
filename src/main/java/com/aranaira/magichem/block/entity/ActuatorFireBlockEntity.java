@@ -59,7 +59,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     public static final int
             SLOT_COUNT = 1,
             DATA_COUNT = 6, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3, DATA_REMAINING_FUEL_TIME = 4, DATA_FUEL_DURATION = 5,
-            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_FUEL_NORMAL = 4, FLAG_FUEL_SUPER = 8, FLAG_FUEL_SATISFACTION_TYPE = 12;
+            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_FUEL_NORMAL = 4, FLAG_FUEL_SUPER = 8, FLAG_FUEL_SATISFACTION_TYPE = 12, FLAG_IS_PAUSED = 16;
     private static final float
             PIPE_VIBRATION_ACCELERATION = 0.002f;
     private int
@@ -237,6 +237,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
+        nbt.putInt("flags", flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -248,6 +249,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
         this.powerLevel = nbt.getInt("powerLevel");
+        this.flags = nbt.getInt("flags");
 
         int nbtSmoke = nbt.getInt("tankSmoke");
         if(nbtSmoke > 0)
@@ -272,6 +274,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
+        nbt.putInt("flags", flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;
@@ -291,7 +294,22 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     }
 
     public static boolean getIsSatisfied(ActuatorFireBlockEntity entity) {
-        return (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+        boolean satisfied = (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
+        boolean paused = (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
+        return satisfied && !paused;
+    }
+
+    public static boolean getIsPaused(ActuatorFireBlockEntity entity) {
+        return (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
+    }
+
+    public static void setPaused(ActuatorFireBlockEntity entity, boolean pauseState) {
+        if(pauseState) {
+            entity.flags = entity.flags | FLAG_IS_PAUSED;
+        } else {
+            entity.flags = entity.flags & ~FLAG_IS_PAUSED;
+        }
+        entity.syncAndSave();
     }
 
     public static boolean getIsFuelled(ActuatorFireBlockEntity entity) {
@@ -306,7 +324,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         if(t instanceof ActuatorFireBlockEntity afbe) {
 
             float smoke = afbe.data.get(DATA_SMOKE);
-            if(smoke > 0) {
+            if(smoke > 0 && !getIsPaused(afbe)) {
                 float mappedSmokePercent = Math.max(0, ((smoke / Config.infernoEngineTankCapacity) - 0.5f) * 2);
                 if (mappedSmokePercent > 0f) {
                     int spawnModulus = 5 - (int) Math.floor(mappedSmokePercent * 4);
@@ -377,57 +395,62 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
             float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.FIRE, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
             entity.remainingEldrinForSatisfaction -= consumption;
 
-            //Fuel processing
-            if(entity.remainingFuelTime <= 0) {
-                ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
-                if(!fuelStack.isEmpty()) {
-                    entity.fuelDuration = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem(), 1), RecipeType.SMELTING);
-                    entity.remainingFuelTime = entity.fuelDuration;
-                    entity.itemHandler.setStackInSlot(0, new ItemStack(fuelStack.getItem(), fuelStack.getCount()-1));
-                    entity.flags = entity.flags | FLAG_FUEL_NORMAL;
-                    entity.syncAndSave();
-
-                    //TODO: handle fancy alchemy coal
-                } else {
-                    if(getIsFuelled(entity) || getIsSuperFuelled(entity)) {
-                        entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+            if (!getIsPaused(entity)) {
+                //Fuel processing
+                if (entity.remainingFuelTime <= 0) {
+                    ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
+                    if (!fuelStack.isEmpty()) {
+                        entity.fuelDuration = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem(), 1), RecipeType.SMELTING);
+                        entity.remainingFuelTime = entity.fuelDuration;
+                        entity.itemHandler.setStackInSlot(0, new ItemStack(fuelStack.getItem(), fuelStack.getCount() - 1));
+                        entity.flags = entity.flags | FLAG_FUEL_NORMAL;
                         entity.syncAndSave();
+
+                        //TODO: handle fancy alchemy coal
                     } else {
-                        entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+                        if (getIsFuelled(entity) || getIsSuperFuelled(entity)) {
+                            entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+                            entity.syncAndSave();
+                        } else {
+                            entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+                        }
                     }
+                } else {
+                    entity.remainingFuelTime = Math.max(-1, entity.remainingFuelTime - 1);
                 }
-            } else {
-                entity.remainingFuelTime = Math.max(-1, entity.remainingFuelTime - 1);
-            }
 
-            //Eldrin processing
-            if(entity.remainingEldrinTime <= 0) {
-                if(entity.remainingEldrinForSatisfaction <= 0) {
-                    entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.infernoEngineOperationTime;
+                //Eldrin processing
+                if (entity.remainingEldrinTime <= 0) {
+                    if (entity.remainingEldrinForSatisfaction <= 0) {
+                        entity.remainingEldrinForSatisfaction = powerDraw;
+                        entity.remainingEldrinTime = Config.infernoEngineOperationTime;
                     }
 
-                    if(!getIsSatisfied(entity)) {
+                    if (!getIsSatisfied(entity)) {
                         entity.syncAndSave();
                     }
                     //process fuel reduction if present
-            }
-            entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
+                }
+                entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
 
-            if(entity.remainingEldrinTime >= 0) entity.flags = entity.flags | ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
-            else {
-                if(getIsSatisfied(entity)) {
-                    entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
-                    entity.syncAndSave();
-                } else
-                    entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+                if (entity.remainingEldrinTime >= 0)
+                    entity.flags = entity.flags | ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+                else {
+                    if (getIsSatisfied(entity)) {
+                        entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+                        entity.syncAndSave();
+                    } else
+                        entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+                }
             }
         }
     }
 
     public void handleAnimationDrivers() {
-        if(remainingEldrinTime >= 0) pipeVibrationIntensity = Math.min(1.0f, pipeVibrationIntensity + PIPE_VIBRATION_ACCELERATION);
-        else pipeVibrationIntensity = Math.max(0.0f, pipeVibrationIntensity - PIPE_VIBRATION_ACCELERATION * 2.5f);
+        if(remainingEldrinTime >= 0 && !getIsPaused(this))
+            pipeVibrationIntensity = Math.min(1.0f, pipeVibrationIntensity + PIPE_VIBRATION_ACCELERATION);
+        else
+            pipeVibrationIntensity = Math.max(0.0f, pipeVibrationIntensity - PIPE_VIBRATION_ACCELERATION * 2.5f);
     }
 
     @Override
