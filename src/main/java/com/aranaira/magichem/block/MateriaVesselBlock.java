@@ -109,7 +109,7 @@ public class MateriaVesselBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        if(pState.getValue(STACKED) == true)
+        if(pState.getValue(STACKED))
             return SHAPE_AGGREGATE_STACKED;
         return SHAPE_AGGREGATE;
     }

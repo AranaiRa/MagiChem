@@ -16,6 +16,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -25,26 +30,39 @@ import org.jetbrains.annotations.Nullable;
 public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreativeTab {
     public BaseActuatorRouterBlock(Properties pProperties) {
         super(pProperties);
+        this.registerDefaultState(this.defaultBlockState().setValue(ELEMENT, 0).setValue(FACING, Direction.NORTH));
     }
 
+    public static final IntegerProperty ELEMENT = IntegerProperty.create("element", 0, 6);
+    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final int
+            ELEMENT_ERROR = 0,
+            ELEMENT_ENDER = 1, ELEMENT_EARTH = 2, ELEMENT_WATER = 3,
+            ELEMENT_AIR = 4, ELEMENT_FIRE = 5, ELEMENT_ARCANE = 6;
     public static VoxelShape
             VOXEL_SHAPE_WATER_PIPES_NORTH, VOXEL_SHAPE_WATER_TUBE_BODY_NORTH, VOXEL_SHAPE_WATER_TUBE_CAP_NORTH,
             VOXEL_SHAPE_FIRE_LEFT_NUB, VOXEL_SHAPE_FIRE_LEFT_HORIZONTAL, VOXEL_SHAPE_FIRE_LEFT_VERTICAL, VOXEL_SHAPE_FIRE_RIGHT_NUB, VOXEL_SHAPE_FIRE_RIGHT_HORIZONTAL, VOXEL_SHAPE_FIRE_RIGHT_VERTICAL, VOXEL_SHAPE_FIRE_CENTER,
 
-            VOXEL_SHAPE_WATER_AGGREGATE_NORTH, VOXEL_SHAPE_WATER_AGGREGATE_EAST, VOXEL_SHAPE_WATER_AGGREGATE_SOUTH, VOXEL_SHAPE_WATER_AGGREGATE_WEST,
+    VOXEL_SHAPE_WATER_AGGREGATE_NORTH, VOXEL_SHAPE_WATER_AGGREGATE_EAST, VOXEL_SHAPE_WATER_AGGREGATE_SOUTH, VOXEL_SHAPE_WATER_AGGREGATE_WEST,
             VOXEL_SHAPE_FIRE_AGGREGATE_NORTH, VOXEL_SHAPE_FIRE_AGGREGATE_EAST, VOXEL_SHAPE_FIRE_AGGREGATE_SOUTH, VOXEL_SHAPE_FIRE_AGGREGATE_WEST,
 
-            VOXEL_SHAPE_EARTH_CAP_NORTH, VOXEL_SHAPE_EARTH_POST_NW_NORTH, VOXEL_SHAPE_EARTH_POST_NE_NORTH,
+    VOXEL_SHAPE_EARTH_CAP_NORTH, VOXEL_SHAPE_EARTH_POST_NW_NORTH, VOXEL_SHAPE_EARTH_POST_NE_NORTH,
             VOXEL_SHAPE_EARTH_POST_SW_NORTH, VOXEL_SHAPE_EARTH_POST_SE_NORTH, VOXEL_SHAPE_EARTH_HOUSING_NORTH,
             VOXEL_SHAPE_EARTH_AGGREGATE_NORTH, VOXEL_SHAPE_EARTH_AGGREGATE_EAST, VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH, VOXEL_SHAPE_EARTH_AGGREGATE_WEST,
 
-            VOXEL_SHAPE_AIR_SIPHON_BASE, VOXEL_SHAPE_AIR_SIPHON_CONNECTOR, VOXEL_SHAPE_AIR_SIPHON, VOXEL_SHAPE_AIR_TANK, VOXEL_SHAPE_AIR_TANK_MOUNT,
+    VOXEL_SHAPE_AIR_SIPHON_BASE, VOXEL_SHAPE_AIR_SIPHON_CONNECTOR, VOXEL_SHAPE_AIR_SIPHON, VOXEL_SHAPE_AIR_TANK, VOXEL_SHAPE_AIR_TANK_MOUNT,
             VOXEL_SHAPE_AIR_AGGREGATE_NORTH, VOXEL_SHAPE_AIR_AGGREGATE_EAST, VOXEL_SHAPE_AIR_AGGREGATE_SOUTH, VOXEL_SHAPE_AIR_AGGREGATE_WEST;
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new BaseActuatorRouterBlockEntity(pPos, pState);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(ELEMENT);
+        pBuilder.add(FACING);
     }
 
     @Override
@@ -65,32 +83,31 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        BlockEntity be = pLevel.getBlockEntity(pPos);
-        if(be != null) {
-            Direction facing = ((BaseActuatorRouterBlockEntity)be).getFacing();
+        int element = pState.getValue(ELEMENT);
+        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-            if(be instanceof ActuatorWaterRouterBlockEntity) {
-                if (facing == Direction.NORTH) return VOXEL_SHAPE_WATER_AGGREGATE_NORTH;
-                if (facing == Direction.EAST) return VOXEL_SHAPE_WATER_AGGREGATE_EAST;
-                if (facing == Direction.SOUTH) return VOXEL_SHAPE_WATER_AGGREGATE_SOUTH;
-                if (facing == Direction.WEST) return VOXEL_SHAPE_WATER_AGGREGATE_WEST;
-            } else if(be instanceof ActuatorFireRouterBlockEntity) {
-                if (facing == Direction.NORTH) return VOXEL_SHAPE_FIRE_AGGREGATE_NORTH;
-                if (facing == Direction.EAST) return VOXEL_SHAPE_FIRE_AGGREGATE_EAST;
-                if (facing == Direction.SOUTH) return VOXEL_SHAPE_FIRE_AGGREGATE_SOUTH;
-                if (facing == Direction.WEST) return VOXEL_SHAPE_FIRE_AGGREGATE_WEST;
-            } else if(be instanceof ActuatorEarthRouterBlockEntity) {
-                if (facing == Direction.NORTH) return VOXEL_SHAPE_EARTH_AGGREGATE_NORTH;
-                if (facing == Direction.EAST) return VOXEL_SHAPE_EARTH_AGGREGATE_EAST;
-                if (facing == Direction.SOUTH) return VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH;
-                if (facing == Direction.WEST) return VOXEL_SHAPE_EARTH_AGGREGATE_WEST;
-            } else if(be instanceof ActuatorAirRouterBlockEntity) {
-                if (facing == Direction.NORTH) return VOXEL_SHAPE_AIR_AGGREGATE_NORTH;
-                if (facing == Direction.EAST) return VOXEL_SHAPE_AIR_AGGREGATE_EAST;
-                if (facing == Direction.SOUTH) return VOXEL_SHAPE_AIR_AGGREGATE_SOUTH;
-                if (facing == Direction.WEST) return VOXEL_SHAPE_AIR_AGGREGATE_WEST;
-            }
+        if(element == ELEMENT_WATER) {
+            if (facing == Direction.NORTH) return VOXEL_SHAPE_WATER_AGGREGATE_NORTH;
+            if (facing == Direction.EAST) return VOXEL_SHAPE_WATER_AGGREGATE_EAST;
+            if (facing == Direction.SOUTH) return VOXEL_SHAPE_WATER_AGGREGATE_SOUTH;
+            if (facing == Direction.WEST) return VOXEL_SHAPE_WATER_AGGREGATE_WEST;
+        } else if(element == ELEMENT_FIRE) {
+            if (facing == Direction.NORTH) return VOXEL_SHAPE_FIRE_AGGREGATE_NORTH;
+            if (facing == Direction.EAST) return VOXEL_SHAPE_FIRE_AGGREGATE_EAST;
+            if (facing == Direction.SOUTH) return VOXEL_SHAPE_FIRE_AGGREGATE_SOUTH;
+            if (facing == Direction.WEST) return VOXEL_SHAPE_FIRE_AGGREGATE_WEST;
+        } else if(element == ELEMENT_EARTH) {
+            if (facing == Direction.NORTH) return VOXEL_SHAPE_EARTH_AGGREGATE_NORTH;
+            if (facing == Direction.EAST) return VOXEL_SHAPE_EARTH_AGGREGATE_EAST;
+            if (facing == Direction.SOUTH) return VOXEL_SHAPE_EARTH_AGGREGATE_SOUTH;
+            if (facing == Direction.WEST) return VOXEL_SHAPE_EARTH_AGGREGATE_WEST;
+        } else if(element == ELEMENT_AIR) {
+            if (facing == Direction.NORTH) return VOXEL_SHAPE_AIR_AGGREGATE_NORTH;
+            if (facing == Direction.EAST) return VOXEL_SHAPE_AIR_AGGREGATE_EAST;
+            if (facing == Direction.SOUTH) return VOXEL_SHAPE_AIR_AGGREGATE_SOUTH;
+            if (facing == Direction.WEST) return VOXEL_SHAPE_AIR_AGGREGATE_WEST;
         }
+
         return super.getShape(pState, pLevel, pPos, pContext);
     }
 

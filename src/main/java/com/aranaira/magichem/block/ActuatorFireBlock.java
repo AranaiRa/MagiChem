@@ -113,8 +113,10 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
     @Override
     public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
-        BlockState state = BlockRegistry.ACTUATOR_FIRE_ROUTER.get().defaultBlockState();
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        BlockState state = BlockRegistry.ACTUATOR_FIRE_ROUTER.get().defaultBlockState();
+        state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
+        state = state.setValue(BaseActuatorRouterBlock.ELEMENT, BaseActuatorRouterBlock.ELEMENT_FIRE);
 
         BlockPos targetPos = pPos.offset(0,1,0);
         pLevel.setBlock(targetPos, state, 3);
