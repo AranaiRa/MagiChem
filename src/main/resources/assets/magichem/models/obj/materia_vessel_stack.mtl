@@ -1,0 +1,5 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 1
+
+newmtl MATERIA_VESSEL
+map_Kd magichem:block/materia_vessel

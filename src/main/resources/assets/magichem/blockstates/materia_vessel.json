@@ -1,7 +1,52 @@
 {
-  "variants": {
-    "": {
-      "model": "magichem:block/materia_vessel"
+  "multipart" : [
+    {
+      "when" : {
+        "stacked" : "false"
+      },
+      "apply" : {
+        "model": "magichem:block/materia_vessel"
+      }
+    },
+    {
+      "when" : {
+        "stacked" : "true",
+        "facing" : "north"
+      },
+      "apply" : {
+        "model": "magichem:block/materia_vessel_stack",
+        "y": 180
+      }
+    },
+    {
+      "when" : {
+        "stacked" : "true",
+        "facing" : "east"
+      },
+      "apply" : {
+        "model": "magichem:block/materia_vessel_stack",
+        "y": 270
+      }
+    },
+    {
+      "when" : {
+        "stacked" : "true",
+        "facing" : "south"
+      },
+      "apply" : {
+        "model": "magichem:block/materia_vessel_stack",
+        "y": 0
+      }
+    },
+    {
+      "when" : {
+        "stacked" : "true",
+        "facing" : "west"
+      },
+      "apply" : {
+        "model": "magichem:block/materia_vessel_stack",
+        "y": 90
+      }
     }
-  }
+  ]
 }

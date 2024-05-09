@@ -15,11 +15,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -35,17 +38,21 @@ import java.util.List;
 public class MateriaVesselBlock extends BaseEntityBlock {
     public MateriaVesselBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.defaultBlockState().setValue(STACKED, false));
     }
 
     private static final VoxelShape SHAPE_JAR;
     private static final VoxelShape SHAPE_LID;
     private static final VoxelShape SHAPE_AGGREGATE;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    private static final BooleanProperty STACKED = BooleanProperty.create("stacked");
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        state.setValue(STACKED, false);
         return new MateriaVesselBlockEntity(pos, state);
+
     }
 
     @Override
@@ -108,7 +115,53 @@ public class MateriaVesselBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+        BlockState state = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+
+        BlockPos pos = pContext.getClickedPos();
+        boolean setStacked = false;
+
+        if (pContext.getLevel().getBlockState(pos.below()).getBlock() == BlockRegistry.MATERIA_VESSEL.get())
+            setStacked = true;
+        else if (pContext.getLevel().getBlockState(pos.above()).getBlock() == BlockRegistry.MATERIA_VESSEL.get())
+            setStacked = true;
+
+        if (setStacked) {
+            state = state.setValue(STACKED, true);
+        }
+
+        return state;
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        boolean setStacked = false;
+
+        if(pLevel.getBlockState(pPos.below()).getBlock() == BlockRegistry.MATERIA_VESSEL.get())
+            setStacked = true;
+        else if(pLevel.getBlockState(pPos.above()).getBlock() == BlockRegistry.MATERIA_VESSEL.get())
+            setStacked = true;
+
+        pState = pState.setValue(STACKED, setStacked);
+        pLevel.setBlock(pPos, pState, 3);
+
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+    }
+
+    @Override
+    public void onNeighborChange(BlockState pState, LevelReader pLevelReader, BlockPos pPos, BlockPos pNeighborPos) {
+        boolean setStacked = false;
+
+        if(pLevelReader.getBlockState(pPos.below()).getBlock() == BlockRegistry.MATERIA_VESSEL.get())
+            setStacked = true;
+        else if(pLevelReader.getBlockState(pPos.above()).getBlock() == BlockRegistry.MATERIA_VESSEL.get())
+            setStacked = true;
+
+        if(setStacked) {
+            pState = pState.setValue(STACKED, true);
+            ((Level)pLevelReader).setBlock(pPos, pState, 3);
+        }
+
+        super.onNeighborChange(pState, pLevelReader, pPos, pNeighborPos);
     }
 
     @Override
@@ -125,6 +178,7 @@ public class MateriaVesselBlock extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         //super.createBlockStateDefinition(pBuilder);
         pBuilder.add(FACING);
+        pBuilder.add(STACKED);
     }
 
     @Override
