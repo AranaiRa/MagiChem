@@ -41,9 +41,9 @@ public class MateriaVesselBlock extends BaseEntityBlock {
         this.registerDefaultState(this.defaultBlockState().setValue(STACKED, false));
     }
 
-    private static final VoxelShape SHAPE_JAR;
-    private static final VoxelShape SHAPE_LID;
-    private static final VoxelShape SHAPE_AGGREGATE;
+    private static final VoxelShape
+            SHAPE_JAR, SHAPE_LID, SHAPE_AGGREGATE,
+            SHAPE_BASE_STACKED, SHAPE_LID_STACKED, SHAPE_AGGREGATE_STACKED;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final BooleanProperty STACKED = BooleanProperty.create("stacked");
 
@@ -109,6 +109,8 @@ public class MateriaVesselBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        if(pState.getValue(STACKED) == true)
+            return SHAPE_AGGREGATE_STACKED;
         return SHAPE_AGGREGATE;
     }
 
@@ -194,6 +196,10 @@ public class MateriaVesselBlock extends BaseEntityBlock {
     static {
         SHAPE_JAR = Block.box(3.0D, 0.0D,  3.0D, 13.0D, 14.0D, 13.0D);
         SHAPE_LID = Block.box(5.0D, 12.5D, 5.0D, 11.0D, 15.5D, 11.0D);
-        SHAPE_AGGREGATE = Shapes.or(SHAPE_JAR, new VoxelShape[]{SHAPE_LID});
+        SHAPE_AGGREGATE = Shapes.or(SHAPE_JAR, SHAPE_LID);
+
+        SHAPE_BASE_STACKED = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D);
+        SHAPE_LID_STACKED = Block.box(2.0D, 13.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+        SHAPE_AGGREGATE_STACKED = Shapes.or(SHAPE_JAR, SHAPE_BASE_STACKED, SHAPE_LID_STACKED);
     }
 }
