@@ -458,6 +458,17 @@
   "advancements.magichem.power_spike.title" : "Wireless Extension Cords?!",
   "advancements.magichem.power_spike.description" : "Craft a Power Spike to transfer energy from the Circle of Power",
 
+  "magichem:actuator.description" : "Craft a Deluge Purifier, Gale Pressurizer, Inferno Engine, or Quake Refinery to upgrade your alchemical devices",
+  "magichem:alembic.description" : "Craft an Alembic",
+  "magichem:centrifuge.description" : "Craft a Centrifuge",
+  "magichem:circle_fabrication.description" : "Craft a Circle of Fabrication",
+  "magichem:circle_power.description" : "Craft a Circle of Power to fuel alchemical creation",
+  "magichem:distillery.description" : "Craft a Distillery to replace your Alembic",
+  "magichem:experience_exchanger.description" : "Craft an Experience Exchanger",
+  "magichem:fusery.description" : "Craft a Fusery",
+  "magichem:materia.description" : "Distill and extract any dram of materia from an Alembic",
+  "magichem:power_spike.description" : "Craft a Power Spike to transfer energy from the Circle of Power",
+
   "mechanic.mna:magichem": "Alchemy",
 
   "jei.magichem.distillation": "Alchemical Distillation",
