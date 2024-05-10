@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:circle_fabrication"
+    },
+    "title": {
+      "translate": "advancements.magichem.circle_fabrication.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.circle_fabrication.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:power_spike",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "magichem:circle_fabrication"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "requirement"
+    ]
+  ]
+}

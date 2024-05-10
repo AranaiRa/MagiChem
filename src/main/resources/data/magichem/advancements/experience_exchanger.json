@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:experience_exchanger"
+    },
+    "title": {
+      "translate": "advancements.magichem.experience_exchanger.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.experience_exchanger.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:nigredo",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "magichem:experience_exchanger"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "requirement"
+    ]
+  ]
+}

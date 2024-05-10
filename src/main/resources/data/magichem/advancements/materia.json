@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:admixture_healing"
+    },
+    "title": {
+      "translate": "advancements.magichem.materia.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.materia.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:alembic",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "magichem_materia"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "requirement"
+    ]
+  ]
+}

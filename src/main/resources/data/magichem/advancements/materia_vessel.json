@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:materia_vessel",
+      "nbt": "{type:healing,amount:1600}"
+    },
+    "title": {
+      "translate": "advancements.magichem.materia_vessel.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.materia_vessel.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:materia",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "magichem:materia_vessel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "requirement"
+    ]
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:materia_vessel"
+    },
+    "title": {
+      "translate": "advancements.magichem.root.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.root.description"
+    },
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": true,
+    "background": "mna:textures/block/artifice/decoration/arcane_stone.png"
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    [
+      "requirement"
+    ]
+  ]
+}

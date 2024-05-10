@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:alembic"
+    },
+    "title": {
+      "translate": "advancements.magichem.alembic.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.alembic.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:root",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "magichem:alembic"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "requirement"
+    ]
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:essentia_air",
+    "magichem:essentia_albedo",
+    "magichem:essentia_arcane",
+    "magichem:essentia_citrinitas",
+    "magichem:essentia_conceptual",
+    "magichem:essentia_earth",
+    "magichem:essentia_ender",
+    "magichem:essentia_fire",
+    "magichem:essentia_fleshy",
+    "magichem:essentia_mineral",
+    "magichem:essentia_nigredo",
+    "magichem:essentia_nourishing",
+    "magichem:essentia_precious",
+    "magichem:essentia_rotten",
+    "magichem:essentia_rubedo",
+    "magichem:essentia_verdant",
+    "magichem:essentia_water",
+    "magichem:essentia_wrought"
+  ]
+}
