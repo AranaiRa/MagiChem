@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:centrifuge"
+            "items": [
+              "magichem:centrifuge"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

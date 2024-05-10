@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:power_spike"
+            "items": [
+              "magichem:power_spike"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

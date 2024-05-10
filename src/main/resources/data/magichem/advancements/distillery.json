@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:distillery"
+            "items": [
+              "magichem:distillery"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:essentia_nigredo"
+            "items": [
+              "magichem:essentia_nigredo"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

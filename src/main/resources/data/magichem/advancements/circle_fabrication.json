@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:circle_fabrication"
+            "items": [
+              "magichem:circle_fabrication"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

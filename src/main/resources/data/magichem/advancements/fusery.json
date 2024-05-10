@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:fusery"
+            "items": [
+              "magichem:fusery"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

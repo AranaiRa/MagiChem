@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:alembic"
+            "items": [
+              "magichem:alembic"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

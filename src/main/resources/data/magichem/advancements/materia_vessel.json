@@ -22,15 +22,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:materia_vessel"
+            "items": [
+              "magichem:materia_vessel"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

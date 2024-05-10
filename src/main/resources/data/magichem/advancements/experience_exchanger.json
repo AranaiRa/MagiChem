@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "item": "magichem:experience_exchanger"
+            "items": [
+              "magichem:experience_exchanger"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

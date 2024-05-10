@@ -18,10 +18,5 @@
     "requirement": {
       "trigger": "minecraft:tick"
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }
