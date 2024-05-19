@@ -27,6 +27,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
+import software.bernie.example.registry.EntityRegistry;
 
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class MagiChemMod
         MateriaRegistry.register(eventBus);
         MenuRegistry.register(eventBus);
         RecipeRegistry.register(eventBus);
+        EntitiesRegistry.register(eventBus);
 
         if(FMLEnvironment.dist.isClient()) {
             eventBus.register(BlockEntitiesClientRegistry.class);

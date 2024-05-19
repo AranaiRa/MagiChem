@@ -416,6 +416,8 @@
   "construct.magichem:collect_experience": "Collect Experience",
   "construct.magichem:study": "Study",
 
+  "gui.mna.parameter.clean_alchemical_apparatus.point": "What alchemical device should the construct clean using water in its tank?",
+
   "gui.mna.parameter.sort_materia.point": "What alchemical device should the construct remove materia from?",
   "gui.mna.parameter.sort_materia.area": "What area should the construct look for Materia Vessels inside of?",
   "gui.mna.parameter.sort_materia.boolean": "Should the construct void excess materia that won't fit inside of a Materia Vessel?",

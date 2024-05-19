@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": false,
+  "output_rate": 1.0,
+  "object": { "item": "mna:purified_vinteum_dust" },
+  "components": [
+    { "item": "magichem:admixture_dust", "count": 2 },
+    { "item": "magichem:admixture_motion", "count": 4 },
+    { "item": "magichem:admixture_sorcery", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}
