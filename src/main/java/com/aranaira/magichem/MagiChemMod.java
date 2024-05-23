@@ -57,6 +57,7 @@ public class MagiChemMod
 
         if(FMLEnvironment.dist.isClient()) {
             eventBus.register(BlockEntitiesClientRegistry.class);
+            eventBus.register(EntitiesClientRegistry.class);
             CreativeTabsRegistry.register(eventBus);
         }
 

@@ -13,7 +13,7 @@
         "distill_only": true,
         "output_rate": 1.0,
         "object": {
-          "item": "occultism:otherstone"
+          "item": "occultism:lens_frames"
         },
         "components": [
           {

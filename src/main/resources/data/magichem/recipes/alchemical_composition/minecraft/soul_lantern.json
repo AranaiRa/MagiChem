@@ -2,7 +2,7 @@
   "type": "magichem:alchemical_composition",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:lantern" },
+  "object": { "item": "minecraft:soul_lantern" },
   "components": [
     { "item": "magichem:admixture_light", "count": 1 },
     { "item": "magichem:admixture_death", "count": 1 },
