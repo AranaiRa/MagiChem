@@ -26,7 +26,9 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
 
     public static final float
             VERT_CLUSTER_THICKNESS = 0.125f;
-    private List<VertexDataHolder> vertData = new ArrayList<>();
+    public static final Vector3
+            VECTOR_POS_CORRECTION = new Vector3(0.5, 0, 0.5);
+    private final List<VertexDataHolder> vertData = new ArrayList<>();
 
     @Override
     public ResourceLocation getTextureLocation(ShlorpEntity pEntity) {
@@ -55,23 +57,13 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
                 {0, 0, 0, 255},
                 {255, 0, 0, 255},
                 {128, 255, 0, 255},
+                {255, 255, 0, 255},
                 {0, 255, 0, 255},
-                {0, 255, 128, 255},
+                {0, 128, 255, 255},
                 {0, 0, 255, 255},
                 {128, 0, 255, 255},
                 {255, 255, 255, 255}
         };
-
-        pPoseStack.pushPose();
-        addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                -1, .5f, 1, minU, minV, 0, 0, white);
-        addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                1, .5f, 1, minU, maxV, 0, 0, white);
-        addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                1, .5f, -1, maxU, maxV, 0, 0, white);
-        addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                -1, .5f, -1, maxU, minV, 0, 0, white);
-        pPoseStack.popPose();
 
         //If we don't have at least 2 entries in the vert data list, shit's going to break. So skip rendering if it's not compliant.
         if(vertData.size() < 2)
@@ -272,12 +264,12 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
         //quick references
         float dbc = pEntity.distanceBetweenClusters;
         int cc = pEntity.vertClusterCount;
-        float curveP = pEntity.currentPosOnTrack/* + pEntity.speed * pPartialTick*/;
+        float curveP = pEntity.currentPosOnTrack + pEntity.speed * pPartialTick;
         float curveL = pEntity.length;
 
-        //generate start point as long as it's on the track
-        if(curveP <= curveL){
-            Vector3 curveCoord = pEntity.generatePointOnBezierCurve(curveP, curveL);
+        //generate start point
+        {
+            Vector3 curveCoord = pEntity.generatePointOnBezierCurve(curveP, curveL).sub(VECTOR_POS_CORRECTION);
             SingleVertex startVert = new SingleVertex(curveCoord.x, curveCoord.y, curveCoord.z);
 
             vertData.add(startVert);
@@ -289,32 +281,43 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
 
             //If this cluster is before the track starts, generate a single point at the start instead
             if(curveDist < 0) {
-                Vector3 curveCoord = pEntity.generatePointOnBezierCurve(0, curveL);
+                Vector3 curveCoord = pEntity.generatePointOnBezierCurve(0, curveL).sub(VECTOR_POS_CORRECTION);
                 SingleVertex newVert = new SingleVertex(curveCoord.x, curveCoord.y, curveCoord.z);
 
-                //only add the vert if the last vert isn't already a single point at the start
-                //if(!newVert.equals(vertData.get(vertData.size()-1)))
-                    vertData.add(newVert);
+                vertData.add(newVert);
             }
-            //If this cluster is after the track ends, generate a single point at the start instead
+            //If this cluster is after the track ends, generate a single point at the end instead
             else if(curveDist > curveL) {
-                Vector3 curveCoord = pEntity.generatePointOnBezierCurve(curveL, curveL);
+                Vector3 curveCoord = pEntity.generatePointOnBezierCurve(curveL, curveL).sub(VECTOR_POS_CORRECTION);
                 SingleVertex newVert = new SingleVertex(curveCoord.x, curveCoord.y, curveCoord.z);
 
-                //only add the vert if the last vert isn't already a single point at the end
-                //if(!newVert.equals(vertData.get(vertData.size()-1)))
-                    vertData.add(newVert);
+                vertData.add(newVert);
             }
             //Otherwise we're making a vert ring
             else {
+                if(curveDist > 0 && curveDist < 0.05)
+                    curveDist += 0;
+
                 BezierVectors bv = getAxisVectors(pEntity, curveDist);
-                Vector3 point = pEntity.generatePointOnBezierCurve(curveDist, curveL);
+                Vector3 point = pEntity.generatePointOnBezierCurve(curveDist, curveL).sub(VECTOR_POS_CORRECTION);
                 VertexRing newVertRing = new VertexRing();
 
-                Vector3 top = point.add(bv.up.scale(VERT_CLUSTER_THICKNESS));
-                Vector3 right = point.add(bv.right.scale(VERT_CLUSTER_THICKNESS));
-                Vector3 bottom = point.add(bv.up.scale(-VERT_CLUSTER_THICKNESS));
-                Vector3 left = point.add(bv.right.scale(-VERT_CLUSTER_THICKNESS));
+                //Scale down the vert ring if we're transitioning in and out
+                float scale = VERT_CLUSTER_THICKNESS;
+                if(curveDist + dbc > curveL) {
+                    scale *= (curveL - curveDist) / dbc;
+                } else if (curveDist - dbc < 0) {
+                    scale *= curveDist / dbc;
+                }
+                //Further scale down if we're adjacent to an endpoint
+                if(i == cc-1 || i == 1) {
+                    scale *= 0.75;
+                }
+
+                Vector3 top = point.add(bv.up.scale(-scale));
+                Vector3 right = point.add(bv.right.scale(scale));
+                Vector3 bottom = point.add(bv.up.scale(scale));
+                Vector3 left = point.add(bv.right.scale(-scale));
 
                 newVertRing.configureRing(0,
                         top.x, top.y, top.z,
@@ -333,9 +336,9 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
             }
         }
 
-        //generate start point as long as it's on the track
-        if(curveP <= curveL){
-            Vector3 curveCoord = pEntity.generatePointOnBezierCurve(curveP - (cc)*dbc, curveL);
+        //generate end point
+        {
+            Vector3 curveCoord = pEntity.generatePointOnBezierCurve(curveP - (cc)*dbc, curveL).sub(VECTOR_POS_CORRECTION);
             SingleVertex endVert = new SingleVertex(curveCoord.x, curveCoord.y, curveCoord.z);
 
             vertData.add(endVert);
@@ -344,7 +347,7 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
 
     public BezierVectors getAxisVectors(ShlorpEntity pEntity, float pCurvePosition) {
         Vector3 atPos = pEntity.generatePointOnBezierCurve(pCurvePosition, pEntity.length);
-        Vector3 future = pEntity.generatePointOnBezierCurve((float)Math.max(pCurvePosition+0.001, pEntity.length), pEntity.length);
+        Vector3 future = pEntity.generatePointOnBezierCurve((float)Math.min(pCurvePosition+0.001, pEntity.length), pEntity.length);
 
         //generate a forward vector
         Vector3 forward = future.sub(atPos).normalize();

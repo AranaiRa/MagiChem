@@ -1,5 +1,7 @@
 package com.aranaira.magichem.entities;
 
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
