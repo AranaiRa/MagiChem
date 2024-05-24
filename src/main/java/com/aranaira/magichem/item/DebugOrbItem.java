@@ -40,8 +40,8 @@ public class DebugOrbItem extends Item {
                         new Vector3(0, 0, 0), new Vector3(0, 2, 0),
                         new Vector3(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()),
                         new Vector3(0.5, 0.5, 0.5), new Vector3(0, 2, 0),
-                        0.125f, 0.125f, 8,
-                        ItemRegistry.getAdmixtures().get(0), 64
+                        0.125f, 0.125f, 18,
+                        ItemRegistry.getMateriaMap(false, true).get("admixture_metal"), 64
                 );
 
                 level.addFreshEntity(se);

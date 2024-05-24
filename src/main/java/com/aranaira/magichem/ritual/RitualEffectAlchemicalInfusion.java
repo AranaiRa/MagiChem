@@ -15,10 +15,6 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
     @Override
     protected boolean applyRitualEffect(IRitualContext iRitualContext) {
-        PresentItem catalystCore = new PresentItem(iRitualContext.getLevel(), iRitualContext.getCenter().getX(), iRitualContext.getCenter().getY(), iRitualContext.getCenter().getZ());
-        catalystCore.setItem(new ItemStack(ItemRegistry.CATALYST_CORE.get()));
-        catalystCore.setDeltaMovement(0.0d,0.0d,0.0d);
-        iRitualContext.getLevel().addFreshEntity(catalystCore);
 
         return true;
     }

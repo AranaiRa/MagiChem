@@ -19,6 +19,11 @@ public class RitualRegistry {
     @SubscribeEvent
     public static void registerRitualEffects(RegisterEvent event) {
         event.register(((IForgeRegistry)Registries.RitualEffect.get()).getRegistryKey(), (helper) -> {
+                    //Ritual of the Balanced Scales
+                    helper.register(
+                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-balaced_scales"),
+                            new RitualEffectAlchemicalInfusion(new ResourceLocation(MagiChemMod.MODID, "rituals/balanced_scales"))
+                    );
                     //Ritual of the Rod and Circle
                     helper.register(
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-reagent2craft"),

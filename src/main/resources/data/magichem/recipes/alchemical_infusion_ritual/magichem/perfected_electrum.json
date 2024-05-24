@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": { "item": "magichem:perfected_electrum" },
+  "materia_type_one": { "item": "magichem:essentia_nigredo", "count": 8 },
+  "materia_type_two": { "item": "magichem:admixture_metal", "count": 52 },
+  "components": [
+    { "item": "minecraft:gold_ingot" },
+    { "item": "magichem:alchemical_waste" },
+    { "item": "mna:transmuted_silver" }
+  ]
+}

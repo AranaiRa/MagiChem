@@ -25,14 +25,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     public ShlorpEntity(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-
-        BlockPos bp = blockPosition();
-
-        configure(
-                bp.offset(-1,1,-1), new Vector3(0,0,0), new Vector3(-1, 0, 0),
-                bp.offset(1,1,1), new Vector3(0, 0, 0), new Vector3(1, 0, 0),
-                0.0625f, 0.25f, 9,
-                ItemRegistry.getAdmixtures().get(0), 16);
     }
 
     public int vertClusterCount = 2;

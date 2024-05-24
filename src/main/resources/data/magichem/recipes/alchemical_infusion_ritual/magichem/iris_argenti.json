@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": { "item": "magichem:iris_argenti" },
+  "materia_type_one": { "item": "magichem:admixture_change", "count": 20 },
+  "materia_type_two": { "item": "magichem:admixture_mana", "count": 20 },
+  "components": [
+    { "item": "mna:transmuted_silver" },
+    { "item": "mna:chimerite" },
+    { "item": "mna:transmuted_silver" }
+  ]
+}
