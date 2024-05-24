@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "magichem:silver_dust"
+  },
+  "result": "mna:transmuted_silver",
+  "experience": 0.7,
+  "cookingtime": 400
+}
