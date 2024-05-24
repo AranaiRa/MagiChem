@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class MateriaVesselBlockEntity extends BlockEntity {
+public class MateriaVesselBlockEntity extends BlockEntity implements IShlorpReceiver {
 
     public MateriaVesselBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.MATERIA_VESSEL_BE.get(), pos, state);
@@ -182,5 +183,43 @@ public class MateriaVesselBlockEntity extends BlockEntity {
             return Config.materiaVesselEssentiaCapacity;
         }
         return Config.materiaVesselAdmixtureCapacity;
+    }
+
+    @Override
+    public int canAcceptStack(ItemStack pStack) {
+        if(pStack.getItem() instanceof MateriaItem mi) {
+            if(getMateriaType() == mi) {
+                int remainingSpace = getStorageLimit() - currentStock;
+                int count = pStack.getCount();
+                return Math.min(count, remainingSpace);
+            }
+        }
+
+        return 0;
+    }
+
+    @Override
+    public int insertStack(ItemStack pStack) {
+        if(pStack.getItem() instanceof MateriaItem mi) {
+            int count = pStack.getCount();
+            if(this.currentMateriaType == null) {
+                this.currentMateriaType = mi;
+                this.currentStock = count;
+                syncAndSave();
+
+                return count;
+            }
+            else if (this.currentMateriaType == mi) {
+                int remainingSpace = getStorageLimit() - currentStock;
+
+                int insertion = Math.min(count, remainingSpace);
+                this.currentStock += insertion;
+                syncAndSave();
+
+                return insertion;
+            }
+        }
+
+        return 0;
     }
 }

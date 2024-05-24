@@ -94,6 +94,10 @@ public class ItemRegistry {
             () -> new BucketItem(FluidRegistry.SMOKE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
 
+    public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
+            () -> new DebugOrbItem(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DUMMY_PROCESS_FIXATION = ITEMS.register("dummy/process_fixation",
             () -> new Item(new Item.Properties())
     );
@@ -111,6 +115,7 @@ public class ItemRegistry {
     );
 
     public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
+            DEBUG_ORB,
             DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION
     );
 

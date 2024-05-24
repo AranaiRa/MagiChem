@@ -25,7 +25,7 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
     }
 
     public static final float
-            VERT_CLUSTER_THICKNESS = 0.125f;
+            VERT_CLUSTER_THICKNESS = 0.0625f;
     public static final Vector3
             VECTOR_POS_CORRECTION = new Vector3(0.5, 0, 0.5);
     private final List<VertexDataHolder> vertData = new ArrayList<>();
@@ -46,24 +46,13 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
                 .apply(new ResourceLocation("minecraft", "block/snow"));
 
         float minU = 0.0f;// * (float)texture.contents().width();
-        float maxU = 16.0f;// * (float)texture.contents().width();
+        float maxU = 3.0f;// * (float)texture.contents().width();
         float minV = 0.0f;// * (float)texture.contents().height();
-        float maxV = 16.0f;// * (float)texture.contents().height();
+        float maxV = 2.0f;// * (float)texture.contents().height();
 
         Matrix4f renderMatrix = pPoseStack.last().pose();
         Matrix3f normalMatrix = pPoseStack.last().normal();
-        int[] white = {255, 255, 255, 255};
-        int[][] colors = {
-                {0, 0, 0, 255},
-                {255, 0, 0, 255},
-                {128, 255, 0, 255},
-                {255, 255, 0, 255},
-                {0, 255, 0, 255},
-                {0, 128, 255, 255},
-                {0, 0, 255, 255},
-                {128, 0, 255, 255},
-                {255, 255, 255, 255}
-        };
+        int[] color = pEntity.color;
 
         //If we don't have at least 2 entries in the vert data list, shit's going to break. So skip rendering if it's not compliant.
         if(vertData.size() < 2)
@@ -80,178 +69,142 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            psv.x, psv.y, psv.z, 0, 0, 0, 0, colors[i-1]);
+                            psv.x, psv.y, psv.z, 0, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.top.x, cvr.top.y, cvr.top.z, 1, 0, 0, 0, colors[i]);
+                            cvr.top.x, cvr.top.y, cvr.top.z, 1, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.right.x, cvr.right.y, cvr.right.z, 1, 1, 0, 0, colors[i]);
+                            cvr.right.x, cvr.right.y, cvr.right.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            psv.x, psv.y, psv.z, 0, 0, 0, 0, colors[i-1]);
+                            psv.x, psv.y, psv.z, 0, 0, 0, 0, color);
                     pPoseStack.popPose();
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            psv.x, psv.y, psv.z, 0, 0, 0, 0, colors[i-1]);
+                            psv.x, psv.y, psv.z, 0, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.right.x, cvr.right.y, cvr.right.z, 1, 0, 0, 0, colors[i]);
+                            cvr.right.x, cvr.right.y, cvr.right.z, 1, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, 1, 1, 0, 0, colors[i]);
+                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            psv.x, psv.y, psv.z, 0, 0, 0, 0, colors[i-1]);
+                            psv.x, psv.y, psv.z, 0, 0, 0, 0, color);
                     pPoseStack.popPose();
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            psv.x, psv.y, psv.z, 0, 0, 0, 0, colors[i-1]);
+                            psv.x, psv.y, psv.z, 0, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, 1, 1, 0, 0, colors[i]);
+                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.left.x, cvr.left.y, cvr.left.z, 1, 1, 0, 0, colors[i]);
+                            cvr.left.x, cvr.left.y, cvr.left.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            psv.x, psv.y, psv.z, 0, 0, 0, 0, colors[i-1]);
+                            psv.x, psv.y, psv.z, 0, 0, 0, 0, color);
                     pPoseStack.popPose();
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            psv.x, psv.y, psv.z, 0, 0, 0, 0, colors[i-1]);
+                            psv.x, psv.y, psv.z, 0, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.left.x, cvr.left.y, cvr.left.z, 1, 1, 0, 0, colors[i]);
+                            cvr.left.x, cvr.left.y, cvr.left.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.top.x, cvr.top.y, cvr.top.z, 1, 1, 0, 0, colors[i]);
+                            cvr.top.x, cvr.top.y, cvr.top.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            psv.x, psv.y, psv.z, 0, 0, 0, 0, colors[i-1]);
+                            psv.x, psv.y, psv.z, 0, 0, 0, 0, color);
                     pPoseStack.popPose();
-
-                    //DEBUG: RENDER CLUSTER QUAD
-//                    pPoseStack.pushPose();
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.top.x, cvr.top.y, cvr.top.z, 0, 0, 0, 0, white);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.right.x, cvr.right.y, cvr.right.z, 0, 0, 0, 0, white);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, 0, 0, 0, 0, white);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.left.x, cvr.left.y, cvr.left.z, 0, 0, 0, 0, white);
-//                    pPoseStack.popPose();
                 }
             } else if(previous instanceof VertexRing pvr) {
                 if(current instanceof SingleVertex csv) {
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            csv.x, csv.y, csv.z, 0, 0, 0, 0, colors[i]);
+                            csv.x, csv.y, csv.z, 0, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.top.x, pvr.top.y, pvr.top.z, 1, 0, 0, 0, colors[i-1]);
+                            pvr.top.x, pvr.top.y, pvr.top.z, 1, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.right.x, pvr.right.y, pvr.right.z, 1, 1, 0, 0, colors[i-1]);
+                            pvr.right.x, pvr.right.y, pvr.right.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            csv.x, csv.y, csv.z, 0, 0, 0, 0, colors[i]);
+                            csv.x, csv.y, csv.z, 0, 0, 0, 0, color);
                     pPoseStack.popPose();
 
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            csv.x, csv.y, csv.z, 0, 0, 0, 0, colors[i]);
+                            csv.x, csv.y, csv.z, 0, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.right.x, pvr.right.y, pvr.right.z, 1, 0, 0, 0, colors[i-1]);
+                            pvr.right.x, pvr.right.y, pvr.right.z, 1, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.bottom.x, pvr.bottom.y, pvr.bottom.z, 1, 1, 0, 0, colors[i-1]);
+                            pvr.bottom.x, pvr.bottom.y, pvr.bottom.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            csv.x, csv.y, csv.z, 0, 0, 0, 0, colors[i]);
+                            csv.x, csv.y, csv.z, 0, 0, 0, 0, color);
                     pPoseStack.popPose();
 
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            csv.x, csv.y, csv.z, 0, 0, 0, 0, colors[i]);
+                            csv.x, csv.y, csv.z, 0, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.bottom.x, pvr.bottom.y, pvr.bottom.z, 1, 0, 0, 0, colors[i-1]);
+                            pvr.bottom.x, pvr.bottom.y, pvr.bottom.z, 1, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.left.x, pvr.left.y, pvr.left.z, 1, 1, 0, 0, colors[i-1]);
+                            pvr.left.x, pvr.left.y, pvr.left.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            csv.x, csv.y, csv.z, 0, 0, 0, 0, colors[i]);
+                            csv.x, csv.y, csv.z, 0, 0, 0, 0, color);
                     pPoseStack.popPose();
 
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            csv.x, csv.y, csv.z, 0, 0, 0, 0, colors[i]);
+                            csv.x, csv.y, csv.z, 0, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.left.x, pvr.left.y, pvr.left.z, 1, 0, 0, 0, colors[i-1]);
+                            pvr.left.x, pvr.left.y, pvr.left.z, 1, 0, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.top.x, pvr.top.y, pvr.top.z, 1, 1, 0, 0, colors[i-1]);
+                            pvr.top.x, pvr.top.y, pvr.top.z, 1, 1, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            csv.x, csv.y, csv.z, 0, 0, 0, 0, colors[i]);
+                            csv.x, csv.y, csv.z, 0, 0, 0, 0, color);
                     pPoseStack.popPose();
-
-                    //DEBUG: RENDER CLUSTER QUAD
-//                    pPoseStack.pushPose();
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.top.x, cvr.top.y, cvr.top.z, 0, 0, 0, 0, white);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.right.x, cvr.right.y, cvr.right.z, 0, 0, 0, 0, white);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, 0, 0, 0, 0, white);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.left.x, cvr.left.y, cvr.left.z, 0, 0, 0, 0, white);
-//                    pPoseStack.popPose();
                 }
                 else if(current instanceof VertexRing cvr) {
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.top.x, cvr.top.y, cvr.top.z, maxU, maxV, 0, 0, colors[i]);
+                            cvr.top.x, cvr.top.y, cvr.top.z, maxU, maxV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.top.x, pvr.top.y, pvr.top.z, minU, maxV, 0, 0, colors[i-1]);
+                            pvr.top.x, pvr.top.y, pvr.top.z, minU, maxV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.right.x, pvr.right.y, pvr.right.z, minU, minV, 0, 0, colors[i-1]);
+                            pvr.right.x, pvr.right.y, pvr.right.z, minU, minV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.right.x, cvr.right.y, cvr.right.z, maxU, minV, 0, 0, colors[i]);
+                            cvr.right.x, cvr.right.y, cvr.right.z, maxU, minV, 0, 0, color);
                     pPoseStack.popPose();
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.right.x, cvr.right.y, cvr.right.z, maxU, maxV, 0, 0, colors[i]);
+                            cvr.right.x, cvr.right.y, cvr.right.z, maxU, maxV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.right.x, pvr.right.y, pvr.right.z, minU, maxV, 0, 0, colors[i-1]);
+                            pvr.right.x, pvr.right.y, pvr.right.z, minU, maxV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.bottom.x, pvr.bottom.y, pvr.bottom.z, minU, minV, 0, 0, colors[i-1]);
+                            pvr.bottom.x, pvr.bottom.y, pvr.bottom.z, minU, minV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, maxU, minV, 0, 0, colors[i]);
+                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, maxU, minV, 0, 0, color);
                     pPoseStack.popPose();
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, maxU, maxV, 0, 0, colors[i]);
+                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, maxU, maxV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.bottom.x, pvr.bottom.y, pvr.bottom.z, minU, maxV, 0, 0, colors[i-1]);
+                            pvr.bottom.x, pvr.bottom.y, pvr.bottom.z, minU, maxV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.left.x, pvr.left.y, pvr.left.z, minU, minV, 0, 0, colors[i-1]);
+                            pvr.left.x, pvr.left.y, pvr.left.z, minU, minV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.left.x, cvr.left.y, cvr.left.z, maxU, minV, 0, 0, colors[i]);
+                            cvr.left.x, cvr.left.y, cvr.left.z, maxU, minV, 0, 0, color);
                     pPoseStack.popPose();
 
                     pPoseStack.pushPose();
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.left.x, cvr.left.y, cvr.left.z, maxU, maxV, 0, 0, colors[i]);
+                            cvr.left.x, cvr.left.y, cvr.left.z, maxU, maxV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.left.x, pvr.left.y, pvr.left.z, minU, maxV, 0, 0, colors[i-1]);
+                            pvr.left.x, pvr.left.y, pvr.left.z, minU, maxV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            pvr.top.x, pvr.top.y, pvr.top.z, minU, minV, 0, 0, colors[i-1]);
+                            pvr.top.x, pvr.top.y, pvr.top.z, minU, minV, 0, 0, color);
                     addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-                            cvr.top.x, cvr.top.y, cvr.top.z, maxU, minV, 0, 0, colors[i]);
+                            cvr.top.x, cvr.top.y, cvr.top.z, maxU, minV, 0, 0, color);
                     pPoseStack.popPose();
-
-                    //DEBUG: RENDER CLUSTER QUAD
-//                    pPoseStack.pushPose();
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.top.x, cvr.top.y, cvr.top.z, maxU, maxV, 0, 0, colors[i]);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.right.x, cvr.right.y, cvr.right.z, minU, maxV, 0, 0, colors[i]);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.bottom.x, cvr.bottom.y, cvr.bottom.z, minU, minU, 0, 0, colors[i]);
-//                    addVertex(vertexBuilder, renderMatrix, normalMatrix, texture, pPackedLight,
-//                            cvr.left.x, cvr.left.y, cvr.left.z, maxU, minU, 0, 0, colors[i]);
-//                    pPoseStack.popPose();
                 }
             }
         }

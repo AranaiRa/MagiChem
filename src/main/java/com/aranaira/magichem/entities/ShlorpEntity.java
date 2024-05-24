@@ -1,60 +1,81 @@
 package com.aranaira.magichem.entities;
 
-import com.mna.api.particles.MAParticleType;
-import com.mna.api.particles.ParticleInit;
+import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class ShlorpEntity extends Entity {
+public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     public ShlorpEntity(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
 
         BlockPos bp = blockPosition();
 
-        configure(bp.offset(-1,1,-1), bp.offset(1,1,1), 0.015625f, 0.25f, 6);
+        configure(
+                bp.offset(-1,1,-1), new Vector3(0,0,0), new Vector3(-1, 0, 0),
+                bp.offset(1,1,1), new Vector3(0, 0, 0), new Vector3(1, 0, 0),
+                0.0625f, 0.25f, 9,
+                ItemRegistry.getAdmixtures().get(0), 16);
     }
 
     public int vertClusterCount = 2;
+    public int[] color = {255, 255, 255, 255};
     public float
         speed = 1.0f, length = 1.0f, distanceBetweenClusters = 0.25f, currentPosOnTrack = 0.0f;
     Vector3
-        startLocation, endLocation, control_a, control_b;
+        startLocation, endLocation, startTangent, endTangent;
+    ItemStack stackInTransit;
 
-    public void configure(BlockPos pStartLocation, BlockPos pEndLocation, float pSpeed, float pDistanceBetweenClusters, int pClusterCount) {
-        Vector3 start = new Vector3(pStartLocation.getX() + 0.5, pStartLocation.getY() + 0.5, pStartLocation.getZ() + 0.5);
-        Vector3 end = new Vector3(pEndLocation.getX() + 0.5, pEndLocation.getY() + 0.5, pEndLocation.getZ() + 0.5);
+    public void configure(BlockPos pStartLocation, Vector3 pStartOrigin, Vector3 pStartTangent, BlockPos pEndLocation, Vector3 pEndOrigin, Vector3 pEndTangent, float pSpeed, float pDistanceBetweenClusters, int pClusterCount, MateriaItem pMateriaType, int pMateriaCount) {
+        Vector3 start = new Vector3(pStartLocation.getX(), pStartLocation.getY(), pStartLocation.getZ());
+        Vector3 end = new Vector3(pEndLocation.getX(), pEndLocation.getY(), pEndLocation.getZ());
 
-        configure(start, end, pSpeed, pDistanceBetweenClusters, pClusterCount);
+        configure(start, pStartOrigin, pStartTangent,
+                end, pEndOrigin, pEndTangent,
+                pSpeed, pDistanceBetweenClusters, pClusterCount,
+                pMateriaType, pMateriaCount);
     }
 
-    public void configure(Vector3 pStartLocation, Vector3 pEndLocation, float pSpeed, float pDistanceBetweenClusters, int pClusterCount) {
-        this.startLocation = pStartLocation;
-        this.endLocation = pEndLocation;
+    public void configure(Vector3 pStartLocation, Vector3 pStartOrigin, Vector3 pStartTangent, Vector3 pEndLocation, Vector3 pEndOrigin, Vector3 pEndTangent, float pSpeed, float pDistanceBetweenClusters, int pClusterCount, MateriaItem pMateriaType, int pMateriaCount) {
+        Vec3 entityPositionRaw = position();
+        Vector3 entityPosition = new Vector3(entityPositionRaw.x, entityPositionRaw.y, entityPositionRaw.z);
+
+        this.startLocation = pStartLocation.add(pStartOrigin).sub(entityPosition).add(new Vector3(0.5, 0, 0.5));
+        this.endLocation = pEndLocation.add(pEndOrigin).sub(entityPosition).add(new Vector3(0.5, 0, 0.5));
+
+        this.startTangent = this.startLocation.add(pStartTangent);
+        this.endTangent = this.endLocation.add(pEndTangent);
+
         this.speed = pSpeed;
         this.distanceBetweenClusters = pDistanceBetweenClusters;
         this.vertClusterCount = pClusterCount;
-
         this.length = (float)startLocation.distanceTo(endLocation);
-        generateBezierControlPoints();
-    }
 
-    //This is straight up stolen from Mithion
-    private void generateBezierControlPoints() {
-        Vector3 o1 = new Vector3((double)this.startLocation.x, (double)this.startLocation.y, (double)this.startLocation.z);
-        Vector3 midPoint = new Vector3((double)((this.startLocation.x + this.endLocation.x) / 2.0F), (double)((this.startLocation.y + this.endLocation.y) / 2.0F), (double)((this.startLocation.z + this.endLocation.z) / 2.0F));
-        midPoint = midPoint.sub(o1);
-        midPoint = midPoint.rotateYaw(1.5707964F);
-        this.control_a = new Vector3((double)(this.startLocation.x + (this.endLocation.x - this.startLocation.x) / 3.0F), (double)(this.startLocation.y + (this.endLocation.y - this.startLocation.y) / 3.0F), (double)(this.startLocation.z + (this.endLocation.z - this.startLocation.z) / 3.0F));
-        this.control_b = new Vector3((double)(this.startLocation.x + (this.endLocation.x - this.startLocation.x) / 3.0F * 2.0F), (double)(this.startLocation.y + (this.endLocation.y - this.startLocation.y) / 3.0F * 2.0F), (double)(this.startLocation.z + (this.endLocation.z - this.startLocation.z) / 3.0F * 2.0F));
-        this.control_a = this.control_a.add(midPoint);
-        this.control_b = this.control_b.add(midPoint);
+        this.color[3] = pMateriaType.getMateriaColor() >> 24;
+        this.color[0] = pMateriaType.getMateriaColor() >> 16 & 255;
+        this.color[1] = pMateriaType.getMateriaColor() >> 8 & 255;
+        this.color[2] = pMateriaType.getMateriaColor() & 255;
+
+        this.stackInTransit = new ItemStack(pMateriaType, pMateriaCount);
+
+
     }
 
     @Override
@@ -64,12 +85,72 @@ public class ShlorpEntity extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
+        //Itemstack
+        String path = pCompound.getString("materiaType");
+        Item materia = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MagiChemMod.MODID, path));
+        if(materia != null) {
+            int count = pCompound.getInt("materiaCount");
+            stackInTransit = new ItemStack(materia, count);
+        }
 
+        //Vectors
+        startLocation = new Vector3(
+                pCompound.getDouble("startPosX"),
+                pCompound.getDouble("startPosY"),
+                pCompound.getDouble("startPosZ")
+        );
+        startTangent = new Vector3(
+                pCompound.getDouble("startTanX"),
+                pCompound.getDouble("startTanY"),
+                pCompound.getDouble("startTanZ")
+        );
+        endLocation = new Vector3(
+                pCompound.getDouble("endPosX"),
+                pCompound.getDouble("endPosY"),
+                pCompound.getDouble("endPosZ")
+        );
+        endTangent = new Vector3(
+                pCompound.getDouble("endTanX"),
+                pCompound.getDouble("endTanY"),
+                pCompound.getDouble("endTanZ")
+        );
+
+        //Misc configs
+        speed = pCompound.getFloat("speed");
+        distanceBetweenClusters = pCompound.getFloat("separation");
+        currentPosOnTrack = pCompound.getFloat("currentPos");
+        vertClusterCount = pCompound.getInt("clusters");
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
+        //Itemstack
+        ResourceLocation key = ForgeRegistries.ITEMS.getKey(this.stackInTransit.getItem());
+        pCompound.putString("materiaType",key.getPath());
+        pCompound.putInt("materiaCount",stackInTransit.getCount());
 
+        //Vectors
+        pCompound.putDouble("startPosX",startLocation.x);
+        pCompound.putDouble("startPosY",startLocation.y);
+        pCompound.putDouble("startPosZ",startLocation.z);
+
+        pCompound.putDouble("startTanX",startTangent.x);
+        pCompound.putDouble("startTanY",startTangent.y);
+        pCompound.putDouble("startTanZ",startTangent.z);
+
+        pCompound.putDouble("endPosX",endLocation.x);
+        pCompound.putDouble("endPosY",endLocation.y);
+        pCompound.putDouble("endPosZ",endLocation.z);
+
+        pCompound.putDouble("endTanX",endTangent.x);
+        pCompound.putDouble("endTanY",endTangent.y);
+        pCompound.putDouble("endTanZ",endTangent.z);
+
+        //Misc configs
+        pCompound.putFloat("speed",speed);
+        pCompound.putFloat("separation",distanceBetweenClusters);
+        pCompound.putFloat("currentPos",currentPosOnTrack);
+        pCompound.putInt("clusters",vertClusterCount);
     }
 
     @Override
@@ -77,8 +158,69 @@ public class ShlorpEntity extends Entity {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        //Itemstack
+        buffer.writeItemStack(stackInTransit, true);
+
+        //Vectors
+        buffer.writeDouble(startLocation.x);
+        buffer.writeDouble(startLocation.y);
+        buffer.writeDouble(startLocation.z);
+
+        buffer.writeDouble(startTangent.x);
+        buffer.writeDouble(startTangent.y);
+        buffer.writeDouble(startTangent.z);
+
+        buffer.writeDouble(endLocation.x);
+        buffer.writeDouble(endLocation.y);
+        buffer.writeDouble(endLocation.z);
+
+        buffer.writeDouble(endTangent.x);
+        buffer.writeDouble(endTangent.y);
+        buffer.writeDouble(endTangent.z);
+
+        //Misc configs
+        buffer.writeFloat(speed);
+        buffer.writeFloat(distanceBetweenClusters);
+        buffer.writeInt(vertClusterCount);
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf additionalData) {
+        //Itemstack
+        stackInTransit = additionalData.readItem();
+
+        //Vectors
+        startLocation = new Vector3(
+                additionalData.readDouble(),
+                additionalData.readDouble(),
+                additionalData.readDouble()
+        );
+        startTangent = new Vector3(
+                additionalData.readDouble(),
+                additionalData.readDouble(),
+                additionalData.readDouble()
+        );
+        endLocation = new Vector3(
+                additionalData.readDouble(),
+                additionalData.readDouble(),
+                additionalData.readDouble()
+        );
+        endTangent = new Vector3(
+                additionalData.readDouble(),
+                additionalData.readDouble(),
+                additionalData.readDouble()
+        );
+
+        //Misc configs
+        speed = additionalData.readFloat();
+        distanceBetweenClusters = additionalData.readFloat();
+        vertClusterCount = additionalData.readInt();
+    }
+
     public Vector3 generatePointOnBezierCurve(float time, float duration) {
-        return Vector3.bezier(this.startLocation, this.endLocation, this.control_a, this.control_b, time / duration);
+        return Vector3.bezier(this.startLocation, this.endLocation, this.startTangent, this.endTangent, time / duration);
     }
 
     @Override
@@ -88,15 +230,22 @@ public class ShlorpEntity extends Entity {
         float limit = distanceBetweenClusters * (vertClusterCount + 1);
 
         if(currentPosOnTrack >= length + limit) {
-            currentPosOnTrack = 0;
+            //deliver the payload
+            if(!this.level().isClientSide()) {
+                Vector3 actualTargetPos = endLocation.add(new Vector3(position().x, position().y, position().z));
+                BlockPos targetBlockPos = new BlockPos((int)Math.floor(actualTargetPos.x-0.5), (int)Math.floor(actualTargetPos.y), (int)Math.floor(actualTargetPos.z-0.5));
+                BlockEntity be = this.level().getBlockEntity(targetBlockPos);
+
+                if(be instanceof IShlorpReceiver isr) {
+                    isr.insertStack(stackInTransit);
+                }
+            }
+            kill();
         } else {
             currentPosOnTrack += speed;
             if (currentPosOnTrack > length + limit)
                 currentPosOnTrack = length + limit;
         }
-
         currentPosOnTrack += 0;
-
-//        currentPosOnTrack = length-0.5f;
     }
 }
