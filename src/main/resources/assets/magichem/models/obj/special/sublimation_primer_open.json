@@ -1,0 +1,20 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "children": {
+    "crystal": {
+      "loader": "forge:obj",
+      "automatic_culling": true,
+      "shade_quads": true,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "magichem:models/obj/sublimation_primer_open.obj"
+    }
+  },
+  "display": {
+    "gui": {
+      "rotation": [-15, -30, 0],
+      "scale": [0.9, 0.9, 0.9]
+    }
+  }
+}

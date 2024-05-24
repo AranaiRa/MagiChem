@@ -50,6 +50,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<SublimationPrimerItem> SUBLIMATION_PRIMER = ITEMS.register("sublimation_primer",
+            () -> new SublimationPrimerItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> IRIS_ARGENTI = ITEMS.register("iris_argenti",
             () -> new TooltipLoreItem(new Item.Properties())
     );

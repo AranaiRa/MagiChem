@@ -3,6 +3,7 @@ package com.aranaira.magichem;
 import com.aranaira.magichem.block.entity.renderer.*;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
+import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.registry.*;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
 import com.mna.items.base.INoCreativeTab;
@@ -139,6 +140,9 @@ public class MagiChemMod
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_COM);
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_RING1);
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_RING2);
+
+            event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_OPEN);
+            event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_CLOSED);
         }
     }
 }
