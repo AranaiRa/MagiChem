@@ -1,11 +1,14 @@
 {
   "type": "magichem:alchemical_infusion_ritual",
-  "object": { "item": "magichem:iris_argenti" },
+  "object": {
+    "item": "magichem:iris_argenti",
+    "count": 9
+  },
   "materia_type_one": { "item": "magichem:admixture_change", "count": 20 },
   "materia_type_two": { "item": "magichem:admixture_mana", "count": 20 },
   "components": [
-    { "item": "mna:transmuted_silver" },
-    { "item": "mna:chimerite" },
-    { "item": "mna:transmuted_silver" }
+    { "item": "mna:decoration/transmuted_silver_block" },
+    { "item": "mna:vinteum_dust" },
+    { "item": "mna:chimerite_block" }
   ]
 }
