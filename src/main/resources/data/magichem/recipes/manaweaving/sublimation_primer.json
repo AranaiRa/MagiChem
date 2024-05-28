@@ -1,0 +1,19 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:sublimation_primer",
+  "tier": 1,
+  "items": [
+    "minecraft:book",
+    "mna:arcanist_ink",
+    "mna:arcane_ash",
+    "minecraft:black_dye",
+    "minecraft:lime_dye",
+    "minecraft:cyan_dye"
+  ],
+  "patterns": [
+    "mna:circle",
+    "mna:square",
+    "mna:square",
+    "mna:slash"
+  ]
+}
