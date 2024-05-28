@@ -3,9 +3,11 @@ package com.aranaira.magichem.interop;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.jei.*;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.items.ItemInit;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
@@ -13,6 +15,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -31,6 +34,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(FixationRecipeCategory.UID, FixationSeparationRecipe.class);
     public static RecipeType<FixationSeparationRecipe> SEPARATION_TYPE =
             new RecipeType<>(SeparationRecipeCategory.UID, FixationSeparationRecipe.class);
+    public static RecipeType<AlchemicalInfusionRitualRecipe> SUBLIMATION_RITUAL_TYPE =
+            new RecipeType<>(SublimationRitualRecipeCategory.UID, AlchemicalInfusionRitualRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -47,6 +52,8 @@ public class JEIPlugin implements IModPlugin {
                 FixationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 SeparationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                SublimationRitualRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -65,6 +72,9 @@ public class JEIPlugin implements IModPlugin {
         List<FixationSeparationRecipe> recipesFixationSeparation = rm.getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE);
         registration.addRecipes(FIXATION_TYPE, recipesFixationSeparation);
         registration.addRecipes(SEPARATION_TYPE, recipesFixationSeparation);
+
+        List<AlchemicalInfusionRitualRecipe> recipesSublimation = rm.getAllRecipesFor(AlchemicalInfusionRitualRecipe.Type.INSTANCE);
+        registration.addRecipes(SUBLIMATION_RITUAL_TYPE, recipesSublimation);
     }
 
     @Override
@@ -77,6 +87,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.FUSERY.get(), 1), FIXATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(ItemInit.RUNE_RITUAL_METAL.get(), 1).setHoverName(Component.translatable("magichem:rituals/balanced_scales")), SUBLIMATION_RITUAL_TYPE);
         IModPlugin.super.registerRecipeCatalysts(registration);
     }
 }

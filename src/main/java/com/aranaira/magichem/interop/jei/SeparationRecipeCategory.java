@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 public class SeparationRecipeCategory implements IRecipeCategory<FixationSeparationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "separation");
     public static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/alchemical_composition.png");
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/jei_recipecategory_01.png");
 
     private final IDrawable background;
     private final IDrawable icon;

@@ -60,6 +60,7 @@
   "itemGroup.magichemtab.substances" : "MagiChem - Essentia and Admixtures",
 
   "magichem:rituals/reagent_2_crafting" : "Ritual of the Rod and Circle",
+  "magichem:rituals/balanced_scales" : "Ritual of the Balanced Scales",
 
   "essentia.house.elements": "House of Elements",
   "essentia.house.qualities": "House of Qualities",
@@ -485,5 +486,7 @@
   "jei.magichem.distillation": "Alchemical Distillation",
   "jei.magichem.fabrication": "Alchemical Fabrication",
   "jei.magichem.fixation": "Alchemical Fixation",
-  "jei.magichem.separation": "Alchemical Separation"
+  "jei.magichem.separation": "Alchemical Separation",
+  "jei.magichem.sublimation": "Alchemical Sublimation",
+  "jei.magichem.sublimation_ritual": "Alchemical Sublimation (Ritual)"
 }

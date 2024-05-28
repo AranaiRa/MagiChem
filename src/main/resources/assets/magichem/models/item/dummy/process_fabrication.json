@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "magichem:item/dummy/process_fabrication"
+    "layer0": "magichem:item/dummy/sign_12_pisces"
   }
 }
