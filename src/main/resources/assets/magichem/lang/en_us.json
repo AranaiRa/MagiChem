@@ -248,6 +248,12 @@
   "item.magichem.admixture_wizard": "Admixture of the Wizard",
   "item.magichem.admixture_wizard.short": "Wizard",
 
+  "feedback.ritual.alchemical_infusion.novessel": "This ritual requires Materia Vessels in very specific locations. Make sure there's a Materia Vessel with the proper type of materia in the \"crook\" of the scale pattern on both sides.",
+  "feedback.ritual.alchemical_infusion.insufficient.a": "This recipe requires ",
+  "feedback.ritual.alchemical_infusion.insufficient.b": "Please provide ",
+  "feedback.ritual.alchemical_infusion.insufficient.and": " and ",
+  "feedback.ritual.alchemical_infusion.insufficient.more": " more ",
+
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",
   "tooltip.magichem.admixtureformula": "Formula:",

@@ -60,7 +60,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         this.vertClusterCount = pClusterCount;
         this.length = (float)startLocation.distanceTo(endLocation);
 
-        this.color[3] = pMateriaType.getMateriaColor() >> 24;
+        this.color[3] = 255;
         this.color[0] = pMateriaType.getMateriaColor() >> 16 & 255;
         this.color[1] = pMateriaType.getMateriaColor() >> 8 & 255;
         this.color[2] = pMateriaType.getMateriaColor() & 255;
@@ -176,6 +176,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         buffer.writeFloat(speed);
         buffer.writeFloat(distanceBetweenClusters);
         buffer.writeInt(vertClusterCount);
+        buffer.writeInt(((MateriaItem)stackInTransit.getItem()).getMateriaColor());
     }
 
     @Override
@@ -209,6 +210,11 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         speed = additionalData.readFloat();
         distanceBetweenClusters = additionalData.readFloat();
         vertClusterCount = additionalData.readInt();
+        int packedColor = additionalData.readInt();
+        color[3] = 255;
+        color[0] = packedColor >> 16 & 255;
+        color[1] = packedColor >> 8 & 255;
+        color[2] = packedColor & 255;
     }
 
     public Vector3 generatePointOnBezierCurve(float time, float duration) {
