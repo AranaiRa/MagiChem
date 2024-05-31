@@ -1,12 +1,10 @@
 package com.aranaira.magichem.ritual;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
-import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.registry.EntitiesRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.api.rituals.IRitualContext;
@@ -14,7 +12,6 @@ import com.mna.api.rituals.RitualEffect;
 import com.mna.api.timing.DelayedEventQueue;
 import com.mna.api.timing.TimedDelayedEvent;
 import com.mna.blocks.ritual.ChalkRuneBlock;
-import com.mna.rituals.effects.RitualEffectHole;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -27,12 +24,10 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
@@ -211,8 +206,8 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 Vector3 tangentRightCenter = new Vector3(-3, -1, 2);
 
                 return new Pair<>(
-                        new VesselData((MateriaVesselBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
-                        new VesselData((MateriaVesselBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
+                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
+                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
                 );
             }
         }
@@ -237,8 +232,8 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 Vector3 tangentRightCenter = new Vector3(2, -1, -3);
 
                 return new Pair<>(
-                        new VesselData((MateriaVesselBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
-                        new VesselData((MateriaVesselBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
+                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
+                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
                 );
             }
         }
@@ -263,8 +258,8 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 Vector3 tangentRightCenter = new Vector3(3, -1, -2);
 
                 return new Pair<>(
-                        new VesselData((MateriaVesselBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
-                        new VesselData((MateriaVesselBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
+                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
+                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
                 );
             }
         }
@@ -289,8 +284,8 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 Vector3 tangentRightCenter = new Vector3(-2, -1, 3);
 
                 return new Pair<>(
-                        new VesselData((MateriaVesselBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
-                        new VesselData((MateriaVesselBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
+                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
+                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
                 );
             }
         }
@@ -477,10 +472,10 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
     }
 
     private class VesselData {
-        public final MateriaVesselBlockEntity vesselBlockEntity;
+        public final AbstractMateriaStorageBlockEntity vesselBlockEntity;
         public final Vector3 origin, tangentVessel, tangentCenter;
 
-        public VesselData(MateriaVesselBlockEntity pEntity, Vector3 pOrigin, Vector3 pTangentVessel, Vector3 pTangentCenter) {
+        public VesselData(AbstractMateriaStorageBlockEntity pEntity, Vector3 pOrigin, Vector3 pTangentVessel, Vector3 pTangentCenter) {
             this.vesselBlockEntity = pEntity;
             this.origin = pOrigin;
             this.tangentVessel = pTangentVessel;

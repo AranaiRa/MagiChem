@@ -54,6 +54,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(PowerSpikeBlockEntity::new, BlockRegistry.POWER_SPIKE.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<MateriaJarBlockEntity>> MATERIA_JAR_BE = BLOCK_ENTITIES.register("materia_jar", () ->
+            BlockEntityType.Builder.of(MateriaJarBlockEntity::new, BlockRegistry.MATERIA_JAR.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<MateriaVesselBlockEntity>> MATERIA_VESSEL_BE = BLOCK_ENTITIES.register("materia_vessel", () ->
             BlockEntityType.Builder.of(MateriaVesselBlockEntity::new, BlockRegistry.MATERIA_VESSEL.get()).build(null)
     );

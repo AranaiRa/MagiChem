@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity.renderer;
 
-import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
+import com.aranaira.magichem.block.entity.MateriaJarBlockEntity;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,22 +13,18 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
-public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<MateriaVesselBlockEntity> {
-    public MateriaVesselBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+public class MateriaJarBlockEntityRenderer implements BlockEntityRenderer<MateriaJarBlockEntity> {
+    public MateriaJarBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
     }
 
     @Override
-    public void render(MateriaVesselBlockEntity mvbe, float pPartialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(MateriaJarBlockEntity mvbe, float pPartialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if(mvbe.getCurrentStockPercent() > 0 && mvbe.getMateriaType() != null) {
             VertexConsumer buffer = bufferSource.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
 
             PoseStack.Pose last = poseStack.last();
-            MateriaVesselContentsRenderUtil.renderVesselFluidContents(last.pose(), last.normal(), buffer, mvbe.getCurrentStockPercent(), mvbe.getMateriaType().getMateriaColor(), packedLight);
-
-            if(mvbe.getMateriaType() instanceof EssentiaItem ei) {
-                MateriaVesselContentsRenderUtil.renderVesselEssentiaLabel(last.pose(), last.normal(), buffer, ei, mvbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), packedLight);
-            }
+            MateriaVesselContentsRenderUtil.renderJarFluidContents(last.pose(), last.normal(), buffer, mvbe.getCurrentStockPercent(), mvbe.getMateriaType().getMateriaColor(), packedLight);
         }
     }
 }

@@ -2,10 +2,10 @@
   "parent": "builtin/entity",
   	"display": {
 		"gui": {
-			"translation": [1,0,0]
+			"translation": [0,0,0]
 		},
 		"fixed": {
-			"translation": [-1,0,0]
+			"translation": [0,0,0]
 		}
 	}
 }

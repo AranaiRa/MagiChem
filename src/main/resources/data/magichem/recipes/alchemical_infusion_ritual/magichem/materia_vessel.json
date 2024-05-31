@@ -1,0 +1,14 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": {
+    "item": "magichem:materia_vessel",
+    "count": 2
+  },
+  "materia_type_one": { "item": "magichem:admixture_vessel", "count": 18 },
+  "materia_type_two": { "item": "magichem:admixture_instrument", "count": 8 },
+  "components": [
+    { "item": "minecraft:amethyst_shard" },
+    { "item": "magichem:materia_jar" },
+    { "item": "magichem:materia_jar" }
+  ]
+}

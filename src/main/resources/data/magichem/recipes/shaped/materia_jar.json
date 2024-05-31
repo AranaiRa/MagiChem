@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "PWP",
+    " P "
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "P": {
+      "tag": "forge:glass_panes"
+    },
+    "W": {
+      "item": "magichem:alchemical_waste"
+    }
+  },
+  "result": {
+    "item": "magichem:materia_jar"
+  }
+}

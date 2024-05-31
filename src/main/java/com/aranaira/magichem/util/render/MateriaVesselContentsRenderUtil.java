@@ -26,35 +26,64 @@ public class MateriaVesselContentsRenderUtil {
     public static final ResourceLocation LABEL_TEXTURE_BOOKENDS = new ResourceLocation(MagiChemMod.MODID, "block/decorator/jar_label_bookends");
 
     private static final float
-            FLUID_START_XZ = 0.25F,
-            FLUID_START_Y = 0.1875F,
-            FLUID_WIDTH = 0.5F,
-            FLUID_HEIGHT_MAX = 0.625F;
+            JAR_FLUID_START_XZ = 0.375F,
+            JAR_FLUID_START_Y = 0.0625F,
+            JAR_FLUID_WIDTH = 0.25F,
+            JAR_FLUID_HEIGHT_MAX = 0.375F;
 
-    public static void renderFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {
-        float height = FLUID_HEIGHT_MAX * fillAmount;
+    public static void renderJarFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {
+        float height = JAR_FLUID_HEIGHT_MAX * fillAmount;
         TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FLUID_TEXTURE);
 
         RenderUtils.renderFace(Direction.UP, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_XZ, FLUID_START_Y+height, FLUID_WIDTH, FLUID_WIDTH, color, packedLight);
+                JAR_FLUID_START_XZ, JAR_FLUID_START_XZ, JAR_FLUID_START_Y +height, JAR_FLUID_WIDTH, JAR_FLUID_WIDTH, color, packedLight);
 
         RenderUtils.renderFace(Direction.DOWN, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_XZ, 1.0f - FLUID_START_Y, FLUID_WIDTH, FLUID_WIDTH, color, packedLight);
+                JAR_FLUID_START_XZ, JAR_FLUID_START_XZ, 1.0f - JAR_FLUID_START_Y, JAR_FLUID_WIDTH, JAR_FLUID_WIDTH, color, packedLight);
 
         RenderUtils.renderFace(Direction.NORTH, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color, packedLight);
+                JAR_FLUID_START_XZ, JAR_FLUID_START_Y, JAR_FLUID_START_XZ, JAR_FLUID_WIDTH, height, color, packedLight);
 
         RenderUtils.renderFace(Direction.EAST, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color, packedLight);
+                JAR_FLUID_START_XZ, JAR_FLUID_START_Y, JAR_FLUID_START_XZ, JAR_FLUID_WIDTH, height, color, packedLight);
 
         RenderUtils.renderFace(Direction.SOUTH, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color, packedLight);
+                JAR_FLUID_START_XZ, JAR_FLUID_START_Y, JAR_FLUID_START_XZ, JAR_FLUID_WIDTH, height, color, packedLight);
 
         RenderUtils.renderFace(Direction.WEST, pose, normal, consumer, texture,
-                FLUID_START_XZ, FLUID_START_Y, FLUID_START_XZ, FLUID_WIDTH, height, color, packedLight);
+                JAR_FLUID_START_XZ, JAR_FLUID_START_Y, JAR_FLUID_START_XZ, JAR_FLUID_WIDTH, height, color, packedLight);
     }
 
-    public static void renderEssentiaLabel(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, EssentiaItem ei, Direction dir, int packedLight) {
+    private static final float
+            VESSEL_FLUID_START_XZ = 0.25F,
+            VESSEL_FLUID_START_Y = 0.1875F,
+            VESSEL_FLUID_WIDTH = 0.5F,
+            VESSEL_FLUID_HEIGHT_MAX = 0.625F;
+
+    public static void renderVesselFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {
+        float height = VESSEL_FLUID_HEIGHT_MAX * fillAmount;
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FLUID_TEXTURE);
+
+        RenderUtils.renderFace(Direction.UP, pose, normal, consumer, texture,
+                VESSEL_FLUID_START_XZ, VESSEL_FLUID_START_XZ, VESSEL_FLUID_START_Y +height, VESSEL_FLUID_WIDTH, VESSEL_FLUID_WIDTH, color, packedLight);
+
+        RenderUtils.renderFace(Direction.DOWN, pose, normal, consumer, texture,
+                VESSEL_FLUID_START_XZ, VESSEL_FLUID_START_XZ, 1.0f - VESSEL_FLUID_START_Y, VESSEL_FLUID_WIDTH, VESSEL_FLUID_WIDTH, color, packedLight);
+
+        RenderUtils.renderFace(Direction.NORTH, pose, normal, consumer, texture,
+                VESSEL_FLUID_START_XZ, VESSEL_FLUID_START_Y, VESSEL_FLUID_START_XZ, VESSEL_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.EAST, pose, normal, consumer, texture,
+                VESSEL_FLUID_START_XZ, VESSEL_FLUID_START_Y, VESSEL_FLUID_START_XZ, VESSEL_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.SOUTH, pose, normal, consumer, texture,
+                VESSEL_FLUID_START_XZ, VESSEL_FLUID_START_Y, VESSEL_FLUID_START_XZ, VESSEL_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.WEST, pose, normal, consumer, texture,
+                VESSEL_FLUID_START_XZ, VESSEL_FLUID_START_Y, VESSEL_FLUID_START_XZ, VESSEL_FLUID_WIDTH, height, color, packedLight);
+    }
+
+    public static void renderVesselEssentiaLabel(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, EssentiaItem ei, Direction dir, int packedLight) {
 
         TextureAtlasSprite textureMain = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(getTextureByEssentiaName(ei.getMateriaName()));
         TextureAtlasSprite textureBookend = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(LABEL_TEXTURE_BOOKENDS);

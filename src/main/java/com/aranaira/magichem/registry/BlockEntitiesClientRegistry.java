@@ -10,6 +10,7 @@ public class BlockEntitiesClientRegistry {
 
     @SubscribeEvent
     public static void onClientSetupEvent(FMLClientSetupEvent event) {
+        BlockEntityRenderers.register(BlockEntitiesRegistry.MATERIA_JAR_BE.get(), MateriaJarBlockEntityRenderer::new);
         BlockEntityRenderers.register(BlockEntitiesRegistry.MATERIA_VESSEL_BE.get(), MateriaVesselBlockEntityRenderer::new);
     }
 

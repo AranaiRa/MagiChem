@@ -1,0 +1,50 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "textures": {
+    "particle": "minecraft:block/glass"
+  },
+  "children": {
+    "part1": {
+      "loader": "forge:obj",
+      "render_type": "cutout",
+      "automatic_culling": false,
+      "shade_quads": true,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "magichem:models/obj/materia_jar.obj"
+    }
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "thirdperson_lefthand": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "firstperson_righthand": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "firstperson_lefthand": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "ground": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    },
+    "gui": {
+      "scale": [1, 1, 1],
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0]
+    }
+  }
+}

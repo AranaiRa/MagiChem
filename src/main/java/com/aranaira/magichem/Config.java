@@ -170,6 +170,16 @@ public class Config
 
     //----------------CIRCLE OF FABRICATION
 
+    //----------------MATERIA JAR
+
+    private static final ForgeConfigSpec.IntValue MATERIA_JAR_ESSENTIA_CAPACITY = BUILDER
+            .comment("How much of one type of Essentia can be stored inside of a Materia Jar.")
+            .defineInRange("materiaJarEssentiaCapacity", 360, 64, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue MATERIA_JAR_ADMIXTURE_CAPACITY = BUILDER
+            .comment("How much of one type of Admixture can be stored inside of a Materia Jar.")
+            .defineInRange("materiaJarAdmixtureCapacity", 180, 64, Integer.MAX_VALUE);
+
     //----------------MATERIA VESSEL
 
     private static final ForgeConfigSpec.IntValue MATERIA_VESSEL_ESSENTIA_CAPACITY = BUILDER
@@ -266,6 +276,8 @@ public class Config
         circlePowerGen3Reagent,
         circlePowerGen4Reagent,
         circlePowerBuffer,
+        materiaJarEssentiaCapacity,
+        materiaJarAdmixtureCapacity,
         materiaVesselEssentiaCapacity,
         materiaVesselAdmixtureCapacity,
         delugePurifierOperationTime,
@@ -322,6 +334,8 @@ public class Config
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();
         circlePowerGen4Reagent = CIRCLE_OF_POWER_GEN_4_REAGENT.get();
         circlePowerBuffer = CIRCLE_OF_POWER_BUFFER.get();
+        materiaJarEssentiaCapacity = MATERIA_JAR_ESSENTIA_CAPACITY.get();
+        materiaJarAdmixtureCapacity = MATERIA_JAR_ADMIXTURE_CAPACITY.get();
         materiaVesselEssentiaCapacity = MATERIA_VESSEL_ESSENTIA_CAPACITY.get();
         materiaVesselAdmixtureCapacity = MATERIA_VESSEL_ADMIXTURE_CAPACITY.get();
         delugePurifierOperationTime = DELUGE_PURIFIER_OPERATION_TIME.get();

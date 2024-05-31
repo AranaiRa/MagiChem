@@ -7,6 +7,7 @@ import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
@@ -55,10 +56,10 @@ public class CommonEventHandler {
         //Handle inserting or extracting from materia vessels
         ItemStack stack = event.getItemStack();
         BlockEntity target = event.getLevel().getBlockEntity(event.getPos());
-        if(target instanceof MateriaVesselBlockEntity mvbe) {
+        if(target instanceof AbstractMateriaStorageBlockEntity amsbe) {
             if(stack.getItem() == Items.GLASS_BOTTLE) {
-                if(mvbe.getMateriaType() != null) {
-                    ItemStack extracted = mvbe.extractMateria(stack.getCount());
+                if(amsbe.getMateriaType() != null) {
+                    ItemStack extracted = amsbe.extractMateria(stack.getCount());
                     stack.shrink(extracted.getCount());
 
                     ItemEntity ie = new ItemEntity(event.getLevel(),
@@ -67,7 +68,7 @@ public class CommonEventHandler {
                     event.getLevel().addFreshEntity(ie);
                 }
             } else if(stack.getItem() instanceof MateriaItem) {
-                int inserted = mvbe.insertMateria(stack);
+                int inserted = amsbe.insertMateria(stack);
                 stack.shrink(inserted);
 
                 ItemEntity ie = new ItemEntity(event.getLevel(),
@@ -164,14 +165,14 @@ public class CommonEventHandler {
         if(hitResult.getType() == HitResult.Type.BLOCK) {
             BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(MathHelper.V3toV3i(hitResult.getLocation())));
             if(blockEntity == null) return;
-            if(blockEntity instanceof MateriaVesselBlockEntity mvbe) {
-                MateriaItem type = mvbe.getMateriaType();
+            if(blockEntity instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                MateriaItem type = amsbe.getMateriaType();
                 if(type != null) {
                     int x = event.getWindow().getGuiScaledWidth() / 2;
                     int y = event.getWindow().getGuiScaledHeight() / 2;
 
                     MutableComponent textRow1 = Component.translatable("item.magichem."+type.toString());
-                    MutableComponent textRow2 = Component.literal("   " + mvbe.getCurrentStock() + " / " + mvbe.getStorageLimit());
+                    MutableComponent textRow2 = Component.literal("   " + amsbe.getCurrentStock() + " / " + amsbe.getStorageLimit());
                     MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
 
                     Font font = Minecraft.getInstance().font;

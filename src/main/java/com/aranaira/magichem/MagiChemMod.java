@@ -2,6 +2,8 @@ package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.entity.renderer.*;
 import com.aranaira.magichem.gui.*;
+import com.aranaira.magichem.interop.mna.MnAPlugin;
+import com.aranaira.magichem.item.renderer.MateriaJarItemRenderer;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.registry.*;
@@ -28,7 +30,6 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
-import software.bernie.example.registry.EntityRegistry;
 
 import java.util.List;
 
@@ -55,6 +56,8 @@ public class MagiChemMod
         MenuRegistry.register(eventBus);
         RecipeRegistry.register(eventBus);
         EntitiesRegistry.register(eventBus);
+
+        MnAPlugin.register();
 
         if(FMLEnvironment.dist.isClient()) {
             eventBus.register(BlockEntitiesClientRegistry.class);
@@ -122,7 +125,8 @@ public class MagiChemMod
 
         @SubscribeEvent
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
-            event.register(MateriaVesselItemRenderer.RENDERER_JAR);
+            event.register(MateriaVesselItemRenderer.RENDERER_VESSEL);
+            event.register(MateriaJarItemRenderer.RENDERER_JAR);
 
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_COG);
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_WHEEL);

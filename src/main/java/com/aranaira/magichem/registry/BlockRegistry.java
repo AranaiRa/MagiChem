@@ -2,6 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
+import com.aranaira.magichem.item.MateriaJarItem;
 import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.item.PowerSpikeItem;
 import com.aranaira.magichem.item.TooltipLoreBlockItem;
@@ -71,6 +72,11 @@ public class BlockRegistry {
                     .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> MATERIA_JAR = registerBlock("materia_jar",
+            () -> new MateriaJarBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> MATERIA_VESSEL = registerBlock("materia_vessel",
             () -> new MateriaVesselBlock(BlockBehaviour.Properties.of()
                     .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
@@ -134,6 +140,7 @@ public class BlockRegistry {
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
         return switch (name) {
+            case "materia_jar" -> ItemRegistry.ITEMS.register(name, () -> new MateriaJarItem(block.get(), new Item.Properties()));
             case "materia_vessel" -> ItemRegistry.ITEMS.register(name, () -> new MateriaVesselItem(block.get(), new Item.Properties()));
             case "power_spike" -> ItemRegistry.ITEMS.register(name, () -> new PowerSpikeItem(block.get(), new Item.Properties()));
             default -> ItemRegistry.ITEMS.register(name, () -> new TooltipLoreBlockItem(block.get(), new Item.Properties()));

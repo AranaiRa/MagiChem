@@ -39,20 +39,18 @@ public class ClientEventForgeBusHandler {
         Minecraft mc = Minecraft.getInstance();
         boolean toolMenuKeyIsDown = ((KeyMapping) KeybindInit.RadialMenuOpen.get()).isDown();
         if (toolMenuKeyIsDown && !toolMenuKeyWasDown) {
-            while(((KeyMapping)KeybindInit.RadialMenuOpen.get()).consumeClick()) {
-                if (mc.screen == null) {
-                    ItemStack inHand = mc.player.getMainHandItem();
-                    boolean checkOffhand = true;
-                    if (inHand.getItem() instanceof SublimationPrimerItem) {
-                        mc.setScreen(new SublimationPrimerRadialSelect(false));
-                        checkOffhand = false;
-                    }
+            if (mc.screen == null) {
+                ItemStack inHand = mc.player.getMainHandItem();
+                boolean checkOffhand = true;
+                if (inHand.getItem() instanceof SublimationPrimerItem) {
+                    mc.setScreen(new SublimationPrimerRadialSelect(false));
+                    checkOffhand = false;
+                }
 
-                    if (checkOffhand) {
-                        inHand = mc.player.getOffhandItem();
-                        if (inHand.getItem() instanceof SublimationPrimerItem) {
-                            mc.setScreen(new SublimationPrimerRadialSelect(true));
-                        }
+                if (checkOffhand) {
+                    inHand = mc.player.getOffhandItem();
+                    if (inHand.getItem() instanceof SublimationPrimerItem) {
+                        mc.setScreen(new SublimationPrimerRadialSelect(true));
                     }
                 }
             }

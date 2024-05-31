@@ -14,7 +14,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
-    public static final ResourceLocation RENDERER_VESSEL = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_vessel");
+public class MateriaJarItemRenderer extends BlockEntityWithoutLevelRenderer {
+    public static final ResourceLocation RENDERER_JAR = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_jar");
     private BakedModel bakedModel;
 
     private final List<Direction> sides = Util.make(new ArrayList<>(), c -> {
@@ -40,7 +40,7 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
         c.add(null);
     });
 
-    public MateriaVesselItemRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
+    public MateriaJarItemRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
         super(pBlockEntityRenderDispatcher, pEntityModelSet);
     }
 
@@ -48,7 +48,7 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
     public void renderByItem(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
 
         if(this.bakedModel == null)
-            this.bakedModel = Minecraft.getInstance().getModelManager().getModel(RENDERER_VESSEL);
+            this.bakedModel = Minecraft.getInstance().getModelManager().getModel(RENDERER_JAR);
 
         PoseStack.Pose last = pPoseStack.last();
         VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());
@@ -70,12 +70,10 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
             if(nbt.contains("type")) {
                 MateriaItem materia = ItemRegistry.getMateriaMap(false, false)
                         .get(nbt.getString("type"));
-                int cap = materia instanceof EssentiaItem ? Config.materiaVesselEssentiaCapacity : Config.materiaVesselAdmixtureCapacity;
+                int cap = materia instanceof EssentiaItem ? Config.materiaJarEssentiaCapacity : Config.materiaJarAdmixtureCapacity;
                 float fill = (float)nbt.getInt("amount") / (float)cap;
 
-                MateriaVesselContentsRenderUtil.renderVesselFluidContents(last.pose(), last.normal(), buffer, fill, materia.getMateriaColor(), pPackedLight);
-                if(materia instanceof EssentiaItem ei)
-                    MateriaVesselContentsRenderUtil.renderVesselEssentiaLabel(last.pose(), last.normal(), buffer, ei, Direction.NORTH, pPackedLight);
+                MateriaVesselContentsRenderUtil.renderJarFluidContents(last.pose(), last.normal(), buffer, fill, materia.getMateriaColor(), pPackedLight);
             }
         }
 
