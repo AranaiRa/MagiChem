@@ -1276,7 +1276,7 @@
     ]
   },
   "Grime": {
-    "index": "1211",
+    "index": "1212",
     "category": "magichem",
     "sections": [
       {
@@ -1567,8 +1567,47 @@
     ],
     "related_recipes": []
   },
-  "Materia Vessel": {
+  "Materia Jar": {
     "index": "1210",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Materia Jar"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Materia Jar",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a small glass container used to store Materia.\n\nYou can insert Materia by right clicking it with a Materia bottle, and extract its contents by right clicking with an empty bottle.\n\nLooking at a Materia Jar will show you the name of its contents, its alchemical formula, the current amount stored, and maximum capacity.\n\nWith default configs, Materia Jars containing Essentia can store "
+          },
+          {
+            "text": "twice",
+            "color": "dark_purple"
+          },
+          {
+            "text": " as much as Materia Jars containing Admixtures."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/materia_jar"
+      }
+    ]
+  },
+  "Materia Vessel": {
+    "index": "1211",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -1581,15 +1620,51 @@
         "value": "",
         "json": [
           {
-            "text": "A Materia Vessel is an enchanted glass jar capable of holding large amounts of Materia. You can insert Materia by right clicking it with a Materia bottle, and extract its contents by right clicking with an empty bottle.\n\nLooking at a Materia Vessel will show you the name of its contents, its alchemical formula, the current amount stored, and maximum capacity. With default configs, Materia Vessels containing Essentia can store twice as much as Materia Vessels containing Admixtures.\n\nMateria Vessels containing Essentia also display a physical label on the front of the jar for easy reference."
+            "text": "A "
+          },
+          {
+            "text": "Materia Vessel",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an improved version of the "
+          },
+          {
+            "text": "Materia Jar",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that has been alchemically treated to hold large amounts of Materia. With default configs, it holds "
+          },
+          {
+            "text": "ten times",
+            "color": "dark_purple"
+          },
+          {
+            "text": " as much materia.\n\n\nCare should be taken when performing the "
+          },
+          {
+            "text": "Ritual of the Balanced Scales",
+            "color": "dark_purple"
+          },
+          {
+            "text": "—the contents of Materia Jars will not be kept in the upgrading process, so make sure to empty them out first."
           }
         ]
       }
     ],
     "related_recipes": [
       {
-        "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/materia_vessel"
+        "type": "crafting",
+        "location": "magichem:shaped/materia_jar"
+      },
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/balanced_scales"
+      },
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/materia_vessel"
       }
     ]
   },
@@ -1666,7 +1741,7 @@
     ]
   },
   "Alchemical Waste": {
-    "index": "1212",
+    "index": "1213",
     "category": "magichem",
     "sections": [
       {
@@ -1703,7 +1778,7 @@
     ]
   },
   "Rarefied Waste": {
-    "index": "1213",
+    "index": "1214",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -1833,39 +1908,111 @@
       }
     ]
   },
-  "TEST": {
-    "index": 9999,
+  "Process: Sublimation": {
+    "index": "1107",
     "category": "magichem",
     "sections": [
       {
         "type": "title",
-        "value": "TEST?"
+        "value": "Process: Sublimation"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "TEST "
+            "text": "To "
           },
           {
-            "text": "test~",
+            "text": "Sublimate",
             "color": "dark_purple"
           },
           {
-            "text": " TEST."
+            "text": " is to infuse an object with Materia to enhance it in some way or to impart it with magical properties. Basic Sublimation is performed using the "
+          },
+          {
+            "text": "Ritual of the Balanced Scales",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
           }
         ]
       }
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/iris_argenti"
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/sublimation_primer"
       },
       {
-        "type": "manaweaving_altar",
-        "location": "mna:fluid_jug"
+        "type": "ritual",
+        "location": "magichem:rituals/balanced_scales"
+      }
+    ]
+  },
+  "Ritual of the Balanced Scales": {
+    "index": "0",
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Ritual of the Balanced Scales"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This ritual is used to perform simple "
+          },
+          {
+            "text": "alchemical sublimation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " recipes. A "
+          },
+          {
+            "text": "Sublimation Primer",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is necessary to select the recipe you want to perform with the ritual.\n\nThis ritual requires two "
+          },
+          {
+            "text": "Materia Jars",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or "
+          },
+          {
+            "text": "Materia Vessels",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in specific locations (specifically, the \"crook\" of the scale). If you attempt to start the ritual with missing or misplaced materia containers, the correct locations will be highlighted."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/balanced_scales"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/sublimation_primer"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/materia_jar"
+      },
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/materia_vessel"
       }
     ]
   },
