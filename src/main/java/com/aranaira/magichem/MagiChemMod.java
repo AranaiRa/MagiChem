@@ -57,8 +57,6 @@ public class MagiChemMod
         RecipeRegistry.register(eventBus);
         EntitiesRegistry.register(eventBus);
 
-        MnAPlugin.register();
-
         if(FMLEnvironment.dist.isClient()) {
             eventBus.register(BlockEntitiesClientRegistry.class);
             eventBus.register(EntitiesClientRegistry.class);
@@ -94,6 +92,8 @@ public class MagiChemMod
         event.getRegistry().addGuidebookPath(new ResourceLocation(MODID, "guide"));
 
         event.getRegistry().registerGuidebookCategory("magichem", new ResourceLocation(MagiChemMod.MODID, "materia_vessel"));
+
+        MnAPlugin.register();
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
