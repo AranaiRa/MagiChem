@@ -12,6 +12,7 @@ import com.mna.api.rituals.RitualEffect;
 import com.mna.api.timing.DelayedEventQueue;
 import com.mna.api.timing.TimedDelayedEvent;
 import com.mna.blocks.ritual.ChalkRuneBlock;
+import com.mna.items.ItemInit;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -173,14 +174,22 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         }
 
         context.getCaster().sendSystemMessage(errorMessage);
-
-        //Refund ritual items.
-        for(ItemStack is : recipe.getIngredientItemStacks()) {
+        
+        //Refund ritual items if the player isn't in creative
+        if(!context.getCaster().isCreative()) {
+            for (ItemStack is : recipe.getIngredientItemStacks()) {
+                ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
+                ie.setItem(is.copy());
+                ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
+                context.getLevel().addFreshEntity(ie);
+            }
+            //Also refund PVD
             ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
-            ie.setItem(is.copy());
+            ie.setItem(new ItemStack(ItemInit.PURIFIED_VINTEUM_DUST.get()));
             ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
             context.getLevel().addFreshEntity(ie);
         }
+
         return false;
     }
 
