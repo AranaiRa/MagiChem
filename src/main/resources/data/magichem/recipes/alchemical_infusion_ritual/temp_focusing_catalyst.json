@@ -1,0 +1,11 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": { "item": "magichem:focusing_catalyst_core" },
+  "materia_type_one": { "item": "magichem:admixture_sorcery", "count": 21 },
+  "materia_type_two": { "item": "magichem:admixture_energy", "count": 58 },
+  "components": [
+    { "item": "minecraft:amethyst_block" },
+    { "item": "minecraft:obsidian" },
+    { "item": "minecraft:obsidian" }
+  ]
+}

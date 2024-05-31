@@ -174,7 +174,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         }
 
         context.getCaster().sendSystemMessage(errorMessage);
-        
+
         //Refund ritual items if the player isn't in creative
         if(!context.getCaster().isCreative()) {
             for (ItemStack is : recipe.getIngredientItemStacks()) {

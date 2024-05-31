@@ -2,7 +2,6 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.ritual.RitualEffectAlchemicalInfusion;
-import com.aranaira.magichem.ritual.RitualEffectCraftPowerReagent2;
 import com.mna.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,13 +20,8 @@ public class RitualRegistry {
         event.register(((IForgeRegistry)Registries.RitualEffect.get()).getRegistryKey(), (helper) -> {
                     //Ritual of the Balanced Scales
                     helper.register(
-                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-balaced_scales"),
+                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-balanced_scales"),
                             new RitualEffectAlchemicalInfusion(new ResourceLocation(MagiChemMod.MODID, "rituals/balanced_scales"))
-                    );
-                    //Ritual of the Rod and Circle
-                    helper.register(
-                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-reagent2craft"),
-                            new RitualEffectCraftPowerReagent2(new ResourceLocation(MagiChemMod.MODID, "rituals/reagent_2_crafting"))
                     );
                 });
     }

@@ -600,7 +600,7 @@
             "text": " on a Runic Anvil, and Catalyst Cores can be made by performing the "
           },
           {
-            "text": "Ritual of the Rod and Circle",
+            "text": "Ritual of the Balanced Scales",
             "color": "dark_purple"
           },
           {
@@ -645,8 +645,12 @@
     ],
     "related_recipes": [
       {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/temp_focusing_catalyst"
+      },
+      {
         "type": "ritual",
-        "location": "magichem:rituals/reagent_2_crafting"
+        "location": "magichem:rituals/balanced_scales"
       }
     ]
   },
@@ -719,46 +723,6 @@
       {
         "type": "arcane_furnace",
         "location": "magichem:arcanefurnace/superheated_glass_pane"
-      }
-    ]
-  },
-  "Ritual of the Rod and Circle": {
-    "index": "1000",
-    "category": "rituals",
-    "tier": 3,
-    "sections": [
-      {
-        "type": "title",
-        "value": "Ritual of the Rod and Circle"
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
-          {
-            "text": "This ritual binds coal, amethyst, and a few different varieties of Materia together into a "
-          },
-          {
-            "text": "Catalyst Core",
-            "color": "dark_purple"
-          },
-          {
-            "text": ", a necessary component of a "
-          },
-          {
-            "text": "Focusing Catalyst",
-            "color": "dark_purple"
-          },
-          {
-            "text": "."
-          }
-        ]
-      }
-    ],
-    "related_recipes": [
-      {
-        "type": "ritual",
-        "location": "magichem:rituals/reagent_2_crafting"
       }
     ]
   },
