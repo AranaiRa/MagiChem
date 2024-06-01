@@ -97,6 +97,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         if (lv.vesselBlockEntity == null || rv.vesselBlockEntity == null) {
             context.getCaster().sendSystemMessage(Component.translatable("feedback.ritual.alchemical_infusion.novessel"));
             isErrorState = true;
+            returnReagentsToWorld(context);
             return false;
         }
 
@@ -177,20 +178,24 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
         //Refund ritual items if the player isn't in creative
         if(!context.getCaster().isCreative()) {
-            for (ItemStack is : recipe.getIngredientItemStacks()) {
-                ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
-                ie.setItem(is.copy());
-                ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
-                context.getLevel().addFreshEntity(ie);
-            }
-            //Also refund PVD
-            ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
-            ie.setItem(new ItemStack(ItemInit.PURIFIED_VINTEUM_DUST.get()));
-            ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
-            context.getLevel().addFreshEntity(ie);
+            returnReagentsToWorld(context);
         }
 
         return false;
+    }
+
+    private void returnReagentsToWorld(IRitualContext context) {
+        for (ItemStack is : recipe.getIngredientItemStacks()) {
+            ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
+            ie.setItem(is.copy());
+            ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
+            context.getLevel().addFreshEntity(ie);
+        }
+        //Also refund PVD
+        ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
+        ie.setItem(new ItemStack(ItemInit.PURIFIED_VINTEUM_DUST.get()));
+        ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
+        context.getLevel().addFreshEntity(ie);
     }
 
     public Pair<VesselData, VesselData> getVesselPositions(Level pLevel, BlockPos pRitualCenter) {
