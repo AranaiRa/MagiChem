@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl ALCHEMICAL_NEXUS
+map_Kd magichem:block/alchemical_nexus
+
+newmtl CENTRIFUGE
+map_Kd magichem:block/centrifuge
+
+newmtl CHIMERITE
+map_Kd mna:block/oreblockchimerite

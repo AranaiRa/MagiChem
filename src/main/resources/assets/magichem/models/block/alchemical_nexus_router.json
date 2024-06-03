@@ -1,0 +1,6 @@
+{
+  "parent": "magichem:block/alchemical_nexus",
+  "textures": {
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
+  }
+}

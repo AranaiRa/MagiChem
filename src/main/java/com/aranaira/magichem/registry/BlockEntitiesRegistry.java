@@ -42,6 +42,14 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(FuseryRouterBlockEntity::new, BlockRegistry.FUSERY_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<AlchemicalNexusBlockEntity>> ALCHEMICAL_NEXUS_BE = BLOCK_ENTITIES.register("alchemical_nexus", () ->
+            BlockEntityType.Builder.of(AlchemicalNexusBlockEntity::new, BlockRegistry.ALCHEMICAL_NEXUS.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<AlchemicalNexusRouterBlockEntity>> ALCHEMICAL_NEXUS_ROUTER_BE = BLOCK_ENTITIES.register("alchemical_nexus_router", () ->
+            BlockEntityType.Builder.of(AlchemicalNexusRouterBlockEntity::new, BlockRegistry.ALCHEMICAL_NEXUS_ROUTER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<CircleFabricationBlockEntity>> CIRCLE_FABRICATION_BE = BLOCK_ENTITIES.register("circle_fabrication", () ->
             BlockEntityType.Builder.of(CircleFabricationBlockEntity::new, BlockRegistry.CIRCLE_FABRICATION.get()).build(null)
     );

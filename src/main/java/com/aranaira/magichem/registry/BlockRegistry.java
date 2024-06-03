@@ -6,12 +6,9 @@ import com.aranaira.magichem.item.MateriaJarItem;
 import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.item.PowerSpikeItem;
 import com.aranaira.magichem.item.TooltipLoreBlockItem;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -54,6 +51,16 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> FUSERY_ROUTER = registerBlock("fusery_router",
             () -> new FuseryRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICAL_NEXUS = registerBlock("alchemical_nexus",
+            () -> new AlchemicalNexusBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICAL_NEXUS_ROUTER = registerBlock("alchemical_nexus_router",
+            () -> new AlchemicalNexusRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
