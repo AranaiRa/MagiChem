@@ -75,6 +75,17 @@
       ]
     },
     {
+      "name": "color",
+      "color": "f1924c",
+      "depth": 2,
+      "components": [
+        { "essentia": "air", "count": 4 },
+        { "admixture": "change", "count": 1 },
+        { "essentia": "conceptual", "count": 2 },
+        { "essentia": "verdant", "count": 2 }
+      ]
+    },
+    {
       "name": "comfort",
       "color": "77536c",
       "depth": 1,

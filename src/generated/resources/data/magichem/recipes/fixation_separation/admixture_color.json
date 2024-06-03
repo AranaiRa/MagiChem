@@ -1,0 +1,24 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_color"
+  },
+  "components": [
+    {
+      "item": "magichem:essentia_air",
+      "count": 4
+    },
+    {
+      "item": "magichem:admixture_change",
+      "count": 1
+    },
+    {
+      "item": "magichem:essentia_conceptual",
+      "count": 2
+    },
+    {
+      "item": "magichem:essentia_verdant",
+      "count": 2
+    }
+  ]
+}
