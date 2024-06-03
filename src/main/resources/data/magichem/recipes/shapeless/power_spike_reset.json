@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "magichem:power_spike"
+    }
+  ],
+  "result": {
+    "item": "magichem:power_spike"
+  }
+}
