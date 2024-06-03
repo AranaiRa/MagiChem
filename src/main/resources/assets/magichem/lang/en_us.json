@@ -52,6 +52,7 @@
   "block.magichem.actuator_water": "Deluge Purifier",
   "block.magichem.actuator_water_router": "Deluge Purifier",
   "block.magichem.experience_exchanger": "Experience Exchanger",
+  "block.magichem.alchemical_nexus": "Alchemical Nexus",
 
   "academic_slurry_fluid_type": "Academic Slurry",
   "smoke_fluid_type": "Smoke",
@@ -141,6 +142,8 @@
   "item.magichem.admixture_change.short": "Change",
   "item.magichem.admixture_cold": "Admixture of Cold",
   "item.magichem.admixture_cold.short": "Cold",
+  "item.magichem.admixture_color": "Admixture of Color",
+  "item.magichem.admixture_color.short": "Color",
   "item.magichem.admixture_comfort": "Admixture of Comfort",
   "item.magichem.admixture_comfort.short": "Comfort",
   "item.magichem.admixture_construct": "Admixture of the Construct",

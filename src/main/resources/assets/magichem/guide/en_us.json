@@ -378,12 +378,49 @@
     ],
     "related_recipes": [
       {
-        "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/iris_argenti"
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/iris_argenti"
       },
       {
         "type": "crafting",
         "location": "magichem:shaped/magic_circle"
+      }
+    ]
+  },
+  "Perfected Electrum": {
+    "index": 1271,
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Perfected Electrum"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "While copper is an acceptable material for a simple Alembic, advanced alchemical devices require an advanced material.\n\n"
+          },
+          {
+            "text": "Perfected Electrum",
+            "color": "dark_purple"
+          },
+          {
+            "text": " combines the magical conductivity of gold with the alchemical inertness of transmuted silver. The resultant alloy amplifies the alchemical magic of materia, but is unaffected by physical contact."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/balanced_scales"
+      },
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/perfected_electrum"
       }
     ]
   },
@@ -445,7 +482,7 @@
       },
       {
         "type": "crafting",
-        "location": "magichem:shaped/circle_power"
+        "location": "magichem:shaped/circle_fabrication"
       }
     ]
   },
@@ -517,7 +554,15 @@
         ]
       }
     ],
-    "related_recipes": []
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/magic_circle"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/circle_power"
+      }]
   },
   "Grains of Transmuted Silver": {
     "index": "1404",
@@ -563,6 +608,14 @@
       }
     ],
     "related_recipes": [
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/power_reagent_1_reclamation"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/power_reagent_1_reprocessing"
+      },
       {
         "type": "crafting",
         "location": "magichem:shaped/circle_power"
@@ -695,6 +748,10 @@
       }
     ],
     "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/power_spike"
+      },
       {
         "type": "crafting",
         "location": "magichem:shaped/circle_power"
