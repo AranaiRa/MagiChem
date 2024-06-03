@@ -82,4 +82,8 @@ public class PowerSpikeBlockEntity extends BlockEntity {
     public void setPowerDrawPos(BlockPos drawPos) {
         this.powerDrawPos = drawPos;
     }
+
+    public BlockPos getPowerDrawPos() {
+        return this.powerDrawPos;
+    }
 }

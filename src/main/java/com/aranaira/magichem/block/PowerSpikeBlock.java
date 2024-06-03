@@ -1,10 +1,14 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
+import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -17,9 +21,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PowerSpikeBlock extends BaseEntityBlock {
     public PowerSpikeBlock(Properties properties) {
@@ -82,6 +91,21 @@ public class PowerSpikeBlock extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(FACING);
+    }
+
+    @Override
+    public List<ItemStack> getDrops(BlockState pState, LootParams.Builder pBuilder) {
+        ItemStack stack = new ItemStack(BlockRegistry.POWER_SPIKE.get(), 1);
+        PowerSpikeBlockEntity psbe = (PowerSpikeBlockEntity) pBuilder.getParameter(LootContextParams.BLOCK_ENTITY);
+        List<ItemStack> output = new ArrayList<>();
+
+        CompoundTag tag = new CompoundTag();
+        tag.putLong("magichem.powerspike.targetpos", psbe.getPowerDrawPos().asLong());
+        stack.setTag(tag);
+
+        output.add(stack);
+        
+        return output;
     }
 
     /* BLOCK ENTITY STUFF BELOW THIS POINT*/
