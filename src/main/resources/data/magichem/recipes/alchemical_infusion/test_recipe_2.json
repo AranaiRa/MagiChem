@@ -1,5 +1,6 @@
 {
   "type": "magichem:alchemical_infusion",
+  "tier": 4,
   "wisdom": 0,
   "object": {
     "item": "minecraft:oxidized_copper"

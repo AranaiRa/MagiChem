@@ -33,15 +33,16 @@ import java.util.List;
  */
 public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
-    private final int wisdom;
+    private final int tier, wisdom;
     private final ItemStack alchemyObject;
     private final NonNullList<InfusionStage> stages;
     private static final NonNullList<ItemStack> allPossibleOutputs = NonNullList.create();
 
-    public AlchemicalInfusionRecipe(ResourceLocation pID, int pWisdom, ItemStack pAlchemyObject,
+    public AlchemicalInfusionRecipe(ResourceLocation pID, int pTier, int pWisdom, ItemStack pAlchemyObject,
                                     NonNullList<InfusionStage> pStages) {
         this.id = pID;
         this.stages = pStages;
+        this.tier = pTier;
         this.wisdom = pWisdom;
         this.alchemyObject = pAlchemyObject;
     }
@@ -72,6 +73,10 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
             out.add(is.copy());
         }
         return out;
+    }
+
+    public int getTier() {
+        return this.tier;
     }
 
     public int getWisdom() {
@@ -157,6 +162,7 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
             if(recipeObject.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
                 recipeObject = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:barrier")));
 
+            int tier = GsonHelper.getAsInt(pSerializedRecipe, "tier");
             int wisdom = GsonHelper.getAsInt(pSerializedRecipe, "wisdom");
 
             JsonArray stages = GsonHelper.getAsJsonArray(pSerializedRecipe, "stages");
@@ -196,13 +202,14 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
                 extractedStages.add(new InfusionStage(experienceThisStage, items, materia));
             });
 
-            return new AlchemicalInfusionRecipe(pRecipeId, wisdom, recipeObject, extractedStages);
+            return new AlchemicalInfusionRecipe(pRecipeId, tier, wisdom, recipeObject, extractedStages);
         }
 
         @Override
         public @Nullable AlchemicalInfusionRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             CompoundTag nbt = buf.readNbt();
 
+            int tier = nbt.getInt("tier");
             int wisdom = nbt.getInt("wisdom");
 
             ResourceLocation alchemyObjectRL = new ResourceLocation(nbt.getString("alchemyObjectItem"));
@@ -252,13 +259,14 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
                 infusionStages.add(is);
             }
 
-            return new AlchemicalInfusionRecipe(id, wisdom, alchemyObject, infusionStages);
+            return new AlchemicalInfusionRecipe(id, tier, wisdom, alchemyObject, infusionStages);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, AlchemicalInfusionRecipe recipe) {
             CompoundTag nbt = new CompoundTag();
 
+            nbt.putInt("tier", recipe.getTier());
             nbt.putInt("wisdom", recipe.getWisdom());
 
             nbt.putString("alchemyObjectItem", ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem()).toString());

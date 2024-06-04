@@ -1,5 +1,6 @@
 {
   "type": "magichem:alchemical_infusion",
+  "tier": 3,
   "wisdom": 0,
   "object": {
     "item": "magichem:catalyst_core"
