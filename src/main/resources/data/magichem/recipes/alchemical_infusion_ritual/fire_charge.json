@@ -1,0 +1,14 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": {
+    "item": "minecraft:fire_charge",
+    "count": 3
+  },
+  "materia_type_one": { "item": "magichem:essentia_fire", "count": 18 },
+  "materia_type_two": { "item": "magichem:admixture_instrument", "count": 8 },
+  "components": [
+    { "item": "minecraft:gunpowder" },
+    { "item": "minecraft:charcoal" },
+    { "item": "minecraft:charcoal" }
+  ]
+}

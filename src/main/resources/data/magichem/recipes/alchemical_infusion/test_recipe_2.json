@@ -1,0 +1,18 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "wisdom": 0,
+  "object": {
+    "item": "minecraft:oxidized_copper"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:copper_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_erosion", "count": 6 }
+      ]
+    }
+  ]
+}
