@@ -1,17 +1,11 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.BaseActuatorRouterBlock;
-import com.aranaira.magichem.block.CentrifugeBlock;
-import com.aranaira.magichem.block.DistilleryBlock;
-import com.aranaira.magichem.block.FuseryBlock;
+import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
-import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
@@ -148,6 +142,13 @@ public class CommonEventHandler {
         else if(entity instanceof FuseryRouterBlockEntity frbe) {
             event.getLevel().destroyBlock(frbe.getMasterPos(), true);
             FuseryBlock.destroyRouters(event.getLevel(), frbe.getMasterPos(), frbe.getFacing());
+        }
+        else if(entity instanceof AlchemicalNexusBlockEntity anbe) {
+            AlchemicalNexusBlock.destroyRouters(event.getLevel(), anbe.getBlockPos(), anbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+        }
+        else if(entity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
+            event.getLevel().destroyBlock(anrbe.getMasterPos(), true);
+            AlchemicalNexusBlock.destroyRouters(event.getLevel(), anrbe.getMasterPos(), anrbe.getFacing());
         }
         else if(entity instanceof DirectionalPluginBlockEntity dpbe) {
             event.getLevel().destroyBlock(dpbe.getBlockPos().above(), true);

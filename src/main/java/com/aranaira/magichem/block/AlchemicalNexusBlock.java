@@ -2,8 +2,10 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -29,6 +31,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +48,7 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
     }
 
     private static final VoxelShape
-            DO_THIS_LATER = Block.box(0,0,0,14,8,14);
+            VOXEL_SHAPE_BASE, VOXEL_SHAPE_DAIS, VOXEL_SHAPE_AGGREGATE;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Override
@@ -58,79 +61,103 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockPos pos = pContext.getClickedPos();
 
-//        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pContext.getHorizontalDirection())) {
-//            if(!pContext.getLevel().isEmptyBlock(pos.offset(posAndType.getFirst()))) {
-//                return null;
-//            }
-//        }
+        for(Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pContext.getHorizontalDirection())) {
+            if(!pContext.getLevel().isEmptyBlock(pos.offset(posAndType.getFirst()))) {
+                return null;
+            }
+        }
 
         return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
     }
 
-//    @Override
-//    public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
-//        BlockState state = BlockRegistry.CENTRIFUGE_ROUTER.get().defaultBlockState();
-//        Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-//
-//        super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
-//
-//        for (Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
-//            BlockPos targetPos = pPos.offset(posAndType.getFirst());
-//            if(pLevel.getBlockState(targetPos).isAir()) {
-//                pLevel.setBlock(targetPos, state, 3);
-//                ((CentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
-//            }
-//        }
-//    }
+    @Override
+    public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        BlockState state = BlockRegistry.ALCHEMICAL_NEXUS_ROUTER.get().defaultBlockState();
+        Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-//    @Override
-//    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-//        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-//
-//        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
-//            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
-//        }
-//
-//        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
-//    }
+        super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
 
-//    @Override
-//    public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
-//        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-//
-//        destroyRouters(pLevel, pPos, facing);
-//
-//        super.destroy(pLevel, pPos, pState);
-//    }
+        for (Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
+            BlockPos targetPos = pPos.offset(posAndType.getFirst());
+            if(pLevel.getBlockState(targetPos).isAir()) {
+                pLevel.setBlock(targetPos, state.setValue(AlchemicalNexusRouterBlock.ALCHEMICAL_NEXUS_ROUTER_TYPE, posAndType.getSecond().ordinal()), 3);
+                ((AlchemicalNexusRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+            }
+        }
+    }
 
-//    public static void destroyRouters(LevelAccessor pLevel, BlockPos pPos, Direction pFacing) {
-//        for(Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pFacing)) {
-//            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
-//        }
-//    }
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-//    public static List<Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection>> getRouterOffsets(Direction pFacing) {
-//        List<Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection>> offsets = new ArrayList<>();
-//        BlockPos origin = new BlockPos(0,0,0);
-//        if(pFacing == Direction.NORTH) {
-//            offsets.add(new Triplet<>(origin.west(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.SOUTH));
-//            offsets.add(new Triplet<>(origin.north(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.EAST));
-//            offsets.add(new Triplet<>(origin.west().north(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
-//        } else if(pFacing == Direction.SOUTH) {
-//            offsets.add(new Triplet<>(origin.east(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.NORTH));
-//            offsets.add(new Triplet<>(origin.south(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.WEST));
-//            offsets.add(new Triplet<>(origin.east().south(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
-//        } else if(pFacing == Direction.EAST) {
-//            offsets.add(new Triplet<>(origin.north(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.WEST));
-//            offsets.add(new Triplet<>(origin.east(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.SOUTH));
-//            offsets.add(new Triplet<>(origin.north().east(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
-//        } else if(pFacing == Direction.WEST) {
-//            offsets.add(new Triplet<>(origin.south(), CentrifugeRouterType.PLUG_LEFT, DevicePlugDirection.EAST));
-//            offsets.add(new Triplet<>(origin.west(), CentrifugeRouterType.PLUG_RIGHT, DevicePlugDirection.NORTH));
-//            offsets.add(new Triplet<>(origin.south().west(), CentrifugeRouterType.COG, DevicePlugDirection.NONE));
-//        }
-//        return offsets;
-//    }
+        for(Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
+            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
+        }
+
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
+        Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        destroyRouters(pLevel, pPos, facing);
+
+        super.destroy(pLevel, pPos, pState);
+    }
+
+    public static void destroyRouters(LevelAccessor pLevel, BlockPos pPos, Direction pFacing) {
+        for(Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pFacing)) {
+            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
+        }
+    }
+
+    public static List<Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection>> getRouterOffsets(Direction pFacing) {
+        List<Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection>> offsets = new ArrayList<>();
+        BlockPos origin = new BlockPos(0,0,0);
+        if(pFacing == Direction.NORTH) {
+            offsets.add(new Triplet<>(origin.north().west(), AlchemicalNexusRouterType.BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.north(), AlchemicalNexusRouterType.BACK_TANK, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.north().east(), AlchemicalNexusRouterType.BACK_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.west(), AlchemicalNexusRouterType.PLUG_LEFT, DevicePlugDirection.WEST));
+            offsets.add(new Triplet<>(origin.east(), AlchemicalNexusRouterType.PLUG_RIGHT, DevicePlugDirection.EAST));
+            offsets.add(new Triplet<>(origin.south().west(), AlchemicalNexusRouterType.FRONT_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.south(), AlchemicalNexusRouterType.FRONT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.south().east(), AlchemicalNexusRouterType.FRONT_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above(), AlchemicalNexusRouterType.TOP_CRYSTAL, DevicePlugDirection.NONE));
+        } else if(pFacing == Direction.SOUTH) {
+            offsets.add(new Triplet<>(origin.south().east(), AlchemicalNexusRouterType.BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.south(), AlchemicalNexusRouterType.BACK_TANK, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.south().west(), AlchemicalNexusRouterType.BACK_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.east(), AlchemicalNexusRouterType.PLUG_LEFT, DevicePlugDirection.EAST));
+            offsets.add(new Triplet<>(origin.west(), AlchemicalNexusRouterType.PLUG_RIGHT, DevicePlugDirection.WEST));
+            offsets.add(new Triplet<>(origin.north().east(), AlchemicalNexusRouterType.FRONT_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.north(), AlchemicalNexusRouterType.FRONT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.north().west(), AlchemicalNexusRouterType.FRONT_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above(), AlchemicalNexusRouterType.TOP_CRYSTAL, DevicePlugDirection.NONE));
+        } else if(pFacing == Direction.EAST) {
+            offsets.add(new Triplet<>(origin.east().north(), AlchemicalNexusRouterType.BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.east(), AlchemicalNexusRouterType.BACK_TANK, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.east().south(), AlchemicalNexusRouterType.BACK_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.north(), AlchemicalNexusRouterType.PLUG_LEFT, DevicePlugDirection.NORTH));
+            offsets.add(new Triplet<>(origin.south(), AlchemicalNexusRouterType.PLUG_RIGHT, DevicePlugDirection.SOUTH));
+            offsets.add(new Triplet<>(origin.west().north(), AlchemicalNexusRouterType.FRONT_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.west(), AlchemicalNexusRouterType.FRONT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.west().south(), AlchemicalNexusRouterType.FRONT_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above(), AlchemicalNexusRouterType.TOP_CRYSTAL, DevicePlugDirection.NONE));
+        } else if(pFacing == Direction.WEST) {
+            offsets.add(new Triplet<>(origin.west().south(), AlchemicalNexusRouterType.BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.west(), AlchemicalNexusRouterType.BACK_TANK, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.west().north(), AlchemicalNexusRouterType.BACK_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.south(), AlchemicalNexusRouterType.PLUG_LEFT, DevicePlugDirection.SOUTH));
+            offsets.add(new Triplet<>(origin.north(), AlchemicalNexusRouterType.PLUG_RIGHT, DevicePlugDirection.NORTH));
+            offsets.add(new Triplet<>(origin.east().south(), AlchemicalNexusRouterType.FRONT_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.east(), AlchemicalNexusRouterType.FRONT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.east().north(), AlchemicalNexusRouterType.FRONT_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above(), AlchemicalNexusRouterType.TOP_CRYSTAL, DevicePlugDirection.NONE));
+        }
+        return offsets;
+    }
 
 //    @Override
 //    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
@@ -206,5 +233,20 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
     @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return VOXEL_SHAPE_AGGREGATE;
+    }
+
+    static {
+        VOXEL_SHAPE_BASE = Block.box(0.0, 0.0, 0.0, 16.0, 14.0, 16.0);
+        VOXEL_SHAPE_DAIS = Block.box(2.074, 14.0, 2.074, 13.956, 16.0, 13.926);
+
+        VOXEL_SHAPE_AGGREGATE = Shapes.or(
+                VOXEL_SHAPE_BASE,
+                VOXEL_SHAPE_DAIS
+        );
     }
 }

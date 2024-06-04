@@ -53,6 +53,7 @@
   "block.magichem.actuator_water_router": "Deluge Purifier",
   "block.magichem.experience_exchanger": "Experience Exchanger",
   "block.magichem.alchemical_nexus": "Alchemical Nexus",
+  "block.magichem.alchemical_nexus_router": "Alchemical Nexus",
 
   "academic_slurry_fluid_type": "Academic Slurry",
   "smoke_fluid_type": "Smoke",

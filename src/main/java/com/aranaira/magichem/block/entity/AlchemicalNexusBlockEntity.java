@@ -1,5 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.gui.AlchemicalNexusMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
@@ -14,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class AlchemicalNexusBlockEntity extends BlockEntity implements MenuProvider {
+public class AlchemicalNexusBlockEntity extends BlockEntity implements MenuProvider, ICanTakePlugins {
     public static final int
         DATA_COUNT = 0;
     protected ContainerData data;
@@ -53,5 +55,20 @@ public class AlchemicalNexusBlockEntity extends BlockEntity implements MenuProvi
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return new AlchemicalNexusMenu(pContainerId, pPlayerInventory, this, this.data);
+    }
+
+    @Override
+    public void linkPluginsDeferred() {
+
+    }
+
+    @Override
+    public void linkPlugins() {
+
+    }
+
+    @Override
+    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+
     }
 }
