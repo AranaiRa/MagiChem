@@ -101,7 +101,7 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
             if(entity instanceof AlembicBlockEntity) {
                 NetworkHooks.openScreen((ServerPlayer)player, (AlembicBlockEntity)entity, pos);
             } else {
-                throw new IllegalStateException("DistilleryBlockEntity container provider is missing!");
+                throw new IllegalStateException("AlembicBlockEntity container provider is missing!");
             }
         }
 

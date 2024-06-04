@@ -117,6 +117,7 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.DISTILLERY_MENU.get(), DistilleryScreen::new);
             MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
             MenuScreens.register(MenuRegistry.FUSERY_MENU.get(), FuseryScreen::new);
+            MenuScreens.register(MenuRegistry.ALCHEMICAL_NEXUS_MENU.get(), AlchemicalNexusScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_WATER_MENU.get(), ActuatorWaterScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_FIRE_MENU.get(), ActuatorFireScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_EARTH_MENU.get(), ActuatorEarthScreen::new);

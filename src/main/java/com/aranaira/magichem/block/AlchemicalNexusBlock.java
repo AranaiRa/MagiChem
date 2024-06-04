@@ -165,30 +165,30 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-//    @Override
-//    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-//        if (state.getBlock() != newState.getBlock()) {
-//            BlockEntity blockEntity = level.getBlockEntity(pos);
-//            if(blockEntity instanceof CentrifugeBlockEntity) {
-//                ((CentrifugeBlockEntity) blockEntity).dropInventoryToWorld();
-//            }
-//        }
-//        super.onRemove(state, level, pos, newState, isMoving);
-//    }
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if(blockEntity instanceof AlchemicalNexusBlockEntity anbe) {
+                //anbe.dropInventoryToWorld();
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
 
-//    @Override
-//    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-//        if(!level.isClientSide()) {
-//            BlockEntity entity = level.getBlockEntity(pos);
-//            if(entity instanceof CentrifugeBlockEntity cfbe) {
-//                NetworkHooks.openScreen((ServerPlayer)player, (CentrifugeBlockEntity)entity, pos);
-//            } else {
-//                throw new IllegalStateException("CentrifugeBlockEntity container provider is missing!");
-//            }
-//        }
-//
-//        return InteractionResult.sidedSuccess(level.isClientSide());
-//    }
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if(!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
+            if(entity instanceof AlchemicalNexusBlockEntity anbe) {
+                NetworkHooks.openScreen((ServerPlayer)player, anbe, pos);
+            } else {
+                throw new IllegalStateException("AlchemicalNexusBlockEntity container provider is missing!");
+            }
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide());
+    }
 
     @Nullable
     @Override

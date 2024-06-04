@@ -1,0 +1,44 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "wisdom": 0,
+  "object": {
+    "item": "mna:demon_lord_sword"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:iron_sword" },
+        { "item": "minecraft:netherite_scrap" },
+        { "item": "minecraft:netherite_ingot" },
+        { "item": "minecraft:netherite_scrap" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_demon", "count": 20 },
+        { "item": "magichem:admixture_instrument", "count": 10 },
+        { "item": "magichem:admixture_violence", "count": 20 }
+      ]
+    },
+    {
+      "experience": 40,
+      "components": [
+        { "item": "mna:living_flame" },
+        { "item": "minecraft:netherite_ingot" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_fire", "count": 60 },
+        { "item": "magichem:admixture_demon", "count": 40 }
+      ]
+    },
+    {
+      "experience": 120,
+      "materia": [
+        { "item": "magichem:essentia_wrought", "count": 60 },
+        { "item": "magichem:admixture_demon", "count": 60 }
+      ],
+      "components": [
+        { "item": "minecraft:crimson_fungus" }
+      ]
+    }
+  ]
+}

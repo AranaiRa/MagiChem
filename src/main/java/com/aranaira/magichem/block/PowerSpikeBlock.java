@@ -104,7 +104,7 @@ public class PowerSpikeBlock extends BaseEntityBlock {
         stack.setTag(tag);
 
         output.add(stack);
-        
+
         return output;
     }
 

@@ -3,6 +3,7 @@ package com.aranaira.magichem.registry;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.datagen.FixationSeparationRecipeGenerator;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -23,6 +24,9 @@ public class RecipeRegistry {
 
     public static final RegistryObject<RecipeSerializer<AlchemicalInfusionRitualRecipe>> ALCHEMICAL_INFUSION_RITUAL =
             SERIALIZERS.register("alchemical_infusion_ritual", () -> AlchemicalInfusionRitualRecipe.Serializer.INSTANCE);
+
+    public static final RegistryObject<RecipeSerializer<AlchemicalInfusionRecipe>> ALCHEMICAL_INFUSION =
+            SERIALIZERS.register("alchemical_infusion", () -> AlchemicalInfusionRecipe.Serializer.INSTANCE);
 
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
