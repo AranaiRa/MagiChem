@@ -1,11 +1,17 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorWaterRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -19,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -91,6 +98,17 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ALCHEMICAL_NEXUS_ROUTER_TYPE);
         pBuilder.add(FACING);
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof AlchemicalNexusRouterBlockEntity anrbe) {
+            AlchemicalNexusBlockEntity master = anrbe.getMaster();
+            pPlayer.swing(InteractionHand.MAIN_HAND);
+            return master.getBlockState().getBlock().use(master.getBlockState(), pLevel, master.getBlockPos(), pPlayer, pHand, pHit);
+        }
+        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
 
     @Override

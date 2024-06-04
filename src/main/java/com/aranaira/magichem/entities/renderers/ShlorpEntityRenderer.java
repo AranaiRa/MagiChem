@@ -25,7 +25,7 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
     }
 
     public static final float
-            VERT_CLUSTER_THICKNESS = 0.0625f;
+            VERT_CLUSTER_THICKNESS = 0.0625f, FLUID_DISTORTION_AMPLITUDE = 0.5f, FLUID_DISTORTION_PERIOD = 0.1875f, TICKS_FOR_FULL_MARCH = 65;
     public static final Vector3
             VECTOR_POS_CORRECTION = new Vector3(0.5, 0, 0.5);
     private final List<VertexDataHolder> vertData = new ArrayList<>();
@@ -38,7 +38,7 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
     @Override
     public void render(ShlorpEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         //Fill up our arraylist of vert data
-        generateVertDataThisFrame(pEntity, pPartialTick);
+        generateVertDataThisFrame(pEntity, Minecraft.getInstance().level.getGameTime(), pPartialTick);
 
         //Set up some references
         VertexConsumer vertexBuilder = pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
@@ -211,7 +211,7 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
 
     }
 
-    public void generateVertDataThisFrame(ShlorpEntity pEntity, float pPartialTick){
+    public void generateVertDataThisFrame(ShlorpEntity pEntity, long pTick, float pPartialTick){
         vertData.clear();
 
         //quick references
@@ -251,12 +251,15 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
                 if(curveDist > 0 && curveDist < 0.05)
                     curveDist += 0;
 
+                float periodicTick = ((pTick + pPartialTick) % TICKS_FOR_FULL_MARCH) / TICKS_FOR_FULL_MARCH;
+                float periodicDist = ((curveDist + periodicTick) % FLUID_DISTORTION_PERIOD) / FLUID_DISTORTION_PERIOD * (float)Math.PI;
+
                 BezierVectors bv = getAxisVectors(pEntity, curveDist);
                 Vector3 point = pEntity.generatePointOnBezierCurve(curveDist, curveL).sub(VECTOR_POS_CORRECTION);
                 VertexRing newVertRing = new VertexRing();
 
                 //Scale down the vert ring if we're transitioning in and out
-                float scale = VERT_CLUSTER_THICKNESS;
+                float scale = VERT_CLUSTER_THICKNESS * (1 + (FLUID_DISTORTION_AMPLITUDE * (float)Math.sin(periodicDist)));
                 if(curveDist + dbc > curveL) {
                     scale *= (curveL - curveDist) / dbc;
                 } else if (curveDist - dbc < 0) {

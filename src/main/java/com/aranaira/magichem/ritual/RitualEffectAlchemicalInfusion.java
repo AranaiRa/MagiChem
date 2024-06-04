@@ -394,7 +394,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         shlorpLeft.configure(
                 lv.origin, Vector3.zero(), lv.tangentVessel,
                 centerPos, Vector3.zero(), lv.tangentCenter,
-                0.0175f, 0.0625f, 2 + Math.min(20, recipe.getComponentMateria().getFirst().getCount() / 2),
+                0.0175f, 0.03125f, 2 + Math.min(40, recipe.getComponentMateria().getFirst().getCount() ),
                 pVesselData.getFirst().type, pVesselData.getSecond().amount);
         pContext.getLevel().addFreshEntity(shlorpLeft);
 
@@ -403,7 +403,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         shlorpRight.configure(
                 rv.origin, Vector3.zero(), rv.tangentVessel,
                 centerPos, Vector3.zero(), rv.tangentCenter,
-                0.0175f, 0.0625f, 2 + Math.min(18, recipe.getComponentMateria().getSecond().getCount() / 2),
+                0.0175f, 0.03125f, 2 + Math.min(40, recipe.getComponentMateria().getSecond().getCount() ),
                 pVesselData.getSecond().type, pVesselData.getSecond().amount);
         pContext.getLevel().addFreshEntity(shlorpRight);
     }
