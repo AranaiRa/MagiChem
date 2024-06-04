@@ -1,0 +1,26 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:catalyst_core"
+  },
+  "stages": [
+    {
+      "experience": 40,
+      "components": [
+        { "item": "minecraft:copper_block" },
+        { "item": "minecraft:amethyst_block" },
+        { "item": "minecraft:copper_block" },
+        { "item": "minecraft:amethyst_block" },
+        { "item": "minecraft:copper_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_energy", "count": 60 },
+        { "item": "magichem:admixture_instrument", "count": 52 },
+        { "item": "magichem:admixture_sorcery", "count": 46 },
+        { "item": "magichem:admixture_construct", "count": 34 },
+        { "item": "magichem:admixture_mana", "count": 28 }
+      ]
+    }
+  ]
+}

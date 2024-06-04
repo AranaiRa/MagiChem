@@ -3,6 +3,7 @@ package com.aranaira.magichem.ritual;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.mna.api.particles.MAParticleType;
@@ -213,15 +214,21 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 Vector3 originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                 Vector3 tangentLeftVessel = new Vector3(0, 4, 0);
                 Vector3 tangentLeftCenter = new Vector3(3, -1, -2);
+                MateriaItem mTypeLeft = ((AbstractMateriaStorageBlockEntity)beLeft).getMateriaType();
+                int mAmountLeft = mTypeLeft == recipe.getComponentMateria().getFirst().getItem() ?
+                        recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
 
                 BlockEntity beRight = pLevel.getBlockEntity(queryRight);
                 Vector3 originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                 Vector3 tangentRightVessel = new Vector3(0, 4, 0);
                 Vector3 tangentRightCenter = new Vector3(-3, -1, 2);
+                MateriaItem mTypeRight = ((AbstractMateriaStorageBlockEntity)beRight).getMateriaType();
+                int mAmountRight = mTypeRight == recipe.getComponentMateria().getFirst().getItem() ?
+                        recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
 
                 return new Pair<>(
-                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
-                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
+                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter, mTypeLeft, mAmountLeft),
+                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter, mTypeRight, mAmountRight)
                 );
             }
         }
@@ -239,15 +246,21 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 Vector3 originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                 Vector3 tangentLeftVessel = new Vector3(0, 4, 0);
                 Vector3 tangentLeftCenter = new Vector3(-2, -1, 3);
+                MateriaItem mTypeLeft = ((AbstractMateriaStorageBlockEntity)beLeft).getMateriaType();
+                int mAmountLeft = mTypeLeft == recipe.getComponentMateria().getFirst().getItem() ?
+                        recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
 
                 BlockEntity beRight = pLevel.getBlockEntity(queryRight);
                 Vector3 originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                 Vector3 tangentRightVessel = new Vector3(0, 4, 0);
                 Vector3 tangentRightCenter = new Vector3(2, -1, -3);
+                MateriaItem mTypeRight = ((AbstractMateriaStorageBlockEntity)beRight).getMateriaType();
+                int mAmountRight = mTypeRight == recipe.getComponentMateria().getFirst().getItem() ?
+                        recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
 
                 return new Pair<>(
-                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
-                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
+                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter, mTypeLeft, mAmountLeft),
+                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter, mTypeRight, mAmountRight)
                 );
             }
         }
@@ -265,15 +278,21 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 Vector3 originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                 Vector3 tangentLeftVessel = new Vector3(0, 4, 0);
                 Vector3 tangentLeftCenter = new Vector3(-3, -1, 2);
+                MateriaItem mTypeLeft = ((AbstractMateriaStorageBlockEntity)beLeft).getMateriaType();
+                int mAmountLeft = mTypeLeft == recipe.getComponentMateria().getFirst().getItem() ?
+                        recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
 
                 BlockEntity beRight = pLevel.getBlockEntity(queryRight);
                 Vector3 originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                 Vector3 tangentRightVessel = new Vector3(0, 4, 0);
                 Vector3 tangentRightCenter = new Vector3(3, -1, -2);
+                MateriaItem mTypeRight = ((AbstractMateriaStorageBlockEntity)beRight).getMateriaType();
+                int mAmountRight = mTypeRight == recipe.getComponentMateria().getFirst().getItem() ?
+                        recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
 
                 return new Pair<>(
-                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
-                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
+                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter, mTypeLeft, mAmountLeft),
+                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter, mTypeRight, mAmountRight)
                 );
             }
         }
@@ -291,15 +310,21 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 Vector3 originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                 Vector3 tangentLeftVessel = new Vector3(0, 4, 0);
                 Vector3 tangentLeftCenter = new Vector3(2, -1, -3);
+                MateriaItem mTypeLeft = ((AbstractMateriaStorageBlockEntity)beLeft).getMateriaType();
+                int mAmountLeft = mTypeLeft == recipe.getComponentMateria().getFirst().getItem() ?
+                        recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
 
                 BlockEntity beRight = pLevel.getBlockEntity(queryRight);
                 Vector3 originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                 Vector3 tangentRightVessel = new Vector3(0, 4, 0);
                 Vector3 tangentRightCenter = new Vector3(-2, -1, 3);
+                MateriaItem mTypeRight = ((AbstractMateriaStorageBlockEntity)beRight).getMateriaType();
+                int mAmountRight = mTypeRight == recipe.getComponentMateria().getFirst().getItem() ?
+                        recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
 
                 return new Pair<>(
-                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter),
-                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter)
+                        new VesselData((AbstractMateriaStorageBlockEntity)beLeft, originLeft, tangentLeftVessel, tangentLeftCenter, mTypeLeft, mAmountLeft),
+                        new VesselData((AbstractMateriaStorageBlockEntity)beRight, originRight, tangentRightVessel, tangentRightCenter, mTypeRight, mAmountRight)
                 );
             }
         }
@@ -370,7 +395,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 lv.origin, Vector3.zero(), lv.tangentVessel,
                 centerPos, Vector3.zero(), lv.tangentCenter,
                 0.0175f, 0.0625f, 2 + Math.min(20, recipe.getComponentMateria().getFirst().getCount() / 2),
-                pVesselData.getFirst().vesselBlockEntity.getMateriaType(), recipe.getComponentMateria().getFirst().getCount());
+                pVesselData.getFirst().type, pVesselData.getSecond().amount);
         pContext.getLevel().addFreshEntity(shlorpLeft);
 
         ShlorpEntity shlorpRight = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pContext.getLevel());
@@ -379,7 +404,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 rv.origin, Vector3.zero(), rv.tangentVessel,
                 centerPos, Vector3.zero(), rv.tangentCenter,
                 0.0175f, 0.0625f, 2 + Math.min(18, recipe.getComponentMateria().getSecond().getCount() / 2),
-                pVesselData.getSecond().vesselBlockEntity.getMateriaType(), recipe.getComponentMateria().getSecond().getCount());
+                pVesselData.getSecond().type, pVesselData.getSecond().amount);
         pContext.getLevel().addFreshEntity(shlorpRight);
     }
 
@@ -488,12 +513,16 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
     private class VesselData {
         public final AbstractMateriaStorageBlockEntity vesselBlockEntity;
         public final Vector3 origin, tangentVessel, tangentCenter;
+        public final MateriaItem type;
+        public final int amount;
 
-        public VesselData(AbstractMateriaStorageBlockEntity pEntity, Vector3 pOrigin, Vector3 pTangentVessel, Vector3 pTangentCenter) {
+        public VesselData(AbstractMateriaStorageBlockEntity pEntity, Vector3 pOrigin, Vector3 pTangentVessel, Vector3 pTangentCenter, MateriaItem pType, int pAmount) {
             this.vesselBlockEntity = pEntity;
             this.origin = pOrigin;
             this.tangentVessel = pTangentVessel;
             this.tangentCenter = pTangentCenter;
+            this.type = pType;
+            this.amount = pAmount;
         }
     }
 

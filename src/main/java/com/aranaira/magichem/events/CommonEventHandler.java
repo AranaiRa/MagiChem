@@ -172,7 +172,7 @@ public class CommonEventHandler {
             if(blockEntity == null) return;
             if(blockEntity instanceof AbstractMateriaStorageBlockEntity amsbe) {
                 MateriaItem type = amsbe.getMateriaType();
-                if(type != null) {
+                if(type != null && amsbe.getCurrentStock() > 0) {
                     int x = event.getWindow().getGuiScaledWidth() / 2;
                     int y = event.getWindow().getGuiScaledHeight() / 2;
 
