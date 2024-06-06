@@ -2,9 +2,7 @@ package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
-import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.tools.render.ModelUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -32,7 +30,7 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
     @Override
     public void render(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        this.renderFans(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        this.renderCrystal(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
 
         float fluidPercent = (float)pBlockEntity.getFluidInTank(0).getAmount() / (float) Config.fuseryTankCapacity;
 
@@ -116,14 +114,18 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
                 fxt, fyt, fzt, fwt, fht, 0, fut, 0, fvt, 0xFFFFFFFF, pPackedLight);
     }
 
-    private void renderFans(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    private void renderCrystal(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
         pPoseStack.pushPose();
 
-        pPoseStack.translate(0.5f, 1.3125f, 0.5f);
+        float loopingTime = ((world.getGameTime() + pPartialTick) % (pBlockEntity.CRYSTAL_BOB_PERIOD * 20)) / pBlockEntity.CRYSTAL_BOB_PERIOD;
+        float heightOffset = pBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * (float)((Math.sin(loopingTime * Math.PI) + 1.0) * 0.5);
+
+        pPoseStack.translate(0.5f, 1.375f + heightOffset, 0.5f);
+        pPoseStack.mulPose(Axis.YP.rotationDegrees((pBlockEntity.crystalAngle + pPartialTick) * (pBlockEntity.crystalRotSpeed)));
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_CRYSTAL, pPoseStack, pPackedLight, pPackedOverlay);
 
         pPoseStack.popPose();

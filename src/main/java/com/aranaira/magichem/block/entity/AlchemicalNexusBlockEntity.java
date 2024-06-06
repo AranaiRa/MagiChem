@@ -56,6 +56,12 @@ public class AlchemicalNexusBlockEntity extends BlockEntity implements MenuProvi
             DATA_COUNT = 1,
             DATA_PROGRESS = 0;
 
+    public static final float
+            CRYSTAL_SPEED_MIN = 0.75f, CRYSTAL_SPEED_MAX = 7.0f, CRYSTAL_ACCELERATION = 0.1f,
+            CRYSTAL_BOB_HEIGHT_MAX = 0.125f, CRYSTAL_BOB_PERIOD = 90f;
+    public float
+            crystalHeight = 0f, crystalAngle = 0f, crystalRotSpeed = CRYSTAL_SPEED_MIN;
+
     ////////////////////
     // CONSTRUCTOR
     ////////////////////
@@ -204,8 +210,11 @@ public class AlchemicalNexusBlockEntity extends BlockEntity implements MenuProvi
     // CRAFTING HANDLERS
     ////////////////////
 
-    public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, E e) {
+    public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, E e) {
         if(e instanceof AlchemicalNexusBlockEntity anbe) {
+            if(pLevel.isClientSide()) {
+                anbe.handleAnimationDrivers();
+            }
             int a = 1;
             int b = 2;
 
@@ -328,6 +337,14 @@ public class AlchemicalNexusBlockEntity extends BlockEntity implements MenuProvi
     ////////////////////
     // DATA SLOT HANDLING
     ////////////////////
+
+    ////////////////////
+    // VFX HANDLING
+    ////////////////////
+
+    public void handleAnimationDrivers() {
+        crystalAngle += crystalRotSpeed;
+    }
 
     ////////////////////
     // ACTUATOR HANDLING

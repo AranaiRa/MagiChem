@@ -447,7 +447,7 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
         );
 
         VOXEL_SHAPE_TOP_DAIS    = Block.box(2.074, 0.0, 2.074, 13.956, 4.0, 13.926);
-        VOXEL_SHAPE_TOP_CRYSTAL = Block.box(6.5, 5.0, 6.5, 9.5, 26.0, 9.5);
+        VOXEL_SHAPE_TOP_CRYSTAL = Block.box(6.5, 6.0, 6.5, 9.5, 26.0, 9.5);
 
         VOXEL_SHAPE_TOP_AGGREGATE = Shapes.or(
                 VOXEL_SHAPE_TOP_DAIS,
