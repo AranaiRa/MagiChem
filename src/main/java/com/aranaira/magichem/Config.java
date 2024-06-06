@@ -146,6 +146,12 @@ public class Config
             .comment("The amount of Academic Slurry, in mB, the Fusery's internal tank can hold.")
             .defineInRange("fuseryTankCapacity", 4000, 500, Integer.MAX_VALUE);
 
+    //----------------ALCHEMICAL NEXUS
+
+    private static final ForgeConfigSpec.IntValue ALCHEMICAL_NEXUS_TANK_CAPACITY = BUILDER
+            .comment("The amount of Academic Slurry, in mB, the Alchemical Nexus's internal tank can hold.")
+            .defineInRange("alchemicalNexusTankCapacity", 4000, 500, Integer.MAX_VALUE);
+
     //----------------CIRCLE OF POWER
 
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_1_REAGENT = BUILDER
@@ -271,6 +277,7 @@ public class Config
         fuseryGrimeOnSuccess,
         fuseryGrimeOnFailure,
         fuseryTankCapacity,
+        alchemicalNexusTankCapacity,
         circlePowerGen1Reagent,
         circlePowerGen2Reagent,
         circlePowerGen3Reagent,
@@ -329,6 +336,7 @@ public class Config
         fuseryGrimeOnSuccess = FUSERY_GRIME_ON_SUCCESS.get();
         fuseryGrimeOnFailure = FUSERY_GRIME_ON_FAILURE.get();
         fuseryTankCapacity = FUSERY_TANK_CAPACITY.get();
+        alchemicalNexusTankCapacity = ALCHEMICAL_NEXUS_TANK_CAPACITY.get();
         circlePowerGen1Reagent = CIRCLE_OF_POWER_GEN_1_REAGENT.get();
         circlePowerGen2Reagent = CIRCLE_OF_POWER_GEN_2_REAGENT.get();
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();

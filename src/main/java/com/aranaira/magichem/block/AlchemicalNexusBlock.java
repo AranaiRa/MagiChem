@@ -80,7 +80,10 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
         for (Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             if(pLevel.getBlockState(targetPos).isAir()) {
-                pLevel.setBlock(targetPos, state.setValue(AlchemicalNexusRouterBlock.ALCHEMICAL_NEXUS_ROUTER_TYPE, posAndType.getSecond().ordinal()), 3);
+                pLevel.setBlock(targetPos, state
+                        .setValue(AlchemicalNexusRouterBlock.ALCHEMICAL_NEXUS_ROUTER_TYPE, posAndType.getSecond().ordinal())
+                        .setValue(BlockStateProperties.HORIZONTAL_FACING, facing),
+                        3);
                 ((AlchemicalNexusRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
             }
         }

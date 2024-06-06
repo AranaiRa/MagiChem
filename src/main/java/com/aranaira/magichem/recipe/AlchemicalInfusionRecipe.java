@@ -117,7 +117,7 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static AlchemicalInfusionRecipe getInfusionRitualRecipe(Level level, ItemStack query) {
+    public static AlchemicalInfusionRecipe getInfusionRecipe(Level level, ItemStack query) {
         AlchemicalInfusionRecipe result = null;
         List<AlchemicalInfusionRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 

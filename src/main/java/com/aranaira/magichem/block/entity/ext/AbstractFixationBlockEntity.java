@@ -404,7 +404,6 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
 
     @Override
     public @NotNull FluidStack drain(int i, FluidAction fluidAction) {
-        //Assume removed fluid is steam if not specified
         return drain(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), i), fluidAction);
     }
 
