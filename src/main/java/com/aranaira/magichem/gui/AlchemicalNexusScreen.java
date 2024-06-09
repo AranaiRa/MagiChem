@@ -1,9 +1,14 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
+import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
+import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -12,10 +17,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNexusMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_alchemicalnexus.png");
+    private static final ResourceLocation TEXTURE_SLURRY =
+            new ResourceLocation(MagiChemMod.MODID, "textures/block/fluid/experience_still.png");
     private static final ResourceLocation TEXTURE_INGREDIENTS =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
 
@@ -27,7 +35,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             PANEL_INGREDIENTS_U1 = 160, PANEL_INGREDIENTS_U2 = 80, PANEL_INGREDIENTS_U3 = 160, PANEL_INGREDIENTS_U4 = 80, PANEL_INGREDIENTS_U5 = 0,
             PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
             PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102,
-            SLURRY_X = 8, SLURRY_Y = 23, SLURRY_W = 8, SLURRY_H = 88;
+            SLURRY_X = 8, SLURRY_Y = 23, SLURRY_W = 8, SLURRY_H = 73,
+            STAGE_INDICATOR_U = 28, STAGE_INDICATOR_V = 230, STAGE_INDICATOR_W = 10, STAGE_INDICATOR_W_END = 4, STAGE_INDICATOR_H = 4;
 
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
@@ -40,8 +49,51 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
+        Font font = Minecraft.getInstance().font;
 
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
+
+        //slurry gauge
+        int slurryH = AlchemicalNexusBlockEntity.getScaledSlurry(menu.getSlurryInTank());
+        RenderSystem.setShaderTexture(1, TEXTURE_SLURRY);
+        pGuiGraphics.blit(TEXTURE_SLURRY, x + SLURRY_X, y + SLURRY_Y + SLURRY_H - slurryH, 0, 0, SLURRY_W, slurryH, 16, 16);
+
+        renderStageGauge(pGuiGraphics, x, y);
+
+        menu.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            if(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_MARKS).isEmpty()) {
+                pGuiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
+                pGuiGraphics.blit(TEXTURE, (x + 134) * 2, (y + 7) * 2, 66, 222, 32, 32);
+                pGuiGraphics.pose().scale(2.0f, 2.0f, 2.0f);
+            }
+
+            if(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_RECIPE).isEmpty()) {
+                pGuiGraphics.blit(TEXTURE, x + 79, y + 79, 28, 238, 18, 18);
+            } else {
+                pGuiGraphics.renderItem(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_RECIPE), x + 80, y + 80);
+
+                pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 0.25f);
+                //ingredients
+                {
+                    int i=0;
+                    for (ItemStack is : menu.getStage(0).componentItems) {
+                        pGuiGraphics.renderItem(is, x + 22, y + 8 + (i * 18));
+                        i++;
+                    }
+                }
+                pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+                //materia
+                {
+                    int i=0;
+                    for (ItemStack is : menu.getStage(0).componentMateria) {
+                        pGuiGraphics.renderItem(is, x + 44, y + 8 + (i * 18));
+                        pGuiGraphics.renderItemDecorations(font, is, x + 44, y + 8 + (i * 18));
+                        i++;
+                    }
+                }
+            }
+        });
 
     }
 
@@ -73,6 +125,26 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 //        this.recipeFilterBox.setCanLoseFocus(false);
 //        this.setFocused(this.recipeFilterBox);
 //    }
+
+    private void renderStageGauge(GuiGraphics pGuiGraphics, int pX, int pY) {
+        int count = menu.getAllStages().size();
+
+        if(count > 0) {
+            int width = 4 + (count - 1) * 10;
+            int x = 115 + (27 - width / 2);
+            int y = 29;
+
+            for(int i=0; i<count; i++) {
+
+                int activeShift = i <= menu.getCurrentStageID() ? 4 : 0;
+
+                if(i == count - 1)
+                    pGuiGraphics.blit(TEXTURE, pX + x + i * 10, pY + y, STAGE_INDICATOR_U, STAGE_INDICATOR_V + activeShift, STAGE_INDICATOR_W_END, STAGE_INDICATOR_H, 256, 256);
+                else
+                    pGuiGraphics.blit(TEXTURE, pX + x + i * 10, pY + y, STAGE_INDICATOR_U, STAGE_INDICATOR_V + activeShift, STAGE_INDICATOR_W, STAGE_INDICATOR_H, 256, 256);
+            }
+        }
+    }
 
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {

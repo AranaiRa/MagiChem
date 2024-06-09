@@ -222,6 +222,11 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     }
 
     @Override
+    public boolean shouldRender(double pX, double pY, double pZ) {
+        return true;
+    }
+
+    @Override
     public void tick() {
         super.tick();
 

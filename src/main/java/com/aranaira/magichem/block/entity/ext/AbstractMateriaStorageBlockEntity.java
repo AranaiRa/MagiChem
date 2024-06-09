@@ -7,6 +7,8 @@ import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.tools.math.Vector3;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -218,4 +220,6 @@ public abstract class AbstractMateriaStorageBlockEntity extends BlockEntity impl
 
         return 0;
     }
+
+    public abstract Pair<Vector3, Vector3> getDefaultOriginAndTangent();
 }

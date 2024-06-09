@@ -190,10 +190,11 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
 
                 materiaArray.forEach(materiaElement -> {
                     String key = materiaElement.getAsJsonObject().get("item").getAsString();
+                    int count = materiaElement.getAsJsonObject().get("count").getAsInt();
 
                     Item materiaQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
                     if(materiaQuery != null) {
-                        materia.add(new ItemStack(materiaQuery));
+                        materia.add(new ItemStack(materiaQuery, count));
                     } else {
                         MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for alchemical_infusion recipe \""+pRecipeId);
                     }

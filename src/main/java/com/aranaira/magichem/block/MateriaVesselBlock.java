@@ -45,7 +45,7 @@ public class MateriaVesselBlock extends BaseEntityBlock {
             SHAPE_JAR, SHAPE_LID, SHAPE_AGGREGATE,
             SHAPE_BASE_STACKED, SHAPE_LID_STACKED, SHAPE_AGGREGATE_STACKED;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    private static final BooleanProperty STACKED = BooleanProperty.create("stacked");
+    public static final BooleanProperty STACKED = BooleanProperty.create("stacked");
 
     @Nullable
     @Override

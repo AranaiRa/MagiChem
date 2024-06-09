@@ -1,5 +1,6 @@
 package com.aranaira.magichem.item;
 
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.registry.EntitiesRegistry;
@@ -32,20 +33,26 @@ public class DebugOrbItem extends Item {
 
                 Vector3 originPoint = new Vector3(player.getPosition(0).x, player.getPosition(0).y, player.getPosition(0).z);
 
-                ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
-                se.setPos(originPoint.x, originPoint.y, originPoint.z);
+                if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
 
-                se.configure(
-                        originPoint,
-                        new Vector3(0, 0, 0), new Vector3(0, 2, 0),
-                        new Vector3(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()),
-                        new Vector3(0.5, 0.5, 0.5), new Vector3(0, 2, 0),
-                        0.125f, 0.125f, 18,
-                        ItemRegistry.getMateriaMap(false, true).get("admixture_whimsy"), 64
-                );
+                    if(amsbe.getMateriaType() == null)
+                        return super.useOn(pContext);
 
-                level.addFreshEntity(se);
-                se.setPos(originPoint.x, originPoint.y, originPoint.z);
+                    ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
+                    se.setPos(originPoint.x, originPoint.y, originPoint.z);
+
+                    se.configure(
+                            originPoint,
+                            new Vector3(0, 0, 0), new Vector3(0, 2, 0),
+                            new Vector3(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()),
+                            new Vector3(0.5, 0.5, 0.5), new Vector3(0, 2, 0),
+                            0.125f, 0.125f, 18,
+                            amsbe.getMateriaType(), 400
+                    );
+
+                    level.addFreshEntity(se);
+                    se.setPos(originPoint.x, originPoint.y, originPoint.z);
+                }
             }
         }
 

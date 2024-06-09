@@ -3,17 +3,17 @@
   "tier": 3,
   "wisdom": 0,
   "object": {
-    "item": "magichem:catalyst_core"
+    "item": "magichem:focusing_catalyst_core"
   },
   "stages": [
     {
       "experience": 40,
       "components": [
-        { "item": "minecraft:copper_block" },
+        { "item": "minecraft:coal_block" },
         { "item": "minecraft:amethyst_block" },
-        { "item": "minecraft:copper_block" },
+        { "item": "minecraft:coal_block" },
         { "item": "minecraft:amethyst_block" },
-        { "item": "minecraft:copper_block" }
+        { "item": "minecraft:coal_block" }
       ],
       "materia": [
         { "item": "magichem:admixture_energy", "count": 60 },

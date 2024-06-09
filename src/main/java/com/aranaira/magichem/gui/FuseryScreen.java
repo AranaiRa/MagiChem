@@ -193,7 +193,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         if(sGrime > 0)
             gui.blit(TEXTURE, x+182, y+81, 64, 248, sGrime, 8);
 
-        //water gauge
+        //slurry gauge
         int slurryH = FuseryBlockEntity.getScaledSlurry(menu.getSlurryInTank(), FuseryBlockEntity::getVar);
         RenderSystem.setShaderTexture(1, TEXTURE_SLURRY);
         gui.blit(TEXTURE_SLURRY, x + SLURRY_X, y + SLURRY_Y + SLURRY_H - slurryH, 0, 0, SLURRY_W, slurryH, 16, 16);

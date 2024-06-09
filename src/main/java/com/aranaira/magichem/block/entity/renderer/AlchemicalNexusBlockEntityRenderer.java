@@ -4,6 +4,9 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.util.render.RenderUtils;
+import com.mna.api.ManaAndArtificeMod;
+import com.mna.items.ItemInit;
+import com.mna.tools.math.Vector3;
 import com.mna.tools.render.ModelUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -12,17 +15,29 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.joml.Quaternionf;
+
+import java.util.List;
 
 public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<AlchemicalNexusBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_CRYSTAL = new ResourceLocation(MagiChemMod.MODID, "obj/special/alchemical_nexus_crystal");
+    public static final ResourceLocation RENDERER_MODEL_BOOKMARKS = new ResourceLocation("mna", "item/special/mark_book_open");
     public static final ResourceLocation FLUID_TEXTURE = new ResourceLocation(MagiChemMod.MODID, "block/fluid/experience_still");
+
+    private final ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+
+    public static final float ITEM_HOVER_RADIUS = 0.5f;
 
     public AlchemicalNexusBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
@@ -31,6 +46,7 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
     @Override
     public void render(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         this.renderCrystal(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        this.renderItems(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
 
         float fluidPercent = (float)pBlockEntity.getFluidInTank(0).getAmount() / (float) Config.fuseryTankCapacity;
 
@@ -122,11 +138,65 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
         pPoseStack.pushPose();
 
         float loopingTime = ((world.getGameTime() + pPartialTick) % (pBlockEntity.CRYSTAL_BOB_PERIOD * 20)) / pBlockEntity.CRYSTAL_BOB_PERIOD;
-        float heightOffset = pBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * (float)((Math.sin(loopingTime * Math.PI) + 1.0) * 0.5);
+        float height = (float)((Math.sin(loopingTime * Math.PI) + 1.0) * 0.5);
+        float heightOffsetCrystal = pBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * height;
+        float heightOffsetMark    = pBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * (1 - height);
 
-        pPoseStack.translate(0.5f, 1.375f + heightOffset, 0.5f);
-        pPoseStack.mulPose(Axis.YP.rotationDegrees((pBlockEntity.crystalAngle + pPartialTick) * (pBlockEntity.crystalRotSpeed)));
+        pPoseStack.translate(0.5f, 1.375f + heightOffsetCrystal, 0.5f);
+        pPoseStack.mulPose(Axis.YP.rotationDegrees((pBlockEntity.crystalAngle + (pPartialTick * pBlockEntity.crystalRotSpeed))));
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_CRYSTAL, pPoseStack, pPackedLight, pPackedOverlay);
+
+        pPoseStack.popPose();
+
+        if(pBlockEntity.getMarkItem().getItem() == ItemInit.BOOK_MARKS.get()) {
+            pPoseStack.pushPose();
+
+            pPoseStack.translate(1.75f, 0.625f + heightOffsetMark, 0.25f);
+            pPoseStack.mulPose(Axis.ZP.rotation(3.14159f * 0.25f));
+            pPoseStack.scale(0.5f, 0.5f, 0.5f);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BOOKMARKS, pPoseStack, pPackedLight, pPackedOverlay);
+
+            pPoseStack.popPose();
+        }
+    }
+
+    private void renderItems(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        Level world = pBlockEntity.getLevel();
+        BlockPos pos = pBlockEntity.getBlockPos();
+        BlockState state = pBlockEntity.getBlockState();
+        List<ItemStack> inputItems = pBlockEntity.getInputItems();
+        float angleShift = 0f;
+        if(inputItems.size() > 0)
+             angleShift = (float)(Math.PI * 2) / inputItems.size();
+
+        pPoseStack.pushPose();
+
+        {
+            int i = 0;
+            for (ItemStack is : inputItems) {
+                pPoseStack.pushPose();
+
+                float x = (float) Math.cos(pBlockEntity.itemAngle + (pBlockEntity.itemRotSpeed * pPartialTick) + (i * angleShift)) * ITEM_HOVER_RADIUS;
+                float z = (float) Math.sin(pBlockEntity.itemAngle + (pBlockEntity.itemRotSpeed * pPartialTick) + (i * angleShift)) * ITEM_HOVER_RADIUS;
+                float rotAmount = ((pBlockEntity.itemAngle + (pBlockEntity.itemRotSpeed * pPartialTick) + (float)(Math.PI * i * 0.375)) % (float)(Math.PI * 8));
+
+                float s = Math.max(0,Math.min(1, pBlockEntity.itemScale));
+
+                Vector3 origin = new Vector3(0.5f, 1.9375f, 0.5f);
+                Vector3 translated = new Vector3(origin.x + x, origin.y, origin.z + z);
+
+                pPoseStack.translate(translated.x, translated.y, translated.z);
+                pPoseStack.scale(0.375f * s, 0.375f * s, 0.375f * s);
+                pPoseStack.mulPose(Axis.YP.rotation(rotAmount));
+                pPoseStack.mulPose(Axis.XP.rotation(rotAmount * 0.25f));
+                pPoseStack.mulPose(Axis.ZP.rotation(rotAmount * 0.5f));
+
+                itemRenderer.renderStatic(is, ItemDisplayContext.FIXED, pPackedLight, OverlayTexture.NO_OVERLAY, pPoseStack, pBuffer, world, 0);
+
+                pPoseStack.popPose();
+                i++;
+            }
+        }
 
         pPoseStack.popPose();
     }

@@ -5,7 +5,7 @@
   "materia_type_two": { "item": "magichem:admixture_energy", "count": 58 },
   "components": [
     { "item": "minecraft:amethyst_block" },
-    { "item": "minecraft:obsidian" },
-    { "item": "minecraft:obsidian" }
+    { "item": "minecraft:coal_block" },
+    { "item": "minecraft:coal_block" }
   ]
 }
