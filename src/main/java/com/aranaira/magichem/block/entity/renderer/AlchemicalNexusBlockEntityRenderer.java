@@ -7,7 +7,9 @@ import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.items.ItemInit;
 import com.mna.tools.math.Vector3;
+import com.mna.tools.render.MARenderTypes;
 import com.mna.tools.render.ModelUtils;
+import com.mna.tools.render.WorldRenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -26,6 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
 import java.util.List;
@@ -47,6 +50,8 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
     public void render(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         this.renderCrystal(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         this.renderItems(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+
+        this.renderBeam(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
 
         float fluidPercent = (float)pBlockEntity.getFluidInTank(0).getAmount() / (float) Config.fuseryTankCapacity;
 
@@ -199,5 +204,33 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
         }
 
         pPoseStack.popPose();
+    }
+
+    private void renderBeam(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        float percent = 0f;
+        int animStage = pBlockEntity.getAnimStage();
+
+        if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_BEAM) {
+            percent = (float)pBlockEntity.getProgress() / (float)AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel()).ticksInRampBeam;
+        }
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CIRCLE ||
+                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_SHLORPS ||
+                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING) {
+            percent = 1f;
+        }
+
+        //do render
+        if(percent > 0f) {
+            pPoseStack.pushPose();
+            Vec3 start = Vec3.upFromBottomCenterOf(pBlockEntity.getBlockPos(), 4.25);
+            Vec3 end = Vec3.atCenterOf(pBlockEntity.getBlockPos());
+
+            pPoseStack.translate(0.5D, 3.5D, 0.5D);
+
+            WorldRenderUtils.renderBeam(pBlockEntity.getLevel(), pPartialTick, pPoseStack, pBuffer, pPackedLight,
+                    start, end, percent, new int[]{255, 255, 255}, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+
+            pPoseStack.popPose();
+        }
     }
 }

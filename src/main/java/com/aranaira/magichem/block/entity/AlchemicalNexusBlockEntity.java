@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.AlchemicalNexusAnimSpec;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
@@ -17,10 +18,10 @@ import com.aranaira.magichem.registry.FluidRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
+import com.mna.particles.types.movers.ParticleOrbitMover;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -40,6 +41,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -52,6 +54,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler {
 
@@ -66,6 +69,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected int
         progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0;
     protected boolean isStalled = false;
+    protected Random r = new Random();
 
     public static final int
             FLUID_BAR_HEIGHT = 88,
@@ -241,7 +245,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         if(e instanceof AlchemicalNexusBlockEntity anbe) {
             if(pLevel.isClientSide()) {
                 anbe.handleAnimationDrivers();
-                anbe.spawnCandleParticles();
+                anbe.spawnParticles();
             }
 
             //Temporary recipe setter
@@ -348,7 +352,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                         spawnPos,
                                         origin, tangent,
                                         new Vector3(anbe.getBlockPos()),
-                                        new Vector3(0.5, 0.5, 0.5), new Vector3(0, 4, 0),
+                                        new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 4, 0),
                                         anbe.cachedSpec.shlorpSpeed, 0.0625f, amount,
                                         mi, amount
                                 );
@@ -448,7 +452,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public static AlchemicalNexusAnimSpec getAnimSpec(int pPowerLevel) {
-        return new AlchemicalNexusAnimSpec(130, 70, 36, 30, 30, 0.03125f);
+        return new AlchemicalNexusAnimSpec(130, 70, 8, 30, 30, 0.03125f);
     }
 
     public boolean hasAllRecipeItemsForCurrentStage() {
@@ -600,6 +604,18 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return (FLUID_BAR_HEIGHT * pSlurry) / Config.alchemicalNexusTankCapacity;
     }
 
+    public int getPowerLevel() {
+        return this.powerLevel;
+    }
+
+    public int getProgress() {
+        return this.progress;
+    }
+
+    public int getAnimStage() {
+        return this.animStage;
+    }
+
     ////////////////////
     // VFX HANDLING
     ////////////////////
@@ -635,11 +651,12 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             new Vector3( 0.907,0.975, 0.483), new Vector3( 0.092,0.975, 0.483),
             new Vector3(-0.483,0.975,-0.092), new Vector3(-0.483,0.975,-0.907)
     };
-    public void spawnCandleParticles() {
+    public void spawnParticles() {
         BlockPos bp = getBlockPos();
         Vector3 origin = new Vector3(bp.getX(), bp.getY(), bp.getZ()).add(new Vector3(0,0,1));
 
-        if(animStage == 0) {
+        //Candles
+        if(animStage == ANIM_STAGE_IDLE) {
             for (int i = 0; i < CANDLE_PARTICLE_ORIGINS.length; i++) {
                 if ((level.getGameTime() % 6 == 0 && i % 2 == 0) || (level.getGameTime() % 6 == 3 && i % 2 == 1)) {
                     Vector3 pos = origin.add(CANDLE_PARTICLE_ORIGINS[i]);
@@ -653,13 +670,78 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         }
         else {
             for (int i = 0; i < CANDLE_PARTICLE_ORIGINS.length; i++) {
-                if (level.getGameTime() % 2 == 0) {
                     Vector3 pos = origin.add(CANDLE_PARTICLE_ORIGINS[i]);
 
-                    level.addParticle(new MAParticleType(ParticleInit.ARCANE_MAGELIGHT.get())
-                            .setScale(0.03f).setMaxAge(30).setColor(15, 150, 135, 255),
+                    level.addParticle(new MAParticleType(ParticleInit.GLOW.get())
+                            .setScale(0.06f).setMaxAge(10).setColor(15, 150, 135, 255),
                             pos.x, pos.y, pos.z,
-                            0, 0.005, 0);
+                            0, 0.05f, 0);
+
+                if (level.getGameTime() % 2 == 0) {
+                    level.addParticle(new MAParticleType(ParticleInit.GLOW.get())
+                            .setScale(0.2f).setMaxAge(5).setColor(15, 150, 135, 255),
+                            pos.x, pos.y, pos.z,
+                            0, 0.001f, 0);
+                }
+            }
+        }
+
+        //Glowing ring that the items turn into
+        float ringPercent = 0f;
+        if(animStage == ANIM_STAGE_RAMP_SPEEDUP) {
+            ringPercent = Math.min(1,Math.max(0, ((float) progress / (float) cachedSpec.ticksInRampSpeedup) * 6 - (ITEM_SCALE_START - 2)));
+
+
+        } else if(animStage == ANIM_STAGE_RAMP_BEAM ||
+                animStage == ANIM_STAGE_RAMP_CIRCLE ||
+                animStage == ANIM_STAGE_SHLORPS ||
+                animStage == ANIM_STAGE_CRAFTING) {
+            ringPercent = 1f;
+        }
+        if(ringPercent > 0) {
+            Vector3 pos = origin.add(new Vector3(0.5, 1.9375f, -0.5));
+
+            for(int i=0; i<3; i++) {
+                level.addParticle(new MAParticleType(ParticleInit.FLAME.get())
+                                .setMover(new ParticleOrbitMover(pos.x, pos.y, pos.z, 0.3 + 0.1 * i, 0, AlchemicalNexusBlockEntityRenderer.ITEM_HOVER_RADIUS))
+                                .setScale(0.06f * ringPercent).setColor(36, 151, 110),
+                        pos.x, pos.y, pos.z,
+                        0, 0, 0);
+            }
+        }
+
+        //Sparky orb above the device
+        float orbPercent = 0f;
+        if(animStage == ANIM_STAGE_RAMP_SPEEDUP) {
+            orbPercent = (float) progress / (float) cachedSpec.ticksInRampSpeedup;
+        }
+        else if(animStage == ANIM_STAGE_RAMP_BEAM ||
+                animStage == ANIM_STAGE_RAMP_CIRCLE ||
+                animStage == ANIM_STAGE_SHLORPS ||
+                animStage == ANIM_STAGE_CRAFTING) {
+            orbPercent = 1f;
+        }
+
+        if(orbPercent > 0) {
+            if ((level.getGameTime() + 1) % 2 == 0) {
+                Vector3 pos = origin.add(new Vector3(0.5, 3.5, -0.5));
+
+                //center orb
+                level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setColor(22, 94, 69).setScale(0.2f + 2.2f * orbPercent).setMaxAge(30),
+                        pos.x, pos.y, pos.z,
+                        0, 0, 0);
+
+                //sparks
+                if ((level.getGameTime() + 1) % 2 == 0) {
+                    for (int i = 0; i < r.nextInt(7); i++) {
+                        Vec3 vector = new Vec3(r.nextFloat() - 0.5f, r.nextFloat() - 0.5f, r.nextFloat() - 0.5f).normalize();
+                        final float speed = 0.08f;
+                        level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                        .setColor(36, 151, 110).setScale(0.2f).setGravity(0.02f).setMaxAge(30).setPhysics(true),
+                                pos.x, pos.y, pos.z,
+                                vector.x * speed, vector.y * speed + (r.nextFloat() * 0.125f), vector.z * speed);
+                    }
                 }
             }
         }

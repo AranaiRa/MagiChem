@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
@@ -20,6 +21,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -27,7 +29,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity {
+public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver {
 
     private BlockPos masterPos;
     private AlchemicalNexusBlockEntity master;
@@ -233,5 +235,15 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return getMaster().createMenu(pContainerId, pPlayerInventory, pPlayer);
+    }
+
+    @Override
+    public int canAcceptStack(ItemStack pStack) {
+        return master.canAcceptStack(pStack);
+    }
+
+    @Override
+    public int insertStack(ItemStack pStack) {
+        return master.insertStack(pStack);
     }
 }
