@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
@@ -318,6 +319,15 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
                 if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
+    }
+
+    ////////////////////
+    // INTERACTION AND VFX
+    ////////////////////
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,1,1));
     }
 
     ////////////////////

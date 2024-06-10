@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -559,5 +560,10 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         if(containedSmoke.getAmount() > 0)
             setChanged();
         return drain(new FluidStack(FluidRegistry.SMOKE.get(), i), fluidAction);
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,1,1));
     }
 }

@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -472,5 +473,10 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
     public static int getScaledRarefiedGrime(int pRarefiedGrimeAmount) {
         return pRarefiedGrimeAmount * ActuatorEarthScreen.FLUID_GAUGE_H / Config.quakeRefineryGrimeCapacity;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,1,1));
     }
 }

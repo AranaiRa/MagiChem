@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -550,5 +551,10 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     @Override
     public @NotNull FluidStack drain(int i, FluidAction fluidAction) {
         return drain(new FluidStack(FluidRegistry.SMOKE.get(), i), fluidAction);
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,1,1));
     }
 }

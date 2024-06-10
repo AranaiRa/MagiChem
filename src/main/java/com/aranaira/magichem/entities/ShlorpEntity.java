@@ -17,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
@@ -250,5 +251,10 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
                 currentPosOnTrack = length + limit;
         }
         currentPosOnTrack += 0;
+    }
+
+    @Override
+    public AABB getBoundingBoxForCulling() {
+        return new AABB(getX()-1000, getY()-100, getZ()-1000, getX()+1000, getY()+100, getZ()+1000);
     }
 }

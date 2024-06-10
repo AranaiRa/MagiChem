@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
@@ -37,6 +39,7 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
     public static final ResourceLocation RENDERER_MODEL_CRYSTAL = new ResourceLocation(MagiChemMod.MODID, "obj/special/alchemical_nexus_crystal");
     public static final ResourceLocation RENDERER_MODEL_BOOKMARKS = new ResourceLocation("mna", "item/special/mark_book_open");
     public static final ResourceLocation FLUID_TEXTURE = new ResourceLocation(MagiChemMod.MODID, "block/fluid/experience_still");
+    public static final ResourceLocation CIRCLE_TEXTURE = new ResourceLocation(MagiChemMod.MODID, "block/actuator_water");
 
     private final ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
@@ -52,6 +55,7 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
         this.renderItems(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
 
         this.renderBeam(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        this.renderCircle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
 
         float fluidPercent = (float)pBlockEntity.getFluidInTank(0).getAmount() / (float) Config.fuseryTankCapacity;
 
@@ -232,5 +236,31 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
             pPoseStack.popPose();
         }
+    }
+
+    private void renderCircle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        Vector3 center = new Vector3(0.5, 3.5, 0.5);
+        float rotation = 0f; //do rotation over time here
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
+
+        RenderUtils.generateMagicCircleRing(center,
+                4, 1.75f, 0.3125f, rotation, texture,
+                new Vec2(0,0), new Vec2(12, 3f),
+                pPartialTick, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center,
+                4, 1.75f, 0.3125f, (float)Math.PI/4, texture,
+                new Vec2(0,0), new Vec2(12, 3f),
+                pPartialTick, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center,
+                12, 2.375f, 0.3125f, rotation, texture,
+                new Vec2(0,0), new Vec2(12, 3f),
+                pPartialTick, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center,
+                12, 2.0f, 0.15625f, rotation, texture,
+                new Vec2(0,3), new Vec2(12, 5.5f),
+                pPartialTick, pPoseStack, pBuffer, pPackedLight);
     }
 }
