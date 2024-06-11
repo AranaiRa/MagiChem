@@ -241,11 +241,11 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
     private void renderCircle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
         float rotation = 0;//(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 200) / 200) * (float)Math.PI * 2; //do rotation over time here
-        float drawLerp = Math.min((((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 75) / 50), 1);
+        float drawLerp = Math.min((((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 250) / 250), 1);
         TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
 
         RenderUtils.generateMagicCircleRing(center,
-                12, 2.0f, 0.375f, rotation, texture,
+                12, 2.17f, 0.375f, rotation, texture,
                 new Vec2(0,0), new Vec2(12, 3), 0.75f,
                 drawLerp, pPoseStack, pBuffer, pPackedLight);
     }
