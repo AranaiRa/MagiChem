@@ -240,27 +240,27 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
     private void renderCircle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
-        float rotation = 0f; //do rotation over time here
+        float rotation = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 200) / 200) * (float)Math.PI * 2; //do rotation over time here
         TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
 
         RenderUtils.generateMagicCircleRing(center,
-                4, 1.75f, 0.3125f, rotation, texture,
-                new Vec2(0,0), new Vec2(12, 3f),
+                12, 1.5f, 0.375f, rotation, texture,
+                new Vec2(0,0), new Vec2(12, 3), 0.75f,
                 pPartialTick, pPoseStack, pBuffer, pPackedLight);
 
-        RenderUtils.generateMagicCircleRing(center,
-                4, 1.75f, 0.3125f, (float)Math.PI/4, texture,
-                new Vec2(0,0), new Vec2(12, 3f),
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.03125f, 0)),
+                4, 3.0f, 0.375f, rotation, texture,
+                new Vec2(0,0), new Vec2(12, 3), 0.75f,
                 pPartialTick, pPoseStack, pBuffer, pPackedLight);
 
-        RenderUtils.generateMagicCircleRing(center,
-                12, 2.375f, 0.3125f, rotation, texture,
-                new Vec2(0,0), new Vec2(12, 3f),
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.0625f, 0)),
+                4, 3.0f, 0.375f, rotation + 3.1415926f * 0.25f, texture,
+                new Vec2(0,0), new Vec2(12, 3), 0.75f,
                 pPartialTick, pPoseStack, pBuffer, pPackedLight);
 
-        RenderUtils.generateMagicCircleRing(center,
-                12, 2.0f, 0.15625f, rotation, texture,
-                new Vec2(0,3), new Vec2(12, 5.5f),
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.0625f, 0)),
+                12, 3.5f, 0.375f, rotation + 3.1415926f * 0.25f, texture,
+                new Vec2(0,0), new Vec2(12, 3), 0.75f,
                 pPartialTick, pPoseStack, pBuffer, pPackedLight);
     }
 }
