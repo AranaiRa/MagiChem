@@ -98,7 +98,7 @@ public class RenderUtils {
         consumer.vertex(pose, x0, y1, z3).color(tint).uv(texture.getU(minU), texture.getV(maxV)).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(normal, normalX, normalY, normalZ).endVertex();
     }
 
-    public static void generateMagicCircleRing(Vector3 pCenter, int pPointCount, float pRadius, float pThickness, float pRotation, TextureAtlasSprite pTexture, Vec2 pUV1, Vec2 pUV2, float pTextureTileDistance, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
+    public static void generateMagicCircleRing(Vector3 pCenter, int pPointCount, float pRadius, float pThickness, float pRotation, TextureAtlasSprite pTexture, Vec2 pUV1, Vec2 pUV2, float pTextureTileDistance, float pFillPercent, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         float thetaD = ((pPointCount - 2) * 180f) / pPointCount;
         float thetaR = thetaD * (float)Math.PI / 180f;
         float insetLeg = pThickness / (float)Math.tan(thetaR / 2);
@@ -147,11 +147,13 @@ public class RenderUtils {
         Matrix4f renderMatrix = pPoseStack.last().pose();
         Matrix3f normalMatrix = pPoseStack.last().normal();
         int[] color = new int[]{255, 255, 255, 255};
+        int[] red = new int[]{255, 0, 0, 255};
 
         //cancel rendering the circle if there's too few circle points to prevent OOB exceptions
         if(vertData.size() <= 1)
             return;
 
+        //TODO: get rid of the array and just use an int
         List<Float> divisionPoints = new ArrayList<>();
         float distanceBetweenExteriorPoints =
                 (float)new Vector3(vertData.get(0).a.x, vertData.get(0).a.y, vertData.get(0).a.z).distanceTo(
@@ -181,7 +183,6 @@ public class RenderUtils {
 
         //Rendering if we have to carve up the circle for texture tiling
         if(divisionPoints.size() > 0) {
-            int[] red = new int[]{255, 0, 0, 255};
 
             for(QuadVertData qvd : vertData) {
 
@@ -591,19 +592,29 @@ public class RenderUtils {
             Vector2f ll = new Vector2f(startX, endY);
             Vector2f lr = new Vector2f(endX, endY);
 
+            float segmentsToDraw = pFillPercent * pPointCount;
             for(QuadVertData qvd : vertData) {
+                float drawLerp = 1f;
+                if(segmentsToDraw < 1)
+                    drawLerp = segmentsToDraw;
 
+                //Top face
                 pPoseStack.pushPose();
                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                        qvd.a.x, qvd.a.y, qvd.a.z, lr.x, lr.y, 0, 0, color);
+                        qvd.a.x, qvd.a.y, qvd.a.z,
+                        lr.x, lr.y, 0, 0, color);
                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                        qvd.d.x, qvd.d.y, qvd.d.z, ur.x, ur.y, 0, 0, color);
+                        qvd.d.x, qvd.d.y, qvd.d.z,
+                        ur.x, ur.y, 0, 0, color);
                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                        qvd.c.x, qvd.c.y, qvd.c.z, ul.x, ul.y, 0, 0, color);
+                        MathUtils.lerpf(qvd.d.x, qvd.c.x, drawLerp), qvd.c.y, MathUtils.lerpf(qvd.d.z, qvd.c.z, drawLerp),
+                        MathUtils.lerpf(ur.x, ul.x, drawLerp), ul.y, 0, 0, color);
                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                        qvd.b.x, qvd.b.y, qvd.b.z, ll.x, ll.y, 0, 0, color);
+                        MathUtils.lerpf(qvd.a.x, qvd.b.x, drawLerp), qvd.b.y, MathUtils.lerpf(qvd.a.z, qvd.b.z, drawLerp),
+                        MathUtils.lerpf(lr.x, ll.x, drawLerp), ll.y, 0, 0, color);
                 pPoseStack.popPose();
 
+                //Bottom face
                 pPoseStack.pushPose();
                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
                         qvd.b.x, qvd.b.y, qvd.b.z, lr.x, lr.y, 0, 0, color);
@@ -616,6 +627,9 @@ public class RenderUtils {
 
                 pPoseStack.popPose();
 
+                if(segmentsToDraw < 1)
+                    break;
+                segmentsToDraw--;
             }
         }
 
