@@ -9,6 +9,7 @@ import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
+import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstruct;
 import com.mna.api.entities.construct.ai.ConstructAITask;
@@ -145,7 +146,8 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
             if(stack != ItemStack.EMPTY) {
                 this.filter = (MateriaItem) stack.getItem();
 
-                int amountToShrink = Math.min(construct.getCarrySize()*4, stack.getCount());
+                int stackLimit = Math.min(2, construct.getConstructData().getAffinityScore(Affinity.ARCANE) * 4);
+                int amountToShrink = Math.min(stackLimit, stack.getCount());
                 stack.shrink(amountToShrink);
                 this.materiaInTransit = new ItemStack(filter, amountToShrink);
             } else

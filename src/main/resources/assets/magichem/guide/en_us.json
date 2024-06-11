@@ -1376,7 +1376,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ".\n\nThe construct is capable of moving two drams of materia per operation by default. If the construct was summoned with "
+          },
+          {
+            "text": "Arcane affinity",
+            "color": "dark_purple"
+          },
+          {
+            "text": " it can move up to four drams per level of affinity instead."
           }
         ]
       }
