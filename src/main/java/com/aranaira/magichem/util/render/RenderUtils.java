@@ -187,14 +187,14 @@ public class RenderUtils {
             int i=0;
             for(QuadVertData qvd : vertData) {
                 float remainingDistanceToDraw = pPointCount * distanceBetweenExteriorPoints * pFillPercent;
+                float drawLerp = 1f;
+                if(remainingDistanceToDraw - (distanceBetweenExteriorPoints * i) < 0)
+                    break;
+                else if(remainingDistanceToDraw - (distanceBetweenExteriorPoints * i) < distanceBetweenExteriorPoints)
+                    drawLerp = (remainingDistanceToDraw - (distanceBetweenExteriorPoints * i)) / distanceBetweenExteriorPoints;
 
                 //simple solution, we only have to split it down the middle
                 if(divisionPoints.size() == 1) {
-                    float drawLerp = 1f;
-                    if(remainingDistanceToDraw - (distanceBetweenExteriorPoints * i) < 0)
-                        break;
-                    else if(remainingDistanceToDraw - (distanceBetweenExteriorPoints * i) < distanceBetweenExteriorPoints)
-                        drawLerp = (remainingDistanceToDraw - (distanceBetweenExteriorPoints * i)) / distanceBetweenExteriorPoints;
 
                     float textureSpanPercent = distanceBetweenExteriorPoints / pTextureTileDistance;
                     float pxWidth = textureSpanPercent * 4 * pTextureTileDistance;
@@ -298,71 +298,105 @@ public class RenderUtils {
 
                     //Left cap
                     {
+                        float start = 1 - ((pTextureTileDistance * 2) / distanceBetweenExteriorPoints);
+                        float end = 1f;
+                        float modifiedDrawLerp = mapRangeToModifiedDrawLerp(drawLerp, start, end);
+
+                        float x1 = MathUtils.lerpf(qvd.a.x, qvd.b.x, capLerpPercentOuter);
+                        float z1 = MathUtils.lerpf(qvd.a.z, qvd.b.z, capLerpPercentOuter);
+                        float x2 = MathUtils.lerpf(qvd.d.x, qvd.c.x, capLerpPercentInner);
+                        float z2 = MathUtils.lerpf(qvd.d.z, qvd.c.z, capLerpPercentInner);
+                        float x3 = qvd.c.x;
+                        float z3 = qvd.c.z;
+                        float x4 = qvd.b.x;
+                        float z4 = qvd.b.z;
+
                         //Top face
-                        pPoseStack.pushPose();
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                MathUtils.lerpf(qvd.a.x, qvd.b.x, capLerpPercentOuter), qvd.a.y, MathUtils.lerpf(qvd.a.z, qvd.b.z, capLerpPercentOuter),
-                                lrl.x, lrl.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                MathUtils.lerpf(qvd.d.x, qvd.c.x, capLerpPercentInner), qvd.d.y, MathUtils.lerpf(qvd.d.z, qvd.c.z, capLerpPercentInner),
-                                url.x, url.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                qvd.c.x, qvd.c.y, qvd.c.z,
-                                ull.x, ull.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                qvd.b.x, qvd.b.y, qvd.b.z,
-                                lll.x, lll.y, 0, 0, color);
-                        pPoseStack.popPose();
+                        {
+                            pPoseStack.pushPose();
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    x1, qvd.a.y, z1,
+                                    lrl.x, lrl.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    x2, qvd.d.y, z2,
+                                    url.x, url.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    MathUtils.lerpf(x2, x3, modifiedDrawLerp), qvd.c.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                    MathUtils.lerpf(url.x, ull.x, modifiedDrawLerp), ull.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    MathUtils.lerpf(x1, x4, modifiedDrawLerp), qvd.b.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                    MathUtils.lerpf(lrl.x, lll.x, modifiedDrawLerp), lll.y, 0, 0, color);
+                            pPoseStack.popPose();
+                        }
 
                         //Bottom face
-                        pPoseStack.pushPose();
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                qvd.b.x, qvd.b.y, qvd.b.z,
-                                lll.x, lll.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                qvd.c.x, qvd.c.y, qvd.c.z,
-                                ull.x, ull.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                MathUtils.lerpf(qvd.d.x, qvd.c.x, capLerpPercentInner), qvd.d.y, MathUtils.lerpf(qvd.d.z, qvd.c.z, capLerpPercentInner),
-                                url.x, url.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                MathUtils.lerpf(qvd.a.x, qvd.b.x, capLerpPercentOuter), qvd.a.y, MathUtils.lerpf(qvd.a.z, qvd.b.z, capLerpPercentOuter),
-                                lrl.x, lrl.y, 0, 0, color);
-                        pPoseStack.popPose();
+                        {
+                            pPoseStack.pushPose();
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    MathUtils.lerpf(x1, x4, modifiedDrawLerp), qvd.b.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                    MathUtils.lerpf(lrl.x, lll.x, modifiedDrawLerp), lll.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    MathUtils.lerpf(x2, x3, modifiedDrawLerp), qvd.c.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                    MathUtils.lerpf(url.x, ull.x, modifiedDrawLerp), ull.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    x2, qvd.d.y, z2,
+                                    url.x, url.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    x1, qvd.a.y, z1,
+                                    lrl.x, lrl.y, 0, 0, color);
+                            pPoseStack.popPose();
+                        }
                     }
                     //Right cap
                     {
+                        float start = 0f;
+                        float end = ((pTextureTileDistance * 2) / distanceBetweenExteriorPoints);
+                        float modifiedDrawLerp = mapRangeToModifiedDrawLerp(drawLerp, start, end);
+
+                        float x1 = qvd.a.x;
+                        float z1 = qvd.a.z;
+                        float x2 = qvd.d.x;
+                        float z2 = qvd.d.z;
+                        float x3 = MathUtils.lerpf(qvd.c.x, qvd.d.x, capLerpPercentInner);
+                        float z3 = MathUtils.lerpf(qvd.c.z, qvd.d.z, capLerpPercentInner);
+                        float x4 = MathUtils.lerpf(qvd.b.x, qvd.a.x, capLerpPercentOuter);
+                        float z4 = MathUtils.lerpf(qvd.b.z, qvd.a.z, capLerpPercentOuter);
+
                         //Top face
-                        pPoseStack.pushPose();
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                qvd.a.x, qvd.a.y, qvd.a.z,
-                                lrr.x, lrr.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                qvd.d.x, qvd.d.y, qvd.d.z,
-                                urr.x, urr.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                MathUtils.lerpf(qvd.c.x, qvd.d.x, capLerpPercentInner), qvd.c.y, MathUtils.lerpf(qvd.c.z, qvd.d.z, capLerpPercentInner),
-                                ulr.x, ulr.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                MathUtils.lerpf(qvd.b.x, qvd.a.x, capLerpPercentOuter), qvd.b.y, MathUtils.lerpf(qvd.b.z, qvd.a.z, capLerpPercentOuter),
-                                llr.x, llr.y, 0, 0, color);
-                        pPoseStack.popPose();
+                        {
+                            pPoseStack.pushPose();
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    x1, qvd.a.y, z1,
+                                    lrr.x, lrr.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    x2, qvd.d.y, z2,
+                                    urr.x, urr.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    MathUtils.lerpf(x2, x3, modifiedDrawLerp), qvd.c.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                    MathUtils.lerpf(urr.x, ulr.x, modifiedDrawLerp), ulr.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    MathUtils.lerpf(x1, x4, modifiedDrawLerp), qvd.b.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                    MathUtils.lerpf(lrr.x, llr.x, modifiedDrawLerp), llr.y, 0, 0, color);
+                            pPoseStack.popPose();
+                        }
 
                         //Bottom face
-                        pPoseStack.pushPose();
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                MathUtils.lerpf(qvd.b.x, qvd.a.x, capLerpPercentOuter), qvd.b.y, MathUtils.lerpf(qvd.b.z, qvd.a.z, capLerpPercentOuter),
-                                llr.x, llr.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                MathUtils.lerpf(qvd.c.x, qvd.d.x, capLerpPercentInner), qvd.c.y, MathUtils.lerpf(qvd.c.z, qvd.d.z, capLerpPercentInner),
-                                ulr.x, ulr.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                qvd.d.x, qvd.d.y, qvd.d.z,
-                                urr.x, urr.y, 0, 0, color);
-                        addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                qvd.a.x, qvd.a.y, qvd.a.z,
-                                lrr.x, lrr.y, 0, 0, color);
-                        pPoseStack.popPose();
+                        {
+                            pPoseStack.pushPose();
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    MathUtils.lerpf(x1, x4, modifiedDrawLerp), qvd.b.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                    MathUtils.lerpf(lrr.x, llr.x, modifiedDrawLerp), llr.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    MathUtils.lerpf(x2, x3, modifiedDrawLerp), qvd.c.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                    MathUtils.lerpf(urr.x, ulr.x, modifiedDrawLerp), ulr.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    x2, qvd.d.y, z2,
+                                    urr.x, urr.y, 0, 0, color);
+                            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                                    x1, qvd.a.y, z1,
+                                    lrr.x, lrr.y, 0, 0, color);
+                            pPoseStack.popPose();
+                        }
                     }
 
                     Vector3 bUL = new Vector3(MathUtils.lerpf(qvd.d.x, qvd.c.x, capLerpPercentInner), qvd.d.y, MathUtils.lerpf(qvd.d.z, qvd.c.z, capLerpPercentInner));
@@ -372,27 +406,41 @@ public class RenderUtils {
 
                     float interiorWidth = (float)bLR.distanceTo(bLL);
 
+                    int w = 0;
                     while(remainingDistance > pTextureTileDistance * 4) {
                         float percentL = (newFaceInset) / (interiorWidth);
                         float percentR = (newFaceInset + pTextureTileDistance * 2) / (interiorWidth);
 
                         //Left side
                         {
+                            float start = 1 - ((pTextureTileDistance * 2) * (w + 1) / distanceBetweenExteriorPoints);
+                            float end = 1 - ((pTextureTileDistance * 2) * (w + 2) / distanceBetweenExteriorPoints);
+                            float modifiedDrawLerp = mapRangeToModifiedDrawLerp(drawLerp, start, end);
+
+                            float x1 = MathUtils.lerpf(bLL.x, bLR.x, percentR);
+                            float z1 = MathUtils.lerpf(bLL.z, bLR.z, percentR);
+                            float x2 = MathUtils.lerpf(bUL.x, bUR.x, percentR);
+                            float z2 = MathUtils.lerpf(bUL.z, bUR.z, percentR);
+                            float x3 = MathUtils.lerpf(bUL.x, bUR.x, percentL);
+                            float z3 = MathUtils.lerpf(bUL.z, bUR.z, percentL);
+                            float x4 = MathUtils.lerpf(bLL.x, bLR.x, percentL);
+                            float z4 = MathUtils.lerpf(bLL.z, bLR.z, percentL);
+
                             //Top face
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, percentR), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, percentR),
+                                        x1, bLR.y, z1,
                                         pUV2.x, pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, percentR), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, percentR),
+                                        x2, bUR.y, z2,
                                         pUV2.x, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, percentL), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, percentL),
-                                        pUV1.x, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(pUV2.x, pUV1.x, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, percentL), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, percentL),
-                                        pUV1.x, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(pUV2.x, pUV1.x, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
 
@@ -400,16 +448,16 @@ public class RenderUtils {
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, percentL), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, percentL),
-                                        pUV1.x, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(pUV2.x, pUV1.x, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, percentL), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, percentL),
-                                        pUV1.x, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(pUV2.x, pUV1.x, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, percentR), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, percentR),
+                                        x2, bUR.y, z2,
                                         pUV2.x, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, percentR), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, percentR),
+                                        x1, bLR.y, z1,
                                         pUV2.x, pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
@@ -417,21 +465,34 @@ public class RenderUtils {
 
                         //Right side
                         {
+                            float start = ((pTextureTileDistance * 2) * (w + 1) / distanceBetweenExteriorPoints);
+                            float end = ((pTextureTileDistance * 2) * (w + 2) / distanceBetweenExteriorPoints);
+                            float modifiedDrawLerp = mapRangeToModifiedDrawLerp(drawLerp, start, end);
+
+                            float x1 = MathUtils.lerpf(bLL.x, bLR.x, 1-percentL);
+                            float z1 = MathUtils.lerpf(bLL.z, bLR.z, 1-percentL);
+                            float x2 = MathUtils.lerpf(bUL.x, bUR.x, 1-percentL);
+                            float z2 = MathUtils.lerpf(bUL.z, bUR.z, 1-percentL);
+                            float x3 = MathUtils.lerpf(bUL.x, bUR.x, 1-percentR);
+                            float z3 = MathUtils.lerpf(bUL.z, bUR.z, 1-percentR);
+                            float x4 = MathUtils.lerpf(bLL.x, bLR.x, 1-percentR);
+                            float z4 = MathUtils.lerpf(bLL.z, bLR.z, 1-percentR);
+
                             //Top face
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 1-percentL), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, 1-percentL),
+                                        x1, bLR.y, z1,
                                         pUV2.x, pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 1-percentL), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, 1-percentL),
+                                        x2, bUR.y, z2,
                                         pUV2.x, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 1-percentR), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, 1-percentR),
-                                        pUV1.x, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(pUV2.x, pUV1.x, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 1-percentR), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, 1-percentR),
-                                        pUV1.x, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(pUV2.x, pUV1.x, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
 
@@ -439,16 +500,16 @@ public class RenderUtils {
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 1-percentR), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, 1-percentR),
-                                        pUV1.x, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(pUV2.x, pUV1.x, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 1-percentR), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, 1-percentR),
-                                        pUV1.x, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(pUV2.x, pUV1.x, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 1-percentL), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, 1-percentL),
+                                        x2, bUR.y, z2,
                                         pUV2.x, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 1-percentL), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, 1-percentL),
+                                        x1, bLR.y, z1,
                                         pUV2.x, pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
@@ -456,10 +517,22 @@ public class RenderUtils {
 
                         remainingDistance -= pTextureTileDistance * 4;
                         newFaceInset += pTextureTileDistance * 2;
+                        w++;
                     }
+
+                    float leftExtent = ((pTextureTileDistance * 2) * (w + 1) / distanceBetweenExteriorPoints);
+                    float rightExtent = 1 - ((pTextureTileDistance * 2) * (w + 1) / distanceBetweenExteriorPoints);
 
                     //Twin Quad Center Fill
                     if(remainingDistance > pTextureTileDistance * 2){
+                        float stepI = (pTextureTileDistance * 2) / distanceBetweenInteriorPoints;
+                        float stepO = (pTextureTileDistance * 2) / distanceBetweenExteriorPoints;
+
+                        Vector3 bTUL = new Vector3(MathUtils.lerpf(qvd.d.x, qvd.c.x, capLerpPercentInner - (stepI * w)), qvd.d.y, MathUtils.lerpf(qvd.d.z, qvd.c.z, capLerpPercentInner - (stepI * w)));
+                        Vector3 bTLL = new Vector3(MathUtils.lerpf(qvd.a.x, qvd.b.x, capLerpPercentOuter - (stepO * w)), qvd.a.y, MathUtils.lerpf(qvd.a.z, qvd.b.z, capLerpPercentOuter - (stepO * w)));
+                        Vector3 bTUR = new Vector3(MathUtils.lerpf(qvd.c.x, qvd.d.x, capLerpPercentInner - (stepI * w)), qvd.c.y, MathUtils.lerpf(qvd.c.z, qvd.d.z, capLerpPercentInner - (stepI * w)));
+                        Vector3 bTLR = new Vector3(MathUtils.lerpf(qvd.b.x, qvd.a.x, capLerpPercentOuter - (stepO * w)), qvd.b.y, MathUtils.lerpf(qvd.b.z, qvd.a.z, capLerpPercentOuter - (stepO * w)));
+
                         float uvWidth = remainingDistance / (pTextureTileDistance * 4);
                         float uvLL = pUV1.x;
                         float uvLR = ((pUV2.x - pUV1.x) * uvWidth) + pUV1.x;
@@ -468,21 +541,32 @@ public class RenderUtils {
 
                         //Left side
                         {
+                            float modifiedDrawLerp = mapRangeToModifiedDrawLerp(drawLerp, 0.5f, rightExtent);
+
+                            float x1 = MathUtils.lerpf(bTLL.x, bTLR.x, 0.5f);
+                            float z1 = MathUtils.lerpf(bTLL.z, bTLR.z, 0.5f);
+                            float x2 = MathUtils.lerpf(bTUL.x, bTUR.x, 0.5f);
+                            float z2 = MathUtils.lerpf(bTUL.z, bTUR.z, 0.5f);
+                            float x3 = MathUtils.lerpf(bTUL.x, bTUR.x, 0.0f);
+                            float z3 = MathUtils.lerpf(bTUL.z, bTUR.z, 0.0f);
+                            float x4 = MathUtils.lerpf(bTLL.x, bTLR.x, 0.0f);
+                            float z4 = MathUtils.lerpf(bTLL.z, bTLR.z, 0.0f);
+
                             //Top face
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 0.5f), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, 0.5f),
+                                        x1, bLR.y, z1,
                                         uvLR, pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 0.5f), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, 0.5f),
+                                        x2, bUR.y, z2,
                                         uvLR, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 0.0f), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, 0.0f),
-                                        uvLL, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvLR, uvLL, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 0.0f), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, 0.0f),
-                                        uvLL, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvLR, uvLL, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
 
@@ -490,16 +574,16 @@ public class RenderUtils {
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 0.0f), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, 0.0f),
-                                        uvLL, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvLR, uvLL, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 0.0f), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, 0.0f),
-                                        uvLL, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvLR, uvLL, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 0.5f), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, 0.5f),
+                                        x2, bUR.y, z2,
                                         uvLR, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 0.5f), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, 0.5f),
+                                        x1, bLR.y, z1,
                                         uvLR, pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
@@ -507,21 +591,32 @@ public class RenderUtils {
 
                         //Right side
                         {
+                            float modifiedDrawLerp = mapRangeToModifiedDrawLerp(drawLerp, leftExtent, 0.5f);
+
+                            float x1 = MathUtils.lerpf(bTLL.x, bTLR.x, 1.0f);
+                            float z1 = MathUtils.lerpf(bTLL.z, bTLR.z, 1.0f);
+                            float x2 = MathUtils.lerpf(bTUL.x, bTUR.x, 1.0f);
+                            float z2 = MathUtils.lerpf(bTUL.z, bTUR.z, 1.0f);
+                            float x3 = MathUtils.lerpf(bTUL.x, bTUR.x, 0.5f);
+                            float z3 = MathUtils.lerpf(bTUL.z, bTUR.z, 0.5f);
+                            float x4 = MathUtils.lerpf(bTLL.x, bTLR.x, 0.5f);
+                            float z4 = MathUtils.lerpf(bTLL.z, bTLR.z, 0.5f);
+
                             //Top face
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 1.0f), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, 1.0f),
+                                        x1, bLR.y, z1,
                                         uvRR, pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 1.0f), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, 1.0f),
+                                        x2, bUR.y, z2,
                                         uvRR, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 0.5f), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, 0.5f),
-                                        uvRL, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvRR, uvRL, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 0.5f), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, 0.5f),
-                                        uvRL, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvRR, uvRL, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
 
@@ -529,16 +624,16 @@ public class RenderUtils {
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 0.5f), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, 0.5f),
-                                        uvRL, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvRR, uvRL, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 0.5f), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, 0.5f),
-                                        uvRL, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvRR, uvRL, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, 1.0f), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, 1.0f),
+                                        x2, bUR.y, z2,
                                         uvRR, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, 1.0f), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, 1.0f),
+                                        x1, bLR.y, z1,
                                         uvRR, pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
@@ -553,21 +648,32 @@ public class RenderUtils {
 
                         //Center
                         {
+                            float modifiedDrawLerp = mapRangeToModifiedDrawLerp(drawLerp, leftExtent, rightExtent);
+
+                            float x1 = MathUtils.lerpf(bLL.x, bLR.x, percentR);
+                            float z1 = MathUtils.lerpf(bLL.z, bLR.z, percentR);
+                            float x2 = MathUtils.lerpf(bUL.x, bUR.x, percentR);
+                            float z2 = MathUtils.lerpf(bUL.z, bUR.z, percentR);
+                            float x3 = MathUtils.lerpf(bUL.x, bUR.x, percentL);
+                            float z3 = MathUtils.lerpf(bUL.z, bUR.z, percentL);
+                            float x4 = MathUtils.lerpf(bLL.x, bLR.x, percentL);
+                            float z4 = MathUtils.lerpf(bLL.z, bLR.z, percentL);
+
                             //Top face
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, percentR), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, percentR),
+                                        x1, bLR.y, z1,
                                         uvRight, pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, percentR), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, percentR),
+                                        x2, bUR.y, z2,
                                         uvRight, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, percentL), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, percentL),
-                                        pUV1.x, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvRight, pUV1.x, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, percentL), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, percentL),
-                                        pUV1.x, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvRight, pUV1.x, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
 
@@ -575,16 +681,16 @@ public class RenderUtils {
                             {
                                 pPoseStack.pushPose();
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, percentL), bLL.y, MathUtils.lerpf(bLL.z, bLR.z, percentL),
-                                        pUV1.x, pUV2.y, 0, 0, color);
+                                        MathUtils.lerpf(x1, x4, modifiedDrawLerp), bLL.y, MathUtils.lerpf(z1, z4, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvRight, pUV1.x, modifiedDrawLerp), pUV2.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, percentL), bUL.y, MathUtils.lerpf(bUL.z, bUR.z, percentL),
-                                        pUV1.x, pUV1.y, 0, 0, color);
+                                        MathUtils.lerpf(x2, x3, modifiedDrawLerp), bUL.y, MathUtils.lerpf(z2, z3, modifiedDrawLerp),
+                                        MathUtils.lerpf(uvRight, pUV1.x, modifiedDrawLerp), pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bUL.x, bUR.x, percentR), bUR.y, MathUtils.lerpf(bUL.z, bUR.z, percentR),
+                                        x2, bUR.y, z2,
                                         uvRight, pUV1.y, 0, 0, color);
                                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                                        MathUtils.lerpf(bLL.x, bLR.x, percentR), bLR.y, MathUtils.lerpf(bLL.z, bLR.z, percentR),
+                                        x1, bLR.y, z1,
                                         uvRight, pUV2.y, 0, 0, color);
                                 pPoseStack.popPose();
                             }
@@ -654,6 +760,26 @@ public class RenderUtils {
 
         //render that shit!
 
+    }
+
+    private static float mapRangeToModifiedDrawLerp(float pDrawLerp, float pStart, float pEnd) {
+        if(pStart < pEnd){
+            if (pDrawLerp < pStart)
+                return 0.0f;
+            else if (pDrawLerp > pEnd)
+                return 1.0f;
+            else {
+                return (pDrawLerp - pStart) / (pEnd - pStart);
+            }
+        } else {
+            if (pDrawLerp < pEnd)
+                return 0.0f;
+            else if (pDrawLerp > pStart)
+                return 1.0f;
+            else {
+                return (pDrawLerp - pEnd) / (pStart - pEnd);
+            }
+        }
     }
 
     private static void addVertex(VertexConsumer pVertexBuilder, Matrix4f pRenderMatrix, Matrix3f pNormalMatrix, TextureAtlasSprite texture, int pPackedLight, float x, float y, float z, float u, float v, float nrmH, float nrmV, int[] rgba) {
