@@ -25,6 +25,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -79,8 +80,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             SLOT_INPUT_START = 3, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT = 9,
             DATA_COUNT = 4,
             DATA_PROGRESS = 0, DATA_ANIM_STAGE = 1, DATA_CRAFTING_STAGE = 2, DATA_POWER_LEVEL = 3,
-            ANIM_STAGE_IDLE = 0, ANIM_STAGE_RAMP_SPEEDUP = 1, ANIM_STAGE_RAMP_CANCEL = 2, ANIM_STAGE_RAMP_BEAM = 3, ANIM_STAGE_RAMP_CIRCLE = 4,
-            ANIM_STAGE_SHLORPS = 5, ANIM_STAGE_CRAFTING = 6, ANIM_STAGE_BETWEEN_CIRCLE_BUILD = 6, ANIM_STAGE_DENOUEMENT = 7;
+            ANIM_STAGE_IDLE = 0,
+            ANIM_STAGE_SHLORPS = 1, ANIM_STAGE_CRAFTING = 2, ANIM_STAGE_CRAFTING_IDLE = 3,
+            ANIM_STAGE_RAMP_SPEEDUP = 11, ANIM_STAGE_RAMP_CIRCLE = 12, ANIM_STAGE_RAMP_CRAFTING = 13, ANIM_STAGE_RAMP_CRAFTING_SPEEDUP = 14, ANIM_STAGE_RAMP_CRAFTING_CIRCLE = 15,
+            ANIM_STAGE_CANCEL_SPEEDUP = 21, ANIM_STAGE_CANCEL_CIRCLE = 22, ANIM_STAGE_CANCEL_CRAFTING = 23, ANIM_STAGE_CANCEL_CRAFTING_ADVANCED = 24, ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP = 25, ANIM_STAGE_CANCEL_CRAFTING_CIRCLE = 26;
 
     public static final float
             CRYSTAL_SPEED_MIN = 0.75f, CRYSTAL_SPEED_MAX = 20.0f,
@@ -112,6 +115,16 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot == SLOT_MARKS)
                     return stack.getItem() == ItemInit.RUNE_MARKING.get() || stack.getItem() == ItemInit.BOOK_MARKS.get();
+                else if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(currentRecipe == null)
+                        return true;
+                    InfusionStage stage = currentRecipe.getStages(false).get(craftingStage);
+
+                    if((slot - SLOT_INPUT_START) >= stage.componentItems.size())
+                        return false;
+                    ItemStack component = stage.componentItems.get(slot - SLOT_INPUT_START);
+                    return stack.getItem().equals(component.getItem());
+                }
                 else if(slot == SLOT_RECIPE || slot == SLOT_PROCESSING || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT))
                     return false;
 
@@ -259,9 +272,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             if(anbe.animStage == ANIM_STAGE_IDLE) {
                 //Check if all the items are present
                 if(anbe.hasAllRecipeItemsForCurrentStage()) {
-                    anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
-                    anbe.cacheAnimSpec();
-                    anbe.syncAndSave();
+                    if(anbe.getContentsOfOutputSlots().canAddItem(anbe.currentRecipe.getAlchemyObject())) {
+                        anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
+                        anbe.cacheAnimSpec();
+                        anbe.syncAndSave();
+                    }
                 }
             }
 
@@ -269,40 +284,22 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 anbe.incrementProgress();
 
                 if(!anbe.hasAllRecipeItemsForCurrentStage()) {
-                    anbe.animStage = ANIM_STAGE_RAMP_CANCEL;
+                    anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
                 }
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampSpeedup) {
                     anbe.resetProgress();
-                    anbe.animStage = ANIM_STAGE_RAMP_BEAM;
+                    anbe.animStage = ANIM_STAGE_RAMP_CIRCLE;
                     anbe.syncAndSave();
                 }
             }
 
-            else if(anbe.animStage == ANIM_STAGE_RAMP_CANCEL) {
-                anbe.incrementProgress();
+            else if(anbe.animStage == ANIM_STAGE_CANCEL_SPEEDUP) {
+                anbe.decrementProgress();
 
-                if(anbe.progress > anbe.cachedSpec.ticksInRampCancel) {
+                if(anbe.progress <= 0) {
                     anbe.resetProgress();
                     anbe.animStage = ANIM_STAGE_IDLE;
-                    anbe.syncAndSave();
-                }
-            }
-
-            else if(anbe.animStage == ANIM_STAGE_RAMP_BEAM) {
-                anbe.incrementProgress();
-
-                if(!anbe.hasAllRecipeItemsForCurrentStage()) {
-                    anbe.resetProgress();
-                    anbe.animStage = ANIM_STAGE_RAMP_CANCEL;
-                    anbe.syncAndSave();
-                }
-
-                if(anbe.progress > anbe.cachedSpec.ticksInRampBeam) {
-                    //remove ingredient items at this point
-
-                    anbe.resetProgress();
-                    anbe.animStage = ANIM_STAGE_RAMP_CIRCLE;
                     anbe.syncAndSave();
                 }
             }
@@ -314,7 +311,19 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
                     anbe.resetProgress();
+                    for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++)
+                        anbe.itemHandler.getStackInSlot(i).shrink(1);
                     anbe.animStage = ANIM_STAGE_SHLORPS;
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_CANCEL_CIRCLE) {
+                anbe.incrementProgress();
+
+                if(anbe.progress > anbe.cachedSpec.ticksInRampCancel) {
+                    anbe.resetProgress();
+                    anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
                     anbe.syncAndSave();
                 }
             }
@@ -324,61 +333,169 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> marks = anbe.getMarkedEntitiesAndLocations();
                     NonNullList<MateriaItem> outstanding = anbe.getDemandedMateriaNotInTransit();
 
-                    Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair = marks.get(anbe.shlorpIndex);
-                    MateriaItem type = pair.getFirst().getMateriaType();
-                    if(type != null) {
-                        for(MateriaItem mi : outstanding) {
-                            if(type == mi) {
-                                anbe.markInTransit(mi);
-                                Pair<Vector3, Vector3> ot = pair.getFirst().getDefaultOriginAndTangent();
-                                Vector3 spawnPos = new Vector3(pair.getSecond());
-                                Vector3 origin = ot.getFirst();
-                                Vector3 tangent = ot.getSecond().scale(4.0f);
+                    if (marks != null) {
+                        Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair = marks.get(anbe.shlorpIndex);
+                        MateriaItem type = pair.getFirst().getMateriaType();
+                        if (type != null) {
+                            for (MateriaItem mi : outstanding) {
+                                if (type == mi) {
+                                    anbe.markInTransit(mi);
+                                    Pair<Vector3, Vector3> ot = pair.getFirst().getDefaultOriginAndTangent();
+                                    Vector3 spawnPos = new Vector3(pair.getSecond());
+                                    Vector3 origin = ot.getFirst();
+                                    Vector3 tangent = ot.getSecond().scale(4.0f);
 
-                                int amount = 0;
-                                for(ItemStack is : anbe.currentRecipe.getStages(false).get(anbe.craftingStage).componentMateria) {
-                                    if(is.getItem() == type) {
-                                        amount = Math.min(pair.getFirst().getCurrentStock(), is.getCount());
-                                        break;
+                                    int amount = 0;
+                                    for (ItemStack is : anbe.currentRecipe.getStages(false).get(anbe.craftingStage).componentMateria) {
+                                        if (is.getItem() == type) {
+                                            amount = Math.min(pair.getFirst().getCurrentStock(), is.getCount());
+                                            break;
+                                        }
                                     }
+
+                                    if (amount == 0) break;
+
+                                    //create shlorp
+                                    ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pLevel);
+                                    se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+                                    se.configure(
+                                            spawnPos,
+                                            origin, tangent,
+                                            new Vector3(anbe.getBlockPos()),
+                                            new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 0.5, 0),
+                                            anbe.cachedSpec.shlorpSpeed, 0.0625f, amount,
+                                            mi, amount
+                                    );
+
+                                    pLevel.addFreshEntity(se);
+                                    se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+                                    //don't need to keep iterating at this point
+                                    break;
                                 }
-
-                                if(amount == 0) break;
-
-                                //create shlorp
-                                ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pLevel);
-                                se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-
-                                se.configure(
-                                        spawnPos,
-                                        origin, tangent,
-                                        new Vector3(anbe.getBlockPos()),
-                                        new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 4, 0),
-                                        anbe.cachedSpec.shlorpSpeed, 0.0625f, amount,
-                                        mi, amount
-                                );
-
-                                pLevel.addFreshEntity(se);
-                                se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-
-                                //don't need to keep iterating at this point
-                                break;
                             }
                         }
-                    }
 
-                    anbe.shlorpIndex = anbe.shlorpIndex == marks.size()-1 ? 0 : anbe.shlorpIndex + 1;
+                        anbe.shlorpIndex = anbe.shlorpIndex == marks.size() - 1 ? 0 : anbe.shlorpIndex + 1;
+                    }
                 }
 
                 if(anbe.isFullySatisfied()) {
+                    anbe.animStage = ANIM_STAGE_RAMP_CRAFTING;
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING) {
+                anbe.incrementProgress();
+
+                if(anbe.progress > anbe.cachedSpec.ticksInRampBeam) {
+                    anbe.resetProgress();
                     anbe.animStage = ANIM_STAGE_CRAFTING;
                     anbe.syncAndSave();
                 }
             }
 
             else if(anbe.animStage == ANIM_STAGE_CRAFTING) {
-                anbe.animStage = ANIM_STAGE_RAMP_CANCEL;
-                anbe.syncAndSave();
+                anbe.incrementProgress();
+
+                if(anbe.progress > anbe.cachedSpec.ticksToCraft) {
+                    //If there's another stage, move to that
+                    if(anbe.currentRecipe.getStages(false).size() > (anbe.craftingStage + 1)) {
+                        anbe.craftingStage++;
+                        anbe.animStage = ANIM_STAGE_CRAFTING_IDLE;
+                    }
+                    //Otherwise, we're done
+                    else{
+                        anbe.resetProgress();
+                        anbe.craftItem();
+                        if(anbe.craftingStage > 0)
+                            anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_ADVANCED;
+                        else
+                            anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING;
+                    }
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING) {
+                anbe.incrementProgress();
+
+                if(anbe.progress > anbe.cachedSpec.ticksInRampBeam) {
+                    anbe.resetProgress();
+                    anbe.craftingStage = 0;
+                    anbe.animStage = ANIM_STAGE_CANCEL_CIRCLE;
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_ADVANCED) {
+                anbe.incrementProgress();
+
+                if(anbe.progress > anbe.cachedSpec.ticksInRampBeam) {
+                    anbe.resetProgress();
+                    anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_CIRCLE;
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_CRAFTING_IDLE) {
+                if(anbe.getProgress() > 0)
+                    anbe.decrementProgress();
+
+                //Check if all the items are present
+                if(anbe.hasAllRecipeItemsForCurrentStage()) {
+                    anbe.animStage = ANIM_STAGE_RAMP_CRAFTING_SPEEDUP;
+                    anbe.cacheAnimSpec();
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
+                anbe.incrementProgress();
+
+                //Move to cancel stage if the partial craft item package is removed
+
+                if(anbe.progress > anbe.cachedSpec.ticksInRampSpeedup) {
+                    anbe.resetProgress();
+                    anbe.animStage = ANIM_STAGE_RAMP_CRAFTING_CIRCLE;
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP) {
+                anbe.decrementProgress();
+
+                if(anbe.progress <= 0) {
+                    anbe.resetProgress();
+                    anbe.animStage = ANIM_STAGE_IDLE;
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
+                anbe.incrementProgress();
+
+                //check for container item in the processing slot
+
+                if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
+                    anbe.resetProgress();
+                    for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++)
+                        anbe.itemHandler.getStackInSlot(i).shrink(1);
+                    anbe.animStage = ANIM_STAGE_SHLORPS;
+                    anbe.syncAndSave();
+                }
+            }
+
+            else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_CIRCLE) {
+                anbe.incrementProgress();
+
+                if(anbe.progress > anbe.cachedSpec.ticksInRampCancel) {
+                    anbe.craftingStage = 0;
+                    anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
+                    anbe.syncAndSave();
+                }
             }
         }
     }
@@ -453,7 +570,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public static AlchemicalNexusAnimSpec getAnimSpec(int pPowerLevel) {
-        return new AlchemicalNexusAnimSpec(130, 70, 8, 30, 30, 0.03125f);
+        return new AlchemicalNexusAnimSpec(130, 70, 8, 36, 30, 0.03125f, 120);
     }
 
     public boolean hasAllRecipeItemsForCurrentStage() {
@@ -486,12 +603,27 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return input;
     }
 
+    protected void craftItem() {
+        SimpleContainer contentsOfOutputSlots = getContentsOfOutputSlots();
+        ItemStack alchemyObject = currentRecipe.getAlchemyObject();
+
+        contentsOfOutputSlots.addItem(alchemyObject.copy());
+
+        for(int i=SLOT_OUTPUT_START;i<SLOT_INPUT_START+SLOT_OUTPUT_COUNT;i++) {
+            itemHandler.setStackInSlot(i, contentsOfOutputSlots.getItem(i-SLOT_OUTPUT_START));
+        }
+    }
+
     protected void resetProgress() {
         progress = 0;
     }
 
     protected void incrementProgress() {
         progress++;
+    }
+
+    protected void decrementProgress() {
+        progress--;
     }
 
     ////////////////////
@@ -617,32 +749,33 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return this.animStage;
     }
 
+    public int getCraftingStage() {
+        return this.craftingStage;
+    }
+
     ////////////////////
     // VFX HANDLING
     ////////////////////
 
     public void handleAnimationDrivers() {
-        crystalAngle = (crystalAngle + crystalRotSpeed);// % (float)(Math.PI * 2);
-        itemAngle = (itemAngle + itemRotSpeed);// % (float)(Math.PI * 2);
+        crystalAngle = (crystalAngle + crystalRotSpeed) % 360f;
+        itemAngle = (itemAngle + itemRotSpeed) % (float)(Math.PI * 8);
 
         if(animStage == ANIM_STAGE_IDLE) {
             crystalRotSpeed = CRYSTAL_SPEED_MIN;
             itemRotSpeed = ITEM_SPEED_MIN;
             itemScale = ITEM_SCALE_START;
         }
-        else if(animStage == ANIM_STAGE_RAMP_SPEEDUP) {
+        else if(animStage == ANIM_STAGE_RAMP_SPEEDUP ||
+                animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP ||
+                animStage == ANIM_STAGE_CANCEL_SPEEDUP ||
+                animStage == ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP ||
+                animStage == ANIM_STAGE_CRAFTING_IDLE) {
             float timeInStage = (float)progress / (float)cachedSpec.ticksInRampSpeedup;
 
             crystalRotSpeed = MathUtils.lerpf(CRYSTAL_SPEED_MIN, CRYSTAL_SPEED_MAX, timeInStage);
             itemRotSpeed = MathUtils.lerpf(ITEM_SPEED_MIN, ITEM_SPEED_MAX, timeInStage);
             itemScale = MathUtils.lerpf(ITEM_SCALE_START, ITEM_SCALE_END, timeInStage);
-        }
-        else if(animStage == ANIM_STAGE_RAMP_CANCEL) {
-            float timeInStage = (float)progress / (float)cachedSpec.ticksInRampCancel;
-
-            crystalRotSpeed = MathUtils.lerpf(CRYSTAL_SPEED_MAX, CRYSTAL_SPEED_MIN, timeInStage);
-            itemRotSpeed = MathUtils.lerpf(ITEM_SPEED_MAX, ITEM_SPEED_MIN, timeInStage);
-            itemScale = MathUtils.lerpf(ITEM_SCALE_END, ITEM_SCALE_START, timeInStage);
         }
     }
 
@@ -674,7 +807,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     Vector3 pos = origin.add(CANDLE_PARTICLE_ORIGINS[i]);
 
                     level.addParticle(new MAParticleType(ParticleInit.GLOW.get())
-                            .setScale(0.06f).setMaxAge(10).setColor(15, 150, 135, 255),
+                            .setScale(0.06f).setMaxAge(10).setColor(135, 202, 195, 128),
                             pos.x, pos.y, pos.z,
                             0, 0.05f, 0);
 
@@ -689,12 +822,12 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
         //Glowing ring that the items turn into
         float ringPercent = 0f;
-        if(animStage == ANIM_STAGE_RAMP_SPEEDUP) {
+        if(animStage == ANIM_STAGE_RAMP_SPEEDUP || animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
             ringPercent = Math.min(1,Math.max(0, ((float) progress / (float) cachedSpec.ticksInRampSpeedup) * 6 - (ITEM_SCALE_START - 2)));
 
 
-        } else if(animStage == ANIM_STAGE_RAMP_BEAM ||
-                animStage == ANIM_STAGE_RAMP_CIRCLE ||
+        } else if(animStage == ANIM_STAGE_RAMP_CIRCLE ||
+                animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
                 animStage == ANIM_STAGE_SHLORPS ||
                 animStage == ANIM_STAGE_CRAFTING) {
             ringPercent = 1f;
@@ -713,17 +846,20 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
         //Sparky orb above the device
         float orbPercent = 0f;
-        if(animStage == ANIM_STAGE_RAMP_SPEEDUP) {
+        if(animStage == ANIM_STAGE_RAMP_SPEEDUP ||
+                animStage == ANIM_STAGE_CRAFTING_IDLE ||
+                animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
             orbPercent = (float) progress / (float) cachedSpec.ticksInRampSpeedup;
         }
-        else if(animStage == ANIM_STAGE_RAMP_BEAM ||
+        else if(animStage == ANIM_STAGE_RAMP_CRAFTING ||
                 animStage == ANIM_STAGE_RAMP_CIRCLE ||
+                animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
                 animStage == ANIM_STAGE_SHLORPS ||
                 animStage == ANIM_STAGE_CRAFTING) {
             orbPercent = 1f;
         }
 
-        if(orbPercent > 0) {
+        if(orbPercent > 0 || animStage == ANIM_STAGE_CRAFTING_IDLE) {
             if ((level.getGameTime() + 1) % 2 == 0) {
                 Vector3 pos = origin.add(new Vector3(0.5, 3.5, -0.5));
 
@@ -732,9 +868,13 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                 .setColor(22, 94, 69).setScale(0.2f + 2.2f * orbPercent).setMaxAge(30),
                         pos.x, pos.y, pos.z,
                         0, 0, 0);
+                level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setColor(128, 128, 128).setScale(0.1f + 0.3f * orbPercent).setMaxAge(20),
+                        pos.x, pos.y, pos.z,
+                        0, 0, 0);
 
                 //sparks
-                if ((level.getGameTime() + 1) % 2 == 0) {
+                if ((level.getGameTime() + 1) % 2 == 0 && animStage != ANIM_STAGE_CRAFTING_IDLE) {
                     for (int i = 0; i < r.nextInt(7); i++) {
                         Vec3 vector = new Vec3(r.nextFloat() - 0.5f, r.nextFloat() - 0.5f, r.nextFloat() - 0.5f).normalize();
                         final float speed = 0.08f;
@@ -744,6 +884,17 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                 vector.x * speed, vector.y * speed + (r.nextFloat() * 0.125f), vector.z * speed);
                     }
                 }
+            }
+        }
+
+        //Sparky blast during crafting
+        if(animStage == ANIM_STAGE_CRAFTING) {
+            Vector3 pos = new Vector3(getBlockPos()).add(new Vector3(0.5, 1.26, 0.5));
+            for(int i = 0; i < 20; ++i) {
+                double sx = (-0.5D + Math.random()) * 0.15D;
+                double sy = 0.03D + ((double)i / 20.0D) * 0.04D;
+                double sz = (-0.5D + Math.random()) * 0.15D;
+                this.getLevel().addParticle(new MAParticleType((ParticleType)ParticleInit.BLUE_SPARKLE_GRAVITY.get()), pos.x, pos.y, pos.z, sx, sy, sz);
             }
         }
     }

@@ -76,7 +76,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 //ingredients
                 {
                     int i=0;
-                    for (ItemStack is : menu.getStage(0).componentItems) {
+                    for (ItemStack is : menu.getStage(menu.blockEntity.getCraftingStage()).componentItems) {
                         pGuiGraphics.renderItem(is, x + 22, y + 8 + (i * 18));
                         i++;
                     }
@@ -86,7 +86,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 //materia
                 {
                     int i=0;
-                    for (ItemStack is : menu.getStage(0).componentMateria) {
+                    for (ItemStack is : menu.getStage(menu.blockEntity.getCraftingStage()).componentMateria) {
                         pGuiGraphics.renderItem(is, x + 44, y + 8 + (i * 18));
                         pGuiGraphics.renderItemDecorations(font, is, x + 44, y + 8 + (i * 18));
                         i++;

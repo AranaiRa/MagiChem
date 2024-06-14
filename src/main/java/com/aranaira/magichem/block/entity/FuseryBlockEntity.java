@@ -449,8 +449,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                         pPos.getY() + mid.y,
                         pPos.getZ() + mid.z + offsets[loopingTime / 2].y);
 
-                Vector2f butt = offsets[loopingTime / 2];
-
                 pLevel.addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
                                 .setScale(0.0875f).setMaxAge(72)
                                 .setMover(new ParticleLerpMover(pos.x, pos.y, pos.z, pos.x, pos.y + 1.375, pos.z))

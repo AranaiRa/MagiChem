@@ -38,7 +38,7 @@
         { "item": "magichem:admixture_demon", "count": 60 }
       ],
       "components": [
-        { "item": "minecraft:crimson_fungus" }
+        { "item": "minecraft:netherite_sword" }
       ]
     }
   ]

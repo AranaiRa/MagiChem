@@ -102,7 +102,7 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
     }
 
     public int getCurrentStageID() {
-        return data.get(AlchemicalNexusBlockEntity.DATA_CRAFTING_STAGE);
+        return blockEntity.getCraftingStage();//data.get(AlchemicalNexusBlockEntity.DATA_CRAFTING_STAGE);
     }
 
     public NonNullList<InfusionStage> getAllStages() {

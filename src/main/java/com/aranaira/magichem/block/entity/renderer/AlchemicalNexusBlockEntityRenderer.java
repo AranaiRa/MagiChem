@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity.renderer;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
+import com.aranaira.magichem.foundation.AlchemicalNexusAnimSpec;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.items.ItemInit;
@@ -44,6 +45,9 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
     private final ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 
     public static final float ITEM_HOVER_RADIUS = 0.5f;
+
+    public static final int
+            CIRCLE_1_ROTATION_PERIOD = 200, CIRCLE_2_ROTATION_PERIOD = 300, CIRCLE_3_ROTATION_PERIOD = 400, CIRCLE_4_ROTATION_PERIOD = 500, CIRCLE_5_ROTATION_PERIOD = 600;
 
     public AlchemicalNexusBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
@@ -146,10 +150,10 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
         pPoseStack.pushPose();
 
-        float loopingTime = ((world.getGameTime() + pPartialTick) % (pBlockEntity.CRYSTAL_BOB_PERIOD * 20)) / pBlockEntity.CRYSTAL_BOB_PERIOD;
+        float loopingTime = ((world.getGameTime() + pPartialTick) % (AlchemicalNexusBlockEntity.CRYSTAL_BOB_PERIOD * 20)) / AlchemicalNexusBlockEntity.CRYSTAL_BOB_PERIOD;
         float height = (float)((Math.sin(loopingTime * Math.PI) + 1.0) * 0.5);
-        float heightOffsetCrystal = pBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * height;
-        float heightOffsetMark    = pBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * (1 - height);
+        float heightOffsetCrystal = AlchemicalNexusBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * height;
+        float heightOffsetMark    = AlchemicalNexusBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * (1 - height);
 
         pPoseStack.translate(0.5f, 1.375f + heightOffsetCrystal, 0.5f);
         pPoseStack.mulPose(Axis.YP.rotationDegrees((pBlockEntity.crystalAngle + (pPartialTick * pBlockEntity.crystalRotSpeed))));
@@ -214,12 +218,14 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
         float percent = 0f;
         int animStage = pBlockEntity.getAnimStage();
 
-        if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_BEAM) {
+        if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING) {
             percent = (float)pBlockEntity.getProgress() / (float)AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel()).ticksInRampBeam;
         }
-        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CIRCLE ||
-                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_SHLORPS ||
-                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING) {
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CRAFTING ||
+                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CRAFTING_ADVANCED) {
+            percent = 1 - ((float)pBlockEntity.getProgress() / (float)AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel()).ticksInRampBeam);
+        }
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING) {
             percent = 1f;
         }
 
@@ -239,14 +245,176 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
     }
 
     private void renderCircle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        float percentFill = 0f;
+        int animStage = pBlockEntity.getAnimStage();
+        boolean doAll = false;
+        boolean doNext = true;
+        final TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
+
+        if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CIRCLE) {
+            AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
+            percentFill = (float)(pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle;
+        }
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CIRCLE) {
+            AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
+            percentFill = 1 - ((float)(pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
+        }
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
+            AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
+            percentFill = ((float)(pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
+        }
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CRAFTING_CIRCLE) {
+            AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
+            percentFill = 1 - ((float)(pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
+            doAll = true;
+        }
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE ||
+                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
+            percentFill = 1;
+            doNext = false;
+        }
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_SHLORPS ||
+                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING ||
+                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING ||
+                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CRAFTING ||
+                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CRAFTING_ADVANCED) {
+            percentFill = 1;
+        }
+
+        if(percentFill > 0) {
+            float previousCircles = doAll ? percentFill : 1f;
+            int craftingStage = pBlockEntity.getCraftingStage();
+
+            if(craftingStage == 0) {
+                renderStage1Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, percentFill, texture);
+            }
+            else if(craftingStage == 1) {
+                renderStage1Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                if(doNext) renderStage2Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, percentFill, texture);
+            }
+            else if(craftingStage == 2) {
+                renderStage1Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                renderStage2Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                if(doNext) renderStage3Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, percentFill, texture);
+            }
+            else if(craftingStage == 3) {
+                renderStage1Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                renderStage2Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                renderStage3Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                if(doNext) renderStage4Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, percentFill, texture);
+            }
+            else if(craftingStage == 4) {
+                renderStage1Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                renderStage2Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                renderStage3Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                renderStage4Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, previousCircles, texture);
+                if(doNext) renderStage5Circle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, percentFill, texture);
+            }
+        }
+    }
+
+    private void renderStage1Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
-        float rotation = 0;//(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 200) / 200) * (float)Math.PI * 2; //do rotation over time here
-        float drawLerp = Math.min((((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 50) / 40), 1);
-        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
+        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_1_ROTATION_PERIOD) / CIRCLE_1_ROTATION_PERIOD) * (float)Math.PI * 2;
 
         RenderUtils.generateMagicCircleRing(center,
-                3, 3.75f, 0.375f, rotation, texture,
-                new Vec2(0,5.5f), new Vec2(12, 8.5f), 0.75f,
-                drawLerp, pPoseStack, pBuffer, pPackedLight);
+                3, 0.9375f, 0.125f, rotation + (float)Math.PI, pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center,
+                6, 1.375f, 0.375f, rotation, pTexture,
+                new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+    }
+
+    private void renderStage2Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
+        Vector3 center = new Vector3(0.5, 3.5, 0.5);
+        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_2_ROTATION_PERIOD) / CIRCLE_2_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.125, 0)),
+                12, 1.5f, 0.125f, -rotation + (float)Math.PI, pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -2.53125, 0)),
+                5, 1.0f, 0.1875f, -rotation + (float)Math.PI, pTexture,
+                new Vec2(0, 3f), new Vec2(12, 4.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+    }
+
+    private void renderStage3Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
+        Vector3 center = new Vector3(0.5, 3.5, 0.5);
+        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_3_ROTATION_PERIOD) / CIRCLE_3_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.28125, 0)),
+                4, 2.625f, 0.375f, rotation, pTexture,
+                new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.21875, 0)),
+                4, 2.625f, 0.375f, rotation + (float)(Math.PI / 4), pTexture,
+                new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -2.625, 0)),
+                5, 1.0f, 0.125f, rotation, pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+    }
+
+    private void renderStage4Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
+        Vector3 center = new Vector3(0.5, 3.5, 0.5);
+        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_4_ROTATION_PERIOD) / CIRCLE_4_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.375, 0)),
+                12, 2.825f, 0.125f, -rotation + (float)(Math.PI / 2), pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.375, 0)),
+                12, 3.075f, 0.1875f, -rotation + (float)(Math.PI / 2) * 3, pTexture,
+                new Vec2(0, 3f), new Vec2(12, 4.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.375, 0)),
+                12, 3.2625f, 0.125f, -rotation + (float)(Math.PI / 2) * 2, pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+    }
+
+    private void renderStage5Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
+        Vector3 center = new Vector3(0.5, 3.5, 0.5);
+        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_5_ROTATION_PERIOD) / CIRCLE_5_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -0.375, 0)),
+                6, 0.8f, 0.125f, rotation + (float)(Math.PI / 4), pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -0.75, 0)),
+                5, 0.6625f, 0.125f, rotation + (float)(Math.PI / 2), pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -1.125, 0)),
+                4, 0.525f, 0.125f, rotation + (float)(Math.PI / 4) * 3, pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -3.375f, 0)),
+                12, 1.825f, 0.125f, rotation + (float)(Math.PI / 2), pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -3.375f, 0)),
+                12, 2.075f, 0.1875f, rotation + (float)(Math.PI / 2) * 3, pTexture,
+                new Vec2(0, 3f), new Vec2(12, 4.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -3.375f, 0)),
+                12, 2.2625f, 0.125f, rotation + (float)(Math.PI / 2) * 2, pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
     }
 }
