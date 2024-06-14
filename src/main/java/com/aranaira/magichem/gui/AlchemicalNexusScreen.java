@@ -36,7 +36,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
             PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102,
             SLURRY_X = 8, SLURRY_Y = 23, SLURRY_W = 8, SLURRY_H = 73,
-            STAGE_INDICATOR_U = 28, STAGE_INDICATOR_V = 230, STAGE_INDICATOR_W = 10, STAGE_INDICATOR_W_END = 4, STAGE_INDICATOR_H = 4;
+            STAGE_INDICATOR_U = 108, STAGE_INDICATOR_V = 238, STAGE_INDICATOR_W = 12, STAGE_INDICATOR_W_END = 6, STAGE_INDICATOR_H = 9;
 
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
@@ -130,18 +130,18 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         int count = menu.getAllStages().size();
 
         if(count > 0) {
-            int width = 4 + (count - 1) * 10;
+            int width = STAGE_INDICATOR_W_END + (count - 1) * STAGE_INDICATOR_W;
             int x = 115 + (27 - width / 2);
             int y = 29;
 
             for(int i=0; i<count; i++) {
 
-                int activeShift = i <= menu.getCurrentStageID() ? 4 : 0;
+                int activeShift = i <= menu.getCurrentStageID() ? STAGE_INDICATOR_H : 0;
 
                 if(i == count - 1)
-                    pGuiGraphics.blit(TEXTURE, pX + x + i * 10, pY + y, STAGE_INDICATOR_U, STAGE_INDICATOR_V + activeShift, STAGE_INDICATOR_W_END, STAGE_INDICATOR_H, 256, 256);
+                    pGuiGraphics.blit(TEXTURE, pX + x + i * STAGE_INDICATOR_W, pY + y, STAGE_INDICATOR_U, STAGE_INDICATOR_V + activeShift, STAGE_INDICATOR_W_END, STAGE_INDICATOR_H, 256, 256);
                 else
-                    pGuiGraphics.blit(TEXTURE, pX + x + i * 10, pY + y, STAGE_INDICATOR_U, STAGE_INDICATOR_V + activeShift, STAGE_INDICATOR_W, STAGE_INDICATOR_H, 256, 256);
+                    pGuiGraphics.blit(TEXTURE, pX + x + i * STAGE_INDICATOR_W, pY + y, STAGE_INDICATOR_U, STAGE_INDICATOR_V + activeShift, STAGE_INDICATOR_W, STAGE_INDICATOR_H, 256, 256);
             }
         }
     }
