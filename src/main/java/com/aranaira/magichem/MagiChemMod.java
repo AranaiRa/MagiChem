@@ -92,6 +92,7 @@ public class MagiChemMod
         event.getRegistry().addGuidebookPath(new ResourceLocation(MODID, "guide"));
 
         event.getRegistry().registerGuidebookCategory("magichem", new ResourceLocation(MagiChemMod.MODID, "materia_vessel"));
+        event.getRegistry().registerGuidebookCategory("magichem_wonders", new ResourceLocation(MagiChemMod.MODID, "sublimation_primer"));
 
         MnAPlugin.register();
     }
