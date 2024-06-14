@@ -2044,5 +2044,37 @@
       }
     ]
   },
+  "Occulted Cinder": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Occulted Cinder"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The curious result of suppressing the cinders of a campfire with Admixture of Cold until only its Light remains.\n\nAn "
+          },
+          {
+            "text": "Occulted Cinder",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can't be seen, touched, or quenched, but casts light as though it were an invisible lantern."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/occulted_cinder"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

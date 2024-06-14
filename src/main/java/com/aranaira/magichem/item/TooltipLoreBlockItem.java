@@ -86,6 +86,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.OCCULTED_CINDER.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.occultedcinder")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

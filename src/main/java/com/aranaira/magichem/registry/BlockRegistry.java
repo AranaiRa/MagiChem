@@ -139,6 +139,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> OCCULTED_CINDER = registerBlock("occulted_cinder",
+            () -> new OccultedCinderBlock(BlockBehaviour.Properties.of()
+                    .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false), false)
+    );
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

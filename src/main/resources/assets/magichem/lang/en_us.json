@@ -54,6 +54,7 @@
   "block.magichem.experience_exchanger": "Experience Exchanger",
   "block.magichem.alchemical_nexus": "Alchemical Nexus",
   "block.magichem.alchemical_nexus_router": "Alchemical Nexus",
+  "block.magichem.occulted_cinder": "Occulted Cinder",
 
   "academic_slurry_fluid_type": "Academic Slurry",
   "smoke_fluid_type": "Smoke",
@@ -287,6 +288,7 @@
   "tooltip.magichem.magiccircle": "The heart of a device that uses an alchemical circle.",
   "tooltip.magichem.gasbucket": "A simple spell spoken over this bucket keeps the vapor inside from escaping.",
   "tooltip.magichem.sublimationprimer": "Used to select a recipe for the Ritual of the Balanced Scales.",
+  "tooltip.magichem.occultedcinder": "The glow of a flame excised from its searing heat. Can be used as an invisible light source.",
 
   "tooltip.magichem.circlepower": "Uses mystical reagents to generate energy.",
   "tooltip.magichem.powerreagent": "Used to generate FE.",
@@ -487,7 +489,8 @@
   "magichem:materia.description" : "Distill and extract any dram of materia from an Alembic",
   "magichem:power_spike.description" : "Craft a Power Spike to transfer energy from the Circle of Power",
 
-  "mechanic.mna:magichem": "Alchemy",
+  "mechanic.mna:magichem": "Alchemical Theory",
+  "mechanic.mna:magichem_wonders": "Alchemical Wonders",
 
   "jei.magichem.distillation": "Alchemical Distillation",
   "jei.magichem.fabrication": "Alchemical Fabrication",

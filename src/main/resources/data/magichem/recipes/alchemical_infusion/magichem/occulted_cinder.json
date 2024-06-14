@@ -1,0 +1,24 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:occulted_cinder"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:torch" },
+        { "item": "minecraft:campfire" },
+        { "item": "mna:bone_ash" },
+        { "item": "minecraft:campfire" },
+        { "item": "minecraft:torch" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_light", "count": 45 },
+        { "item": "magichem:admixture_cold", "count": 21 }
+      ]
+    }
+  ]
+}
