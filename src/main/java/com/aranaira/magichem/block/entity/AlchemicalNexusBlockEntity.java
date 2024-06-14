@@ -69,7 +69,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected ContainerData data;
     protected AlchemicalNexusAnimSpec cachedSpec;
     protected int
-        progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0;
+        progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
     protected boolean isStalled = false;
     protected Random r = new Random();
 
@@ -78,8 +78,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             SLOT_COUNT = 17,
             SLOT_MARKS = 0, SLOT_PROCESSING = 1, SLOT_RECIPE = 2,
             SLOT_INPUT_START = 3, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT = 9,
-            DATA_COUNT = 4,
-            DATA_PROGRESS = 0, DATA_ANIM_STAGE = 1, DATA_CRAFTING_STAGE = 2, DATA_POWER_LEVEL = 3,
+            DATA_COUNT = 5,
+            DATA_PROGRESS = 0, DATA_ANIM_STAGE = 1, DATA_CRAFTING_STAGE = 2, DATA_POWER_LEVEL = 3, DATA_FLUID_NEEDED = 4,
             ANIM_STAGE_IDLE = 0,
             ANIM_STAGE_SHLORPS = 1, ANIM_STAGE_CRAFTING = 2, ANIM_STAGE_CRAFTING_IDLE = 3,
             ANIM_STAGE_RAMP_SPEEDUP = 11, ANIM_STAGE_RAMP_CIRCLE = 12, ANIM_STAGE_RAMP_CRAFTING = 13, ANIM_STAGE_RAMP_CRAFTING_SPEEDUP = 14, ANIM_STAGE_RAMP_CRAFTING_CIRCLE = 15,
@@ -103,9 +103,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
             protected void onContentsChanged(int slot) {
-                if(slot == SLOT_RECIPE)
+                if(slot == SLOT_RECIPE) {
                     currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(level, getStackInSlot(SLOT_RECIPE));
-                setChanged();
+                    setChanged();
+                }
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
                     isStalled = false;
                 }
@@ -140,6 +141,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     case DATA_ANIM_STAGE -> animStage;
                     case DATA_CRAFTING_STAGE -> craftingStage;
                     case DATA_POWER_LEVEL -> powerLevel;
+                    case DATA_FLUID_NEEDED -> remainingFluidForSatisfaction;
                     default -> -1;
                 };
             }
@@ -151,6 +153,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     case DATA_ANIM_STAGE -> AlchemicalNexusBlockEntity.this.animStage = pValue;
                     case DATA_CRAFTING_STAGE -> AlchemicalNexusBlockEntity.this.craftingStage = pValue;
                     case DATA_POWER_LEVEL -> AlchemicalNexusBlockEntity.this.powerLevel = pValue;
+                    case DATA_FLUID_NEEDED -> AlchemicalNexusBlockEntity.this.remainingFluidForSatisfaction = pValue;
                 }
             }
 
@@ -196,6 +199,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("animationStage", this.animStage);
+        nbt.putInt("craftingStage", this.craftingStage);
+        nbt.putInt("remainingFluidForSatisfaction", this.remainingFluidForSatisfaction);
+        nbt.putInt("powerLevel", this.powerLevel);
         nbt.putInt("fluidContents", 0);
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
@@ -209,6 +215,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         animStage = nbt.getInt("animationStage");
+        craftingStage = nbt.getInt("craftingStage");
+        remainingFluidForSatisfaction = nbt.getInt("remainingFluidForSatisfaction");
+        powerLevel = nbt.getInt("powerLevel");
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -222,6 +231,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("animationStage", this.animStage);
+        nbt.putInt("craftingStage", this.craftingStage);
+        nbt.putInt("remainingFluidForSatisfaction", this.remainingFluidForSatisfaction);
+        nbt.putInt("powerLevel", this.powerLevel);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -261,9 +273,13 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 anbe.handleAnimationDrivers();
                 anbe.spawnParticles();
             }
+            if(!anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty() && anbe.currentRecipe == null) {
+                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
+                anbe.syncAndSave();
+            }
 
             //Temporary recipe setter
-            if(anbe.currentRecipe == null) {
+            if(anbe.currentRecipe == null && !pLevel.isClientSide()) {
                 anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, AlchemicalInfusionRecipe.getAllOutputs().get(0));
                 anbe.itemHandler.setStackInSlot(SLOT_RECIPE, anbe.currentRecipe.getAlchemyObject());
                 anbe.syncAndSave();
@@ -273,13 +289,16 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 //Check if all the items are present
                 if(anbe.hasAllRecipeItemsForCurrentStage()) {
                     if(anbe.getContentsOfOutputSlots().canAddItem(anbe.currentRecipe.getAlchemyObject())) {
+                        int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
+                        int fluidCost = experienceCost * Config.fluidPerXPPoint;
+
                         anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
                         anbe.cacheAnimSpec();
+                        anbe.remainingFluidForSatisfaction = fluidCost;
                         anbe.syncAndSave();
                     }
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_RAMP_SPEEDUP) {
                 anbe.incrementProgress();
 
@@ -293,7 +312,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_CANCEL_SPEEDUP) {
                 anbe.decrementProgress();
 
@@ -303,21 +321,28 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_RAMP_CIRCLE) {
                 anbe.incrementProgress();
 
                 //check for container item in the processing slot
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
-                    anbe.resetProgress();
-                    for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++)
-                        anbe.itemHandler.getStackInSlot(i).shrink(1);
-                    anbe.animStage = ANIM_STAGE_SHLORPS;
-                    anbe.syncAndSave();
+                    //check to see if we have enough experience
+                    anbe.progress = anbe.cachedSpec.ticksInRampCircle;
+                    int amountInTank = anbe.getFluidInTank(0).getAmount();
+
+                    if(anbe.remainingFluidForSatisfaction <= 0) {
+                        anbe.resetProgress();
+                        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++)
+                            anbe.itemHandler.getStackInSlot(i).shrink(1);
+                        anbe.animStage = ANIM_STAGE_SHLORPS;
+                        anbe.syncAndSave();
+                    } else if(amountInTank > 0) {
+                        anbe.remainingFluidForSatisfaction -= anbe.drain(Math.min(amountInTank, anbe.remainingFluidForSatisfaction), FluidAction.EXECUTE).getAmount();
+                        anbe.syncAndSave();
+                    }
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CIRCLE) {
                 anbe.incrementProgress();
 
@@ -327,8 +352,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
-            else if(anbe.animStage == ANIM_STAGE_SHLORPS) {
+            else if(anbe.animStage == ANIM_STAGE_SHLORPS && !pLevel.isClientSide()) {
                 if(pLevel.getGameTime() % anbe.cachedSpec.ticksBetweenShlorpPulls == 0) {
                     NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> marks = anbe.getMarkedEntitiesAndLocations();
                     NonNullList<MateriaItem> outstanding = anbe.getDemandedMateriaNotInTransit();
@@ -359,6 +383,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                     ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pLevel);
                                     se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 
+                                    pair.getFirst().drain(amount);
                                     se.configure(
                                             spawnPos,
                                             origin, tangent,
@@ -386,7 +411,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING) {
                 anbe.incrementProgress();
 
@@ -396,7 +420,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_CRAFTING) {
                 anbe.incrementProgress();
 
@@ -404,6 +427,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     //If there's another stage, move to that
                     if(anbe.currentRecipe.getStages(false).size() > (anbe.craftingStage + 1)) {
                         anbe.craftingStage++;
+                        int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
+                        int fluidCost = experienceCost * Config.fluidPerXPPoint;
+
+                        anbe.remainingFluidForSatisfaction = fluidCost;
                         anbe.animStage = ANIM_STAGE_CRAFTING_IDLE;
                     }
                     //Otherwise, we're done
@@ -418,7 +445,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING) {
                 anbe.incrementProgress();
 
@@ -429,7 +455,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_ADVANCED) {
                 anbe.incrementProgress();
 
@@ -439,7 +464,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_CRAFTING_IDLE) {
                 if(anbe.getProgress() > 0)
                     anbe.decrementProgress();
@@ -451,7 +475,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
                 anbe.incrementProgress();
 
@@ -463,7 +486,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP) {
                 anbe.decrementProgress();
 
@@ -473,21 +495,27 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
                 anbe.incrementProgress();
 
                 //check for container item in the processing slot
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
-                    anbe.resetProgress();
-                    for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++)
-                        anbe.itemHandler.getStackInSlot(i).shrink(1);
-                    anbe.animStage = ANIM_STAGE_SHLORPS;
-                    anbe.syncAndSave();
+                    int amountInTank = anbe.getFluidInTank(0).getAmount();
+
+                    if(anbe.remainingFluidForSatisfaction <= 0) {
+                        anbe.remainingFluidForSatisfaction = 0;
+                        anbe.resetProgress();
+                        for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++)
+                            anbe.itemHandler.getStackInSlot(i).shrink(1);
+                        anbe.animStage = ANIM_STAGE_SHLORPS;
+                        anbe.syncAndSave();
+                    } else if(amountInTank > 0) {
+                        anbe.remainingFluidForSatisfaction -= anbe.drain(Math.min(amountInTank, anbe.remainingFluidForSatisfaction), FluidAction.EXECUTE).getAmount();
+                        anbe.syncAndSave();
+                    }
                 }
             }
-
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_CIRCLE) {
                 anbe.incrementProgress();
 
@@ -601,6 +629,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         }
 
         return input;
+    }
+
+    public static int getBaseExperienceCostPerStage(int pPowerLevel) {
+        return 10;
     }
 
     protected void craftItem() {

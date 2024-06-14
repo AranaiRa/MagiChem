@@ -253,19 +253,19 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
         if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CIRCLE) {
             AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
-            percentFill = (float)(pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle;
+            percentFill = (pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle;
         }
         else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CIRCLE) {
             AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
-            percentFill = 1 - ((float)(pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
+            percentFill = 1 - ((pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
         }
         else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
             AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
-            percentFill = ((float)(pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
+            percentFill = (pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle;
         }
         else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CRAFTING_CIRCLE) {
             AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
-            percentFill = 1 - ((float)(pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
+            percentFill = 1 - ((pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
             doAll = true;
         }
         else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE ||
@@ -366,6 +366,7 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
     private void renderStage4Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
         float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_4_ROTATION_PERIOD) / CIRCLE_4_ROTATION_PERIOD) * (float)Math.PI * 2;
+        float rotation5 = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_5_ROTATION_PERIOD) / CIRCLE_5_ROTATION_PERIOD) * (float)Math.PI * 2;
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.375, 0)),
                 12, 2.825f, 0.125f, -rotation + (float)(Math.PI / 2), pTexture,
@@ -381,29 +382,29 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
                 12, 3.2625f, 0.125f, -rotation + (float)(Math.PI / 2) * 2, pTexture,
                 new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
                 pPercentFill, pPoseStack, pBuffer, pPackedLight);
+
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -3.375f, 0)),
+                12, 1.825f, 0.125f, rotation5 + (float)(Math.PI / 2), pTexture,
+                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
+                pPercentFill, pPoseStack, pBuffer, pPackedLight);
     }
 
     private void renderStage5Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
         float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_5_ROTATION_PERIOD) / CIRCLE_5_ROTATION_PERIOD) * (float)Math.PI * 2;
 
-        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -0.375, 0)),
-                6, 0.8f, 0.125f, rotation + (float)(Math.PI / 4), pTexture,
-                new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
-                pPercentFill, pPoseStack, pBuffer, pPackedLight);
-
-        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -0.75, 0)),
-                5, 0.6625f, 0.125f, rotation + (float)(Math.PI / 2), pTexture,
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -1.140625, 0)),
+                4, 1.75f, 0.125f, rotation + (float)(Math.PI / 3), pTexture,
                 new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
                 pPercentFill, pPoseStack, pBuffer, pPackedLight);
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -1.125, 0)),
-                4, 0.525f, 0.125f, rotation + (float)(Math.PI / 4) * 3, pTexture,
+                4, 1.75f, 0.125f, rotation + (float)(Math.PI / 3) * 2, pTexture,
                 new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
                 pPercentFill, pPoseStack, pBuffer, pPackedLight);
 
-        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -3.375f, 0)),
-                12, 1.825f, 0.125f, rotation + (float)(Math.PI / 2), pTexture,
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -1.109375, 0)),
+                4, 1.75f, 0.125f, rotation + (float)(Math.PI / 2) * 3, pTexture,
                 new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
                 pPercentFill, pPoseStack, pBuffer, pPackedLight);
 

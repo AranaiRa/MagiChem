@@ -38,6 +38,32 @@
         { "item": "magichem:admixture_demon", "count": 60 }
       ],
       "components": [
+        { "item": "minecraft:diamond_sword" }
+      ]
+    },
+    {
+      "experience": 0,
+      "materia": [
+        { "item": "magichem:essentia_fire", "count": 16 },
+        { "item": "magichem:essentia_wrought", "count": 120 }
+      ],
+      "components": [
+        { "item": "minecraft:netherite_sword" }
+      ]
+    },
+    {
+      "experience": 0,
+      "materia": [
+        { "item": "magichem:essentia_fire", "count": 180 },
+        { "item": "magichem:essentia_wrought", "count": 120 },
+        { "item": "magichem:admixture_demon", "count": 400 },
+        { "item": "magichem:admixture_instrument", "count": 120 },
+        { "item": "magichem:admixture_violence", "count": 200 }
+      ],
+      "components": [
+        { "item": "minecraft:netherite_sword" },
+        { "item": "minecraft:netherite_sword" },
+        { "item": "minecraft:netherite_sword" },
         { "item": "minecraft:netherite_sword" }
       ]
     }

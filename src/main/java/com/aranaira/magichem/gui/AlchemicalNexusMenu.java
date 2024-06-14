@@ -106,6 +106,8 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
     }
 
     public NonNullList<InfusionStage> getAllStages() {
+        if(blockEntity.getCurrentRecipe() == null)
+            return NonNullList.create();
         return blockEntity.getCurrentRecipe().getStages(false);
     }
 

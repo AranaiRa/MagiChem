@@ -150,7 +150,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue ALCHEMICAL_NEXUS_TANK_CAPACITY = BUILDER
             .comment("The amount of Academic Slurry, in mB, the Alchemical Nexus's internal tank can hold.")
-            .defineInRange("alchemicalNexusTankCapacity", 4000, 500, Integer.MAX_VALUE);
+            .defineInRange("alchemicalNexusTankCapacity", 12000, 500, Integer.MAX_VALUE);
 
     //----------------CIRCLE OF POWER
 
