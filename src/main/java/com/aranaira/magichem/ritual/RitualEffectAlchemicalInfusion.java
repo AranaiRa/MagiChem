@@ -2,12 +2,12 @@ package com.aranaira.magichem.ritual;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.entities.InfusionRitualVFXEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
+import com.aranaira.magichem.foundation.VesselData;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.registry.EntitiesRegistry;
-import com.mna.api.particles.MAParticleType;
-import com.mna.api.particles.ParticleInit;
 import com.mna.api.rituals.IRitualContext;
 import com.mna.api.rituals.RitualEffect;
 import com.mna.api.timing.DelayedEventQueue;
@@ -23,15 +23,11 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -44,18 +40,14 @@ import java.util.Random;
 public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
     private AlchemicalInfusionRitualRecipe recipe;
-    private int remainingTicks = Integer.MAX_VALUE;
-    private boolean hasPerformedStateCheck = false;
-    private boolean isDoingWindup = true;
-    private boolean isErrorState = false;
 
-    private static final int RITUAL_LIFESPAN = 160;
+    public static final int RITUAL_LIFESPAN = 160;
     private static final Vec3i
             OFFSET_N = new Vec3i(0, 0, -3),
             OFFSET_E = new Vec3i(3, 0, 0),
             OFFSET_S = new Vec3i(0, 0, 3),
             OFFSET_W = new Vec3i(-3, 0, 0);
-    private static final float
+    public static final float
             RITUAL_VFX_HEIGHT = 2.25f;
     private static final Random r = new Random();
 
@@ -69,7 +61,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         if (recipe == null)
             return null;
 
-        Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter());
+        Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter(), recipe);
         VesselData lv = vesselData.getFirst();
         VesselData rv = vesselData.getSecond();
 
@@ -96,15 +88,22 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
     @Override
     protected boolean matchReagents(IRitualContext context) {
-        Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter());
+        Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter(), recipe);
         VesselData lv = vesselData.getFirst();
         VesselData rv = vesselData.getSecond();
+
+        InfusionRitualVFXEntity irve = new InfusionRitualVFXEntity(EntitiesRegistry.INFUSION_RITUAL_VFX_ENTITY.get(), context.getLevel());
+        irve.configure(context.getCenter(), recipe);
+        irve.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY(), context.getCenter().getZ() + 0.5);
+        context.getLevel().addFreshEntity(irve);
 
         //Materia vessels missing at one or both spots, we should inform the player
         if (lv.vesselBlockEntity == null || rv.vesselBlockEntity == null) {
             context.getCaster().sendSystemMessage(Component.translatable("feedback.ritual.alchemical_infusion.novessel"));
-            isErrorState = true;
-            returnReagentsToWorld(context);
+
+            if(!context.getCaster().isCreative())
+                returnReagentsToWorld(context);
+
             return false;
         }
 
@@ -205,7 +204,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         context.getLevel().addFreshEntity(ie);
     }
 
-    public Pair<VesselData, VesselData> getVesselPositions(Level pLevel, BlockPos pRitualCenter) {
+    public static Pair<VesselData, VesselData> getVesselPositions(Level pLevel, BlockPos pRitualCenter, AlchemicalInfusionRitualRecipe pRecipe) {
         Vector3 originLeft = Vector3.zero();
         Vector3 tangentLeftVessel = Vector3.zero();
         Vector3 tangentLeftCenter = Vector3.zero();
@@ -228,23 +227,23 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
             if((leftIsRune && !rightIsRune) || (rightIsRune && !leftIsRune)) {
                 BlockEntity beLeft = pLevel.getBlockEntity(queryLeft);
+                originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                 if(beLeft != null) {
-                    originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                     tangentLeftVessel = new Vector3(0, 4, 0);
                     tangentLeftCenter = new Vector3(3, -1, -2);
                     mTypeLeft = ((AbstractMateriaStorageBlockEntity)beLeft).getMateriaType();
-                    mAmountLeft = mTypeLeft == recipe.getComponentMateria().getFirst().getItem() ?
-                            recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
+                    mAmountLeft = mTypeLeft == pRecipe.getComponentMateria().getFirst().getItem() ?
+                            pRecipe.getComponentMateria().getFirst().getCount() : pRecipe.getComponentMateria().getSecond().getCount();
                 }
 
                 BlockEntity beRight = pLevel.getBlockEntity(queryRight);
+                originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                 if(beRight != null) {
-                    originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                     tangentRightVessel = new Vector3(0, 4, 0);
                     tangentRightCenter = new Vector3(-3, -1, 2);
                     mTypeRight = ((AbstractMateriaStorageBlockEntity) beRight).getMateriaType();
-                    mAmountRight = mTypeRight == recipe.getComponentMateria().getFirst().getItem() ?
-                            recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
+                    mAmountRight = mTypeRight == pRecipe.getComponentMateria().getFirst().getItem() ?
+                            pRecipe.getComponentMateria().getFirst().getCount() : pRecipe.getComponentMateria().getSecond().getCount();
                 }
 
                 return new Pair<>(
@@ -264,23 +263,23 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
             if((leftIsRune && !rightIsRune) || (rightIsRune && !leftIsRune)) {
                 BlockEntity beLeft = pLevel.getBlockEntity(queryLeft);
+                originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                 if(beLeft != null) {
-                    originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                     tangentLeftVessel = new Vector3(0, 4, 0);
                     tangentLeftCenter = new Vector3(-2, -1, 3);
                     mTypeLeft = ((AbstractMateriaStorageBlockEntity) beLeft).getMateriaType();
-                    mAmountLeft = mTypeLeft == recipe.getComponentMateria().getFirst().getItem() ?
-                            recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
+                    mAmountLeft = mTypeLeft == pRecipe.getComponentMateria().getFirst().getItem() ?
+                            pRecipe.getComponentMateria().getFirst().getCount() : pRecipe.getComponentMateria().getSecond().getCount();
                 }
 
                 BlockEntity beRight = pLevel.getBlockEntity(queryRight);
+                originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                 if(beRight != null) {
-                    originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                     tangentRightVessel = new Vector3(0, 4, 0);
                     tangentRightCenter = new Vector3(2, -1, -3);
                     mTypeRight = ((AbstractMateriaStorageBlockEntity) beRight).getMateriaType();
-                    mAmountRight = mTypeRight == recipe.getComponentMateria().getFirst().getItem() ?
-                            recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
+                    mAmountRight = mTypeRight == pRecipe.getComponentMateria().getFirst().getItem() ?
+                            pRecipe.getComponentMateria().getFirst().getCount() : pRecipe.getComponentMateria().getSecond().getCount();
                 }
 
                 return new Pair<>(
@@ -300,23 +299,23 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
             if((leftIsRune && !rightIsRune) || (rightIsRune && !leftIsRune)) {
                 BlockEntity beLeft = pLevel.getBlockEntity(queryLeft);
+                originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                 if(beLeft != null) {
-                    originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                     tangentLeftVessel = new Vector3(0, 4, 0);
                     tangentLeftCenter = new Vector3(-3, -1, 2);
                     mTypeLeft = ((AbstractMateriaStorageBlockEntity) beLeft).getMateriaType();
-                    mAmountLeft = mTypeLeft == recipe.getComponentMateria().getFirst().getItem() ?
-                            recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
+                    mAmountLeft = mTypeLeft == pRecipe.getComponentMateria().getFirst().getItem() ?
+                            pRecipe.getComponentMateria().getFirst().getCount() : pRecipe.getComponentMateria().getSecond().getCount();
                 }
 
                 BlockEntity beRight = pLevel.getBlockEntity(queryRight);
+                originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                 if(beRight != null) {
-                    originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                     tangentRightVessel = new Vector3(0, 4, 0);
                     tangentRightCenter = new Vector3(3, -1, -2);
                     mTypeRight = ((AbstractMateriaStorageBlockEntity) beRight).getMateriaType();
-                    mAmountRight = mTypeRight == recipe.getComponentMateria().getFirst().getItem() ?
-                            recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
+                    mAmountRight = mTypeRight == pRecipe.getComponentMateria().getFirst().getItem() ?
+                            pRecipe.getComponentMateria().getFirst().getCount() : pRecipe.getComponentMateria().getSecond().getCount();
                 }
 
                 return new Pair<>(
@@ -336,23 +335,23 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
             if((leftIsRune && !rightIsRune) || (rightIsRune && !leftIsRune)) {
                 BlockEntity beLeft = pLevel.getBlockEntity(queryLeft);
+                originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                 if(beLeft != null) {
-                    originLeft = new Vector3(queryLeft).add(new Vector3(0.5, 0.5, 0.5));
                     tangentLeftVessel = new Vector3(0, 4, 0);
                     tangentLeftCenter = new Vector3(2, -1, -3);
                     mTypeLeft = ((AbstractMateriaStorageBlockEntity) beLeft).getMateriaType();
-                    mAmountLeft = mTypeLeft == recipe.getComponentMateria().getFirst().getItem() ?
-                            recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
+                    mAmountLeft = mTypeLeft == pRecipe.getComponentMateria().getFirst().getItem() ?
+                            pRecipe.getComponentMateria().getFirst().getCount() : pRecipe.getComponentMateria().getSecond().getCount();
                 }
 
                 BlockEntity beRight = pLevel.getBlockEntity(queryRight);
+                originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                 if(beRight != null) {
-                    originRight = new Vector3(queryRight).add(new Vector3(0.5, 0.5, 0.5));
                     tangentRightVessel = new Vector3(0, 4, 0);
                     tangentRightCenter = new Vector3(-2, -1, 3);
                     mTypeRight = ((AbstractMateriaStorageBlockEntity) beRight).getMateriaType();
-                    mAmountRight = mTypeRight == recipe.getComponentMateria().getFirst().getItem() ?
-                            recipe.getComponentMateria().getFirst().getCount() : recipe.getComponentMateria().getSecond().getCount();
+                    mAmountRight = mTypeRight == pRecipe.getComponentMateria().getFirst().getItem() ?
+                            pRecipe.getComponentMateria().getFirst().getCount() : pRecipe.getComponentMateria().getSecond().getCount();
                 }
 
                 return new Pair<>(
@@ -366,7 +365,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
     @Override
     protected boolean applyRitualEffect(IRitualContext context) {
-        Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter());
+        Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter(), recipe);
         VesselData lv = vesselData.getFirst();
         VesselData rv = vesselData.getSecond();
 
@@ -439,75 +438,6 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
     @Override
     public boolean spawnRitualParticles(IRitualContext context) {
-        Vec3 center = new Vec3(context.getCenter().getX() + 0.5D, context.getCenter().getY() + RITUAL_VFX_HEIGHT, context.getCenter().getZ() + 0.5D);
-
-        //putter about for a bit
-        if(isErrorState) {
-            Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter());
-            VesselData lv = vesselData.getFirst();
-            VesselData rv = vesselData.getSecond();
-
-            //left side
-            if(lv.vesselBlockEntity == null) {
-                context.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                        .setColor(128, 10, 10).setScale(1.5f),
-                        lv.origin.x, lv.origin.y, lv.origin.z,
-                        0, 0, 0);
-            }
-            //right side
-            if(rv.vesselBlockEntity == null) {
-                context.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                        .setColor(128, 10, 10).setScale(1.5f),
-                        rv.origin.x, rv.origin.y, rv.origin.z,
-                        0, 0, 0);
-            }
-        }
-        else if(isDoingWindup) {
-
-        }
-        //build up the visuals
-        else if(remainingTicks > 0) {
-            //center orb
-            float centerScale = (float)(RITUAL_LIFESPAN - remainingTicks) / (float)RITUAL_LIFESPAN;
-            context.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                    .setColor(22, 94, 69).setScale(0.2f + 2.2f * centerScale),
-                    center.x, center.y, center.z,
-                    0, 0, 0);
-
-            //sparks
-            if(remainingTicks % 10 == 0) {
-                for(int i=0; i<r.nextInt(7); i++) {
-                    Vec3 vector = new Vec3(r.nextFloat() - 0.5f, r.nextFloat() - 0.5f, r.nextFloat() - 0.5f).normalize();
-                    final float speed = 0.08f;
-                    context.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                    .setColor(36, 151, 110).setScale(0.2f).setGravity(0.02f).setMaxAge(30).setPhysics(true),
-                            center.x, center.y, center.z,
-                            vector.x * speed, vector.y * speed + (r.nextFloat() * 0.125f), vector.z * speed);
-                }
-            }
-
-            remainingTicks--;
-        }
-        //kaboom!
-        else {
-            for(int i=0; i<40; i++) {
-                Vec3 vector = new Vec3(r.nextFloat() - 0.5f, r.nextFloat() - 0.5f, r.nextFloat() - 0.5f).normalize();
-                float speed = 0.09f;
-
-                //big seafoam
-                context.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                .setColor(36, 151, 110).setScale(0.4f).setGravity(0.01f).setMaxAge(35).setPhysics(true),
-                        center.x, center.y, center.z,
-                        vector.x * speed, vector.y * speed + (r.nextFloat() * 0.125f), vector.z * speed);
-
-                //small white
-                speed = 0.12f;
-                context.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                .setColor(255, 255, 255).setScale(0.15f).setGravity(0.005f).setMaxAge(35).setPhysics(true),
-                        center.x, center.y, center.z,
-                        vector.x * speed, vector.y * speed + (r.nextFloat() * 0.125f), vector.z * speed);
-            }
-        }
         return true;
     }
 
@@ -537,28 +467,11 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         }
 
         context.replaceReagents(new ResourceLocation(MagiChemMod.MODID, "dynamic_infusion"), locations);
-        remainingTicks = Integer.MAX_VALUE;
-        isDoingWindup = true;
-        isErrorState = false;
 
         return true;
     }
 
-    private class VesselData {
-        public final AbstractMateriaStorageBlockEntity vesselBlockEntity;
-        public final Vector3 origin, tangentVessel, tangentCenter;
-        public final MateriaItem type;
-        public final int amount;
 
-        public VesselData(AbstractMateriaStorageBlockEntity pEntity, Vector3 pOrigin, Vector3 pTangentVessel, Vector3 pTangentCenter, MateriaItem pType, int pAmount) {
-            this.vesselBlockEntity = pEntity;
-            this.origin = pOrigin;
-            this.tangentVessel = pTangentVessel;
-            this.tangentCenter = pTangentCenter;
-            this.type = pType;
-            this.amount = pAmount;
-        }
-    }
 
     private class DelayDataOutputItem {
         Level level;

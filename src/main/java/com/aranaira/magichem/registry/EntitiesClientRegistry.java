@@ -1,5 +1,6 @@
 package com.aranaira.magichem.registry;
 
+import com.aranaira.magichem.entities.renderers.InfusionRitualVFXEntityRenderer;
 import com.aranaira.magichem.entities.renderers.ShlorpEntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.EntityType;
@@ -14,5 +15,6 @@ public class EntitiesClientRegistry {
     @OnlyIn(Dist.CLIENT)
     public static void registerEntityRenderers(FMLClientSetupEvent event) {
         EntityRenderers.register((EntityType)EntitiesRegistry.SHLORP_ENTITY.get(), ShlorpEntityRenderer::new);
+        EntityRenderers.register((EntityType)EntitiesRegistry.INFUSION_RITUAL_VFX_ENTITY.get(), InfusionRitualVFXEntityRenderer::new);
     }
 }
