@@ -131,11 +131,11 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
         return result;
     }
 
-    public static NonNullList<ItemStack> getAllOutputs() {
+    public static NonNullList<ItemStack> getAllOutputs(Level pLevel) {
         if(allPossibleOutputs.size() > 0)
             return allPossibleOutputs;
 
-        List<AlchemicalInfusionRecipe> allRecipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+        List<AlchemicalInfusionRecipe> allRecipes = pLevel.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
         for(AlchemicalInfusionRecipe airr : allRecipes) {
             allPossibleOutputs.add(airr.alchemyObject.copy());
         }

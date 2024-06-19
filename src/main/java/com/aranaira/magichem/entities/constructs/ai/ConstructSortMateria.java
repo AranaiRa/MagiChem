@@ -12,6 +12,7 @@ import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstruct;
+import com.mna.api.entities.construct.IConstructConstruction;
 import com.mna.api.entities.construct.ai.ConstructAITask;
 import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskAreaParameter;
@@ -146,7 +147,7 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
             if(stack != ItemStack.EMPTY) {
                 this.filter = (MateriaItem) stack.getItem();
 
-                int stackLimit = Math.min(2, construct.getConstructData().getAffinityScore(Affinity.ARCANE) * 4);
+                int stackLimit = Math.max(2, construct.getConstructData().getAffinityScore(Affinity.ARCANE) * 4);
                 int amountToShrink = Math.min(stackLimit, stack.getCount());
                 stack.shrink(amountToShrink);
                 this.materiaInTransit = new ItemStack(filter, amountToShrink);

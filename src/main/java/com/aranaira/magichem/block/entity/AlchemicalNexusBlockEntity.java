@@ -280,7 +280,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
             //Temporary recipe setter
             if(anbe.currentRecipe == null && !pLevel.isClientSide()) {
-                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, AlchemicalInfusionRecipe.getAllOutputs().get(0));
+                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, AlchemicalInfusionRecipe.getAllOutputs(pLevel).get(0));
                 anbe.itemHandler.setStackInSlot(SLOT_RECIPE, anbe.currentRecipe.getAlchemyObject());
                 anbe.syncAndSave();
             }

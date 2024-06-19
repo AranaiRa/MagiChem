@@ -6,11 +6,15 @@ import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 public class RecipeRegistry {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
@@ -31,5 +35,4 @@ public class RecipeRegistry {
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
     }
-
 }

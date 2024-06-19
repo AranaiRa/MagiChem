@@ -7,6 +7,7 @@ import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.ClientUtil;
 import com.mna.KeybindInit;
 import com.mna.items.base.IRadialInventorySelect;
 import com.mna.items.base.IRadialMenuItem;
@@ -17,8 +18,10 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -31,14 +34,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.util.NonNullLazy;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 public class SublimationPrimerItem extends Item implements IRadialInventorySelect {
+    private static Level level;
+
     public SublimationPrimerItem(Properties pProperties) {
         super(pProperties);
     }
@@ -78,20 +85,25 @@ public class SublimationPrimerItem extends Item implements IRadialInventorySelec
 
     @Override
     public int capacity() {
-        return AlchemicalInfusionRitualRecipe.getAllOutputs().size();
+        return 6;
     }
 
     @Override
     public void setIndex(ItemStack itemStack, int i) {
-        itemStack.getOrCreateTag().putInt("recipe", i);
+        if(FMLEnvironment.dist.isClient()) {
+            Level level = ClientUtil.tryGetClientLevel();
+
+            if(level != null) {
+                NonNullList<ItemStack> allOutputs = AlchemicalInfusionRitualRecipe.getAllOutputs(level);
+                String key = ForgeRegistries.ITEMS.getKey(allOutputs.get(i).getItem()).toString();
+                itemStack.getOrCreateTag().putString("recipe", key);
+            }
+        }
     }
 
     @Override
     public int getIndex(ItemStack itemStack) {
-        CompoundTag nbt = itemStack.getOrCreateTag();
-        if(nbt.contains("recipe"))
-            return nbt.getInt("recipe");
-        return -1;
+        return 0;
     }
 
     @Override

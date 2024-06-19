@@ -448,6 +448,9 @@
   "construct.magichem:collect_experience": "Collect Experience",
   "construct.magichem:study": "Study",
 
+  "gui.mna.codex_search.recipe.alchemical_infusion": "Alchemical Sublimation > ",
+  "gui.mna.codex_search.recipe.alchemical_infusion_ritual": "Ritual Sublimation > ",
+
   "gui.mna.parameter.clean_alchemical_apparatus.point": "What alchemical device should the construct clean using water in its tank?",
 
   "gui.mna.parameter.sort_materia.point": "What alchemical device should the construct remove materia from?",

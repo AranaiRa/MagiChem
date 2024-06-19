@@ -45,7 +45,7 @@ public class SublimationPrimerRadialSelect extends Screen {
         this.offhand = offhand;
         this.stackEquipped = this.getHandItem();
 
-        NonNullList<ItemStack> allOutputs = AlchemicalInfusionRitualRecipe.getAllOutputs();
+        NonNullList<ItemStack> allOutputs = AlchemicalInfusionRitualRecipe.getAllOutputs(mc.level);
         this.inventory = new ItemStackHandler(allOutputs.size());
         int i=0;
         for(ItemStack is : allOutputs) {

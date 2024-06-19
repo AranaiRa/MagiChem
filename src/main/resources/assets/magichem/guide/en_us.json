@@ -379,7 +379,7 @@
     "related_recipes": [
       {
         "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/iris_argenti"
+        "location": "magichem:alchemical_infusion_ritual/magichem/iris_argenti"
       },
       {
         "type": "crafting",
@@ -420,7 +420,7 @@
       },
       {
         "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/perfected_electrum"
+        "location": "magichem:alchemical_infusion_ritual/magichem/perfected_electrum"
       }
     ]
   },
@@ -699,7 +699,7 @@
     "related_recipes": [
       {
         "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/temp_focusing_catalyst"
+        "location": "magichem:alchemical_infusion_ritual/magichem/temp_focusing_catalyst"
       },
       {
         "type": "ritual",
@@ -1037,6 +1037,10 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/temp_actuator_earth"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/temp_actuator_air"
       }
     ]
   },
@@ -1692,7 +1696,7 @@
       },
       {
         "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/materia_vessel"
+        "location": "magichem:alchemical_infusion_ritual/magichem/materia_vessel"
       }
     ]
   },
@@ -2040,7 +2044,7 @@
       },
       {
         "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/materia_vessel"
+        "location": "magichem:alchemical_infusion_ritual/magichem/materia_vessel"
       }
     ]
   },
