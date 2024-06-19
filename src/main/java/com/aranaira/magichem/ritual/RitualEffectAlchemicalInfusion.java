@@ -416,22 +416,28 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         VesselData lv = pVesselData.getFirst();
         VesselData rv = pVesselData.getSecond();
         Vector3 centerPos = new Vector3(pContext.getCenter()).add(new Vector3(0.5, RITUAL_VFX_HEIGHT, 0.5));
+        boolean isFirstVessel;
 
         ShlorpEntity shlorpLeft = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pContext.getLevel());
+        isFirstVessel = lv.vesselBlockEntity.getMateriaType() == pVesselData.getFirst().type;
         shlorpLeft.setPos(new Vec3(lv.origin.x, lv.origin.y, lv.origin.z));
         shlorpLeft.configure(
                 lv.origin, Vector3.zero(), lv.tangentVessel,
                 centerPos, Vector3.zero(), lv.tangentCenter,
-                0.0175f, 0.03125f, 2 + Math.min(40, recipe.getComponentMateria().getFirst().getCount() ),
-                pVesselData.getFirst().type, pVesselData.getSecond().amount);
+                0.0175f, 0.03125f,
+                2 + Math.min(40, isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount),
+                isFirstVessel ? pVesselData.getFirst().type : pVesselData.getSecond().type,
+                isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount);
         pContext.getLevel().addFreshEntity(shlorpLeft);
 
         ShlorpEntity shlorpRight = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pContext.getLevel());
+        isFirstVessel = rv.vesselBlockEntity.getMateriaType() == pVesselData.getFirst().type;
         shlorpRight.setPos(new Vec3(rv.origin.x, rv.origin.y, rv.origin.z));
         shlorpRight.configure(
                 rv.origin, Vector3.zero(), rv.tangentVessel,
                 centerPos, Vector3.zero(), rv.tangentCenter,
-                0.0175f, 0.03125f, 2 + Math.min(40, recipe.getComponentMateria().getSecond().getCount() ),
+                0.0175f, 0.03125f,
+                2 + Math.min(40, isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount),
                 pVesselData.getSecond().type, pVesselData.getSecond().amount);
         pContext.getLevel().addFreshEntity(shlorpRight);
     }
