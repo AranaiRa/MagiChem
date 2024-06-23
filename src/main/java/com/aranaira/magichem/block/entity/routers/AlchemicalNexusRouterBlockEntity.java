@@ -101,7 +101,7 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.magichem.centrifuge");
+        return Component.translatable("block.magichem.alchemicalnexus");
     }
 
     @Override
@@ -239,11 +239,11 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
 
     @Override
     public int canAcceptStack(ItemStack pStack) {
-        return master.canAcceptStack(pStack);
+        return getMaster().canAcceptStack(pStack);
     }
 
     @Override
     public int insertStack(ItemStack pStack) {
-        return master.insertStack(pStack);
+        return getMaster().insertStack(pStack);
     }
 }

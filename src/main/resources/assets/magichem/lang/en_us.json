@@ -358,6 +358,8 @@
   "tooltip.magichem.gui.sublimationcost.part1": "Sublimation will cost ",
   "tooltip.magichem.gui.sublimationcost.part2": " of Academic Slurry over ",
   "tooltip.magichem.gui.sublimationcost.part3": " recipe stages.",
+  "tooltip.magichem.gui.shlorps.waiting": "Waiting...",
+  "tooltip.magichem.gui.shlorps.idle": "Idle",
 
   "tooltip.magichem.gui.eldrin.air": "Eldrin Power (Air)",
   "tooltip.magichem.gui.eldrin.arcane": "Eldrin Power (Arcane)",

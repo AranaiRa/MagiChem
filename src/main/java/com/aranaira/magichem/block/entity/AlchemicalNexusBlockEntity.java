@@ -213,6 +213,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         for(int i=0; i<satisfactionDemands.size(); i++) {
             nbt.putString("demandType"+i, ForgeRegistries.ITEMS.getKey(satisfactionDemands.get(i).getFirst()).toString());
             nbt.putInt("demandCount"+i, satisfactionDemands.get(i).getSecond());
+            nbt.putBoolean("demandTransit"+i, satisfactionDemands.get(i).getThird());
         }
 
         super.saveAdditional(nbt);
@@ -237,7 +238,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         for(int i=0; i<nbt.getInt("numberOfDemands"); i++) {
             Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("demandType"+i)));
             if(query instanceof MateriaItem mi)
-                satisfactionDemands.add(new Triplet<>(mi, nbt.getInt("demandCount"+i), false));
+                satisfactionDemands.add(new Triplet<>(
+                        mi,
+                        nbt.getInt("demandCount"+i),
+                        nbt.getBoolean("demandTransit"+i)
+                ));
         }
 
         doDeferredRecipeLinkages = true;
@@ -261,6 +266,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         for(int i=0; i<satisfactionDemands.size(); i++) {
             nbt.putString("demandType"+i, ForgeRegistries.ITEMS.getKey(satisfactionDemands.get(i).getFirst()).toString());
             nbt.putInt("demandCount"+i, satisfactionDemands.get(i).getSecond());
+            nbt.putBoolean("demandTransit"+i, satisfactionDemands.get(i).getThird());
         }
 
         return nbt;
@@ -366,15 +372,17 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.progress = anbe.cachedSpec.ticksInRampCircle;
                     int amountInTank = anbe.getFluidInTank(0).getAmount();
 
-                    if(anbe.remainingFluidForSatisfaction <= 0) {
-                        anbe.resetProgress();
-                        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++)
-                            anbe.itemHandler.getStackInSlot(i).shrink(1);
-                        anbe.animStage = ANIM_STAGE_SHLORPS;
-                        anbe.syncAndSave();
-                    } else if(amountInTank > 0) {
-                        anbe.remainingFluidForSatisfaction -= anbe.drain(Math.min(amountInTank, anbe.remainingFluidForSatisfaction), FluidAction.EXECUTE).getAmount();
-                        anbe.syncAndSave();
+                    if(!pLevel.isClientSide()) {
+                        if (anbe.remainingFluidForSatisfaction <= 0) {
+                            anbe.resetProgress();
+                            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++)
+                                anbe.itemHandler.getStackInSlot(i).shrink(1);
+                            anbe.animStage = ANIM_STAGE_SHLORPS;
+                            anbe.syncAndSave();
+                        } else if (amountInTank > 0) {
+                            anbe.remainingFluidForSatisfaction -= anbe.drain(Math.min(amountInTank, anbe.remainingFluidForSatisfaction), FluidAction.EXECUTE).getAmount();
+                            anbe.syncAndSave();
+                        }
                     }
                 }
             }
@@ -383,6 +391,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCancel) {
                     anbe.resetProgress();
+                    anbe.progress = anbe.cachedSpec.ticksInRampCancel;
                     anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
                     anbe.syncAndSave();
                 }
@@ -842,7 +851,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 animStage == ANIM_STAGE_CANCEL_SPEEDUP ||
                 animStage == ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP ||
                 animStage == ANIM_STAGE_CRAFTING_IDLE) {
-            float timeInStage = (float)progress / (float)cachedSpec.ticksInRampSpeedup;
+            float timeInStage = ((float)progress / (float)cachedSpec.ticksInRampSpeedup);
 
             crystalRotSpeed = MathUtils.lerpf(CRYSTAL_SPEED_MIN, CRYSTAL_SPEED_MAX, timeInStage);
             itemRotSpeed = MathUtils.lerpf(ITEM_SPEED_MIN, ITEM_SPEED_MAX, timeInStage);

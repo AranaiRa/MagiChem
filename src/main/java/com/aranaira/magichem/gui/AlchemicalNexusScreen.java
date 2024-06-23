@@ -340,26 +340,43 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             NonNullList<Triplet<MateriaItem, Integer, Boolean>> allMateriaDemands = menu.blockEntity.getAllMateriaDemands();
             NonNullList<ItemStack> componentMateria = menu.getCurrentRecipe().getStages(false).get(menu.getCurrentStageID()).componentMateria;
 
+            int animStage = menu.blockEntity.getAnimStage();
             if(i < componentMateria.size()) {
                 String name = componentMateria.get(i).getDisplayName().getString();
                 int required = componentMateria.get(i).getCount();
                 int outstanding = required;
-                for(Triplet<MateriaItem, Integer, Boolean> triplet : allMateriaDemands) {
-                    if(componentMateria.get(i).getItem() == triplet.getFirst()) {
+                for (Triplet<MateriaItem, Integer, Boolean> triplet : allMateriaDemands) {
+                    if (componentMateria.get(i).getItem() == triplet.getFirst()) {
                         outstanding = triplet.getSecond();
                     }
                 }
 
                 tooltipContents.clear();
                 tooltipContents.add(Component.empty()
-                        .append(Component.literal(name.substring(1,name.length()-1)))
+                        .append(Component.literal(name.substring(1, name.length() - 1)))
                 );
-                tooltipContents.add(Component.empty()
-                        .append(Component.literal(""+(required - outstanding)).withStyle(ChatFormatting.DARK_AQUA))
-                        .append(" of ").withStyle(ChatFormatting.DARK_GRAY)
-                        .append(Component.literal(""+required).withStyle(ChatFormatting.DARK_AQUA))
-                        .append(" provided").withStyle(ChatFormatting.DARK_GRAY)
-                );
+
+                if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_SHLORPS ||
+                   animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING ||
+                   animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING) {
+                    tooltipContents.add(Component.empty()
+                            .append(Component.literal("" + (required - outstanding)).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(" of ").withStyle(ChatFormatting.DARK_GRAY)
+                            .append(Component.literal("" + required).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(" provided").withStyle(ChatFormatting.DARK_GRAY)
+                    );
+                }
+                else if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE ||
+                         animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
+                    tooltipContents.add(Component.empty()
+                            .append(Component.translatable("tooltip.magichem.gui.shlorps.idle")).withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+                    );
+                }
+                else {
+                    tooltipContents.add(Component.empty()
+                            .append(Component.translatable("tooltip.magichem.gui.shlorps.waiting")).withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+                    );
+                }
             }
         }
 
