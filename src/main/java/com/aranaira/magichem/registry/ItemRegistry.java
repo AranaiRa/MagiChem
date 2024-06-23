@@ -99,7 +99,7 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
-            () -> new DebugOrbItem(new Item.Properties())
+            () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> DUMMY_PROCESS_FIXATION = ITEMS.register("dummy/process_fixation",

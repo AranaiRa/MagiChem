@@ -5,16 +5,14 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntit
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
 import com.aranaira.magichem.entities.ShlorpEntity;
-import com.aranaira.magichem.foundation.AlchemicalNexusAnimSpec;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.InfusionStage;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.AlchemicalNexusMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
@@ -31,12 +29,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -51,6 +51,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,7 +71,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected AlchemicalNexusAnimSpec cachedSpec;
     protected int
         progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
-    protected boolean isStalled = false;
+    protected boolean
+        isStalled = false, doDeferredRecipeLinkages = false;
     protected Random r = new Random();
 
     public static final int
@@ -136,7 +138,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
-                return switch(pIndex) {
+                return switch (pIndex) {
                     case DATA_PROGRESS -> progress;
                     case DATA_ANIM_STAGE -> animStage;
                     case DATA_CRAFTING_STAGE -> craftingStage;
@@ -206,6 +208,13 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
         });
+
+        nbt.putInt("numberOfDemands", satisfactionDemands.size());
+        for(int i=0; i<satisfactionDemands.size(); i++) {
+            nbt.putString("demandType"+i, ForgeRegistries.ITEMS.getKey(satisfactionDemands.get(i).getFirst()).toString());
+            nbt.putInt("demandCount"+i, satisfactionDemands.get(i).getSecond());
+        }
+
         super.saveAdditional(nbt);
     }
 
@@ -223,6 +232,15 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
         else
             containedSlurry = FluidStack.EMPTY;
+
+        satisfactionDemands.clear();
+        for(int i=0; i<nbt.getInt("numberOfDemands"); i++) {
+            Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("demandType"+i)));
+            if(query instanceof MateriaItem mi)
+                satisfactionDemands.add(new Triplet<>(mi, nbt.getInt("demandCount"+i), false));
+        }
+
+        doDeferredRecipeLinkages = true;
     }
 
     @Override
@@ -238,6 +256,13 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             nbt.putInt("fluidContents", 0);
         else
             nbt.putInt("fluidContents", containedSlurry.getAmount());
+
+        nbt.putInt("numberOfDemands", satisfactionDemands.size());
+        for(int i=0; i<satisfactionDemands.size(); i++) {
+            nbt.putString("demandType"+i, ForgeRegistries.ITEMS.getKey(satisfactionDemands.get(i).getFirst()).toString());
+            nbt.putInt("demandCount"+i, satisfactionDemands.get(i).getSecond());
+        }
+
         return nbt;
     }
 
@@ -273,29 +298,39 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 anbe.handleAnimationDrivers();
                 anbe.spawnParticles();
             }
-            if(!anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty() && anbe.currentRecipe == null) {
-                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
-                anbe.syncAndSave();
+            if(anbe.doDeferredRecipeLinkages) {
+                if (!anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty() && anbe.currentRecipe == null) {
+                    anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
+
+                    if(anbe.animStage != ANIM_STAGE_IDLE)
+                        anbe.cacheAnimSpec();
+
+                    anbe.syncAndSave();
+                }
             }
 
             //Temporary recipe setter
             if(anbe.currentRecipe == null && !pLevel.isClientSide()) {
-                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, AlchemicalInfusionRecipe.getAllOutputs(pLevel).get(0));
+                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, new ItemStack(ItemRegistry.CATALYST_CORE.get()));
                 anbe.itemHandler.setStackInSlot(SLOT_RECIPE, anbe.currentRecipe.getAlchemyObject());
                 anbe.syncAndSave();
             }
 
             if(anbe.animStage == ANIM_STAGE_IDLE) {
-                //Check if all the items are present
-                if(anbe.hasAllRecipeItemsForCurrentStage()) {
-                    if(anbe.getContentsOfOutputSlots().canAddItem(anbe.currentRecipe.getAlchemyObject())) {
-                        int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
-                        int fluidCost = experienceCost * Config.fluidPerXPPoint;
+                //Just sit here and do nothing if we have no recipe
+                if(anbe.currentRecipe != null)
+                {
+                    //Check if all the items are present
+                    if (anbe.hasAllRecipeItemsForCurrentStage()) {
+                        if (anbe.getContentsOfOutputSlots().canAddItem(anbe.currentRecipe.getAlchemyObject())) {
+                            int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
+                            int fluidCost = experienceCost * Config.fluidPerXPPoint;
 
-                        anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
-                        anbe.cacheAnimSpec();
-                        anbe.remainingFluidForSatisfaction = fluidCost;
-                        anbe.syncAndSave();
+                            anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
+                            anbe.cacheAnimSpec();
+                            anbe.remainingFluidForSatisfaction = fluidCost;
+                            anbe.syncAndSave();
+                        }
                     }
                 }
             }
@@ -357,7 +392,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> marks = anbe.getMarkedEntitiesAndLocations();
                     NonNullList<MateriaItem> outstanding = anbe.getDemandedMateriaNotInTransit();
 
-                    if (marks != null) {
+                    if (marks.size() >= 1) {
                         Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair = marks.get(anbe.shlorpIndex);
                         MateriaItem type = pair.getFirst().getMateriaType();
                         if (type != null) {
@@ -673,6 +708,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return items;
     }
 
+    public NonNullList<Triplet<MateriaItem, Integer, Boolean>> getAllMateriaDemands() {
+        return satisfactionDemands;
+    }
+
     ////////////////////
     // FLUID HANDLING
     ////////////////////
@@ -953,5 +992,15 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     @Override
     public void linkPluginsDeferred() {
 
+    }
+
+    ////////////////////
+    // SHLORP HANDLING
+    ////////////////////
+
+    @Override
+    public void satisfy(ItemStack pQuery) {
+        super.satisfy(pQuery);
+        syncAndSave();
     }
 }

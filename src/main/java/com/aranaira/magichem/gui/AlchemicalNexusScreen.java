@@ -7,6 +7,8 @@ import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.InfusionStage;
+import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -17,11 +19,13 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -104,16 +108,22 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             } else {
                 pGuiGraphics.renderItem(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_RECIPE), x + 80, y + 80);
 
-                pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 0.25f);
                 //ingredients
                 {
                     int i=0;
                     for (ItemStack is : menu.getStage(menu.blockEntity.getCraftingStage()).componentItems) {
+                        pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 0.25f);
                         pGuiGraphics.renderItem(is, x + 22, y + 8 + (i * 18));
+                        pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+                        //correction for blockitems
+                        if(is.getItem() instanceof BlockItem) {
+                            pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 22, y + 8 + (i * 18), x + 40, y + 26 + (i * 18), 0x40ffffff);
+                        }
+
                         i++;
                     }
                 }
-                pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
                 //materia
                 {
@@ -299,6 +309,58 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
                     .append(": ")
                     .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+        }
+
+        //Ingredients
+        if(pX >= x+21 && pX <= x+39 &&
+                pY >= y+7 && pY <= y+97) {
+            int i = (pY - (y+7)) / 18;
+            NonNullList<ItemStack> componentItems = menu.getStage(menu.getCurrentStageID()).componentItems;
+
+            if(i < componentItems.size()) {
+                ItemStack stackInSlot = menu.getItems().get(AlchemicalNexusBlockEntity.SLOT_INPUT_START + i + 35);
+
+                if(stackInSlot.isEmpty()) {
+                    String name = componentItems.get(i).getDisplayName().getString();
+
+                    tooltipContents.clear();
+                    tooltipContents.add(Component.empty()
+                            .append(Component.literal(name.substring(1,name.length()-1)).withStyle(ChatFormatting.DARK_GRAY))
+                    );
+                } else {
+                    super.renderTooltip(pGuiGraphics, pX, pY);
+                }
+            }
+        }
+
+        //Materia
+        if(pX >= x+43 && pX <= x+60 &&
+                pY >= y+7 && pY <= y+97) {
+            int i = (pY - (y+7)) / 18;
+            NonNullList<Triplet<MateriaItem, Integer, Boolean>> allMateriaDemands = menu.blockEntity.getAllMateriaDemands();
+            NonNullList<ItemStack> componentMateria = menu.getCurrentRecipe().getStages(false).get(menu.getCurrentStageID()).componentMateria;
+
+            if(i < componentMateria.size()) {
+                String name = componentMateria.get(i).getDisplayName().getString();
+                int required = componentMateria.get(i).getCount();
+                int outstanding = required;
+                for(Triplet<MateriaItem, Integer, Boolean> triplet : allMateriaDemands) {
+                    if(componentMateria.get(i).getItem() == triplet.getFirst()) {
+                        outstanding = triplet.getSecond();
+                    }
+                }
+
+                tooltipContents.clear();
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(name.substring(1,name.length()-1)))
+                );
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(""+(required - outstanding)).withStyle(ChatFormatting.DARK_AQUA))
+                        .append(" of ").withStyle(ChatFormatting.DARK_GRAY)
+                        .append(Component.literal(""+required).withStyle(ChatFormatting.DARK_AQUA))
+                        .append(" provided").withStyle(ChatFormatting.DARK_GRAY)
+                );
+            }
         }
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
