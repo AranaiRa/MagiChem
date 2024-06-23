@@ -307,12 +307,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             if(anbe.doDeferredRecipeLinkages) {
                 if (!anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty() && anbe.currentRecipe == null) {
                     anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
-
-                    if(anbe.animStage != ANIM_STAGE_IDLE)
-                        anbe.cacheAnimSpec();
-
-                    anbe.syncAndSave();
                 }
+                if(anbe.animStage != ANIM_STAGE_IDLE)
+                    anbe.cacheAnimSpec();
+                anbe.doDeferredRecipeLinkages = false;
+                anbe.syncAndSave();
             }
 
             //Temporary recipe setter

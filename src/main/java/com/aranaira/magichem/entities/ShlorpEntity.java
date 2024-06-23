@@ -67,8 +67,6 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         this.color[2] = pMateriaType.getMateriaColor() & 255;
 
         this.stackInTransit = new ItemStack(pMateriaType, pMateriaCount);
-
-
     }
 
     @Override
