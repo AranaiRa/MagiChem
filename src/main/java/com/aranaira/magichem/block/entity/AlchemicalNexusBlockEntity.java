@@ -402,21 +402,24 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     NonNullList<MateriaItem> outstanding = anbe.getDemandedMateriaNotInTransit();
 
                     if (marks.size() >= 1) {
-                        Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair = marks.get(anbe.shlorpIndex);
+                        Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair;
+                        if(marks.size() == 1) pair = marks.get(0);
+                        else pair = marks.get(anbe.shlorpIndex);
+
                         MateriaItem type = pair.getFirst().getMateriaType();
+
                         if (type != null) {
                             for (MateriaItem mi : outstanding) {
                                 if (type == mi) {
-                                    anbe.markInTransit(mi);
                                     Pair<Vector3, Vector3> ot = pair.getFirst().getDefaultOriginAndTangent();
                                     Vector3 spawnPos = new Vector3(pair.getSecond());
                                     Vector3 origin = ot.getFirst();
                                     Vector3 tangent = ot.getSecond().scale(4.0f);
 
                                     int amount = 0;
-                                    for (ItemStack is : anbe.currentRecipe.getStages(false).get(anbe.craftingStage).componentMateria) {
-                                        if (is.getItem() == type) {
-                                            amount = Math.min(pair.getFirst().getCurrentStock(), is.getCount());
+                                    for (Triplet<MateriaItem, Integer, Boolean> demand : anbe.satisfactionDemands) {
+                                        if(demand.getFirst() == mi) {
+                                            amount = Math.min(pair.getFirst().getCurrentStock(), demand.getSecond());
                                             break;
                                         }
                                     }
@@ -439,6 +442,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                                     pLevel.addFreshEntity(se);
                                     se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+                                    anbe.markInTransit(mi);
 
                                     //don't need to keep iterating at this point
                                     break;

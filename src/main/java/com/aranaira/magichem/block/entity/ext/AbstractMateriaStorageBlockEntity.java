@@ -67,7 +67,7 @@ public abstract class AbstractMateriaStorageBlockEntity extends BlockEntity impl
         syncAndSave();
         int test = currentStock - amount;
         int actual = amount;
-        if(test < 0) {
+        if(test <= 0) {
             actual = currentStock;
             currentStock = 0;
             currentMateriaType = null;
