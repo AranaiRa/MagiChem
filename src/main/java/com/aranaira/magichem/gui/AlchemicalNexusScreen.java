@@ -190,12 +190,12 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
     @Override
     protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
-        super.renderTooltip(pGuiGraphics, pX, pY);
 
         Font font = Minecraft.getInstance().font;
         List<Component> tooltipContents = new ArrayList<>();
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
+        boolean doOriginalTooltip = true;
 
         //Slurry Bar
         if(pX >= x+TOOLTIP_SLURRY_X && pX <= x+TOOLTIP_SLURRY_X+TOOLTIP_SLURRY_W &&
@@ -379,6 +379,30 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 }
             }
         }
+
+        //Sublimation In Progress
+        if(pX >= x+79 && pX <= x+97 &&
+                pY >= y+7 && pY <= y+24) {
+
+            ItemStack stackInSlot = menu.getItems().get(AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER);
+            doOriginalTooltip = false;
+
+            if(!stackInSlot.isEmpty()) {
+                tooltipContents.clear();
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.sublimation_in_progress.line1"))
+                );
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.sublimation_in_progress.line2.part1").withStyle(ChatFormatting.RED, ChatFormatting.ITALIC))
+                        .append(" ")
+                        .append(Component.translatable("tooltip.magichem.gui.sublimation_in_progress.line2.part2"))
+                );
+            }
+        }
+
+        if(doOriginalTooltip)
+            super.renderTooltip(pGuiGraphics, pX, pY);
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
     }

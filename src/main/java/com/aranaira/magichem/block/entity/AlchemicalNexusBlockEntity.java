@@ -113,6 +113,33 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
                     isStalled = false;
                 }
+                if(slot == SLOT_PROGRESS_HOLDER && !getLevel().isClientSide()) {
+                    ItemStack stackInSlot = getStackInSlot(slot);
+                    if(stackInSlot.isEmpty()) {
+                        //Switch isn't working here for some reason, onto the ugly if chain!
+                        if(animStage == ANIM_STAGE_RAMP_SPEEDUP)
+                            animStage = ANIM_STAGE_CANCEL_SPEEDUP;
+                        else if(animStage == ANIM_STAGE_RAMP_CIRCLE || animStage == ANIM_STAGE_SHLORPS)
+                            animStage = ANIM_STAGE_CANCEL_CIRCLE;
+                        else if(animStage == ANIM_STAGE_RAMP_CRAFTING || animStage == ANIM_STAGE_CRAFTING)
+                            animStage = ANIM_STAGE_CANCEL_CRAFTING;
+                        else if(animStage == ANIM_STAGE_CRAFTING_IDLE) {
+                            craftingStage--;
+                            animStage = ANIM_STAGE_CANCEL_CRAFTING_CIRCLE;
+                        }
+                        else if(animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE)
+                            animStage = ANIM_STAGE_CANCEL_CRAFTING_CIRCLE;
+                        else if(animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP)
+                            animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
+
+                        syncAndSave();
+                    }
+                }
+            }
+
+            @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                return super.extractItem(slot, amount, simulate);
             }
 
             @Override
@@ -359,6 +386,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 if(anbe.progress <= 0) {
                     anbe.resetProgress();
                     anbe.animStage = ANIM_STAGE_IDLE;
+                    anbe.craftingStage = 0;
                     anbe.syncAndSave();
                 }
             }

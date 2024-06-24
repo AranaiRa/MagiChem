@@ -365,6 +365,9 @@
   "tooltip.magichem.gui.sublimationcost.part3": " recipe stages.",
   "tooltip.magichem.gui.shlorps.waiting": "Waiting...",
   "tooltip.magichem.gui.shlorps.idle": "Idle",
+  "tooltip.magichem.gui.sublimation_in_progress.line1": "Removing this item will abort the active Sublimation. Items and Materia can be retrieved, but any Academic Slurry consumed thus far will be lost.",
+  "tooltip.magichem.gui.sublimation_in_progress.line2.part1": "You cannot re-insert a Sublimation in Progress.",
+  "tooltip.magichem.gui.sublimation_in_progress.line2.part2": "Only remove this item if you're certain that you want to abort crafting.",
 
   "tooltip.magichem.gui.eldrin.air": "Eldrin Power (Air)",
   "tooltip.magichem.gui.eldrin.arcane": "Eldrin Power (Arcane)",
