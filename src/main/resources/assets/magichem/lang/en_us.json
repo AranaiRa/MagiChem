@@ -21,6 +21,7 @@
   "item.magichem.steam_bucket": "Steam Bucket",
   "item.magichem.sublimation_primer": "Sublimation Primer",
   "item.magichem.debug_orb": "Orb of Alchemical Unraveling",
+  "item.magichem.sublimation_in_progress": "Sublimation in Progress",
 
   "item.magichem.dummy.process_fixation": "Alchemical Fixation",
   "item.magichem.dummy.process_separation": "Alchemical Separation",
@@ -289,6 +290,10 @@
   "tooltip.magichem.gasbucket": "A simple spell spoken over this bucket keeps the vapor inside from escaping.",
   "tooltip.magichem.sublimationprimer": "Used to select a recipe for the Ritual of the Balanced Scales.",
   "tooltip.magichem.occultedcinder": "The glow of a flame excised from its searing heat. Can be used as an invisible light source.",
+  "tooltip.magichem.sublimation_in_progress.line1": "An interrupted Sublimation. Its contents can still be retrieved.",
+  "tooltip.magichem.sublimation_in_progress.line2": "Contains:",
+  "tooltip.magichem.sublimation_in_progress.line3.trail_items": " Items",
+  "tooltip.magichem.sublimation_in_progress.line3.trail_materia": " drams of Materia",
 
   "tooltip.magichem.circlepower": "Uses mystical reagents to generate energy.",
   "tooltip.magichem.powerreagent": "Used to generate FE.",

@@ -24,7 +24,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -38,6 +40,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,9 +58,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler {
 
@@ -78,7 +79,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     public static final int
             FLUID_BAR_HEIGHT = 88,
             SLOT_COUNT = 17,
-            SLOT_MARKS = 0, SLOT_PROCESSING = 1, SLOT_RECIPE = 2,
+            SLOT_MARKS = 0, SLOT_PROGRESS_HOLDER = 1, SLOT_RECIPE = 2,
             SLOT_INPUT_START = 3, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT = 9,
             DATA_COUNT = 5,
             DATA_PROGRESS = 0, DATA_ANIM_STAGE = 1, DATA_CRAFTING_STAGE = 2, DATA_POWER_LEVEL = 3, DATA_FLUID_NEEDED = 4,
@@ -128,7 +129,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     ItemStack component = stage.componentItems.get(slot - SLOT_INPUT_START);
                     return stack.getItem().equals(component.getItem());
                 }
-                else if(slot == SLOT_RECIPE || slot == SLOT_PROCESSING || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT))
+                else if(slot == SLOT_RECIPE || slot == SLOT_PROGRESS_HOLDER || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT))
                     return false;
 
                 return super.isItemValid(slot, stack);
@@ -316,7 +317,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
             //Temporary recipe setter
             if(anbe.currentRecipe == null && !pLevel.isClientSide()) {
-                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, new ItemStack(ItemRegistry.CATALYST_CORE.get()));
+                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, new ItemStack(ItemInit.DEMON_LORD_SWORD.get()));
                 anbe.itemHandler.setStackInSlot(SLOT_RECIPE, anbe.currentRecipe.getAlchemyObject());
                 anbe.syncAndSave();
             }
@@ -473,6 +474,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 if(anbe.progress > anbe.cachedSpec.ticksToCraft) {
                     //If there's another stage, move to that
                     if(anbe.currentRecipe.getStages(false).size() > (anbe.craftingStage + 1)) {
+                        anbe.createOrUpdateInProgressHolder(anbe.getCraftingStage());
                         anbe.craftingStage++;
                         int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
                         int fluidCost = experienceCost * Config.fluidPerXPPoint;
@@ -693,6 +695,66 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         }
     }
 
+    protected void createOrUpdateInProgressHolder(int pRecipeStage) {
+        ItemStack holder = itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER);
+
+        if(holder.isEmpty()) {
+            holder = new ItemStack(ItemRegistry.SUBLIMATION_IN_PROGRESS.get());
+        }
+
+        CompoundTag holderNBT = holder.getOrCreateTag();
+
+        //Create a data structure that contains all of the bits and bobs we need
+        Map<Item, Integer> itemMap = new HashMap<>();
+        Map<Item, Integer> materiaMap = new HashMap<>();
+
+        for(int i=0; i<=pRecipeStage; i++) {
+            InfusionStage stage = currentRecipe.getStages(false).get(i);
+
+            for(ItemStack is : stage.componentItems) {
+                if(itemMap.containsKey(is.getItem())) {
+                    itemMap.put(is.getItem(), itemMap.get(is.getItem()) + is.getCount());
+                } else {
+                    itemMap.put(is.getItem(), is.getCount());
+                }
+            }
+            for(ItemStack is : stage.componentMateria) {
+                if(materiaMap.containsKey(is.getItem())) {
+                    materiaMap.put(is.getItem(), materiaMap.get(is.getItem()) + is.getCount());
+                } else {
+                    materiaMap.put(is.getItem(), is.getCount());
+                }
+            }
+        }
+
+        ListTag itemList = new ListTag();
+        for (Item i : itemMap.keySet())
+        {
+            CompoundTag itemTag = new CompoundTag();
+            ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(i);
+            itemTag.putString("id", resourcelocation == null ? "minecraft:air" : resourcelocation.toString());
+            int amount = itemMap.get(i);
+            itemTag.putByte("Count", (byte)amount);
+            itemList.add(itemTag);
+        }
+        ListTag materiaList = new ListTag();
+        for (Item i : materiaMap.keySet())
+        {
+            CompoundTag materiaTag = new CompoundTag();
+            ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(i);
+            materiaTag.putString("id", resourcelocation == null ? "minecraft:air" : resourcelocation.toString());
+            int amount = materiaMap.get(i);
+            materiaTag.putByte("Count", (byte)amount);
+            materiaList.add(materiaTag);
+        }
+
+        holderNBT.put("savedItems", itemList);
+        holderNBT.put("savedMateria", materiaList);
+
+        holder.setTag(holderNBT);
+        itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, holder);
+    }
+
     protected void resetProgress() {
         progress = 0;
     }
@@ -844,21 +906,23 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         crystalAngle = (crystalAngle + crystalRotSpeed) % 360f;
         itemAngle = (itemAngle + itemRotSpeed) % (float)(Math.PI * 8);
 
-        if(animStage == ANIM_STAGE_IDLE) {
-            crystalRotSpeed = CRYSTAL_SPEED_MIN;
-            itemRotSpeed = ITEM_SPEED_MIN;
-            itemScale = ITEM_SCALE_START;
-        }
-        else if(animStage == ANIM_STAGE_RAMP_SPEEDUP ||
-                animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP ||
-                animStage == ANIM_STAGE_CANCEL_SPEEDUP ||
-                animStage == ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP ||
-                animStage == ANIM_STAGE_CRAFTING_IDLE) {
-            float timeInStage = ((float)progress / (float)cachedSpec.ticksInRampSpeedup);
+        if(cachedSpec != null) {
+            if(animStage == ANIM_STAGE_IDLE) {
+                crystalRotSpeed = CRYSTAL_SPEED_MIN;
+                itemRotSpeed = ITEM_SPEED_MIN;
+                itemScale = ITEM_SCALE_START;
+            }
+            else if(animStage == ANIM_STAGE_RAMP_SPEEDUP ||
+                    animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP ||
+                    animStage == ANIM_STAGE_CANCEL_SPEEDUP ||
+                    animStage == ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP ||
+                    animStage == ANIM_STAGE_CRAFTING_IDLE) {
+                float timeInStage = ((float)progress / (float)cachedSpec.ticksInRampSpeedup);
 
-            crystalRotSpeed = MathUtils.lerpf(CRYSTAL_SPEED_MIN, CRYSTAL_SPEED_MAX, timeInStage);
-            itemRotSpeed = MathUtils.lerpf(ITEM_SPEED_MIN, ITEM_SPEED_MAX, timeInStage);
-            itemScale = MathUtils.lerpf(ITEM_SCALE_START, ITEM_SCALE_END, timeInStage);
+                crystalRotSpeed = MathUtils.lerpf(CRYSTAL_SPEED_MIN, CRYSTAL_SPEED_MAX, timeInStage);
+                itemRotSpeed = MathUtils.lerpf(ITEM_SPEED_MIN, ITEM_SPEED_MAX, timeInStage);
+                itemScale = MathUtils.lerpf(ITEM_SCALE_START, ITEM_SCALE_END, timeInStage);
+            }
         }
     }
 
@@ -872,112 +936,112 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         BlockPos bp = getBlockPos();
         Vector3 origin = new Vector3(bp.getX(), bp.getY(), bp.getZ()).add(new Vector3(0,0,1));
 
-        //Candles
-        if(animStage == ANIM_STAGE_IDLE) {
-            for (int i = 0; i < CANDLE_PARTICLE_ORIGINS.length; i++) {
-                if ((level.getGameTime() % 6 == 0 && i % 2 == 0) || (level.getGameTime() % 6 == 3 && i % 2 == 1)) {
-                    Vector3 pos = origin.add(CANDLE_PARTICLE_ORIGINS[i]);
+        if(cachedSpec != null) {
+            //Candles
+            if (animStage == ANIM_STAGE_IDLE) {
+                for (int i = 0; i < CANDLE_PARTICLE_ORIGINS.length; i++) {
+                    if ((level.getGameTime() % 6 == 0 && i % 2 == 0) || (level.getGameTime() % 6 == 3 && i % 2 == 1)) {
+                        Vector3 pos = origin.add(CANDLE_PARTICLE_ORIGINS[i]);
 
-                    level.addParticle(new MAParticleType(ParticleInit.BLUE_FLAME.get())
-                            .setScale(0.05f).setMaxAge(30),
-                            pos.x, pos.y, pos.z,
-                            0, 0.04f, 0);
+                        level.addParticle(new MAParticleType(ParticleInit.BLUE_FLAME.get())
+                                        .setScale(0.05f).setMaxAge(30),
+                                pos.x, pos.y, pos.z,
+                                0, 0.04f, 0);
+                    }
                 }
-            }
-        }
-        else {
-            for (int i = 0; i < CANDLE_PARTICLE_ORIGINS.length; i++) {
+            } else {
+                for (int i = 0; i < CANDLE_PARTICLE_ORIGINS.length; i++) {
                     Vector3 pos = origin.add(CANDLE_PARTICLE_ORIGINS[i]);
 
                     level.addParticle(new MAParticleType(ParticleInit.GLOW.get())
-                            .setScale(0.06f).setMaxAge(10).setColor(135, 202, 195, 128),
+                                    .setScale(0.06f).setMaxAge(10).setColor(135, 202, 195, 128),
                             pos.x, pos.y, pos.z,
                             0, 0.05f, 0);
 
-                if (level.getGameTime() % 2 == 0) {
-                    level.addParticle(new MAParticleType(ParticleInit.GLOW.get())
-                            .setScale(0.2f).setMaxAge(5).setColor(15, 150, 135, 255),
-                            pos.x, pos.y, pos.z,
-                            0, 0.001f, 0);
-                }
-            }
-        }
-
-        //Glowing ring that the items turn into
-        float ringPercent = 0f;
-        if(animStage == ANIM_STAGE_RAMP_SPEEDUP || animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
-            ringPercent = Math.min(1,Math.max(0, ((float) progress / (float) cachedSpec.ticksInRampSpeedup) * 6 - (ITEM_SCALE_START - 2)));
-
-
-        } else if(animStage == ANIM_STAGE_RAMP_CIRCLE ||
-                animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
-                animStage == ANIM_STAGE_SHLORPS ||
-                animStage == ANIM_STAGE_CRAFTING) {
-            ringPercent = 1f;
-        }
-        if(ringPercent > 0) {
-            Vector3 pos = origin.add(new Vector3(0.5, 1.9375f, -0.5));
-
-            for(int i=0; i<3; i++) {
-                level.addParticle(new MAParticleType(ParticleInit.FLAME.get())
-                                .setMover(new ParticleOrbitMover(pos.x, pos.y, pos.z, 0.3 + 0.1 * i, 0, AlchemicalNexusBlockEntityRenderer.ITEM_HOVER_RADIUS))
-                                .setScale(0.06f * ringPercent).setColor(36, 151, 110),
-                        pos.x, pos.y, pos.z,
-                        0, 0, 0);
-            }
-        }
-
-        //Sparky orb above the device
-        float orbPercent = 0f;
-        if(animStage == ANIM_STAGE_RAMP_SPEEDUP ||
-                animStage == ANIM_STAGE_CRAFTING_IDLE ||
-                animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
-            orbPercent = (float) progress / (float) cachedSpec.ticksInRampSpeedup;
-        }
-        else if(animStage == ANIM_STAGE_RAMP_CRAFTING ||
-                animStage == ANIM_STAGE_RAMP_CIRCLE ||
-                animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
-                animStage == ANIM_STAGE_SHLORPS ||
-                animStage == ANIM_STAGE_CRAFTING) {
-            orbPercent = 1f;
-        }
-
-        if(orbPercent > 0 || animStage == ANIM_STAGE_CRAFTING_IDLE) {
-            if ((level.getGameTime() + 1) % 2 == 0) {
-                Vector3 pos = origin.add(new Vector3(0.5, 3.5, -0.5));
-
-                //center orb
-                level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                .setColor(22, 94, 69).setScale(0.2f + 2.2f * orbPercent).setMaxAge(30),
-                        pos.x, pos.y, pos.z,
-                        0, 0, 0);
-                level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                .setColor(128, 128, 128).setScale(0.1f + 0.3f * orbPercent).setMaxAge(20),
-                        pos.x, pos.y, pos.z,
-                        0, 0, 0);
-
-                //sparks
-                if ((level.getGameTime() + 1) % 2 == 0 && animStage != ANIM_STAGE_CRAFTING_IDLE) {
-                    for (int i = 0; i < r.nextInt(7); i++) {
-                        Vec3 vector = new Vec3(r.nextFloat() - 0.5f, r.nextFloat() - 0.5f, r.nextFloat() - 0.5f).normalize();
-                        final float speed = 0.08f;
-                        level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                        .setColor(36, 151, 110).setScale(0.2f).setGravity(0.02f).setMaxAge(30).setPhysics(true),
+                    if (level.getGameTime() % 2 == 0) {
+                        level.addParticle(new MAParticleType(ParticleInit.GLOW.get())
+                                        .setScale(0.2f).setMaxAge(5).setColor(15, 150, 135, 255),
                                 pos.x, pos.y, pos.z,
-                                vector.x * speed, vector.y * speed + (r.nextFloat() * 0.125f), vector.z * speed);
+                                0, 0.001f, 0);
                     }
                 }
             }
-        }
 
-        //Sparky blast during crafting
-        if(animStage == ANIM_STAGE_CRAFTING) {
-            Vector3 pos = new Vector3(getBlockPos()).add(new Vector3(0.5, 1.26, 0.5));
-            for(int i = 0; i < 20; ++i) {
-                double sx = (-0.5D + Math.random()) * 0.15D;
-                double sy = 0.03D + ((double)i / 20.0D) * 0.04D;
-                double sz = (-0.5D + Math.random()) * 0.15D;
-                this.getLevel().addParticle(new MAParticleType((ParticleType)ParticleInit.BLUE_SPARKLE_GRAVITY.get()), pos.x, pos.y, pos.z, sx, sy, sz);
+            //Glowing ring that the items turn into
+            float ringPercent = 0f;
+            if (animStage == ANIM_STAGE_RAMP_SPEEDUP || animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
+                ringPercent = Math.min(1, Math.max(0, ((float) progress / (float) cachedSpec.ticksInRampSpeedup) * 6 - (ITEM_SCALE_START - 2)));
+
+
+            } else if (animStage == ANIM_STAGE_RAMP_CIRCLE ||
+                    animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
+                    animStage == ANIM_STAGE_SHLORPS ||
+                    animStage == ANIM_STAGE_CRAFTING) {
+                ringPercent = 1f;
+            }
+            if (ringPercent > 0) {
+                Vector3 pos = origin.add(new Vector3(0.5, 1.9375f, -0.5));
+
+                for (int i = 0; i < 3; i++) {
+                    level.addParticle(new MAParticleType(ParticleInit.FLAME.get())
+                                    .setMover(new ParticleOrbitMover(pos.x, pos.y, pos.z, 0.3 + 0.1 * i, 0, AlchemicalNexusBlockEntityRenderer.ITEM_HOVER_RADIUS))
+                                    .setScale(0.06f * ringPercent).setColor(36, 151, 110),
+                            pos.x, pos.y, pos.z,
+                            0, 0, 0);
+                }
+            }
+
+            //Sparky orb above the device
+            float orbPercent = 0f;
+            if (animStage == ANIM_STAGE_RAMP_SPEEDUP ||
+                    animStage == ANIM_STAGE_CRAFTING_IDLE ||
+                    animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
+                orbPercent = (float) progress / (float) cachedSpec.ticksInRampSpeedup;
+            } else if (animStage == ANIM_STAGE_RAMP_CRAFTING ||
+                    animStage == ANIM_STAGE_RAMP_CIRCLE ||
+                    animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
+                    animStage == ANIM_STAGE_SHLORPS ||
+                    animStage == ANIM_STAGE_CRAFTING) {
+                orbPercent = 1f;
+            }
+
+            if (orbPercent > 0 || animStage == ANIM_STAGE_CRAFTING_IDLE) {
+                if ((level.getGameTime() + 1) % 2 == 0) {
+                    Vector3 pos = origin.add(new Vector3(0.5, 3.5, -0.5));
+
+                    //center orb
+                    level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(22, 94, 69).setScale(0.2f + 2.2f * orbPercent).setMaxAge(30),
+                            pos.x, pos.y, pos.z,
+                            0, 0, 0);
+                    level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(128, 128, 128).setScale(0.1f + 0.3f * orbPercent).setMaxAge(20),
+                            pos.x, pos.y, pos.z,
+                            0, 0, 0);
+
+                    //sparks
+                    if ((level.getGameTime() + 1) % 2 == 0 && animStage != ANIM_STAGE_CRAFTING_IDLE) {
+                        for (int i = 0; i < r.nextInt(7); i++) {
+                            Vec3 vector = new Vec3(r.nextFloat() - 0.5f, r.nextFloat() - 0.5f, r.nextFloat() - 0.5f).normalize();
+                            final float speed = 0.08f;
+                            level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                            .setColor(36, 151, 110).setScale(0.2f).setGravity(0.02f).setMaxAge(30).setPhysics(true),
+                                    pos.x, pos.y, pos.z,
+                                    vector.x * speed, vector.y * speed + (r.nextFloat() * 0.125f), vector.z * speed);
+                        }
+                    }
+                }
+            }
+
+            //Sparky blast during crafting
+            if (animStage == ANIM_STAGE_CRAFTING) {
+                Vector3 pos = new Vector3(getBlockPos()).add(new Vector3(0.5, 1.26, 0.5));
+                for (int i = 0; i < 20; ++i) {
+                    double sx = (-0.5D + Math.random()) * 0.15D;
+                    double sy = 0.03D + ((double) i / 20.0D) * 0.04D;
+                    double sz = (-0.5D + Math.random()) * 0.15D;
+                    this.getLevel().addParticle(new MAParticleType((ParticleType) ParticleInit.BLUE_SPARKLE_GRAVITY.get()), pos.x, pos.y, pos.z, sx, sy, sz);
+                }
             }
         }
     }

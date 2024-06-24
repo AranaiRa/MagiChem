@@ -1,11 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
-import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
-import com.aranaira.magichem.block.entity.container.OnlyAdmixtureInputSlot;
 import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -19,12 +15,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 public class AlchemicalNexusMenu extends AbstractContainerMenu {
@@ -51,7 +45,7 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_MARKS, 134, -6));
 
             //Processing slot
-            this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_PROCESSING, 80, -5));
+            this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER, 80, -5));
 
             //Input item slots
             for(int i = AlchemicalNexusBlockEntity.SLOT_INPUT_START; i< AlchemicalNexusBlockEntity.SLOT_INPUT_START + AlchemicalNexusBlockEntity.SLOT_INPUT_COUNT; i++)
