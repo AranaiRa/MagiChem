@@ -693,6 +693,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         for(int i=SLOT_OUTPUT_START;i<SLOT_INPUT_START+SLOT_OUTPUT_COUNT;i++) {
             itemHandler.setStackInSlot(i, contentsOfOutputSlots.getItem(i-SLOT_OUTPUT_START));
         }
+
+        itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
     }
 
     protected void createOrUpdateInProgressHolder(int pRecipeStage) {
@@ -734,7 +736,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(i);
             itemTag.putString("id", resourcelocation == null ? "minecraft:air" : resourcelocation.toString());
             int amount = itemMap.get(i);
-            itemTag.putByte("Count", (byte)amount);
+            itemTag.putShort("Count", (short)amount);
             itemList.add(itemTag);
         }
         ListTag materiaList = new ListTag();
@@ -744,7 +746,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             ResourceLocation resourcelocation = ForgeRegistries.ITEMS.getKey(i);
             materiaTag.putString("id", resourcelocation == null ? "minecraft:air" : resourcelocation.toString());
             int amount = materiaMap.get(i);
-            materiaTag.putByte("Count", (byte)amount);
+            materiaTag.putShort("Count", (short)amount);
             materiaList.add(materiaTag);
         }
 

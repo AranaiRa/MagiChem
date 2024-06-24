@@ -37,16 +37,16 @@ public class SublimationInProgressItem extends Item {
             ListTag itemsList = (ListTag)nbt.get("savedItems");
             for(int i=0; i<itemsList.size(); i++) {
                 CompoundTag entry = (CompoundTag)itemsList.get(i);
-                containedItems += entry.getInt("Count");
+                containedItems += entry.getShort("Count");
             }
         }
 
-        int containedMateria = 1;
+        int containedMateria = 0;
         if(nbt.contains("savedMateria")) {
             ListTag materiaList = (ListTag)nbt.get("savedMateria");
             for(int i=0; i<materiaList.size(); i++) {
                 CompoundTag entry = (CompoundTag)materiaList.get(i);
-                containedMateria += entry.getInt("Count");
+                containedMateria += entry.getShort("Count");
             }
         }
 
@@ -91,7 +91,7 @@ public class SublimationInProgressItem extends Item {
                 CompoundTag entry = (CompoundTag)itemsList.get(i);
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getString("id")));
                 if(item != null) {
-                    ItemStack stack = new ItemStack(item, entry.getByte("Count"));
+                    ItemStack stack = new ItemStack(item, entry.getShort("Count"));
                     pPlayer.drop(stack, false);
                 }
             }
@@ -107,6 +107,7 @@ public class SublimationInProgressItem extends Item {
             if(stack.getItem() == Items.GLASS_BOTTLE)
                 bottleCount += stack.getCount();
         }
+        int originalBottleCount = bottleCount;
 
         if(nbt.contains("savedMateria")) {
             ListTag materiaList = (ListTag)nbt.get("savedMateria");
@@ -117,12 +118,12 @@ public class SublimationInProgressItem extends Item {
                 if(bottleCount == 0) {
                     CompoundTag materiaTag = new CompoundTag();
                     materiaTag.putString("id", entry.getString("id"));
-                    materiaTag.putByte("Count", entry.getByte("Count"));
+                    materiaTag.putShort("Count", entry.getShort("Count"));
                     materiaListPost.add(materiaTag);
                 } else {
                     Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(entry.getString("id")));
                     if (item != null) {
-                        int amount = entry.getByte("Count");
+                        int amount = entry.getShort("Count");
                         int deduction = Math.min(amount, bottleCount);
                         ItemStack stack = new ItemStack(item, deduction);
                         pPlayer.drop(stack, false);
@@ -130,9 +131,8 @@ public class SublimationInProgressItem extends Item {
                         if (bottleCount < amount) {
                             CompoundTag materiaTag = new CompoundTag();
                             materiaTag.putString("id", entry.getString("id"));
-                            materiaTag.putByte("Count", (byte)deduction);
+                            materiaTag.putShort("Count", (short)(amount - deduction));
                             materiaListPost.add(materiaTag);
-                            pPlayer.getInventory().removeItem(new ItemStack(Items.GLASS_BOTTLE, deduction));
                             bottleCount = 0;
                         } else {
                             bottleCount -= amount;
@@ -147,6 +147,16 @@ public class SublimationInProgressItem extends Item {
                 nbt.put("savedMateria", materiaListPost);
         } else {
             noMateria = true;
+        }
+
+        //remove bottles from the player's inventory
+        int bottlesToRemove = originalBottleCount - bottleCount;
+        for(ItemStack is : pPlayer.getInventory().items) {
+            if(is.getItem() == Items.GLASS_BOTTLE) {
+                int amount = Math.min(is.getCount(), bottlesToRemove);
+                is.shrink(amount);
+                bottlesToRemove -= amount;
+            }
         }
 
         if(noItems && noMateria)
