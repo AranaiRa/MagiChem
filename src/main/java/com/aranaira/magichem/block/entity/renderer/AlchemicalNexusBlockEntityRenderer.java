@@ -47,7 +47,7 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
     public static final float ITEM_HOVER_RADIUS = 0.5f;
 
     public static final int
-            CIRCLE_1_ROTATION_PERIOD = 200, CIRCLE_2_ROTATION_PERIOD = 300, CIRCLE_3_ROTATION_PERIOD = 400, CIRCLE_4_ROTATION_PERIOD = 500, CIRCLE_5_ROTATION_PERIOD = 600;
+            CIRCLE_1_ROTATION_PERIOD = 200, CIRCLE_2_ROTATION_PERIOD = 300, CIRCLE_3_ROTATION_PERIOD = 400, CIRCLE_4_ROTATION_PERIOD = 700, CIRCLE_5_ROTATION_PERIOD = 600;
 
     public AlchemicalNexusBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
@@ -353,7 +353,7 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
                 pPercentFill, pPoseStack, pBuffer, pPackedLight);
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.21875, 0)),
-                4, 2.625f, 0.375f, rotation + (float)(Math.PI / 4), pTexture,
+                4, 2.625f, 0.375f, rotation + (float)(Math.PI * 5 / 4), pTexture,
                 new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
                 pPercentFill, pPoseStack, pBuffer, pPackedLight);
 

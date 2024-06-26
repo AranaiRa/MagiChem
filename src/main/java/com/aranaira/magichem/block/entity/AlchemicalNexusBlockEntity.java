@@ -7,6 +7,7 @@ import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRen
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.AlchemicalNexusMenu;
+import com.aranaira.magichem.gui.AlchemicalNexusScreen;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -306,7 +307,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    protected void syncAndSave() {
+    public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
@@ -356,8 +357,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     //Check if all the items are present
                     if (anbe.hasAllRecipeItemsForCurrentStage()) {
                         if (anbe.getContentsOfOutputSlots().canAddItem(anbe.currentRecipe.getAlchemyObject())) {
-                            int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
-                            int fluidCost = experienceCost * Config.fluidPerXPPoint;
+                            int experienceCost = anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
+                            int fluidCost = experienceCost * Config.fluidPerXPPoint + getBaseExperienceCostPerStage(anbe.getPowerLevel());
 
                             anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
                             anbe.cacheAnimSpec();
@@ -425,7 +426,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 }
             }
             else if(anbe.animStage == ANIM_STAGE_SHLORPS && !pLevel.isClientSide()) {
-                if(pLevel.getGameTime() % anbe.cachedSpec.ticksBetweenShlorpPulls == 0) {
+                if(anbe.isFullySatisfied()) {
+                    anbe.animStage = ANIM_STAGE_RAMP_CRAFTING;
+                    anbe.syncAndSave();
+                }
+                else if(pLevel.getGameTime() % anbe.cachedSpec.ticksBetweenShlorpPulls == 0) {
                     NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> marks = anbe.getMarkedEntitiesAndLocations();
                     NonNullList<MateriaItem> outstanding = anbe.getDemandedMateriaNotInTransit();
 
@@ -464,7 +469,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                             origin, tangent,
                                             new Vector3(anbe.getBlockPos()),
                                             new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 0.5, 0),
-                                            anbe.cachedSpec.shlorpSpeed, 0.0625f, amount,
+                                            anbe.cachedSpec.shlorpSpeed, 0.03125f, amount,
                                             mi, amount
                                     );
 
@@ -480,11 +485,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                         anbe.shlorpIndex = anbe.shlorpIndex == marks.size() - 1 ? 0 : anbe.shlorpIndex + 1;
                     }
-                }
-
-                if(anbe.isFullySatisfied()) {
-                    anbe.animStage = ANIM_STAGE_RAMP_CRAFTING;
-                    anbe.syncAndSave();
                 }
             }
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING) {
@@ -674,8 +674,22 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return markedPairs;
     }
 
+    private static final int[] SPEC_PARAM_RAMP_SPEEDUP = {-1, 127, 98, 78, 64, 54, 47, 42, 39, 37, 36};
+    private static final int[] SPEC_PARAM_RAMP_CANCEL  = {-1, 88, 77, 69, 63, 58, 54, 51, 49, 47, 45};
+    private static final int[] SPEC_PARAM_RAMP_BEAM    = {-1, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8};
+    private static final int[] SPEC_PARAM_RAMP_CIRCLE  = {-1, 160, 118, 90, 71, 58, 49, 43, 39, 37, 36};
+    private static final int[] SPEC_PARAM_SHLORP_PULL  = {-1, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10};
+    private static final int[] SPEC_PARAM_CRAFT        = {-1, 524, 338, 229, 163, 122, 96, 79, 69, 63, 60};
+    private static final float[] SPEC_PARAM_SHLORP_SPEED = {-1, 0.0086f, 0.0118f, 0.0157f, 0.0201f, 0.0249f, 0.0298f, 0.0343f, 0.0382f, 0.0410f, 0.0425f};
     public static AlchemicalNexusAnimSpec getAnimSpec(int pPowerLevel) {
-        return new AlchemicalNexusAnimSpec(130, 70, 8, 36, 30, 0.03125f, 120);
+        return new AlchemicalNexusAnimSpec(
+                SPEC_PARAM_RAMP_SPEEDUP[pPowerLevel],
+                SPEC_PARAM_RAMP_CANCEL[pPowerLevel],
+                SPEC_PARAM_RAMP_BEAM[pPowerLevel],
+                SPEC_PARAM_RAMP_CIRCLE[pPowerLevel],
+                SPEC_PARAM_SHLORP_PULL[pPowerLevel],
+                SPEC_PARAM_SHLORP_SPEED[pPowerLevel],
+                SPEC_PARAM_CRAFT[pPowerLevel]);
     }
 
     public boolean hasAllRecipeItemsForCurrentStage() {
@@ -708,8 +722,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return input;
     }
 
+    private static final int[] SPEC_EXPERIENCE_COST = {-1, 50, 60 ,75, 95, 120, 150, 185, 230, 290, 365};
     public static int getBaseExperienceCostPerStage(int pPowerLevel) {
-        return 10;
+        return SPEC_EXPERIENCE_COST[pPowerLevel];
     }
 
     protected void craftItem() {
@@ -926,6 +941,25 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
     public int getCraftingStage() {
         return this.craftingStage;
+    }
+
+    public void incrementPowerUsageSetting() {
+        this.powerLevel = Math.min(this.powerLevel + 1, 10);
+        this.setChanged();
+    }
+
+    public void decrementPowerUsageSetting() {
+        this.powerLevel = Math.max(this.powerLevel - 1, 1);
+        this.setChanged();
+    }
+
+    public void setPowerUsageSetting(int pNewSetting) {
+        this.powerLevel = pNewSetting;
+        this.setChanged();
+    }
+
+    public int getScaledProgress(int pWidth) {
+        return progress * pWidth / cachedSpec.ticksToCraft;
     }
 
     ////////////////////

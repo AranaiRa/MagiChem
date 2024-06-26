@@ -337,6 +337,7 @@
   "tooltip.magichem.gui.experience.line2": "Some recipes may have an additional Academic Slurry cost at one or more stages.",
   "tooltip.magichem.gui.operationtime": "Operation Time",
   "tooltip.magichem.gui.operationtime.line1": "The amount of time, in seconds, it takes to perform one task in this device.",
+  "tooltip.magichem.gui.operationtime.nexus.line2": "This figure does not include the amount of time the Alchemical Nexus requires to pull in required Materia.",
   "tooltip.magichem.gui.grime": "Grime",
   "tooltip.magichem.gui.grime.line1": "How much waste and residue has built up in this device.",
   "tooltip.magichem.gui.grime.line2.1": "As Grime builds up past ",

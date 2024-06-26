@@ -3,21 +3,27 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
+import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
+import com.aranaira.magichem.foundation.AlchemicalNexusAnimSpec;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
+import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
+import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
@@ -26,6 +32,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -41,6 +48,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             new ResourceLocation(MagiChemMod.MODID, "textures/block/fluid/experience_still.png");
     private static final ResourceLocation TEXTURE_INGREDIENTS =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
+    private ImageButton
+            b_powerLevelUp, b_powerLevelDown;
 
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 192,
@@ -52,6 +61,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102,
             SLURRY_X = 8, SLURRY_Y = 23, SLURRY_W = 8, SLURRY_H = 73,
             STAGE_INDICATOR_U = 108, STAGE_INDICATOR_V = 238, STAGE_INDICATOR_W = 12, STAGE_INDICATOR_W_END = 6, STAGE_INDICATOR_H = 9,
+            PROGRESS_BAR_WIDTH = 28,
             TOOLTIP_SLURRY_X = 7, TOOLTIP_SLURRY_Y = 7, TOOLTIP_SLURRY_W = 10, TOOLTIP_SLURRY_H = 90,
             TOOLTIP_INPROGRESS_X = 80, TOOLTIP_INPROGRESS_Y = 8, TOOLTIP_INPROGRESS_S = 16,
             TOOLTIP_SELECTED_RECIPE_X = 80, TOOLTIP_SELECTED_RECIPE_Y = 80, TOOLTIP_SELECTED_RECIPE_S = 16,
@@ -70,13 +80,35 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     }
 
     @Override
+    protected void init() {
+        super.init();
+        initializePowerLevelButtons();
+    }
+
+    @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
-//        renderButtons(pGuiGraphics, pPartialTick, pMouseX, pMouseY);
 //        renderFilterBox();
 //        renderRecipeOptions(pGuiGraphics);
+    }
+
+    private void initializePowerLevelButtons(){
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 31, 12, 7, 232, 242, TEXTURE, button -> {
+            menu.blockEntity.incrementPowerUsageSetting();
+            PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    menu.blockEntity.getPowerLevel()
+            ));
+        }));
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 76, 12, 7, 244, 242, TEXTURE, button -> {
+            menu.blockEntity.decrementPowerUsageSetting();
+            PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    menu.blockEntity.getPowerLevel()
+            ));
+        }));
     }
 
     @Override
@@ -85,6 +117,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         int y = (height - PANEL_MAIN_H) / 2;
         Font font = Minecraft.getInstance().font;
 
+        //bg and panel elements
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
         pGuiGraphics.blit(TEXTURE, x + PANEL_STATS_X, y + PANEL_STATS_Y, PANEL_STATS_U, PANEL_STATS_V, PANEL_STATS_W, PANEL_STATS_H);
         pGuiGraphics.blit(TEXTURE, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
@@ -94,8 +127,10 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         RenderSystem.setShaderTexture(1, TEXTURE_SLURRY);
         pGuiGraphics.blit(TEXTURE_SLURRY, x + SLURRY_X, y + SLURRY_Y + SLURRY_H - slurryH, 0, 0, SLURRY_W, slurryH, 16, 16);
 
+        //stages
         renderStageGauge(pGuiGraphics, x, y);
 
+        //recipe indicator
         menu.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             if(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_MARKS).isEmpty()) {
                 pGuiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
@@ -137,6 +172,15 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             }
         });
 
+        //power level gauge
+        int powerLevel = menu.blockEntity.getPowerLevel() * 3;
+        pGuiGraphics.blit(TEXTURE, x + 182, y + 55 + (30 - powerLevel), 100, 256 - powerLevel, 8, powerLevel);
+
+        //progress gauge
+        if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING) {
+            int scaledProgress = menu.blockEntity.getScaledProgress(PROGRESS_BAR_WIDTH);
+            pGuiGraphics.blit(TEXTURE, x + 74, y + 38, 0, 228, scaledProgress, 28);
+        }
     }
 
 //    private void initializeRecipeFilterBox() {
@@ -223,10 +267,9 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             } else {
                 int totalCost = 0;
                 for(InfusionStage is : menu.getCurrentRecipe().getStages(false)){
-                    totalCost += is.experience;
+                    totalCost += is.experience * Config.fluidPerXPPoint;
                     totalCost += AlchemicalNexusBlockEntity.getBaseExperienceCostPerStage(menu.blockEntity.getPowerLevel());
                 }
-                totalCost *= Config.fluidPerXPPoint;
 
                 tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                 tooltipContents.add(Component.empty());
@@ -309,6 +352,9 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
                     .append(": ")
                     .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.operationtime.nexus.line2")));
         }
 
         //Ingredients
@@ -409,8 +455,10 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-        int powerDraw = 10;
-        int ticksToCraft = AlchemicalNexusBlockEntity.getAnimSpec(menu.blockEntity.getPowerLevel()).ticksToCraft;
+        int powerDraw = AlchemicalNexusBlockEntity.getBaseExperienceCostPerStage(menu.blockEntity.getPowerLevel());
+
+        AlchemicalNexusAnimSpec animSpec = AlchemicalNexusBlockEntity.getAnimSpec(menu.blockEntity.getPowerLevel());
+        int ticksToCraft = animSpec.ticksInRampSpeedup + animSpec.ticksInRampBeam + animSpec.ticksInRampCancel + animSpec.ticksToCraft;
         int secWhole = ticksToCraft / 20;
         int secPartial = (ticksToCraft % 20) * 5;
 
