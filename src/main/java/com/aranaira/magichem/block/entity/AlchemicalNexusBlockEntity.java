@@ -505,6 +505,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
                         int fluidCost = experienceCost * Config.fluidPerXPPoint;
 
+                        anbe.progress = anbe.cachedSpec.ticksInRampCancel;
                         anbe.remainingFluidForSatisfaction = fluidCost;
                         anbe.animStage = ANIM_STAGE_CRAFTING_IDLE;
                     }
@@ -594,7 +595,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_CIRCLE) {
                 anbe.incrementProgress();
 
-                if(anbe.progress > anbe.cachedSpec.ticksInRampCancel) {
+                if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
                     anbe.craftingStage = 0;
                     anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
                     anbe.syncAndSave();
@@ -1056,9 +1057,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             //Sparky orb above the device
             float orbPercent = 0f;
             if (animStage == ANIM_STAGE_RAMP_SPEEDUP ||
-                    animStage == ANIM_STAGE_CRAFTING_IDLE ||
                     animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
                 orbPercent = (float) progress / (float) cachedSpec.ticksInRampSpeedup;
+            } else if (animStage == ANIM_STAGE_CRAFTING_IDLE) {
+                orbPercent = (float) progress / (float) cachedSpec.ticksInRampCancel;
             } else if (animStage == ANIM_STAGE_RAMP_CRAFTING ||
                     animStage == ANIM_STAGE_RAMP_CIRCLE ||
                     animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
