@@ -3,6 +3,7 @@ package com.aranaira.magichem.item;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.Vector3;
@@ -47,7 +48,7 @@ public class DebugOrbItem extends Item {
                             new Vector3(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()),
                             new Vector3(0.5, 0.5, 0.5), new Vector3(0, 2, 0),
                             0.125f, 0.125f, 18,
-                            amsbe.getMateriaType(), 400
+                            amsbe.getMateriaType(), 400, ShlorpParticleMode.NONE
                     );
 
                     level.addFreshEntity(se);

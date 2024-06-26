@@ -6,8 +6,8 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.gui.AlchemicalNexusMenu;
-import com.aranaira.magichem.gui.AlchemicalNexusScreen;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -25,7 +25,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -41,7 +40,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -470,7 +468,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                             new Vector3(anbe.getBlockPos()),
                                             new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 0.5, 0),
                                             anbe.cachedSpec.shlorpSpeed, 0.03125f, amount,
-                                            mi, amount
+                                            mi, amount, ShlorpParticleMode.INVERSE_ENTRY_TANGENT
                                     );
 
                                     pLevel.addFreshEntity(se);

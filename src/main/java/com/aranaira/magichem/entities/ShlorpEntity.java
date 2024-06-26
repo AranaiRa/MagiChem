@@ -2,8 +2,11 @@ package com.aranaira.magichem.entities;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleVelocityMover;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
@@ -23,11 +27,15 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Random;
+
 public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     public ShlorpEntity(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
+    private static final ItemStack PARTICLE_STACK = new ItemStack(Items.SNOW_BLOCK);
+    private static final Random r = new Random();
     public int vertClusterCount = 2;
     public int[] color = {255, 255, 255, 255};
     public float
@@ -35,18 +43,19 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     Vector3
         startLocation, endLocation, startTangent, endTangent;
     ItemStack stackInTransit;
+    ShlorpParticleMode particleMode;
 
-    public void configure(BlockPos pStartLocation, Vector3 pStartOrigin, Vector3 pStartTangent, BlockPos pEndLocation, Vector3 pEndOrigin, Vector3 pEndTangent, float pSpeed, float pDistanceBetweenClusters, int pClusterCount, MateriaItem pMateriaType, int pMateriaCount) {
+    public void configure(BlockPos pStartLocation, Vector3 pStartOrigin, Vector3 pStartTangent, BlockPos pEndLocation, Vector3 pEndOrigin, Vector3 pEndTangent, float pSpeed, float pDistanceBetweenClusters, int pClusterCount, MateriaItem pMateriaType, int pMateriaCount, ShlorpParticleMode pParticleMode) {
         Vector3 start = new Vector3(pStartLocation.getX(), pStartLocation.getY(), pStartLocation.getZ());
         Vector3 end = new Vector3(pEndLocation.getX(), pEndLocation.getY(), pEndLocation.getZ());
 
         configure(start, pStartOrigin, pStartTangent,
                 end, pEndOrigin, pEndTangent,
                 pSpeed, pDistanceBetweenClusters, pClusterCount,
-                pMateriaType, pMateriaCount);
+                pMateriaType, pMateriaCount, pParticleMode);
     }
 
-    public void configure(Vector3 pStartLocation, Vector3 pStartOrigin, Vector3 pStartTangent, Vector3 pEndLocation, Vector3 pEndOrigin, Vector3 pEndTangent, float pSpeed, float pDistanceBetweenClusters, int pClusterCount, MateriaItem pMateriaType, int pMateriaCount) {
+    public void configure(Vector3 pStartLocation, Vector3 pStartOrigin, Vector3 pStartTangent, Vector3 pEndLocation, Vector3 pEndOrigin, Vector3 pEndTangent, float pSpeed, float pDistanceBetweenClusters, int pClusterCount, MateriaItem pMateriaType, int pMateriaCount, ShlorpParticleMode pParticleMode) {
         Vec3 entityPositionRaw = position();
         Vector3 entityPosition = new Vector3(entityPositionRaw.x, entityPositionRaw.y, entityPositionRaw.z);
 
@@ -67,6 +76,8 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         this.color[2] = pMateriaType.getMateriaColor() & 255;
 
         this.stackInTransit = new ItemStack(pMateriaType, pMateriaCount);
+
+        this.particleMode = pParticleMode;
     }
 
     @Override
@@ -111,6 +122,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         distanceBetweenClusters = pCompound.getFloat("separation");
         currentPosOnTrack = pCompound.getFloat("currentPos");
         vertClusterCount = pCompound.getInt("clusters");
+        particleMode = ShlorpParticleMode.values()[pCompound.getInt("particleMode")];
     }
 
     @Override
@@ -142,6 +154,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         pCompound.putFloat("separation",distanceBetweenClusters);
         pCompound.putFloat("currentPos",currentPosOnTrack);
         pCompound.putInt("clusters",vertClusterCount);
+        pCompound.putInt("particleMode",particleMode.ordinal());
     }
 
     @Override
@@ -176,6 +189,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         buffer.writeFloat(distanceBetweenClusters);
         buffer.writeInt(vertClusterCount);
         buffer.writeInt(((MateriaItem)stackInTransit.getItem()).getMateriaColor());
+        buffer.writeInt(particleMode.ordinal());
     }
 
     @Override
@@ -214,6 +228,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         color[0] = packedColor >> 16 & 255;
         color[1] = packedColor >> 8 & 255;
         color[2] = packedColor & 255;
+        particleMode = ShlorpParticleMode.values()[additionalData.readInt()];
     }
 
     public Vector3 generatePointOnBezierCurve(float time, float duration) {
@@ -249,6 +264,41 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
                 currentPosOnTrack = length + limit;
         }
         currentPosOnTrack += 0;
+
+        if(particleMode == ShlorpParticleMode.INVERSE_ENTRY_TANGENT && this.currentPosOnTrack > this.length) {
+            Vec3 pos = getPosition(0).add(endLocation.x, endLocation.y, endLocation.z);
+
+            Vector3 fwd = Vector3.bezier(this.startLocation, this.endLocation, this.startTangent, this.endTangent, 1)
+                    .sub(Vector3.bezier(this.startLocation, this.endLocation, this.startTangent, this.endTangent, 0.5f)
+                    ).normalize();
+            Vector3 speed = fwd.scale(0.25f).add(
+                    new Vector3((r.nextFloat() - 0.5f) * 1.2f + 0.4f, (r.nextFloat() - 0.5f) * 1.2f + 0.4f, (r.nextFloat() - 0.5f) * 1.2f + 0.4f)
+                    .scale(0.1f)
+                    );
+
+            level().addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                            .setStack(PARTICLE_STACK)
+                            .setScale(0.10f).setGravity(0.05f).setMaxAge(30)
+                            .setColor(color[0], color[1], color[2], color[3])
+                            .setMover(new ParticleVelocityMover(speed.x, speed.y, speed.z, true)),
+                    pos.x - 0.5, pos.y, pos.z - 0.5,
+                    0,0,0);
+        } else if(particleMode == ShlorpParticleMode.DESTINATION_TANGENT && this.currentPosOnTrack > this.length) {
+            Vec3 pos = getPosition(0).add(endLocation.x, endLocation.y, endLocation.z);
+
+            Vector3 speed = endTangent.normalize().scale(0.25f).add(
+                    new Vector3((r.nextFloat() - 0.5f) * 1.2f + 0.4f, (r.nextFloat() - 0.5f) * 1.2f + 0.4f, (r.nextFloat() - 0.5f) * 1.2f + 0.4f)
+                            .scale(0.1f)
+            );
+
+            level().addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                            .setStack(PARTICLE_STACK)
+                            .setScale(0.10f).setGravity(0.05f).setMaxAge(30)
+                            .setColor(color[0], color[1], color[2], color[3])
+                            .setMover(new ParticleVelocityMover(speed.x, speed.y, speed.z, true)),
+                    pos.x - 0.5, pos.y, pos.z - 0.5,
+                    0,0,0);
+        }
     }
 
     @Override

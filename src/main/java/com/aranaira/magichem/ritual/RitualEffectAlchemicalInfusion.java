@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.entities.InfusionRitualVFXEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.VesselData;
+import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.registry.EntitiesRegistry;
@@ -427,7 +428,8 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 0.0175f, 0.03125f,
                 2 + Math.min(40, isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount),
                 isFirstVessel ? pVesselData.getFirst().type : pVesselData.getSecond().type,
-                isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount);
+                isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount,
+                ShlorpParticleMode.INVERSE_ENTRY_TANGENT);
         pContext.getLevel().addFreshEntity(shlorpLeft);
 
         ShlorpEntity shlorpRight = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pContext.getLevel());
@@ -438,7 +440,8 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
                 centerPos, Vector3.zero(), rv.tangentCenter,
                 0.0175f, 0.03125f,
                 2 + Math.min(40, isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount),
-                pVesselData.getSecond().type, pVesselData.getSecond().amount);
+                pVesselData.getSecond().type, pVesselData.getSecond().amount,
+                ShlorpParticleMode.INVERSE_ENTRY_TANGENT);
         pContext.getLevel().addFreshEntity(shlorpRight);
     }
 
