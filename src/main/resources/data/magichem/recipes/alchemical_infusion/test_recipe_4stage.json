@@ -1,0 +1,52 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 3,
+  "wisdom": 0,
+  "object": {
+    "item": "minecraft:birch_button"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:birch_planks" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_wrought", "count": 2 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:birch_planks" },
+        { "item": "minecraft:birch_planks" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_wrought", "count": 2 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:birch_planks" },
+        { "item": "minecraft:birch_planks" },
+        { "item": "minecraft:birch_planks" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_wrought", "count": 2 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:birch_planks" },
+        { "item": "minecraft:birch_planks" },
+        { "item": "minecraft:birch_planks" },
+        { "item": "minecraft:birch_planks" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_wrought", "count": 2 }
+      ]
+    }
+  ]
+}

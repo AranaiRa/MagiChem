@@ -3,6 +3,7 @@ package com.aranaira.magichem.interop;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.jei.*;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -36,6 +37,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(SeparationRecipeCategory.UID, FixationSeparationRecipe.class);
     public static RecipeType<AlchemicalInfusionRitualRecipe> SUBLIMATION_RITUAL_TYPE =
             new RecipeType<>(SublimationRitualRecipeCategory.UID, AlchemicalInfusionRitualRecipe.class);
+    public static RecipeType<AlchemicalInfusionRecipe> SUBLIMATION_TYPE =
+            new RecipeType<>(SublimationRecipeCategory.UID, AlchemicalInfusionRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -54,6 +57,8 @@ public class JEIPlugin implements IModPlugin {
                 SeparationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 SublimationRitualRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                SublimationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -73,8 +78,11 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipes(FIXATION_TYPE, recipesFixationSeparation);
         registration.addRecipes(SEPARATION_TYPE, recipesFixationSeparation);
 
-        List<AlchemicalInfusionRitualRecipe> recipesSublimation = rm.getAllRecipesFor(AlchemicalInfusionRitualRecipe.Type.INSTANCE);
-        registration.addRecipes(SUBLIMATION_RITUAL_TYPE, recipesSublimation);
+        List<AlchemicalInfusionRitualRecipe> recipesSublimationRitual = rm.getAllRecipesFor(AlchemicalInfusionRitualRecipe.Type.INSTANCE);
+        registration.addRecipes(SUBLIMATION_RITUAL_TYPE, recipesSublimationRitual);
+
+        List<AlchemicalInfusionRecipe> recipesSublimation = rm.getAllRecipesFor(AlchemicalInfusionRecipe.Type.INSTANCE);
+        registration.addRecipes(SUBLIMATION_TYPE, recipesSublimation);
     }
 
     @Override
@@ -89,6 +97,9 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(ItemInit.RUNE_RITUAL_METAL.get(), 1).setHoverName(Component.translatable("magichem:rituals/balanced_scales")), SUBLIMATION_RITUAL_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ALCHEMICAL_NEXUS.get(), 1), SUBLIMATION_TYPE);
+
         IModPlugin.super.registerRecipeCatalysts(registration);
     }
 }
