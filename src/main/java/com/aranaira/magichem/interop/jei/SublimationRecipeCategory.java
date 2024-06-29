@@ -60,8 +60,8 @@ public class SublimationRecipeCategory implements IRecipeCategory<AlchemicalInfu
         IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
 
         int stages = recipe.getStages(false).size();
-        int verticalShift = (int)(21.5f * (5 - stages));
-        int padding = (int)(11.5f * (5 - stages));
+        int verticalShift = (int)(21f * (5 - stages));
+        int padding = new int[]{43, 22, 0, 0, 0}[stages - 1];
 
         //Slot backgrounds
         {
@@ -100,8 +100,8 @@ public class SublimationRecipeCategory implements IRecipeCategory<AlchemicalInfu
     public void setRecipe(IRecipeLayoutBuilder builder, AlchemicalInfusionRecipe recipe, IFocusGroup group) {
 
         int stages = recipe.getStages(false).size();
-        int verticalShift = (int)(21.5f * (5 - stages));
-        int padding = (int)(11.5f * (5 - stages));
+        int verticalShift = (int)(21f * (5 - stages));
+        int padding = new int[]{43, 22, 0, 0, 0}[stages - 1];
 
         builder.addSlot(RecipeIngredientRole.OUTPUT,138,90 - verticalShift + padding).addItemStack(recipe.getAlchemyObject());
 
