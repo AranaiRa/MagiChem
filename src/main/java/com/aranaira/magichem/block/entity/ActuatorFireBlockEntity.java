@@ -13,6 +13,7 @@ import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
+import com.mna.items.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +28,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -42,11 +44,14 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler {
 
@@ -84,6 +89,9 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            if(stack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get() ||
+                    stack.getItem() == ItemInit.FLUID_JUG.get())
+                return true;
             return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
         }
     };
@@ -401,10 +409,35 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                 if (entity.remainingFuelTime <= 0) {
                     ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
                     if (!fuelStack.isEmpty()) {
-                        entity.fuelDuration = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem(), 1), RecipeType.SMELTING);
-                        entity.remainingFuelTime = entity.fuelDuration;
-                        entity.itemHandler.setStackInSlot(0, new ItemStack(fuelStack.getItem(), fuelStack.getCount() - 1));
+                        int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
+
+                        if(fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
+                            LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                            AtomicReference<Integer> mi = new AtomicReference<>(0);
+                            cap.ifPresent(handler -> {
+                                FluidStack fluidInTank = handler.getFluidInTank(0);
+                                if(fluidInTank.getAmount() > 0) {
+                                    if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
+                                        FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                                        float proportion = operation.getAmount() / 1000f;
+                                        int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                                        mi.set((int) (lavaBurnTime * proportion));
+                                    }
+                                }
+                            });
+                            burnTime = mi.get();
+                        } else if(fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
+                            burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                        } else if(fuelStack.getItem() != Items.LAVA_BUCKET) {
+                            fuelStack = new ItemStack(Items.BUCKET);
+                        } else {
+                            fuelStack.shrink(1);
+                        }
+
+                        entity.fuelDuration = burnTime;
+                        entity.remainingFuelTime = burnTime;
                         entity.flags = entity.flags | FLAG_FUEL_NORMAL;
+                        entity.itemHandler.setStackInSlot(0, fuelStack);
                         entity.syncAndSave();
 
                         //TODO: handle fancy alchemy coal

@@ -15,6 +15,7 @@ import com.aranaira.magichem.gui.DistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.items.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -30,20 +31,25 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemStackHandler;
+import org.antlr.v4.misc.MutableInt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins {
     public static final int
@@ -75,8 +81,12 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if (slot == SLOT_BOTTLES)
                     return stack.getItem() == Items.GLASS_BOTTLE;
-                if (slot == SLOT_FUEL)
+                if (slot == SLOT_FUEL) {
+                    if(stack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get() ||
+                       stack.getItem() == ItemInit.FLUID_JUG.get())
+                        return true;
                     return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
+                }
                 if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
                     return !(stack.getItem() instanceof MateriaItem);
                 if (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
@@ -343,12 +353,34 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
             ItemStack fuelStack = pEntity.itemHandler.getStackInSlot(SLOT_FUEL);
             if(fuelStack != ItemStack.EMPTY) {
                 int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
+
+                if(fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
+                    LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                    AtomicReference<Integer> mi = new AtomicReference<>(0);
+                    cap.ifPresent(handler -> {
+                        FluidStack fluidInTank = handler.getFluidInTank(0);
+                        if(fluidInTank.getAmount() > 0) {
+                            if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
+                                FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                                float proportion = operation.getAmount() / 1000f;
+                                int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                                mi.set((int) (lavaBurnTime * proportion));
+                            }
+                        }
+                    });
+                    burnTime = mi.get();
+                } else if(fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
+                    burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                } else if(fuelStack.getItem() != Items.LAVA_BUCKET) {
+                    fuelStack = new ItemStack(Items.BUCKET);
+                } else {
+                    fuelStack.shrink(1);
+                }
+
+                pEntity.itemHandler.setStackInSlot(SLOT_FUEL, fuelStack);
                 pEntity.remainingHeat = burnTime;
                 pEntity.heatDuration = burnTime;
                 pEntity.pushData();
-
-                fuelStack.shrink(1);
-                pEntity.itemHandler.setStackInSlot(SLOT_FUEL, fuelStack);
 
                 pEntity.syncAndSave();
             }
