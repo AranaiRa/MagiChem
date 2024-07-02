@@ -1,0 +1,9 @@
+{
+	"type": "mna:runeforging",
+	"tier": 2,
+	"material": "magichem:perfected_electrum",
+	"hits": 16,
+	"pattern": "magichem:perfected_electrum",
+	"output": "magichem:tube_components",
+	"output_quantity": 3
+}

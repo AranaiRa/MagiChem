@@ -22,6 +22,8 @@
   "item.magichem.sublimation_primer": "Sublimation Primer",
   "item.magichem.debug_orb": "Orb of Alchemical Unraveling",
   "item.magichem.sublimation_in_progress": "Sublimation in Progress",
+  "item.magichem.tube_components": "Tube Components",
+  "item.magichem.sublime_tube_components": "Sublime Tube Components",
 
   "item.magichem.dummy.process_fixation": "Alchemical Fixation",
   "item.magichem.dummy.process_separation": "Alchemical Separation",
@@ -29,6 +31,7 @@
   "item.magichem.dummy.process_fabrication": "Alchemical Fabrication",
 
   "block.magichem.alembic": "Alembic",
+  "block.magichem.magichemical_mechanism": "Magichemical Mechanism",
   "block.magichem.centrifuge": "Centrifuge",
   "block.magichem.centrifuge_router": "Centrifuge",
   "block.magichem.distillery": "Distillery",

@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "magichem:block/magichemical_mechanism",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "magichem:block/magichemical_mechanism",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "magichem:block/magichemical_mechanism"
+    },
+    "facing=south": {
+      "model": "magichem:block/magichemical_mechanism"
+    },
+    "facing=up": {
+      "model": "magichem:block/magichemical_mechanism",
+      "x": 90
+    },
+    "facing=west": {
+      "model": "magichem:block/magichemical_mechanism",
+      "y": 90
+    }
+  }
+}

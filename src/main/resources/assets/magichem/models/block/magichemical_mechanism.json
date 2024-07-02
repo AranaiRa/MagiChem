@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:block/cube_directional",
+  "textures": {
+    "north": "magichem:block/magichemical_mechanism",
+    "south": "magichem:block/magichemical_mechanism",
+    "east": "mna:block/artifice/decoration/arcane_sandstone",
+    "west": "mna:block/artifice/decoration/arcane_sandstone",
+    "up": "mna:block/artifice/decoration/arcane_sandstone",
+    "down": "mna:block/artifice/decoration/arcane_sandstone"
+  }
+}

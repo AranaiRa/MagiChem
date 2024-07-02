@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": {
+    "item": "magichem:sublime_tube_components"
+  },
+  "materia_type_one": { "item": "magichem:admixture_industry", "count": 12 },
+  "materia_type_two": { "item": "magichem:admixture_motion", "count": 18 },
+  "components": [
+    { "item": "magichem:tube_components" },
+    { "item": "mna:arcane_ash" },
+    { "item": "mna:arcane_ash" }
+  ]
+}

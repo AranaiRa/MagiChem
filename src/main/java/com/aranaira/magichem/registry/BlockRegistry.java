@@ -6,6 +6,7 @@ import com.aranaira.magichem.item.MateriaJarItem;
 import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.item.PowerSpikeItem;
 import com.aranaira.magichem.item.TooltipLoreBlockItem;
+import com.mna.blocks.decoration.SimpleRotationalBlock;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -22,6 +23,11 @@ public class BlockRegistry {
     public static final RegistryObject<Block> ALEMBIC = registerBlock("alembic",
             () -> new AlembicBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> MAGICHEMICAL_MECHANISM = registerBlock("magichemical_mechanism",
+            () -> new SimpleRotationalBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f))
     );
 
     public static final RegistryObject<Block> CENTRIFUGE = registerBlock("centrifuge",
