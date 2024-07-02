@@ -106,6 +106,8 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(getMasterPos() == null)
+            return LazyOptional.empty();
         return getMaster().getCapability(cap, side);
     }
 
