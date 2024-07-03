@@ -3,15 +3,12 @@
   "output": "magichem:actuator_earth",
   "tier": 3,
   "items": [
-    "magichem:perfected_electrum",
-    "magichem:magic_circle",
-    "magichem:perfected_electrum",
-    "magichem:perfected_electrum",
-    "mna:mote_earth",
-    "magichem:perfected_electrum",
     "mna:decoration/arcane_sandstone",
     "minecraft:cauldron",
-    "mna:decoration/arcane_sandstone"
+    "magichem:cog_components",
+    "mna:mote_earth",
+    "magichem:cog_components",
+    "magichem:magichemical_mechanism"
   ],
   "patterns": [
     "mna:inverted_triangle",

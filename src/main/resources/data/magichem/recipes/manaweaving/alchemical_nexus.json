@@ -1,0 +1,24 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:alchemical_nexus",
+  "tier": 2,
+  "items": [
+    "magichem:magichemical_mechanism",
+    "magichem:magic_circle",
+    "magichem:magichemical_mechanism",
+    "magichem:tube_components",
+    "mna:chimerite_block",
+    "magichem:tube_components",
+    "magichem:magichemical_mechanism",
+    "magichem:sublimation_primer",
+    "magichem:magichemical_mechanism"
+  ],
+  "patterns": [
+    "mna:knot2",
+    "mna:knot3",
+    "mna:slash",
+    "mna:backslash",
+    "mna:knot4",
+    "mna:knot"
+  ]
+}

@@ -3,15 +3,15 @@
   "output": "magichem:fusery",
   "tier": 3,
   "items": [
-    "magichem:magic_circle",
+    "magichem:cog_components",
     "magichem:perfected_electrum",
     "magichem:alembic",
-    "mna:decoration/arcane_sandstone",
-    "magichem:magic_circle",
     "magichem:perfected_electrum",
+    "magichem:magic_circle",
+    "magichem:magichemical_mechanism",
     "mna:fluid_jug",
-    "mna:decoration/arcane_sandstone",
-    "minecraft:cauldron"
+    "minecraft:cauldron",
+    "magichem:magichemical_mechanism"
   ],
   "patterns": [
     "mna:inverted_triangle",

@@ -1,0 +1,20 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:actuator_water",
+  "tier": 3,
+  "items": [
+    "minecraft:glass_pane",
+    "minecraft:glass_pane",
+    "minecraft:glass_pane",
+    "minecraft:glass_pane",
+    "mna:mote_water",
+    "magichem:cog_components",
+    "magichem:cog_components",
+    "magichem:magichemical_mechanism"
+  ],
+  "patterns": [
+    "mna:inverted_triangle",
+    "mna:bolt",
+    "mna:split_triangle"
+  ]
+}

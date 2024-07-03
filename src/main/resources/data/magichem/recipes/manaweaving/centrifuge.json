@@ -3,15 +3,15 @@
   "output": "magichem:centrifuge",
   "tier": 2,
   "items": [
-    "magichem:magic_circle",
+    "magichem:magichemical_mechanism",
     "magichem:perfected_electrum",
-    "mna:decoration/arcane_sandstone",
+    "magichem:cog_components",
+    "magichem:perfected_electrum",
+    "magichem:magic_circle",
     "magichem:perfected_electrum",
     "magichem:alembic",
     "magichem:perfected_electrum",
-    "mna:decoration/arcane_sandstone",
-    "magichem:perfected_electrum",
-    "magichem:magic_circle"
+    "magichem:magichemical_mechanism"
   ],
   "patterns": [
     "mna:slash",

@@ -10,10 +10,7 @@ import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.gui.AlchemicalNexusMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
-import com.aranaira.magichem.registry.BlockEntitiesRegistry;
-import com.aranaira.magichem.registry.EntitiesRegistry;
-import com.aranaira.magichem.registry.FluidRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.*;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
@@ -343,7 +340,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
             //Temporary recipe setter
             if(anbe.currentRecipe == null && !pLevel.isClientSide()) {
-                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, new ItemStack(ItemInit.DEMON_LORD_SWORD.get()));
+                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, new ItemStack(BlockRegistry.MAGICHEMICAL_MECHANISM.get()));
                 anbe.itemHandler.setStackInSlot(SLOT_RECIPE, anbe.currentRecipe.getAlchemyObject());
                 anbe.syncAndSave();
             }

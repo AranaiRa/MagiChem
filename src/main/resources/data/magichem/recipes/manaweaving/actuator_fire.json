@@ -1,0 +1,17 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:actuator_fire",
+  "tier": 3,
+  "items": [
+    "minecraft:blast_furnace",
+    "magichem:tube_components",
+    "mna:mote_fire",
+    "magichem:tube_components",
+    "magichem:magichemical_mechanism"
+  ],
+  "patterns": [
+    "mna:inverted_triangle",
+    "mna:bolt",
+    "mna:split_triangle"
+  ]
+}

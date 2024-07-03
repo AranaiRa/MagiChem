@@ -1,0 +1,17 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:actuator_air",
+  "tier": 3,
+  "items": [
+    "magichem:materia_vessel",
+    "magichem:tube_components",
+    "mna:mote_air",
+    "magichem:tube_components",
+    "magichem:magichemical_mechanism"
+  ],
+  "patterns": [
+    "mna:inverted_triangle",
+    "mna:bolt",
+    "mna:split_triangle"
+  ]
+}
