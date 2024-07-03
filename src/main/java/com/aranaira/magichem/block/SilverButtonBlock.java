@@ -1,8 +1,5 @@
 package com.aranaira.magichem.block;
 
-import com.mna.api.capabilities.IPlayerMagic;
-import com.mna.api.capabilities.IPlayerProgression;
-import com.mna.capabilities.MACapabilityForgeEventHandlers;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

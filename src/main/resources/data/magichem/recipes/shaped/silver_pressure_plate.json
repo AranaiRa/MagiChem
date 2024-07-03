@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "II"
+  ],
+  "key": {
+    "I": {
+      "item": "mna:transmuted_silver"
+    }
+  },
+  "result": {
+    "item": "magichem:silver_pressure_plate"
+  }
+}
