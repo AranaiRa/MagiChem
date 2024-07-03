@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button_inventory",
+  "textures": {
+    "texture": "mna:block/artifice/decoration/transmuted_silver_block"
+  }
+}

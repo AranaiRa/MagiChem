@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "mna:transmuted_silver"
+    }
+  ],
+  "result": {
+    "item": "magichem:silver_button",
+    "count": 4
+  }
+}

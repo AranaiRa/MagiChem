@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/pressure_plate_down",
+  "textures": {
+    "texture": "mna:block/artifice/decoration/transmuted_silver_block"
+  }
+}
