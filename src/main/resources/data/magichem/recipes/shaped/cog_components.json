@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB",
+    "BPB",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "magichem:silver_button"
+    },
+    "P": {
+      "item": "magichem:silver_pressure_plate"
+    }
+  },
+  "result": {
+    "item": "magichem:cog_components"
+  }
+}

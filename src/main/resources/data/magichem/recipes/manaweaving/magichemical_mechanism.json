@@ -1,0 +1,20 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:magichemical_mechanism",
+  "tier": 2,
+  "items": [
+    "mna:decoration/arcane_sandstone",
+    "magichem:sublime_cog_components",
+    "mna:decoration/arcane_sandstone",
+    "magichem:sublime_tube_components",
+    "magichem:iris_argenti",
+    "magichem:sublime_cog_components",
+    "mna:decoration/arcane_sandstone",
+    "magichem:sublime_tube_components",
+    "mna:decoration/arcane_sandstone"
+  ],
+  "patterns": [
+    "mna:diamond",
+    "mna:slash"
+  ]
+}

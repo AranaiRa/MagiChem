@@ -1,0 +1,39 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:magichemical_mechanism"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:decoration/arcane_sandstone" },
+        { "item": "mna:transmuted_silver" },
+        { "item": "mna:transmuted_silver" },
+        { "item": "mna:transmuted_silver" },
+        { "item": "mna:decoration/arcane_sandstone" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_instrument", "count": 26 },
+        { "item": "magichem:admixture_motion", "count": 20 },
+        { "item": "magichem:essentia_wrought", "count": 10 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:decoration/arcane_sandstone" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "magichem:iris_argenti" },
+        { "item": "mna:decoration/arcane_sandstone" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_motion", "count": 20 },
+        { "item": "magichem:admixture_industry", "count": 18 },
+        { "item": "magichem:essentia_wrought", "count": 10 }
+      ]
+    }
+  ]
+}

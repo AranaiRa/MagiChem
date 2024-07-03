@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": {
+    "item": "magichem:sublime_cog_components"
+  },
+  "materia_type_one": { "item": "magichem:admixture_instrument", "count": 18 },
+  "materia_type_two": { "item": "magichem:admixture_motion", "count": 26 },
+  "components": [
+    { "item": "magichem:cog_components" },
+    { "item": "mna:arcane_ash" },
+    { "item": "mna:arcane_ash" }
+  ]
+}
