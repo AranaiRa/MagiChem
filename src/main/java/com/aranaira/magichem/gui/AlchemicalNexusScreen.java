@@ -10,8 +10,11 @@ import com.aranaira.magichem.foundation.AlchemicalNexusAnimSpec;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.gui.element.AlchemicalNexusButtonRecipeSelector;
+import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
+import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
 import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
@@ -35,10 +38,13 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNexusMenu> {
@@ -71,18 +77,41 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             TOOLTIP_EXPERIENCE_X = 193, TOOLTIP_EXPERIENCE_Y = 54, TOOLTIP_EXPERIENCE_W = 59, TOOLTIP_EXPERIENCE_H = 13,
             TOOLTIP_OPTIME_X = 193, TOOLTIP_OPTIME_Y = 73, TOOLTIP_OPTIME_W = 59, TOOLTIP_OPTIME_H = 13,
             TOOLTIP_RECIPE_ZONE_X = -77, TOOLTIP_RECIPE_ZONE_Y = 22, TOOLTIP_RECIPE_ZONE_W = 54, TOOLTIP_RECIPE_ZONE_H = 90;
+    private AlchemicalInfusionRecipe lastRecipe = null;
+    private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
+    private ItemStack lastRecipeResult = ItemStack.EMPTY;
 
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
 
     public AlchemicalNexusScreen(AlchemicalNexusMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        updateDisplayedRecipes("");
     }
 
     @Override
     protected void init() {
         super.init();
+        initializeRecipeSelectorButtons();
         initializePowerLevelButtons();
+        initializeRecipeFilterBox();
+    }
+
+    private List<ItemStack> filteredRecipeOutputs = new ArrayList<>();
+    private int recipeFilterRow, recipeFilterRowTotal;
+    private void updateDisplayedRecipes(String filter) {
+        List<AlchemicalInfusionRecipe> sublimationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(AlchemicalInfusionRecipe.Type.INSTANCE);
+        filteredRecipeOutputs.clear();
+
+        recipeFilterRowTotal = (int)Math.ceil(sublimationRecipeOutputs.size() / 3.0f);
+        recipeFilterRow = 0;
+
+        for(AlchemicalInfusionRecipe iar : sublimationRecipeOutputs) {
+            String display = iar.getAlchemyObject().getDisplayName().getString();
+            if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
+                filteredRecipeOutputs.add(iar.getAlchemyObject().copy());
+            }
+        }
     }
 
     @Override
@@ -90,23 +119,28 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
-//        renderFilterBox();
-//        renderRecipeOptions(pGuiGraphics);
+        renderFilterBox();
+        renderRecipeOptions(pGuiGraphics);
+        renderButtons(pGuiGraphics, pPartialTick, pMouseX, pMouseY);
     }
 
     private void initializePowerLevelButtons(){
         b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 31, 12, 7, 232, 242, TEXTURE, button -> {
             menu.blockEntity.incrementPowerUsageSetting();
+            ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
             PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    menu.blockEntity.getPowerLevel()
+                    menu.blockEntity.getPowerLevel(),
+                    output
             ));
         }));
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 76, 12, 7, 244, 242, TEXTURE, button -> {
             menu.blockEntity.decrementPowerUsageSetting();
+            ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
             PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    menu.blockEntity.getPowerLevel()
+                    menu.blockEntity.getPowerLevel(),
+                    output
             ));
         }));
     }
@@ -183,34 +217,61 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         }
     }
 
-//    private void initializeRecipeFilterBox() {
-//        int x = (width - PANEL_MAIN_W) / 2;
-//        int y = (height - PANEL_MAIN_H) / 2;
-//
-//        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
-//            @Override
-//            public boolean charTyped(char pCodePoint, int pModifiers) {
-//                updateDisplayedRecipes(recipeFilterBox.getValue());
-//                return super.charTyped(pCodePoint, pModifiers);
-//            }
-//
-//            @Override
-//            public void deleteChars(int pNum) {
-//                super.deleteChars(pNum);
-//                updateDisplayedRecipes(recipeFilterBox.getValue());
-//            }
-//
-//            @Override
-//            public void deleteWords(int pNum) {
-//                super.deleteWords(pNum);
-//                updateDisplayedRecipes(recipeFilterBox.getValue());
-//            }
-//        };
-//        this.recipeFilterBox.setMaxLength(60);
-//        this.recipeFilterBox.setFocused(false);
-//        this.recipeFilterBox.setCanLoseFocus(false);
-//        this.setFocused(this.recipeFilterBox);
-//    }
+    private void initializeRecipeSelectorButtons(){
+        int c = 0;
+        for(int y=0; y<5; y++) {
+            for(int x=0; x<3; x++) {
+                recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new AlchemicalNexusButtonRecipeSelector(
+                        this, c, this.leftPos, this.topPos, 18, 18, 46, 220, TEXTURE, button -> {
+
+                    AlchemicalNexusScreen query = (AlchemicalNexusScreen) ((AlchemicalNexusButtonRecipeSelector) button).getScreen();
+                    query.setActiveRecipe(((AlchemicalNexusButtonRecipeSelector) button).getArrayIndex());
+                })), x*18 - 77, y*18 + 22);
+                c++;
+            }
+        }
+    }
+
+    public void setActiveRecipe(int index) {
+        int trueIndex = recipeFilterRow*3 + index;
+        if(trueIndex < filteredRecipeOutputs.size()) {
+            PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    menu.blockEntity.getPowerLevel(),
+                    filteredRecipeOutputs.get(trueIndex)
+            ));
+            menu.blockEntity.setRecipeFromOutput(menu.blockEntity.getLevel(), filteredRecipeOutputs.get(trueIndex));
+        }
+    }
+
+    private void initializeRecipeFilterBox() {
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
+            @Override
+            public boolean charTyped(char pCodePoint, int pModifiers) {
+                updateDisplayedRecipes(recipeFilterBox.getValue());
+                return super.charTyped(pCodePoint, pModifiers);
+            }
+
+            @Override
+            public void deleteChars(int pNum) {
+                super.deleteChars(pNum);
+                updateDisplayedRecipes(recipeFilterBox.getValue());
+            }
+
+            @Override
+            public void deleteWords(int pNum) {
+                super.deleteWords(pNum);
+                updateDisplayedRecipes(recipeFilterBox.getValue());
+            }
+        };
+        this.recipeFilterBox.setMaxLength(60);
+        this.recipeFilterBox.setFocused(false);
+        this.recipeFilterBox.setCanLoseFocus(false);
+        this.setFocused(this.recipeFilterBox);
+    }
 
     private void renderStageGauge(GuiGraphics pGuiGraphics, int pX, int pY) {
         int count = menu.getAllStages().size();
@@ -284,19 +345,19 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         }
 
         //Items in recipe picker
-//        if(mouseX >= x+TOOLTIP_RECIPE_ZONE_X && mouseX <= x+TOOLTIP_RECIPE_ZONE_X+TOOLTIP_RECIPE_ZONE_W &&
-//                mouseY >= y+TOOLTIP_RECIPE_ZONE_Y && mouseY <= y+TOOLTIP_RECIPE_ZONE_Y+TOOLTIP_RECIPE_ZONE_H) {
-//            int mx = mouseX - (x+TOOLTIP_RECIPE_ZONE_X);
-//            int my = mouseY - (y+TOOLTIP_RECIPE_ZONE_Y);
-//            int id = ((my / 18) * 3) + ((mx / 18) % 3);
-//
-//            if(id < filteredRecipeOutputs.size()) {
-//                if (id >= 0 && id < 16) {
-//                    ItemStack stackUnderMouse = filteredRecipeOutputs.get(id);
-//                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
-//                }
-//            }
-//        }
+        if(pX >= x+TOOLTIP_RECIPE_ZONE_X && pX <= x+TOOLTIP_RECIPE_ZONE_X+TOOLTIP_RECIPE_ZONE_W &&
+                pY >= y+TOOLTIP_RECIPE_ZONE_Y && pY <= y+TOOLTIP_RECIPE_ZONE_Y+TOOLTIP_RECIPE_ZONE_H) {
+            int mx = pX - (x+TOOLTIP_RECIPE_ZONE_X);
+            int my = pY - (y+TOOLTIP_RECIPE_ZONE_Y);
+            int id = ((my / 18) * 3) + ((mx / 18) % 3);
+
+            if(id < filteredRecipeOutputs.size()) {
+                if (id >= 0 && id < 16) {
+                    ItemStack stackUnderMouse = filteredRecipeOutputs.get(id);
+                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                }
+            }
+        }
 
         //Marks
         if(menu.blockEntity.getMarkItem().isEmpty()) {
@@ -451,6 +512,58 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             super.renderTooltip(pGuiGraphics, pX, pY);
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+    }
+
+    private void renderButtons(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        for (ButtonData bd : recipeSelectButtons) {
+            bd.getButton().setPosition(x + bd.getXOffset(), y + bd.getYOffset());
+            bd.getButton().renderWidget(gui, mouseX, mouseY, partialTick);
+            bd.getButton().active = true;
+            bd.getButton().visible = true;
+        }
+    }
+
+    private void renderFilterBox() {
+        int xOrigin = (width - PANEL_MAIN_W) / 2;
+        int yOrigin = (height - PANEL_MAIN_H) / 2;
+
+        recipeFilterBox.setX(xOrigin - 76);
+        recipeFilterBox.setY(yOrigin + 1);
+
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
+
+        addRenderableWidget(recipeFilterBox);
+    }
+
+    private void renderRecipeOptions(GuiGraphics gui) {
+        int xOrigin = (width - PANEL_MAIN_W) / 2;
+        int yOrigin = (height - PANEL_MAIN_H) / 2;
+
+        List<ItemStack> snipped = new ArrayList<>();
+        for(int i=recipeFilterRow*3; i<Math.min(filteredRecipeOutputs.size(), recipeFilterRow*3 + 15); i++) {
+            snipped.add(filteredRecipeOutputs.get(i));
+        }
+
+        int c = 0;
+        int cLimit = Math.min(15, snipped.size());
+        while(c < cLimit) {
+
+            for(int y=0; y<5; y++) {
+                for (int x = 0; x < 3; x++) {
+
+                    gui.renderItem(snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
+                    c++;
+                    if(c >= cLimit) break;
+                }
+                if(c >= cLimit) break;
+            }
+        }
     }
 
     @Override

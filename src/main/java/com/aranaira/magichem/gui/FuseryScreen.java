@@ -146,7 +146,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         }
     }
 
-    private static List<ItemStack> filteredRecipeOutputs = new ArrayList<>();
+    private List<ItemStack> filteredRecipeOutputs = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
         List<FixationSeparationRecipe> fabricationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE);
@@ -276,12 +276,11 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     }
 
     private void renderButtons(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
-
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        for(ButtonData bd : recipeSelectButtons) {
-            bd.getButton().setPosition(x+bd.getXOffset(), y+bd.getYOffset());
+        for (ButtonData bd : recipeSelectButtons) {
+            bd.getButton().setPosition(x + bd.getXOffset(), y + bd.getYOffset());
             bd.getButton().renderWidget(gui, mouseX, mouseY, partialTick);
             bd.getButton().active = true;
             bd.getButton().visible = true;

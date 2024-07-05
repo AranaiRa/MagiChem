@@ -339,11 +339,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
 
             //Temporary recipe setter
-            if(anbe.currentRecipe == null && !pLevel.isClientSide()) {
-                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, new ItemStack(BlockRegistry.MAGICHEMICAL_MECHANISM.get()));
-                anbe.itemHandler.setStackInSlot(SLOT_RECIPE, anbe.currentRecipe.getAlchemyObject());
-                anbe.syncAndSave();
-            }
+//            if(anbe.currentRecipe == null && !pLevel.isClientSide()) {
+//                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, new ItemStack(BlockRegistry.MAGICHEMICAL_MECHANISM.get()));
+//                anbe.itemHandler.setStackInSlot(SLOT_RECIPE, anbe.currentRecipe.getAlchemyObject());
+//                anbe.syncAndSave();
+//            }
 
             if(anbe.animStage == ANIM_STAGE_IDLE) {
                 //Just sit here and do nothing if we have no recipe
@@ -821,6 +821,15 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         }
 
         return items;
+    }
+
+    public void setRecipeFromOutput(Level pLevel, ItemStack pQuery) {
+        AlchemicalInfusionRecipe air = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, pQuery);
+        if(air != null) {
+            this.currentRecipe = air;
+            this.itemHandler.setStackInSlot(SLOT_RECIPE, air.getAlchemyObject());
+            this.syncAndSave();
+        }
     }
 
     public NonNullList<Triplet<MateriaItem, Integer, Boolean>> getAllMateriaDemands() {

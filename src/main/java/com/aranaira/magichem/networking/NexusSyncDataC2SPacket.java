@@ -15,20 +15,24 @@ import java.util.function.Supplier;
 public class NexusSyncDataC2SPacket {
     private final BlockPos blockPos;
     private final byte powerUsageSetting;
+    private final ItemStack recipeOutput;
 
-    public NexusSyncDataC2SPacket(BlockPos pBlockPos, int pPowerLevel) {
+    public NexusSyncDataC2SPacket(BlockPos pBlockPos, int pPowerLevel, ItemStack pStack) {
         this.blockPos = pBlockPos;
         this.powerUsageSetting = (byte)pPowerLevel;
+        this.recipeOutput = pStack.copy();
     }
 
     public NexusSyncDataC2SPacket(FriendlyByteBuf buf) {
         this.blockPos = buf.readBlockPos();
         this.powerUsageSetting = buf.readByte();
+        this.recipeOutput = buf.readItem();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
         buf.writeByte(powerUsageSetting);
+        buf.writeItemStack(recipeOutput, true);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -40,6 +44,7 @@ public class NexusSyncDataC2SPacket {
         context.enqueueWork(() -> {
             if(entity instanceof AlchemicalNexusBlockEntity anbe) {
                 anbe.setPowerUsageSetting(powerUsageSetting);
+                anbe.setRecipeFromOutput(anbe.getLevel(), recipeOutput);
                 anbe.syncAndSave();
             }
         });
