@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:icarian_flight" },
+  "components": [
+    { "item": "magichem:admixture_flight", "count": 64 },
+    { "item": "magichem:admixture_travel", "count": 64 },
+    { "item": "magichem:admixture_instrument", "count": 7 },
+    { "item": "magichem:admixture_thought", "count": 5 },
+    { "item": "magichem:admixture_legend", "count": 1 }
+  ]
+}
