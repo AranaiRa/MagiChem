@@ -1,0 +1,22 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:perfected_electrum"
+  },
+  "stages": [
+    {
+      "experience": 40,
+      "components": [
+        { "item": "minecraft:gold_ingot" },
+        { "item": "magichem:alchemical_waste" },
+        { "item": "mna:transmuted_silver" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_nigredo", "count": 4 },
+        { "item": "magichem:admixture_metal", "count": 18 }
+      ]
+    }
+  ]
+}

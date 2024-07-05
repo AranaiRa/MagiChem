@@ -1,0 +1,23 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:iris_argenti",
+    "count": 10
+  },
+  "stages": [
+    {
+      "experience": 40,
+      "components": [
+        { "item": "mna:decoration/transmuted_silver_block" },
+        { "item": "mna:chimerite_block" },
+        { "item": "mna:decoration/transmuted_silver_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_change", "count": 18 },
+        { "item": "magichem:admixture_mana", "count": 18 }
+      ]
+    }
+  ]
+}

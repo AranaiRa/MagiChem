@@ -4,8 +4,8 @@
     "item": "magichem:iris_argenti",
     "count": 9
   },
-  "materia_type_one": { "item": "magichem:admixture_change", "count": 20 },
-  "materia_type_two": { "item": "magichem:admixture_mana", "count": 20 },
+  "materia_type_one": { "item": "magichem:admixture_change", "count": 24 },
+  "materia_type_two": { "item": "magichem:admixture_mana", "count": 24 },
   "components": [
     { "item": "mna:chimerite_block" },
     { "item": "mna:decoration/transmuted_silver_block" },

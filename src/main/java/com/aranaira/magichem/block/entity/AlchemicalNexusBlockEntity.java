@@ -67,7 +67,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected ContainerData data;
     protected AlchemicalNexusAnimSpec cachedSpec;
     protected int
-        progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
+        progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 3, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
     protected boolean
         isStalled = false, doDeferredRecipeLinkages = false;
     protected Random r = new Random();

@@ -2077,6 +2077,10 @@
       {
         "type": "alchemical_infusion_ritual",
         "location": "magichem:alchemical_infusion_ritual/magichem/occulted_cinder"
+      },
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/occulted_cinder"
       }
     ]
   },
