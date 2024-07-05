@@ -428,7 +428,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                             burnTime = mi.get();
                         } else if(fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
                             burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                        } else if(fuelStack.getItem() != Items.LAVA_BUCKET) {
+                        } else if(fuelStack.getItem() == Items.LAVA_BUCKET) {
                             fuelStack = new ItemStack(Items.BUCKET);
                         } else {
                             fuelStack.shrink(1);
