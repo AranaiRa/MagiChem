@@ -322,25 +322,29 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         //Selected Recipe
         if(pX >= x+TOOLTIP_SELECTED_RECIPE_X && pX <= x+TOOLTIP_SELECTED_RECIPE_X+TOOLTIP_SELECTED_RECIPE_S &&
                 pY >= y+TOOLTIP_SELECTED_RECIPE_Y && pY <= y+TOOLTIP_SELECTED_RECIPE_Y+TOOLTIP_SELECTED_RECIPE_S) {
-            ItemStack recipeItem = menu.getCurrentRecipe().getAlchemyObject();
-            if(recipeItem == ItemStack.EMPTY) {
-                tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-            } else {
-                int totalCost = 0;
-                for(InfusionStage is : menu.getCurrentRecipe().getStages(false)){
-                    totalCost += is.experience * Config.fluidPerXPPoint;
-                    totalCost += AlchemicalNexusBlockEntity.getBaseExperienceCostPerStage(menu.blockEntity.getPowerLevel());
-                }
+            if(menu.getCurrentRecipe() == null) {
 
-                tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
-                tooltipContents.add(Component.empty());
-                tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
-                        .append(Component.literal(totalCost+"mB").withStyle(ChatFormatting.DARK_AQUA))
-                        .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
-                        .append(Component.literal(menu.getCurrentRecipe().getStages(false).size()+"").withStyle(ChatFormatting.DARK_AQUA))
-                        .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part3").withStyle(ChatFormatting.DARK_GRAY))
-                );
+            } else {
+                ItemStack recipeItem = menu.getCurrentRecipe().getAlchemyObject();
+                if (recipeItem == ItemStack.EMPTY) {
+                    tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                } else {
+                    int totalCost = 0;
+                    for (InfusionStage is : menu.getCurrentRecipe().getStages(false)) {
+                        totalCost += is.experience * Config.fluidPerXPPoint;
+                        totalCost += AlchemicalNexusBlockEntity.getBaseExperienceCostPerStage(menu.blockEntity.getPowerLevel());
+                    }
+
+                    tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                    tooltipContents.add(Component.empty());
+                    tooltipContents.add(Component.empty()
+                            .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(totalCost + "mB").withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(menu.getCurrentRecipe().getStages(false).size() + "").withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part3").withStyle(ChatFormatting.DARK_GRAY))
+                    );
+                }
             }
         }
 
@@ -418,71 +422,71 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     .append(Component.translatable("tooltip.magichem.gui.operationtime.nexus.line2")));
         }
 
-        //Ingredients
-        if(pX >= x+21 && pX <= x+39 &&
-                pY >= y+7 && pY <= y+97) {
-            int i = (pY - (y+7)) / 18;
-            NonNullList<ItemStack> componentItems = menu.getStage(menu.getCurrentStageID()).componentItems;
+        if(menu.getCurrentRecipe() != null) {
+            //Ingredients
+            if (pX >= x + 21 && pX <= x + 39 &&
+                    pY >= y + 7 && pY <= y + 97) {
+                int i = (pY - (y + 7)) / 18;
+                NonNullList<ItemStack> componentItems = menu.getStage(menu.getCurrentStageID()).componentItems;
 
-            if(i < componentItems.size()) {
-                ItemStack stackInSlot = menu.getItems().get(AlchemicalNexusBlockEntity.SLOT_INPUT_START + i + 35);
+                if (i < componentItems.size()) {
+                    ItemStack stackInSlot = menu.getItems().get(AlchemicalNexusBlockEntity.SLOT_INPUT_START + i + 35);
 
-                if(stackInSlot.isEmpty()) {
-                    String name = componentItems.get(i).getDisplayName().getString();
+                    if (stackInSlot.isEmpty()) {
+                        String name = componentItems.get(i).getDisplayName().getString();
+
+                        tooltipContents.clear();
+                        tooltipContents.add(Component.empty()
+                                .append(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY))
+                        );
+                    } else {
+                        super.renderTooltip(pGuiGraphics, pX, pY);
+                    }
+                }
+            }
+
+            //Materia
+            if (pX >= x + 43 && pX <= x + 60 &&
+                    pY >= y + 7 && pY <= y + 97) {
+                int i = (pY - (y + 7)) / 18;
+                NonNullList<Triplet<MateriaItem, Integer, Boolean>> allMateriaDemands = menu.blockEntity.getAllMateriaDemands();
+                NonNullList<ItemStack> componentMateria = menu.getCurrentRecipe().getStages(false).get(menu.getCurrentStageID()).componentMateria;
+
+                int animStage = menu.blockEntity.getAnimStage();
+                if (i < componentMateria.size()) {
+                    String name = componentMateria.get(i).getDisplayName().getString();
+                    int required = componentMateria.get(i).getCount();
+                    int outstanding = required;
+                    for (Triplet<MateriaItem, Integer, Boolean> triplet : allMateriaDemands) {
+                        if (componentMateria.get(i).getItem() == triplet.getFirst()) {
+                            outstanding = triplet.getSecond();
+                        }
+                    }
 
                     tooltipContents.clear();
                     tooltipContents.add(Component.empty()
-                            .append(Component.literal(name.substring(1,name.length()-1)).withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(name.substring(1, name.length() - 1)))
                     );
-                } else {
-                    super.renderTooltip(pGuiGraphics, pX, pY);
-                }
-            }
-        }
 
-        //Materia
-        if(pX >= x+43 && pX <= x+60 &&
-                pY >= y+7 && pY <= y+97) {
-            int i = (pY - (y+7)) / 18;
-            NonNullList<Triplet<MateriaItem, Integer, Boolean>> allMateriaDemands = menu.blockEntity.getAllMateriaDemands();
-            NonNullList<ItemStack> componentMateria = menu.getCurrentRecipe().getStages(false).get(menu.getCurrentStageID()).componentMateria;
-
-            int animStage = menu.blockEntity.getAnimStage();
-            if(i < componentMateria.size()) {
-                String name = componentMateria.get(i).getDisplayName().getString();
-                int required = componentMateria.get(i).getCount();
-                int outstanding = required;
-                for (Triplet<MateriaItem, Integer, Boolean> triplet : allMateriaDemands) {
-                    if (componentMateria.get(i).getItem() == triplet.getFirst()) {
-                        outstanding = triplet.getSecond();
+                    if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_SHLORPS ||
+                            animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING ||
+                            animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING) {
+                        tooltipContents.add(Component.empty()
+                                .append(Component.literal("" + (required - outstanding)).withStyle(ChatFormatting.DARK_AQUA))
+                                .append(" of ").withStyle(ChatFormatting.DARK_GRAY)
+                                .append(Component.literal("" + required).withStyle(ChatFormatting.DARK_AQUA))
+                                .append(" provided").withStyle(ChatFormatting.DARK_GRAY)
+                        );
+                    } else if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE ||
+                            animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
+                        tooltipContents.add(Component.empty()
+                                .append(Component.translatable("tooltip.magichem.gui.shlorps.idle")).withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+                        );
+                    } else {
+                        tooltipContents.add(Component.empty()
+                                .append(Component.translatable("tooltip.magichem.gui.shlorps.waiting")).withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+                        );
                     }
-                }
-
-                tooltipContents.clear();
-                tooltipContents.add(Component.empty()
-                        .append(Component.literal(name.substring(1, name.length() - 1)))
-                );
-
-                if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_SHLORPS ||
-                   animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING ||
-                   animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING) {
-                    tooltipContents.add(Component.empty()
-                            .append(Component.literal("" + (required - outstanding)).withStyle(ChatFormatting.DARK_AQUA))
-                            .append(" of ").withStyle(ChatFormatting.DARK_GRAY)
-                            .append(Component.literal("" + required).withStyle(ChatFormatting.DARK_AQUA))
-                            .append(" provided").withStyle(ChatFormatting.DARK_GRAY)
-                    );
-                }
-                else if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE ||
-                         animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
-                    tooltipContents.add(Component.empty()
-                            .append(Component.translatable("tooltip.magichem.gui.shlorps.idle")).withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
-                    );
-                }
-                else {
-                    tooltipContents.add(Component.empty()
-                            .append(Component.translatable("tooltip.magichem.gui.shlorps.waiting")).withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
-                    );
                 }
             }
         }
