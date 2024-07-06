@@ -338,13 +338,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 anbe.syncAndSave();
             }
 
-            //Temporary recipe setter
-//            if(anbe.currentRecipe == null && !pLevel.isClientSide()) {
-//                anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, new ItemStack(BlockRegistry.MAGICHEMICAL_MECHANISM.get()));
-//                anbe.itemHandler.setStackInSlot(SLOT_RECIPE, anbe.currentRecipe.getAlchemyObject());
-//                anbe.syncAndSave();
-//            }
-
             if(anbe.animStage == ANIM_STAGE_IDLE) {
                 //Just sit here and do nothing if we have no recipe
                 if(anbe.currentRecipe != null)
@@ -413,7 +406,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CIRCLE) {
                 anbe.incrementProgress();
 
-                if(anbe.progress > anbe.cachedSpec.ticksInRampCancel) {
+                if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
                     anbe.resetProgress();
                     anbe.progress = anbe.cachedSpec.ticksInRampCancel;
                     anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
