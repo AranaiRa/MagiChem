@@ -175,7 +175,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             if(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_RECIPE).isEmpty() || menu.getCurrentRecipe() == null) {
                 pGuiGraphics.blit(TEXTURE, x + 79, y + 79, 28, 238, 18, 18);
             } else {
-                pGuiGraphics.renderItem(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_RECIPE), x + 80, y + 80);
+                pGuiGraphics.renderItem(menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
+                pGuiGraphics.renderItemDecorations(Minecraft.getInstance().font, menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
 
                 //ingredients
                 {
