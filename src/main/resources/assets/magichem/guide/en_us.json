@@ -382,6 +382,10 @@
         "location": "magichem:alchemical_infusion_ritual/magichem/iris_argenti"
       },
       {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/iris_argenti"
+      },
+      {
         "type": "crafting",
         "location": "magichem:shaped/magic_circle"
       }
@@ -996,6 +1000,66 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/fusery"
+      }
+    ]
+  },
+  "Fusery": {
+    "index": "1206",
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Alchemical Nexus"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Alchemical Nexus",
+            "color": "dark_purple"
+          },
+          {
+            "text": "is an advanced device capable of performing "
+          },
+          {
+            "text": "Sublimation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Alchemical Nexus to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Sublimation symbol in the center.\n\nThe alchemical Sublimation symbol in the center represents the progress on the current craft. It begins filling once all ingredients and materia are provided, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots, the rightmost group of five for materia and the leftmost group for ingredient items. When a recipe is selected, two slots will be reserved for each type of item and materia required by the recipe and no items can be inserted. Materia cannot be directly inserted, only drawn from nearby Jars or Vessels.\n\nIn the top right is a single slot that can take a Rune of Marking or a Book of Marks. The Alchemical Nexus will try to draw materia from Jars or Vessels placed at the marked location(s).\n\nBetween the mark slot and the output slots is a gauge that displays how many stages the current recipe has. Recipes with multiple stages will pause after crafting and wait for new ingredients and materia.\n\nDirectly above the alchemical Sublimation symbol is a slot used by recipes with more than one stage. If you wish to abort a multi stage craft, remove the "
+          },
+          {
+            "text": "Sublimation in Progress",
+            "color": "dark_purple"
+          },
+          {
+            "text": " item from the slot. Right clicking this item will extract any consumed ingredients. If you right click while bottles are in your inventory, consumed materia will be bottled and also extracted. There is no way to retrieve spent Academic Slurry."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/alchemical_nexus"
       }
     ]
   },
@@ -2081,6 +2145,128 @@
       {
         "type": "alchemical_infusion",
         "location": "magichem:alchemical_infusion/magichem/occulted_cinder"
+      }
+    ]
+  },
+  "Perfected Electrum": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Perfected Electrum"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An alloy that combines the workability of gold with the inertness of transmuted silver, "
+          },
+          {
+            "text": "Perfected Electrum",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is the ideal material to construct an alchemical apparatus out of."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/perfected_electrum"
+      },
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/perfected_electrum"
+      }
+    ]
+  },
+  "Iris Argenti": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Iris Argenti"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Also known as \"Rainbow Silver\", "
+          },
+          {
+            "text": "Iris Argenti",
+            "color": "dark_purple"
+          },
+          {
+            "text": " takes its name from the shifting hues of chimerite blended into transmuted silver and amplified with Admixture of Color.\n\nIris Argenti is used to create "
+          },
+          {
+            "text": "Magic Circles",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and internal components for advanced alchemical devices."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/iris_argenti"
+      },
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/iris_argenti"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/magic_circle"
+      }
+    ]
+  },
+  "Sublimation Primer": {
+    "index": -10,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Sublimation Primer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Sublimation Primer",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is used to select a recipe for the "
+          },
+          {
+            "text": "Ritual of the Balanced Scales",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/sublimation_primer"
       }
     ]
   },
