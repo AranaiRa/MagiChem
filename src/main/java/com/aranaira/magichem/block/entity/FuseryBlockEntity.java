@@ -14,6 +14,7 @@ import com.aranaira.magichem.gui.FuseryMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.particles.MAParticleType;
@@ -247,26 +248,21 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         return nbt;
     }
 
-    public void dropInventoryToWorld() {
-        //TODO: Retain internal inventory and grime
+    public void packInventoryToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.FUSERY.get());
+        IGrimeCapability grimeCap = GrimeProvider.getCapability(FuseryBlockEntity.this);
 
-        //Drop items in input slots, bottle slot, and processing slot as-is
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
-        for (int i = 0; i < SLOT_INPUT_COUNT + 1; i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
+        CompoundTag nbt = new CompoundTag();
+        nbt.putInt("grime", grimeCap.getGrime());
+        nbt.put("inventory", itemHandler.serializeNBT());
 
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        stack.setTag(nbt);
 
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
 
-        //Convert items in the output slots to alchemical waste
-        SimpleContainer waste = new SimpleContainer(itemHandler.getSlots()+4);
-        for (int i = 0; i < SLOT_OUTPUT_COUNT; i++) {
-            ItemStack stack = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-            waste.setItem(i, new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), stack.getCount()));
-        }
-
-        Containers.dropContents(this.level, this.worldPosition, waste);
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
+        itemHandler.deserializeNBT(pInventoryTag);
     }
 
     ////////////////////

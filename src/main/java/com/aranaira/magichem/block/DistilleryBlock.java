@@ -1,9 +1,6 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
+import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
@@ -163,6 +160,17 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if(blockEntity instanceof DistilleryBlockEntity) {
+                ((DistilleryBlockEntity) blockEntity).packInventoryToBlockItem();
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override

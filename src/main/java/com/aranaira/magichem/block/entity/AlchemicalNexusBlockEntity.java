@@ -4,6 +4,8 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
@@ -29,6 +31,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -316,6 +319,21 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return new AlchemicalNexusMenu(pContainerId, pPlayerInventory, this, this.data);
+    }
+
+    public void packInventoryToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.ALCHEMICAL_NEXUS.get());
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
+        itemHandler.deserializeNBT(pInventoryTag);
     }
 
     ////////////////////

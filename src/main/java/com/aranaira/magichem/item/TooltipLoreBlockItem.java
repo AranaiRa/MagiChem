@@ -1,11 +1,16 @@
 package com.aranaira.magichem.item;
 
+import com.aranaira.magichem.block.entity.*;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
@@ -94,5 +99,72 @@ public class TooltipLoreBlockItem extends BlockItem {
         }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    }
+
+    @Override
+    public InteractionResult place(BlockPlaceContext pContext) {
+        ItemStack stack = pContext.getItemInHand();
+        InteractionResult result = super.place(pContext);
+
+        if(result != InteractionResult.FAIL) {
+            if (stack.getItem() == BlockRegistry.ALEMBIC.get().asItem()) {
+                CompoundTag nbt = stack.getOrCreateTag();
+                AlembicBlockEntity abe = (AlembicBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(abe != null) {
+                    if (nbt.contains("inventory")) {
+                        abe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                    }
+                    if (nbt.contains("grime")) {
+                        GrimeProvider.getCapability(abe).setGrime(nbt.getInt("grime"));
+                    }
+                }
+            }
+            else if (stack.getItem() == BlockRegistry.CENTRIFUGE.get().asItem()) {
+                CompoundTag nbt = stack.getOrCreateTag();
+                CentrifugeBlockEntity cbe = (CentrifugeBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(cbe != null) {
+                    if (nbt.contains("inventory")) {
+                        cbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                    }
+                    if (nbt.contains("grime")) {
+                        GrimeProvider.getCapability(cbe).setGrime(nbt.getInt("grime"));
+                    }
+                }
+            }
+            else if (stack.getItem() == BlockRegistry.DISTILLERY.get().asItem()) {
+                CompoundTag nbt = stack.getOrCreateTag();
+                DistilleryBlockEntity dbe = (DistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(dbe != null) {
+                    if (nbt.contains("inventory")) {
+                        dbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                    }
+                    if (nbt.contains("grime")) {
+                        GrimeProvider.getCapability(dbe).setGrime(nbt.getInt("grime"));
+                    }
+                }
+            }
+            else if (stack.getItem() == BlockRegistry.FUSERY.get().asItem()) {
+                CompoundTag nbt = stack.getOrCreateTag();
+                FuseryBlockEntity abe = (FuseryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(abe != null) {
+                    if (nbt.contains("inventory")) {
+                        abe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                    }
+                    if (nbt.contains("grime")) {
+                        GrimeProvider.getCapability(abe).setGrime(nbt.getInt("grime"));
+                    }
+                }
+            }
+            else if (stack.getItem() == BlockRegistry.ALCHEMICAL_NEXUS.get().asItem()) {
+                CompoundTag nbt = stack.getOrCreateTag();
+                AlchemicalNexusBlockEntity anbe = (AlchemicalNexusBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(anbe != null) {
+                    if (nbt.contains("inventory")) {
+                        anbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                    }
+                }
+            }
+        }
+        return result;
     }
 }

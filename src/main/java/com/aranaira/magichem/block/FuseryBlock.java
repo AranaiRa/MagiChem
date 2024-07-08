@@ -183,7 +183,7 @@ public class FuseryBlock extends BaseEntityBlock {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof FuseryBlockEntity) {
-                ((FuseryBlockEntity) blockEntity).dropInventoryToWorld();
+                ((FuseryBlockEntity) blockEntity).packInventoryToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

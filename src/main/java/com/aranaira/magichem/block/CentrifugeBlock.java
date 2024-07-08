@@ -173,7 +173,7 @@ public class CentrifugeBlock extends BaseEntityBlock {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof CentrifugeBlockEntity) {
-                ((CentrifugeBlockEntity) blockEntity).dropInventoryToWorld();
+                ((CentrifugeBlockEntity) blockEntity).packInventoryToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

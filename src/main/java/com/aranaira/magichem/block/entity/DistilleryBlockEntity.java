@@ -14,6 +14,7 @@ import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.gui.DistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.ItemInit;
 import net.minecraft.core.BlockPos;
@@ -229,24 +230,21 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         return nbt;
     }
 
-    public void dropInventoryToWorld() {
-        //Drop items in input slots, bottle slot, and processing slot as-is
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
-        for (int i = 0; i < SLOT_INPUT_COUNT + 1; i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
-        }
+    public void packInventoryToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.DISTILLERY.get());
+        IGrimeCapability grimeCap = GrimeProvider.getCapability(DistilleryBlockEntity.this);
 
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        CompoundTag nbt = new CompoundTag();
+        nbt.putInt("grime", grimeCap.getGrime());
+        nbt.put("inventory", itemHandler.serializeNBT());
 
+        stack.setTag(nbt);
 
-        //Convert items in the output slots to alchemical waste
-        SimpleContainer waste = new SimpleContainer(itemHandler.getSlots()+4);
-        for (int i = 0; i < SLOT_OUTPUT_COUNT; i++) {
-            ItemStack stack = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-            waste.setItem(i, new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), stack.getCount()));
-        }
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
 
-        Containers.dropContents(this.level, this.worldPosition, waste);
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
+        itemHandler.deserializeNBT(pInventoryTag);
     }
 
     ////////////////////
