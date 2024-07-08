@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ActuatorFireRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.ISpellInteractibleBlock;
@@ -19,6 +20,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -217,6 +219,11 @@ public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativ
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_BACK_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_FRONT_NORTH, 3)
         );
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+        return new ItemStack(BlockRegistry.DISTILLERY.get());
     }
 
     @Override
