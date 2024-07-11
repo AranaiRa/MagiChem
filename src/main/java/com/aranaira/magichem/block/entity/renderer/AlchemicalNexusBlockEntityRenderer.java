@@ -163,9 +163,24 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
         if(pBlockEntity.getMarkItem().getItem() == ItemInit.BOOK_MARKS.get()) {
             pPoseStack.pushPose();
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-            pPoseStack.translate(1.75f, 0.625f + heightOffsetMark, 0.25f);
-            pPoseStack.mulPose(Axis.ZP.rotation(3.14159f * 0.25f));
+            if(facing == Direction.NORTH) {
+                pPoseStack.translate(0.75f, 0.625f + heightOffsetMark, 1.75f);
+                pPoseStack.mulPose(Axis.YP.rotation(3.14159f * 1.5f));
+                pPoseStack.mulPose(Axis.ZP.rotation(3.14159f * 0.25f));
+            } else if(facing == Direction.EAST) {
+                pPoseStack.translate(-0.75f, 0.625f + heightOffsetMark, 0.75f);
+                pPoseStack.mulPose(Axis.YP.rotation(3.14159f));
+                pPoseStack.mulPose(Axis.ZP.rotation(3.14159f * 0.25f));
+            } else if(facing == Direction.SOUTH) {
+                pPoseStack.translate(0.25f, 0.625f + heightOffsetMark, -0.75f);
+                pPoseStack.mulPose(Axis.YP.rotation(3.14159f * 0.5f));
+                pPoseStack.mulPose(Axis.ZP.rotation(3.14159f * 0.25f));
+            } else if(facing == Direction.WEST) {
+                pPoseStack.translate(1.75f, 0.625f + heightOffsetMark, 0.25f);
+                pPoseStack.mulPose(Axis.ZP.rotation(3.14159f * 0.25f));
+            }
             pPoseStack.scale(0.5f, 0.5f, 0.5f);
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BOOKMARKS, pPoseStack, pPackedLight, pPackedOverlay);
 
