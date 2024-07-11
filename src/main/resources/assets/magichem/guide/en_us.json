@@ -1938,12 +1938,30 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nAcademic Slurry can be thought of as \"liquid experience\". There are several methods of creating Academic Slurry, detailed elsewhere in the Codex."
+            "text": ".\n\nAcademic Slurry can be thought of as \"liquid experience\". There are several methods of creating Academic Slurry, but the most direct method is by using a "
+          },
+          {
+            "text": "Crystal of Memories",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and an "
+          },
+          {
+            "text": "Experience Exchanger",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
           }
         ]
       }
     ],
     "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "mna:manaweaving/crystal_of_memories"
+      },
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/experience_exchanger"

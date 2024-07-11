@@ -277,7 +277,7 @@
   "tooltip.magichem.materiajar": "Stores a small amount of Materia.",
   "tooltip.magichem.materiavessel": "Stores a very large amount of Materia. A Vessel bearing Essentia will automatically display a label.",
   "tooltip.magichem.alembic": "Breaks down blocks and items into their component Materia. Requires a heat source underneath.",
-  "tooltip.magichem.distillery": "Breaks down blocks and items into their component Materia. Requires a heat source underneath.",
+  "tooltip.magichem.distillery": "Breaks down blocks and items into their component Materia.",
   "tooltip.magichem.centrifuge": "Breaks down Admixtures into their component Materia.",
   "tooltip.magichem.fusery": "Combines component Materia into Admixtures.",
   "tooltip.magichem.actuator.water": "A Water-aspected Elemental Actuator. Increases the Efficiency of a connected device. Consumes water every time the connected device completes an operation.",
