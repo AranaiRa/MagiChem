@@ -61,6 +61,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.ALCHEMICAL_NEXUS.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.alchemicalnexus")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.ACTUATOR_WATER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.actuator.water")
@@ -94,6 +100,17 @@ public class TooltipLoreBlockItem extends BlockItem {
         else if(pStack.getItem() == BlockRegistry.OCCULTED_CINDER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.occultedcinder")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.MAGICHEMICAL_MECHANISM.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.magichemicalmechanism")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(Component.empty());
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.magichemicalmechanism.ext")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }

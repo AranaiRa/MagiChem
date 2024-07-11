@@ -126,6 +126,40 @@ public class TooltipLoreItem extends Item {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.COG_COMPONENTS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.cogcomponents")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.SUBLIME_COG_COMPONENTS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.cogcomponents")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(Component.empty());
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.sublimecomponents.ext")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.TUBE_COMPONENTS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.tubecomponents")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.SUBLIME_TUBE_COMPONENTS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.tubecomponents")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(Component.empty());
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.sublimecomponents.ext")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
