@@ -208,7 +208,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         });
 
         //power level gauge
-        int powerLevel = menu.blockEntity.getPowerLevel() * 3;
+        int powerLevel = menu.blockEntity.getPowerLevel() * 6;
         pGuiGraphics.blit(TEXTURE, x + 182, y + 55 + (30 - powerLevel), 100, 256 - powerLevel, 8, powerLevel);
 
         //progress gauge

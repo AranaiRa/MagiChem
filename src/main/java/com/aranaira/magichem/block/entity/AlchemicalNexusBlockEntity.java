@@ -70,7 +70,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected ContainerData data;
     protected AlchemicalNexusAnimSpec cachedSpec;
     protected int
-        progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 3, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
+        progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
     protected boolean
         isStalled = false, doDeferredRecipeLinkages = false;
     protected Random r = new Random();
@@ -681,13 +681,13 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return markedPairs;
     }
 
-    private static final int[] SPEC_PARAM_RAMP_SPEEDUP = {-1, 127, 98, 78, 64, 54, 47, 42, 39, 37, 36};
-    private static final int[] SPEC_PARAM_RAMP_CANCEL  = {-1, 88, 77, 69, 63, 58, 54, 51, 49, 47, 45};
-    private static final int[] SPEC_PARAM_RAMP_BEAM    = {-1, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8};
-    private static final int[] SPEC_PARAM_RAMP_CIRCLE  = {-1, 160, 118, 90, 71, 58, 49, 43, 39, 37, 36};
-    private static final int[] SPEC_PARAM_SHLORP_PULL  = {-1, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10};
-    private static final int[] SPEC_PARAM_CRAFT        = {-1, 524, 338, 229, 163, 122, 96, 79, 69, 63, 60};
-    private static final float[] SPEC_PARAM_SHLORP_SPEED = {-1, 0.0086f, 0.0118f, 0.0157f, 0.0201f, 0.0249f, 0.0298f, 0.0343f, 0.0382f, 0.0410f, 0.0425f};
+    private static final int[] SPEC_PARAM_RAMP_SPEEDUP = {-1, 120, 90, 67, 50, 37};
+    private static final int[] SPEC_PARAM_RAMP_CANCEL  = {-1, 90, 67, 50, 37, 28};
+    private static final int[] SPEC_PARAM_RAMP_BEAM    = {-1, 32, 28, 24, 20, 16};
+    private static final int[] SPEC_PARAM_RAMP_CIRCLE  = {-1, 80, 60, 45, 32, 24};
+    private static final int[] SPEC_PARAM_SHLORP_PULL  = {-1, 25, 18, 12, 7, 3};
+    private static final int[] SPEC_PARAM_CRAFT        = {-1, 420, 315, 235, 175, 130};
+    private static final float[] SPEC_PARAM_SHLORP_SPEED = {-1, 0.016f, 0.020f, 0.025f, 0.031f, 0.040f};
     public static AlchemicalNexusAnimSpec getAnimSpec(int pPowerLevel) {
         return new AlchemicalNexusAnimSpec(
                 SPEC_PARAM_RAMP_SPEEDUP[pPowerLevel],
@@ -729,7 +729,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return input;
     }
 
-    private static final int[] SPEC_EXPERIENCE_COST = {-1, 50, 60 ,75, 95, 120, 150, 185, 230, 290, 365};
+    private static final int[] SPEC_EXPERIENCE_COST = {-1, 360, 540, 810, 1215, 1825};
     public static int getBaseExperienceCostPerStage(int pPowerLevel) {
         return SPEC_EXPERIENCE_COST[pPowerLevel];
     }
@@ -960,7 +960,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public void incrementPowerUsageSetting() {
-        this.powerLevel = Math.min(this.powerLevel + 1, 10);
+        this.powerLevel = Math.min(this.powerLevel + 1, 5);
         this.setChanged();
     }
 
@@ -1056,6 +1056,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             } else if (animStage == ANIM_STAGE_RAMP_CIRCLE ||
                     animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
                     animStage == ANIM_STAGE_SHLORPS ||
+                    animStage == ANIM_STAGE_RAMP_CRAFTING ||
                     animStage == ANIM_STAGE_CRAFTING) {
                 ringPercent = 1f;
             }

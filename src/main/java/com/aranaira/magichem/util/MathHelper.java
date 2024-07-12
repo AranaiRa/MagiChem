@@ -17,7 +17,7 @@ public class MathHelper {
         if(doFuzzyCoordinate) {
             return new Vec3i((int) Math.ceil(input.x), (int) Math.ceil(input.y), (int) Math.ceil(input.z));
         }
-        return new Vec3i((int) Math.floor(input.x), (int) Math.floor(input.y), (int) Math.floor(input.z));
+        return new Vec3i((int) Math.floor(input.x - 0.5f), (int) Math.floor(input.y - 0.5f), (int) Math.floor(input.z - 0.5f));
     }
 
     public static VoxelShape rotateVoxelShape(VoxelShape pShape, int pRot90DegreeSteps) {
