@@ -43,6 +43,7 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
             VOXEL_SHAPE_LEFT_AGGREGATE_WEST, VOXEL_SHAPE_RIGHT_AGGREGATE_WEST, VOXEL_SHAPE_COG_AGGREGATE_WEST,
             VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_WEST,
             VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_NORTH, VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_EAST, VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_SOUTH, VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_WEST;
+    private static final float FUZZ_FACTOR = 0.000625f;
 
     @Nullable
     @Override
@@ -119,8 +120,8 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
     }
 
     static {
-        VOXEL_SHAPE_LEFT_BASE = Block.box(2.0D, 0.0D,  0.0D, 16.0D, 8.0D, 16.0D);
-        VOXEL_SHAPE_LEFT_PLUG = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);
+        VOXEL_SHAPE_LEFT_BASE = Block.box(2.0D, 0.0D,  0.0D + FUZZ_FACTOR, 16.0D - FUZZ_FACTOR, 8.0D, 16.0D - FUZZ_FACTOR);
+        VOXEL_SHAPE_LEFT_PLUG = Block.box(0.0D + FUZZ_FACTOR, 0.0D + FUZZ_FACTOR, 12.0D, 16.0D - FUZZ_FACTOR, 16.0D - FUZZ_FACTOR, 16.0D - FUZZ_FACTOR);
         VOXEL_SHAPE_LEFT_URN_FOOT = Block.box(4.0D, 8.0D, 4.0D, 12.0D, 10.0D, 12.0D);
         VOXEL_SHAPE_LEFT_URN_LOW = Block.box(5.0D, 0.5D, 5.0D, 11.0D, 14.0D, 12.0D);
         VOXEL_SHAPE_LEFT_URN_HIGH = Block.box(6.0D, 14.0D, 6.0D, 10.0D, 16.0D, 10.0D);
@@ -149,8 +150,8 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_URN_LOW, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_URN_HIGH, 3));
 
-        VOXEL_SHAPE_RIGHT_BASE = Block.box(0.0D, 0.0D,  2.0D, 16.0D, 8.0D, 16.0D);
-        VOXEL_SHAPE_RIGHT_PLUG = Block.box(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+        VOXEL_SHAPE_RIGHT_BASE = Block.box(0.0D + FUZZ_FACTOR, 0.0D,  2.0D, 16.0D - FUZZ_FACTOR, 8.0D, 16.0D - FUZZ_FACTOR);
+        VOXEL_SHAPE_RIGHT_PLUG = Block.box(12.0D, 0.0D + FUZZ_FACTOR, 0.0D + FUZZ_FACTOR, 16.0D - FUZZ_FACTOR, 16.0D - FUZZ_FACTOR, 16.0D - FUZZ_FACTOR);
         VOXEL_SHAPE_RIGHT_FOOT_BACK = Block.box(0.0D, 8.0D, 3.0D, 12.0D, 10.0D, 9.0D);
         VOXEL_SHAPE_RIGHT_FOOT_FORE = Block.box(0.0D, 8.0D, 9.0D, 7.0D, 10.0D, 14.0D);
         VOXEL_SHAPE_RIGHT_TANKS_BACK = Block.box(0.0D, 10.0D, 4.0D, 9.0D, 16.0D, 8.0D);

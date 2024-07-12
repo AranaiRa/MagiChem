@@ -47,6 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractibleBlock<DistilleryBlock> {
+    private static final float FUZZ_FACTOR = 0.000625f;
+
     public DistilleryBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(
@@ -219,8 +221,8 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
     static {
         VOXEL_SHAPE_ERROR = Block.box(4, 4, 4, 12, 12, 12);
 
-        VOXEL_SHAPE_BODY_NORTH = Block.box(0, 0, 2, 16, 8, 14);
-        VOXEL_SHAPE_PLUG_NORTH = Block.box(12, 0, 0, 16, 16, 16);
+        VOXEL_SHAPE_BODY_NORTH = Block.box(0, 0, 2, 16 - FUZZ_FACTOR, 8, 14);
+        VOXEL_SHAPE_PLUG_NORTH = Block.box(12, 0 + FUZZ_FACTOR, 0 + FUZZ_FACTOR, 16 - FUZZ_FACTOR, 16, 16 - FUZZ_FACTOR);
         VOXEL_SHAPE_TANK_NORTH = Block.box(3, 13, 6, 7, 16, 10);
         VOXEL_SHAPE_MOUNT_NORTH = Block.box(2, 8, 5, 12, 12, 11);
         VOXEL_SHAPE_FURNACE_NORTH = Block.box(0, 0, 1, 6, 10, 15);

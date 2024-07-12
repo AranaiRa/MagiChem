@@ -39,6 +39,7 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
             VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_COG_AGGREGATE_SOUTH,
             VOXEL_SHAPE_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_COG_AGGREGATE_EAST,
             VOXEL_SHAPE_LEFT_AGGREGATE_WEST, VOXEL_SHAPE_RIGHT_AGGREGATE_WEST, VOXEL_SHAPE_COG_AGGREGATE_WEST;
+    private static final float FUZZ_FACTOR = 0.000625f;
 
     @Nullable
     @Override
@@ -105,8 +106,8 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
     }
 
     static {
-        VOXEL_SHAPE_LEFT_BASE_NORTH = Block.box(2.0D, 0.0D,  0.0D, 16.0D, 8.0D, 16.0D);
-        VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);
+        VOXEL_SHAPE_LEFT_BASE_NORTH = Block.box(2.0D, 0.0D,  0.0D + FUZZ_FACTOR, 16.0D - FUZZ_FACTOR, 8.0D, 16.0D - FUZZ_FACTOR);
+        VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0.0D + FUZZ_FACTOR, 0.0D + FUZZ_FACTOR, 12.0D, 16.0D - FUZZ_FACTOR, 16.0D - FUZZ_FACTOR, 16.0D - FUZZ_FACTOR);
         VOXEL_SHAPE_LEFT_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_LEFT_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_LEFT_PLUG_NORTH});
         VOXEL_SHAPE_LEFT_AGGREGATE_EAST = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 1), new VoxelShape[]{
@@ -118,8 +119,8 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 3), new VoxelShape[]{
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 3)});
 
-        VOXEL_SHAPE_RIGHT_BASE_NORTH = Block.box(0.0D, 0.0D,  2.0D, 16.0D, 8.0D, 16.0D);
-        VOXEL_SHAPE_RIGHT_PLUG_NORTH = Block.box(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+        VOXEL_SHAPE_RIGHT_BASE_NORTH = Block.box(0.0D + FUZZ_FACTOR, 0.0D,  2.0D, 16.0D - FUZZ_FACTOR, 8.0D, 16.0D - FUZZ_FACTOR);
+        VOXEL_SHAPE_RIGHT_PLUG_NORTH = Block.box(12.0D, 0.0D + FUZZ_FACTOR, 0.0D + FUZZ_FACTOR, 16.0D - FUZZ_FACTOR, 16.0D - FUZZ_FACTOR, 16.0D - FUZZ_FACTOR);
         VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_RIGHT_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_RIGHT_PLUG_NORTH});
         VOXEL_SHAPE_RIGHT_AGGREGATE_EAST = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_BASE_NORTH, 1), new VoxelShape[]{

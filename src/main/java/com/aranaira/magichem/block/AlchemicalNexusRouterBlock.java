@@ -60,16 +60,17 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
 
             VOXEL_SHAPE_BACK_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_BACK_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_BACK_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_BACK_RIGHT_AGGREGATE_WEST,
 
-            VOXEL_SHAPE_PLUG_LEFT,
+            VOXEL_SHAPE_PLUG_LEFT, VOXEL_SHAPE_PLUG_LEFT_CONNECTOR,
             VOXEL_SHAPE_PLUG_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_PLUG_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_PLUG_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_PLUG_LEFT_AGGREGATE_WEST,
 
-            VOXEL_SHAPE_PLUG_RIGHT,
+            VOXEL_SHAPE_PLUG_RIGHT, VOXEL_SHAPE_PLUG_RIGHT_CONNECTOR,
             VOXEL_SHAPE_PLUG_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_PLUG_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_PLUG_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_PLUG_RIGHT_AGGREGATE_WEST,
 
             VOXEL_SHAPE_TOP_DAIS, VOXEL_SHAPE_TOP_CRYSTAL,
             VOXEL_SHAPE_TOP_AGGREGATE;
     private static final int
         PLUG_LEFT = 1, PLUG_RIGHT = 2, FRONT = 3, FRONT_LEFT = 4, FRONT_RIGHT = 5, BACK_TANK = 6, BACK_LEFT = 7, BACK_RIGHT = 8, TOP_CRYSTAL = 9;
+    private static final float FUZZ_FACTOR = 0.000625f;
 
     @Nullable
     @Override
@@ -369,7 +370,8 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_LEFT_SHELF_2, 1)
         );
 
-        VOXEL_SHAPE_PLUG_LEFT = Block.box(0.0, 0.0, 0.0, 4.0, 16.0, 16.0);
+        VOXEL_SHAPE_PLUG_LEFT = Block.box(0.0 + FUZZ_FACTOR, 0.0 + FUZZ_FACTOR, 0.0 + FUZZ_FACTOR, 4.0, 16.0 - FUZZ_FACTOR, 16.0 - FUZZ_FACTOR);
+        VOXEL_SHAPE_PLUG_LEFT_CONNECTOR = Block.box(4.0, 0.0, 4.0, 8.0, 12.0, 12.0);
 
         VOXEL_SHAPE_PLUG_LEFT_AGGREGATE_NORTH = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_BASE, 1),
@@ -378,7 +380,8 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_1, 1),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_2, 1),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_RAISED_CENTER, 1),
-                VOXEL_SHAPE_PLUG_LEFT
+                VOXEL_SHAPE_PLUG_LEFT,
+                VOXEL_SHAPE_PLUG_LEFT_CONNECTOR
         );
 
         VOXEL_SHAPE_PLUG_LEFT_AGGREGATE_EAST = Shapes.or(
@@ -388,7 +391,8 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_1, 2),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_2, 2),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_RAISED_CENTER, 2),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT, 1)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT_CONNECTOR, 1)
         );
 
         VOXEL_SHAPE_PLUG_LEFT_AGGREGATE_SOUTH = Shapes.or(
@@ -398,7 +402,8 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_1, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_2, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_RAISED_CENTER, 3),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT, 2)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT_CONNECTOR, 2)
         );
 
         VOXEL_SHAPE_PLUG_LEFT_AGGREGATE_WEST = Shapes.or(
@@ -408,10 +413,12 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 VOXEL_SHAPE_FRONT_SHELF_1,
                 VOXEL_SHAPE_FRONT_SHELF_2,
                 VOXEL_SHAPE_FRONT_RAISED_CENTER,
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT, 3)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_LEFT_CONNECTOR, 3)
         );
 
-        VOXEL_SHAPE_PLUG_RIGHT = Block.box(12.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+        VOXEL_SHAPE_PLUG_RIGHT = Block.box(12.0, 0.0 + FUZZ_FACTOR, 0.0 + FUZZ_FACTOR, 16.0 - FUZZ_FACTOR, 16.0 - FUZZ_FACTOR, 16.0 - FUZZ_FACTOR);
+        VOXEL_SHAPE_PLUG_RIGHT_CONNECTOR = Block.box(8.0, 0.0, 4.0, 12.0, 12.0, 12.0);
 
         VOXEL_SHAPE_PLUG_RIGHT_AGGREGATE_NORTH = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_BASE, 3),
@@ -420,7 +427,8 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_1, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_2, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_RAISED_CENTER, 3),
-                VOXEL_SHAPE_PLUG_RIGHT
+                VOXEL_SHAPE_PLUG_RIGHT,
+                VOXEL_SHAPE_PLUG_RIGHT_CONNECTOR
         );
 
         VOXEL_SHAPE_PLUG_RIGHT_AGGREGATE_EAST = Shapes.or(
@@ -430,7 +438,8 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 VOXEL_SHAPE_FRONT_SHELF_1,
                 VOXEL_SHAPE_FRONT_SHELF_2,
                 VOXEL_SHAPE_FRONT_RAISED_CENTER,
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT, 1)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT_CONNECTOR, 1)
         );
 
         VOXEL_SHAPE_PLUG_RIGHT_AGGREGATE_SOUTH = Shapes.or(
@@ -440,7 +449,8 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_1, 1),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_2, 1),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_RAISED_CENTER, 1),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT, 2)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT_CONNECTOR, 2)
         );
 
         VOXEL_SHAPE_PLUG_RIGHT_AGGREGATE_WEST = Shapes.or(
@@ -450,7 +460,8 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_1, 2),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_SHELF_2, 2),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FRONT_RAISED_CENTER, 2),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT, 3)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_RIGHT_CONNECTOR, 3)
         );
 
         VOXEL_SHAPE_TOP_DAIS    = Block.box(2.074, 0.0, 2.074, 13.956, 4.0, 13.926);
