@@ -4,11 +4,16 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
+import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -42,6 +47,10 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import org.antlr.v4.misc.MutableInt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod.EventBusSubscriber(
         modid = MagiChemMod.MODID,
@@ -165,26 +174,75 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onDrawScreenPost(RenderGuiOverlayEvent.Post event) {
         HitResult hitResult = Minecraft.getInstance().hitResult;
+        Font font = Minecraft.getInstance().font;
 
         if(hitResult == null) return;
 
         if(hitResult.getType() == HitResult.Type.BLOCK) {
-            BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(MathHelper.V3toV3i(hitResult.getLocation())));
+            int x = event.getWindow().getGuiScaledWidth() / 2;
+            int y = event.getWindow().getGuiScaledHeight() / 2;
+
+            BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(MathHelper.V3toV3i(hitResult.getLocation(), true)));
             if(blockEntity == null) return;
             if(blockEntity instanceof AbstractMateriaStorageBlockEntity amsbe) {
                 MateriaItem type = amsbe.getMateriaType();
                 if(type != null && amsbe.getCurrentStock() > 0) {
-                    int x = event.getWindow().getGuiScaledWidth() / 2;
-                    int y = event.getWindow().getGuiScaledHeight() / 2;
 
                     MutableComponent textRow1 = Component.translatable("item.magichem."+type.toString());
                     MutableComponent textRow2 = Component.literal("   " + amsbe.getCurrentStock() + " / " + amsbe.getStorageLimit());
                     MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
 
-                    Font font = Minecraft.getInstance().font;
                     event.getGuiGraphics().drawString(font, textRow1, x+4, y+4, 0xffffff, true);
                     event.getGuiGraphics().drawString(font, textRow2, x+4, y+14, 0xffffff, true);
                     event.getGuiGraphics().drawString(font, textRow3, x+4, y+24, 0xffffff, true);
+                }
+            }
+            else if(Minecraft.getInstance().player.isCrouching()) {
+                List<MutableComponent> components = new ArrayList<>();
+                BlockState state = blockEntity.getBlockState();
+                int mode = 0;
+                //mode 1: all six types
+                //mode 2: just arcane and ender
+
+                if(blockEntity instanceof DistilleryBlockEntity dbe) {
+                    mode = 1;
+                } else if (blockEntity instanceof DistilleryRouterBlockEntity drbe) {
+                    if(drbe.getRouterType() == DistilleryRouterType.PLUG_LEFT) {
+                        mode = 1;
+                    }
+                } else if (blockEntity instanceof CentrifugeRouterBlockEntity crbe) {
+                    if(crbe.getRouterType() == CentrifugeRouterType.PLUG_LEFT || crbe.getRouterType() == CentrifugeRouterType.PLUG_RIGHT) {
+                        mode = 1;
+                    }
+                } else if (blockEntity instanceof FuseryRouterBlockEntity frbe) {
+                    if(frbe.getRouterType() == FuseryRouterType.PLUG_LEFT || frbe.getRouterType() == FuseryRouterType.PLUG_RIGHT) {
+                        mode = 1;
+                    }
+                } else if (blockEntity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
+                    if(anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_LEFT || anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_RIGHT) {
+                        mode = 2;
+                    }
+                }
+
+                if(mode == 1) {
+                    components.add(Component.translatable("overlay.magichem.actuator.port"));
+                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_fire")));
+                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_water")));
+                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_earth")));
+                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_air")));
+                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_arcane")));
+                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_ender")));
+                } else if(mode == 2) {
+                    components.add(Component.translatable("overlay.magichem.actuator.port"));
+                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_arcane")));
+                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_ender")));
+                }
+
+                for(int i=0; i<components.size(); i++) {
+                    MutableComponent c = components.get(i);
+
+                    event.getGuiGraphics().drawString(font, c, x+4, y+4 + i*10, 0xffffff, true);
+
                 }
             }
         }

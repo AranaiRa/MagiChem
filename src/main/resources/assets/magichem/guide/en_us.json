@@ -1084,7 +1084,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is a device that consumes Eldrin power (and other reagents) in order to enhance an alchemical device. The Alembic is too simple and crude to make use of Elemental Actuators, but all other devices have at least two ports that an Elemental Actuator can be plugged into.\n\nSlotting multiple copies of an Elemental Actuator into the same device has no effect; only one of the Actuators will have any effect on the target device.\n\nElemental Actuators that use Earth, Water, Air, and Fire Eldrin power can be crafted at Tier 3, while those that use Arcane and Ender Eldrin power can be crafted at Tier 4."
+            "text": " is a device that consumes Eldrin power (and other reagents) in order to enhance an alchemical device. The Alembic is too simple and crude to make use of Elemental Actuators, but all other devices have at least two ports that an Elemental Actuator can be plugged into. Looking at a port while sneaking will provide you with a list of what Elemental Actuators are compatible with the device.\n\nSlotting multiple copies of an Elemental Actuator into the same device has no effect; only one of the Actuators will have any effect on the target device.\n\nElemental Actuators that use Earth, Water, Air, and Fire Eldrin power can be crafted at Tier 3, while those that use Arcane and Ender Eldrin power can be crafted at Tier 4."
           }
         ]
       }

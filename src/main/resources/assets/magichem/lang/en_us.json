@@ -457,6 +457,8 @@
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
   "log.magichem.powerspike.bind": "Power Spike bound to this Circle of Power.",
 
+  "overlay.magichem.actuator.port": "This port accepts:",
+
   "gui.magichem.typetofilter": "Filter...",
   "gui.magichem.insufficientpower": "Insufficient power!",
   "gui.magichem.insufficientwater": "Insufficient Water!",
@@ -472,7 +474,7 @@
   "construct.magichem:collect_experience": "Collect Experience",
   "construct.magichem:study": "Study",
 
-  "gui.mna.codex_search.recipe.alchemical_infusion": "Alchemical Sublimation > ",
+  "gui.mna.codex_search.recipe.alchemical_infusion": "Nexus Sublimation > ",
   "gui.mna.codex_search.recipe.alchemical_infusion_ritual": "Ritual Sublimation > ",
 
   "gui.mna.parameter.clean_alchemical_apparatus.point": "What alchemical device should the construct clean using water in its tank?",
