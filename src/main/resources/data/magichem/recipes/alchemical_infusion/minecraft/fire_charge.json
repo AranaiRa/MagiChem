@@ -1,0 +1,23 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "minecraft:fire_charge",
+    "count": 5
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:charcoal" },
+        { "item": "minecraft:gunpowder" },
+        { "item": "minecraft:charcoal" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_fire", "count": 16 },
+        { "item": "magichem:admixture_instrument", "count": 6 }
+      ]
+    }
+  ]
+}

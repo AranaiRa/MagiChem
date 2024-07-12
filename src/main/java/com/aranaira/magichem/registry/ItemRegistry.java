@@ -120,6 +120,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties())
     );
 
+    public static final RegistryObject<Item> DUMMY_PROCESS_SUBLIMATION_RITUAL = ITEMS.register("dummy/process_sublimation_ritual",
+            () -> new Item(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DUMMY_PROCESS_SEPARATION = ITEMS.register("dummy/process_separation",
             () -> new Item(new Item.Properties())
     );
@@ -138,7 +142,7 @@ public class ItemRegistry {
 
     public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
             DEBUG_ORB, SUBLIMATION_IN_PROGRESS,
-            DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION
+            DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL
     );
 
     public static void register(IEventBus eventBus) {

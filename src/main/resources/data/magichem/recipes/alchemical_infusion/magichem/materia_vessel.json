@@ -1,0 +1,24 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:materia_vessel",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:glass" },
+        { "item": "minecraft:amethyst_shard" },
+        { "item": "magichem:alchemical_waste" },
+        { "item": "magichem:alchemical_waste" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_vessel", "count": 16 },
+        { "item": "magichem:admixture_instrument", "count": 8 }
+      ]
+    }
+  ]
+}

@@ -32,7 +32,7 @@ public class SublimationRitualRecipeCategory implements IRecipeCategory<Alchemic
 
     public SublimationRitualRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 96, 110);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemRegistry.DUMMY_PROCESS_SUBLIMATION.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemRegistry.DUMMY_PROCESS_SUBLIMATION_RITUAL.get()));
     }
 
     @Override
