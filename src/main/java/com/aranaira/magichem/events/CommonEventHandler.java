@@ -182,7 +182,7 @@ public class CommonEventHandler {
             int x = event.getWindow().getGuiScaledWidth() / 2;
             int y = event.getWindow().getGuiScaledHeight() / 2;
 
-            BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(MathHelper.V3toV3i(hitResult.getLocation(), false)));
+            BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(MathHelper.V3toV3i(hitResult.getLocation())));
             if(blockEntity == null) return;
             if(blockEntity instanceof AbstractMateriaStorageBlockEntity amsbe) {
                 MateriaItem type = amsbe.getMateriaType();

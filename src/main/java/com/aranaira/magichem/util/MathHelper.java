@@ -13,11 +13,8 @@ import java.awt.geom.Point2D;
 public class MathHelper {
     public static final double FUZZ_FACTOR = 0.000625;
 
-    public static Vec3i V3toV3i(Vec3 input, boolean doFuzzyCoordinate) {
-        if(doFuzzyCoordinate) {
-            return new Vec3i((int) Math.ceil(input.x), (int) Math.ceil(input.y), (int) Math.ceil(input.z));
-        }
-        return new Vec3i((int) Math.floor(input.x - 0.5f), (int) Math.floor(input.y - 0.5f), (int) Math.floor(input.z - 0.5f));
+    public static Vec3i V3toV3i(Vec3 input) {
+        return new Vec3i((int) Math.floor(input.x), (int) Math.floor(input.y), (int) Math.floor(input.z));
     }
 
     public static VoxelShape rotateVoxelShape(VoxelShape pShape, int pRot90DegreeSteps) {
