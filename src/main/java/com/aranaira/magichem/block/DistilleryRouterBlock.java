@@ -54,7 +54,6 @@ public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativ
             VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_ABOVE_AGGREGATE_SOUTH, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_SOUTH,
             VOXEL_SHAPE_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_ABOVE_AGGREGATE_EAST, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_EAST,
             VOXEL_SHAPE_LEFT_AGGREGATE_WEST, VOXEL_SHAPE_ABOVE_AGGREGATE_WEST, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_WEST;
-    private static final float FUZZ_FACTOR = 0.000625f;
 
     @Nullable
     @Override
@@ -112,8 +111,8 @@ public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativ
     }
 
     static {
-        VOXEL_SHAPE_LEFT_BODY_NORTH = Block.box(0 + FUZZ_FACTOR, 0, 2, 16, 8, 14);
-        VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0 + FUZZ_FACTOR, 0 + FUZZ_FACTOR, 0 + FUZZ_FACTOR, 4, 16 - FUZZ_FACTOR, 16 - FUZZ_FACTOR);
+        VOXEL_SHAPE_LEFT_BODY_NORTH = Block.box(0, 0, 2, 16, 8, 14);
+        VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0, 0, 0, 4, 16, 16);
         VOXEL_SHAPE_LEFT_TANK_NORTH = Block.box(5, 13, 4, 13, 16, 12);
         VOXEL_SHAPE_LEFT_MOUNT_NORTH = Block.box(4, 8, 5, 14, 12, 11);
         VOXEL_SHAPE_LEFT_FURNACE_NORTH = Block.box(10, 0, 1, 16, 10, 15);

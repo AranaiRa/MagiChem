@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -177,72 +178,73 @@ public class CommonEventHandler {
         Font font = Minecraft.getInstance().font;
 
         if(hitResult == null) return;
+        else if(hitResult instanceof BlockHitResult bhr) {
 
-        if(hitResult.getType() == HitResult.Type.BLOCK) {
-            int x = event.getWindow().getGuiScaledWidth() / 2;
-            int y = event.getWindow().getGuiScaledHeight() / 2;
+            if (hitResult.getType() == HitResult.Type.BLOCK) {
+                int x = event.getWindow().getGuiScaledWidth() / 2;
+                int y = event.getWindow().getGuiScaledHeight() / 2;
 
-            BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(new BlockPos(MathHelper.V3toV3i(hitResult.getLocation())));
-            if(blockEntity == null) return;
-            if(blockEntity instanceof AbstractMateriaStorageBlockEntity amsbe) {
-                MateriaItem type = amsbe.getMateriaType();
-                if(type != null && amsbe.getCurrentStock() > 0) {
+                BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(bhr.getBlockPos());
+                if (blockEntity == null) return;
+                if (blockEntity instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                    MateriaItem type = amsbe.getMateriaType();
+                    if (type != null && amsbe.getCurrentStock() > 0) {
 
-                    MutableComponent textRow1 = Component.translatable("item.magichem."+type.toString());
-                    MutableComponent textRow2 = Component.literal("   " + amsbe.getCurrentStock() + " / " + amsbe.getStorageLimit());
-                    MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
+                        MutableComponent textRow1 = Component.translatable("item.magichem." + type.toString());
+                        MutableComponent textRow2 = Component.literal("   " + amsbe.getCurrentStock() + " / " + amsbe.getStorageLimit());
+                        MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
 
-                    event.getGuiGraphics().drawString(font, textRow1, x+4, y+4, 0xffffff, true);
-                    event.getGuiGraphics().drawString(font, textRow2, x+4, y+14, 0xffffff, true);
-                    event.getGuiGraphics().drawString(font, textRow3, x+4, y+24, 0xffffff, true);
-                }
-            }
-            else if(Minecraft.getInstance().player.isCrouching()) {
-                List<MutableComponent> components = new ArrayList<>();
-                BlockState state = blockEntity.getBlockState();
-                int mode = 0;
-                //mode 1: all six types
-                //mode 2: just arcane and ender
+                        event.getGuiGraphics().drawString(font, textRow1, x + 4, y + 4, 0xffffff, true);
+                        event.getGuiGraphics().drawString(font, textRow2, x + 4, y + 14, 0xffffff, true);
+                        event.getGuiGraphics().drawString(font, textRow3, x + 4, y + 24, 0xffffff, true);
+                    }
+                } else if (Minecraft.getInstance().player.isCrouching()) {
+                    List<MutableComponent> components = new ArrayList<>();
+                    BlockState state = blockEntity.getBlockState();
+                    int mode = 0;
+                    //mode 1: all six types
+                    //mode 2: just arcane and ender
 
-                if(blockEntity instanceof DistilleryBlockEntity dbe) {
-                    mode = 1;
-                } else if (blockEntity instanceof DistilleryRouterBlockEntity drbe) {
-                    if(drbe.getRouterType() == DistilleryRouterType.PLUG_LEFT) {
+                    if (blockEntity instanceof DistilleryBlockEntity dbe) {
                         mode = 1;
+                    } else if (blockEntity instanceof DistilleryRouterBlockEntity drbe) {
+                        if (drbe.getRouterType() == DistilleryRouterType.PLUG_LEFT) {
+                            mode = 1;
+                        }
+                    } else if (blockEntity instanceof CentrifugeRouterBlockEntity crbe) {
+                        if (crbe.getRouterType() == CentrifugeRouterType.PLUG_LEFT || crbe.getRouterType() == CentrifugeRouterType.PLUG_RIGHT) {
+                            mode = 1;
+                        }
+                    } else if (blockEntity instanceof FuseryRouterBlockEntity frbe) {
+                        if (frbe.getRouterType() == FuseryRouterType.PLUG_LEFT || frbe.getRouterType() == FuseryRouterType.PLUG_RIGHT) {
+                            mode = 1;
+                        }
+                    } else if (blockEntity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
+                        if (anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_LEFT || anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_RIGHT) {
+                            mode = 2;
+                        }
                     }
-                } else if (blockEntity instanceof CentrifugeRouterBlockEntity crbe) {
-                    if(crbe.getRouterType() == CentrifugeRouterType.PLUG_LEFT || crbe.getRouterType() == CentrifugeRouterType.PLUG_RIGHT) {
-                        mode = 1;
+
+                    if (mode == 1) {
+                        components.add(Component.translatable("overlay.magichem.actuator.port"));
+                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_fire")));
+                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_water")));
+                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_earth")));
+                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_air")));
+                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_arcane")));
+                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_ender")));
+                    } else if (mode == 2) {
+                        components.add(Component.translatable("overlay.magichem.actuator.port"));
+                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_arcane")));
+                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_ender")));
                     }
-                } else if (blockEntity instanceof FuseryRouterBlockEntity frbe) {
-                    if(frbe.getRouterType() == FuseryRouterType.PLUG_LEFT || frbe.getRouterType() == FuseryRouterType.PLUG_RIGHT) {
-                        mode = 1;
+
+                    for (int i = 0; i < components.size(); i++) {
+                        MutableComponent c = components.get(i);
+
+                        event.getGuiGraphics().drawString(font, c, x + 4, y + 4 + i * 10, 0xffffff, true);
+
                     }
-                } else if (blockEntity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
-                    if(anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_LEFT || anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_RIGHT) {
-                        mode = 2;
-                    }
-                }
-
-                if(mode == 1) {
-                    components.add(Component.translatable("overlay.magichem.actuator.port"));
-                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_fire")));
-                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_water")));
-                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_earth")));
-                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_air")));
-                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_arcane")));
-                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_ender")));
-                } else if(mode == 2) {
-                    components.add(Component.translatable("overlay.magichem.actuator.port"));
-                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_arcane")));
-                    components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_ender")));
-                }
-
-                for(int i=0; i<components.size(); i++) {
-                    MutableComponent c = components.get(i);
-
-                    event.getGuiGraphics().drawString(font, c, x+4, y+4 + i*10, 0xffffff, true);
-
                 }
             }
         }
