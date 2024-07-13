@@ -6,6 +6,7 @@
     "east": "mna:block/artifice/decoration/arcane_sandstone",
     "west": "mna:block/artifice/decoration/arcane_sandstone",
     "up": "mna:block/artifice/decoration/arcane_sandstone",
-    "down": "mna:block/artifice/decoration/arcane_sandstone"
+    "down": "mna:block/artifice/decoration/arcane_sandstone",
+    "particle": "mna:block/artifice/decoration/arcane_sandstone"
   }
 }
