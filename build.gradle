@@ -142,6 +142,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     implementation fg.deobf("curse.maven:jei-238222:5074448")
+    implementation fg.deobf("curse.maven:better-advancements-272515:5454907")
     implementation fg.deobf("curse.maven:the-one-probe-245211:4629624")
     implementation fg.deobf("curse.maven:geckolib-388172:5060416")
     implementation fg.deobf("curse.maven:curios-309927:5066845")
