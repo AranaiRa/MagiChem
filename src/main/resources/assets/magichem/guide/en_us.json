@@ -1092,19 +1092,19 @@
     "related_recipes": [
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/temp_actuator_fire"
+        "location": "magichem:manaweaving/actuator_fire"
       },
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/temp_actuator_water"
+        "location": "magichem:manaweaving/actuator_water"
       },
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/temp_actuator_earth"
+        "location": "magichem:manaweaving/actuator_earth"
       },
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/temp_actuator_air"
+        "location": "magichem:manaweaving/actuator_air"
       }
     ]
   },
@@ -1159,7 +1159,7 @@
     "related_recipes": [
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/temp_actuator_earth"
+        "location": "magichem:manaweaving/actuator_earth"
       }
     ]
   },
@@ -1219,7 +1219,7 @@
     "related_recipes": [
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/temp_actuator_water"
+        "location": "magichem:manaweaving/actuator_water"
       }
     ]
   },
@@ -1279,7 +1279,7 @@
     "related_recipes": [
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/temp_actuator_fire"
+        "location": "magichem:manaweaving/actuator_fire"
       }
     ]
   },
@@ -1360,7 +1360,7 @@
     "related_recipes": [
       {
         "type": "manaweaving_altar",
-        "location": "magichem:manaweaving/temp_actuator_air"
+        "location": "magichem:manaweaving/actuator_air"
       }
     ]
   },
