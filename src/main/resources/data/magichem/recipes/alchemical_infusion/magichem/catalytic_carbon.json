@@ -4,18 +4,18 @@
   "wisdom": 0,
   "object": {
     "item": "magichem:catalytic_carbon",
-    "count": 2
+    "count": 3
   },
   "stages": [
     {
       "experience": 0,
       "components": [
-        { "item": "minecraft:red_dye" },
         { "item": "minecraft:charcoal" },
-        { "item": "minecraft:red_dye" }
+        { "item": "minecraft:red_dye" },
+        { "item": "minecraft:charcoal" }
       ],
       "materia": [
-        { "item": "magichem:admixture_energy", "count": 30 },
+        { "item": "magichem:admixture_energy", "count": 36 },
         { "item": "magichem:admixture_light", "count": 10 }
       ]
     }
