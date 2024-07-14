@@ -98,10 +98,13 @@ public class PowerSpikeBlock extends BaseEntityBlock {
         ItemStack stack = new ItemStack(BlockRegistry.POWER_SPIKE.get(), 1);
         PowerSpikeBlockEntity psbe = (PowerSpikeBlockEntity) pBuilder.getParameter(LootContextParams.BLOCK_ENTITY);
         List<ItemStack> output = new ArrayList<>();
+        BlockPos pos = psbe.getPowerDrawPos();
 
-        CompoundTag tag = new CompoundTag();
-        tag.putLong("magichem.powerspike.targetpos", psbe.getPowerDrawPos().asLong());
-        stack.setTag(tag);
+        if(pos != null) {
+            CompoundTag tag = new CompoundTag();
+            tag.putLong("magichem.powerspike.targetpos", pos.asLong());
+            stack.setTag(tag);
+        }
 
         output.add(stack);
 
