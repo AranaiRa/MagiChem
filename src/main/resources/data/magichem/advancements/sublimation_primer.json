@@ -1,13 +1,13 @@
 {
   "display": {
     "icon": {
-      "item": "magichem:admixture_healing"
+      "item": "magichem:sublimation_primer"
     },
     "title": {
-      "translate": "advancements.magichem.materia.title"
+      "translate": "advancements.magichem.sublimation_primer.title"
     },
     "description": {
-      "translate": "advancements.magichem.materia.description"
+      "translate": "advancements.magichem.sublimation_primer.description"
     },
     "frame": "task",
     "show_toast": true,
@@ -21,15 +21,12 @@
       "conditions": {
         "items": [
           {
-            "tag": "magichem_materia"
+            "items": [
+              "magichem:sublimation_primer"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

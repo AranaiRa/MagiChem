@@ -1,20 +1,21 @@
 {
   "display": {
     "icon": {
-      "item": "magichem:circle_power"
+      "item": "magichem:materia_jar",
+      "nbt": "{type:healing,amount:180}"
     },
     "title": {
-      "translate": "advancements.magichem.circle_power.title"
+      "translate": "advancements.magichem.materia_jar.title"
     },
     "description": {
-      "translate": "advancements.magichem.circle_power.description"
+      "translate": "advancements.magichem.materia_jar.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:iris_argenti",
+  "parent": "magichem:cleaning",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -22,7 +23,7 @@
         "items": [
           {
             "items": [
-              "magichem:circle_power"
+              "magichem:materia_jar"
             ]
           }
         ]

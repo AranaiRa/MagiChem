@@ -1,20 +1,20 @@
 {
   "display": {
     "icon": {
-      "item": "magichem:essentia_nigredo"
+      "item": "magichem:perfected_electrum"
     },
     "title": {
-      "translate": "advancements.magichem.nigredo.title"
+      "translate": "advancements.magichem.perfected_electrum.title"
     },
     "description": {
-      "translate": "advancements.magichem.nigredo.description"
+      "translate": "advancements.magichem.perfected_electrum.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:alembic",
+  "parent": "magichem:sublimation_primer",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -22,7 +22,7 @@
         "items": [
           {
             "items": [
-              "magichem:essentia_nigredo"
+              "magichem:perfected_electrum"
             ]
           }
         ]

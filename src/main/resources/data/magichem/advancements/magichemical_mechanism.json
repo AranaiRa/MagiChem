@@ -1,20 +1,20 @@
 {
   "display": {
     "icon": {
-      "item": "magichem:circle_power"
+      "item": "magichem:magichemical_mechanism"
     },
     "title": {
-      "translate": "advancements.magichem.circle_power.title"
+      "translate": "advancements.magichem.magichemical_mechanism.title"
     },
     "description": {
-      "translate": "advancements.magichem.circle_power.description"
+      "translate": "advancements.magichem.magichemical_mechanism.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:iris_argenti",
+  "parent": "magichem:perfected_electrum",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -22,7 +22,7 @@
         "items": [
           {
             "items": [
-              "magichem:circle_power"
+              "magichem:magichemical_mechanism"
             ]
           }
         ]

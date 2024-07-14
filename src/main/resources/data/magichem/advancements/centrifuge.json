@@ -14,7 +14,7 @@
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:nigredo",
+  "parent": "magichem:distillery",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",

@@ -15,7 +15,7 @@
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:materia",
+  "parent": "magichem:materia_jar",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
