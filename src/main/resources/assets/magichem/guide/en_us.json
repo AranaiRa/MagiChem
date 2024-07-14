@@ -2288,5 +2288,84 @@
       }
     ]
   },
+  "Catalytic Carbon": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Catalytic Carbon"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A wondrous fuel source, brimming with inner light and free of all impurities. It burns "
+          },
+          {
+            "text": "twenty-four times longer",
+            "color": "dark_purple"
+          },
+          {
+            "text": " than coal (a little over half an hour).\n\nAn "
+          },
+          {
+            "text": "Inferno Engine",
+            "color": "dark_purple"
+          },
+          {
+            "text": " fueled with Catalytic Carbon burns hotter with purer flame, boosting the actuator's enhancement to operation time or FE usage."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/catalytic_carbon"
+      },
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/catalytic_carbon"
+      }
+    ]
+  },
+  "Silver Buttons and Pressure Plates": {
+    "index": 0,
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Silver Buttons and Pressure Plates"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A recreation of simple redstone devices made with magical materials.\n\nWhen a silver button or pressure plate is activated, it gives off a redstone signal "
+          },
+          {
+            "text": "equal to one plus the activator's Tier",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/silver_button"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/silver_pressure_plate"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

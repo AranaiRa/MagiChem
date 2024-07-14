@@ -9,6 +9,7 @@ import com.aranaira.magichem.gui.ActuatorFireScreen;
 import com.aranaira.magichem.gui.ActuatorWaterScreen;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
@@ -410,6 +411,10 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                     ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
                     if (!fuelStack.isEmpty()) {
                         int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
+                        if(fuelStack.getItem() == ItemRegistry.CATALYTIC_CARBON.get())
+                            entity.flags = (entity.flags | FLAG_FUEL_SUPER) & ~FLAG_FUEL_NORMAL;
+                        else
+                            entity.flags = (entity.flags | FLAG_FUEL_NORMAL) & ~FLAG_FUEL_SUPER;
 
                         if(fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
                             LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
@@ -436,11 +441,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
 
                         entity.fuelDuration = burnTime;
                         entity.remainingFuelTime = burnTime;
-                        entity.flags = entity.flags | FLAG_FUEL_NORMAL;
                         entity.itemHandler.setStackInSlot(0, fuelStack);
                         entity.syncAndSave();
-
-                        //TODO: handle fancy alchemy coal
                     } else {
                         if (getIsFuelled(entity) || getIsSuperFuelled(entity)) {
                             entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;

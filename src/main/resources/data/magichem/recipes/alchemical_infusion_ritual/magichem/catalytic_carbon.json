@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": {
+    "item": "magichem:catalytic_carbon"
+  },
+  "materia_type_one": { "item": "magichem:admixture_energy", "count": 40 },
+  "materia_type_two": { "item": "magichem:admixture_light", "count": 14 },
+  "components": [
+    { "item": "minecraft:charcoal" },
+    { "item": "minecraft:red_dye" },
+    { "item": "minecraft:red_dye" }
+  ]
+}
