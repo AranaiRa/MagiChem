@@ -19,6 +19,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FlowingFluid;
 
 public class LiquidLightFluidBlock extends LiquidBlock {
@@ -37,6 +38,7 @@ public class LiquidLightFluidBlock extends LiquidBlock {
                     le.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 600));
                     le.addEffect(new MobEffectInstance(MobEffects.GLOWING, 600));
                     le.removeEffect(MobEffects.BLINDNESS);
+                    le.removeEffect(MobEffects.DARKNESS);
                 }
             }
         }
