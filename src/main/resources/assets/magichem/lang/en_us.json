@@ -27,6 +27,7 @@
   "item.magichem.tube_components": "Tube Components",
 
   "item.magichem.academic_slurry_bucket": "Academic Slurry Bucket",
+  "item.magichem.liquid_light_bucket": "Liquid Light Bucket",
   "item.magichem.smoke_bucket": "Smoke Bucket",
   "item.magichem.steam_bucket": "Steam Bucket",
 
@@ -68,6 +69,7 @@
   "block.magichem.silver_pressure_plate": "Silver Pressure Plate",
 
   "academic_slurry_fluid_type": "Academic Slurry",
+  "liquid_light_fluid_type": "Liquid Light",
   "smoke_fluid_type": "Smoke",
   "steam_fluid_type": "Steam",
 

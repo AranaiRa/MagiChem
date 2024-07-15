@@ -2367,6 +2367,70 @@
       }
     ]
   },
+  "Liquid Light": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Liquid Light"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Sunlight that has been alchemically rendered into a liquid state. Casts light as bright as a torch.\n\nLiving creatures that touch Liquid Light can "
+          },
+          {
+            "text": "see in the dark",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "begin to glow",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for a short time, and they are "
+          },
+          {
+            "text": "cured of any blindness",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nUndead creatures that touch Liquid Light are "
+          },
+          {
+            "text": "weakened",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "rapidly take damage",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/liquid_light_bucket"
+      },
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/liquid_light_bucket"
+      }
+    ]
+  },
   "Silver Buttons and Pressure Plates": {
     "index": 0,
     "category": "artifice",

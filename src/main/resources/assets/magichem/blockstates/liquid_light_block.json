@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "magichem:block/liquid_light_block"
+    }
+  }
+}

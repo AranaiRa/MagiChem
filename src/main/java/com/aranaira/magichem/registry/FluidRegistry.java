@@ -1,6 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.fluid.LiquidLightFluidBlock;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
@@ -132,6 +133,43 @@ public class FluidRegistry {
 
     public static ForgeFlowingFluid.Properties getSmokeProperties() {
         return new ForgeFlowingFluid.Properties(SMOKE_FLUID_TYPE, SMOKE, SMOKE_FLOWING).block(SMOKE_BLOCK).bucket(ItemRegistry.SMOKE_BUCKET);
+    }
+
+    //////////////////////
+    //-----LIQUID LIGHT
+    //////////////////////
+
+    public static final RegistryObject<FluidType> LIQUID_LIGHT_FLUID_TYPE = FLUID_TYPES.register("liquid_light_fluid_type", () ->
+            new FluidType(FluidType.Properties.create().descriptionId("liquid_light_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquid_light_still");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquid_light_flow");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<FlowingFluid> LIQUID_LIGHT = FLUIDS.register("liquid_light", () -> new ForgeFlowingFluid.Source(getLiquidLightProperties()));
+    public static final RegistryObject<Fluid> LIQUID_LIGHT_FLOWING = FLUIDS.register("liquid_light_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquidLightProperties()));
+    public static final RegistryObject<LiquidBlock> LIQUID_LIGHT_BLOCK = BlockRegistry.BLOCKS.register("liquid_light_block", () -> new LiquidLightFluidBlock(LIQUID_LIGHT.get(), BlockBehaviour.Properties.of()));
+
+    public static ForgeFlowingFluid.Properties getLiquidLightProperties() {
+        return new ForgeFlowingFluid.Properties(LIQUID_LIGHT_FLUID_TYPE, LIQUID_LIGHT, LIQUID_LIGHT_FLOWING).block(LIQUID_LIGHT_BLOCK).bucket(ItemRegistry.LIQUID_LIGHT_BUCKET);
     }
 
     //////////////////////

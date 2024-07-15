@@ -1,0 +1,20 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:liquid_light_bucket"
+  },
+  "stages": [
+    {
+      "experience": 40,
+      "components": [
+        { "item": "minecraft:bucket" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_water", "count": 10 },
+        { "item": "magichem:admixture_light", "count": 10 }
+      ]
+    }
+  ]
+}
