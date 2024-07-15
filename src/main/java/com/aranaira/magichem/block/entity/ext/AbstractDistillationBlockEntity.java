@@ -114,6 +114,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             if (dpbe instanceof ActuatorEarthBlockEntity earth) {
                 ActuatorEarthBlockEntity.delegatedTick(pLevel, pPos, pState, earth);
             }
+            if (dpbe instanceof ActuatorWaterBlockEntity water) {
+                ActuatorWaterBlockEntity.delegatedTick(pLevel, pPos, pState, water);
+            }
             if (dpbe instanceof ActuatorAirBlockEntity air) {
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
                 int pre = pEntity.batchSize;
