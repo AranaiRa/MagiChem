@@ -2331,6 +2331,42 @@
       }
     ]
   },
+  "Thunderstone": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Thunderstone"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A carved rock from deep in the earth instilled with malice and the rage of a storm cloud.\n\nWhen thrown, the thunderstone will "
+          },
+          {
+            "text": "call down a lightning strike",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to smite your foes.\n\nIf for whatever reason the thunderstone cannot call a lightning strike, it won't be consumed and will drop on the ground instead."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/thunderstone"
+      },
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/thunderstone"
+      }
+    ]
+  },
   "Silver Buttons and Pressure Plates": {
     "index": 0,
     "category": "artifice",

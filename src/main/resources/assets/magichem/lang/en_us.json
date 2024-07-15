@@ -23,6 +23,7 @@
   "item.magichem.sublime_tube_components": "Sublime Tube Components",
   "item.magichem.superheated_glass_pane": "Superheated Glass Pane",
   "item.magichem.tarnished_silver_lump": "Tarnished Silver Lump",
+  "item.magichem.thunderstone": "Thunderstone",
   "item.magichem.tube_components": "Tube Components",
 
   "item.magichem.academic_slurry_bucket": "Academic Slurry Bucket",
@@ -312,6 +313,7 @@
   "tooltip.magichem.sublimation_in_progress.line3.trail_materia": " drams of Materia",
   "tooltip.magichem.sublimecomponents.ext": "This set of components has been alchemically treated for specialized use.",
   "tooltip.magichem.tubecomponents": "Perfected Electrum rolled into tubes. Used to craft certain alchemical devices.",
+  "tooltip.magichem.thunderstone": "When thrown, causes a lightning strike at the point of impact.",
 
   "tooltip.magichem.circlepower": "Uses mystical reagents to generate energy.",
   "tooltip.magichem.powerreagent": "Used to generate FE.",

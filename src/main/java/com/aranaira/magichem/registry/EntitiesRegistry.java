@@ -3,6 +3,7 @@ package com.aranaira.magichem.registry;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.entities.InfusionRitualVFXEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
+import com.aranaira.magichem.entities.ThrownThunderstoneEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.Builder;
 import net.minecraft.world.entity.MobCategory;
@@ -20,6 +21,7 @@ public class EntitiesRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES;
     public static final RegistryObject<EntityType<ShlorpEntity>> SHLORP_ENTITY;
     public static final RegistryObject<EntityType<InfusionRitualVFXEntity>> INFUSION_RITUAL_VFX_ENTITY;
+    public static final RegistryObject<EntityType<ThrownThunderstoneEntity>> THROWN_THUNDERSTONE_ENTITY;
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
@@ -38,6 +40,12 @@ public class EntitiesRegistry {
                 Builder.of(InfusionRitualVFXEntity::new, MobCategory.MISC)
                 .sized(0.1f, 0.8f)
                 .build(MagiChemMod.MODID+":infusion_ritual_vfx")
+        );
+
+        THROWN_THUNDERSTONE_ENTITY = ENTITY_TYPES.register("thrown_thunderstone", () ->
+                Builder.of(ThrownThunderstoneEntity::new, MobCategory.MISC)
+                .sized(0.1f, 0.8f)
+                .build(MagiChemMod.MODID+":thrown_thunderstone")
         );
     }
 }

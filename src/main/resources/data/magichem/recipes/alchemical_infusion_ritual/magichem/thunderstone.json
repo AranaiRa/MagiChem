@@ -1,0 +1,14 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": {
+    "item": "magichem:thunderstone",
+    "count": 2
+  },
+  "materia_type_one": { "item": "magichem:admixture_storm", "count": 24 },
+  "materia_type_two": { "item": "magichem:admixture_violence", "count": 10 },
+  "components": [
+    { "item": "minecraft:deepslate" },
+    { "item": "minecraft:purple_dye" },
+    { "item": "minecraft:deepslate" }
+  ]
+}

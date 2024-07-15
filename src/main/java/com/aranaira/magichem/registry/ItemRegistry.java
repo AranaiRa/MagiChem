@@ -100,6 +100,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<ThunderstoneItem> THUNDERSTONE = ITEMS.register("thunderstone",
+            () -> new ThunderstoneItem(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> ACADEMIC_SLURRY_BUCKET = ITEMS.register("academic_slurry_bucket",
             () -> new BucketItem(FluidRegistry.ACADEMIC_SLURRY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
