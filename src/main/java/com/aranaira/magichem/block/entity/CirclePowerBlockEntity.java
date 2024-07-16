@@ -33,15 +33,22 @@ import org.jetbrains.annotations.Nullable;
 
 public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider {
     public static final int
-        SLOT_REAGENT_1 = 0, SLOT_REAGENT_2 = 1, SLOT_REAGENT_3 = 2, SLOT_REAGENT_4 = 3;
+        SLOT_REAGENT_1 = 0, SLOT_REAGENT_2 = 1, SLOT_REAGENT_3 = 2, SLOT_REAGENT_4 = 3, SLOT_RECHARGE = 4;
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(5) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             return switch(slot) {
-                case SLOT_REAGENT_1 -> stack.getItem() == ItemRegistry.SILVER_DUST.get();
-                case SLOT_REAGENT_2 -> stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get();
-                case SLOT_REAGENT_3, SLOT_REAGENT_4 -> false;
+                case SLOT_REAGENT_1 ->
+                        stack.getItem() == ItemRegistry.SILVER_DUST.get() ||
+                        stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                case SLOT_REAGENT_2 ->
+                        stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get() ||
+                        stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                case SLOT_REAGENT_3, SLOT_REAGENT_4 ->
+                        stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                case SLOT_RECHARGE ->
+                        stack.getCapability(ForgeCapabilities.ENERGY).isPresent();
                 default -> super.isItemValid(slot, stack);
             };
         }
@@ -196,10 +203,23 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         if(getProgressByTier(entity, 1) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == REAGENT_TIER1) {
             entity.itemHandler.setStackInSlot(SLOT_REAGENT_1, ItemStack.EMPTY);
             entity.incrementProgress(1);
+        } else if(getProgressByTier(entity, 1) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+            entity.incrementProgress(1);
         }
+
         if(getProgressByTier(entity, 2) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == REAGENT_TIER2) {
             entity.itemHandler.setStackInSlot(SLOT_REAGENT_2, ItemStack.EMPTY);
             entity.incrementProgress(2);
+        } else if(getProgressByTier(entity, 2) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+            entity.incrementProgress(2);
+        }
+
+        if(getProgressByTier(entity, 3) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+            entity.incrementProgress(3);
+        }
+
+        if(getProgressByTier(entity, 4) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_4).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+            entity.incrementProgress(4);
         }
     }
 
@@ -220,8 +240,14 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
     private static void ejectWaste(int tier, Level level, CirclePowerBlockEntity entity) {
         ItemStack wasteProduct = null;
 
-        if(tier == 1) wasteProduct = new ItemStack(WASTE_TIER1, 1);
-        else if(tier == 2) wasteProduct = new ItemStack(WASTE_TIER2, 1);
+        if(tier == 1) {
+            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() != ItemRegistry.DEBUG_ORB.get())
+                wasteProduct = new ItemStack(WASTE_TIER1, 1);
+        }
+        else if(tier == 2) {
+            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() != ItemRegistry.DEBUG_ORB.get())
+                wasteProduct = new ItemStack(WASTE_TIER2, 1);
+        }
 
         if(wasteProduct != null)
             Containers.dropItemStack(level, entity.worldPosition.getX(), entity.worldPosition.getY()+0.125, entity.worldPosition.getZ(), wasteProduct);
@@ -279,20 +305,38 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
 
         //Again, switch statement fucks up here and I don't know why
         if(reagentTier == 1) {
+            //Just do the thing if there's a debug orb in the slot
+            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == ItemRegistry.DEBUG_ORB.get())
+                return true;
+
             query = entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == REAGENT_TIER1;
-            //Consume the reagent if we don't have an existing one "burning"
+            //Otherwise, consume the reagent if we don't have an existing one "burning"
             if(query && getProgressByTier(entity, 1) == 0) {
                 entity.itemHandler.setStackInSlot(SLOT_REAGENT_1, ItemStack.EMPTY);
                 entity.incrementProgress(1);
             }
         }
         if(reagentTier == 2) {
+            //Just do the thing if there's a debug orb in the slot
+            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == ItemRegistry.DEBUG_ORB.get())
+                return true;
+
             query = entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == REAGENT_TIER2;
-            //Consume the reagent if we don't have an existing one "burning"
+            //Otherwise, consume the reagent if we don't have an existing one "burning"
             if(query && getProgressByTier(entity, 2) == 0) {
                 entity.itemHandler.setStackInSlot(SLOT_REAGENT_2, ItemStack.EMPTY);
                 entity.incrementProgress(2);
             }
+        }
+        if(reagentTier == 3) {
+            //Just do the thing if there's a debug orb in the slot
+            if (entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get())
+                return true;
+        }
+        if(reagentTier == 4) {
+            //Just do the thing if there's a debug orb in the slot
+            if (entity.itemHandler.getStackInSlot(SLOT_REAGENT_4).getItem() == ItemRegistry.DEBUG_ORB.get())
+                return true;
         }
 
         return query;

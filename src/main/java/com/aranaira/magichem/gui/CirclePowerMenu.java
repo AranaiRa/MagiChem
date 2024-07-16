@@ -41,7 +41,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_1, 26, 32) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
-                    if(stack.getItem() == ItemRegistry.SILVER_DUST.get())
+                    if(stack.getItem() == ItemRegistry.SILVER_DUST.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
                         return true;
                     else
                         return false;
@@ -50,7 +50,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_2, 62, 32) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
-                    if(stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get())
+                    if(stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
                         return true;
                     else
                         return false;
@@ -59,13 +59,19 @@ public class CirclePowerMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_3, 98, 32) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
+                    if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                        return true;
+                    else
+                        return false;
                 }
             });
             this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_4, 134, 32) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
+                    if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                        return true;
+                    else
+                        return false;
                 }
             });
         });
