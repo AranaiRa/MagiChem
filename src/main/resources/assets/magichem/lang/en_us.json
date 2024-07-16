@@ -25,6 +25,7 @@
   "item.magichem.tarnished_silver_lump": "Tarnished Silver Lump",
   "item.magichem.thunderstone": "Thunderstone",
   "item.magichem.tube_components": "Tube Components",
+  "item.magichem.winter_charge": "Winter Charge",
 
   "item.magichem.academic_slurry_bucket": "Academic Slurry Bucket",
   "item.magichem.liquid_light_bucket": "Liquid Light Bucket",
@@ -316,6 +317,7 @@
   "tooltip.magichem.sublimecomponents.ext": "This set of components has been alchemically treated for specialized use.",
   "tooltip.magichem.tubecomponents": "Perfected Electrum rolled into tubes. Used to craft certain alchemical devices.",
   "tooltip.magichem.thunderstone": "When thrown, causes a lightning strike at the point of impact.",
+  "tooltip.magichem.winter_charge": "Freezes water and creates snow in a small area when used.",
 
   "tooltip.magichem.circlepower": "Uses mystical reagents to generate energy.",
   "tooltip.magichem.powerreagent": "Used to generate FE.",

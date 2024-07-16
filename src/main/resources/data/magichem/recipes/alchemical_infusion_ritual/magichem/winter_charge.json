@@ -1,0 +1,14 @@
+{
+  "type": "magichem:alchemical_infusion_ritual",
+  "object": {
+    "item": "magichem:winter_charge",
+    "count": 2
+  },
+  "materia_type_one": { "item": "magichem:admixture_change", "count": 22 },
+  "materia_type_two": { "item": "magichem:admixture_wizard", "count": 16 },
+  "components": [
+    { "item": "mna:vinteum_dust" },
+    { "item": "minecraft:fire_charge" },
+    { "item": "minecraft:fire_charge" }
+  ]
+}

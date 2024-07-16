@@ -15,12 +15,14 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
 
 public class LiquidLightFluidBlock extends LiquidBlock {
     public LiquidLightFluidBlock(FlowingFluid pFluid, Properties pProperties) {
@@ -49,6 +51,16 @@ public class LiquidLightFluidBlock extends LiquidBlock {
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         return 15;
+    }
+
+    @Override
+    public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
+        return true;
+    }
+
+    @Override
+    public boolean canBeReplaced(BlockState pState, Fluid pFluid) {
+        return false;
     }
 
     @Override

@@ -2431,6 +2431,56 @@
       }
     ]
   },
+  "Winter Charge": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Winter Charge"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A fire charge that has been alchemically transformed. When used, a "
+          },
+          {
+            "text": "puff of intense winter air",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is released that "
+          },
+          {
+            "text": "freezes water",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "creates snow ",
+            "color": "dark_purple"
+          },
+          {
+            "text": "in a small area.\n\nThis wonder was developed by alchemists in hot climates where Admixture of Cold is scarce; it uses an obtuse approach that requires none."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/winter_charge"
+      },
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/winter_charge"
+      }
+    ]
+  },
   "Silver Buttons and Pressure Plates": {
     "index": 0,
     "category": "artifice",

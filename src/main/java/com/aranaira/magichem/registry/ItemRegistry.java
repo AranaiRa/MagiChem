@@ -104,6 +104,10 @@ public class ItemRegistry {
             () -> new ThunderstoneItem(new Item.Properties())
     );
 
+    public static final RegistryObject<WinterChargeItem> WINTER_CHARGE = ITEMS.register("winter_charge",
+            () -> new WinterChargeItem(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> ACADEMIC_SLURRY_BUCKET = ITEMS.register("academic_slurry_bucket",
             () -> new BucketItem(FluidRegistry.ACADEMIC_SLURRY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );

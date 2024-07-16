@@ -1,0 +1,23 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:winter_charge",
+    "count": 3
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:fire_charge" },
+        { "item": "mna:vinteum_dust" },
+        { "item": "minecraft:fire_charge" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_change", "count": 22 },
+        { "item": "magichem:admixture_wizard", "count": 16 }
+      ]
+    }
+  ]
+}
