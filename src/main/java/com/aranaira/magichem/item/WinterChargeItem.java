@@ -144,7 +144,7 @@ public class WinterChargeItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.winter_charge")
+                Component.translatable("tooltip.magichem.wintercharge")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 
