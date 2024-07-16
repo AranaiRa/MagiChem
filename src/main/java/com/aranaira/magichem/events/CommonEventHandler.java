@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
@@ -16,6 +17,7 @@ import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.ItemInit;
@@ -41,11 +43,16 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.antlr.v4.misc.MutableInt;
@@ -109,6 +116,49 @@ public class CommonEventHandler {
                 if(event.getEntity().isCrouching()) {
                     if (bewe.getGrimeFromData() > 0) {
                         CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), bewe, stack);
+                    }
+                }
+            }
+            else if(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
+                IFluidHandler targetEntity = null;
+                if(target instanceof AbstractFixationBlockEntity afbe)
+                    targetEntity = afbe;
+                else if(target instanceof FuseryRouterBlockEntity frbe)
+                    targetEntity = frbe.getMaster();
+
+                if(targetEntity != null) {
+                    LazyOptional<IFluidHandlerItem> itemCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                    if(itemCap.isPresent()) {
+                        if(itemCap.resolve().isPresent()) {
+                            IFluidHandlerItem itemCapResolved = itemCap.resolve().get();
+
+                            if(itemCapResolved.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                                FluidStack maxTransfer = itemCapResolved.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+                                int actualTransfer = targetEntity.fill(maxTransfer, IFluidHandler.FluidAction.EXECUTE);
+                                itemCapResolved.drain(actualTransfer, IFluidHandler.FluidAction.EXECUTE);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if(target instanceof AlchemicalNexusBlockEntity || target instanceof AlchemicalNexusRouterBlockEntity) {
+            IFluidHandler targetEntity = null;
+            if(target instanceof AlchemicalNexusBlockEntity anbe)
+                targetEntity = anbe;
+            else if(target instanceof AlchemicalNexusRouterBlockEntity anrbe)
+                targetEntity = anrbe.getMaster();
+
+            if(targetEntity != null) {
+                LazyOptional<IFluidHandlerItem> itemCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                if(itemCap.isPresent()) {
+                    if(itemCap.resolve().isPresent()) {
+                        IFluidHandlerItem itemCapResolved = itemCap.resolve().get();
+
+                        if(itemCapResolved.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                            FluidStack maxTransfer = itemCapResolved.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+                            int actualTransfer = targetEntity.fill(maxTransfer, IFluidHandler.FluidAction.EXECUTE);
+                            itemCapResolved.drain(actualTransfer, IFluidHandler.FluidAction.EXECUTE);
+                        }
                     }
                 }
             }

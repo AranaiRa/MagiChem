@@ -29,6 +29,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -194,7 +195,8 @@ public class FuseryBlock extends BaseEntityBlock {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof FuseryBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (FuseryBlockEntity)entity, pos);
+                if(!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
+                    NetworkHooks.openScreen((ServerPlayer)player, (FuseryBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("AdmixerBlockEntity container provider is missing!");
             }

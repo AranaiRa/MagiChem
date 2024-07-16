@@ -33,6 +33,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -211,7 +212,8 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof AlchemicalNexusBlockEntity anbe) {
-                NetworkHooks.openScreen((ServerPlayer)player, anbe, pos);
+                if(!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
+                    NetworkHooks.openScreen((ServerPlayer)player, anbe, pos);
             } else {
                 throw new IllegalStateException("AlchemicalNexusBlockEntity container provider is missing!");
             }
