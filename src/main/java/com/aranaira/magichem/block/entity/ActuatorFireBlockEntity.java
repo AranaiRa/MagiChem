@@ -535,6 +535,10 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         return pipeVibrationIntensity;
     }
 
+    public ItemStack tryPushFuel(ItemStack pStack) {
+        return itemHandler.insertItem(0, pStack, false);
+    }
+
     @Override
     public int getTanks() {
         return 1;

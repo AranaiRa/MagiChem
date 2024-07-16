@@ -347,6 +347,17 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, DistilleryBlockEntity pEntity) {
+        if(!pEntity.getLevel().isClientSide()) {
+            for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+                if (dpbe instanceof ActuatorFireBlockEntity fire) {
+                    if (!pEntity.itemHandler.getStackInSlot(SLOT_FUEL).isEmpty()) {
+                        //try to push fuel to an open slot in an inferno engine if there is one
+                        pEntity.itemHandler.setStackInSlot(SLOT_FUEL,fire.tryPushFuel(pEntity.itemHandler.getStackInSlot(SLOT_FUEL)));
+                    }
+                }
+            }
+        }
+
         if(pEntity.remainingHeat <= 0) {
             ItemStack fuelStack = pEntity.itemHandler.getStackInSlot(SLOT_FUEL);
             if(fuelStack != ItemStack.EMPTY) {
