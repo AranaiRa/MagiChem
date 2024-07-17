@@ -3,8 +3,7 @@
   "tier": 3,
   "wisdom": 0,
   "object": {
-    "item": "magichem:charging_catalyst",
-    "count": 3
+    "item": "magichem:charging_talisman"
   },
   "stages": [
     {
@@ -12,7 +11,7 @@
       "components": [
         { "item": "minecraft:leather" },
         { "item": "magichem:magic_circle" },
-        { "item": "minecraft:charcoal" }
+        { "item": "mna:mundane_amulet" }
       ],
       "materia": [
         { "item": "magichem:admixture_travel", "count": 38 },

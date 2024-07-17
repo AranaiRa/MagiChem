@@ -219,6 +219,8 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
                 additionalData.readDouble()
         );
 
+        length = (float)startLocation.distanceTo(endLocation);
+
         //Misc configs
         speed = additionalData.readFloat();
         distanceBetweenClusters = additionalData.readFloat();

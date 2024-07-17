@@ -25,7 +25,7 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
     }
 
     public static final float
-            VERT_CLUSTER_THICKNESS = 0.0625f, FLUID_DISTORTION_AMPLITUDE = 0.5f, FLUID_DISTORTION_PERIOD = 0.1875f, TICKS_FOR_FULL_MARCH = 65;
+            VERT_CLUSTER_THICKNESS = 0.0625f, FLUID_DISTORTION_AMPLITUDE = 0.625f, FLUID_DISTORTION_PERIOD = 0.825f, TICKS_FOR_FULL_MARCH = 16;
     public static final Vector3
             VECTOR_POS_CORRECTION = new Vector3(0.5, 0, 0.5);
     private final List<VertexDataHolder> vertData = new ArrayList<>();
@@ -251,7 +251,7 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
                 if(curveDist > 0 && curveDist < 0.05)
                     curveDist += 0;
 
-                float periodicTick = ((pTick + pPartialTick) % TICKS_FOR_FULL_MARCH) / TICKS_FOR_FULL_MARCH;
+                float periodicTick = ((pTick + pPartialTick) % TICKS_FOR_FULL_MARCH) / (TICKS_FOR_FULL_MARCH + 1);
                 float periodicDist = ((curveDist + periodicTick) % FLUID_DISTORTION_PERIOD) / FLUID_DISTORTION_PERIOD * (float)Math.PI;
 
                 BezierVectors bv = getAxisVectors(pEntity, curveDist);

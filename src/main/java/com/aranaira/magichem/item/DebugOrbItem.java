@@ -53,7 +53,7 @@ public class DebugOrbItem extends Item {
                             new Vector3(0, 0, 0), new Vector3(0, 2, 0),
                             new Vector3(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()),
                             new Vector3(0.5, 0.5, 0.5), new Vector3(0, 2, 0),
-                            0.125f, 0.125f, 18,
+                            0.0625f, 0.125f, 18,
                             amsbe.getMateriaType(), 400, ShlorpParticleMode.NONE
                     );
 

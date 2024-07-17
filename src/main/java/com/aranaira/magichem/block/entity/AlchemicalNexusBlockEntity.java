@@ -475,7 +475,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                             origin, tangent,
                                             new Vector3(anbe.getBlockPos()),
                                             new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 0.5, 0),
-                                            anbe.cachedSpec.shlorpSpeed, 0.03125f, amount,
+                                            anbe.cachedSpec.shlorpSpeed, 0.125f, amount,
                                             mi, amount, ShlorpParticleMode.INVERSE_ENTRY_TANGENT
                                     );
 
@@ -687,7 +687,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     private static final int[] SPEC_PARAM_RAMP_CIRCLE  = {-1, 80, 60, 45, 32, 24};
     private static final int[] SPEC_PARAM_SHLORP_PULL  = {-1, 25, 18, 12, 7, 3};
     private static final int[] SPEC_PARAM_CRAFT        = {-1, 420, 315, 235, 175, 130};
-    private static final float[] SPEC_PARAM_SHLORP_SPEED = {-1, 0.016f, 0.020f, 0.025f, 0.031f, 0.040f};
+    private static final float[] SPEC_PARAM_SHLORP_SPEED = {-1, 0.040f, 0.050f, 0.063f, 0.078f, 0.100f};
     public static AlchemicalNexusAnimSpec getAnimSpec(int pPowerLevel) {
         return new AlchemicalNexusAnimSpec(
                 SPEC_PARAM_RAMP_SPEEDUP[pPowerLevel],
