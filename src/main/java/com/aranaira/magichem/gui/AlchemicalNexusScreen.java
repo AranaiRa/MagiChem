@@ -126,22 +126,26 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
     private void initializePowerLevelButtons(){
         b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 31, 12, 7, 232, 242, TEXTURE, button -> {
-            menu.blockEntity.incrementPowerUsageSetting();
-            ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
-            PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
-                    menu.blockEntity.getBlockPos(),
-                    menu.blockEntity.getPowerLevel(),
-                    output
-            ));
+            if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
+                menu.blockEntity.incrementPowerUsageSetting();
+                ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
+                PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
+                        menu.blockEntity.getBlockPos(),
+                        menu.blockEntity.getPowerLevel(),
+                        output
+                ));
+            }
         }));
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 76, 12, 7, 244, 242, TEXTURE, button -> {
-            menu.blockEntity.decrementPowerUsageSetting();
-            ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
-            PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
-                    menu.blockEntity.getBlockPos(),
-                    menu.blockEntity.getPowerLevel(),
-                    output
-            ));
+            if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
+                menu.blockEntity.decrementPowerUsageSetting();
+                ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
+                PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
+                        menu.blockEntity.getBlockPos(),
+                        menu.blockEntity.getPowerLevel(),
+                        output
+                ));
+            }
         }));
     }
 
