@@ -108,6 +108,10 @@ public class ItemRegistry {
             () -> new WinterChargeItem(new Item.Properties())
     );
 
+    public static final RegistryObject<ChargingTalismanItem> CHARGING_TALISMAN = ITEMS.register("charging_talisman",
+            () -> new ChargingTalismanItem(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> ACADEMIC_SLURRY_BUCKET = ITEMS.register("academic_slurry_bucket",
             () -> new BucketItem(FluidRegistry.ACADEMIC_SLURRY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );

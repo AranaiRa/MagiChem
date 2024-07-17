@@ -4,6 +4,7 @@
 
   "item.magichem.alchemical_waste": "Alchemical Waste",
   "item.magichem.catalytic_carbon": "Catalytic Carbon",
+  "item.magichem.charging_talisman": "Charging Talisman",
   "item.magichem.cleaning_brush": "Cleaning Brush",
   "item.magichem.cog_components": "Cog Components",
   "item.magichem.debug_orb": "Orb of Alchemical Creativity",
@@ -70,9 +71,13 @@
   "block.magichem.silver_pressure_plate": "Silver Pressure Plate",
 
   "academic_slurry_fluid_type": "Academic Slurry",
+  "block.magichem.academic_slurry": "Academic Slurry",
   "liquid_light_fluid_type": "Liquid Light",
+  "block.magichem.liquid_light": "Liquid Light",
   "smoke_fluid_type": "Smoke",
+  "block.magichem.smoke_block": "Smoke",
   "steam_fluid_type": "Steam",
+  "block.magichem.steam_block": "Steam",
 
   "itemGroup.magichemtab" : "MagiChem - Blocks and Items",
   "itemGroup.magichemtab.substances" : "MagiChem - Essentia and Admixtures",
@@ -300,6 +305,7 @@
   "tooltip.magichem.alchemicalwaste": "A mistake, or perhaps a failure. It smells unbelievably foul.",
   "tooltip.magichem.alchemicalwaste.ext": "Created by breaking devices without extracting materia first.",
   "tooltip.magichem.catalyticcarbon": "Burns for a drastically longer time than coal and enhances the Inferno Engine.",
+  "tooltip.magichem.chargingtalisman": "Draws FE through a Power Spike to recharge FE-consuming items.",
   "tooltip.magichem.cleaningbrush": "Used to clean the Grime out of alchemical devices.",
   "tooltip.magichem.cogcomponents": "Transmuted Silver shaped into precision clockwork. Used to craft certain alchemical devices.",
   "tooltip.magichem.debugorb": "Has several creative mode functions. Not craftable.",

@@ -48,6 +48,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<ActuatorAirMenu>> ACTUATOR_AIR_MENU =
             registerMenuType(ActuatorAirMenu::new, "actuator_air");
 
+    public static final RegistryObject<MenuType<ChargingTalismanMenu>> CHARGING_TALISMAN_MENU =
+            registerMenuType(ChargingTalismanMenu::new, "charging_talisman");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

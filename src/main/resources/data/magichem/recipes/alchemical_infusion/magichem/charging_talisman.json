@@ -1,0 +1,26 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 3,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:charging_catalyst",
+    "count": 3
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:leather" },
+        { "item": "magichem:magic_circle" },
+        { "item": "minecraft:charcoal" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_travel", "count": 38 },
+        { "item": "magichem:admixture_energy", "count": 12 },
+        { "item": "magichem:admixture_instrument", "count": 8 },
+        { "item": "magichem:admixture_vessel", "count": 8 },
+        { "item": "magichem:essentia_wrought", "count": 14 }
+      ]
+    }
+  ]
+}
