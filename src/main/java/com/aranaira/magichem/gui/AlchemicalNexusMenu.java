@@ -111,7 +111,7 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
     private static final Pair<Item, Integer>[] DIRSPEC = new Pair[]{};
     private static final Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i( //Input slots
-                    SLOT_INVENTORY_COUNT + AlchemicalNexusBlockEntity.SLOT_INPUT_START,
+                    SLOT_INVENTORY_COUNT + AlchemicalNexusBlockEntity.SLOT_INPUT_START - 1,
                     SLOT_INVENTORY_COUNT + AlchemicalNexusBlockEntity.SLOT_INPUT_START + AlchemicalNexusBlockEntity.SLOT_INPUT_COUNT),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
