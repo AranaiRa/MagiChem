@@ -3,7 +3,8 @@
   "tier": 2,
   "wisdom": 0,
   "object": {
-    "item": "magichem:magichemical_mechanism"
+    "item": "magichem:magichemical_mechanism",
+    "count": 3
   },
   "stages": [
     {
@@ -27,6 +28,7 @@
         { "item": "mna:decoration/arcane_sandstone" },
         { "item": "magichem:perfected_electrum" },
         { "item": "magichem:iris_argenti" },
+        { "item": "magichem:perfected_electrum" },
         { "item": "mna:decoration/arcane_sandstone" }
       ],
       "materia": [

@@ -1,6 +1,7 @@
 {
   "type": "mna:manaweaving-recipe",
   "output": "magichem:magichemical_mechanism",
+  "quantity": 2,
   "tier": 2,
   "items": [
     "mna:decoration/arcane_sandstone",
