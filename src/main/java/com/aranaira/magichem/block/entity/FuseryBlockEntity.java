@@ -457,6 +457,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
 
     @Override
     public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,1,1));
+        return new AABB(getBlockPos().offset(-2, 0, -2), getBlockPos().offset(2,1,2));
     }
 }
