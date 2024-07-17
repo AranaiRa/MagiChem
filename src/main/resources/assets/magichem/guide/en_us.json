@@ -2517,5 +2517,55 @@
       }
     ]
   },
+  "Orb of Alchemical Creativity": {
+    "index": -1000,
+    "category": "magichem",
+    "required_advancement": "magichem:debug_orb",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Orb of Alchemical Creativity"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "You're probably not supposed to have one of these, but in case you do get your grubby mitts on one, here's what you can do with it.\n\nRight clicking a materia jar or vessel will create a shlorp that adds "
+          },
+          {
+            "text": "400 to its current materia stocks",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". There's no effect on an empty jar/vessel.\n\nYou can insert the Orb into any slot of the Circle of Power and it'll act as an infinite reagent that is "
+          },
+          {
+            "text": "never consumed",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "never spits out a waste product",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nYou can insert the orb into an Experience Exchanger. It acts as an "
+          },
+          {
+            "text": "infinite source",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of Academic Slurry."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+    ]
+  },
   "version": "1.0.0a"
 }

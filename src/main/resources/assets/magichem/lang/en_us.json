@@ -526,6 +526,8 @@
   "advancements.magichem.circle_power_reagent_2.description" : "Use the Alchemical Nexus and a Runic Anvil to create a Focusing Catalyst to improve your Circle of Power",
   "advancements.magichem.cleaning.title" : "A Clean Workshop is a Safe Workshop",
   "advancements.magichem.cleaning.description" : "Use a Cleaning Brush to scrub the Alchemical Waste out of an Alembic",
+  "advancements.magichem.debug_orb.title" : "You're Not Supposed to Have This",
+  "advancements.magichem.debug_orb.description" : "Acquire an Orb of Alchemical Creativity (an item for debugging)",
   "advancements.magichem.distillery.title" : "No More Furnace Loading",
   "advancements.magichem.distillery.description" : "Craft a Distillery to replace your Alembic",
   "advancements.magichem.experience_exchanger.title" : "Liquidated (Mental) Assets",
