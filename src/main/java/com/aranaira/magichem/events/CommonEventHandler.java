@@ -163,12 +163,11 @@ public class CommonEventHandler {
                 }
             }
         } else if(target instanceof ExperienceExchangerBlockEntity eebe) {
-            if(!event.getLevel().isClientSide()) {
-                if (stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
+            if(!event.getLevel().isClientSide() && event.getHand() == InteractionHand.MAIN_HAND) {
+                if (stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
                     eebe.ejectStack(event.getEntity().getOnPos().above());
                     stack = eebe.setContainedStack(stack);
-                    EquipmentSlot hand = event.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-                    event.getEntity().setItemSlot(hand, stack);
+                    event.getEntity().setItemSlot(EquipmentSlot.MAINHAND, stack);
                 } else {
                     eebe.ejectStack(event.getEntity().getOnPos().above());
                 }

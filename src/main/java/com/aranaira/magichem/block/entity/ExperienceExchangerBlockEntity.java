@@ -4,6 +4,7 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
@@ -55,7 +56,7 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get();
+            return stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
         }
     };
 
@@ -82,6 +83,9 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
             }
 
             if(eebe.itemHandler.getStackInSlot(0) == ItemStack.EMPTY) return;
+            else if(eebe.itemHandler.getStackInSlot(0).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                int a = 0;
+            }
 
             //particles
             BlockPos pos = eebe.getBlockPos();
@@ -174,9 +178,13 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
 
-        CompoundTag crystalNBT = itemHandler.getStackInSlot(0).getOrCreateTag();
-        if(crystalNBT.contains("memory_crystal_fragment_mode")) {
-            isPushMode = crystalNBT.getInt("memory_crystal_fragment_mode") == 1;
+        if(itemHandler.getStackInSlot(0).getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
+            CompoundTag crystalNBT = itemHandler.getStackInSlot(0).getOrCreateTag();
+            if (crystalNBT.contains("memory_crystal_fragment_mode")) {
+                isPushMode = crystalNBT.getInt("memory_crystal_fragment_mode") == 1;
+            }
+        } else if(itemHandler.getStackInSlot(0).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+            isPushMode = true;
         }
 
         storedXP = nbt.getInt("storedXP");
@@ -225,6 +233,13 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
 
                 syncAndSave();
                 return ItemStack.EMPTY;
+            } else if(pNewStack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                itemHandler.setStackInSlot(0, pNewStack);
+                isPushMode = true;
+                storedXP = Integer.MAX_VALUE;
+
+                syncAndSave();
+                return ItemStack.EMPTY;
             }
         }
         return pNewStack;
@@ -232,10 +247,16 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
 
     public void ejectStack(BlockPos pPlayerPos) {
         ItemStack storedCrystal = itemHandler.getStackInSlot(0).copy();
-        if(storedCrystal != ItemStack.EMPTY) {
+        if(storedCrystal.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
             CompoundTag crystalNBT = storedCrystal.getOrCreateTag();
             crystalNBT.putInt("stored_xp", storedXP);
             storedCrystal.setTag(crystalNBT);
+            storedXP = 0;
+
+            level.addFreshEntity(new ItemEntity(level, pPlayerPos.getX(), pPlayerPos.getY(), pPlayerPos.getZ(), storedCrystal));
+            itemHandler.setStackInSlot(0, ItemStack.EMPTY);
+            syncAndSave();
+        } else if(storedCrystal.getItem() == ItemRegistry.DEBUG_ORB.get()) {
             storedXP = 0;
 
             level.addFreshEntity(new ItemEntity(level, pPlayerPos.getX(), pPlayerPos.getY(), pPlayerPos.getZ(), storedCrystal));
