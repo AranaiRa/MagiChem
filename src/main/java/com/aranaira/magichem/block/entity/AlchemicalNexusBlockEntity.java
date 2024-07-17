@@ -475,7 +475,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                             origin, tangent,
                                             new Vector3(anbe.getBlockPos()),
                                             new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 0.5, 0),
-                                            anbe.cachedSpec.shlorpSpeed, 0.125f, amount,
+                                            anbe.cachedSpec.shlorpSpeed, 0.125f, amount * 2,
                                             mi, amount, ShlorpParticleMode.INVERSE_ENTRY_TANGENT
                                     );
 
