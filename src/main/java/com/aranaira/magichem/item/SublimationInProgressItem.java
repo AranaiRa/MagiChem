@@ -112,6 +112,8 @@ public class SublimationInProgressItem extends Item {
         if(nbt.contains("savedMateria")) {
             ListTag materiaList = (ListTag)nbt.get("savedMateria");
             ListTag materiaListPost = new ListTag();
+            if(pPlayer.isCreative())
+                bottleCount = Integer.MAX_VALUE;
 
             for(int i=0; i<materiaList.size(); i++) {
                 CompoundTag entry = (CompoundTag)materiaList.get(i);
@@ -150,12 +152,14 @@ public class SublimationInProgressItem extends Item {
         }
 
         //remove bottles from the player's inventory
-        int bottlesToRemove = originalBottleCount - bottleCount;
-        for(ItemStack is : pPlayer.getInventory().items) {
-            if(is.getItem() == Items.GLASS_BOTTLE) {
-                int amount = Math.min(is.getCount(), bottlesToRemove);
-                is.shrink(amount);
-                bottlesToRemove -= amount;
+        if(!pPlayer.isCreative()) {
+            int bottlesToRemove = originalBottleCount - bottleCount;
+            for (ItemStack is : pPlayer.getInventory().items) {
+                if (is.getItem() == Items.GLASS_BOTTLE) {
+                    int amount = Math.min(is.getCount(), bottlesToRemove);
+                    is.shrink(amount);
+                    bottlesToRemove -= amount;
+                }
             }
         }
 
