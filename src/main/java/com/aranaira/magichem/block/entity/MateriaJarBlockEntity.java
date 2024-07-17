@@ -27,7 +27,7 @@ public class MateriaJarBlockEntity extends AbstractMateriaStorageBlockEntity  {
 
     @Override
     public Pair<Vector3, Vector3> getDefaultOriginAndTangent() {
-        Vector3 origin = new Vector3(0.5, 25, 0.5);
+        Vector3 origin = new Vector3(0.5, 0.5, 0.5);
 
         Vector3 tangent = new Vector3(0, 1, 0);
 
