@@ -8,6 +8,7 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -110,6 +111,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             REAGENT_TIER2 =  ItemRegistry.FOCUSING_CATALYST.get(),
             WASTE_TIER1 =  ItemRegistry.TARNISHED_SILVER_LUMP.get(),
             WASTE_TIER2 =  ItemRegistry.WARPED_FOCUSING_CATALYST.get();
+    private NonNullList<ItemStack> itemsForRemoteCharging = NonNullList.create();
 
     @Override
     public @NotNull Component getDisplayName() {
@@ -184,6 +186,19 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
+    public void addRemoteChargeItem(ItemStack pStack) {
+        itemsForRemoteCharging.add(pStack);
+    }
+
+    public boolean removeRemoteChargeItem(ItemStack pStack) {
+        if (itemsForRemoteCharging.contains(pStack)) {
+            itemsForRemoteCharging.remove(pStack);
+            return true;
+        }
+
+        return false;
+    }
+
     public static void tick(Level level, BlockPos pos, BlockState state, CirclePowerBlockEntity entity) {
         if(level.isClientSide()) {
             return;
@@ -196,6 +211,21 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             processReagent(level, pos, state, entity, 2);
 
             generatePower(entity);
+        }
+
+        for(int i=entity.itemsForRemoteCharging.size()-1; i>=0; i--) {
+            ItemStack toCharge = entity.itemsForRemoteCharging.get(i);
+            LazyOptional<IEnergyStorage> energyCapability = toCharge.getCapability(ForgeCapabilities.ENERGY);
+
+            energyCapability.ifPresent(itemCap -> {
+                int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
+                int energyExtracted = entity.ENERGY_STORAGE.extractEnergy(energyNeeded, false);
+                itemCap.receiveEnergy(energyExtracted, false);
+            });
+
+            if(toCharge.isEmpty()) {
+                entity.itemsForRemoteCharging.remove(i);
+            }
         }
     }
 

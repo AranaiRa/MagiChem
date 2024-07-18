@@ -109,7 +109,7 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<ChargingTalismanItem> CHARGING_TALISMAN = ITEMS.register("charging_talisman",
-            () -> new ChargingTalismanItem(new Item.Properties())
+            () -> new ChargingTalismanItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> ACADEMIC_SLURRY_BUCKET = ITEMS.register("academic_slurry_bucket",

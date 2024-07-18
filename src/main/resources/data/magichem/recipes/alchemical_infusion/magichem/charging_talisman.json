@@ -9,9 +9,10 @@
     {
       "experience": 0,
       "components": [
-        { "item": "minecraft:leather" },
-        { "item": "magichem:magic_circle" },
-        { "item": "mna:mundane_amulet" }
+        { "item": "minecraft:string" },
+        { "item": "mna:mundane_amulet" },
+        { "item": "magichem:iris_argenti" },
+        { "item": "minecraft:redstone" }
       ],
       "materia": [
         { "item": "magichem:admixture_travel", "count": 38 },

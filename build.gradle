@@ -147,6 +147,7 @@ dependencies {
     implementation fg.deobf("curse.maven:geckolib-388172:5060416")
     implementation fg.deobf("curse.maven:curios-309927:5066845")
     implementation fg.deobf("curse.maven:mana-and-artifice-406360:5529601")
+    implementation fg.deobf("curse.maven:building-gadgets-298187:5144161")
     //implementation fg.deobf("curse.maven:occultism-361026:5082179")
     //implementation fg.deobf("curse.maven:modonomicon-538392:5058322")
     //implementation fg.deobf("curse.maven:smartbrainlib-661293:4981397")

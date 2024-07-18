@@ -360,6 +360,10 @@
   "tooltip.magichem.citrinitas": "Third of the House of Alchemy",
   "tooltip.magichem.rubedo": "Last of the House of Alchemy",
 
+  "tooltip.magichem.gui.chargingtalisman.spike.line1": "This slot takes a Power Spike.",
+  "tooltip.magichem.gui.chargingtalisman.spike.line2": "If the linked Circle of Power is in a loaded chunk, the item in the lower left slot will be charged with FE from that Circle of Power.",
+  "tooltip.magichem.gui.chargingtalisman.chargee.line1": "This slot takes an item that can hold an FE charge.",
+  "tooltip.magichem.gui.chargingtalisman.chargee.line2": "If a Power Spike has been inserted in the upper right slot, FE will be drawn from the linked Cirlce of Power to recharge the item in this slot.",
   "tooltip.magichem.gui.efficiency": "Efficiency",
   "tooltip.magichem.gui.efficiency.line1": "The chance that each dram of materia will successfully process.",
   "tooltip.magichem.gui.efficiency.line2": "Each dram has its own Efficiency check. Failure to process generates additional Grime.",

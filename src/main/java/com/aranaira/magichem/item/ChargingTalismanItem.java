@@ -1,18 +1,30 @@
 package com.aranaira.magichem.item;
 
+import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.gui.ChargingTalismanMenu;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,12 +37,29 @@ public class ChargingTalismanItem extends Item {
     }
 
     @Nonnull
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, @Nonnull InteractionHand hand) {
-        if (!world.isClientSide && hand == InteractionHand.MAIN_HAND) {
-            //NetworkHooks.openScreen(player, new SimpleMenuProvider(menuconstructor, Component.empty()));
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, @Nonnull InteractionHand pHand) {
+        if (!pLevel.isClientSide && pHand == InteractionHand.MAIN_HAND) {
+            NetworkHooks.openScreen((ServerPlayer)pPlayer, new SimpleMenuProvider(new MenuProvider() {
+                @Override
+                public Component getDisplayName() {
+                    return Component.empty();
+                }
+
+                @Nullable
+                @Override
+                public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pInternalPlayer) {
+                    ItemStack itemInHand = pInternalPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+                    int slot = pPlayerInventory.findSlotMatchingItem(itemInHand);
+
+                    ContainerData data = new SimpleContainerData(1);
+                    data.set(0, slot);
+
+                    return new ChargingTalismanMenu(pContainerId, pPlayerInventory, data);
+                }
+            }, Component.empty()));
         }
 
-        return InteractionResultHolder.success(player.getItemInHand(hand));
+        return InteractionResultHolder.success(pPlayer.getItemInHand(pHand));
     }
 
     @Override

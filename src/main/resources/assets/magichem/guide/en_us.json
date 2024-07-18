@@ -2567,5 +2567,50 @@
     "related_recipes": [
     ]
   },
+  "Charging Talisman": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Charging Talisman"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A smaller, portable version of a Circle of Power that can be used to "
+          },
+          {
+            "text": "recharge items that hold FE charge",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nA Power Spike can be inserted into the upper right slot, which determines what Circle of Power to draw FE from. The item to be recharged can be inserted into the lower left slot.\n\n"
+          },
+          {
+            "text": "Note: Neither Mana and Artifice or MagiChem include any items that hold FE charge. This item is intended to be used alongside other mods.",
+            "italic": true,
+            "color": "dark_gray"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/charging_talisman"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/power_spike"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/circle_power"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }
