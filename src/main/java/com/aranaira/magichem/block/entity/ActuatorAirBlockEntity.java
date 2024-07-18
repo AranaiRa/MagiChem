@@ -555,6 +555,6 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
 
     @Override
     public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,1,1));
+        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,2,1));
     }
 }
