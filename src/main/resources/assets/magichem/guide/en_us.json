@@ -525,7 +525,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ".\n\nOn the far right side of the GUI, items that "
+          },
+          {
+            "text": "hold an FE charge",
+            "color": "dark_purple"
+          },
+          {
+            "text": "can be recharged."
           }
         ]
       },
@@ -553,7 +560,7 @@
             "italic": true
           },
           {
-            "text": " reagent reagent present. For example, supplying the first two reagents will generate more power than supplying only the fourth reagent.\n\nThe Circle of Power only generates up to three ticks’ worth of FE."
+            "text": " reagent present. For example, supplying the first two reagents will generate more power than supplying only the fourth reagent.\n\nThe Circle of Power only generates up to three ticks’ worth of FE."
           }
         ]
       }
@@ -2587,7 +2594,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nA Power Spike can be inserted into the upper right slot, which determines what Circle of Power to draw FE from. The item to be recharged can be inserted into the lower left slot.\n\n"
+            "text": ".\n\nA Power Spike can be inserted into the upper right slot, which determines what Circle of Power to draw FE from. The item to be recharged can be inserted into the lower left slot.\n\nWhile there are no extra benefits for doing so, a Charging Talisman can be worn in a neck or charm curio slot.\n\n"
           },
           {
             "text": "Note: Neither Mana and Artifice or MagiChem include any items that hold FE charge. This item is intended to be used alongside other mods.",

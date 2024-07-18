@@ -74,6 +74,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_RECHARGE, 188, 32));
         });
 
         addDataSlots(data);

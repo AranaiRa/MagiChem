@@ -121,13 +121,6 @@ public class ChargingTalismanMenu extends AbstractContainerMenu {
         return true;
     }
 
-
-//    public void clicked(int slotId, int dragType, ClickType clickTypeIn, Player player) {
-//        if (slotId != this.mySlot && (clickTypeIn != ClickType.SWAP || dragType != this.myPlayerIndex)) {
-//            super.clicked(slotId, dragType, clickTypeIn, player);
-//        }
-//    }
-
     @Override
     public void clicked(int pSlotId, int pButton, ClickType pClickType, Player pPlayer) {
         int selectedSlot = pPlayer.getInventory().findSlotMatchingItem(pPlayer.getInventory().getSelected());

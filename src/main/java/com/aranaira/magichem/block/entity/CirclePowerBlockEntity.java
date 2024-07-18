@@ -213,6 +213,21 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             generatePower(entity);
         }
 
+        //Charge anything in the inline charging slot
+        {
+            ItemStack toCharge = entity.itemHandler.getStackInSlot(SLOT_RECHARGE);
+            if(!toCharge.isEmpty()) {
+                LazyOptional<IEnergyStorage> energyCapability = toCharge.getCapability(ForgeCapabilities.ENERGY);
+
+                energyCapability.ifPresent(itemCap -> {
+                    int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
+                    int energyExtracted = entity.ENERGY_STORAGE.extractEnergy(energyNeeded, false);
+                    itemCap.receiveEnergy(energyExtracted, false);
+                });
+            }
+        }
+
+        //Charge anything routed to this Circle of Power from a Charging Talisman
         for(int i=entity.itemsForRemoteCharging.size()-1; i>=0; i--) {
             ItemStack toCharge = entity.itemsForRemoteCharging.get(i);
             LazyOptional<IEnergyStorage> energyCapability = toCharge.getCapability(ForgeCapabilities.ENERGY);

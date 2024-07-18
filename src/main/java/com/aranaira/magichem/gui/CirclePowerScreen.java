@@ -38,6 +38,8 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
         gui.blit(TEXTURE, x, y, 0, 0, w, h);
         renderProgressBar(1, gui, x + 23, y + 42);
         renderProgressBar(2, gui, x + 59, y + 42);
+
+        gui.blit(TEXTURE, x + w + 4, y + 10, 176, 0, 32, 32);
     }
 
     private void renderProgressBar(int tier, GuiGraphics gui, int x, int y) {
