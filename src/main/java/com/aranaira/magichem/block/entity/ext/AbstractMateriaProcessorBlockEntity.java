@@ -40,17 +40,19 @@ public class AbstractMateriaProcessorBlockEntity extends BlockEntity implements 
         return true;
     }
 
-    public void satisfy(ItemStack pQuery) {
+    public int satisfy(ItemStack pQuery) {
         if(pQuery.getItem() instanceof MateriaItem mi) {
 
             for (int i = 0; i < satisfactionDemands.size(); i++) {
                 Triplet<MateriaItem, Integer, Boolean> demand = satisfactionDemands.get(i);
                 if (demand.getFirst() == pQuery.getItem()) {
                     satisfactionDemands.set(i, new Triplet<>(mi, Math.max(0, demand.getSecond() - pQuery.getCount()), false));
-                    break;
+                    return i;
                 }
             }
         }
+
+        return -1;
     }
 
     public void markInTransit(MateriaItem pQuery) {

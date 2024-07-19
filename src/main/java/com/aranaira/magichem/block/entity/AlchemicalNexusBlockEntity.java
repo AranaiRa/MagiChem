@@ -444,49 +444,51 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                     if (marks.size() >= 1) {
                         Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair;
-                        if(marks.size() == 1) pair = marks.get(0);
-                        else pair = marks.get(anbe.shlorpIndex);
+                            if (marks.size() == 1) pair = marks.get(0);
+                            else pair = marks.get(anbe.shlorpIndex);
 
-                        MateriaItem type = pair.getFirst().getMateriaType();
+                        if(pair.getFirst() != null) {
+                            MateriaItem type = pair.getFirst().getMateriaType();
 
-                        if (type != null) {
-                            for (MateriaItem mi : outstanding) {
-                                if (type == mi) {
-                                    Pair<Vector3, Vector3> ot = pair.getFirst().getDefaultOriginAndTangent();
-                                    Vector3 spawnPos = new Vector3(pair.getSecond());
-                                    Vector3 origin = ot.getFirst();
-                                    Vector3 tangent = ot.getSecond().scale(4.0f);
+                            if (type != null) {
+                                for (MateriaItem mi : outstanding) {
+                                    if (type == mi) {
+                                        Pair<Vector3, Vector3> ot = pair.getFirst().getDefaultOriginAndTangent();
+                                        Vector3 spawnPos = new Vector3(pair.getSecond());
+                                        Vector3 origin = ot.getFirst();
+                                        Vector3 tangent = ot.getSecond().scale(4.0f);
 
-                                    int amount = 0;
-                                    for (Triplet<MateriaItem, Integer, Boolean> demand : anbe.satisfactionDemands) {
-                                        if(demand.getFirst() == mi) {
-                                            amount = Math.min(pair.getFirst().getCurrentStock(), demand.getSecond());
-                                            break;
+                                        int amount = 0;
+                                        for (Triplet<MateriaItem, Integer, Boolean> demand : anbe.satisfactionDemands) {
+                                            if (demand.getFirst() == mi) {
+                                                amount = Math.min(pair.getFirst().getCurrentStock(), demand.getSecond());
+                                                break;
+                                            }
                                         }
+
+                                        if (amount == 0) break;
+
+                                        //create shlorp
+                                        ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pLevel);
+                                        se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+                                        pair.getFirst().drain(amount);
+                                        se.configure(
+                                                spawnPos,
+                                                origin, tangent,
+                                                new Vector3(anbe.getBlockPos()),
+                                                new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 0.5, 0),
+                                                anbe.cachedSpec.shlorpSpeed, 0.125f, amount * 2,
+                                                mi, amount, ShlorpParticleMode.INVERSE_ENTRY_TANGENT
+                                        );
+
+                                        pLevel.addFreshEntity(se);
+                                        se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+                                        anbe.markInTransit(mi);
+
+                                        //don't need to keep iterating at this point
+                                        break;
                                     }
-
-                                    if (amount == 0) break;
-
-                                    //create shlorp
-                                    ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pLevel);
-                                    se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-
-                                    pair.getFirst().drain(amount);
-                                    se.configure(
-                                            spawnPos,
-                                            origin, tangent,
-                                            new Vector3(anbe.getBlockPos()),
-                                            new Vector3(0.5, 1.9375f, 0.5), new Vector3(0, 0.5, 0),
-                                            anbe.cachedSpec.shlorpSpeed, 0.125f, amount * 2,
-                                            mi, amount, ShlorpParticleMode.INVERSE_ENTRY_TANGENT
-                                    );
-
-                                    pLevel.addFreshEntity(se);
-                                    se.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-                                    anbe.markInTransit(mi);
-
-                                    //don't need to keep iterating at this point
-                                    break;
                                 }
                             }
                         }
@@ -1178,8 +1180,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     ////////////////////
 
     @Override
-    public void satisfy(ItemStack pQuery) {
-        super.satisfy(pQuery);
+    public int satisfy(ItemStack pQuery) {
+        int id = super.satisfy(pQuery);
         syncAndSave();
+        return id;
     }
 }
