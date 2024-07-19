@@ -363,8 +363,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     //Check if all the items are present
                     if (anbe.hasAllRecipeItemsForCurrentStage()) {
                         if (anbe.getContentsOfOutputSlots().canAddItem(anbe.currentRecipe.getAlchemyObject())) {
-                            int experienceCost = anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
-                            int fluidCost = experienceCost * Config.fluidPerXPPoint + getBaseExperienceCostPerStage(anbe.getPowerLevel());
+                            int experienceCost = anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience * Config.fluidPerXPPoint;
+                            int fluidCost = experienceCost + getBaseExperienceCostPerStage(anbe.getPowerLevel());
 
                             anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
                             anbe.cacheAnimSpec();

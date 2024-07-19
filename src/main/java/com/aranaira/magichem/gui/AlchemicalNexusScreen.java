@@ -585,7 +585,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         int secPartial = (ticksToCraft % 20) * 5;
 
         Font font = Minecraft.getInstance().font;
-        pGuiGraphics.drawString(font ,powerDraw+"", 208, 44, 0xff000000, false);
+        pGuiGraphics.drawString(font ,powerDraw+" mB", 208, 44, 0xff000000, false);
         pGuiGraphics.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 63, 0xff000000, false);
 
 //        if(!menu.getHasSufficientPower()) {
