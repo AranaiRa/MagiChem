@@ -281,10 +281,15 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
         else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CRAFTING_CIRCLE) {
             AlchemicalNexusAnimSpec spec = AlchemicalNexusBlockEntity.getAnimSpec(pBlockEntity.getPowerLevel());
             percentFill = 1 - ((pBlockEntity.getProgress() + pPartialTick) / (float)spec.ticksInRampCircle);
-            doAll = true;
+            if(pBlockEntity.getProgressHolderItem().isEmpty())
+                doAll = true;
         }
         else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE ||
                 animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
+            percentFill = 1;
+            doNext = false;
+        }
+        else if(animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP) {
             percentFill = 1;
             doNext = false;
         }

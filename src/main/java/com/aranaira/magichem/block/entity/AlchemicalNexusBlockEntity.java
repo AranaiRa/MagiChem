@@ -400,7 +400,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             else if(anbe.animStage == ANIM_STAGE_RAMP_CIRCLE) {
                 anbe.incrementProgress();
 
-                //check for container item in the processing slot
+                if(!anbe.hasAllRecipeItemsForCurrentStage()) {
+                    anbe.animStage = ANIM_STAGE_CANCEL_CIRCLE;
+                }
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
                     //check to see if we have enough experience
@@ -562,7 +564,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
                 anbe.incrementProgress();
 
-                //Move to cancel stage if the partial craft item package is removed
+                if(!anbe.hasAllRecipeItemsForCurrentStage()) {
+                    anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
+                }
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampSpeedup) {
                     anbe.resetProgress();
@@ -575,14 +579,19 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                 if(anbe.progress <= 0) {
                     anbe.resetProgress();
-                    anbe.animStage = ANIM_STAGE_IDLE;
+                    if(anbe.craftingStage > 0)
+                        anbe.animStage = ANIM_STAGE_CRAFTING_IDLE;
+                    else
+                        anbe.animStage = ANIM_STAGE_IDLE;
                     anbe.syncAndSave();
                 }
             }
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
                 anbe.incrementProgress();
 
-                //check for container item in the processing slot
+                if(!anbe.hasAllRecipeItemsForCurrentStage()) {
+                    anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_CIRCLE;
+                }
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
                     int amountInTank = anbe.getFluidInTank(0).getAmount();
@@ -604,8 +613,14 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 anbe.incrementProgress();
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
-                    anbe.craftingStage = 0;
-                    anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
+                    if(anbe.itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER).isEmpty()) {
+                        anbe.craftingStage = 0;
+                        anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
+                    }
+                    else {
+                        anbe.progress = anbe.cachedSpec.ticksInRampSpeedup;
+                        anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
+                    }
                     anbe.syncAndSave();
                 }
             }
@@ -939,6 +954,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return itemHandler.getStackInSlot(SLOT_MARKS);
     }
 
+    public ItemStack getProgressHolderItem() {
+        return itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER);
+    }
+
     public static int getScaledSlurry(int pSlurry) {
         return (FLUID_BAR_HEIGHT * pSlurry) / Config.alchemicalNexusTankCapacity;
     }
@@ -1075,13 +1094,15 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             //Sparky orb above the device
             float orbPercent = 0f;
             if (animStage == ANIM_STAGE_RAMP_SPEEDUP ||
-                    animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
+                    animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP ||
+                    animStage == ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP) {
                 orbPercent = (float) progress / (float) cachedSpec.ticksInRampSpeedup;
             } else if (animStage == ANIM_STAGE_CRAFTING_IDLE) {
                 orbPercent = (float) progress / (float) cachedSpec.ticksInRampCancel;
             } else if (animStage == ANIM_STAGE_RAMP_CRAFTING ||
                     animStage == ANIM_STAGE_RAMP_CIRCLE ||
                     animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
+                    animStage == ANIM_STAGE_CANCEL_CRAFTING_CIRCLE ||
                     animStage == ANIM_STAGE_SHLORPS ||
                     animStage == ANIM_STAGE_CRAFTING) {
                 orbPercent = 1f;
