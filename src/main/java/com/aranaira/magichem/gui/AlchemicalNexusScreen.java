@@ -3,23 +3,16 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
-import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
-import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
-import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.AlchemicalNexusAnimSpec;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.AlchemicalNexusButtonRecipeSelector;
-import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
-import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
 import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
-import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -31,16 +24,12 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,9 +108,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
-        renderFilterBox();
         renderRecipeOptions(pGuiGraphics);
-        renderButtons(pGuiGraphics, pPartialTick, pMouseX, pMouseY);
+        updateFilterBoxContents();
     }
 
     private void initializePowerLevelButtons(){
@@ -235,6 +223,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 c++;
             }
         }
+
+        renderButtons();
     }
 
     public void setActiveRecipe(int index) {
@@ -246,6 +236,18 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     filteredRecipeOutputs.get(trueIndex)
             ));
             menu.blockEntity.setRecipeFromOutput(menu.blockEntity.getLevel(), filteredRecipeOutputs.get(trueIndex));
+        }
+    }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (pKeyCode == InputConstants.KEY_ESCAPE) {
+            this.onClose();
+            return true;
+        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+            return true;
+        } else {
+            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
     }
 
@@ -276,6 +278,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         this.recipeFilterBox.setFocused(false);
         this.recipeFilterBox.setCanLoseFocus(false);
         this.setFocused(this.recipeFilterBox);
+
+        renderFilterBox();
     }
 
     private void renderStageGauge(GuiGraphics pGuiGraphics, int pX, int pY) {
@@ -529,13 +533,12 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
     }
 
-    private void renderButtons(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
+    private void renderButtons() {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
         for (ButtonData bd : recipeSelectButtons) {
             bd.getButton().setPosition(x + bd.getXOffset(), y + bd.getYOffset());
-            bd.getButton().renderWidget(gui, mouseX, mouseY, partialTick);
             bd.getButton().active = true;
             bd.getButton().visible = true;
         }
@@ -548,12 +551,14 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         recipeFilterBox.setX(xOrigin - 76);
         recipeFilterBox.setY(yOrigin + 1);
 
+        addRenderableWidget(recipeFilterBox);
+    }
+
+    private void updateFilterBoxContents() {
         if(recipeFilterBox.getValue().isEmpty())
             recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
         else
             recipeFilterBox.setSuggestion("");
-
-        addRenderableWidget(recipeFilterBox);
     }
 
     private void renderRecipeOptions(GuiGraphics gui) {

@@ -84,11 +84,14 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        if(pKeyCode == InputConstants.KEY_ESCAPE) {
+        if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;
+        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+            return true;
+        } else {
+            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
-        return this.getFocused() != null && this.getFocused().keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     private void initializeRecipeSelectorButtons(){
@@ -104,6 +107,8 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                 c++;
             }
         }
+
+        renderButtons();
     }
 
     private void initializeRecipeFilterBox() {
@@ -133,6 +138,8 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         this.recipeFilterBox.setFocused(false);
         this.recipeFilterBox.setCanLoseFocus(false);
         this.setFocused(this.recipeFilterBox);
+
+        renderFilterBox();
     }
 
     public void setActiveRecipe(int index) {
@@ -208,9 +215,8 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        renderButtons(gui, delta, mouseX, mouseY);
-        renderFilterBox();
         renderRecipeOptions(gui);
+        updateFilterBoxContents();
     }
 
     private void renderSlotGhosts(GuiGraphics gui) {
@@ -275,13 +281,12 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
         RenderSystem.setShaderTexture(0, TEXTURE);
     }
 
-    private void renderButtons(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
+    private void renderButtons() {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
         for (ButtonData bd : recipeSelectButtons) {
             bd.getButton().setPosition(x + bd.getXOffset(), y + bd.getYOffset());
-            bd.getButton().renderWidget(gui, mouseX, mouseY, partialTick);
             bd.getButton().active = true;
             bd.getButton().visible = true;
         }
@@ -300,6 +305,13 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             recipeFilterBox.setSuggestion("");
 
         addRenderableWidget(recipeFilterBox);
+    }
+
+    private void updateFilterBoxContents() {
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
     }
 
     private void renderRecipeOptions(GuiGraphics gui) {

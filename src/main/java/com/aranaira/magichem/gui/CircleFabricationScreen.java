@@ -63,11 +63,14 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        if(pKeyCode == InputConstants.KEY_ESCAPE) {
+        if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;
+        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+            return true;
+        } else {
+            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
-        return this.getFocused() != null && this.getFocused().keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 
     private void initializeRecipeFilterBox() {
@@ -79,6 +82,8 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         this.recipeFilterBox.setFocused(false);
         this.recipeFilterBox.setCanLoseFocus(false);
         this.setFocused(this.recipeFilterBox);
+
+        renderFilterBox();
     }
 
     private void initializePowerLevelButtons(){
@@ -121,6 +126,8 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                 c++;
             }
         }
+
+        renderButtons();
     }
 
     public void setActiveRecipe(int index) {
@@ -188,10 +195,9 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        renderButtons(gui, delta, mouseX, mouseY);
-        renderFilterBox();
         updateDisplayedRecipes(recipeFilterBox.getValue());
         renderRecipeOptions(gui);
+        updateFilterBoxContents();
     }
 
     private void renderIngredientPanel(GuiGraphics gui, int x, int y) {
@@ -223,24 +229,21 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         RenderSystem.setShaderTexture(0, TEXTURE);
     }
 
-    private void renderButtons(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
+    private void renderButtons() {
 
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
         b_powerLevelUp.setPosition(x+180, y+26);
-        b_powerLevelUp.renderWidget(gui, mouseX, mouseY, partialTick);
         b_powerLevelUp.active = true;
         b_powerLevelUp.visible = true;
 
         b_powerLevelDown.setPosition(x+180, y+71);
-        b_powerLevelDown.renderWidget(gui, mouseX, mouseY, partialTick);
         b_powerLevelDown.active = true;
         b_powerLevelDown.visible = true;
 
         for(ButtonData bd : recipeSelectButtons) {
             bd.getButton().setPosition(x+bd.getXOffset(), y+bd.getYOffset());
-            bd.getButton().renderWidget(gui, mouseX, mouseY, partialTick);
             bd.getButton().active = true;
             bd.getButton().visible = true;
         }
@@ -299,6 +302,13 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             slotGroup++;
         }
         gui.setColor(1f, 1f, 1f, 1f);
+    }
+
+    private void updateFilterBoxContents() {
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
     }
 
     private void renderRecipeOptions(GuiGraphics gui) {
