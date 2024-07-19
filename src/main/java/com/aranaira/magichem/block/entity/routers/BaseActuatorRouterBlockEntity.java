@@ -13,6 +13,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -42,7 +43,13 @@ public class BaseActuatorRouterBlockEntity extends BlockEntity implements MenuPr
 
     public BlockEntity getMaster(){
         if(master == null) {
-            master = getLevel().getBlockEntity(masterPos);
+            if(masterPos != null)
+                master = level.getBlockEntity(masterPos);
+
+            //if master is still null we've got a problem and the router needs to be deleted
+            if(master == null) {
+                level.setBlock(getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+            }
         }
         return master;
     }
