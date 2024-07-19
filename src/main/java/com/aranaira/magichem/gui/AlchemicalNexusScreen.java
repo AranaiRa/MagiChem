@@ -473,17 +473,23 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                             .append(Component.literal(name.substring(1, name.length() - 1)))
                     );
 
-                    if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_SHLORPS ||
-                            animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING ||
-                            animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING) {
+                    if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_SHLORPS) {
                         tooltipContents.add(Component.empty()
                                 .append(Component.literal("" + (required - outstanding)).withStyle(ChatFormatting.DARK_AQUA))
                                 .append(" of ").withStyle(ChatFormatting.DARK_GRAY)
                                 .append(Component.literal("" + required).withStyle(ChatFormatting.DARK_AQUA))
                                 .append(" provided").withStyle(ChatFormatting.DARK_GRAY)
                         );
+                    } else if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING ||
+                               animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING) {
+                        tooltipContents.add(Component.empty()
+                                .append(Component.literal("" + required).withStyle(ChatFormatting.DARK_AQUA))
+                                .append(" of ").withStyle(ChatFormatting.DARK_GRAY)
+                                .append(Component.literal("" + required).withStyle(ChatFormatting.DARK_AQUA))
+                                .append(" provided").withStyle(ChatFormatting.DARK_GRAY)
+                        );
                     } else if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE ||
-                            animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
+                               animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
                         tooltipContents.add(Component.empty()
                                 .append(Component.translatable("tooltip.magichem.gui.shlorps.idle")).withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
                         );

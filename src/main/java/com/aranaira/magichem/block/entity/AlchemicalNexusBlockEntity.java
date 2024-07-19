@@ -350,8 +350,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 if (!anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty() && anbe.currentRecipe == null) {
                     anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
                 }
-                if(anbe.animStage != ANIM_STAGE_IDLE)
-                    anbe.cacheAnimSpec();
+                if(anbe.animStage != ANIM_STAGE_IDLE && !anbe.getLevel().isClientSide())
+                    anbe.cacheAnimSpec(true);
                 anbe.doDeferredRecipeLinkages = false;
                 anbe.syncAndSave();
             }
@@ -367,7 +367,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             int fluidCost = experienceCost + getBaseExperienceCostPerStage(anbe.getPowerLevel());
 
                             anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
-                            anbe.cacheAnimSpec();
+                            anbe.cacheAnimSpec(true);
                             anbe.remainingFluidForSatisfaction = fluidCost;
                             anbe.syncAndSave();
                         }
@@ -559,7 +559,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 //Check if all the items are present
                 if(anbe.hasAllRecipeItemsForCurrentStage()) {
                     anbe.animStage = ANIM_STAGE_RAMP_CRAFTING_SPEEDUP;
-                    anbe.cacheAnimSpec();
+                    anbe.cacheAnimSpec(false);
                     anbe.syncAndSave();
                 }
             }
@@ -629,12 +629,13 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         }
     }
 
-    private void cacheAnimSpec() {
+    private void cacheAnimSpec(boolean doSatisfactionDemandsUpdate) {
         this.cachedSpec = getAnimSpec(this.powerLevel);
 
-        InfusionStage currentStage = this.currentRecipe.getStages(false).get(this.craftingStage);
-
-        setSatisfactionDemands(currentStage.componentMateria);
+        if(doSatisfactionDemandsUpdate) {
+            InfusionStage currentStage = this.currentRecipe.getStages(false).get(this.craftingStage);
+            setSatisfactionDemands(currentStage.componentMateria);
+        }
     }
 
     public NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> getMarkedEntitiesAndLocations() {
@@ -861,7 +862,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public NonNullList<Triplet<MateriaItem, Integer, Boolean>> getAllMateriaDemands() {
-        return satisfactionDemands;
+        return this.satisfactionDemands;
     }
 
     ////////////////////
