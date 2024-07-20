@@ -1,5 +1,5 @@
 {
   "type": "mna:progression-condition",
-  "advancement": "magichem:magichemical_vessel",
+  "advancement": "magichem:materia_vessel",
   "tier": 2
 }
