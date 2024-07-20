@@ -284,7 +284,7 @@
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",
   "tooltip.magichem.admixtureformula": "Formula:",
 
-  "tooltip.magichem.actuator.water": "A Water-aspected Elemental Actuator. Increases the Efficiency of a connected device. Consumes water every time the connected device completes an operation.",
+  "tooltip.magichem.actuator.water": "A Water-aspected Elemental Actuator. Increases the Efficiency of a connected device. Consumes water.",
   "tooltip.magichem.actuator.fire": "A Fire-aspected Elemental Actuator. Continuously operates a connected device. Reduces FE requirement of powered devices, reduces operation time of non-powered devices.",
   "tooltip.magichem.actuator.earth": "An Earth-aspected Elemental Actuator. Reduces and manages Grime buildup. Consumes sand every time the connected device completes an operation.",
   "tooltip.magichem.actuator.air": "An Air-aspected Elemental Actuator. Slows down operation time, but allows a connected device to process more than one item at once.",
