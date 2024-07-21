@@ -177,31 +177,37 @@ public class AlchemicalInfusionRitualRecipe implements Recipe<SimpleContainer> {
             CompoundTag nbt = buf.readNbt();
             if(nbt == null) return null;
 
-            ResourceLocation alchemyObjectRL = new ResourceLocation(nbt.getString("alchemyObjectItem"));
+            CompoundTag nbtAlchemyObject = nbt.getCompound("alchemyObject");
+            CompoundTag nbtIngredients = nbt.getCompound("ingredients");
+            CompoundTag nbtMateria1 = nbt.getCompound("materia1");
+            CompoundTag nbtMateria2 = nbt.getCompound("materia2");
+
+            ResourceLocation alchemyObjectRL = new ResourceLocation(nbtAlchemyObject.getString("item"));
             Item alchemyObjectItem = ForgeRegistries.ITEMS.getValue(alchemyObjectRL);
             ItemStack alchemyObject = ItemStack.EMPTY;
             if(alchemyObjectItem != null) {
-                if(nbt.contains("alchemyObjectCount"))
-                    alchemyObject = new ItemStack(alchemyObjectItem, nbt.getInt("alchemyObjectCount"));
+                if(nbtAlchemyObject.contains("count"))
+                    alchemyObject = new ItemStack(alchemyObjectItem, nbtAlchemyObject.getInt("count"));
                 else
                     alchemyObject = new ItemStack(alchemyObjectItem, 1);
             }
 
-            ResourceLocation materiaTypeOneRL = new ResourceLocation(nbt.getString("materiaTypeOneItem"));
-            int materiaTypeOneCount = nbt.getInt("materiaTypeOneCount");
+            ResourceLocation materiaTypeOneRL = new ResourceLocation(nbtMateria1.getString("item"));
+            int materiaTypeOneCount = nbtMateria1.getInt("count");
             Item materiaTypeOneItem = materiaMap.get(materiaTypeOneRL.toString());
             ItemStack materiaTypeOne = new ItemStack(materiaTypeOneItem, materiaTypeOneCount);
 
-            ResourceLocation materiaTypeTwoRL = new ResourceLocation(nbt.getString("materiaTypeTwoItem"));
-            int materiaTypeTwoCount = nbt.getInt("materiaTypeTwoCount");
+            ResourceLocation materiaTypeTwoRL = new ResourceLocation(nbtMateria2.getString("item"));
+            int materiaTypeTwoCount = nbtMateria2.getInt("count");
             Item materiaTypeTwoItem = materiaMap.get(materiaTypeTwoRL.toString());
             ItemStack materiaTypeTwo = new ItemStack(materiaTypeTwoItem, materiaTypeTwoCount);
 
-            int componentTotal = nbt.getInt("componentCount");
+            int componentTotal = nbtIngredients.getInt("total");
             NonNullList<ItemStack> readIngredients = NonNullList.create();
             for(int i=0; i<componentTotal; i++) {
-                ResourceLocation componentItemRL = new ResourceLocation(nbt.getString("component"+i+"Item"));
-                int componentCount = nbt.getInt("component"+i+"Count");
+                CompoundTag nbtThisIngredient = nbtIngredients.getCompound("ingredient"+i);
+                ResourceLocation componentItemRL = new ResourceLocation(nbtThisIngredient.getString("item"));
+                int componentCount = nbtThisIngredient.getInt("count");
                 Item componentItem = ForgeRegistries.ITEMS.getValue(componentItemRL);
                 ItemStack componentStack = ItemStack.EMPTY;
                 if(componentItem != null)
@@ -215,22 +221,33 @@ public class AlchemicalInfusionRitualRecipe implements Recipe<SimpleContainer> {
         @Override
         public void toNetwork(FriendlyByteBuf buf, AlchemicalInfusionRitualRecipe recipe) {
             CompoundTag nbt = new CompoundTag();
-            nbt.putString("alchemyObjectItem", ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem()).toString());
-            nbt.putInt("alchemyObjectCount", recipe.getAlchemyObject().getCount());
 
+            CompoundTag nbtAlchemyObject = new CompoundTag();
+            nbtAlchemyObject.putString("item", ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem()).toString());
+            nbtAlchemyObject.putInt("count", recipe.getAlchemyObject().getCount());
+            nbt.put("alchemyObject", nbtAlchemyObject);
+
+            CompoundTag nbtMateria1 = new CompoundTag();
             ItemStack first = recipe.getComponentMateria().getFirst();
-            nbt.putString("materiaTypeOneItem", ForgeRegistries.ITEMS.getKey(first.getItem()).toString());
-            nbt.putInt("materiaTypeOneCount", first.getCount());
+            nbtMateria1.putString("item", ForgeRegistries.ITEMS.getKey(first.getItem()).toString());
+            nbtMateria1.putInt("count", first.getCount());
+            nbt.put("materia1", nbtMateria1);
 
+            CompoundTag nbtMateria2 = new CompoundTag();
             ItemStack second = recipe.getComponentMateria().getSecond();
-            nbt.putString("materiaTypeTwoItem", ForgeRegistries.ITEMS.getKey(second.getItem()).toString());
-            nbt.putInt("materiaTypeTwoCount", second.getCount());
+            nbtMateria2.putString("item", ForgeRegistries.ITEMS.getKey(second.getItem()).toString());
+            nbtMateria2.putInt("count", second.getCount());
+            nbt.put("materia2", nbtMateria2);
 
-            nbt.putInt("componentCount", recipe.ingredients.size());
+            CompoundTag nbtIngredients = new CompoundTag();
+            nbtIngredients.putInt("total", recipe.ingredients.size());
             for(int i=0;i<recipe.ingredients.size(); i++) {
-                nbt.putString("component"+i+"Item", ForgeRegistries.ITEMS.getKey(recipe.ingredients.get(i).getItem()).toString());
-                nbt.putInt("component"+i+"Count", recipe.ingredients.get(i).getCount());
+                CompoundTag thisIngredient = new CompoundTag();
+                thisIngredient.putString("item", ForgeRegistries.ITEMS.getKey(recipe.ingredients.get(i).getItem()).toString());
+                thisIngredient.putInt("count", recipe.ingredients.get(i).getCount());
+                nbtIngredients.put("ingredient"+i, thisIngredient);
             }
+            nbt.put("ingredients", nbtIngredients);
 
             buf.writeNbt(nbt);
         }
