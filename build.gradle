@@ -153,7 +153,7 @@ dependencies {
     //implementation fg.deobf("curse.maven:smartbrainlib-661293:4981397")
     //implementation fg.deobf("curse.maven:selene-499980:5068161")
     //implementation fg.deobf("curse.maven:supplementaries-412082:5075373")
-    //implementation fg.deobf("curse.maven:patchouli-306770:4966125")
+    implementation fg.deobf("curse.maven:patchouli-306770:4966125")
     //implementation fg.deobf("curse.maven:botania-225643:5002307")
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings

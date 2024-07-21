@@ -425,7 +425,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         shlorpLeft.configure(
                 lv.origin, Vector3.zero(), lv.tangentVessel,
                 centerPos, Vector3.zero(), lv.tangentCenter,
-                0.0175f, 0.03125f,
+                0.035f, 0.03125f,
                 2 + Math.min(40, isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount),
                 isFirstVessel ? pVesselData.getFirst().type : pVesselData.getSecond().type,
                 isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount,
@@ -438,7 +438,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         shlorpRight.configure(
                 rv.origin, Vector3.zero(), rv.tangentVessel,
                 centerPos, Vector3.zero(), rv.tangentCenter,
-                0.0175f, 0.03125f,
+                0.035f, 0.03125f,
                 2 + Math.min(40, isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount),
                 pVesselData.getSecond().type, pVesselData.getSecond().amount,
                 ShlorpParticleMode.INVERSE_ENTRY_TANGENT);

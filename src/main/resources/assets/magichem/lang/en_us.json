@@ -316,6 +316,7 @@
   "tooltip.magichem.rarefiedwaste": "Something glitters within, though the smell is no less foul than conventional Alchemical Waste.",
   "tooltip.magichem.rarefiedwaste.ext": "Can be Distilled into random Admixtures.",
   "tooltip.magichem.sublimationprimer": "Used to select a recipe for the Ritual of the Balanced Scales.",
+  "tooltip.magichem.sublimationprimer.currentrecipe": "Current Recipe: ",
   "tooltip.magichem.occultedcinder": "The glow of a flame excised from its searing heat. Can be used as an invisible light source.",
   "tooltip.magichem.sublimation_in_progress.line1": "An interrupted Sublimation. Its contents can still be retrieved.",
   "tooltip.magichem.sublimation_in_progress.line2": "Contains:",

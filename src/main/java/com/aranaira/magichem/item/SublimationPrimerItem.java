@@ -12,6 +12,8 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -60,6 +62,21 @@ public class SublimationPrimerItem extends Item implements IRadialInventorySelec
                 Component.translatable("tooltip.magichem.sublimationprimer")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
+
+        MutableComponent recipeName = Component.empty();
+        if(pStack.getOrCreateTag().contains("recipe")) {
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(pStack.getTag().getString("recipe")));
+            if(item != null)
+                recipeName = (MutableComponent) item.getName(new ItemStack(item));
+        }
+
+        if(!recipeName.equals(Component.empty())) {
+            pTooltipComponents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.sublimationprimer.currentrecipe").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(recipeName.withStyle(ChatFormatting.DARK_AQUA))
+            );
+        }
+
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 
