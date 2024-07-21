@@ -209,31 +209,39 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
         @Override
         public @Nullable AlchemicalInfusionRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             CompoundTag nbt = buf.readNbt();
+            CompoundTag nbtAlchemyObject = nbt.getCompound("alchemyObject");
+            CompoundTag nbtStages = nbt.getCompound("stages");
 
             int tier = nbt.getInt("tier");
             int wisdom = nbt.getInt("wisdom");
 
-            ResourceLocation alchemyObjectRL = new ResourceLocation(nbt.getString("alchemyObjectItem"));
+            //alchemy object
+            ResourceLocation alchemyObjectRL = new ResourceLocation(nbtAlchemyObject.getString("item"));
             Item alchemyObjectItem = ForgeRegistries.ITEMS.getValue(alchemyObjectRL);
             ItemStack alchemyObject = ItemStack.EMPTY;
             if(alchemyObjectItem != null) {
-                if(nbt.contains("alchemyObjectCount"))
-                    alchemyObject = new ItemStack(alchemyObjectItem, nbt.getInt("alchemyObjectCount"));
+                if(nbtAlchemyObject.contains("count"))
+                    alchemyObject = new ItemStack(alchemyObjectItem, nbtAlchemyObject.getInt("count"));
                 else
                     alchemyObject = new ItemStack(alchemyObjectItem, 1);
             }
 
-            int stagesCount = nbt.getInt("stagesCount");
+            int stagesCount = nbtStages.getInt("count");
             NonNullList<InfusionStage> infusionStages = NonNullList.create();
             for(int stage=0; stage<stagesCount; stage++) {
-                int experienceThisStage = nbt.getInt("stage"+stage+"Experience");
+                CompoundTag nbtThisStage = nbtStages.getCompound("stage"+stage);
+                int experienceThisStage = nbtThisStage.getInt("experience");
+                CompoundTag nbtThisStageIngredients = nbtThisStage.getCompound("ingredients");
+                CompoundTag nbtThisStageMateria = nbtThisStage.getCompound("materia");
 
+                //ingredients
                 NonNullList<ItemStack> componentItems = NonNullList.create();
                 {
-                    for(int i=0; i<nbt.getInt("stage"+stage+"IngredientCount"); i++) {
-                        ResourceLocation rloc = new ResourceLocation(nbt.getString("stage"+stage+"Ingredient"+i+"Item"));
+                    for(int i=0; i<nbtThisStageIngredients.getInt("ingredientTotal"); i++) {
+                        CompoundTag nbtThisIngredient = nbtThisStageIngredients.getCompound("ingredient"+i);
+                        ResourceLocation rloc = new ResourceLocation(nbtThisIngredient.getString("item"));
                         Item item = ForgeRegistries.ITEMS.getValue(rloc);
-                        int count = nbt.getInt("stage"+stage+"Ingredient"+i+"Count");
+                        int count = nbtThisIngredient.getInt("count");
 
                         if(item == null)
                             MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+rloc+"\" for alchemical_infusion recipe \""+id+"\"");
@@ -242,12 +250,14 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
                     }
                 }
 
+                //materia
                 NonNullList<ItemStack> componentMateria = NonNullList.create();
                 {
-                    for(int i=0; i<nbt.getInt("stage"+stage+"IngredientCount"); i++) {
-                        ResourceLocation rloc = new ResourceLocation(nbt.getString("stage"+stage+"Ingredient"+i+"Item"));
+                    for(int i=0; i<nbtThisStageMateria.getInt("materiaTotal"); i++) {
+                        CompoundTag nbtThisMateria = nbtThisStageMateria.getCompound("materia"+i);
+                        ResourceLocation rloc = new ResourceLocation(nbtThisMateria.getString("item"));
                         Item item = ForgeRegistries.ITEMS.getValue(rloc);
-                        int count = nbt.getInt("stage"+stage+"Ingredient"+i+"Count");
+                        int count = nbtThisMateria.getInt("count");
 
                         if(item == null)
                             MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+rloc+"\" for alchemical_infusion recipe \""+id+"\"");
@@ -270,41 +280,61 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
             nbt.putInt("tier", recipe.getTier());
             nbt.putInt("wisdom", recipe.getWisdom());
 
-            nbt.putString("alchemyObjectItem", ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem()).toString());
-            nbt.putInt("alchemyObjectCount", recipe.getAlchemyObject().getCount());
+            CompoundTag nbtAlchemyObject = new CompoundTag();
+            nbtAlchemyObject.putString("item", ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem()).toString());
+            nbtAlchemyObject.putInt("count", recipe.getAlchemyObject().getCount());
+            nbt.put("alchemyObject", nbtAlchemyObject);
 
-            nbt.putInt("stagesCount", recipe.getStages(false).size());
+            CompoundTag nbtStages = new CompoundTag();
+            nbtStages.putInt("count", recipe.getStages(false).size());
 
+            for(int stage=0; stage<recipe.getStages(false).size(); stage++)
             {
-                int stage = 0;
-                for(InfusionStage infusionStage : recipe.getStages(false)) {
-                    nbt.putInt("stage"+stage+"Experience", infusionStage.experience);
+                InfusionStage infusionStage = recipe.getStages(false).get(stage);
+                CompoundTag nbtThisStage = new CompoundTag();
+                CompoundTag nbtThisStageIngredients = new CompoundTag();
+                CompoundTag nbtThisStageMateria = new CompoundTag();
 
-                    //component items
-                    {
-                        nbt.putInt("stage"+stage+"IngredientCount", infusionStage.componentItems.size());
+                nbtThisStage.putInt("experience", infusionStage.experience);
 
-                        int i = 0;
-                        for(ItemStack is : infusionStage.componentItems) {
-                            nbt.putString("stage"+stage+"Ingredient"+i+"Item", ForgeRegistries.ITEMS.getKey(is.getItem()).toString());
-                            nbt.putInt("stage"+stage+"Ingredient"+i+"Count", is.getCount());
-                            i++;
-                        }
+                //component items
+                {
+                    nbtThisStageIngredients.putInt("ingredientTotal", infusionStage.componentItems.size());
+
+                    for(int i=0; i<infusionStage.componentItems.size(); i++) {
+                        ItemStack is = infusionStage.componentItems.get(i);
+
+                        CompoundTag nbtThisIngredient = new CompoundTag();
+                        nbtThisIngredient.putString("item", ForgeRegistries.ITEMS.getKey(is.getItem()).toString());
+                        nbtThisIngredient.putInt("count", is.getCount());
+
+                        nbtThisStageIngredients.put("ingredient"+i, nbtThisIngredient);
                     }
 
-                    //component materia
-                    {
-                        nbt.putInt("stage"+stage+"MateriaCount", infusionStage.componentMateria.size());
-
-                        int i = 0;
-                        for(ItemStack is : infusionStage.componentMateria) {
-                            nbt.putString("stage"+stage+"Materia"+i+"Item", ForgeRegistries.ITEMS.getKey(is.getItem()).toString());
-                            nbt.putInt("stage"+stage+"Materia"+i+"Count", is.getCount());
-                            i++;
-                        }
-                    }
+                    nbtThisStage.put("ingredients", nbtThisStageIngredients);
                 }
+
+                //component materia
+                {
+                    nbtThisStageMateria.putInt("materiaTotal", infusionStage.componentMateria.size());
+
+                    for(int i=0; i<infusionStage.componentMateria.size(); i++) {
+                        ItemStack is = infusionStage.componentMateria.get(i);
+
+                        CompoundTag nbtThisMateria = new CompoundTag();
+                        nbtThisMateria.putString("item", ForgeRegistries.ITEMS.getKey(is.getItem()).toString());
+                        nbtThisMateria.putInt("count", is.getCount());
+
+                        nbtThisStageMateria.put("materia"+i, nbtThisMateria);
+                    }
+
+                    nbtThisStage.put("materia", nbtThisStageMateria);
+                }
+
+                nbtStages.put("stage"+stage, nbtThisStage);
             }
+
+            nbt.put("stages", nbtStages);
 
             buf.writeNbt(nbt);
         }
