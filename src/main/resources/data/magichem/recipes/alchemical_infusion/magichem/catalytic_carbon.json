@@ -15,8 +15,8 @@
         { "item": "minecraft:charcoal" }
       ],
       "materia": [
-        { "item": "magichem:admixture_energy", "count": 36 },
-        { "item": "magichem:admixture_light", "count": 10 }
+        { "item": "magichem:admixture_energy", "count": 24 },
+        { "item": "magichem:admixture_light", "count": 8 }
       ]
     }
   ]

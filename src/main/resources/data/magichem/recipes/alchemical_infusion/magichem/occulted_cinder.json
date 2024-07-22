@@ -17,8 +17,8 @@
         { "item": "minecraft:torch" }
       ],
       "materia": [
-        { "item": "magichem:admixture_light", "count": 45 },
-        { "item": "magichem:admixture_cold", "count": 21 }
+        { "item": "magichem:admixture_light", "count": 35 },
+        { "item": "magichem:admixture_cold", "count": 16 }
       ]
     }
   ]

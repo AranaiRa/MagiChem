@@ -4,8 +4,8 @@
     "item": "magichem:occulted_cinder",
     "count": 16
   },
-  "materia_type_one": { "item": "magichem:admixture_light", "count": 61 },
-  "materia_type_two": { "item": "magichem:admixture_cold", "count": 25 },
+  "materia_type_one": { "item": "magichem:admixture_light", "count": 35 },
+  "materia_type_two": { "item": "magichem:admixture_cold", "count": 16 },
   "components": [
     { "item": "mna:bone_ash" },
     { "item": "minecraft:campfire" },

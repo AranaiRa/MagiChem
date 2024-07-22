@@ -15,8 +15,8 @@
         { "item": "minecraft:charcoal" }
       ],
       "materia": [
-        { "item": "magichem:essentia_fire", "count": 16 },
-        { "item": "magichem:admixture_instrument", "count": 6 }
+        { "item": "magichem:essentia_fire", "count": 14 },
+        { "item": "magichem:admixture_instrument", "count": 4 }
       ]
     }
   ]

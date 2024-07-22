@@ -15,8 +15,8 @@
         { "item": "minecraft:fire_charge" }
       ],
       "materia": [
-        { "item": "magichem:admixture_change", "count": 22 },
-        { "item": "magichem:admixture_wizard", "count": 16 }
+        { "item": "magichem:admixture_change", "count": 18 },
+        { "item": "magichem:admixture_wizard", "count": 10 }
       ]
     }
   ]

@@ -4,8 +4,8 @@
     "item": "magichem:catalytic_carbon",
     "count": 2
   },
-  "materia_type_one": { "item": "magichem:admixture_energy", "count": 36 },
-  "materia_type_two": { "item": "magichem:admixture_light", "count": 10 },
+  "materia_type_one": { "item": "magichem:admixture_energy", "count": 24 },
+  "materia_type_two": { "item": "magichem:admixture_light", "count": 8 },
   "components": [
     { "item": "minecraft:red_dye" },
     { "item": "minecraft:charcoal" },

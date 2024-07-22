@@ -7,7 +7,7 @@
   },
   "stages": [
     {
-      "experience": 40,
+      "experience": 0,
       "components": [
         { "item": "minecraft:bucket" }
       ],

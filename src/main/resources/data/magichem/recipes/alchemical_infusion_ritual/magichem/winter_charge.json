@@ -4,8 +4,8 @@
     "item": "magichem:winter_charge",
     "count": 2
   },
-  "materia_type_one": { "item": "magichem:admixture_change", "count": 22 },
-  "materia_type_two": { "item": "magichem:admixture_wizard", "count": 16 },
+  "materia_type_one": { "item": "magichem:admixture_change", "count": 18 },
+  "materia_type_two": { "item": "magichem:admixture_wizard", "count": 10 },
   "components": [
     { "item": "mna:vinteum_dust" },
     { "item": "minecraft:fire_charge" },

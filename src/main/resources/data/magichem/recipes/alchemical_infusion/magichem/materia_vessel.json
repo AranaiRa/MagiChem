@@ -16,8 +16,8 @@
         { "item": "magichem:alchemical_waste" }
       ],
       "materia": [
-        { "item": "magichem:admixture_vessel", "count": 16 },
-        { "item": "magichem:admixture_instrument", "count": 8 }
+        { "item": "magichem:admixture_vessel", "count": 12 },
+        { "item": "magichem:admixture_instrument", "count": 4 }
       ]
     }
   ]

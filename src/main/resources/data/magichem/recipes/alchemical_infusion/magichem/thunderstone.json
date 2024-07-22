@@ -15,8 +15,8 @@
         { "item": "minecraft:deepslate" }
       ],
       "materia": [
-        { "item": "magichem:admixture_storm", "count": 24 },
-        { "item": "magichem:admixture_violence", "count": 10 }
+        { "item": "magichem:admixture_storm", "count": 12 },
+        { "item": "magichem:admixture_violence", "count": 6 }
       ]
     }
   ]

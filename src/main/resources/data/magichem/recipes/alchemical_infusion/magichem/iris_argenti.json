@@ -8,15 +8,15 @@
   },
   "stages": [
     {
-      "experience": 40,
+      "experience": 0,
       "components": [
         { "item": "mna:decoration/transmuted_silver_block" },
         { "item": "mna:chimerite_block" },
         { "item": "mna:decoration/transmuted_silver_block" }
       ],
       "materia": [
-        { "item": "magichem:admixture_change", "count": 18 },
-        { "item": "magichem:admixture_mana", "count": 18 }
+        { "item": "magichem:admixture_change", "count": 16 },
+        { "item": "magichem:admixture_mana", "count": 16 }
       ]
     }
   ]
