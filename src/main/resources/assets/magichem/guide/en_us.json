@@ -306,14 +306,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nThe device will only process items if placed on top of a lit Furnace, Smoker, or Blast Furnace.\n\nIf fuel is at a premium, the Alembic can be lit with a "
+            "text": ".\n\nThe device requires a "
+          },
+          {
+            "text": "heat source",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". A lit smoker or blast furnace is the most effective, followed by a lit furnace or a "
           },
           {
             "text": "Fire Damage",
             "color": "dark_purple"
           },
           {
-            "text": " spell."
+            "text": " spell.\n\nPassive heat sources (such as magma blocks, lava, or campfires) can also be used but will cause the device to distill at a slower rate.\n\n\n\n"
           }
         ]
       },
@@ -330,8 +337,7 @@
             "italic": true
           },
           {
-            "text": "\n\nThe three slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.",
-            "italic": false
+            "text": "\n\nThe three slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nThe wavy lines below the alchemical Distillation symbol represent the device's current heat. A bright yellow-orange represents heat from a furnace, blast furnace, or smoker, while a dark red represents a passive heat source"
           }
         ]
       }

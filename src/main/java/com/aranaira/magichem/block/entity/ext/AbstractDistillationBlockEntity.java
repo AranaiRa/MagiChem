@@ -21,8 +21,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -142,8 +144,12 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
         //make sure we have enough heat (or passive heat) to operate
         boolean hasPassiveHeat = false;
-        if(pEntity instanceof AlembicBlockEntity abe)
+        boolean doubleSpeed = false;
+        if(pEntity instanceof AlembicBlockEntity abe) {
             hasPassiveHeat = pEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT);
+            BlockState below = pLevel.getBlockState(pPos.below());
+            doubleSpeed = ((below.getBlock() == Blocks.SMOKER) && below.getValue(BlockStateProperties.LIT)) || ((below.getBlock() == Blocks.BLAST_FURNACE) && below.getValue(BlockStateProperties.LIT));
+        }
 
         if(pEntity.remainingHeat > 0 || hasPassiveHeat) {
             int operationTicks = getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod * 100, pVarFunc);
@@ -165,9 +171,12 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                         if (!pEntity.isStalled)
                             pEntity.resetProgress();
                     } else {
-                        if (!halfSpeed)
+                        if (doubleSpeed) {
                             pEntity.incrementProgress();
-                        else if (pLevel.getGameTime() % 2 == 0)
+                            pEntity.incrementProgress();
+                        } else if (!halfSpeed) {
+                            pEntity.incrementProgress();
+                        } else if (pLevel.getGameTime() % 2 == 0)
                             pEntity.incrementProgress();
                     }
                 }
@@ -181,9 +190,12 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                         if (!pEntity.isStalled)
                             pEntity.resetProgress();
                     } else {
-                        if (!halfSpeed)
+                        if (doubleSpeed) {
                             pEntity.incrementProgress();
-                        else if (pLevel.getGameTime() % 2 == 0)
+                            pEntity.incrementProgress();
+                        } else if (!halfSpeed) {
+                            pEntity.incrementProgress();
+                        } else if (pLevel.getGameTime() % 2 == 0)
                             pEntity.incrementProgress();
                     }
                 }

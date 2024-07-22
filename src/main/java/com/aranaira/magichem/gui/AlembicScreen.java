@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.ArrayList;
@@ -113,10 +115,16 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
                     .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
 
             boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
+            BlockState below = menu.blockEntity.getLevel().getBlockState(menu.blockEntity.getBlockPos().below());
+            boolean fastHeaterBlocks = ((below.getBlock() == Blocks.SMOKER) && below.getValue(BlockStateProperties.LIT)) || ((below.getBlock() == Blocks.BLAST_FURNACE) && below.getValue(BlockStateProperties.LIT));
             if(hasPassiveHeat) {
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.operationtime.alembic.line2")));
+                        .append(Component.translatable("tooltip.magichem.gui.operationtime.alembic.line2.passive")));
+            } else if(fastHeaterBlocks) {
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.operationtime.alembic.line2.fast")));
             }
 
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
@@ -151,10 +159,14 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         gui.drawString(font, Component.literal(AlembicBlockEntity.getActualEfficiency(0, menu.getGrime(), AlembicBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 4, 0xff000000, false);
 
         boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
+        BlockState below = menu.blockEntity.getLevel().getBlockState(menu.blockEntity.getBlockPos().below());
+        boolean fastHeaterBlocks = ((below.getBlock() == Blocks.SMOKER) && below.getValue(BlockStateProperties.LIT)) || ((below.getBlock() == Blocks.BLAST_FURNACE) && below.getValue(BlockStateProperties.LIT));
+        float passiveHeatMod = hasPassiveHeat ? 2 : 1;
+        float fastHeatMod = fastHeaterBlocks ? 0.5f : 1;
 
         int operationTicks = AlembicBlockEntity.getOperationTicks(menu.getGrime(), 1, 0.0f, AlembicBlockEntity::getVar);
-        int secWhole = (operationTicks / 20) * (hasPassiveHeat ? 2 : 1);
-        int secPartial = ((operationTicks % 20) * 5) * (hasPassiveHeat ? 2 : 1);
+        int secWhole = (int)Math.floor((operationTicks / 20f) * passiveHeatMod * fastHeatMod);
+        int secPartial = (int)Math.floor(((operationTicks % 20) * 5) * passiveHeatMod * fastHeatMod);
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 15, 0xff000000, false);
     }
 }
