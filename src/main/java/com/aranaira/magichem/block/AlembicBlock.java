@@ -11,13 +11,17 @@ import com.mna.api.spells.collections.Components;
 import com.mna.spells.SpellsInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -25,24 +29,31 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleBlock<AlembicBlock> {
     public AlembicBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
-                this.stateDefinition.any().setValue(FACING, Direction.NORTH)
+                this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HAS_PASSIVE_HEAT, false)
         );
     }
 
     private static final VoxelShape VOXEL_SHAPE = Block.box(4,0,4,12,10,12);
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty HAS_PASSIVE_HEAT = BooleanProperty.create("has_passive_heat");
+    public static final TagKey<Block> PASSIVE_HEAT_TAG = BlockTags.create(new ResourceLocation("minecraft", "alembic_passive_heat_source"));
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
@@ -72,8 +83,7 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        //super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(FACING);
+        pBuilder.add(FACING, HAS_PASSIVE_HEAT);
     }
 
     /* BLOCK ENTITY STUFF BELOW THIS POINT*/
@@ -92,6 +102,39 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Override
+    public void onNeighborChange(BlockState pState, LevelReader pLevelReader, BlockPos pPos, BlockPos pNeighborPos) {
+        boolean hasPassiveHeat = false;
+
+        Stream<TagKey<Block>> tags = pLevelReader.getBlockState(pPos.below()).getBlockHolder().tags();
+
+        if (pLevelReader.getBlockState(pPos.below()).getBlockHolder().is(new ResourceLocation("minecraft:alembic_passive_heat_source"))) {
+            hasPassiveHeat = true;
+        }
+
+        pState = pState.setValue(HAS_PASSIVE_HEAT, hasPassiveHeat);
+        super.onNeighborChange(pState, pLevelReader, pPos, pNeighborPos);
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+        boolean hasPassiveHeat = false;
+
+        for(TagKey<Block> key : pLevel.getBlockState(pPos.below()).getBlockHolder().getTagKeys().collect(Collectors.toList())) {
+            ResourceLocation location = key.location();
+
+            int a = 0;
+        }
+
+        if (pLevel.getBlockState(pPos.below()).getBlockHolder().is(PASSIVE_HEAT_TAG)) {
+            hasPassiveHeat = true;
+        }
+
+        pState = pState.setValue(HAS_PASSIVE_HEAT, hasPassiveHeat);
+        pLevel.setBlock(pPos, pState, 3);
     }
 
     @Override

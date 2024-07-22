@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.AlembicBlock;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -59,7 +60,11 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         if(sGrime > 0)
             gui.blit(TEXTURE, x+182, y+96, 24, 248, sGrime, 8);
 
+        boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT);
         int heat = menu.getHeat();
+
+        if(hasPassiveHeat)
+            gui.blit(TEXTURE, x+79, y+87, 43, 232, 18, 16);
         if(heat > 0)
             gui.blit(TEXTURE, x+79, y+87, 24, 232, 18, 16);
     }
@@ -106,6 +111,14 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
                     .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
                     .append(": ")
                     .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+
+            boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
+            if(hasPassiveHeat) {
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.operationtime.alembic.line2")));
+            }
+
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
@@ -137,8 +150,11 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
 
         gui.drawString(font, Component.literal(AlembicBlockEntity.getActualEfficiency(0, menu.getGrime(), AlembicBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 4, 0xff000000, false);
 
-        int secWhole = AlembicBlockEntity.getOperationTicks(menu.getGrime(), 1,0.0f, AlembicBlockEntity::getVar) / 20;
-        int secPartial = (AlembicBlockEntity.getOperationTicks(menu.getGrime(), 1,0.0f, AlembicBlockEntity::getVar) % 20) * 5;
+        boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
+
+        int operationTicks = AlembicBlockEntity.getOperationTicks(menu.getGrime(), 1, 0.0f, AlembicBlockEntity::getVar);
+        int secWhole = (operationTicks / 20) * (hasPassiveHeat ? 2 : 1);
+        int secPartial = ((operationTicks % 20) * 5) * (hasPassiveHeat ? 2 : 1);
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 15, 0xff000000, false);
     }
 }

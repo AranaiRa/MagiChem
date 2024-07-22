@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.AlembicBlock;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
@@ -139,8 +140,14 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
         updateActuatorValues(pEntity);
 
-        //make sure we have enough torque (or animus) to operate
-        if(pEntity.remainingHeat > 0) {
+        //make sure we have enough heat (or passive heat) to operate
+        boolean hasPassiveHeat = false;
+        if(pEntity instanceof AlembicBlockEntity abe)
+            hasPassiveHeat = pEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT);
+
+        if(pEntity.remainingHeat > 0 || hasPassiveHeat) {
+            int operationTicks = getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod * 100, pVarFunc);
+            boolean halfSpeed = hasPassiveHeat && (pEntity.remainingHeat <= 0);
 
             //figure out what slot and stack to target
             Pair<Integer, ItemStack> processing = getProcessingItem(pEntity, pVarFunc);
@@ -150,27 +157,35 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             AlchemicalCompositionRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
             if(recipe != null) {
                 if (canCraftItem(pEntity, recipe, pVarFunc)) {
-                    if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod * 100, pVarFunc)) {
+                    if (pEntity.progress > operationTicks) {
                         if (!pLevel.isClientSide()) {
                             craftItem(pEntity, recipe, processingSlot, pVarFunc);
                             pEntity.pushData();
                         }
                         if (!pEntity.isStalled)
                             pEntity.resetProgress();
-                    } else
-                        pEntity.incrementProgress();
+                    } else {
+                        if (!halfSpeed)
+                            pEntity.incrementProgress();
+                        else if (pLevel.getGameTime() % 2 == 0)
+                            pEntity.incrementProgress();
+                    }
                 }
             } else if(processingItem.getItem() == ItemRegistry.RAREFIED_WASTE.get()) {
                 if (canCraftRandom(pEntity, pVarFunc)) {
-                    if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod * 100, pVarFunc)) {
+                    if (pEntity.progress > operationTicks) {
                         if (!pLevel.isClientSide()) {
                             craftRandomAdmixture(pEntity, processingSlot, pVarFunc);
                             pEntity.pushData();
                         }
                         if (!pEntity.isStalled)
                             pEntity.resetProgress();
-                    } else
-                        pEntity.incrementProgress();
+                    } else {
+                        if (!halfSpeed)
+                            pEntity.incrementProgress();
+                        else if (pLevel.getGameTime() % 2 == 0)
+                            pEntity.incrementProgress();
+                    }
                 }
             }
             if (processingItem == ItemStack.EMPTY)

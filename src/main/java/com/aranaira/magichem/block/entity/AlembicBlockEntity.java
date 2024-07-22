@@ -8,10 +8,8 @@ import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -24,11 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FurnaceBlock;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.util.LazyOptional;
@@ -209,6 +202,10 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
         this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
+    }
+
+    public int getRemainingHeat() {
+        return this.remainingHeat;
     }
 
     ////////////////////
