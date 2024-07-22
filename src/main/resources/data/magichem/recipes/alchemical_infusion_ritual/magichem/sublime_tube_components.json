@@ -3,8 +3,8 @@
   "object": {
     "item": "magichem:sublime_tube_components"
   },
-  "materia_type_one": { "item": "magichem:admixture_industry", "count": 12 },
-  "materia_type_two": { "item": "magichem:admixture_motion", "count": 18 },
+  "materia_type_one": { "item": "magichem:admixture_industry", "count": 6 },
+  "materia_type_two": { "item": "magichem:admixture_motion", "count": 10 },
   "components": [
     { "item": "magichem:tube_components" },
     { "item": "mna:arcane_ash" },

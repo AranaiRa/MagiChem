@@ -17,9 +17,9 @@
         { "item": "mna:decoration/arcane_sandstone" }
       ],
       "materia": [
-        { "item": "magichem:admixture_instrument", "count": 26 },
-        { "item": "magichem:admixture_motion", "count": 20 },
-        { "item": "magichem:essentia_wrought", "count": 10 }
+        { "item": "magichem:admixture_instrument", "count": 12 },
+        { "item": "magichem:admixture_motion", "count": 10 },
+        { "item": "magichem:essentia_wrought", "count": 8 }
       ]
     },
     {
@@ -32,9 +32,9 @@
         { "item": "mna:decoration/arcane_sandstone" }
       ],
       "materia": [
-        { "item": "magichem:admixture_motion", "count": 20 },
-        { "item": "magichem:admixture_industry", "count": 18 },
-        { "item": "magichem:essentia_wrought", "count": 10 }
+        { "item": "magichem:admixture_motion", "count": 12 },
+        { "item": "magichem:admixture_industry", "count": 10 },
+        { "item": "magichem:essentia_wrought", "count": 8 }
       ]
     }
   ]
