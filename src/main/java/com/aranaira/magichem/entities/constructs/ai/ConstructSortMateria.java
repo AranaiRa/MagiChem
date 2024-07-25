@@ -26,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.List;
@@ -148,6 +149,12 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
                 this.filter = (MateriaItem) stack.getItem();
 
                 int stackLimit = Math.max(2, construct.getConstructData().getAffinityScore(Affinity.ARCANE) * 4);
+                if(construct.getConstructData().calculateFluidCapacity() > 0) {
+                    FluidStack fluidInTank = construct.getFluidInTank(0);
+                    fluidInTank.getAmount();
+                    if(fluidInTank.isEmpty())
+                        stackLimit += 32;
+                }
                 int amountToShrink = Math.min(stackLimit, stack.getCount());
                 stack.shrink(amountToShrink);
                 this.materiaInTransit = new ItemStack(filter, amountToShrink);

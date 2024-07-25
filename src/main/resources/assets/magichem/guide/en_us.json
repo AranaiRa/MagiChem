@@ -1464,7 +1464,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " it can move up to four drams per level of affinity instead."
+            "text": " it can move up to four drams per level of affinity instead.\n\nIf the construct has a "
+          },
+          {
+            "text": "tank torso",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with "
+          },
+          {
+            "text": "no fluid",
+            "color": "dark_purple"
+          },
+          {
+            "text": " inside, it can move 32 additional drams of materia per operation."
           }
         ]
       }
