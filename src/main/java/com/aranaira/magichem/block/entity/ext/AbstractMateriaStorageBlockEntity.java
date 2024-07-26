@@ -163,6 +163,12 @@ public abstract class AbstractMateriaStorageBlockEntity extends BlockEntity impl
         }
     }
 
+    public int insertMateria(int amount) {
+        if(currentMateriaType == null)
+            return amount;
+        return insertMateria(new ItemStack(currentMateriaType, amount));
+    }
+
     public ItemStack extractMateria(int amount) {
         if(currentMateriaType == null)
             return ItemStack.EMPTY;
