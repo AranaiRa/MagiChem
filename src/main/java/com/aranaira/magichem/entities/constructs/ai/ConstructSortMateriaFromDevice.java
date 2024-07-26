@@ -1,9 +1,10 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
+import com.aranaira.magichem.block.MateriaJarBlock;
 import com.aranaira.magichem.block.MateriaVesselBlock;
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
@@ -12,7 +13,6 @@ import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstruct;
-import com.mna.api.entities.construct.IConstructConstruction;
 import com.mna.api.entities.construct.ai.ConstructAITask;
 import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskAreaParameter;
@@ -32,10 +32,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> {
+public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSortMateriaFromDevice> {
     private static final ConstructCapability[] requiredCaps;
     private BlockPos takeFromTarget, jarTargetPos;
-    private MateriaVesselBlockEntity jarTargetEntity;
+    private AbstractMateriaStorageBlockEntity jarTargetEntity;
     private AABB area;
     private boolean voidExcess;
     private MateriaItem filter;
@@ -43,7 +43,7 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
     private int waitTimer;
     private ItemStack materiaInTransit;
 
-    public ConstructSortMateria(IConstruct<?> construct, ResourceLocation guiIcon) {
+    public ConstructSortMateriaFromDevice(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
     }
 
@@ -175,8 +175,8 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
         return transferredAmount;
     }
 
-    private Map<MateriaVesselBlockEntity, BlockPos> getMateriaVesselsInRegion() {
-        Map<MateriaVesselBlockEntity, BlockPos> output = new HashMap<>();
+    private Map<AbstractMateriaStorageBlockEntity, BlockPos> getMateriaVesselsInRegion() {
+        Map<AbstractMateriaStorageBlockEntity, BlockPos> output = new HashMap<>();
 
         Level level = construct.asEntity().level();
 
@@ -184,8 +184,8 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
             for(int y=(int)area.minY; y<=(int)area.maxY; y++) {
                 for (int z=(int)area.minZ; z<=(int)area.maxZ; z++) {
                     BlockPos pos = new BlockPos(x, y, z);
-                    if(level.getBlockState(pos).getBlock() instanceof MateriaVesselBlock) {
-                        output.put((MateriaVesselBlockEntity) level.getBlockEntity(pos), pos);
+                    if(level.getBlockState(pos).getBlock() instanceof MateriaJarBlock || level.getBlockState(pos).getBlock() instanceof MateriaVesselBlock) {
+                        output.put((AbstractMateriaStorageBlockEntity) level.getBlockEntity(pos), pos);
                     }
                 }
             }
@@ -195,11 +195,11 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
     }
 
     private void setTargetVessel(MateriaItem filter) {
-        MateriaVesselBlockEntity firstEmpty = null;
+        AbstractMateriaStorageBlockEntity firstEmpty = null;
         BlockPos firstEmptyPos = null;
-        Map<MateriaVesselBlockEntity, BlockPos> map = getMateriaVesselsInRegion();
+        Map<AbstractMateriaStorageBlockEntity, BlockPos> map = getMateriaVesselsInRegion();
         boolean foundFilter = false;
-        for(MateriaVesselBlockEntity mvbe : map.keySet()) {
+        for(AbstractMateriaStorageBlockEntity mvbe : map.keySet()) {
             if (mvbe.getMateriaType() == null) {
                 if (firstEmpty == null) {
                     firstEmpty = mvbe;
@@ -221,17 +221,17 @@ public class ConstructSortMateria extends ConstructAITask<ConstructSortMateria> 
 
     @Override
     public ResourceLocation getType() {
-        return ManaAndArtificeMod.getConstructTaskRegistry().getKey(ConstructTasksRegistry.SORT_MATERIA);
+        return ManaAndArtificeMod.getConstructTaskRegistry().getKey(ConstructTasksRegistry.SORT_MATERIA_FROM_DEVICE);
     }
 
     @Override
-    public ConstructSortMateria duplicate() {
-        return new ConstructSortMateria(this.construct, this.guiIcon).copyFrom(this);
+    public ConstructSortMateriaFromDevice duplicate() {
+        return new ConstructSortMateriaFromDevice(this.construct, this.guiIcon).copyFrom(this);
     }
 
     @Override
-    public ConstructSortMateria copyFrom(ConstructAITask<?> other) {
-        if(other instanceof ConstructSortMateria task) {
+    public ConstructSortMateriaFromDevice copyFrom(ConstructAITask<?> other) {
+        if(other instanceof ConstructSortMateriaFromDevice task) {
             this.takeFromTarget = task.takeFromTarget;
             this.area = task.area;
             this.voidExcess = task.voidExcess;

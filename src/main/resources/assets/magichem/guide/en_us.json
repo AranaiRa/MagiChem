@@ -1437,13 +1437,13 @@
       }
     ]
   },
-  "Command: Sort Materia": {
+  "Command: Sort Materia from Device": {
     "index": "4",
     "category": "constructs",
     "sections": [
       {
         "type": "title",
-        "value": "Command: Sort Materia"
+        "value": "Command: Sort Materia from Device"
       },
       {
         "type": "text",

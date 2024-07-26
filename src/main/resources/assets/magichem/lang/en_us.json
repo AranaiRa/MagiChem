@@ -492,7 +492,8 @@
   "gui.magichem.insufficientsmoke": "Insufficient Smoke!",
   "gui.magichem.insufficientsteamsmoke": "Insufficient Steam/Smoke!",
 
-  "construct.magichem:sort_materia": "Sort Materia",
+  "construct.magichem:sort_materia": "Sort Materia from Device",
+  "construct.magichem:sort_materia_from_container": "Sort Materia from Container",
   "construct.magichem:query_check_vessel": "Condition: Check Vessel Fill",
   "construct.magichem:clean_alchemical_apparatus": "Clean Alchemical Device",
   "construct.magichem:query_has_grime_level": "Condition: Has Grime Level",
@@ -581,6 +582,8 @@
   "magichem:materia.description" : "Distill and extract any dram of materia from an Alembic",
   "magichem:power_spike.description" : "Craft a Power Spike to transfer energy from the Circle of Power",
   "magichem:rarefied_waste.description" : "Extract Rarefied Waste from a Quake Refinery",
+
+  "magichem:infusion_ritual_vfx": "Ritual of the Balanced Scales",
 
   "mechanic.mna:magichem": "Alchemical Theory",
   "mechanic.mna:magichem_wonders": "Alchemical Wonders",
