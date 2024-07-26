@@ -46,7 +46,7 @@ public class AlembicBlockEntityRenderer implements BlockEntityRenderer<AlembicBl
 
         float
             y = 0.1875f,
-            x = -1f, z = 1f,
+            x = 0.4375f, z = 0.77f,
             w = 0.125f, h = 0.125f,
             gu1 = -1f, gu2 = -1f, gv1 = 0.4375f, gv2 = 0.5f;
 
@@ -61,20 +61,8 @@ public class AlembicBlockEntityRenderer implements BlockEntityRenderer<AlembicBl
             gu2 = 0.9375f;
         }
 
-        if(dir == Direction.NORTH) {
-            x = 0.4375f;
-            z = 0.77f;
+        if(dir == Direction.NORTH || dir == Direction.SOUTH) {
             renderDir = dir.getOpposite();
-        } else if(dir == Direction.EAST) {
-            x = 0.0f;
-            z = 0.0f;
-        } else if(dir == Direction.SOUTH) {
-            x = 0.0f;
-            z = 0.0f;
-            renderDir = dir.getOpposite();
-        } else if(dir == Direction.WEST) {
-            x = 0.0f;
-            z = 0.0f;
         }
 
         RenderUtils.renderFaceWithUV(renderDir, pPoseStack.last().pose(), pPoseStack.last().normal(),

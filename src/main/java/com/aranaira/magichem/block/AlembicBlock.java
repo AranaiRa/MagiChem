@@ -68,7 +68,13 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+        BlockState state = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+        BlockState below = pContext.getLevel().getBlockState(pContext.getClickedPos().below());
+
+        if(below.getBlockHolder().is(PASSIVE_HEAT_TAG))
+            state = state.setValue(HAS_PASSIVE_HEAT, true);
+
+        return state;
     }
 
     @Override
