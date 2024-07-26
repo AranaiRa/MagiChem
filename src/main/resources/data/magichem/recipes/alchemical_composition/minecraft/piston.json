@@ -5,7 +5,7 @@
   "object": { "item": "minecraft:piston" },
   "components": [
     { "item": "magichem:admixture_motion", "count": 20 },
-    { "item": "magichem:admixture_industry", "count": 2 },
+    { "item": "magichem:admixture_industry", "count": 6 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }
