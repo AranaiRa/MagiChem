@@ -715,12 +715,16 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/temp_focusing_catalyst"
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/catalyst_core"
       },
       {
-        "type": "ritual",
-        "location": "magichem:rituals/balanced_scales"
+        "type": "runesmithing",
+        "location": "magichem:runeforging/reagent_2_creation"
+      },
+      {
+        "type": "runesmithing",
+        "location": "magichem:runeforging/reagent_2_reprocessing"
       }
     ]
   },
@@ -1792,7 +1796,7 @@
     ]
   },
   "Distillery": {
-    "index": "1201",
+    "index": "1202",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -2636,6 +2640,73 @@
       {
         "type": "crafting",
         "location": "magichem:shaped/circle_power"
+      }
+    ]
+  },
+  "Magichemical Mechanism": {
+    "index": "1201",
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Magichemical Mechanism"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Alembic is a servicable device for an alchemical novice, but a serious alchemist needs more sophisticated tools.\n\nThe "
+          },
+          {
+            "text": "Magichemical Mechanism",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is the core of every alchemical device more complicated than the Alembic. Constructing these precision alchemical components requires a lot of work and many steps, but the results are more than worth it.\n\nThe difficulty of creating Magichemical Mechanisms is "
+          },
+          {
+            "text": "drastically",
+            "italic": true
+          },
+          {
+            "text": " reduced once your laboratory has an "
+          },
+          {
+            "text": "Alchemical Nexus",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/magichemical_mechanism"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/cog_components"
+      },
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/sublime_cog_components"
+      },
+      {
+        "type": "runesmithing",
+        "location": "magichem:runeforging/tube_components"
+      },
+      {
+        "type": "alchemical_infusion_ritual",
+        "location": "magichem:alchemical_infusion_ritual/magichem/sublime_tube_components"
+      },
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/magichemical_mechanism"
       }
     ]
   },

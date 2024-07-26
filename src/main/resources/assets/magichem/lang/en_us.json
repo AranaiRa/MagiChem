@@ -73,7 +73,7 @@
   "academic_slurry_fluid_type": "Academic Slurry",
   "block.magichem.academic_slurry": "Academic Slurry",
   "liquid_light_fluid_type": "Liquid Light",
-  "block.magichem.liquid_light": "Liquid Light",
+  "block.magichem.liquid_light_block": "Liquid Light",
   "smoke_fluid_type": "Smoke",
   "block.magichem.smoke_block": "Smoke",
   "steam_fluid_type": "Steam",
