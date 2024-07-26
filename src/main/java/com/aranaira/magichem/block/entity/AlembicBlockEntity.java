@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.AlembicBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
@@ -8,7 +9,12 @@ import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.particles.types.movers.ParticleVelocityMover;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -22,12 +28,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 public class AlembicBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider {
     public static final int
@@ -37,6 +47,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 8,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50,
         DATA_COUNT = 3, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2;
+    private static final Random r = new Random();
 
     ////////////////////
     // CONSTRUCTOR
@@ -225,6 +236,38 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         }
 
         AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, AlembicBlockEntity::getVar);
+
+        //Particles
+        boolean hasPassiveHeat = pEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT);
+        if(hasPassiveHeat || pEntity.remainingHeat > 0) {
+            int particleCount = 0;
+            int particleRate = 0;
+
+            if(stateBelow.getBlock() == Blocks.BLAST_FURNACE || stateBelow.getBlock() == Blocks.SMOKER) {
+                particleRate = 2;
+                particleCount = 4;
+            } else if(pEntity.remainingHeat > 0) {
+                particleRate = 4;
+                particleCount = 2;
+            }
+
+            if(particleRate > 0) {
+                Vec3 blockPos = new Vec3(pEntity.getBlockPos().getX() + 0.25, pEntity.getBlockPos().getY() + 0.0, pEntity.getBlockPos().getZ() + 0.25);
+                if(pLevel.getGameTime() % particleRate == 0) {
+                    for (int i = 0; i < particleCount; i++) {
+                        Vec3 particlePos = new Vec3(r.nextFloat(), r.nextFloat(), r.nextFloat()).normalize().scale(0.575f).add(blockPos);
+                        Vec3 particleEnd = new Vec3(particlePos.x, particlePos.y + 1, particlePos.z);
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                                        .setScale(0.05f).setMaxAge(80)
+                                        .setMover(new ParticleLerpMover(particlePos.x, particlePos.y, particlePos.z, particleEnd.x, particleEnd.y, particleEnd.z))
+                                        .setColor(128, 128, 128, 40),
+                                particlePos.x, particlePos.y, particlePos.z,
+                                0, 0, 0);
+                    }
+                }
+            }
+        }
     }
 
     public static int getVar(IDs pID) {
