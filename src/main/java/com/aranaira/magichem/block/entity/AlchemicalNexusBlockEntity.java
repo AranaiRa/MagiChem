@@ -494,7 +494,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             }
                         }
 
-                        anbe.shlorpIndex = anbe.shlorpIndex == marks.size() - 1 ? 0 : anbe.shlorpIndex + 1;
+                        anbe.shlorpIndex = anbe.shlorpIndex >= marks.size() - 1 ? 0 : anbe.shlorpIndex + 1;
                     }
                 }
             }
