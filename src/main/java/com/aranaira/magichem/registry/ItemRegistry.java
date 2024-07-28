@@ -2,10 +2,12 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.*;
+import com.aranaira.magichem.item.compat.occultism.*;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -19,6 +21,12 @@ public class ItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ESSENTIA = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
+
+    public static final DeferredRegister<Item> ITEMS_COMPAT_OCCULTISM = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
+
+    ///////////////
+    // MAGICHEM ITEMS
+    ///////////////
 
     public static final RegistryObject<TooltipLoreItem> SILVER_DUST = ITEMS.register("silver_dust",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
@@ -112,6 +120,14 @@ public class ItemRegistry {
             () -> new ChargingTalismanItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
+            () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
+    );
+
+    ///////////////
+    // MAGICHEM FLUID BUCKETS
+    ///////////////
+
     public static final RegistryObject<Item> ACADEMIC_SLURRY_BUCKET = ITEMS.register("academic_slurry_bucket",
             () -> new BucketItem(FluidRegistry.ACADEMIC_SLURRY, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
@@ -128,9 +144,9 @@ public class ItemRegistry {
             () -> new BucketItem(FluidRegistry.LIQUID_LIGHT, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
 
-    public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
-            () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
-    );
+    ///////////////
+    // MAGICHEM DUMMIES AND HIDDEN ITEMS
+    ///////////////
 
     public static final RegistryObject<Item> DUMMY_PROCESS_FIXATION = ITEMS.register("dummy/process_fixation",
             () -> new Item(new Item.Properties())
@@ -160,6 +176,18 @@ public class ItemRegistry {
             () -> new SublimationInProgressItem(new Item.Properties().stacksTo(1))
     );
 
+    ///////////////
+    // OCCULTISM COMPAT ITEMS
+    ///////////////
+
+    public static final RegistryObject<Item> OCCULT_RITUAL_TALISMAN = ITEMS_COMPAT_OCCULTISM.register("occult_ritual_talisman",
+            () -> new OccultRitualTalismanItem(new Item.Properties().stacksTo(16))
+    );
+
+    ///////////////
+    // TECHNICAL HELPERS
+    ///////////////
+
     public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
             SUBLIMATION_IN_PROGRESS,
             DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL
@@ -169,6 +197,12 @@ public class ItemRegistry {
         ITEMS.register(eventBus);
         ESSENTIA.register(eventBus);
         ADMIXTURES.register(eventBus);
+
+        ModList modList = ModList.get();
+
+        if(modList.isLoaded("occultism")) {
+            ITEMS_COMPAT_OCCULTISM.register(eventBus);
+        }
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

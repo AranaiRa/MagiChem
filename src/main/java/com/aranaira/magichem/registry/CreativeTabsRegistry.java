@@ -8,6 +8,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -26,6 +27,20 @@ public class CreativeTabsRegistry {
                     } else if(!ItemRegistry.ITEMS_EXCLUDED_FROM_TABS.contains(item))
                         output.accept(item.get());
                 });
+
+                //Compat items below this point
+                ModList modList = ModList.get();
+
+                //Occultism
+                if(modList.isLoaded("occultism")) {
+                    ItemRegistry.ITEMS_COMPAT_OCCULTISM.getEntries().stream().forEach((item) -> {
+                        if(item.get() instanceof BlockItem bi) {
+                            boolean skip = bi.getBlock() instanceof INoCreativeTab;
+                            if(!skip) output.accept(item.get());
+                        } else if(!ItemRegistry.ITEMS_EXCLUDED_FROM_TABS.contains(item))
+                            output.accept(item.get());
+                    });
+                }
             })
             .build());
 

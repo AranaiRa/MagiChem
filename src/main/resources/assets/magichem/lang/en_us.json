@@ -38,6 +38,8 @@
   "item.magichem.dummy.process_distillation": "Alchemical Distillation",
   "item.magichem.dummy.process_fabrication": "Alchemical Fabrication",
 
+  "item.magichem.occult_ritual_talisman": "Occult Ritual Talisman",
+
   "block.magichem.alembic": "Alembic",
   "block.magichem.magichemical_mechanism": "Magichemical Mechanism",
   "block.magichem.centrifuge": "Centrifuge",
@@ -318,6 +320,8 @@
   "tooltip.magichem.sublimationprimer": "Used to select a recipe for the Ritual of the Balanced Scales.",
   "tooltip.magichem.sublimationprimer.currentrecipe": "Current Recipe: ",
   "tooltip.magichem.occultedcinder": "The glow of a flame excised from its searing heat. Can be used as an invisible light source.",
+  "tooltip.magichem.occultritualtalisman": "Absorbs and stores an occult ritual pentacle for later placement.",
+  "tooltip.magichem.occultritualtalisman.storedpentacle": "Stored Pentacle: ",
   "tooltip.magichem.sublimation_in_progress.line1": "An interrupted Sublimation. Its contents can still be retrieved.",
   "tooltip.magichem.sublimation_in_progress.line2": "Contains:",
   "tooltip.magichem.sublimation_in_progress.line3.trail_items": " Items",

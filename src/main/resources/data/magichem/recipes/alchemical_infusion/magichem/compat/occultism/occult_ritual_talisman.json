@@ -1,0 +1,40 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:alchemical_infusion",
+        "tier": 2,
+        "wisdom": 0,
+        "object": {
+          "item": "magichem:occult_ritual_talisman"
+        },
+        "stages": [
+          {
+            "experience": 0,
+            "components": [
+              { "item": "magichem:perfected_electrum" },
+              { "item": "minecraft:amethyst_shard" },
+              { "item": "occultism:burnt_otherstone" },
+              { "item": "minecraft:iron_bars" },
+              { "item": "occultism:burnt_otherstone" }
+            ],
+            "materia": [
+              { "item": "magichem:essentia_ender", "count": 70 },
+              { "item": "magichem:admixture_sorcery", "count": 27 },
+              { "item": "magichem:admixture_spirit", "count": 17 },
+              { "item": "magichem:admixture_instrument", "count": 7 },
+              { "item": "magichem:admixture_vessel", "count": 7 }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

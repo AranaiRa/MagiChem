@@ -2710,5 +2710,50 @@
       }
     ]
   },
+  "Occult Ritual Talisman": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "required_advancement": "occultism:occultism/root",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Occult Ritual Talisman"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "When used on the "
+          },
+          {
+            "text": "Golden Sacrificial Bowl",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at the center of a pentacle, an "
+          },
+          {
+            "text": "Occult Ritual Talisman",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will absorb all chalk runes, attuned spirit crystals, skulls, candles, and sacrificial bowls.\n\nUsing the Talisman again will place the pentacle back down in the same state it was picked up in, including placement of sacrificial bowls.\n\nIdeal for the occultist concerned with efficient use of space!"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/compat/occultism/occult_ritual_talisman"
+      },
+      {
+        "type": "crafting",
+        "location": "occultism:dictionary_of_spirits"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }
