@@ -55,6 +55,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.antlr.v4.misc.MutableInt;
@@ -174,11 +175,6 @@ public class CommonEventHandler {
                 } else {
                     eebe.ejectStack(event.getEntity().getOnPos().above());
                 }
-            }
-        } else if(OccultismEventHelper.isBlockSacrificialBowl(targetState)) {
-            if(stack.getItem() == ItemRegistry.OCCULT_RITUAL_TALISMAN.get()) {
-                OccultRitualTalismanItem.storePentacleInTalisman(event.getLevel(), event.getEntity(), event.getItemStack(), event.getPos(), event.getLevel().getBlockState(event.getPos()));
-                event.setCanceled(true);
             }
         }
     }

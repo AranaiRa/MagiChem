@@ -2,11 +2,13 @@ package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.entity.renderer.*;
 import com.aranaira.magichem.gui.*;
+import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
 import com.aranaira.magichem.item.renderer.MateriaJarItemRenderer;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.registry.*;
+import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
 import com.mna.items.base.INoCreativeTab;
 import com.mojang.logging.LogUtils;
@@ -19,6 +21,7 @@ import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -68,6 +71,14 @@ public class MagiChemMod
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        //Conditional registration
+        ModList modList = ModList.get();
+
+        if(modList.isLoaded("occultism")) {
+            OccultismItemRegistry.ITEMS_COMPAT_OCCULTISM.register(eventBus);
+            OccultismCompat.handleRegistration(eventBus);
+        }
 
         //Only uncomment this nonsense if we need to generate the custom JSON files again
         //FixationSeparationRecipeGenerator.parseRecipeTable();

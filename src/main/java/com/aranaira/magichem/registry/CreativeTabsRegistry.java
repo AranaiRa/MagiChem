@@ -1,6 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -33,7 +34,7 @@ public class CreativeTabsRegistry {
 
                 //Occultism
                 if(modList.isLoaded("occultism")) {
-                    ItemRegistry.ITEMS_COMPAT_OCCULTISM.getEntries().stream().forEach((item) -> {
+                    OccultismItemRegistry.ITEMS_COMPAT_OCCULTISM.getEntries().stream().forEach((item) -> {
                         if(item.get() instanceof BlockItem bi) {
                             boolean skip = bi.getBlock() instanceof INoCreativeTab;
                             if(!skip) output.accept(item.get());

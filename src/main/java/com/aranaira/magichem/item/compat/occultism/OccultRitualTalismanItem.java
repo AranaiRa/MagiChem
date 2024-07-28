@@ -1,6 +1,7 @@
 package com.aranaira.magichem.item.compat.occultism;
 
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.klikli_dev.modonomicon.api.ModonomiconAPI;
 import com.klikli_dev.modonomicon.api.multiblock.Multiblock;
 import com.klikli_dev.occultism.common.block.ChalkGlyphBlock;
@@ -140,7 +141,7 @@ public class OccultRitualTalismanItem extends Item {
 
                     nbt.put("spec", ish.serializeNBT());
                     pItemStack.shrink(1);
-                    ItemStack droppedItem = new ItemStack(ItemRegistry.OCCULT_RITUAL_TALISMAN.get());
+                    ItemStack droppedItem = new ItemStack(OccultismItemRegistry.OCCULT_RITUAL_TALISMAN.get());
                     droppedItem.setTag(nbt);
                     ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), droppedItem);
                     pLevel.addFreshEntity(ie);

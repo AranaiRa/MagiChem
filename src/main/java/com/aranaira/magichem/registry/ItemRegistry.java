@@ -3,6 +3,7 @@ package com.aranaira.magichem.registry;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.item.compat.occultism.*;
+import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -21,8 +22,6 @@ public class ItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ESSENTIA = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
     public static final DeferredRegister<Item> ADMIXTURES = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
-
-    public static final DeferredRegister<Item> ITEMS_COMPAT_OCCULTISM = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
 
     ///////////////
     // MAGICHEM ITEMS
@@ -177,14 +176,6 @@ public class ItemRegistry {
     );
 
     ///////////////
-    // OCCULTISM COMPAT ITEMS
-    ///////////////
-
-    public static final RegistryObject<Item> OCCULT_RITUAL_TALISMAN = ITEMS_COMPAT_OCCULTISM.register("occult_ritual_talisman",
-            () -> new OccultRitualTalismanItem(new Item.Properties().stacksTo(16))
-    );
-
-    ///////////////
     // TECHNICAL HELPERS
     ///////////////
 
@@ -197,12 +188,6 @@ public class ItemRegistry {
         ITEMS.register(eventBus);
         ESSENTIA.register(eventBus);
         ADMIXTURES.register(eventBus);
-
-        ModList modList = ModList.get();
-
-        if(modList.isLoaded("occultism")) {
-            ITEMS_COMPAT_OCCULTISM.register(eventBus);
-        }
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
