@@ -10,6 +10,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.events.compat.OccultismEventHelper;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
@@ -17,6 +18,7 @@ import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.compat.occultism.OccultRitualTalismanItem;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -71,6 +73,7 @@ public class CommonEventHandler {
     public static void onBlockActivated(PlayerInteractEvent.RightClickBlock event) {
         //Handle inserting or extracting from materia vessels
         ItemStack stack = event.getItemStack();
+        BlockState targetState = event.getLevel().getBlockState(event.getPos());
         BlockEntity target = event.getLevel().getBlockEntity(event.getPos());
         if(target instanceof AbstractMateriaStorageBlockEntity amsbe) {
             if(stack.getItem() == Items.GLASS_BOTTLE) {
@@ -171,6 +174,11 @@ public class CommonEventHandler {
                 } else {
                     eebe.ejectStack(event.getEntity().getOnPos().above());
                 }
+            }
+        } else if(OccultismEventHelper.isBlockSacrificialBowl(targetState)) {
+            if(stack.getItem() == ItemRegistry.OCCULT_RITUAL_TALISMAN.get()) {
+                OccultRitualTalismanItem.storePentacleInTalisman(event.getLevel(), event.getEntity(), event.getItemStack(), event.getPos(), event.getLevel().getBlockState(event.getPos()));
+                event.setCanceled(true);
             }
         }
     }

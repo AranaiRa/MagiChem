@@ -19,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -45,19 +46,14 @@ public class OccultRitualTalismanItem extends Item {
         super(pProperties);
     }
 
-    @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        Level level = pContext.getLevel();
-        BlockPos pentacleCenter = pContext.getClickedPos();
-        BlockState pentacleCenterState = level.getBlockState(pentacleCenter);
-
-        if(pentacleCenterState.getBlock() == OccultismBlocks.GOLDEN_SACRIFICIAL_BOWL.get() && !pContext.getItemInHand().getOrCreateTag().contains("pentacleID")) {
-            List<Pair<ResourceLocation, Multiblock>> allPentacles = getAllPentacles(level);
+    public static void storePentacleInTalisman(Level pLevel, Player pPlayer, ItemStack pItemStack, BlockPos pPentacleCenter, BlockState pPentacleBlockState) {
+        if(pPentacleBlockState.getBlock() == OccultismBlocks.GOLDEN_SACRIFICIAL_BOWL.get() && !pItemStack.getOrCreateTag().contains("pentacleID")) {
+            List<Pair<ResourceLocation, Multiblock>> allPentacles = getAllPentacles(pLevel);
 
             for(Pair<ResourceLocation, Multiblock> pair : allPentacles) {
                 Multiblock mb = pair.getSecond();
 
-                Rotation validation = mb.validate(level, pentacleCenter);
+                Rotation validation = mb.validate(pLevel, pPentacleCenter);
                 if(validation != null) {
                     CompoundTag nbt = new CompoundTag();
                     nbt.putString("pentacleID", pair.getFirst().getPath());
@@ -70,8 +66,8 @@ public class OccultRitualTalismanItem extends Item {
                     int slotID = 0;
                     for (int z = -span; z <= span; z++) {
                         for(int x=-span; x<=span; x++) {
-                            BlockPos scanPos = pentacleCenter.offset(x, 0, z);
-                            BlockState scanState = level.getBlockState(scanPos);
+                            BlockPos scanPos = pPentacleCenter.offset(x, 0, z);
+                            BlockState scanState = pLevel.getBlockState(scanPos);
                             boolean changed = false;
 
                             //Chalk glyphs
@@ -131,10 +127,10 @@ public class OccultRitualTalismanItem extends Item {
                             }
 
                             if(changed) {
-                                if(!level.isClientSide()) {
-                                    level.setBlock(scanPos, Blocks.AIR.defaultBlockState(), 3);
+                                if(!pLevel.isClientSide()) {
+                                    pLevel.setBlock(scanPos, Blocks.AIR.defaultBlockState(), 3);
                                 } else {
-                                    spawnOutParticles(level, scanPos);
+                                    spawnOutParticles(pLevel, scanPos);
                                 }
                             }
 
@@ -143,18 +139,24 @@ public class OccultRitualTalismanItem extends Item {
                     }
 
                     nbt.put("spec", ish.serializeNBT());
-                    pContext.getItemInHand().shrink(1);
+                    pItemStack.shrink(1);
                     ItemStack droppedItem = new ItemStack(ItemRegistry.OCCULT_RITUAL_TALISMAN.get());
                     droppedItem.setTag(nbt);
-                    ItemEntity ie = new ItemEntity(level, pContext.getPlayer().getX(), pContext.getPlayer().getY(), pContext.getPlayer().getZ(), droppedItem);
-                    level.addFreshEntity(ie);
-
-                    return InteractionResult.SUCCESS;
+                    ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), droppedItem);
+                    pLevel.addFreshEntity(ie);
                 }
             }
         }
-        //Place the stored pentacle instead
-        else if(pentacleCenterState.getBlock() != OccultismBlocks.GOLDEN_SACRIFICIAL_BOWL.get()){
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext pContext) {
+        Level level = pContext.getLevel();
+        BlockPos pentacleCenter = pContext.getClickedPos();
+        BlockState pentacleCenterState = level.getBlockState(pentacleCenter);
+
+        //Place the stored pentacle
+        if(pentacleCenterState.getBlock() != OccultismBlocks.GOLDEN_SACRIFICIAL_BOWL.get()){
             CompoundTag nbt = pContext.getItemInHand().getOrCreateTag();
 
             if(nbt.contains("pentacleID")) {
@@ -250,7 +252,7 @@ public class OccultRitualTalismanItem extends Item {
             }
         }
 
-        return super.useOn(pContext);
+        return InteractionResult.CONSUME;
     }
 
     private void spawnInParticles(Level pLevel, BlockPos pPos) {
@@ -277,7 +279,7 @@ public class OccultRitualTalismanItem extends Item {
         }
     }
 
-    private void spawnOutParticles(Level pLevel, BlockPos pPos) {
+    private static void spawnOutParticles(Level pLevel, BlockPos pPos) {
         for(int i=0; i<10; i++) {
             pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_RANDOM.get())
                             .setPhysics(true).setScale(0.0625f).setMaxAge(25+r.nextInt(50)),
