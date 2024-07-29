@@ -7,6 +7,8 @@ import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
+import com.aranaira.magichem.item.AdmixtureItem;
+import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
@@ -20,6 +22,7 @@ import com.mna.api.entities.construct.ai.parameter.ConstructTaskBooleanParameter
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,11 +71,13 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 }
                 case MOVE_TO_DEVICE -> {
                     if (doMove(2.0F)) {
-                        this.phase = ETaskPhase.WAIT_AT_DEVICE;
                         this.waitTimer = 21;
-                        this.selectMateriaStackFromSource();
+                        boolean foundTargetAndSource = this.selectMateriaStackFromSource();
                         if(this.filter != null) {
-                            this.setTargetVessel(this.filter);
+                            if(foundTargetAndSource) {
+                                this.phase = ETaskPhase.WAIT_AT_DEVICE;
+                                this.setTargetVessel(this.filter);
+                            }
                         } else {
                             this.pushDiagnosticMessage("The device I'm monitoring is empty right now. I'll just wait for a bit!", false);
                             this.phase = ETaskPhase.WAIT_TO_FAIL;
@@ -90,10 +96,10 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                     if(doMove(2.0F)) {
                         int amount = doMateriaTransfer();
                         if(amount > 0) {
-                            this.pushDiagnosticMessage("I moved some materia to a vessel, boss. Bloop!", true);
+                            this.pushDiagnosticMessage("I moved " + amount + " " + getTranslatedNameFromItem(this.filter) + " to a vessel, boss. Bloop!", true);
                             this.phase = ETaskPhase.WAIT_AT_VESSEL;
                         } else {
-                            this.pushDiagnosticMessage("I couldn't find a jar to put the materia in. Sorry, boss!", true);
+                            this.pushDiagnosticMessage("I couldn't find a jar to put the " + getTranslatedNameFromItem(this.filter) + " in. Sorry, boss!", true);
                             this.phase = ETaskPhase.WAIT_TO_FAIL;
                         }
                         this.waitTimer = 21;
@@ -116,7 +122,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         }
     }
 
-    private void selectMateriaStackFromSource() {
+    private boolean selectMateriaStackFromSource() {
         BlockEntity be = construct.asEntity().level().getBlockEntity(this.takeFromTarget);
         SimpleContainer contents = new SimpleContainer(1);
 
@@ -146,21 +152,57 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             }
 
             if(stack != ItemStack.EMPTY) {
+                Map<AbstractMateriaStorageBlockEntity, BlockPos> materiaVesselsInRegion = getMateriaVesselsInRegion();
+
+                boolean hasDestination = false;
+                for(AbstractMateriaStorageBlockEntity amsbe : materiaVesselsInRegion.keySet()) {
+                    if(amsbe.getMateriaType() == (MateriaItem) stack.getItem()) {
+                        hasDestination = true;
+                        break;
+                    }
+                }
+                if(!hasDestination) {
+                    for (AbstractMateriaStorageBlockEntity amsbe : materiaVesselsInRegion.keySet()) {
+                        if (amsbe.getMateriaType() == null) {
+                            hasDestination = true;
+                            break;
+                        }
+                    }
+                }
+
                 this.filter = (MateriaItem) stack.getItem();
 
-                int stackLimit = Math.max(2, construct.getConstructData().getAffinityScore(Affinity.ARCANE) * 4);
-                if(construct.getConstructData().calculateFluidCapacity() > 0) {
-                    FluidStack fluidInTank = construct.getFluidInTank(0);
-                    fluidInTank.getAmount();
-                    if(fluidInTank.isEmpty())
-                        stackLimit += 32;
+                if(hasDestination) {
+
+                    int stackLimit = Math.max(2, construct.getConstructData().getAffinityScore(Affinity.ARCANE) * 4);
+                    if (construct.getConstructData().calculateFluidCapacity() > 0) {
+                        FluidStack fluidInTank = construct.getFluidInTank(0);
+                        fluidInTank.getAmount();
+                        if (fluidInTank.isEmpty())
+                            stackLimit += 32;
+                    }
+                    int amountToShrink = Math.min(stackLimit, stack.getCount());
+                    stack.shrink(amountToShrink);
+                    this.materiaInTransit = new ItemStack(filter, amountToShrink);
+                    return true;
+                } else {
+                    String targetMateria = getTranslatedNameFromItem(this.filter);
+                    this.pushDiagnosticMessage("I couldn't find anywhere to put this " + targetMateria + ". Sorry, boss!", false);
+                    return false;
                 }
-                int amountToShrink = Math.min(stackLimit, stack.getCount());
-                stack.shrink(amountToShrink);
-                this.materiaInTransit = new ItemStack(filter, amountToShrink);
-            } else
+            } else {
                 stop();
+            }
         }
+        return false;
+    }
+
+    @NotNull
+    private String getTranslatedNameFromItem(MateriaItem pItem) {
+        String prefix = "";
+        if(pItem instanceof EssentiaItem) prefix = "essentia_";
+        else if(pItem instanceof AdmixtureItem) prefix = "admixture_";
+        return Component.translatable("item.magichem." + prefix + filter.getMateriaName()).getString();
     }
 
     private int doMateriaTransfer() {
