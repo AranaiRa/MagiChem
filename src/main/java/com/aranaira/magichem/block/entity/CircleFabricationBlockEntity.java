@@ -51,9 +51,9 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             PROGRESS_BAR_WIDTH = 66, PROGRESS_BAR_HEIGHT = 57;
 
     private static final int[] POWER_DRAW = { //TODO: Convert this to config
-            1, 3, 5, 8, 12, 17, 23, 30, 39, 50,
-            64, 82, 104, 132, 167, 210, 264, 332, 417, 523,
-            655, 820, 1027, 1285, 1608, 2012, 2517, 3148, 3937, 4923
+            10, 30, 50, 80, 120, 170, 230, 300, 390, 500,
+            640, 820, 1040, 1320, 1670, 2100, 2640, 3320, 4170, 5230,
+            6550, 8200, 10270, 12850, 16080, 20120, 25170, 31480, 39370, 49230
     };
 
     private static final int[] OPERATION_TICKS = { //TODO: Convert this to config
