@@ -205,7 +205,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
                 entity.resetProgress();
             }
         } else {
-            entity.resetProgress();
+            entity.decrementProgress();
         }
     }
 
@@ -363,6 +363,10 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
 
     private void incrementProgress() {
         this.craftingProgress++;
+    }
+
+    private void decrementProgress() {
+        this.craftingProgress = Math.max(0, craftingProgress - 1);
     }
 
     public int getPowerUsageSetting() {
