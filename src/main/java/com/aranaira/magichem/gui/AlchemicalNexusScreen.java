@@ -216,9 +216,10 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             for(int x=0; x<3; x++) {
                 recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new AlchemicalNexusButtonRecipeSelector(
                         this, c, this.leftPos, this.topPos, 18, 18, 46, 220, TEXTURE, button -> {
-
-                    AlchemicalNexusScreen query = (AlchemicalNexusScreen) ((AlchemicalNexusButtonRecipeSelector) button).getScreen();
-                    query.setActiveRecipe(((AlchemicalNexusButtonRecipeSelector) button).getArrayIndex());
+                    if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE) {
+                        AlchemicalNexusScreen query = (AlchemicalNexusScreen) ((AlchemicalNexusButtonRecipeSelector) button).getScreen();
+                        query.setActiveRecipe(((AlchemicalNexusButtonRecipeSelector) button).getArrayIndex());
+                    }
                 })), x*18 - 77, y*18 + 22);
                 c++;
             }
