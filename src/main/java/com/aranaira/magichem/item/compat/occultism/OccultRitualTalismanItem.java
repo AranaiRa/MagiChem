@@ -324,7 +324,6 @@ public class OccultRitualTalismanItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        //My tooltip
         pTooltipComponents.add(
                 Component.translatable("tooltip.magichem.occultritualtalisman")
                         .withStyle(ChatFormatting.DARK_GRAY)

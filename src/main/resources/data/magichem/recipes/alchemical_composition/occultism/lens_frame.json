@@ -13,7 +13,7 @@
         "distill_only": true,
         "output_rate": 1.0,
         "object": {
-          "item": "occultism:lens_frames"
+          "item": "occultism:lens_frame"
         },
         "components": [
           {

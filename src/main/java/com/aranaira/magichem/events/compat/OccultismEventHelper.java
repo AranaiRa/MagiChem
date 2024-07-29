@@ -21,12 +21,12 @@ public class OccultismEventHelper {
     }
 
     public static boolean handleRitualTalismanOnSacrificialBowl(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pTarget, ItemStack pStack) {
-        if(pTarget.getBlock() == OccultismBlocks.GOLDEN_SACRIFICIAL_BOWL.get()) {
-            if(pStack.getItem() == OccultismItemRegistry.OCCULT_RITUAL_TALISMAN.get()) {
-                OccultRitualTalismanItem.storePentacleInTalisman(pLevel, pPlayer, pStack, pPos, pLevel.getBlockState(pPos));
-                return true;
-            }
-        }
+//        if(pTarget.getBlock() == OccultismBlocks.GOLDEN_SACRIFICIAL_BOWL.get()) {
+//            if(pStack.getItem() == OccultismItemRegistry.OCCULT_RITUAL_TALISMAN.get()) {
+//                OccultRitualTalismanItem.storePentacleInTalisman(pLevel, pPlayer, pStack, pPos, pLevel.getBlockState(pPos));
+//                return true;
+//            }
+//        }
         return false;
     }
 }
