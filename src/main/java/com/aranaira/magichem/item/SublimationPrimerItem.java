@@ -1,7 +1,10 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
+import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
+import com.aranaira.magichem.networking.SublimationPrimerSyncRecipeC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
+import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.ClientUtil;
 import com.mna.KeybindInit;
 import com.mna.items.base.IRadialInventorySelect;
@@ -11,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -101,7 +105,13 @@ public class SublimationPrimerItem extends Item implements IRadialInventorySelec
             if(level != null) {
                 NonNullList<ItemStack> allOutputs = AlchemicalInfusionRitualRecipe.getAllOutputs(level);
                 String key = ForgeRegistries.ITEMS.getKey(allOutputs.get(i).getItem()).toString();
-                itemStack.getOrCreateTag().putString("recipe", key);
+                CompoundTag nbt = itemStack.getOrCreateTag();
+                nbt.putString("recipe", key);
+                itemStack.setTag(nbt);
+
+                PacketRegistry.sendToServer(new SublimationPrimerSyncRecipeC2SPacket(
+                        key
+                ));
             }
         }
     }
