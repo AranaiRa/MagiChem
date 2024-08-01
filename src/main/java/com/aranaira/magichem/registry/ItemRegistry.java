@@ -103,6 +103,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> LABORATORY_CHARM = ITEMS.register("laboratory_charm",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> CATALYTIC_CARBON = ITEMS.register("catalytic_carbon",
             () -> new TooltipLoreItem(new Item.Properties())
     );

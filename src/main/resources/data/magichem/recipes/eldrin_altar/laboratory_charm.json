@@ -1,0 +1,26 @@
+{
+	"type": "mna:eldrin-altar",
+	"output": "magichem:laboratory_charm",
+	"tier": 5,
+	"items": [
+		"magichem:superheated_glass_pane",
+		"minecraft:gold_ingot",
+		"minecraft:blackstone",
+		"minecraft:gold_ingot",
+		"mna:chimerite_gem",
+		"minecraft:gold_ingot",
+		"minecraft:blackstone",
+		"minecraft:gold_ingot",
+		"mna:chimerite_gem"
+	],
+	"power_requirements": [
+		{
+			"affinity": "ARCANE",
+			"amount": 450
+		}
+	],
+	"colors": [
+		8440831,
+		14849254
+	]
+}
