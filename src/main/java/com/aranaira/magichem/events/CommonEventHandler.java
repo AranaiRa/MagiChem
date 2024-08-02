@@ -213,6 +213,13 @@ public class CommonEventHandler {
             event.getLevel().destroyBlock(anrbe.getMasterPos(), true);
             AlchemicalNexusBlock.destroyRouters(event.getLevel(), anrbe.getMasterPos(), anrbe.getFacing());
         }
+        else if(entity instanceof GrandDistilleryBlockEntity gdbe) {
+            GrandDistilleryBlock.destroyRouters(event.getLevel(), gdbe.getBlockPos(), gdbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+        }
+        else if(entity instanceof GrandDistilleryRouterBlockEntity gdrbe) {
+            event.getLevel().destroyBlock(gdrbe.getMasterPos(), true);
+            GrandDistilleryBlock.destroyRouters(event.getLevel(), gdrbe.getMasterPos(), gdrbe.getFacing());
+        }
         else if(entity instanceof DirectionalPluginBlockEntity dpbe) {
             event.getLevel().destroyBlock(dpbe.getBlockPos().above(), true);
         }

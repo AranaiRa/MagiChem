@@ -33,7 +33,7 @@
 			"translation": [2, 0, 0]
 		},
 		"gui": {
-			"rotation": [29, 135, 0],
+			"rotation": [29, 315, 0],
 			"scale": [0.32, 0.32, 0.32],
 			"translation": [0, -1.5, 0]
 		},

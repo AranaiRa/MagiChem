@@ -75,6 +75,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> GRAND_DISTILLERY_ROUTER = registerBlock("grand_distillery_router",
+            () -> new GrandDistilleryRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> CIRCLE_POWER = registerBlock("circle_power",
             () -> new CirclePowerBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
