@@ -362,16 +362,16 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     }
 
     public void handleAnimationDrivers() {
-        if(circlePercent == 1) {
-            particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
-        } else if(circlePercent == 0) {
-            particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
+        if(particlePercent == 1) {
+            circlePercent = Math.min(1, circlePercent + CIRCLE_FILL_RATE);
+        } else if(particlePercent == 0) {
+            circlePercent = Math.max(0, circlePercent - CIRCLE_FILL_RATE);
         }
 
         if(hasSufficientPower) {
-            circlePercent = Math.min(1, circlePercent + CIRCLE_FILL_RATE);
+            particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
         } else {
-            circlePercent = Math.max(0, circlePercent - CIRCLE_FILL_RATE);
+            particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
         }
     }
 
@@ -454,29 +454,37 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                 }
             }
 
-            boolean sufficientThisTick = pEntity.ENERGY_STORAGE.getEnergyStored() >= pEntity.getPowerDraw();
+            int powerDraw = pEntity.getPowerDraw();
+            boolean sufficientThisTick = pEntity.ENERGY_STORAGE.getEnergyStored() >= powerDraw;
+
             if(sufficientThisTick != pEntity.hasSufficientPower) {
                 pEntity.hasSufficientPower = sufficientThisTick;
                 pEntity.syncAndSave();
+            }
+            if(sufficientThisTick) {
+                pEntity.remainingHeat = 2;
+                pEntity.ENERGY_STORAGE.extractEnergy(powerDraw, false);
+            }
 
-                Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                BlockPos daisPos = pPos;
+            Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            BlockPos daisPos = pPos;
 
-                if(facing == Direction.NORTH) daisPos = daisPos.south();
-                if(facing == Direction.SOUTH) daisPos = daisPos.north();
-                if(facing == Direction.EAST) daisPos = daisPos.west();
-                if(facing == Direction.WEST) daisPos = daisPos.east();
+            if(facing == Direction.NORTH) daisPos = daisPos.south();
+            if(facing == Direction.SOUTH) daisPos = daisPos.north();
+            if(facing == Direction.EAST) daisPos = daisPos.west();
+            if(facing == Direction.WEST) daisPos = daisPos.east();
 
-                BlockState daisState = pLevel.getBlockState(daisPos);
+            BlockState daisState = pLevel.getBlockState(daisPos);
+            boolean isDaisEmittingLight = daisState.getValue(GrandDistilleryRouterBlock.IS_EMITTING_LIGHT);
+
+            if((isDaisEmittingLight && pEntity.particlePercent == 0) || (!isDaisEmittingLight && pEntity.particlePercent == 1)) {
                 BlockState newDaisState = pLevel.getBlockState(daisPos).setValue(GrandDistilleryRouterBlock.IS_EMITTING_LIGHT, sufficientThisTick);
 
                 pLevel.setBlock(daisPos, newDaisState, 3);
                 pLevel.sendBlockUpdated(daisPos, daisState, newDaisState, 3);
             }
-
-        } else {
-            pEntity.handleAnimationDrivers();
         }
+        pEntity.handleAnimationDrivers();
 
         if(pEntity.remainingHeat <= 0) {
             ItemStack fuelStack = pEntity.itemHandler.getStackInSlot(SLOT_FUEL);
@@ -541,20 +549,22 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                     center.x, center.y, center.z,
                     0, 0, 0);
 
-            for (int i = 0; i < 2; i++) {
-                Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
-                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
-                                .setColor(PARTICLE_COLORS[colorIndex][0], PARTICLE_COLORS[colorIndex][1], PARTICLE_COLORS[colorIndex][2], 128)
-                                .setScale(0.09f * pEntity.particlePercent).setMaxAge(16)
-                                .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
-                        center.x + offset.x, center.y + offset.y, center.z + offset.z,
-                        0, 0, 0);
+            if(pEntity.particlePercent == 1) {
+                for (int i = 0; i < 2; i++) {
+                    Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                    pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                    .setColor(PARTICLE_COLORS[colorIndex][0], PARTICLE_COLORS[colorIndex][1], PARTICLE_COLORS[colorIndex][2], 128)
+                                    .setScale(0.09f).setMaxAge(16)
+                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                            0, 0, 0);
 
-                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
-                                .setScale(0.015f * pEntity.particlePercent).setMaxAge(16)
-                                .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
-                        center.x + offset.x, center.y + offset.y, center.z + offset.z,
-                        0, 0, 0);
+                    pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                    .setScale(0.015f).setMaxAge(16)
+                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                            0, 0, 0);
+                }
             }
         }
 
