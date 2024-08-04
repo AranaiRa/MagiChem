@@ -414,6 +414,8 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
             case DATA_EFFICIENCY_MOD -> DATA_EFFICIENCY_MOD;
             case DATA_OPERATION_TIME_MOD -> DATA_OPERATION_TIME_MOD;
 
+            case MODE_USES_RF -> 0;
+
             case GUI_PROGRESS_BAR_WIDTH -> GUI_PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;
             case GUI_HEAT_GAUGE_HEIGHT -> GUI_HEAT_GAUGE_HEIGHT;

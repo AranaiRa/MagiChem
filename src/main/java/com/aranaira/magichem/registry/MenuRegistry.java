@@ -33,6 +33,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<FuseryMenu>> FUSERY_MENU =
             registerMenuType(FuseryMenu::new, "admixer");
 
+    public static final RegistryObject<MenuType<GrandDistilleryMenu>> GRAND_DISTILLERY_MENU =
+            registerMenuType(GrandDistilleryMenu::new, "grand_distillery");
+
     public static final RegistryObject<MenuType<AlchemicalNexusMenu>> ALCHEMICAL_NEXUS_MENU =
             registerMenuType(AlchemicalNexusMenu::new, "alchemical_nexus");
 

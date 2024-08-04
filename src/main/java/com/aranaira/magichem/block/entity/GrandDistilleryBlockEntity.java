@@ -11,11 +11,15 @@ import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
-import com.aranaira.magichem.gui.DistilleryMenu;
+import com.aranaira.magichem.gui.GrandDistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -58,14 +62,27 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50, GUI_HEAT_GAUGE_HEIGHT = 16,
         DATA_COUNT = 7, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2, DATA_HEAT_DURATION = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5, DATA_BATCH_SIZE = 6;
+    public static final float
+            CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
+
+    public float circlePercent = 0f;
+    public float particlePercent = 0f;
+    private static final int[][] PARTICLE_COLORS = {
+            {64, 2, 2},
+            {32, 32, 2},
+            {2, 64, 2},
+            {2, 32, 32},
+            {2, 2, 64},
+            {32, 2, 32}
+    };
 
     ////////////////////
     // CONSTRUCTOR
     ////////////////////
 
     public GrandDistilleryBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesRegistry.DISTILLERY_BE.get(), pos, state);
+        super(BlockEntitiesRegistry.GRAND_DISTILLERY_BE.get(), pos, state);
 
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
@@ -188,7 +205,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new DistilleryMenu(id, inventory, this, this.data);
+        return new GrandDistilleryMenu(id, inventory, this, this.data);
     }
 
     @Override
@@ -336,6 +353,21 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,1,1));
     }
 
+    public void handleAnimationDrivers() {
+        if(circlePercent == 1) {
+            particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
+        } else if(circlePercent == 0) {
+            particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
+        }
+
+        //check to see if we have power
+        if(true) {
+            circlePercent = Math.min(1, circlePercent + CIRCLE_FILL_RATE);
+        } else {
+            circlePercent = Math.max(0, circlePercent - CIRCLE_FILL_RATE);
+        }
+    }
+
     ////////////////////
     // OVERRIDES
     ////////////////////
@@ -354,6 +386,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                     }
                 }
             }
+        } else {
+            pEntity.handleAnimationDrivers();
         }
 
         if(pEntity.remainingHeat <= 0) {
@@ -393,6 +427,49 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             }
         }
 
+        //particle stuff
+        if(pEntity.getLevel().isClientSide() && pEntity.particlePercent > 0) {
+            Vector3 center = Vector3.zero();
+            Direction facing = pEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+            if (facing == Direction.NORTH)
+                center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.375, pPos.getZ() + 1.5);
+            else if (facing == Direction.EAST)
+                center = new Vector3(pPos.getX() - 0.5, pPos.getY() + 1.375, pPos.getZ() + 0.5);
+            else if (facing == Direction.SOUTH)
+                center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.375, pPos.getZ() - 0.5);
+            else if (facing == Direction.WEST)
+                center = new Vector3(pPos.getX() + 1.5, pPos.getY() + 1.375, pPos.getZ() + 0.5);
+
+            int colorIndex = r.nextInt(6);
+            if (pEntity.getLevel().getGameTime() % 8 == 0) {
+                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setColor(PARTICLE_COLORS[colorIndex][0], PARTICLE_COLORS[colorIndex][1], PARTICLE_COLORS[colorIndex][2]).setScale(0.4f * pEntity.particlePercent)
+                                .setMaxAge(80),
+                        center.x, center.y, center.z,
+                        0, 0, 0);
+            }
+            pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                            .setColor(255, 255, 255).setScale(0.2f * pEntity.particlePercent),
+                    center.x, center.y, center.z,
+                    0, 0, 0);
+
+            for (int i = 0; i < 2; i++) {
+                Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                .setColor(PARTICLE_COLORS[colorIndex][0], PARTICLE_COLORS[colorIndex][1], PARTICLE_COLORS[colorIndex][2], 72)
+                                .setScale(0.09f * pEntity.particlePercent).setMaxAge(16)
+                                .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                        center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                        0, 0, 0);
+
+                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                .setScale(0.015f * pEntity.particlePercent).setMaxAge(16)
+                                .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                        center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                        0, 0, 0);
+            }
+        }
+
         AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, GrandDistilleryBlockEntity::getVar);
     }
 
@@ -411,6 +488,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             case DATA_HEAT_DURATION -> DATA_HEAT_DURATION;
             case DATA_EFFICIENCY_MOD -> DATA_EFFICIENCY_MOD;
             case DATA_OPERATION_TIME_MOD -> DATA_OPERATION_TIME_MOD;
+
+            case MODE_USES_RF -> 1;
 
             case GUI_PROGRESS_BAR_WIDTH -> GUI_PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;

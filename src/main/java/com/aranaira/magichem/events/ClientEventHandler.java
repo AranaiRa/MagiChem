@@ -1,7 +1,6 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.renderer.CentrifugeBlockEntityRenderer;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;

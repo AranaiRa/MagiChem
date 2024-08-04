@@ -1,9 +1,6 @@
 {
 	"parent": "forge:item/default",
 	"loader": "forge:composite",
-	"textures": {
-		"particle": "magichem:block/breakparticle_arcane_sandstone"
-	},
 	"children": {
 		"crystal": {
 			"loader": "forge:obj",
@@ -11,7 +8,7 @@
 			"shade_quads": true,
 			"flip_v": true,
 			"emissive_ambient": false,
-			"model": "magichem:models/obj/actuator_air_inventory.obj"
+			"model": "magichem:models/obj/grand_distillery_inventory.obj"
 		}
 	},
 	"display": {

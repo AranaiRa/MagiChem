@@ -54,8 +54,8 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(GrandDistilleryBlockEntity::new, BlockRegistry.GRAND_DISTILLERY.get()).build(null)
     );
 
-    public static final RegistryObject<BlockEntityType<GrandDistilleryBlockEntity>> GRAND_DISTILLERY_ROUTER_BE = BLOCK_ENTITIES.register("grand_distillery_router", () ->
-            BlockEntityType.Builder.of(GrandDistilleryBlockEntity::new, BlockRegistry.GRAND_DISTILLERY_ROUTER.get()).build(null)
+    public static final RegistryObject<BlockEntityType<GrandDistilleryRouterBlockEntity>> GRAND_DISTILLERY_ROUTER_BE = BLOCK_ENTITIES.register("grand_distillery_router", () ->
+            BlockEntityType.Builder.of(GrandDistilleryRouterBlockEntity::new, BlockRegistry.GRAND_DISTILLERY_ROUTER.get()).build(null)
     );
 
     public static final RegistryObject<BlockEntityType<CircleFabricationBlockEntity>> CIRCLE_FABRICATION_BE = BLOCK_ENTITIES.register("circle_fabrication", () ->

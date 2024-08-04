@@ -76,6 +76,7 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
     public void configure(BlockPos pMasterPos, DevicePlugDirection pPlugDirection) {
         this.masterPos = pMasterPos;
         this.plugDirection = pPlugDirection;
+        getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
     }
 
     @Override
@@ -157,7 +158,7 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
         CompoundTag nbt = new CompoundTag();
 
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putInt("plugDirection", mapPlugDirToInt(plugDirection) << 8);
+        nbt.putInt("plugDirection", mapPlugDirToInt(plugDirection));
 
         return nbt;
     }

@@ -50,8 +50,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
 
     private static HashMap<String, AdmixtureItem> admixturesMap = ItemRegistry.getAdmixturesMap(false, true);
-    private static List<AdmixtureItem> admixturesForRandomSelection = new ArrayList();
-    private static Random random = new Random();
+    private static final NonNullList<AdmixtureItem> admixturesForRandomSelection = NonNullList.create();
+    private static final Random random = new Random();
 
     ////////////////////
     // CONSTRUCTOR
@@ -415,7 +415,14 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     public static int getOperationTicks(int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
-        float otmScalar = (10000f - pOperationTimeMod) / 10000f;
+        float otmScalar;
+
+        //RF-using devices reduce energy usage, not operation time
+        if(pVarFunc.apply(IDs.MODE_USES_RF) == 0)
+            otmScalar = (10000f - pOperationTimeMod) / 10000f;
+        else
+            otmScalar = 1;
+
         float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize);
         return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
     }
@@ -498,6 +505,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     public enum IDs {
         SLOT_BOTTLES, SLOT_FUEL, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT,
         CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_MAX_BURN_TIME, CONFIG_GRIME_ON_SUCCESS, CONFIG_GRIME_ON_FAILURE,
+        MODE_USES_RF,
         DATA_PROGRESS, DATA_GRIME, DATA_REMAINING_HEAT, DATA_HEAT_DURATION, DATA_EFFICIENCY_MOD, DATA_OPERATION_TIME_MOD,
         GUI_PROGRESS_BAR_WIDTH, GUI_HEAT_GAUGE_HEIGHT, GUI_GRIME_BAR_WIDTH
     }

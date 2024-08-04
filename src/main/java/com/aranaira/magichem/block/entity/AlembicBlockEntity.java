@@ -282,6 +282,8 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             case DATA_GRIME -> DATA_GRIME;
             case DATA_REMAINING_HEAT -> DATA_REMAINING_HEAT;
 
+            case MODE_USES_RF -> 0;
+
             case GUI_PROGRESS_BAR_WIDTH -> GUI_PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;
 
