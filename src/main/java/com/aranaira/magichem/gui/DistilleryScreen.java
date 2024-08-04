@@ -51,7 +51,7 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
 
         renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 
-        int sProg = DistilleryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar);
+        int sProg = DistilleryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
         if(sProg > 0)
             gui.blit(TEXTURE, x+76, y+47, 0, 228, sProg, 28);
 
@@ -141,8 +141,8 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
 
         gui.drawString(font, Component.literal(DistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), DistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 10, 0xff000000, false);
 
-        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar) / 20;
-        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar) % 20) * 5;
+        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
+        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 9, 0xff000000, false);
     }
 }

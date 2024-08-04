@@ -103,7 +103,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     // CRAFTING HANDLERS
     ////////////////////
 
-    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractDistillationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractDistillationBlockEntity pEntity, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
         for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
@@ -152,7 +152,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         }
 
         if(pEntity.remainingHeat > 0 || hasPassiveHeat) {
-            int operationTicks = getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod * 100, pVarFunc);
+            int operationTicks = getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod * 100, pVarFunc, pPoweredTimeFunc);
             boolean halfSpeed = hasPassiveHeat && (pEntity.remainingHeat <= 0);
 
             //figure out what slot and stack to target
@@ -414,17 +414,23 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return 1f + grimeScalar * 3f;
     }
 
-    public static int getOperationTicks(int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
+    public static int getOperationTicks(int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
+        int poweredOpTime = pPoweredTimeFunc.apply(null);
         float otmScalar;
 
         //RF-using devices reduce energy usage, not operation time
-        if(pVarFunc.apply(IDs.MODE_USES_RF) == 0)
+        if (pVarFunc.apply(IDs.MODE_USES_RF) == 0)
             otmScalar = (10000f - pOperationTimeMod) / 10000f;
         else
             otmScalar = 1;
 
         float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize);
-        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
+
+        if(poweredOpTime == -1) {
+            return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
+        } else {
+            return Math.round(poweredOpTime * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
+        }
     }
 
     public static int getActualEfficiency(int pMod, int pGrime, Function<IDs, Integer> pVarFunc) {
@@ -436,8 +442,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return (float)pGrime / (float)pVarFunc.apply(IDs.CONFIG_MAX_GRIME);
     }
 
-    public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
-        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc);
+    public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
+        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc);
     }
 
     public static int getScaledHeat(int pHeat, int pHeatDuration, Function<IDs, Integer> pVarFunc) {
@@ -497,6 +503,10 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     ////////////////////
     // FINAL VARIABLE RETRIEVAL
     ////////////////////
+
+    public Integer getPoweredOperationTime(Void unused) {
+        return -1;
+    }
 
     public static int getVar(IDs pID) {
         return -2;

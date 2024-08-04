@@ -54,7 +54,7 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
 
         renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 
-        int sProg = AlembicBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), 1, 0.0f, AlembicBlockEntity::getVar);
+        int sProg = AlembicBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), 1, 0.0f, AlembicBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
         if(sProg > 0)
             gui.blit(TEXTURE, x+76, y+53, 0, 228, sProg, 28);
 
@@ -164,7 +164,7 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         float passiveHeatMod = hasPassiveHeat ? 2 : 1;
         float fastHeatMod = fastHeaterBlocks ? 0.5f : 1;
 
-        int operationTicks = AlembicBlockEntity.getOperationTicks(menu.getGrime(), 1, 0.0f, AlembicBlockEntity::getVar);
+        int operationTicks = AlembicBlockEntity.getOperationTicks(menu.getGrime(), 1, 0.0f, AlembicBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
         int secWhole = (int)Math.floor((operationTicks / 20f) * passiveHeatMod * fastHeatMod);
         int secPartial = (int)Math.floor(((operationTicks % 20) * 5) * passiveHeatMod * fastHeatMod);
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 15, 0xff000000, false);

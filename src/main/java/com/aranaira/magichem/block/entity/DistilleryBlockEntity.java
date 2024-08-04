@@ -395,7 +395,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
             }
         }
 
-        AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, DistilleryBlockEntity::getVar);
+        AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, DistilleryBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
 
     public static int getVar(IDs pID) {

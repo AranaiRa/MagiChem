@@ -69,7 +69,7 @@ public class GrandDistilleryBlockEntityRenderer implements BlockEntityRenderer<G
 
     private void renderMagicCircle(GrandDistilleryBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, float pPartialTick, int pPackedLight) {
         Vector3 center = new Vector3(0, 0, 0);
-        float circleRotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 200) / 200) * (float)Math.PI * 2;
+        float circleRotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 400) / 400) * (float)Math.PI * 2;
         Direction facing = pBlockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         Vector3 translation = Vector3.zero();

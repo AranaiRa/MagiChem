@@ -2,7 +2,6 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -52,19 +51,13 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
 
         renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 
-        int sProg = GrandDistilleryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar);
+        int sProg = GrandDistilleryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
         if(sProg > 0)
             gui.blit(TEXTURE, x+76, y+47, 0, 228, sProg, 28);
 
         int sGrime = GrandDistilleryBlockEntity.getScaledGrime(menu.getGrime());
         if(sGrime > 0)
             gui.blit(TEXTURE, x+182, y+57, 24, 248, sGrime, 8);
-
-        if(menu.getHeatDuration() > 0) {
-            int sHeat = GrandDistilleryBlockEntity.getScaledHeat(menu.getHeat(), menu.getHeatDuration(), GrandDistilleryBlockEntity::getVar);
-            int hHeat = GrandDistilleryBlockEntity.getVar(AbstractDistillationBlockEntity.IDs.GUI_HEAT_GAUGE_HEIGHT) - sHeat;
-            gui.blit(TEXTURE, x + 79, y + 78 + hHeat, 24, 232 + hHeat, 18, sHeat);
-        }
     }
 
     private void renderGrimePanel(GuiGraphics gui, int x, int y) {
@@ -86,8 +79,6 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
         List<Component> tooltipContents = new ArrayList<>();
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
-
-        int g = 40;
 
         //Efficiency
         if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
@@ -142,8 +133,8 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
 
         gui.drawString(font, Component.literal(GrandDistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), GrandDistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 10, 0xff000000, false);
 
-        int secWhole = GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar) / 20;
-        int secPartial = (GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar) % 20) * 5;
+        int secWhole = GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
+        int secPartial = (GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 9, 0xff000000, false);
     }
 }

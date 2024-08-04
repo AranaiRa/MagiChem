@@ -125,14 +125,6 @@ public class GrandDistilleryMenu extends AbstractContainerMenu {
         return data.get(GrandDistilleryBlockEntity.DATA_GRIME);
     }
 
-    public int getHeat() {
-        return data.get(GrandDistilleryBlockEntity.DATA_REMAINING_HEAT);
-    }
-
-    public int getHeatDuration() {
-        return data.get(GrandDistilleryBlockEntity.DATA_HEAT_DURATION);
-    }
-
     public int getEfficiencyMod() {
         return data.get(GrandDistilleryBlockEntity.DATA_EFFICIENCY_MOD);
     }

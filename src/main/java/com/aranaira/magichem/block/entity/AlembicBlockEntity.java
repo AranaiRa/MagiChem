@@ -235,7 +235,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             }
         }
 
-        AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, AlembicBlockEntity::getVar);
+        AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, AlembicBlockEntity::getVar, pEntity::getPoweredOperationTime);
 
         //Particles
         boolean hasPassiveHeat = pEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT);
