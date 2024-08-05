@@ -69,9 +69,9 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private static final int[] POWER_DRAW = { //TODO: Convert this to config
-            100, 120, 150, 180, 220, 270, 330, 400, 480, 580,
-            700, 840, 1010, 1220, 1470, 1770, 2130, 2560, 3080, 3700,
-            4440, 5330, 6400, 7680, 9220, 11070, 13290, 15950, 19140, 22970
+            300, 360, 450, 540, 660, 810, 990, 1200, 1440, 1740,
+            2100, 2520, 3030, 3660, 4410, 5310, 6390, 7680, 9240, 11100,
+            13320, 15990, 19200, 23040, 27660, 33210, 39870, 47850, 57420, 68910
     };
     private static final int[] OPERATION_TICKS = { //TODO: Convert this to config
             200, 177, 155, 136, 119, 104, 91, 80, 70, 61,
