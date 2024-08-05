@@ -6,6 +6,8 @@ import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.api.capabilities.IPlayerProgression;
+import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -15,9 +17,11 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -93,6 +97,28 @@ public class SublimationRecipeCategory implements IRecipeCategory<AlchemicalInfu
         {
             guiGraphics.blit(TEXTURE, 135, 87 - verticalShift + padding, 0, 234, 22, 22);
             guiGraphics.blit(TEXTURE, 112, 112 - verticalShift + padding, 189, 0, 67, 83);
+        }
+
+        //Tier label; stolen from MnA code
+        {
+            Minecraft mc = Minecraft.getInstance();
+            int tier = recipe.getTier();
+            int playerTier = ((IPlayerProgression)mc.player.getCapability(PlayerProgressionProvider.PROGRESSION).resolve().get()).getTier();
+            int color = tier <= playerTier ? FastColor.ARGB32.color(255, 0, 128, 0) : FastColor.ARGB32.color(255, 255, 0, 0);
+
+            Component name = Component.translatable(recipe.getAlchemyObject().getDescriptionId().toString());
+            Component tierPrompt = Component.translatable("gui.mna.item-tier", new Object[]{tier});
+
+            int stringWidth = mc.font.width(name);
+            int textX = this.getWidth() / 2 - stringWidth / 2;
+            int textY = 2;
+
+            if(recipe.getStages(false).size() == 5)
+                guiGraphics.drawString(mc.font, tierPrompt, this.getWidth() / 2 - mc.font.width(tierPrompt) / 2, -12, color, false);
+            else {
+                guiGraphics.drawString(mc.font, name, textX, textY, FastColor.ARGB32.color(255, 255, 255, 255), false);
+                guiGraphics.drawString(mc.font, tierPrompt, this.getWidth() / 2 - mc.font.width(tierPrompt) / 2, 12, color, false);
+            }
         }
     }
 

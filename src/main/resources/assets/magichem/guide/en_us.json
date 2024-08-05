@@ -2755,5 +2755,32 @@
       }
     ]
   },
+  "Grand Distillery": {
+    "index": "1207",
+    "category": "magichem",
+    "tier": 4,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Grand Distillery"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Codex entry TBD.",
+            "italic": "true"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/grand_distillery"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }
