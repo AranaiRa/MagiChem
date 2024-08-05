@@ -12,6 +12,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -30,6 +31,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import org.antlr.v4.misc.MutableInt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,12 +71,14 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     private AlchemicalInfusionRecipe lastRecipe = null;
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
     private ItemStack lastRecipeResult = ItemStack.EMPTY;
+    private int recipeTierCap = 1;
 
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
 
     public AlchemicalNexusScreen(AlchemicalNexusMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        pPlayerInventory.player.getCapability(PlayerProgressionProvider.PROGRESSION).ifPresent(cap -> recipeTierCap = cap.getTier());
         updateDisplayedRecipes("");
     }
 
@@ -98,7 +102,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         for(AlchemicalInfusionRecipe iar : sublimationRecipeOutputs) {
             String display = iar.getAlchemyObject().getDisplayName().getString();
             if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
-                filteredRecipeOutputs.add(iar.getAlchemyObject().copy());
+                if(iar.getTier() <= recipeTierCap)
+                    filteredRecipeOutputs.add(iar.getAlchemyObject().copy());
             }
         }
     }
