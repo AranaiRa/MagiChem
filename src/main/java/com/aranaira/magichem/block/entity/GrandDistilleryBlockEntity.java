@@ -6,6 +6,7 @@ import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.GrandDistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
@@ -13,6 +14,7 @@ import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
+import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.gui.GrandDistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -20,7 +22,6 @@ import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
-import com.mna.items.ItemInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
@@ -37,28 +38,21 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins {
     public static final int
@@ -295,7 +289,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     }
 
     public static int getScaledGrime(int grime) {
-        return (GUI_GRIME_BAR_WIDTH * grime) / Config.grandDistilleryMaximumGrime;
+        return Math.min(Config.grandDistilleryMaximumGrime, (GUI_GRIME_BAR_WIDTH * grime) / Config.grandDistilleryMaximumGrime);
     }
 
     @Override
@@ -334,15 +328,15 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             pluginDevices.add(dpbe);
 
         List<BlockEntity> query = new ArrayList<>();
-        for(Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : DistilleryBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+        for(Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection> posAndType : GrandDistilleryBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
             BlockEntity be = level.getBlockEntity(getBlockPos().offset(posAndType.getFirst()));
             if(be != null)
                 query.add(be);
         }
 
         for(BlockEntity be : query) {
-            if (be instanceof DistilleryRouterBlockEntity crbe) {
-                BlockEntity pe = crbe.getPlugEntity();
+            if (be instanceof GrandDistilleryRouterBlockEntity gdrbe) {
+                BlockEntity pe = gdrbe.getPlugEntity();
                 if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }

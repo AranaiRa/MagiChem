@@ -150,7 +150,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue GRAND_DISTILLERY_EFFICIENCY = BUILDER
             .comment("The baseline efficiency of a Grand Distillery.")
-            .defineInRange("grandDistilleryEfficiency", 65, 1, 100);
+            .defineInRange("grandDistilleryEfficiency", 60, 1, 100);
 
     private static final ForgeConfigSpec.IntValue GRAND_DISTILLERY_MAXIMUM_GRIME = BUILDER
             .comment("The maximum Grime level of the Grand Distillery. ")

@@ -104,8 +104,8 @@ public class ActuatorEarthBlock extends BaseEntityBlock {
         pLevel.setBlock(targetPos, state, 3);
         ((BaseActuatorRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, facing);
 
-        ActuatorEarthBlockEntity awbe = (ActuatorEarthBlockEntity) pLevel.getBlockEntity(pPos);
-        ICanTakePlugins ictp = awbe.getTargetMachine();
+        ActuatorEarthBlockEntity aebe = (ActuatorEarthBlockEntity) pLevel.getBlockEntity(pPos);
+        ICanTakePlugins ictp = aebe.getTargetMachine();
         if(ictp != null)
             ictp.linkPluginsDeferred();
     }
