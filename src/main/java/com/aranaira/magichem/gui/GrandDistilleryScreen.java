@@ -158,10 +158,13 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
 
         gui.drawString(font, Component.literal(GrandDistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), GrandDistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 32, PANEL_GRIME_Y - 7, 0xff000000, false);
 
-        gui.drawString(font, Component.literal(menu.blockEntity.getPowerDraw() + "/t"), PANEL_GRIME_X + 32, PANEL_GRIME_Y + 10, 0xff000000, false);
+        float fireActuatorReduction = 1 - (menu.getOperationTimeMod() / 10000f);
+        int powerDraw = Math.round((float)menu.blockEntity.getPowerDraw() * fireActuatorReduction);
+        gui.drawString(font, Component.literal(powerDraw + "/t"), PANEL_GRIME_X + 32, PANEL_GRIME_Y + 10, 0xff000000, false);
 
-        int secWhole = GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
-        int secPartial = (GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
+        int opTicks = GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
+        int secWhole = opTicks / 20;
+        int secPartial = (opTicks % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 32, PANEL_GRIME_Y + 27, 0xff000000, false);
     }
 }

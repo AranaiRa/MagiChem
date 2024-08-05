@@ -108,8 +108,10 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
                 if (ActuatorFireBlockEntity.getIsSatisfied(fire) && pEntity.remainingHeat <= 20) {
-                    pEntity.remainingHeat = 1000;
-                    pEntity.heatDuration = 1000;
+                    if(!(pEntity instanceof GrandDistilleryBlockEntity)) {
+                        pEntity.remainingHeat = 1000;
+                        pEntity.heatDuration = 1000;
+                    }
                     pEntity.operationTimeMod = fire.getReductionRate();
                     pEntity.syncAndSave();
                 }
@@ -353,7 +355,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
             if (grimeToAdd > 0) {
                 IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
-                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
+                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), pVarFunc.apply(IDs.CONFIG_MAX_GRIME)));
             }
         }
 

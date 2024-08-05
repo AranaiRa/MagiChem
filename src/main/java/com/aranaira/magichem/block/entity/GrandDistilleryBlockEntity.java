@@ -374,7 +374,12 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     }
 
     public int getPowerDraw() {
-        return POWER_DRAW[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
+        int baseDraw = POWER_DRAW[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
+        float fireActuatorModifier = 1 - (operationTimeMod / 100.0f);
+
+        int out = Math.round((float)baseDraw * fireActuatorModifier);
+
+        return Math.round((float)baseDraw * fireActuatorModifier);
     }
 
     public int getOperationTicks() {
