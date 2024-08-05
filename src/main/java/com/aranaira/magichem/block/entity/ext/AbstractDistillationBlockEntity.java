@@ -445,7 +445,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
-        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc);
+        int maxWidth = pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH);
+        return Math.min(maxWidth, maxWidth * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc));
     }
 
     public static int getScaledHeat(int pHeat, int pHeatDuration, Function<IDs, Integer> pVarFunc) {
