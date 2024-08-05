@@ -255,8 +255,11 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
             BlockEntity entity = level.getBlockEntity(pos);
 
             boolean holdingLabCharm = player.getInventory().getSelected().getItem() == ItemRegistry.LABORATORY_CHARM.get();
+            boolean holdingPowerSpike = player.getInventory().getSelected().getItem() == BlockRegistry.POWER_SPIKE.get().asItem();
 
-            if(!holdingLabCharm) {
+            if(holdingPowerSpike) {
+                return InteractionResult.PASS;
+            } if(!holdingLabCharm) {
                 if (entity instanceof GrandDistilleryBlockEntity) {
                     NetworkHooks.openScreen((ServerPlayer) player, (GrandDistilleryBlockEntity) entity, pos);
                 } else {

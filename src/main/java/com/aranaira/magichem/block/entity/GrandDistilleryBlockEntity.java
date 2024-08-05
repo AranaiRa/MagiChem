@@ -66,7 +66,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         SLOT_BOTTLES = 0,
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 6,
         SLOT_OUTPUT_START = 7, SLOT_OUTPUT_COUNT  = 18,
-        GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50, GUI_HEAT_GAUGE_HEIGHT = 16,
+        GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 67, GUI_HEAT_GAUGE_HEIGHT = 16,
         DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_POWER_SUFFICIENCY = 2, DATA_EFFICIENCY_MOD = 3, DATA_OPERATION_TIME_MOD = 4, DATA_BATCH_SIZE = 5;
     public static final float
             CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f;
@@ -266,7 +266,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
         return super.getCapability(cap, side);
     }
-////////////////////
+
+    ////////////////////
     // DATA SLOT HANDLING
     ////////////////////
 
@@ -521,7 +522,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     }
 
     public Integer getPoweredOperationTime(Void unused) {
-        return OPERATION_TICKS[this.powerUsageSetting];
+        return OPERATION_TICKS[this.powerUsageSetting-1];
     }
 
     public void applyLaboratoryCharm() {

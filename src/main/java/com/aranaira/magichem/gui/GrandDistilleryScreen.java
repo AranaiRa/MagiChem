@@ -3,12 +3,14 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.networking.GrandDeviceSyncDataC2SPacket;
+import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -28,6 +30,8 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
             TOOLTIP_EFFICIENCY_X = 178, TOOLTIP_EFFICIENCY_Y = 18, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
             TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 37, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
             TOOLTIP_GRIME_X = 179, TOOLTIP_GRIME_Y = 53, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14;
+    private ImageButton
+            b_powerLevelUp, b_powerLevelDown;
 
     public GrandDistilleryScreen(GrandDistilleryMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -36,6 +40,24 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
     @Override
     protected void init() {
         super.init();
+        initializePowerLevelButtons();
+    }
+
+    private void initializePowerLevelButtons(){
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 2, 12, 7, 232, 242, TEXTURE, button -> {
+            menu.blockEntity.incrementPowerUsageSetting();
+            PacketRegistry.sendToServer(new GrandDeviceSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    menu.blockEntity.getPowerUsageSetting()
+            ));
+        }));
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 47, 12, 7, 244, 242, TEXTURE, button -> {
+            menu.blockEntity.decrementPowerUsageSetting();
+            PacketRegistry.sendToServer(new GrandDeviceSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    menu.blockEntity.getPowerUsageSetting()
+            ));
+        }));
     }
 
     @Override
@@ -55,9 +77,12 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
         if(sProg > 0)
             gui.blit(TEXTURE, x+76, y+47, 0, 228, sProg, 28);
 
+        int powerLevel = menu.blockEntity.getPowerUsageSetting();
+        gui.blit(TEXTURE, x+182, y + (62 - powerLevel), 24, 248 - powerLevel, 8, powerLevel);
+
         int sGrime = GrandDistilleryBlockEntity.getScaledGrime(menu.getGrime());
         if(sGrime > 0)
-            gui.blit(TEXTURE, x+182, y+57, 24, 248, sGrime, 8);
+            gui.blit(TEXTURE, x+181, y+78, 24, 248, sGrime, 8);
     }
 
     private void renderGrimePanel(GuiGraphics gui, int x, int y) {
@@ -131,10 +156,12 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
 
-        gui.drawString(font, Component.literal(GrandDistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), GrandDistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 32, PANEL_GRIME_Y + 1, 0xff000000, false);
+        gui.drawString(font, Component.literal(GrandDistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), GrandDistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 32, PANEL_GRIME_Y - 7, 0xff000000, false);
+
+        gui.drawString(font, Component.literal(menu.blockEntity.getPowerDraw() + "/t"), PANEL_GRIME_X + 32, PANEL_GRIME_Y + 10, 0xff000000, false);
 
         int secWhole = GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
         int secPartial = (GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
-        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 32, PANEL_GRIME_Y + 20, 0xff000000, false);
+        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 32, PANEL_GRIME_Y + 27, 0xff000000, false);
     }
 }

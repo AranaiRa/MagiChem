@@ -57,6 +57,12 @@ public class PacketRegistry {
                 .encoder(SublimationPrimerSyncRecipeC2SPacket::toBytes)
                 .consumerMainThread(SublimationPrimerSyncRecipeC2SPacket::handle)
                 .add();
+
+        net.messageBuilder(GrandDeviceSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(GrandDeviceSyncDataC2SPacket::new)
+                .encoder(GrandDeviceSyncDataC2SPacket::toBytes)
+                .consumerMainThread(GrandDeviceSyncDataC2SPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

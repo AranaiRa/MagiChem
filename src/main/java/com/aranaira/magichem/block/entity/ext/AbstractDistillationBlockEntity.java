@@ -94,7 +94,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    protected void syncAndSave() {
+    public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
