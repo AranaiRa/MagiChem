@@ -47,9 +47,6 @@ public class GrandDistilleryMenu extends AbstractContainerMenu {
             //Bottle slot
             this.addSlot(new BottleStockSlot(handler, GrandDistilleryBlockEntity.SLOT_BOTTLES, 80, -11, false));
 
-            //Fuel slot
-            this.addSlot(new SlotItemHandler(handler, GrandDistilleryBlockEntity.SLOT_FUEL, 80, 79));
-
             //Input item slots
             for(int i = GrandDistilleryBlockEntity.SLOT_INPUT_START; i< GrandDistilleryBlockEntity.SLOT_INPUT_START + GrandDistilleryBlockEntity.SLOT_INPUT_COUNT; i++)
             {

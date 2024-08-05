@@ -36,6 +36,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -62,6 +63,8 @@ import org.antlr.v4.misc.MutableInt;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.aranaira.magichem.block.GrandDistilleryBlock.HAS_LABORATORY_UPGRADE;
 
 @Mod.EventBusSubscriber(
         modid = MagiChemMod.MODID,
@@ -120,6 +123,20 @@ public class CommonEventHandler {
                 if(event.getEntity().isCrouching()) {
                     if (bewe.getGrimeFromData() > 0) {
                         CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), bewe, stack);
+                    }
+                }
+            } else if(stack.getItem() == ItemRegistry.LABORATORY_CHARM.get()) {
+                if(target instanceof GrandDistilleryBlockEntity gdbe) {
+                    if(!gdbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+                        gdbe.applyLaboratoryCharm();
+                        stack.shrink(1);
+                        event.setCanceled(true);
+                    }
+                } else if(target instanceof GrandDistilleryRouterBlockEntity gdrbe) {
+                    if(!gdrbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+                        gdrbe.getMaster().applyLaboratoryCharm();
+                        stack.shrink(1);
+                        event.setCanceled(true);
                     }
                 }
             }
@@ -214,9 +231,21 @@ public class CommonEventHandler {
             AlchemicalNexusBlock.destroyRouters(event.getLevel(), anrbe.getMasterPos(), anrbe.getFacing());
         }
         else if(entity instanceof GrandDistilleryBlockEntity gdbe) {
+            if(state.getValue(HAS_LABORATORY_UPGRADE)) {
+                ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
+                ItemEntity ie = new ItemEntity((Level)event.getLevel(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), charmStack);
+                event.getLevel().addFreshEntity(ie);
+            }
+
             GrandDistilleryBlock.destroyRouters(event.getLevel(), gdbe.getBlockPos(), gdbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
         }
         else if(entity instanceof GrandDistilleryRouterBlockEntity gdrbe) {
+            if(state.getValue(HAS_LABORATORY_UPGRADE)) {
+                ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
+                ItemEntity ie = new ItemEntity((Level)event.getLevel(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), charmStack);
+                event.getLevel().addFreshEntity(ie);
+            }
+
             event.getLevel().destroyBlock(gdrbe.getMasterPos(), true);
             GrandDistilleryBlock.destroyRouters(event.getLevel(), gdrbe.getMasterPos(), gdrbe.getFacing());
         }

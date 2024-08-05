@@ -180,8 +180,18 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         }
 
         //Make sure we don't void reagents entirely if the block is broken; always drop waste of a currently "burning" reagent
-        if(progressReagentTier1 > 0) inventory.addItem(new ItemStack(WASTE_TIER1, 1));
-        if(progressReagentTier2 > 0) inventory.addItem(new ItemStack(WASTE_TIER2, 1));
+        if(progressReagentTier1 > 0) {
+            if(itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == ItemRegistry.DEBUG_ORB.get())
+                inventory.addItem(new ItemStack(ItemRegistry.DEBUG_ORB.get(), 1));
+            else
+                inventory.addItem(new ItemStack(WASTE_TIER1, 1));
+        }
+        if(progressReagentTier2 > 0) {
+            if (itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == ItemRegistry.DEBUG_ORB.get())
+                inventory.addItem(new ItemStack(ItemRegistry.DEBUG_ORB.get(), 1));
+            else
+                inventory.addItem(new ItemStack(WASTE_TIER2, 1));
+        }
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }

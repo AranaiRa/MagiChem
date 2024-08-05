@@ -7,13 +7,16 @@ import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -250,10 +253,15 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof GrandDistilleryBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (GrandDistilleryBlockEntity)entity, pos);
-            } else {
-                throw new IllegalStateException("GrandDistilleryBlockEntity container provider is missing!");
+
+            boolean holdingLabCharm = player.getInventory().getSelected().getItem() == ItemRegistry.LABORATORY_CHARM.get();
+
+            if(!holdingLabCharm) {
+                if (entity instanceof GrandDistilleryBlockEntity) {
+                    NetworkHooks.openScreen((ServerPlayer) player, (GrandDistilleryBlockEntity) entity, pos);
+                } else {
+                    throw new IllegalStateException("GrandDistilleryBlockEntity container provider is missing!");
+                }
             }
         }
 

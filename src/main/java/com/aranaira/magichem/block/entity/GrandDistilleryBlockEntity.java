@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.DistilleryBlock;
+import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
@@ -61,10 +62,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins {
     public static final int
-        SLOT_COUNT = 26,
-        SLOT_BOTTLES = 0, SLOT_FUEL = 1,
-        SLOT_INPUT_START = 2, SLOT_INPUT_COUNT = 6,
-        SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
+        SLOT_COUNT = 25,
+        SLOT_BOTTLES = 0,
+        SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 6,
+        SLOT_OUTPUT_START = 7, SLOT_OUTPUT_COUNT  = 18,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50, GUI_HEAT_GAUGE_HEIGHT = 16,
         DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_POWER_SUFFICIENCY = 2, DATA_EFFICIENCY_MOD = 3, DATA_OPERATION_TIME_MOD = 4, DATA_BATCH_SIZE = 5;
     public static final float
@@ -115,12 +116,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if (slot == SLOT_BOTTLES)
                     return stack.getItem() == Items.GLASS_BOTTLE;
-                if (slot == SLOT_FUEL) {
-                    if(stack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get() ||
-                       stack.getItem() == ItemInit.FLUID_JUG.get())
-                        return true;
-                    return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
-                }
                 if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
                     return !(stack.getItem() instanceof MateriaItem);
                 if (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
@@ -445,15 +440,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandDistilleryBlockEntity pEntity) {
         if(!pEntity.getLevel().isClientSide()) {
-            for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-                if (dpbe instanceof ActuatorFireBlockEntity fire) {
-                    if (!pEntity.itemHandler.getStackInSlot(SLOT_FUEL).isEmpty()) {
-                        //try to push fuel to an open slot in an inferno engine if there is one
-                        pEntity.itemHandler.setStackInSlot(SLOT_FUEL,fire.tryPushFuel(pEntity.itemHandler.getStackInSlot(SLOT_FUEL)));
-                    }
-                }
-            }
-
             int powerDraw = pEntity.getPowerDraw();
             boolean sufficientThisTick = pEntity.ENERGY_STORAGE.getEnergyStored() >= powerDraw;
 
@@ -485,43 +471,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             }
         }
         pEntity.handleAnimationDrivers();
-
-        if(pEntity.remainingHeat <= 0) {
-            ItemStack fuelStack = pEntity.itemHandler.getStackInSlot(SLOT_FUEL);
-            if(fuelStack != ItemStack.EMPTY) {
-                int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
-
-                if(fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
-                    LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-                    AtomicReference<Integer> mi = new AtomicReference<>(0);
-                    cap.ifPresent(handler -> {
-                        FluidStack fluidInTank = handler.getFluidInTank(0);
-                        if(fluidInTank.getAmount() > 0) {
-                            if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
-                                FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
-                                float proportion = operation.getAmount() / 1000f;
-                                int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                                mi.set((int) (lavaBurnTime * proportion));
-                            }
-                        }
-                    });
-                    burnTime = mi.get();
-                } else if(fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
-                    burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                } else if(fuelStack.getItem() == Items.LAVA_BUCKET) {
-                    fuelStack = new ItemStack(Items.BUCKET);
-                } else {
-                    fuelStack.shrink(1);
-                }
-
-                pEntity.itemHandler.setStackInSlot(SLOT_FUEL, fuelStack);
-                pEntity.remainingHeat = burnTime;
-                pEntity.heatDuration = burnTime;
-                pEntity.pushData();
-
-                pEntity.syncAndSave();
-            }
-        }
 
         //particle stuff
         if(pEntity.getLevel().isClientSide() && pEntity.particlePercent > 0) {
@@ -575,10 +524,34 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         return OPERATION_TICKS[this.powerUsageSetting];
     }
 
+    public void applyLaboratoryCharm() {
+        BlockPos rootPos = getBlockPos();
+        BlockState rootState = getBlockState();
+        BlockState newRootState = getBlockState().setValue(GrandDistilleryBlock.HAS_LABORATORY_UPGRADE, true);
+
+        getLevel().setBlock(rootPos, newRootState, 3);
+        getLevel().sendBlockUpdated(rootPos, rootState, newRootState, 2);
+
+        for(int z=-1; z<=1; z++) {
+            for(int y=0; y<=2; y++) {
+                for (int x=-1; x <=1; x++) {
+                    BlockPos routerPos = rootPos.offset(x, y, z);
+                    BlockState routerState = getLevel().getBlockState(routerPos);
+
+                    if(routerState.getBlock() == BlockRegistry.GRAND_DISTILLERY_ROUTER.get()) {
+                        BlockState newRouterState = routerState.setValue(GrandDistilleryBlock.HAS_LABORATORY_UPGRADE, true);
+
+                        getLevel().setBlock(routerPos, newRouterState, 3);
+                        getLevel().sendBlockUpdated(routerPos, routerState, newRouterState, 2);
+                    }
+                }
+            }
+        }
+    }
+
     public static int getVar(IDs pID) {
         return switch(pID) {
             case SLOT_BOTTLES -> SLOT_BOTTLES;
-            case SLOT_FUEL -> SLOT_FUEL;
             case SLOT_INPUT_START -> SLOT_INPUT_START;
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;

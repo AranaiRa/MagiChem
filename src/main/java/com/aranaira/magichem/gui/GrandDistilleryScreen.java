@@ -24,7 +24,7 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_grand_distillery.png");
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 204,
-            PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 64, PANEL_GRIME_H = 59, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
+            PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 80, PANEL_GRIME_H = 80, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
             TOOLTIP_EFFICIENCY_X = 178, TOOLTIP_EFFICIENCY_Y = 18, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
             TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 37, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
             TOOLTIP_GRIME_X = 179, TOOLTIP_GRIME_Y = 53, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14;
@@ -131,10 +131,10 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
 
-        gui.drawString(font, Component.literal(GrandDistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), GrandDistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 10, 0xff000000, false);
+        gui.drawString(font, Component.literal(GrandDistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), GrandDistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 32, PANEL_GRIME_Y + 1, 0xff000000, false);
 
         int secWhole = GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
         int secPartial = (GrandDistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandDistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
-        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 9, 0xff000000, false);
+        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 32, PANEL_GRIME_Y + 20, 0xff000000, false);
     }
 }

@@ -97,7 +97,7 @@ public class GrandDistilleryBlockEntityRenderer implements BlockEntityRenderer<G
         pPoseStack.mulPose(axisRotation);
 
         RenderUtils.generateMagicCircleRing(center,
-                8, 1.25f, 0.375f, circleRotation, circleTexture,
+                7, 1.25f, 0.375f, -circleRotation, circleTexture,
                 new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
                 pBlockEntity.circlePercent, pPoseStack, pBuffer, pPackedLight);
 
@@ -106,7 +106,7 @@ public class GrandDistilleryBlockEntityRenderer implements BlockEntityRenderer<G
                 new Vec2(0, 4.5f), new Vec2(12, 5.5f), 0.75f,
                 pBlockEntity.circlePercent, pPoseStack, pBuffer, pPackedLight);
 
-        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -0.01, 0)),
+        RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.02, 0)),
                 4, 0.85f, 0.09375f, circleRotation, circleTexture,
                 new Vec2(0, 4.5f), new Vec2(12, 5.5f), 0.75f,
                 pBlockEntity.circlePercent, pPoseStack, pBuffer, pPackedLight);
