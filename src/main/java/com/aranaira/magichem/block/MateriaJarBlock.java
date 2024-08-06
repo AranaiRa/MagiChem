@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.MateriaJarBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
@@ -144,6 +145,21 @@ public class MateriaJarBlock extends BaseEntityBlock {
     @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+        ItemStack stack = new ItemStack(BlockRegistry.MATERIA_JAR.get());
+
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("type", amsbe.getMateriaType().getMateriaName());
+            tag.putInt("amount", amsbe.getCurrentStock());
+            stack.setTag(tag);
+        }
+
+        return stack;
     }
 
     static {
