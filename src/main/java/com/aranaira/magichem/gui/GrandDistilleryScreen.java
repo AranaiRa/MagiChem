@@ -27,9 +27,10 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 204,
             PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 80, PANEL_GRIME_H = 80, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
-            TOOLTIP_EFFICIENCY_X = 178, TOOLTIP_EFFICIENCY_Y = 18, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
-            TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 37, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
-            TOOLTIP_GRIME_X = 179, TOOLTIP_GRIME_Y = 53, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14;
+            TOOLTIP_EFFICIENCY_X = 193, TOOLTIP_EFFICIENCY_Y = 22, TOOLTIP_EFFICIENCY_W = 59, TOOLTIP_EFFICIENCY_H = 15,
+            TOOLTIP_POWERUSAGE_X = 193, TOOLTIP_POWERUSAGE_Y = 39, TOOLTIP_POWERUSAGE_W = 59, TOOLTIP_POWERUSAGE_H = 15,
+            TOOLTIP_OPERATIONTIME_X = 193, TOOLTIP_OPERATIONTIME_Y = 56, TOOLTIP_OPERATIONTIME_W = 59, TOOLTIP_OPERATIONTIME_H = 15,
+            TOOLTIP_GRIME_X = 180, TOOLTIP_GRIME_Y = 77, TOOLTIP_GRIME_W = 69, TOOLTIP_GRIME_H = 10;
     private ImageButton
             b_powerLevelUp, b_powerLevelDown;
 
@@ -115,6 +116,19 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
                     .append(Component.translatable("tooltip.magichem.gui.efficiency.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.translatable("tooltip.magichem.gui.efficiency.line2"));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Efficiency
+        if(mouseX >= x+TOOLTIP_POWERUSAGE_X && mouseX <= x+TOOLTIP_POWERUSAGE_X+TOOLTIP_POWERUSAGE_W &&
+            mouseY >= y+TOOLTIP_POWERUSAGE_Y && mouseY <= y+TOOLTIP_POWERUSAGE_Y+TOOLTIP_POWERUSAGE_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.powerusage").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.powerusage.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.powerusage.line2"));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
