@@ -1422,14 +1422,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ". Alchemical Waste currently has no use, but it "
-          },
-          {
-            "text": "is",
-            "italic": true
-          },
-          {
-            "text": " a favorite snack of Constructs. Do with that information what you will."
+            "text": ", a favorite snack of Constructs. Do with that information what you will."
           }
         ]
       }

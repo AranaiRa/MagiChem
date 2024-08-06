@@ -7,6 +7,7 @@ import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -182,11 +183,15 @@ public class CentrifugeBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof CentrifugeBlockEntity cfbe) {
-                NetworkHooks.openScreen((ServerPlayer)player, (CentrifugeBlockEntity)entity, pos);
-            } else {
-                throw new IllegalStateException("CentrifugeBlockEntity container provider is missing!");
+            boolean holdingCleaningBrush = player.getInventory().getSelected().getItem() == ItemRegistry.CLEANING_BRUSH.get();
+
+            if(!holdingCleaningBrush) {
+                BlockEntity entity = level.getBlockEntity(pos);
+                if (entity instanceof CentrifugeBlockEntity cfbe) {
+                    NetworkHooks.openScreen((ServerPlayer) player, (CentrifugeBlockEntity) entity, pos);
+                } else {
+                    throw new IllegalStateException("CentrifugeBlockEntity container provider is missing!");
+                }
             }
         }
 

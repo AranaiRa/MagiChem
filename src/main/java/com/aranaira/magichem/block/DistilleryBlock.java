@@ -9,6 +9,7 @@ import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.ISpellInteractibleBlock;
@@ -188,11 +189,15 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof DistilleryBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (DistilleryBlockEntity)entity, pos);
-            } else {
-                throw new IllegalStateException("DistilleryBlockEntity container provider is missing!");
+            boolean holdingCleaningBrush = player.getInventory().getSelected().getItem() == ItemRegistry.CLEANING_BRUSH.get();
+
+            if(!holdingCleaningBrush) {
+                BlockEntity entity = level.getBlockEntity(pos);
+                if (entity instanceof DistilleryBlockEntity) {
+                    NetworkHooks.openScreen((ServerPlayer) player, (DistilleryBlockEntity) entity, pos);
+                } else {
+                    throw new IllegalStateException("DistilleryBlockEntity container provider is missing!");
+                }
             }
         }
 

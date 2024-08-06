@@ -3,6 +3,7 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.blocks.ISpellInteractibleBlock;
 import com.mna.api.spells.attributes.Attribute;
 import com.mna.api.spells.base.IModifiedSpellPart;
@@ -146,11 +147,15 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof AlembicBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (AlembicBlockEntity)entity, pos);
-            } else {
-                throw new IllegalStateException("AlembicBlockEntity container provider is missing!");
+            boolean holdingCleaningBrush = player.getInventory().getSelected().getItem() == ItemRegistry.CLEANING_BRUSH.get();
+
+            if(!holdingCleaningBrush) {
+                BlockEntity entity = level.getBlockEntity(pos);
+                if (entity instanceof AlembicBlockEntity) {
+                    NetworkHooks.openScreen((ServerPlayer) player, (AlembicBlockEntity) entity, pos);
+                } else {
+                    throw new IllegalStateException("AlembicBlockEntity container provider is missing!");
+                }
             }
         }
 

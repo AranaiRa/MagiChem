@@ -7,6 +7,7 @@ import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -193,12 +194,16 @@ public class FuseryBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof FuseryBlockEntity) {
-                if(!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
-                    NetworkHooks.openScreen((ServerPlayer)player, (FuseryBlockEntity)entity, pos);
-            } else {
-                throw new IllegalStateException("AdmixerBlockEntity container provider is missing!");
+            boolean holdingCleaningBrush = player.getInventory().getSelected().getItem() == ItemRegistry.CLEANING_BRUSH.get();
+
+            if(!holdingCleaningBrush) {
+                BlockEntity entity = level.getBlockEntity(pos);
+                if (entity instanceof FuseryBlockEntity) {
+                    if (!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
+                        NetworkHooks.openScreen((ServerPlayer) player, (FuseryBlockEntity) entity, pos);
+                } else {
+                    throw new IllegalStateException("AdmixerBlockEntity container provider is missing!");
+                }
             }
         }
 

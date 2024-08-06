@@ -256,14 +256,18 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
 
             boolean holdingLabCharm = player.getInventory().getSelected().getItem() == ItemRegistry.LABORATORY_CHARM.get();
             boolean holdingPowerSpike = player.getInventory().getSelected().getItem() == BlockRegistry.POWER_SPIKE.get().asItem();
+            boolean holdingCleaningBrush = player.getInventory().getSelected().getItem() == ItemRegistry.CLEANING_BRUSH.get();
 
-            if(holdingPowerSpike) {
-                return InteractionResult.PASS;
-            } if(!holdingLabCharm) {
-                if (entity instanceof GrandDistilleryBlockEntity) {
-                    NetworkHooks.openScreen((ServerPlayer) player, (GrandDistilleryBlockEntity) entity, pos);
-                } else {
-                    throw new IllegalStateException("GrandDistilleryBlockEntity container provider is missing!");
+            if(!holdingCleaningBrush) {
+                if (holdingPowerSpike) {
+                    return InteractionResult.PASS;
+                }
+                if (!holdingLabCharm) {
+                    if (entity instanceof GrandDistilleryBlockEntity) {
+                        NetworkHooks.openScreen((ServerPlayer) player, (GrandDistilleryBlockEntity) entity, pos);
+                    } else {
+                        throw new IllegalStateException("GrandDistilleryBlockEntity container provider is missing!");
+                    }
                 }
             }
         }
