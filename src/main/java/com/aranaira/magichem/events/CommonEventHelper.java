@@ -15,8 +15,9 @@ public class CommonEventHelper {
             stackToDamage.setDamageValue(stackToDamage.getDamageValue() + 1);
         }
 
-        SimpleContainer wasteItems = new SimpleContainer(wasteCount / 64 + 1);
-        for (int i = 0; i < wasteCount / 64 + 1; i++) {
+        int slots = (wasteCount / 64) + 1;
+        SimpleContainer wasteItems = new SimpleContainer(slots);
+        for (int i = 0; i < slots; i++) {
             int thisAmount = Math.min(wasteCount, 64);
             wasteItems.setItem(i, new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), thisAmount));
             wasteCount -= thisAmount;
