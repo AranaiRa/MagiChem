@@ -261,8 +261,7 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
             if(!holdingCleaningBrush) {
                 if (holdingPowerSpike) {
                     return InteractionResult.PASS;
-                }
-                if (!holdingLabCharm) {
+                } else if (!holdingLabCharm) {
                     if (entity instanceof GrandDistilleryBlockEntity) {
                         NetworkHooks.openScreen((ServerPlayer) player, (GrandDistilleryBlockEntity) entity, pos);
                     } else {

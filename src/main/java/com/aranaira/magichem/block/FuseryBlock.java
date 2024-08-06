@@ -195,7 +195,10 @@ public class FuseryBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             boolean holdingCleaningBrush = player.getInventory().getSelected().getItem() == ItemRegistry.CLEANING_BRUSH.get();
+            boolean holdingExperienceExchanger = player.getInventory().getSelected().getItem() == BlockRegistry.EXPERIENCE_EXCHANGER.get().asItem();
 
+            if(holdingExperienceExchanger)
+                return InteractionResult.PASS;
             if(!holdingCleaningBrush) {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof FuseryBlockEntity) {

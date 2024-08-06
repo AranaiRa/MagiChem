@@ -10,6 +10,7 @@ import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -210,12 +211,18 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof AlchemicalNexusBlockEntity anbe) {
-                if(!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
-                    NetworkHooks.openScreen((ServerPlayer)player, anbe, pos);
+            boolean holdingExperienceExchanger = player.getInventory().getSelected().getItem() == BlockRegistry.EXPERIENCE_EXCHANGER.get().asItem();
+
+            if (holdingExperienceExchanger) {
+                return InteractionResult.PASS;
             } else {
-                throw new IllegalStateException("AlchemicalNexusBlockEntity container provider is missing!");
+                BlockEntity entity = level.getBlockEntity(pos);
+                if (entity instanceof AlchemicalNexusBlockEntity anbe) {
+                    if (!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
+                        NetworkHooks.openScreen((ServerPlayer) player, anbe, pos);
+                } else {
+                    throw new IllegalStateException("AlchemicalNexusBlockEntity container provider is missing!");
+                }
             }
         }
 
