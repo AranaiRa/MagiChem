@@ -18,7 +18,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue GRIME_PER_WASTE = BUILDER
             .comment("How much Grime is consumed to make a single unit of Alchemical Waste when cleaning an alchemical device.")
-            .defineInRange("grimePerWaste", 250, 1, Integer.MAX_VALUE);
+            .defineInRange("grimePerWaste", 700, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue GRIME_PENALTY_POINT = BUILDER
             .comment("At what percent full of Grime that alchemical devices start to lose Efficiency and gain Operation Time.")
@@ -250,7 +250,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_RAREFIED_RATE = BUILDER
             .comment("What percentage of Grime reduced by a Quake Refinery becomes Rarefied Waste instead of Alchemical Waste.")
-            .defineInRange("quakeRefineryRarefiedRate", 20, 1, 100);
+            .defineInRange("quakeRefineryRarefiedRate", 60, 1, 100);
 
     //----------------GALE PRESSURIZER
 
