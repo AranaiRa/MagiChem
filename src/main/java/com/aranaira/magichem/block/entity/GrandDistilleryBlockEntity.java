@@ -214,6 +214,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putInt("craftingProgress", this.progress);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         super.saveAdditional(nbt);
     }
 
@@ -224,6 +225,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         progress = nbt.getInt("craftingProgress");
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
+        powerUsageSetting = nbt.getInt("powerUsageSetting");
     }
 
     @Override
@@ -233,6 +235,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putInt("craftingProgress", this.progress);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         return nbt;
     }
 
