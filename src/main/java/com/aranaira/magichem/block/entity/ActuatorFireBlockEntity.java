@@ -4,6 +4,7 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import com.aranaira.magichem.foundation.IPluginDevice;
+import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
 import com.aranaira.magichem.gui.ActuatorFireMenu;
 import com.aranaira.magichem.gui.ActuatorFireScreen;
 import com.aranaira.magichem.gui.ActuatorWaterScreen;
@@ -404,6 +405,12 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         if(ownerCheck != null) {
             float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.FIRE, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
             entity.remainingEldrinForSatisfaction -= consumption;
+
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            BlockEntity be = level.getBlockEntity(pos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ()));
+            if(be instanceof IPoweredAlchemyDevice ipad) {
+                entity.flags = entity.flags | FLAG_REDUCTION_TYPE_POWER;
+            }
 
             if (!getIsPaused(entity)) {
                 //Fuel processing
