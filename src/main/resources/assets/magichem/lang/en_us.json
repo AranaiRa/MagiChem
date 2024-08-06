@@ -304,6 +304,7 @@
   "tooltip.magichem.distillery": "Breaks down blocks and items into their component Materia.",
   "tooltip.magichem.experienceexchanger": "Place on top of a Brimming Urn. Transfers Academic Slurry to and from a Crystal of Memories.",
   "tooltip.magichem.fusery": "Combines component Materia into Admixtures.",
+  "tooltip.magichem.grand_distillery": "Breaks down blocks and items into their component Materia. Requires FE, but has unparalleled speed and efficiency potential.",
   "tooltip.magichem.magichemicalmechanism": "Alchemically treated cogs, tubes, buffers, and regulators packed into an Arcane Sandstone shell.",
   "tooltip.magichem.magichemicalmechanism.ext": "A core component of most alchemical devices.",
   "tooltip.magichem.materiajar": "Stores a small amount of Materia.",

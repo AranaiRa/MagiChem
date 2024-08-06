@@ -67,6 +67,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.grand_distillery")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.ACTUATOR_WATER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.actuator.water")
@@ -178,6 +184,18 @@ public class TooltipLoreBlockItem extends BlockItem {
                 if(anbe != null) {
                     if (nbt.contains("inventory")) {
                         anbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                    }
+                }
+            }
+            else if (stack.getItem() == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
+                CompoundTag nbt = stack.getOrCreateTag();
+                GrandDistilleryBlockEntity gdbe = (GrandDistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(gdbe != null) {
+                    if (nbt.contains("inventory")) {
+                        gdbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                    }
+                    if (nbt.contains("grime")) {
+                        GrimeProvider.getCapability(gdbe).setGrime(nbt.getInt("grime"));
                     }
                 }
             }
