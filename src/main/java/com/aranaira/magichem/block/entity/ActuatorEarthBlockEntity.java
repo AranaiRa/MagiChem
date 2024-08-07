@@ -52,7 +52,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
-            SAND_PER_OPERATION = {0, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440, 470, 500},
+            SAND_PER_OPERATION = {0, 45, 50, 55, 60, 70, 80, 90, 105, 120, 135, 155, 175, 200},
             GRIME_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
     public static final int
             SLOT_COUNT = 3, SLOT_SAND = 0, SLOT_WASTE = 1, SLOT_RAREFIED_WASTE = 2,
@@ -423,6 +423,9 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
         //Determine how much grime is being added
         if((flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED) {
+            float rate = Math.min(1, (float)pGrimeToAdd / 1000f);
+            int sandConsumption = (int)Math.ceil((float)getSandPerOperation() * rate);
+
             if (remainingSand >= getSandPerOperation()) {
                 remainingSand -= getSandPerOperation();
 
