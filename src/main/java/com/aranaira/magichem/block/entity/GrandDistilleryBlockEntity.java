@@ -453,8 +453,10 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             }
             if(sufficientThisTick) {
                 pEntity.remainingHeat = 2;
-                pEntity.ENERGY_STORAGE.extractEnergy(powerDraw, false);
+            } else {
+                pEntity.progress = Math.max(0, pEntity.progress - 2);
             }
+            pEntity.ENERGY_STORAGE.extractEnergy(powerDraw, false);
 
             Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
             BlockPos daisPos = pPos;
