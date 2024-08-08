@@ -43,12 +43,13 @@ public class SilverPressurePlateBlock extends PressurePlateBlock {
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        MutableInt tier = new MutableInt(0);
-        pEntity.getCapability(PlayerProgressionProvider.PROGRESSION).ifPresent(cap -> {
-            tier.v = cap.getTier();
-        });
+        int tier = 0;
 
-        pState = pState.setValue(USER_TIER_TYPE, tier.v);
+        if(pEntity.getCapability(PlayerProgressionProvider.PROGRESSION).isPresent()) {
+            tier = pEntity.getCapability(PlayerProgressionProvider.PROGRESSION).resolve().get().getTier();
+        }
+
+        pState = pState.setValue(USER_TIER_TYPE, tier);
         pLevel.setBlock(pPos, pState, 3);
         super.entityInside(pState, pLevel, pPos, pEntity);
     }

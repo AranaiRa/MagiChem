@@ -37,12 +37,13 @@ public class SilverButtonBlock extends ButtonBlock {
         if (pState.getValue(POWERED)) {
             return InteractionResult.CONSUME;
         } else {
-            MutableInt tier = new MutableInt(0);
-            pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION).ifPresent(cap -> {
-                tier.v = cap.getTier();
-            });
+            int tier = 0;
 
-            this.press(pState, pLevel, pPos, tier.v);
+            if(pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION).isPresent()) {
+                tier = pPlayer.getCapability(PlayerProgressionProvider.PROGRESSION).resolve().get().getTier();
+            }
+
+            this.press(pState, pLevel, pPos, tier);
             this.playSound(pPlayer, pLevel, pPos, true);
             pLevel.gameEvent(pPlayer, GameEvent.BLOCK_ACTIVATE, pPos);
             return InteractionResult.sidedSuccess(pLevel.isClientSide);
