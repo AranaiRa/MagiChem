@@ -121,8 +121,8 @@ public class MateriaVesselItem extends BlockItem {
                             itemInHand.removeTagKey("amount");
                         }
                     }
+                    return InteractionResult.SUCCESS;
                 }
-                return InteractionResult.SUCCESS;
             }
         }
         return super.useOn(pContext);
