@@ -1,0 +1,18 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:actuator_arcane",
+  "tier": 4,
+  "items": [
+    "minecraft:polished_deepslate",
+    "magichem:experience_exchanger",
+    "magichem:magic_circle",
+    "mna:mote_arcane",
+    "minecraft:bookshelf",
+    "magichem:magichemical_mechanism"
+  ],
+  "patterns": [
+    "mna:hourglass",
+    "mna:bolt",
+    "mna:split_triangle"
+  ]
+}
