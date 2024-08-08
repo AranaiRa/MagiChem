@@ -51,7 +51,7 @@ public class PowerSpikeItem extends BlockItem {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         if(!context.getLevel().isClientSide) {
-            if(context.getPlayer() != null && context.getPlayer().isCrouching()) {
+            if(context.getPlayer() != null) {
                 BlockPos pos = context.getClickedPos();
                 if(context.getLevel().getBlockState(pos).getBlock() instanceof CirclePowerBlock) {
                     context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.bind"));

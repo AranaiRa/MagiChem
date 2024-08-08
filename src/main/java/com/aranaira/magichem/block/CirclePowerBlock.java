@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -63,7 +64,13 @@ public class CirclePowerBlock extends BaseEntityBlock {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof CirclePowerBlockEntity) {
-                NetworkHooks.openScreen((ServerPlayer)player, (CirclePowerBlockEntity)entity, pos);
+                boolean holdingPowerSpike = player.getInventory().getSelected().getItem() == BlockRegistry.POWER_SPIKE.get().asItem();
+
+                if(holdingPowerSpike) {
+                    return InteractionResult.PASS;
+                } else {
+                    NetworkHooks.openScreen((ServerPlayer) player, (CirclePowerBlockEntity) entity, pos);
+                }
             } else {
                 throw new IllegalStateException("MagicCircleBlockEntity container provider is missing!");
             }
