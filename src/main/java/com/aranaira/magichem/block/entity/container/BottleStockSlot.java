@@ -1,7 +1,9 @@
 package com.aranaira.magichem.block.entity.container;
 
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
@@ -17,9 +19,8 @@ public class BottleStockSlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(@NotNull ItemStack stack) {
-        if(stack.getItem() instanceof BottleItem) {
-            if(extractOnly) return false;
-            return true;
+        if(stack.getItem() == ItemRegistry.DEBUG_ORB.get() || stack.getItem() == Items.GLASS_BOTTLE) {
+            return !extractOnly;
         }
         return false;
     }

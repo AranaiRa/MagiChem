@@ -65,9 +65,11 @@ public class AlembicBlockEntityRenderer implements BlockEntityRenderer<AlembicBl
             renderDir = dir.getOpposite();
         }
 
-        RenderUtils.renderFaceWithUV(renderDir, pPoseStack.last().pose(), pPoseStack.last().normal(),
-                pBuffer.getBuffer(RenderType.entityTranslucentEmissive(InventoryMenu.BLOCK_ATLAS)),
-                Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE),
-                x, y, z, w, h, gu1, gu2, gv1, gv2, 0xFFFFFFFF, pPackedLight);
+        if(isOn) {
+            RenderUtils.renderFaceWithUV(renderDir, pPoseStack.last().pose(), pPoseStack.last().normal(),
+                    pBuffer.getBuffer(RenderType.entityTranslucentEmissive(InventoryMenu.BLOCK_ATLAS)),
+                    Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE),
+                    x, y, z, w, h, gu1, gu2, gv1, gv2, 0xFFFFFFFF, pPackedLight);
+        }
     }
 }

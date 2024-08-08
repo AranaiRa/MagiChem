@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity.container;
 
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -21,6 +22,9 @@ public class BottleConsumingResultSlot extends SlotItemHandler {
     @Override
     public @NotNull ItemStack remove(int amount) {
         ItemStack bottles = getItemHandler().getStackInSlot(bottleIndex);
+        if(bottles.getItem() == ItemRegistry.DEBUG_ORB.get())
+            return super.remove(amount);
+
         int amountToRemove = Math.min(amount, bottles.getCount());
         bottles.shrink(amountToRemove);
         return super.remove(amountToRemove);

@@ -81,7 +81,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if (slot == SLOT_BOTTLES)
-                    return stack.getItem() == Items.GLASS_BOTTLE;
+                    return true;
                 if (slot == SLOT_FUEL) {
                     if(stack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get() ||
                        stack.getItem() == ItemInit.FLUID_JUG.get())
