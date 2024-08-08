@@ -200,10 +200,12 @@ public class MateriaVesselBlock extends BaseEntityBlock {
 
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
-            CompoundTag tag = new CompoundTag();
-            tag.putString("type", amsbe.getMateriaType().getMateriaName());
-            tag.putInt("amount", amsbe.getCurrentStock());
-            stack.setTag(tag);
+            if(amsbe.getMateriaType() != null) {
+                CompoundTag tag = new CompoundTag();
+                tag.putString("type", amsbe.getMateriaType().getMateriaName());
+                tag.putInt("amount", amsbe.getCurrentStock());
+                stack.setTag(tag);
+            }
         }
 
         return stack;
