@@ -1,0 +1,14 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "children": {
+    "part1": {
+      "loader": "forge:obj",
+      "automatic_culling": false,
+      "shade_quads": false,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "magichem:models/obj/actuator_arcane_cube_var1.obj"
+    }
+  }
+}

@@ -159,6 +159,9 @@ public class MagiChemMod
 
             event.register(ActuatorAirBlockEntityRenderer.RENDERER_MODEL_FANS);
 
+            event.register(ActuatorArcaneBlockEntityRenderer.RENDERER_MODEL_CUBE_VAR1);
+            event.register(ActuatorArcaneBlockEntityRenderer.RENDERER_MODEL_CUBE_VAR2);
+
             event.register(AlchemicalNexusBlockEntityRenderer.RENDERER_MODEL_CRYSTAL);
 
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_COM);

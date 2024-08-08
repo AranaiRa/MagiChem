@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/actuator_arcane"
+    },
+    "facing=east": {
+      "model": "magichem:block/actuator_arcane",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/actuator_arcane",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/actuator_arcane",
+      "y": 270
+    }
+  }
+}
