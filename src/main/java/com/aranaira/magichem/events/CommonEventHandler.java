@@ -12,10 +12,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.events.compat.OccultismEventHelper;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
-import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
-import com.aranaira.magichem.foundation.enums.FuseryRouterType;
+import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.item.compat.occultism.OccultRitualTalismanItem;
@@ -65,6 +62,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.aranaira.magichem.block.GrandDistilleryBlock.HAS_LABORATORY_UPGRADE;
+import static com.aranaira.magichem.block.GrandDistilleryRouterBlock.ROUTER_TYPE;
 
 @Mod.EventBusSubscriber(
         modid = MagiChemMod.MODID,
@@ -309,6 +307,18 @@ public class CommonEventHandler {
                     } else if (blockEntity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
                         if (anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_LEFT || anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_RIGHT) {
                             mode = 2;
+                        }
+                    } else if (blockEntity instanceof GrandDistilleryRouterBlockEntity anrbe) {
+                        boolean hasLaboratoryUpgrade = state.getValue(HAS_LABORATORY_UPGRADE);
+                        GrandDistilleryRouterType routerType = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE));
+
+                        if(routerType == GrandDistilleryRouterType.PLUG_BACK_LEFT ||
+                           routerType == GrandDistilleryRouterType.PLUG_BACK_RIGHT ||
+                           routerType == GrandDistilleryRouterType.PLUG_FRONT_LEFT ||
+                           routerType == GrandDistilleryRouterType.PLUG_FRONT_RIGHT) {
+                            mode = 1;
+                        } else if(hasLaboratoryUpgrade && (routerType == GrandDistilleryRouterType.PLUG_MID_LEFT || routerType == GrandDistilleryRouterType.PLUG_MID_RIGHT)) {
+                            mode = 1;
                         }
                     }
 
