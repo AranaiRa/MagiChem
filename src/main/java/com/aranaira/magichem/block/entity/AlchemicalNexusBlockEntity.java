@@ -445,8 +445,12 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                     if (marks.size() >= 1) {
                         Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair;
-                            if (marks.size() == 1) pair = marks.get(0);
-                            else pair = marks.get(anbe.shlorpIndex);
+                        if (marks.size() == 1) pair = marks.get(0);
+                        else {
+                            if(anbe.shlorpIndex >= marks.size())
+                                anbe.shlorpIndex = 0;
+                            pair = marks.get(anbe.shlorpIndex);
+                        }
 
                         if(pair.getFirst() != null) {
                             MateriaItem type = pair.getFirst().getMateriaType();
@@ -604,6 +608,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         anbe.resetProgress();
                         for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++)
                             anbe.itemHandler.getStackInSlot(i).shrink(1);
+                        anbe.setSatisfactionDemands(anbe.currentRecipe.getStages(true).get(anbe.craftingStage).componentMateria);
                         anbe.animStage = ANIM_STAGE_SHLORPS;
                         anbe.syncAndSave();
                     } else if(amountInTank > 0) {
@@ -1106,7 +1111,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             } else if (animStage == ANIM_STAGE_RAMP_CRAFTING ||
                     animStage == ANIM_STAGE_RAMP_CIRCLE ||
                     animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE ||
-                    animStage == ANIM_STAGE_CANCEL_CRAFTING_CIRCLE ||
                     animStage == ANIM_STAGE_SHLORPS ||
                     animStage == ANIM_STAGE_CRAFTING) {
                 orbPercent = 1f;
