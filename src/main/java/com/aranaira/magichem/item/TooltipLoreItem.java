@@ -167,6 +167,12 @@ public class TooltipLoreItem extends Item {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.LABORATORY_CHARM.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.laboratorycharm")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
