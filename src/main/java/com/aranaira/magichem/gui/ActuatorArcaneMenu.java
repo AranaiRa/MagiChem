@@ -26,8 +26,8 @@ public class ActuatorArcaneMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     private static final int
-            SLOT_INPUT_X = 75, SLOT_INPUT_Y = 13,
-            SLOT_OUTPUT_X = 66, SLOT_OUTPUT_Y = 43;
+            SLOT_INPUT_X = 84, SLOT_INPUT_Y = 16,
+            SLOT_OUTPUT_X = 84, SLOT_OUTPUT_Y = 39;
 
     public ActuatorArcaneMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorArcaneBlockEntity.DATA_COUNT));

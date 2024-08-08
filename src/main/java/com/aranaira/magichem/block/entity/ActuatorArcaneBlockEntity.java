@@ -5,14 +5,9 @@ import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.ActuatorArcaneMenu;
-import com.aranaira.magichem.gui.ActuatorArcaneScreen;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
-import com.mna.api.particles.MAParticleType;
-import com.mna.api.particles.ParticleInit;
-import com.mna.particles.types.movers.ParticleVelocityMover;
-import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -35,23 +29,23 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
-public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile {
+public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IFluidHandler, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
-            SAND_PER_OPERATION = {0, 45, 50, 55, 60, 70, 80, 90, 105, 120, 135, 155, 175, 200},
-            GRIME_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
+            SLURRY_PER_OPERATION = {0, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20},
+            SLURRY_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
     public static final int
             SLOT_COUNT = 2, SLOT_INPUT = 0, SLOT_OUTPUT = 1,
             DATA_COUNT = 4, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SLURRY = 3,
-            FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2,
-            STAMPER_ANIMATION_PERIOD = 10;
+            FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2;
     private int
             powerLevel = 1,
             remainingEldrinTime = -1,
@@ -59,9 +53,6 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
             flags;
     private float
             remainingEldrinForSatisfaction;
-    public float
-            stamperDepth = 0,
-            stamperDepthNextTick = 0;
     protected ContainerData data;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
@@ -129,20 +120,20 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
         return ELDRIN_POWER_USAGE[pPowerLevel];
     }
 
-    public int getSandPerOperation() {
-        return SAND_PER_OPERATION[this.powerLevel];
+    public int getSlurryGeneratedPerOperation() {
+        return SLURRY_PER_OPERATION[this.powerLevel];
     }
 
-    public static int getSandPerOperation(int pPowerLevel) {
-        return SAND_PER_OPERATION[pPowerLevel];
+    public static int getSlurryGeneratedPerOperation(int pPowerLevel) {
+        return SLURRY_PER_OPERATION[pPowerLevel];
     }
 
-    public int getGrimeReductionRate() {
-        return GRIME_REDUCTION[this.powerLevel];
+    public int getSlurryReductionRate() {
+        return SLURRY_REDUCTION[this.powerLevel];
     }
 
-    public static int getGrimeReductionRate(int pPowerLevel) {
-        return GRIME_REDUCTION[pPowerLevel];
+    public static int getSlurryReductionRate(int pPowerLevel) {
+        return SLURRY_REDUCTION[pPowerLevel];
     }
 
     public int getPowerLevel() {
@@ -246,7 +237,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
         }
     }
 
-    public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorArcaneBlockEntity entity) {
+    public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorArcaneBlockEntity entity, boolean consume) {
         Player ownerCheck = entity.getOwner();
         int powerDraw = entity.getEldrinPowerUsage();
 
@@ -282,6 +273,10 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
 
     }
 
+    public void generateAcademicSlurry() {
+
+    }
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
@@ -309,5 +304,40 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,2,1));
+    }
+
+    @Override
+    public int getTanks() {
+        return 0;
+    }
+
+    @Override
+    public @NotNull FluidStack getFluidInTank(int tank) {
+        return null;
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return 0;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
+        return false;
+    }
+
+    @Override
+    public int fill(FluidStack resource, FluidAction action) {
+        return 0;
+    }
+
+    @Override
+    public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
+        return null;
+    }
+
+    @Override
+    public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+        return null;
     }
 }

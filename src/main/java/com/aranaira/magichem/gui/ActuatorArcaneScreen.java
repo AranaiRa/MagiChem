@@ -29,7 +29,7 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
             SYMBOL_X = 36, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
-            POWER_X = 22, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
+            POWER_X = 33, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
             GRIME_X = 56, GRIME_Y = 15, GRIME_U = 176, GRIME_V = 40, GRIME_W = 4,
             RAREFIED_GRIME_X = 56, RAREFIED_GRIME_Y = 15, RAREFIED_GRIME_U = 180, RAREFIED_GRIME_V = 40, RAREFIED_GRIME_W = 1,
             SAND_X = 106, SAND_Y = 15, SAND_W = 4,
@@ -56,11 +56,11 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
     }
 
     private void initializePowerLevelButtons() {
-        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 20, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 31, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
             menu.incrementPowerLevel();
 
         }));
-        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 20, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 31, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
             menu.decrementPowerLevel();
 
         }));
@@ -184,23 +184,23 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
         Font font = Minecraft.getInstance().font;
 
         //Grime Reduction
-        if((menu.getFlags() & ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED) == ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED)
-            gui.drawString(font, Component.literal("-"+ActuatorArcaneBlockEntity.getGrimeReductionRate(menu.getPowerLevel())+"%"), 128, 17, 0xff000000, false);
-        else
-            gui.drawString(font, Component.literal("-"), 128, 17, 0xffaa0000, false);
+//        if((menu.getFlags() & ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED) == ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED)
+//            gui.drawString(font, Component.literal("-"+ActuatorArcaneBlockEntity.getGrimeReductionRate(menu.getPowerLevel())+"%"), 128, 17, 0xff000000, false);
+//        else
+//            gui.drawString(font, Component.literal("-"), 128, 17, 0xffaa0000, false);
 
         //Sand per Operation
-        gui.drawString(font, Component.literal(ActuatorArcaneBlockEntity.getSandPerOperation(menu.getPowerLevel())+"mB"), 128, 32, 0xff000000, false);
+//        gui.drawString(font, Component.literal(ActuatorArcaneBlockEntity.getSandPerOperation(menu.getPowerLevel())+"mB"), 128, 32, 0xff000000, false);
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorArcaneBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 128, 47, 0xff000000, false);
 
         //Warning label
-        if(menu.getSlurryInTank() < ActuatorArcaneBlockEntity.getSandPerOperation(menu.getPowerLevel())) {
-            MutableComponent warningText = Component.translatable("gui.magichem.insufficientslurry");
-            int width = Minecraft.getInstance().font.width(warningText.getString());
-            gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
-        }
+//        if(menu.getSlurryInTank() < ActuatorArcaneBlockEntity.getSandPerOperation(menu.getPowerLevel())) {
+//            MutableComponent warningText = Component.translatable("gui.magichem.insufficientslurry");
+//            int width = Minecraft.getInstance().font.width(warningText.getString());
+//            gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
+//        }
     }
 
     private int getScaledEldrinTime() {

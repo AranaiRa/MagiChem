@@ -134,6 +134,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 if(pre != pEntity.batchSize)
                     pEntity.syncAndSave();
             }
+            if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
+                ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, false);
+            }
         }
 
         pEntity.remainingHeat = Math.max(0, pEntity.remainingHeat - 1);
@@ -350,6 +353,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
                 if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
                     grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
+                }
+                if (dpbe instanceof ActuatorArcaneBlockEntity aabe) {
+                    aabe.generateAcademicSlurry();
                 }
             }
 

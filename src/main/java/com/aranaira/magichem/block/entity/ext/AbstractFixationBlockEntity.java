@@ -1,10 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
+import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
@@ -128,6 +125,9 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
 
                 if(pre != pEntity.batchSize)
                     pEntity.syncAndSave();
+            }
+            if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
+                ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, true);
             }
         }
 

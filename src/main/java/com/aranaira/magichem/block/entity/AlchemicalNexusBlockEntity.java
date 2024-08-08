@@ -74,14 +74,15 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected boolean
         isStalled = false, doDeferredRecipeLinkages = false;
     protected Random r = new Random();
+    protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
 
     public static final int
             FLUID_BAR_HEIGHT = 88,
             SLOT_COUNT = 17,
             SLOT_MARKS = 0, SLOT_PROGRESS_HOLDER = 1, SLOT_RECIPE = 2,
             SLOT_INPUT_START = 3, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT = 9,
-            DATA_COUNT = 5,
-            DATA_PROGRESS = 0, DATA_ANIM_STAGE = 1, DATA_CRAFTING_STAGE = 2, DATA_POWER_LEVEL = 3, DATA_FLUID_NEEDED = 4,
+            DATA_COUNT = 6,
+            DATA_PROGRESS = 0, DATA_ANIM_STAGE = 1, DATA_CRAFTING_STAGE = 2, DATA_POWER_LEVEL = 3, DATA_FLUID_NEEDED = 4, DATA_REDUCTION_RATE = 5,
             ANIM_STAGE_IDLE = 0,
             ANIM_STAGE_SHLORPS = 1, ANIM_STAGE_CRAFTING = 2, ANIM_STAGE_CRAFTING_IDLE = 3,
             ANIM_STAGE_RAMP_SPEEDUP = 11, ANIM_STAGE_RAMP_CIRCLE = 12, ANIM_STAGE_RAMP_CRAFTING = 13, ANIM_STAGE_RAMP_CRAFTING_SPEEDUP = 14, ANIM_STAGE_RAMP_CRAFTING_CIRCLE = 15,
@@ -93,7 +94,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             ITEM_SPEED_MIN = 0.0375f, ITEM_SPEED_MAX = 1.5f, ITEM_SCALE_START = 6f, ITEM_SCALE_END = 0f;
     public float
             crystalAngle = 0f, crystalRotSpeed = CRYSTAL_SPEED_MIN,
-            itemAngle = 0f, itemRotSpeed = ITEM_SPEED_MIN, itemScale = 7f;
+            itemAngle = 0f, itemRotSpeed = ITEM_SPEED_MIN, itemScale = 7f,
+            reductionRate = 0.0f;
 
     ////////////////////
     // CONSTRUCTOR
@@ -171,6 +173,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     case DATA_CRAFTING_STAGE -> craftingStage;
                     case DATA_POWER_LEVEL -> powerLevel;
                     case DATA_FLUID_NEEDED -> remainingFluidForSatisfaction;
+                    case DATA_REDUCTION_RATE -> (int)(reductionRate * 10000);
                     default -> -1;
                 };
             }
@@ -183,6 +186,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     case DATA_CRAFTING_STAGE -> AlchemicalNexusBlockEntity.this.craftingStage = pValue;
                     case DATA_POWER_LEVEL -> AlchemicalNexusBlockEntity.this.powerLevel = pValue;
                     case DATA_FLUID_NEEDED -> AlchemicalNexusBlockEntity.this.remainingFluidForSatisfaction = pValue;
+                    case DATA_REDUCTION_RATE -> AlchemicalNexusBlockEntity.this.reductionRate = pValue / 10000f;
                 }
             }
 
@@ -342,10 +346,23 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, E e) {
         if(e instanceof AlchemicalNexusBlockEntity anbe) {
+
             if(pLevel.isClientSide()) {
                 anbe.handleAnimationDrivers();
                 anbe.spawnParticles();
+            } else {
+                for (DirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
+                    if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
+                        ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pBlockState, arcane, true);
+                        float newReductionRate = arcane.getSlurryReductionRate() / 10000f;
+                        if(newReductionRate != anbe.reductionRate) {
+                            anbe.reductionRate = newReductionRate;
+                            anbe.syncAndSave();
+                        }
+                    }
+                }
             }
+
             if(anbe.doDeferredRecipeLinkages) {
                 if (!anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty() && anbe.currentRecipe == null) {
                     anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
@@ -630,6 +647,16 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
                     }
                     anbe.syncAndSave();
+                }
+            }
+
+            //deferred plugin linkage
+            if(!pLevel.isClientSide()) {
+                if (anbe.pluginLinkageCountdown == 0) {
+                    anbe.pluginLinkageCountdown = -1;
+                    anbe.linkPlugins();
+                } else if (anbe.pluginLinkageCountdown > 0) {
+                    anbe.pluginLinkageCountdown--;
                 }
             }
         }
@@ -1168,17 +1195,21 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
     @Override
     public void linkPlugins() {
-
+        pluginDevices.clear();
     }
 
     @Override
     public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
-
+        this.pluginDevices.remove(pPlugin);
+        if(pPlugin instanceof ActuatorArcaneBlockEntity) {
+            reductionRate = 0.0f;
+        }
+        syncAndSave();
     }
 
     @Override
     public void linkPluginsDeferred() {
-
+        pluginLinkageCountdown = 3;
     }
 
     ////////////////////
