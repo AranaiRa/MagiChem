@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
+import com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -62,7 +62,7 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         if(pPlacer instanceof Player player) {
-            ActuatorEarthBlockEntity awbe = (ActuatorEarthBlockEntity) pLevel.getBlockEntity(pPos);
+            ActuatorArcaneBlockEntity awbe = (ActuatorArcaneBlockEntity) pLevel.getBlockEntity(pPos);
             awbe.setOwner(player);
         }
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
@@ -84,8 +84,8 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {
-            if(be instanceof ActuatorEarthBlockEntity aebe) {
-                ActuatorEarthBlockEntity.setPaused(aebe, pLevel.hasNeighborSignal(pPos));
+            if(be instanceof ActuatorArcaneBlockEntity aebe) {
+                ActuatorArcaneBlockEntity.setPaused(aebe, pLevel.hasNeighborSignal(pPos));
             }
         }
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
@@ -95,15 +95,15 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
     public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
         super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        BlockState state = BlockRegistry.ACTUATOR_EARTH_ROUTER.get().defaultBlockState();
+        BlockState state = BlockRegistry.ACTUATOR_ARCANE_ROUTER.get().defaultBlockState();
         state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
-        state = state.setValue(BaseActuatorRouterBlock.ELEMENT, BaseActuatorRouterBlock.ELEMENT_EARTH);
+        state = state.setValue(BaseActuatorRouterBlock.ELEMENT, BaseActuatorRouterBlock.ELEMENT_ARCANE);
 
         BlockPos targetPos = pPos.offset(0,1,0);
         pLevel.setBlock(targetPos, state, 3);
         ((BaseActuatorRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, facing);
 
-        ActuatorEarthBlockEntity aebe = (ActuatorEarthBlockEntity) pLevel.getBlockEntity(pPos);
+        ActuatorArcaneBlockEntity aebe = (ActuatorArcaneBlockEntity) pLevel.getBlockEntity(pPos);
         ICanTakePlugins ictp = aebe.getTargetMachine();
         if(ictp != null)
             ictp.linkPluginsDeferred();
@@ -152,7 +152,7 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        ActuatorEarthBlockEntity aebe = (ActuatorEarthBlockEntity) level.getBlockEntity(pos);
+        ActuatorArcaneBlockEntity aebe = (ActuatorArcaneBlockEntity) level.getBlockEntity(pos);
         ICanTakePlugins ictp = aebe.getTargetMachine();
         if(ictp != null)
             ictp.removePlugin(aebe);
@@ -164,10 +164,10 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof ActuatorEarthBlockEntity aebe) {
-                NetworkHooks.openScreen((ServerPlayer)player, (ActuatorEarthBlockEntity)entity, pos);
+            if(entity instanceof ActuatorArcaneBlockEntity aebe) {
+                NetworkHooks.openScreen((ServerPlayer)player, (ActuatorArcaneBlockEntity)entity, pos);
             } else {
-                throw new IllegalStateException("ActuatorEarthBlockEntity container provider is missing!");
+                throw new IllegalStateException("ActuatorArcaneBlockEntity container provider is missing!");
             }
         }
 
@@ -177,14 +177,14 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ActuatorEarthBlockEntity(pos, state);
+        return new ActuatorArcaneBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_EARTH_BE.get()) {
-            return ActuatorEarthBlockEntity::tick;
+        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_ARCANE_BE.get()) {
+            return ActuatorArcaneBlockEntity::tick;
         }
 
         return null;

@@ -135,6 +135,7 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.ACTUATOR_FIRE_MENU.get(), ActuatorFireScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_EARTH_MENU.get(), ActuatorEarthScreen::new);
             MenuScreens.register(MenuRegistry.ACTUATOR_AIR_MENU.get(), ActuatorAirScreen::new);
+            MenuScreens.register(MenuRegistry.ACTUATOR_ARCANE_MENU.get(), ActuatorArcaneScreen::new);
             MenuScreens.register(MenuRegistry.CHARGING_TALISMAN_MENU.get(), ChargingTalismanScreen::new);
         }
 

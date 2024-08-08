@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.routers.ActuatorEarthRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.ActuatorArcaneRouterBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ public class ActuatorArcaneRouterBlock extends BaseActuatorRouterBlock implement
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new ActuatorEarthRouterBlockEntity(pPos, pState);
+        return new ActuatorArcaneRouterBlockEntity(pPos, pState);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ActuatorArcaneRouterBlock extends BaseActuatorRouterBlock implement
     @Override
     protected void spawnDestroyParticles(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
-        if(be instanceof ActuatorEarthRouterBlockEntity router) {
+        if(be instanceof ActuatorArcaneRouterBlockEntity router) {
             BlockState masterState = router.getMaster().getBlockState();
             pLevel.levelEvent(pPlayer, 2001, pPos, getId(masterState));
         }

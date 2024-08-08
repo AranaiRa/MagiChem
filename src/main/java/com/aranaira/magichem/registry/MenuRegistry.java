@@ -51,6 +51,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<ActuatorAirMenu>> ACTUATOR_AIR_MENU =
             registerMenuType(ActuatorAirMenu::new, "actuator_air");
 
+    public static final RegistryObject<MenuType<ActuatorArcaneMenu>> ACTUATOR_ARCANE_MENU =
+            registerMenuType(ActuatorArcaneMenu::new, "actuator_arcane");
+
     public static final RegistryObject<MenuType<ChargingTalismanMenu>> CHARGING_TALISMAN_MENU =
             registerMenuType(ChargingTalismanMenu::new, "charging_talisman");
 
