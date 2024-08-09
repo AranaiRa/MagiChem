@@ -176,11 +176,15 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         }
     }
 
+    public SimpleContainer getContentsOfOutputSlots() {
+        return getContentsOfOutputSlots(AbstractFixationBlockEntity::getVar);
+    }
+
     public SimpleContainer getContentsOfOutputSlots(Function<IDs, Integer> pVarFunc) {
         SimpleContainer output = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
 
         for(int i = pVarFunc.apply(IDs.SLOT_OUTPUT_START); i<pVarFunc.apply(IDs.SLOT_OUTPUT_START)+pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-            output.setItem(i-pVarFunc.apply(IDs.SLOT_OUTPUT_START), itemHandler.getStackInSlot(i).copy());
+            output.setItem(i-pVarFunc.apply(IDs.SLOT_OUTPUT_START), itemHandler.getStackInSlot(i));
         }
 
         return output;

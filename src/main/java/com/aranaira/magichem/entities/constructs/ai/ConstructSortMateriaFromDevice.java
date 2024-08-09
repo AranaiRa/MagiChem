@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.MateriaJarBlock;
 import com.aranaira.magichem.block.MateriaVesselBlock;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
@@ -130,11 +131,15 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             contents = adbe.getContentsOfOutputSlots();
         } else if(be instanceof AbstractSeparationBlockEntity asbe) {
             contents = asbe.getContentsOfOutputSlots();
+        } else if(be instanceof AbstractFixationBlockEntity asbe) {
+            contents = asbe.getContentsOfOutputSlots();
         } else if(be instanceof IRouterBlockEntity irbe) {
             BlockEntity mbe = irbe.getMaster();
             if(mbe instanceof AbstractDistillationBlockEntity adbe) {
                 contents = adbe.getContentsOfOutputSlots();
             } else if(mbe instanceof AbstractSeparationBlockEntity asbe) {
+                contents = asbe.getContentsOfOutputSlots();
+            } else if(mbe instanceof AbstractFixationBlockEntity asbe) {
                 contents = asbe.getContentsOfOutputSlots();
             }
         }
