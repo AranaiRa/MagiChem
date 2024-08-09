@@ -1,8 +1,11 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.ActuatorArcaneMenu;
 import com.aranaira.magichem.gui.ActuatorArcaneScreen;
@@ -69,11 +72,9 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(slot == SLOT_INPUT)
-                return true;
-            else if(slot == SLOT_OUTPUT)
-                return true;
-            return false;
+            boolean hasFluidCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
+            boolean isCrystalOfMemories = stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get();
+            return hasFluidCap || isCrystalOfMemories;
         }
     };
 
@@ -265,72 +266,96 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
             }
 
             if (!level.isClientSide()) {
-                ItemStack inputItem = aabe.itemHandler.getStackInSlot(SLOT_INPUT);
-                ItemStack outputItem = aabe.itemHandler.getStackInSlot(SLOT_OUTPUT);
+                //Handle item slots
+                {
+                    ItemStack inputItem = aabe.itemHandler.getStackInSlot(SLOT_INPUT);
+                    ItemStack outputItem = aabe.itemHandler.getStackInSlot(SLOT_OUTPUT);
 
-                //Fill the slurry buffer from a waiting item
-                if (inputItem != ItemStack.EMPTY) {
-                    LazyOptional<IFluidHandlerItem> inputCap = inputItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                    //Fill the slurry buffer from a waiting item
+                    if (inputItem != ItemStack.EMPTY) {
+                        LazyOptional<IFluidHandlerItem> inputCap = inputItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
 
-                    if (inputItem.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
-                        CompoundTag crystalNBT = inputItem.getOrCreateTag();
-                        if (crystalNBT.contains("stored_xp")) {
-                            int availableExperiencePoints = crystalNBT.getInt("stored_xp");
-                            int availableTankCapacity = aabe.getTankCapacity(0) - aabe.containedSlurry.getAmount();
+                        if (inputItem.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
+                            CompoundTag crystalNBT = inputItem.getOrCreateTag();
+                            if (crystalNBT.contains("stored_xp")) {
+                                int availableExperiencePoints = crystalNBT.getInt("stored_xp");
+                                int availableTankCapacity = aabe.getTankCapacity(0) - aabe.containedSlurry.getAmount();
 
-                            int pointsToConvert = Math.min(availableExperiencePoints, availableTankCapacity / Config.fluidPerXPPoint);
-                            aabe.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pointsToConvert * Config.fluidPerXPPoint), FluidAction.EXECUTE);
-                            crystalNBT.putInt("stored_xp", availableExperiencePoints - pointsToConvert);
-                            inputItem.setTag(crystalNBT);
+                                int pointsToConvert = Math.min(availableExperiencePoints, availableTankCapacity / Config.fluidPerXPPoint);
+                                aabe.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pointsToConvert * Config.fluidPerXPPoint), FluidAction.EXECUTE);
+                                crystalNBT.putInt("stored_xp", availableExperiencePoints - pointsToConvert);
+                                inputItem.setTag(crystalNBT);
+                            }
+                        } else if (inputCap.isPresent()) {
+                            IFluidHandlerItem handler = inputCap.resolve().get();
+
+                            if (handler.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                                FluidStack simulatedDrain = handler.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
+                                FluidStack executedFill = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), simulatedDrain.getAmount());
+                                executedFill.setAmount(aabe.fill(executedFill, FluidAction.EXECUTE));
+                                handler.drain(executedFill, FluidAction.EXECUTE);
+                            }
                         }
-                    } else if (inputCap.isPresent()) {
-                        IFluidHandlerItem handler = inputCap.resolve().get();
+                    }
 
-                        if (handler.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
-                            FluidStack simulatedDrain = handler.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
-                            FluidStack executedFill = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), simulatedDrain.getAmount());
-                            executedFill.setAmount(aabe.fill(executedFill, FluidAction.EXECUTE));
-                            handler.drain(executedFill, FluidAction.EXECUTE);
+                    //Empty the slurry buffer into a waiting item
+                    if (outputItem != ItemStack.EMPTY && aabe.containedSlurry.getAmount() > 0) {
+                        LazyOptional<IFluidHandlerItem> outputCap = outputItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+
+                        if (outputItem.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
+                            CompoundTag crystalNBT = outputItem.getOrCreateTag();
+
+                            int availableSlurry = aabe.containedSlurry.getAmount();
+                            int availableCrystalCapacity = 20000;
+                            int currentCrystalFill = 0;
+
+                            if (crystalNBT.contains("stored_xp")) {
+                                currentCrystalFill = crystalNBT.getInt("stored_xp");
+                                availableCrystalCapacity = Math.max(0, 20000 - currentCrystalFill);
+                            }
+
+                            int availableSlurryAsPoints = availableSlurry / Config.fluidPerXPPoint;
+                            int pointsToConvert = Math.min(availableSlurryAsPoints, availableCrystalCapacity);
+                            if (currentCrystalFill + pointsToConvert > availableCrystalCapacity) {
+                                pointsToConvert = currentCrystalFill + pointsToConvert - availableCrystalCapacity;
+                            }
+
+                            aabe.drain(pointsToConvert * Config.fluidPerXPPoint, FluidAction.EXECUTE);
+                            int newCrystalFill = Math.min(20000, Math.max(0, currentCrystalFill + pointsToConvert));
+
+                            crystalNBT.putInt("stored_xp", newCrystalFill);
+                            outputItem.setTag(crystalNBT);
+                        } else if (outputCap.isPresent()) {
+                            IFluidHandlerItem handler = outputCap.resolve().get();
+
+                            if (handler.getFluidInTank(0) == FluidStack.EMPTY || handler.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                                FluidStack simulatedDrain = aabe.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
+                                simulatedDrain.setAmount(Integer.MAX_VALUE - simulatedDrain.getAmount());
+                                FluidStack executedFill = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), simulatedDrain.getAmount());
+                                executedFill.setAmount(handler.fill(executedFill, FluidAction.EXECUTE));
+                                aabe.drain(executedFill, FluidAction.EXECUTE);
+                            }
                         }
                     }
                 }
 
-                //Empty the slurry buffer into a waiting item
-                if (outputItem != ItemStack.EMPTY && aabe.containedSlurry.getAmount() > 0) {
-                    LazyOptional<IFluidHandlerItem> outputCap = outputItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                //Handle pushing to device reservoirs
+                if((aabe.flags & FLAG_IS_REDUCTION_MODE) == FLAG_IS_REDUCTION_MODE) {
+                    ICanTakePlugins targetMachine = aabe.getTargetMachine();
+                    LazyOptional<IFluidHandler> fluidCap = LazyOptional.empty();
 
-                    if (outputItem.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
-                        CompoundTag crystalNBT = outputItem.getOrCreateTag();
+                    if(targetMachine instanceof FuseryRouterBlockEntity frbe) {
+                        fluidCap = frbe.getCapability(ForgeCapabilities.FLUID_HANDLER);
+                    } else if(targetMachine instanceof AlchemicalNexusRouterBlockEntity anrbe) {
+                        fluidCap = anrbe.getCapability(ForgeCapabilities.FLUID_HANDLER);
+                    }
 
-                        int availableSlurry = aabe.containedSlurry.getAmount();
-                        int availableCrystalCapacity = 20000;
-                        int currentCrystalFill = 0;
-
-                        if (crystalNBT.contains("stored_xp")) {
-                            currentCrystalFill = crystalNBT.getInt("stored_xp");
-                            availableCrystalCapacity = Math.max(0, 20000 - currentCrystalFill);
-                        }
-
-                        int availableSlurryAsPoints = availableSlurry / Config.fluidPerXPPoint;
-                        int pointsToConvert = Math.min(availableSlurryAsPoints, availableCrystalCapacity);
-                        if (currentCrystalFill + pointsToConvert > availableCrystalCapacity) {
-                            pointsToConvert = currentCrystalFill + pointsToConvert - availableCrystalCapacity;
-                        }
-
-                        aabe.drain(pointsToConvert * Config.fluidPerXPPoint, FluidAction.EXECUTE);
-                        int newCrystalFill = Math.min(20000, Math.max(0, currentCrystalFill + pointsToConvert));
-
-                        crystalNBT.putInt("stored_xp", newCrystalFill);
-                        outputItem.setTag(crystalNBT);
-                    } else if (outputCap.isPresent()) {
-                        IFluidHandlerItem handler = outputCap.resolve().get();
-
-                        if (handler.getFluidInTank(0) == FluidStack.EMPTY || handler.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
-                            FluidStack simulatedDrain = aabe.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
-                            simulatedDrain.setAmount(Integer.MAX_VALUE - simulatedDrain.getAmount());
-                            FluidStack executedFill = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), simulatedDrain.getAmount());
-                            executedFill.setAmount(handler.fill(executedFill, FluidAction.EXECUTE));
-                            aabe.drain(executedFill, FluidAction.EXECUTE);
+                    if(fluidCap.isPresent()) {
+                        IFluidHandler handler = fluidCap.resolve().get();
+                        int simulatedFill = handler.fill(aabe.containedSlurry, FluidAction.SIMULATE);
+                        if(simulatedFill > 0) {
+                            handler.fill(aabe.containedSlurry, FluidAction.EXECUTE);
+                            aabe.drain(simulatedFill, FluidAction.EXECUTE);
                         }
                     }
                 }

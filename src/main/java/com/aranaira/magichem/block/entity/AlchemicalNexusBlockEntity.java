@@ -1,13 +1,20 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.AlchemicalNexusBlock;
+import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
+import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.gui.AlchemicalNexusMenu;
 import com.aranaira.magichem.item.MateriaItem;
@@ -43,6 +50,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -1196,6 +1204,20 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     @Override
     public void linkPlugins() {
         pluginDevices.clear();
+
+        List<BlockEntity> query = new ArrayList<>();
+        for(Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection> posAndType : AlchemicalNexusBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            BlockEntity be = level.getBlockEntity(getBlockPos().offset(posAndType.getFirst()));
+            if(be != null)
+                query.add(be);
+        }
+
+        for(BlockEntity be : query) {
+            if (be instanceof AlchemicalNexusRouterBlockEntity anrbe) {
+                BlockEntity pe = anrbe.getPlugEntity();
+                if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            }
+        }
     }
 
     @Override
