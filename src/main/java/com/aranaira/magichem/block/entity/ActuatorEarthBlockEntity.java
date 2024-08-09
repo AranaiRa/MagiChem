@@ -433,7 +433,6 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
                 reduction = Math.round((float) pGrimeToAdd * ((float) getGrimeReductionRate()) / 100.0f);
                 insertion = pGrimeToAdd - reduction;
                 rarefied = Math.round(((float) Config.quakeRefineryRarefiedRate / 100.0f) * (float) reduction);
-
                 if (currentGrime + insertion > Config.quakeRefineryGrimeCapacity) {
                     overflow = insertion - (Config.quakeRefineryGrimeCapacity - currentGrime);
                     insertion = Config.quakeRefineryGrimeCapacity - currentGrime;
@@ -445,7 +444,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
         //Final application
         currentGrime += insertion;
-        currentRarefiedGrime += rarefied;
+        currentRarefiedGrime = Math.min(Config.quakeRefineryGrimeCapacity, currentRarefiedGrime + rarefied);
         syncAndSave();
         return overflow;
     }
