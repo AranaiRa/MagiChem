@@ -2541,6 +2541,49 @@
       }
     ]
   },
+  "Construct Pressure Plate": {
+    "index": 0,
+    "category": "artifice",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Construct Pressure Plate"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A modified version of a quicksilver pressure plate that will "
+          },
+          {
+            "text": "only activate",
+            "color": "dark_purple"
+          },
+          {
+            "text": " if a "
+          },
+          {
+            "text": "construct",
+            "color": "dark_purple"
+          },
+          {
+            "text": " steps on it.\n\nA Construct Pressure Plate always outputs a signal strength of 15."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "alchemical_infusion",
+        "location": "magichem:alchemical_infusion/magichem/construct_pressure_plate"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/silver_pressure_plate"
+      }
+    ]
+  },
   "Orb of Alchemical Creativity": {
     "index": -1000,
     "category": "magichem",
@@ -2584,7 +2627,7 @@
           },
           {
             "text": " to extract materia."
-          }
+          },
           {
             "text": ".\n\nYou can insert the orb into an Experience Exchanger. It acts as an "
           },

@@ -1,0 +1,19 @@
+{
+  "type": "magichem:alchemical_infusion",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:construct_pressure_plate"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:silver_pressure_plate" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_construct", "count": 1 }
+      ]
+    }
+  ]
+}

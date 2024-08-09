@@ -175,6 +175,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> CONSTRUCT_PRESSURE_PLATE = registerBlock("construct_pressure_plate",
+            () -> new ConstructPressurePlateBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> OCCULTED_CINDER = registerBlock("occulted_cinder",
             () -> new OccultedCinderBlock(BlockBehaviour.Properties.of()
                     .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false), false)
