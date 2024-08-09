@@ -378,11 +378,13 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             if(recipeItem == ItemStack.EMPTY) {
                 tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             } else {
+                int slurryCost = Math.round(menu.getCurrentRecipe().getSlurryCost() * ((100f - menu.getReductionRate()) / 100f));
+
                 tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
                         .append(Component.translatable("tooltip.magichem.gui.fixationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
-                        .append(Component.literal(menu.getCurrentRecipe().getSlurryCost()+"mB").withStyle(ChatFormatting.DARK_AQUA))
+                        .append(Component.literal(slurryCost+"mB").withStyle(ChatFormatting.DARK_AQUA))
                         .append(Component.translatable("tooltip.magichem.gui.fixationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
                 );
             }

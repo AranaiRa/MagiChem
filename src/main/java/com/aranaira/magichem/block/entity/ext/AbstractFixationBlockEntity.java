@@ -45,7 +45,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     protected LazyOptional<IFluidHandler> lazyFluidHandler;
     protected ContainerData data;
     protected int
-            progress = 0, batchSize = 1, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
+            progress = 0, batchSize = 1, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3, reductionRate = 0;
 
     protected ItemStackHandler itemHandler;
     protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -99,6 +99,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     ////////////////////
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractFixationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
+        pEntity.reductionRate = 0;
         for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
@@ -128,6 +129,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             }
             if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                 ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, true);
+                pEntity.reductionRate = arcane.getSlurryReductionRate();
             }
         }
 
@@ -218,7 +220,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             return false;
 
         //Can't craft if there's not enough Academic Slurry
-        if(pEntity.currentRecipe.getSlurryCost() > pEntity.containedSlurry.getAmount())
+        if(pEntity.currentRecipe.getSlurryCost() > pEntity.containedSlurry.getAmount() * ((100f - pEntity.reductionRate) / 100f))
             return false;
 
         //Can't craft if the bottle output is full
@@ -303,7 +305,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             }
 
             //Consume slurry
-            int slurryCost = pEntity.currentRecipe.getSlurryCost();
+            int slurryCost = Math.round((float)pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f));
             float reducedSlurryCost = (1.0f - (Config.fixationFailureRefund / 100.0f)) * slurryCost;
             pEntity.containedSlurry.shrink(postEfficiencyOutput.size() == 1 ? slurryCost : (int) reducedSlurryCost);
             pEntity.syncAndSave();

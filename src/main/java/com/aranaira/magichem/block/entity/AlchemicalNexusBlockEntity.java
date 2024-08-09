@@ -89,8 +89,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             SLOT_COUNT = 17,
             SLOT_MARKS = 0, SLOT_PROGRESS_HOLDER = 1, SLOT_RECIPE = 2,
             SLOT_INPUT_START = 3, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT = 9,
-            DATA_COUNT = 6,
-            DATA_PROGRESS = 0, DATA_ANIM_STAGE = 1, DATA_CRAFTING_STAGE = 2, DATA_POWER_LEVEL = 3, DATA_FLUID_NEEDED = 4, DATA_REDUCTION_RATE = 5,
+            DATA_COUNT = 5,
+            DATA_PROGRESS = 0, DATA_ANIM_STAGE = 1, DATA_CRAFTING_STAGE = 2, DATA_POWER_LEVEL = 3, DATA_FLUID_NEEDED = 4,
             ANIM_STAGE_IDLE = 0,
             ANIM_STAGE_SHLORPS = 1, ANIM_STAGE_CRAFTING = 2, ANIM_STAGE_CRAFTING_IDLE = 3,
             ANIM_STAGE_RAMP_SPEEDUP = 11, ANIM_STAGE_RAMP_CIRCLE = 12, ANIM_STAGE_RAMP_CRAFTING = 13, ANIM_STAGE_RAMP_CRAFTING_SPEEDUP = 14, ANIM_STAGE_RAMP_CRAFTING_CIRCLE = 15,
@@ -181,7 +181,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     case DATA_CRAFTING_STAGE -> craftingStage;
                     case DATA_POWER_LEVEL -> powerLevel;
                     case DATA_FLUID_NEEDED -> remainingFluidForSatisfaction;
-                    case DATA_REDUCTION_RATE -> (int)(reductionRate * 10000);
                     default -> -1;
                 };
             }
@@ -194,7 +193,6 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     case DATA_CRAFTING_STAGE -> AlchemicalNexusBlockEntity.this.craftingStage = pValue;
                     case DATA_POWER_LEVEL -> AlchemicalNexusBlockEntity.this.powerLevel = pValue;
                     case DATA_FLUID_NEEDED -> AlchemicalNexusBlockEntity.this.remainingFluidForSatisfaction = pValue;
-                    case DATA_REDUCTION_RATE -> AlchemicalNexusBlockEntity.this.reductionRate = pValue / 10000f;
                 }
             }
 
@@ -243,10 +241,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         nbt.putInt("craftingStage", this.craftingStage);
         nbt.putInt("remainingFluidForSatisfaction", this.remainingFluidForSatisfaction);
         nbt.putInt("powerLevel", this.powerLevel);
-        nbt.putInt("fluidContents", 0);
-        lazyFluidHandler.ifPresent(cap -> {
-            nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
-        });
+        nbt.putInt("fluidContents", this.containedSlurry.getAmount());
+        nbt.putFloat("reductionRate", this.reductionRate);
 
         nbt.putInt("numberOfDemands", satisfactionDemands.size());
         for(int i=0; i<satisfactionDemands.size(); i++) {
@@ -267,6 +263,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         craftingStage = nbt.getInt("craftingStage");
         remainingFluidForSatisfaction = nbt.getInt("remainingFluidForSatisfaction");
         powerLevel = nbt.getInt("powerLevel");
+        reductionRate = nbt.getFloat("reductionRate");
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -296,6 +293,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         nbt.putInt("craftingStage", this.craftingStage);
         nbt.putInt("remainingFluidForSatisfaction", this.remainingFluidForSatisfaction);
         nbt.putInt("powerLevel", this.powerLevel);
+        nbt.putFloat("reductionRate", this.reductionRate);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -359,10 +357,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 anbe.handleAnimationDrivers();
                 anbe.spawnParticles();
             } else {
+                anbe.reductionRate = 0;
                 for (DirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
                     if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                         ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pBlockState, arcane, true);
-                        float newReductionRate = arcane.getSlurryReductionRate() / 10000f;
+                        float newReductionRate = arcane.getSlurryReductionRate() / 100f;
                         if(newReductionRate != anbe.reductionRate) {
                             anbe.reductionRate = newReductionRate;
                             anbe.syncAndSave();
@@ -394,7 +393,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                             anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
                             anbe.cacheAnimSpec(true);
-                            anbe.remainingFluidForSatisfaction = fluidCost;
+                            anbe.remainingFluidForSatisfaction = Math.round((float)fluidCost * (1f - anbe.reductionRate));
                             anbe.syncAndSave();
                         }
                     }
@@ -548,7 +547,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         int fluidCost = experienceCost * Config.fluidPerXPPoint;
 
                         anbe.progress = anbe.cachedSpec.ticksInRampCancel;
-                        anbe.remainingFluidForSatisfaction = fluidCost;
+                        anbe.remainingFluidForSatisfaction = Math.round((float)fluidCost * (1f - anbe.reductionRate));
                         anbe.animStage = ANIM_STAGE_CRAFTING_IDLE;
                     }
                     //Otherwise, we're done

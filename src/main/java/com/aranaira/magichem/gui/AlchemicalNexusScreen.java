@@ -349,6 +349,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                         totalCost += is.experience * Config.fluidPerXPPoint;
                         totalCost += AlchemicalNexusBlockEntity.getBaseExperienceCostPerStage(menu.blockEntity.getPowerLevel());
                     }
+                    totalCost = Math.round((float)totalCost * (1f - menu.getReductionRate()));
 
                     tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                     tooltipContents.add(Component.empty());
@@ -594,7 +595,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-        int powerDraw = AlchemicalNexusBlockEntity.getBaseExperienceCostPerStage(menu.blockEntity.getPowerLevel());
+        int experienceDraw = AlchemicalNexusBlockEntity.getBaseExperienceCostPerStage(menu.blockEntity.getPowerLevel());
+        experienceDraw = Math.round((float)experienceDraw * (1f - menu.getReductionRate()));
 
         AlchemicalNexusAnimSpec animSpec = AlchemicalNexusBlockEntity.getAnimSpec(menu.blockEntity.getPowerLevel());
         int ticksToCraft = animSpec.ticksInRampSpeedup + animSpec.ticksInRampBeam + animSpec.ticksInRampCancel + animSpec.ticksToCraft;
@@ -602,13 +604,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         int secPartial = (ticksToCraft % 20) * 5;
 
         Font font = Minecraft.getInstance().font;
-        pGuiGraphics.drawString(font ,powerDraw+" mB", 208, 44, 0xff000000, false);
+        pGuiGraphics.drawString(font ,experienceDraw+" mB", 208, 44, 0xff000000, false);
         pGuiGraphics.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 63, 0xff000000, false);
-
-//        if(!menu.getHasSufficientPower()) {
-//            MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
-//            int width = Minecraft.getInstance().font.width(warningText.getString());
-//            pGuiGraphics.drawString(font, warningText, 89 - width/2, -33, 0xff000000, false);
-//        }
     }
 }

@@ -58,7 +58,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT  = 9,
             GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 88,
-            DATA_COUNT = 7, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5, DATA_BATCH_SIZE = 6,
+            DATA_COUNT = 8, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_TORQUE = 2, DATA_ANIMUS = 3, DATA_EFFICIENCY_MOD = 4, DATA_OPERATION_TIME_MOD = 5, DATA_BATCH_SIZE = 6, DATA_REDUCTION_RATE = 7,
             NO_TORQUE_GRACE_PERIOD = 20, TORQUE_GAIN_ON_COG_ACTIVATION = 36, ANIMUS_GAIN_ON_DUSTING = 12000;
     public static final float
             WHEEL_ACCELERATION_RATE = 0.375f, WHEEL_DECELERATION_RATE = 0.625f, WHEEL_TOP_SPEED = 20.0f,
@@ -134,6 +134,9 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                     case DATA_BATCH_SIZE: {
                         return FuseryBlockEntity.this.batchSize;
                     }
+                    case DATA_REDUCTION_RATE: {
+                        return FuseryBlockEntity.this.reductionRate;
+                    }
                     default: return -1;
                 }
             }
@@ -168,6 +171,10 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                     }
                     case DATA_BATCH_SIZE: {
                         batchSize = pValue;
+                        break;
+                    }
+                    case DATA_REDUCTION_RATE: {
+                        reductionRate = pValue;
                         break;
                     }
                 }

@@ -83,6 +83,10 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
         }
     }
 
+    public float getReductionRate() {
+        return blockEntity.reductionRate;
+    }
+
     public int getSlurryInTank() {
         return blockEntity.getFluidInTank(0).getAmount();
     }

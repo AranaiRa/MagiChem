@@ -120,6 +120,10 @@ public class FuseryMenu extends AbstractContainerMenu {
         return data.get(FuseryBlockEntity.DATA_PROGRESS);
     }
 
+    public int getReductionRate() {
+        return data.get(FuseryBlockEntity.DATA_REDUCTION_RATE);
+    }
+
     public int getGrime() {
         return data.get(FuseryBlockEntity.DATA_GRIME);
     }
