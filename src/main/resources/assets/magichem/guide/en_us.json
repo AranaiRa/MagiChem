@@ -1381,6 +1381,73 @@
       }
     ]
   },
+  "Occult Matrix": {
+    "index": "1305",
+    "category": "magichem",
+    "tier": 4,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Occult Matrix"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Occult Matrix",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an Elemental Actuator that uses Arcane Eldrin Power.\n\nWhen modifying an alchemical device that consumes Academic Slurry, the Occult Matrix "
+          },
+          {
+            "text": "reduces the amount of Slurry consumed",
+            "color": "dark_purple"
+          },
+          {
+            "text": " by a large percentage. The device will also draw from the Occult Matrix's substantial reservoir of Academic Slurry if any is present.\n\nWhen modifying an alchemical device that doesn't consume Academic Slurry, the Occult Matrix will instead "
+          },
+          {
+            "text": "create a small amount of Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": " whenever the linked device completes an operation.\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The leftmost gauge lets you tell the Occult Matrix how much Eldrin power to use each cycle. The elemental arcane symbol to its right displays the amount of time remaining until more Eldrin power is consumed.\n\nTo the right of this, there is a fluid tanks that holds a substantial amount of "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nUrns, tanks, or Crystals of Memories placed in the upper item slot next to the Academic Slurry tank will try to dump their contents into the reservoir, while such items placed in the lower item slot will try to fill themselves from the reservoir instead.\n\nThe rightmost area of the interface shows you what the current Academic Slurry reduction or creation rate is as well the amount of Eldrin power consumed each cycle."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/actuator_arcane"
+      }
+    ]
+  },
   "Grime": {
     "index": "1212",
     "category": "magichem",
@@ -2543,7 +2610,7 @@
   },
   "Construct Pressure Plate": {
     "index": 0,
-    "category": "artifice",
+    "category": "magichem_wonders",
     "sections": [
       {
         "type": "title",
@@ -2554,7 +2621,7 @@
         "value": "",
         "json": [
           {
-            "text": "A modified version of a quicksilver pressure plate that will "
+            "text": "An alchemically modified version of a quicksilver pressure plate that will "
           },
           {
             "text": "only activate",
@@ -2629,7 +2696,7 @@
             "text": " to extract materia."
           },
           {
-            "text": ".\n\nYou can insert the orb into an Experience Exchanger. It acts as an "
+            "text": ".\n\nYou can insert the orb into an Experience Exchanger or an Occult Matrix. It acts as an "
           },
           {
             "text": "infinite source",
@@ -2637,6 +2704,16 @@
           },
           {
             "text": " of Academic Slurry."
+          },
+          {
+            "text": ".\n\nYou can insert the orb into a Quake Refinery or an Occult Matrix. It acts as an "
+          },
+          {
+            "text": "infinite source",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of Sand."
           }
         ]
       }
@@ -2815,8 +2892,60 @@
         "value": "",
         "json": [
           {
-            "text": "Codex entry TBD.",
-            "italic": "true"
+            "text": "The "
+          },
+          {
+            "text": "Grand Distillery",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is the pinnacle of all devices capable of peforming "
+          },
+          {
+            "text": "Distillation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", boasting greatly improved "
+          },
+          {
+            "text": "Efficiency",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and two additional Elemental Actuator ports over the Distillery.\n\nUnlike the Alembic and the Distillery, the Grand Distillery requires FE from a "
+          },
+          {
+            "text": "Circle of Power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in order to run. The amount of FE required can be controlled; higher FE usage results in faster distillations.\n\nAt Tier 5, the Grand Distillery can be upgraded to have 6 Elemental Actuator ports using a "
+          },
+          {
+            "text": "Laboratory Charm",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The tall, leftmost slot is for fluids and is currently unimplemented.",
+            "italic": true
+          },
+          {
+            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
+            "italic": false
           }
         ]
       }
@@ -2825,6 +2954,64 @@
       {
         "type": "alchemical_infusion",
         "location": "magichem:alchemical_infusion/magichem/grand_distillery"
+      },
+      {
+        "type": "eldrin_altar",
+        "location": "magichem:eldrin_altar/laboratory_charm"
+      }
+    ]
+  },
+  "Laboratory Charm": {
+    "index": "1299",
+    "category": "magichem",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Laboratory Charm"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Inspired by the Runeforge-altering properties of the Brimstone Charm, the "
+          },
+          {
+            "text": "Laboratory Charm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be used to upgrade a "
+          },
+          {
+            "text": "Grand Centrifuge",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Grand Distillery",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", or "
+          },
+          {
+            "text": "Grand Fusery",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to have 6 ports for Elemental Actuators instead of 4."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "eldrin_altar",
+        "location": "magichem:eldrin_altar/laboratory_charm"
       }
     ]
   },
