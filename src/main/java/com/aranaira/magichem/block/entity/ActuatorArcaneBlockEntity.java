@@ -12,6 +12,7 @@ import com.aranaira.magichem.gui.ActuatorArcaneScreen;
 import com.aranaira.magichem.gui.ActuatorWaterScreen;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.items.ItemInit;
@@ -74,7 +75,8 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             boolean hasFluidCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
             boolean isCrystalOfMemories = stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get();
-            return hasFluidCap || isCrystalOfMemories;
+            boolean isDebugOrb = stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+            return hasFluidCap || isCrystalOfMemories || (slot == SLOT_INPUT && isDebugOrb);
         }
     };
 
@@ -299,6 +301,11 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
                                 executedFill.setAmount(aabe.fill(executedFill, FluidAction.EXECUTE));
                                 handler.drain(executedFill, FluidAction.EXECUTE);
                             }
+                        } else if (inputItem.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                            if(aabe.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get())
+                                aabe.containedSlurry.setAmount(aabe.getTankCapacity(0));
+                            else
+                                aabe.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), aabe.getTankCapacity(0));
                         }
                     }
 
