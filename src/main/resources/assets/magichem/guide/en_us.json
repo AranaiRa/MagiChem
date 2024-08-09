@@ -377,7 +377,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ", an alchemical alloy of transmuted silver, chimerite, and some Admixtures made on the Manaweaving Altar."
+            "text": ", an alchemical alloy of quicksilver, chimerite, and some Admixtures made on the Manaweaving Altar."
           }
         ]
       }
@@ -418,7 +418,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " combines the magical conductivity of gold with the alchemical inertness of transmuted silver. The resultant alloy amplifies the alchemical magic of materia, but is unaffected by physical contact."
+            "text": " combines the magical conductivity of gold with the alchemical inertness of quicksilver. The resultant alloy amplifies the alchemical magic of materia, but is unaffected by physical contact."
           }
         ]
       }
@@ -581,28 +581,28 @@
         "location": "magichem:shaped/circle_power"
       }]
   },
-  "Grains of Transmuted Silver": {
+  "Grains of Quicksilver": {
     "index": "1404",
     "category": "magichem",
     "tier": 2,
     "sections": [
       {
         "type": "title",
-        "value": "Grains of Transmuted Silver"
+        "value": "Grains of Quicksilver"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "Grains of Transmuted Silver",
+            "text": "Grains of Quicksilver",
             "color": "dark_purple"
           },
           {
-            "text": " are the most basic energy-generating reagent used in the Circle of Power. Grains of Transmuted Silver can be made at Tier 2 by having a Construct crush a Transmuted Silver ingot.\n\nThe Grains have a very short burn time and eject a "
+            "text": " are the most basic energy-generating reagent used in the Circle of Power. Grains of Quicksilver can be made at Tier 2 by having a Construct crush a Quicksilver ingot.\n\nThe Grains have a very short burn time and eject a "
           },
           {
-            "text": "Tarnished Silver Lump",
+            "text": "Tarnished Quicksilver Lump",
             "color": "dark_purple"
           },
           {
@@ -619,7 +619,7 @@
         "value": "",
         "json": [
           {
-            "text": "The Tarnished Silver Lump can be crushed by a Construct back into Grains of Transmuted Silver."
+            "text": "The Tarnished Quicksilver Lump can be crushed by a Construct back into Grains of Quicksilver."
           }
         ]
       }
@@ -660,7 +660,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is a more advanced energy-generating reagent used in the Circle of Power. Focusing Catalysts can be made at Tier 3 by pounding a block of Transmuted Silver into a "
+            "text": " is a more advanced energy-generating reagent used in the Circle of Power. Focusing Catalysts can be made at Tier 3 by pounding a block of Quicksilver into a "
           },
           {
             "text": "Catalyst Core",
@@ -841,7 +841,7 @@
         "value": "",
         "json": [
           {
-            "text": "A silver gear on one corner of the device can be cranked to operate the device—either manually, with a construct set to "
+            "text": "A quicksilver gear on one corner of the device can be cranked to operate the device—either manually, with a construct set to "
           },
           {
             "text": "Activate",
@@ -2203,7 +2203,7 @@
         "value": "",
         "json": [
           {
-            "text": "An alloy that combines the workability of gold with the inertness of transmuted silver, "
+            "text": "An alloy that combines the workability of gold with the inertness of Quicksilver, "
           },
           {
             "text": "Perfected Electrum",
@@ -2246,7 +2246,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " takes its name from the shifting hues of chimerite blended into transmuted silver and amplified with Admixture of Color.\n\nIris Argenti is used to create "
+            "text": " takes its name from the shifting hues of chimerite blended into Quicksilver and amplified with Admixture of Color.\n\nIris Argenti is used to create "
           },
           {
             "text": "Magic Circles",
@@ -2505,20 +2505,20 @@
       }
     ]
   },
-  "Silver Buttons and Pressure Plates": {
+  "Quicksilver Buttons and Pressure Plates": {
     "index": 0,
     "category": "artifice",
     "sections": [
       {
         "type": "title",
-        "value": "Silver Buttons and Pressure Plates"
+        "value": "Quicksilver Buttons and Pressure Plates"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "A recreation of simple redstone devices made with magical materials.\n\nWhen a silver button or pressure plate is activated, it gives off a redstone signal "
+            "text": "A recreation of simple redstone devices made with magical materials.\n\nWhen a Quicksilver button or pressure plate is activated, it gives off a redstone signal "
           },
           {
             "text": "equal to one plus the activator's Tier",
