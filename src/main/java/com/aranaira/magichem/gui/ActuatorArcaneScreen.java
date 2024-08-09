@@ -33,12 +33,12 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
             GRIME_X = 56, GRIME_Y = 15, GRIME_U = 176, GRIME_V = 40, GRIME_W = 4,
             RAREFIED_GRIME_X = 56, RAREFIED_GRIME_Y = 15, RAREFIED_GRIME_U = 180, RAREFIED_GRIME_V = 40, RAREFIED_GRIME_W = 1,
             SAND_X = 106, SAND_Y = 15, SAND_W = 4,
-            TOOLTIP_POWER_X = 20, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
-            TOOLTIP_GRIME_X = 55, TOOLTIP_GRIME_Y = 14, TOOLTIP_GRIME_W = 6, TOOLTIP_GRIME_H = 35,
-            TOOLTIP_SAND_X = 105, TOOLTIP_SAND_Y = 14, TOOLTIP_SAND_W = 6, TOOLTIP_SAND_H = 35,
-            TOOLTIP_GRIMEREDUCTION_X = 114, TOOLTIP_GRIMEREDUCTION_Y = 10, TOOLTIP_GRIMEREDUCTION_W = 46, TOOLTIP_GRIMEREDUCTION_H = 11,
-            TOOLTIP_SANDCONSUMPTION_X = 114, TOOLTIP_SANDCONSUMPTION_Y = 25, TOOLTIP_SANDCONSUMPTION_W = 46, TOOLTIP_SANDCONSUMPTION_H = 11,
-            TOOLTIP_ELDRIN_X = 114, TOOLTIP_ELDRIN_Y = 40, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 11;
+            TOOLTIP_POWER_X = 31, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
+            TOOLTIP_SLURRY_X = 65, TOOLTIP_SLURRY_Y = 13, TOOLTIP_SLURRY_W = 12, TOOLTIP_SLURRY_H = 37,
+            TOOLTIP_INPUT_X = 82, TOOLTIP_INPUT_Y = 10, TOOLTIP_INPUT_S = 20,
+            TOOLTIP_OUTPUT_X = 82, TOOLTIP_OUTPUT_Y = 33, TOOLTIP_OUTPUT_S = 20,
+            TOOLTIP_EXPERIENCE_X = 104, TOOLTIP_EXPERIENCE_Y = 14, TOOLTIP_EXPERIENCE_W = 46, TOOLTIP_EXPERIENCE_H = 13,
+            TOOLTIP_ELDRIN_X = 104, TOOLTIP_ELDRIN_Y = 36, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 13;
     public static final int
             FLUID_GAUGE_H = 33;
     private ImageButton
@@ -86,6 +86,15 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
         int sH = getScaledEldrinTime();
         int sY = SYMBOL_H - sH;
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
+
+        //change icon for generator mode
+        if(menu.getIsReductionMode()) {
+            gui.blit(TEXTURE, x + 105, y + 15, 176, 40, 11, 11);
+        }
+
+        //water gauge
+        int slurryH = ActuatorArcaneBlockEntity.getScaledSlurry(menu.getSlurryInTank());
+        gui.blit(TEXTURE_SLURRY, x + 67, y + 15 + FLUID_GAUGE_H - slurryH, 0, 0, 8, slurryH, 16, 16);
     }
 
     @Override
@@ -125,36 +134,40 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
-        //progress symbol
-        int sH = getScaledEldrinTime();
-        int sY = SYMBOL_H - sH;
-        gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
-
-        //Grime Reduction Rate
-        if(mouseX >= x+TOOLTIP_GRIMEREDUCTION_X && mouseX <= x+TOOLTIP_GRIMEREDUCTION_X+TOOLTIP_GRIMEREDUCTION_W &&
-                mouseY >= y+TOOLTIP_GRIMEREDUCTION_Y && mouseY <= y+TOOLTIP_GRIMEREDUCTION_Y+TOOLTIP_GRIMEREDUCTION_H) {
+        //Slurry tank
+        if(mouseX >= x+TOOLTIP_SLURRY_X && mouseX <= x+TOOLTIP_SLURRY_X+TOOLTIP_SLURRY_W &&
+                mouseY >= y+TOOLTIP_SLURRY_Y && mouseY <= y+TOOLTIP_SLURRY_Y+TOOLTIP_SLURRY_H) {
 
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.arcane.tank").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.arcane.tank.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(Config.quakeRefineryRarefiedRate+"% ").withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction.line2")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.arcane.tank.line2").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(menu.getSlurryInTank() + " / " + Config.occultMatrixTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", ActuatorArcaneBlockEntity.getSlurryPercent(menu.getSlurryInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
-        //Sand Consumption Rate
-        if(mouseX >= x+TOOLTIP_SANDCONSUMPTION_X && mouseX <= x+TOOLTIP_SANDCONSUMPTION_X+TOOLTIP_SANDCONSUMPTION_W &&
-                mouseY >= y+TOOLTIP_SANDCONSUMPTION_Y && mouseY <= y+TOOLTIP_SANDCONSUMPTION_Y+TOOLTIP_SANDCONSUMPTION_H) {
+        if(mouseX >= x+TOOLTIP_EXPERIENCE_X && mouseX <= x+TOOLTIP_EXPERIENCE_X+TOOLTIP_EXPERIENCE_W &&
+                mouseY >= y+TOOLTIP_EXPERIENCE_Y && mouseY <= y+TOOLTIP_EXPERIENCE_Y+TOOLTIP_EXPERIENCE_H) {
 
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.sandconsume").withStyle(ChatFormatting.GOLD))
-                    .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.sandconsume.line1")));
-            tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.sandconsume.line2"));
+            //Reduction Mode
+            if(menu.getIsReductionMode()) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.actuator.slurryreduction").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.actuator.slurryreduction.line1")));
+            } else {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.actuator.slurrygeneration").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.actuator.slurrygeneration.line1")));
+            }
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
@@ -183,24 +196,16 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
     protected void renderLabels(GuiGraphics gui, int mouseX, int mouseY) {
         Font font = Minecraft.getInstance().font;
 
-        //Grime Reduction
-//        if((menu.getFlags() & ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED) == ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED)
-//            gui.drawString(font, Component.literal("-"+ActuatorArcaneBlockEntity.getGrimeReductionRate(menu.getPowerLevel())+"%"), 128, 17, 0xff000000, false);
-//        else
-//            gui.drawString(font, Component.literal("-"), 128, 17, 0xffaa0000, false);
-
-        //Sand per Operation
-//        gui.drawString(font, Component.literal(ActuatorArcaneBlockEntity.getSandPerOperation(menu.getPowerLevel())+"mB"), 128, 32, 0xff000000, false);
+        if(menu.getIsReductionMode()) {
+            //Reduction rate
+            gui.drawString(font, Component.literal("-" + ActuatorArcaneBlockEntity.getSlurryReductionRate(menu.getPowerLevel())+"%"), 120, 21, 0xff000000, false);
+        } else {
+            //Generation rate
+            gui.drawString(font, Component.literal("" + ActuatorArcaneBlockEntity.getSlurryGeneratedPerOperation(menu.getPowerLevel())+" mB"), 120, 21, 0xff000000, false);
+        }
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorArcaneBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 128, 47, 0xff000000, false);
-
-        //Warning label
-//        if(menu.getSlurryInTank() < ActuatorArcaneBlockEntity.getSandPerOperation(menu.getPowerLevel())) {
-//            MutableComponent warningText = Component.translatable("gui.magichem.insufficientslurry");
-//            int width = Minecraft.getInstance().font.width(warningText.getString());
-//            gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
-//        }
+        gui.drawString(font, Component.literal(""+ActuatorArcaneBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 120, 43, 0xff000000, false);
     }
 
     private int getScaledEldrinTime() {

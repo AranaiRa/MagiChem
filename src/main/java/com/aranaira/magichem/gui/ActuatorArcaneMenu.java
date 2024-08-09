@@ -81,6 +81,10 @@ public class ActuatorArcaneMenu extends AbstractContainerMenu {
         return data.get(ActuatorArcaneBlockEntity.DATA_SLURRY);
     }
 
+    public boolean getIsReductionMode() {
+        return (this.data.get(ActuatorArcaneBlockEntity.DATA_FLAGS) & ActuatorArcaneBlockEntity.FLAG_IS_REDUCTION_MODE) == ActuatorArcaneBlockEntity.FLAG_IS_REDUCTION_MODE;
+    }
+
     public void incrementPowerLevel() {
         int previous = getPowerLevel();
         int current = Math.min(13, getPowerLevel() + 1);

@@ -5,9 +5,13 @@ import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.ActuatorArcaneMenu;
+import com.aranaira.magichem.gui.ActuatorArcaneScreen;
+import com.aranaira.magichem.gui.ActuatorWaterScreen;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
+import com.mna.items.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,12 +29,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -45,11 +52,10 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     public static final int
             SLOT_COUNT = 2, SLOT_INPUT = 0, SLOT_OUTPUT = 1,
             DATA_COUNT = 4, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SLURRY = 3,
-            FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2;
+            FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2, FLAG_IS_REDUCTION_MODE = 4;
     private int
             powerLevel = 1,
             remainingEldrinTime = -1,
-            containedSlurry = 0,
             flags;
     private float
             remainingEldrinForSatisfaction;
@@ -72,6 +78,9 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
+
+    private FluidStack containedSlurry = FluidStack.EMPTY;
 
     public ActuatorArcaneBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -88,7 +97,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
                     case DATA_REMAINING_ELDRIN_TIME -> ActuatorArcaneBlockEntity.this.remainingEldrinTime;
                     case DATA_POWER_LEVEL -> ActuatorArcaneBlockEntity.this.powerLevel;
                     case DATA_FLAGS -> ActuatorArcaneBlockEntity.this.flags;
-                    case DATA_SLURRY -> ActuatorArcaneBlockEntity.this.containedSlurry;
+                    case DATA_SLURRY -> ActuatorArcaneBlockEntity.this.containedSlurry.getAmount();
                     default -> -1;
                 };
             }
@@ -99,7 +108,13 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
                     case DATA_REMAINING_ELDRIN_TIME -> ActuatorArcaneBlockEntity.this.remainingEldrinTime = pValue;
                     case DATA_POWER_LEVEL -> ActuatorArcaneBlockEntity.this.powerLevel = pValue;
                     case DATA_FLAGS -> ActuatorArcaneBlockEntity.this.flags = pValue;
-                    case DATA_SLURRY -> ActuatorArcaneBlockEntity.this.containedSlurry = pValue;
+                    case DATA_SLURRY -> {
+                        if(ActuatorArcaneBlockEntity.this.containedSlurry == FluidStack.EMPTY) {
+                            ActuatorArcaneBlockEntity.this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pValue);
+                        } else {
+                            ActuatorArcaneBlockEntity.this.containedSlurry.setAmount(pValue);
+                        }
+                    }
                 }
             }
 
@@ -136,6 +151,18 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
         return SLURRY_REDUCTION[pPowerLevel];
     }
 
+    public static float getSlurryPercent(int pSlurryAmount) {
+        return (float)pSlurryAmount * 100f / Config.occultMatrixTankCapacity;
+    }
+
+    public float getSlurryPercent() {
+        return (float)this.data.get(DATA_SLURRY) / Config.occultMatrixTankCapacity;
+    }
+
+    public static int getScaledSlurry(int pSlurryAmount) {
+        return pSlurryAmount * ActuatorArcaneScreen.FLUID_GAUGE_H / Config.occultMatrixTankCapacity;
+    }
+
     public int getPowerLevel() {
         return this.powerLevel;
     }
@@ -158,7 +185,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
-        nbt.putInt("containedSlurry", containedSlurry);
+        nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
@@ -171,7 +198,10 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
         this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
         this.powerLevel = nbt.getInt("powerLevel");
-        this.containedSlurry = nbt.getInt("containedSlurry");
+        if(this.containedSlurry == FluidStack.EMPTY)
+            this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), nbt.getInt("containedSlurry"));
+        else
+            this.containedSlurry.setAmount(nbt.getInt("containedSlurry"));
         this.flags = nbt.getInt("flags");
 
         if(nbt.contains("owner"))
@@ -182,6 +212,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyFluidHandler = LazyOptional.of(() -> this);
     }
 
     @Override
@@ -190,7 +221,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("remainingEldrinTime", remainingEldrinTime);
         nbt.putInt("powerLevel", powerLevel);
-        nbt.putInt("containedSlurry", containedSlurry);
+        nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
@@ -228,18 +259,59 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        if(t instanceof ActuatorArcaneBlockEntity aebe) {
+        if(t instanceof ActuatorArcaneBlockEntity aabe) {
             if (level.isClientSide()) {
-                aebe.handleAnimationDrivers();
+                aabe.handleAnimationDrivers();
             }
 
-            //fill and empty from the slurry buffer
+            ItemStack inputItem = aabe.itemHandler.getStackInSlot(SLOT_INPUT);
+            ItemStack outputItem = aabe.itemHandler.getStackInSlot(SLOT_OUTPUT);
+
+            //Fill the slurry buffer from a waiting item
+            if(inputItem != ItemStack.EMPTY) {
+                LazyOptional<IFluidHandlerItem> inputCap = inputItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+
+                if (inputItem.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
+
+                } else if (inputCap.isPresent()) {
+                    IFluidHandlerItem handler = inputCap.resolve().get();
+
+                    if(handler.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                        FluidStack simulatedDrain = handler.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
+                        FluidStack executedFill = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), simulatedDrain.getAmount());
+                        executedFill.setAmount(aabe.fill(executedFill, FluidAction.EXECUTE));
+                        handler.drain(executedFill, FluidAction.EXECUTE);
+                    }
+                }
+            }
+
+            //Empty the slurry buffer into a waiting item
+            if(outputItem != ItemStack.EMPTY) {
+                LazyOptional<IFluidHandlerItem> outputCap = outputItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+
+                if (outputItem.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
+
+                } else if (outputCap.isPresent()) {
+                    IFluidHandlerItem handler = outputCap.resolve().get();
+
+                    if(handler.getFluidInTank(0) == FluidStack.EMPTY || handler.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                        FluidStack simulatedDrain = aabe.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
+                        simulatedDrain.setAmount(Integer.MAX_VALUE - simulatedDrain.getAmount());
+                        FluidStack executedFill = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), simulatedDrain.getAmount());
+                        executedFill.setAmount(handler.fill(executedFill, FluidAction.EXECUTE));
+                        aabe.drain(executedFill, FluidAction.EXECUTE);
+                    }
+                }
+            }
         }
     }
 
-    public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorArcaneBlockEntity entity, boolean consume) {
+    public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorArcaneBlockEntity entity, boolean reductionMode) {
         Player ownerCheck = entity.getOwner();
         int powerDraw = entity.getEldrinPowerUsage();
+
+        if(reductionMode) entity.flags = entity.flags | FLAG_IS_REDUCTION_MODE;
+        else entity.flags = entity.flags & ~FLAG_IS_REDUCTION_MODE;
 
         if(ownerCheck != null && !getIsPaused(entity)) {
             float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.ARCANE, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
@@ -249,7 +321,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
             if(entity.remainingEldrinTime <= 0) {
                 if(entity.remainingEldrinForSatisfaction <= 0) {
                     entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.quakeRefineryOperationTime;
+                    entity.remainingEldrinTime = Config.occultMatrixOperationTime;
                 }
 
                 if(!getIsSatisfied(entity)) {
@@ -280,6 +352,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
+        if(cap == ForgeCapabilities.FLUID_HANDLER) return lazyFluidHandler.cast();
 
         return super.getCapability(cap, side);
     }
@@ -288,6 +361,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     public void invalidateCaps() {
         super.invalidateCaps();
         this.lazyItemHandler.invalidate();
+        this.lazyFluidHandler.invalidate();
     }
 
     @Override
@@ -308,36 +382,84 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
 
     @Override
     public int getTanks() {
-        return 0;
+        return 1;
     }
 
     @Override
     public @NotNull FluidStack getFluidInTank(int tank) {
-        return null;
+        return containedSlurry;
     }
 
     @Override
     public int getTankCapacity(int tank) {
-        return 0;
+        return Config.occultMatrixTankCapacity;
     }
 
     @Override
     public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-        return false;
+        return stack.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get();
     }
 
     @Override
-    public int fill(FluidStack resource, FluidAction action) {
+    public int fill(FluidStack fluidStack, FluidAction fluidAction) {
+        if(fluidAction.execute()) {
+            setChanged();
+            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
+
+        Fluid fluid = fluidStack.getFluid();
+        int incomingAmount = fluidStack.getAmount();
+        if(fluid == FluidRegistry.ACADEMIC_SLURRY.get()) {
+            int extantAmount = containedSlurry.getAmount();
+            int query = Config.occultMatrixTankCapacity - (incomingAmount + extantAmount);
+
+            //Hit capacity
+            if(query < 0) {
+                int actualTransfer = Config.occultMatrixTankCapacity - extantAmount;
+                if(fluidAction == FluidAction.EXECUTE)
+                    this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), extantAmount + actualTransfer);
+                return actualTransfer;
+            } else {
+                if(fluidAction == FluidAction.EXECUTE)
+                    this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), extantAmount + incomingAmount);
+                return incomingAmount;
+            }
+        }
         return 0;
     }
 
     @Override
-    public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
-        return null;
+    public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
+        if(fluidAction.execute()) {
+            setChanged();
+            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        }
+
+        //Steam is extract only
+        Fluid fluid = fluidStack.getFluid();
+        int incomingAmount = fluidStack.getAmount();
+        if(fluid == FluidRegistry.ACADEMIC_SLURRY.get()) {
+            int extantAmount = containedSlurry.getAmount();
+            if(extantAmount >= incomingAmount) {
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedSlurry.shrink(incomingAmount);
+                setChanged();
+                return new FluidStack(fluid, incomingAmount);
+            } else {
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedSlurry = FluidStack.EMPTY;
+                if(incomingAmount - extantAmount > 0)
+                    setChanged();
+                return new FluidStack(fluid, incomingAmount - extantAmount);
+            }
+        }
+        return fluidStack;
     }
 
     @Override
-    public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
-        return null;
+    public @NotNull FluidStack drain(int maxDrain, FluidAction fluidAction) {
+        if(containedSlurry.getAmount() > 0)
+            setChanged();
+        return drain(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), maxDrain), fluidAction);
     }
 }

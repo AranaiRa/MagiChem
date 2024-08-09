@@ -262,6 +262,16 @@ public class Config
             .comment("The amount of Smoke and Steam, in mB, the Gale Pressurizer's internal tanks can hold.")
             .defineInRange("galePressurizerTankCapacity", 2000, 500, Integer.MAX_VALUE);
 
+    //----------------GALE PRESSURIZER
+
+    private static final ForgeConfigSpec.IntValue OCCULT_MATRIX_OPERATION_TIME = BUILDER
+            .comment("The amount of time, in ticks, an Occult Matrix goes between drawing more Eldrin power.")
+            .defineInRange("occultMatrixOperationTime", 300, 1, 6000);
+
+    private static final ForgeConfigSpec.IntValue OCCULT_MATRIX_TANK_CAPACITY = BUILDER
+            .comment("The amount of Academic Slurry, in mB, the Gale Pressurizer's internal tanks can hold.")
+            .defineInRange("occultMatrixTankCapacity", 72000, 500, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -318,7 +328,9 @@ public class Config
         quakeRefineryGrimeCapacity,
         quakeRefineryRarefiedRate,
         galePressurizerOperationTime,
-        galePressurizerTankCapacity;
+        galePressurizerTankCapacity,
+        occultMatrixOperationTime,
+        occultMatrixTankCapacity;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -382,5 +394,7 @@ public class Config
         quakeRefineryRarefiedRate = QUAKE_REFINERY_RAREFIED_RATE.get();
         galePressurizerOperationTime = GALE_PRESSURIZER_OPERATION_TIME.get();
         galePressurizerTankCapacity = GALE_PRESSURIZER_TANK_CAPACITY.get();
+        occultMatrixOperationTime = OCCULT_MATRIX_OPERATION_TIME.get();
+        occultMatrixTankCapacity = OCCULT_MATRIX_TANK_CAPACITY.get();
     }
 }
