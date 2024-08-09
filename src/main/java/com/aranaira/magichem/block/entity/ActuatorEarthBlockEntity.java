@@ -82,7 +82,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             if(slot == SLOT_SAND)
-                return stack.getItem().equals(Items.SAND);
+                return stack.getItem().equals(Items.SAND) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
             return false;
         }
     };
@@ -261,7 +261,10 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
 
             if (!getIsPaused(aebe)) {
                 //Fill the internal sand buffer
-                if (Config.quakeRefinerySandCapacity - aebe.remainingSand >= 1000) {
+                if(aebe.itemHandler.getStackInSlot(SLOT_SAND).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                    aebe.remainingSand = Config.quakeRefinerySandCapacity;
+                }
+                else if (Config.quakeRefinerySandCapacity - aebe.remainingSand >= 1000) {
                     ItemStack sandStack = aebe.itemHandler.getStackInSlot(SLOT_SAND);
                     if (!sandStack.isEmpty()) {
                         sandStack.shrink(1);
