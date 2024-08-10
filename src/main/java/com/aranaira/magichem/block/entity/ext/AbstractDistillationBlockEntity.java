@@ -365,7 +365,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             }
         }
 
-        resolveActuators(pEntity);
+        resolveActuators(pEntity, totalCycles);
     }
 
     protected static void craftRandomAdmixture(AbstractDistillationBlockEntity pEntity, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
@@ -408,7 +408,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             }
         }
 
-        resolveActuators(pEntity);
+        resolveActuators(pEntity, totalCycles);
     }
 
     ////////////////////
@@ -477,7 +477,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         }
     }
 
-    public static void resolveActuators(AbstractDistillationBlockEntity pEntity) {
+    public static void resolveActuators(AbstractDistillationBlockEntity pEntity, int pCyclesCompleted) {
         for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             dpbe.processCompletedOperation();
         }

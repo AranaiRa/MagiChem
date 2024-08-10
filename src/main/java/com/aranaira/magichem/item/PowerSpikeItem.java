@@ -2,6 +2,8 @@ package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
+import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -69,9 +71,27 @@ public class PowerSpikeItem extends BlockItem {
 
     @Override
     public InteractionResult place(BlockPlaceContext context) {
+        float cd = context.getPlayer().getCooldowns().getCooldownPercent(BlockRegistry.POWER_SPIKE.get().asItem(), 0);
+
+        if(cd > 0) {
+            return InteractionResult.PASS;
+        }
+
         CompoundTag tag = null;
-        if(context.getItemInHand().hasTag())
+        if(context.getItemInHand().hasTag()) {
             tag = context.getItemInHand().getTag();
+            if(!tag.contains("magichem.powerspike.targetpos")) {
+                if(!context.getLevel().isClientSide())
+                    context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.nosource"));
+                context.getPlayer().getCooldowns().addCooldown(BlockRegistry.POWER_SPIKE.get().asItem(), 20);
+                return InteractionResult.PASS;
+            }
+        } else {
+            if(!context.getLevel().isClientSide())
+                context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.nosource"));
+            context.getPlayer().getCooldowns().addCooldown(BlockRegistry.POWER_SPIKE.get().asItem(), 20);
+            return InteractionResult.PASS;
+        }
         InteractionResult result = super.place(context);
 
         if(!context.getLevel().isClientSide) {
@@ -85,9 +105,9 @@ public class PowerSpikeItem extends BlockItem {
                         PowerSpikeBlockEntity typedEntity = (PowerSpikeBlockEntity) entity;
 
                         typedEntity.setPowerDrawPos(drawPos);
+                    } else {
+                        context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.nosource"));
                     }
-                } else {
-                    context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.nosource"));
                 }
             }
         }
