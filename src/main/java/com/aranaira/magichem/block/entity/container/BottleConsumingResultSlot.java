@@ -22,11 +22,12 @@ public class BottleConsumingResultSlot extends SlotItemHandler {
     @Override
     public @NotNull ItemStack remove(int amount) {
         ItemStack bottles = getItemHandler().getStackInSlot(bottleIndex);
-        if(bottles.getItem() == ItemRegistry.DEBUG_ORB.get())
+        if(bottles.getItem() == ItemRegistry.DEBUG_ORB.get()) {
             return super.remove(amount);
-
-        int amountToRemove = Math.min(amount, bottles.getCount());
-        bottles.shrink(amountToRemove);
-        return super.remove(amountToRemove);
+        } else {
+            int amountToRemove = Math.min(amount, bottles.getCount());
+            bottles.shrink(amountToRemove);
+            return super.remove(amountToRemove);
+        }
     }
 }

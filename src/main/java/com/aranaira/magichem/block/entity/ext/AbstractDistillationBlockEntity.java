@@ -320,10 +320,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         for(int batch=0; batch<pEntity.batchSize; batch++) {
             totalCycles++;
             if(!canCraftItem(pEntity, pRecipe, pVarFunc)) {
-//                totalCycles = batch + 1;
                 break;
             } else if (pEntity.itemHandler.getStackInSlot(pProcessingSlot).isEmpty()) {
-//                totalCycles = batch + 1;
                 break;
             }
 
