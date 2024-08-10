@@ -55,7 +55,7 @@ public class ConstructCleanAlchemicalApparatus extends ConstructAITask<Construct
                                     if(construct.asEntity() instanceof IFluidHandler ifh) {
                                         ifh.drain(100, IFluidHandler.FluidAction.EXECUTE);
                                     }
-                                    CommonEventHelper.generateWasteFromCleanedApparatus(construct.asEntity().level(), bewe, null);
+                                    CommonEventHelper.generateWasteFromCleanedApparatus(null, construct.asEntity().level(), bewe, null);
                                 } else {
                                     this.phase = ETaskPhase.WAIT_TO_FAIL;
                                     this.pushDiagnosticMessage("I don't have enough water to clean the apparatus. Sorry, boss!", false);

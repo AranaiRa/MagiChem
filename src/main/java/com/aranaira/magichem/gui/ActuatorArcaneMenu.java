@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity;
+import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -114,7 +115,7 @@ public class ActuatorArcaneMenu extends AbstractContainerMenu {
             SLOT_INVENTORY_COUNT = 36;
     Pair<Item, Integer>[] DIRSPEC = null;
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
-            new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
+            new Vector2i(SLOT_INVENTORY_COUNT + ActuatorArcaneBlockEntity.SLOT_INPUT, ActuatorArcaneBlockEntity.SLOT_COUNT)
     };
     Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)

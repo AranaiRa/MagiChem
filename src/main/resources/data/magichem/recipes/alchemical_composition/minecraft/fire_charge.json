@@ -1,0 +1,13 @@
+{
+  "type": "magichem:alchemical_composition",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:fire_charge" },
+  "components": [
+    { "item": "magichem:essentia_fire", "count": 20 },
+    { "item": "magichem:admixture_energy", "count": 4 },
+    { "item": "magichem:admixture_instrument", "count": 4 },
+    { "item": "magichem:essentia_mineral", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

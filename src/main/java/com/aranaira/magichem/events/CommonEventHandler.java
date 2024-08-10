@@ -119,7 +119,7 @@ public class CommonEventHandler {
             }
             else if(stack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
                 if (bewe.getGrimeFromData() > 0) {
-                    CommonEventHelper.generateWasteFromCleanedApparatus(event.getLevel(), bewe, stack);
+                    CommonEventHelper.generateWasteFromCleanedApparatus(event.getEntity(), event.getLevel(), bewe, stack);
                 }
             } else if(stack.getItem() == ItemRegistry.LABORATORY_CHARM.get()) {
                 if(target instanceof GrandDistilleryBlockEntity gdbe) {
