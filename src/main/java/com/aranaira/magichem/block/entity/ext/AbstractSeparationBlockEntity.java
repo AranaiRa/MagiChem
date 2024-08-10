@@ -321,7 +321,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         }
         Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
-        resolveActuators(pEntity);
+        resolveActuators(pEntity, totalCycles);
     }
 
     ////////////////////
@@ -381,9 +381,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         }
     }
 
-    public static void resolveActuators(AbstractSeparationBlockEntity pEntity) {
+    public static void resolveActuators(AbstractSeparationBlockEntity pEntity, int pCyclesCompleted) {
         for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            dpbe.processCompletedOperation();
+            dpbe.processCompletedOperation(pCyclesCompleted);
         }
     }
 

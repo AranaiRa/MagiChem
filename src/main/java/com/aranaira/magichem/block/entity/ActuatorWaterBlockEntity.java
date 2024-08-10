@@ -232,8 +232,8 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     }
 
     @Override
-    public void processCompletedOperation() {
-        int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess());
+    public void processCompletedOperation(int pCyclesCompleted) {
+        int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess() * pCyclesCompleted);
         containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Math.min(newTotal, Config.delugePurifierTankCapacity));
     }
 

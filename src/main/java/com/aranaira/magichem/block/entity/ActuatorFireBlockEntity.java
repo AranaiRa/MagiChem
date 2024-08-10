@@ -298,8 +298,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
     }
 
     @Override
-    public void processCompletedOperation() {
-        int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSmoke.getAmount() + getSmokePerProcess());
+    public void processCompletedOperation(int pCyclesCompleted) {
+        int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSmoke.getAmount() + getSmokePerProcess() * pCyclesCompleted);
         containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Math.min(newTotal, Config.delugePurifierTankCapacity));
         syncAndSave();
     }

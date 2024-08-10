@@ -46,5 +46,5 @@ public abstract class DirectionalPluginBlockEntity extends BlockEntity {
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
-    public abstract void processCompletedOperation();
+    public abstract void processCompletedOperation(int pCyclesCompleted);
 }

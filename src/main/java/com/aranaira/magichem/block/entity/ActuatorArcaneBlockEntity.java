@@ -238,9 +238,9 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     }
 
     @Override
-    public void processCompletedOperation() {
+    public void processCompletedOperation(int pCyclesCompleted) {
         if((flags & FLAG_IS_REDUCTION_MODE) == 0) {
-            fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), getSlurryGeneratedPerOperation()), FluidAction.EXECUTE);
+            fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), getSlurryGeneratedPerOperation() * pCyclesCompleted), FluidAction.EXECUTE);
         }
 
         syncAndSave();

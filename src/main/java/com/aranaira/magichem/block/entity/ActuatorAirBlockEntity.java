@@ -264,7 +264,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
     }
 
     @Override
-    public void processCompletedOperation() {
+    public void processCompletedOperation(int pCyclesCompleted) {
         consumeGasses();
     }
 

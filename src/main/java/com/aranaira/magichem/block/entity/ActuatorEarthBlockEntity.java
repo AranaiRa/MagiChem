@@ -230,7 +230,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
     }
 
     @Override
-    public void processCompletedOperation() {
+    public void processCompletedOperation(int pCyclesCompleted) {
         syncAndSave();
     }
 

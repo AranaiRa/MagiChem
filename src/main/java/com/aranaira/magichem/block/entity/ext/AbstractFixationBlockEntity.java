@@ -333,7 +333,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         }
         Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
-        resolveActuators(pEntity);
+        resolveActuators(pEntity, totalCycles);
     }
 
     ////////////////////
@@ -477,9 +477,9 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         }
     }
 
-    public static void resolveActuators(AbstractFixationBlockEntity pEntity) {
+    public static void resolveActuators(AbstractFixationBlockEntity pEntity, int pCyclesCompleted) {
         for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            dpbe.processCompletedOperation();
+            dpbe.processCompletedOperation(pCyclesCompleted);
         }
     }
 

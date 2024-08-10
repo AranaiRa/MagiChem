@@ -318,11 +318,12 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
         int totalCycles = 0;
         for(int batch=0; batch<pEntity.batchSize; batch++) {
+            totalCycles++;
             if(!canCraftItem(pEntity, pRecipe, pVarFunc)) {
-                totalCycles = batch;
+//                totalCycles = batch + 1;
                 break;
             } else if (pEntity.itemHandler.getStackInSlot(pProcessingSlot).isEmpty()) {
-                totalCycles = batch;
+//                totalCycles = batch + 1;
                 break;
             }
 
@@ -479,7 +480,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     public static void resolveActuators(AbstractDistillationBlockEntity pEntity, int pCyclesCompleted) {
         for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            dpbe.processCompletedOperation();
+            dpbe.processCompletedOperation(pCyclesCompleted);
         }
     }
 
