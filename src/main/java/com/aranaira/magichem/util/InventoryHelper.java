@@ -34,11 +34,13 @@ public class InventoryHelper {
         if(pTargetSlot >= pInventoryRange.x && pTargetSlot < pInventoryRange.y) {
 
             //First we check to see if the targeted item is part of the direct specs
-            for(Pair<Item, Integer> pair : pDirectSpec) {
-                if(pair.getFirst().equals(modStack.getItem())) {
-                    moveItemStackTo(pSlots, modStack, pair.getSecond(), pair.getSecond()+1, false);
-                    if(modStack.isEmpty())
-                        break;
+            if(pDirectSpec != null) {
+                for (Pair<Item, Integer> pair : pDirectSpec) {
+                    if (pair.getFirst().equals(modStack.getItem())) {
+                        moveItemStackTo(pSlots, modStack, pair.getSecond(), pair.getSecond() + 1, false);
+                        if (modStack.isEmpty())
+                            break;
+                    }
                 }
             }
 

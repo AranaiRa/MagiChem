@@ -115,7 +115,9 @@ public class ActuatorArcaneMenu extends AbstractContainerMenu {
             SLOT_INVENTORY_COUNT = 36;
     Pair<Item, Integer>[] DIRSPEC = null;
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
-            new Vector2i(SLOT_INVENTORY_COUNT + ActuatorArcaneBlockEntity.SLOT_INPUT, ActuatorArcaneBlockEntity.SLOT_COUNT)
+            new Vector2i(SLOT_INVENTORY_COUNT + ActuatorArcaneBlockEntity.SLOT_INPUT,
+                         SLOT_INVENTORY_COUNT + ActuatorArcaneBlockEntity.SLOT_INPUT + ActuatorArcaneBlockEntity.SLOT_COUNT),
+            new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
     Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
