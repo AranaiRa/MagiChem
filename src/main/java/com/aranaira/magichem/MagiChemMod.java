@@ -163,6 +163,11 @@ public class MagiChemMod
             event.register(ActuatorArcaneBlockEntityRenderer.RENDERER_MODEL_CUBE_VAR1);
             event.register(ActuatorArcaneBlockEntityRenderer.RENDERER_MODEL_CUBE_VAR2);
 
+            event.register(VariegatorBlockEntityRenderer.RENDERER_MODEL_LIMB_ABOVE);
+            event.register(VariegatorBlockEntityRenderer.RENDERER_MODEL_LIMB_LONG);
+            event.register(VariegatorBlockEntityRenderer.RENDERER_MODEL_LIMB_SHORT);
+            event.register(VariegatorBlockEntityRenderer.RENDERER_MODEL_SHARD);
+
             event.register(AlchemicalNexusBlockEntityRenderer.RENDERER_MODEL_CRYSTAL);
 
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_COM);

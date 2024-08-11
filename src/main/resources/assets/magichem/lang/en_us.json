@@ -72,6 +72,8 @@
   "block.magichem.actuator_fire_router": "Inferno Engine",
   "block.magichem.actuator_water": "Deluge Purifier",
   "block.magichem.actuator_water_router": "Deluge Purifier",
+  "block.magichem.variegator": "Variegator",
+  "block.magichem.variegator_router": "Variegator",
   "block.magichem.experience_exchanger": "Experience Exchanger",
   "block.magichem.alchemical_nexus": "Alchemical Nexus",
   "block.magichem.alchemical_nexus_router": "Alchemical Nexus",

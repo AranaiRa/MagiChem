@@ -122,6 +122,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(ActuatorArcaneRouterBlockEntity::new, BlockRegistry.ACTUATOR_ARCANE_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<VariegatorBlockEntity>> VARIEGATOR_BE = BLOCK_ENTITIES.register("variegator", () ->
+            BlockEntityType.Builder.of(VariegatorBlockEntity::new, BlockRegistry.VARIEGATOR.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<ExperienceExchangerBlockEntity>> EXPERIENCE_EXCHANGER_BE = BLOCK_ENTITIES.register("experience_exchanger", () ->
             BlockEntityType.Builder.of(ExperienceExchangerBlockEntity::new, BlockRegistry.EXPERIENCE_EXCHANGER.get()).build(null)
     );
