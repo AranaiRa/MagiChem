@@ -15,6 +15,8 @@ import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec2;
 import org.joml.Matrix3f;
@@ -760,6 +762,87 @@ public class RenderUtils {
 
         //render that shit!
 
+    }
+
+    public static void generateLinearVolumetricBeam(Vector3 pStartPos, Vector3 pEndPos, float pRadius, TextureAtlasSprite pTexture, int[] pRGBA, float pFillPercent, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float u1, float v1, float u2, float v2) {
+        //Generate important vectors and vertex data
+        Vector3 fwd = pEndPos.sub(pStartPos).normalize();
+        Vector3 left = Vector3.crossProduct(fwd, Vector3.up()).normalize();
+        Vector3 up = Vector3.crossProduct(fwd, left).normalize();
+
+        QuadVertData startRing = new QuadVertData(
+                new SingleVertex(pStartPos.add(new Vector3(up.x, up.y, up.z).scale(pRadius))),
+                new SingleVertex(pStartPos.add(new Vector3(up.x, up.y, up.z).scale(-pRadius))),
+                new SingleVertex(pStartPos.add(new Vector3(left.x, left.y, left.z).scale(pRadius))),
+                new SingleVertex(pStartPos.add(new Vector3(left.x, left.y, left.z).scale(-pRadius)))
+        );
+        QuadVertData endRing = new QuadVertData(
+                new SingleVertex(Vector3.lerp(pStartPos, pEndPos, pFillPercent)
+                        .add(new Vector3(up.x, up.y, up.z).scale(pRadius))),
+                new SingleVertex(Vector3.lerp(pStartPos, pEndPos, pFillPercent)
+                        .add(new Vector3(up.x, up.y, up.z).scale(-pRadius))),
+                new SingleVertex(Vector3.lerp(pStartPos, pEndPos, pFillPercent)
+                        .add(new Vector3(left.x, left.y, left.z).scale(pRadius))),
+                new SingleVertex(Vector3.lerp(pStartPos, pEndPos, pFillPercent)
+                        .add(new Vector3(left.x, left.y, left.z).scale(-pRadius)))
+        );
+
+        VertexConsumer vertexBuilder = pBuffer.getBuffer(RenderType.translucentNoCrumbling());
+        Matrix4f renderMatrix = pPoseStack.last().pose();
+        Matrix3f normalMatrix = pPoseStack.last().normal();
+
+        //Positive Horizontal
+        {
+            pPoseStack.pushPose();
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    startRing.a.x, startRing.a.y, startRing.a.z, u1*16, v2*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    endRing.a.x, endRing.a.y, endRing.a.z, u1*16, v1*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    endRing.b.x, endRing.b.y, endRing.b.z, u2*16, v1*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    startRing.b.x, startRing.b.y, startRing.b.z, u2*16, v2*16, 0, 0, pRGBA);
+            pPoseStack.popPose();
+        }
+        //Negative Horizontal
+        {
+            pPoseStack.pushPose();
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    startRing.b.x, startRing.b.y, startRing.b.z, u1*16, v2*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    endRing.b.x, endRing.b.y, endRing.b.z, u1*16, v1*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    endRing.a.x, endRing.a.y, endRing.a.z, u2*16, v1*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    startRing.a.x, startRing.a.y, startRing.a.z, u2*16, v2*16, 0, 0, pRGBA);
+            pPoseStack.popPose();
+        }
+        //Positive Vertical
+        {
+            pPoseStack.pushPose();
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    startRing.c.x, startRing.c.y, startRing.c.z, u1*16, v2*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    endRing.c.x, endRing.c.y, endRing.c.z, u1*16, v1*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    endRing.d.x, endRing.d.y, endRing.d.z, u2*16, v1*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    startRing.d.x, startRing.d.y, startRing.d.z, u2*16, v2*16, 0, 0, pRGBA);
+            pPoseStack.popPose();
+        }
+        //Negative Vertical
+        {
+            pPoseStack.pushPose();
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    startRing.d.x, startRing.d.y, startRing.d.z, u1*16, v2*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    endRing.d.x, endRing.d.y, endRing.d.z, u1*16, v1*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    endRing.c.x, endRing.c.y, endRing.c.z, u2*16, v1*16, 0, 0, pRGBA);
+            addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
+                    startRing.c.x, startRing.c.y, startRing.c.z, u2*16, v2*16, 0, 0, pRGBA);
+            pPoseStack.popPose();
+        }
     }
 
     private static float mapRangeToModifiedDrawLerp(float pDrawLerp, float pStart, float pEnd) {

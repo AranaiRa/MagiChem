@@ -8,7 +8,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/variegator_short.obj"
+      "model": "magichem:models/obj/variegator_limb_short.obj"
     }
   }
 }
