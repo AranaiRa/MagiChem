@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.VariegatorBlockEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.items.ItemInit;
@@ -60,11 +61,19 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
         float rotS = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 360) / 360f) * -360f;
         DyeColor color = DyeColor.LIGHT_BLUE;
 
+        pPoseStack.pushPose();
+        if(!pBlockEntity.getBlockState().getValue(MagiChemBlockStateProperties.GROUNDED)){
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
+            pPoseStack.translate(0, -1, -1);
+        }
+
         this.renderItem(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight, pPackedOverlay, rotL, rotS);
         this.renderLimbs(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight, pPackedOverlay, color, rotL, rotS);
         this.renderBeams(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight, pPackedOverlay, color, rotL, rotS);
         this.renderShards(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight, pPackedOverlay, color);
         this.renderColorShell(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight, pPackedOverlay, color);
+
+        pPoseStack.popPose();
     }
 
     private void renderItem(VariegatorBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay, float pRotL, float pRotS) {
