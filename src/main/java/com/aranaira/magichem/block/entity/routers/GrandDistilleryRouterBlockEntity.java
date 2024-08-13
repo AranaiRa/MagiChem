@@ -1,6 +1,5 @@
 package com.aranaira.magichem.block.entity.routers;
 
-import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
@@ -31,6 +30,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
+
 public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice {
     private BlockPos masterPos;
     private GrandDistilleryBlockEntity master;
@@ -46,14 +48,14 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
     }
 
     public GrandDistilleryRouterType getRouterType() {
-        return GrandDistilleryRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(GrandDistilleryRouterBlock.ROUTER_TYPE));
+        return GrandDistilleryRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_GRAND_DISTILLERY));
     }
 
     public DevicePlugDirection getPlugDirection() {
-        GrandDistilleryRouterType type = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(GrandDistilleryRouterBlock.ROUTER_TYPE));
+        GrandDistilleryRouterType type = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_GRAND_DISTILLERY));
 
         if(type == GrandDistilleryRouterType.PLUG_MID_LEFT || type == GrandDistilleryRouterType.PLUG_MID_RIGHT){
-            if(getBlockState().getValue(GrandDistilleryBlock.HAS_LABORATORY_UPGRADE)) {
+            if(getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
                 return this.plugDirection;
             } else {
                 return DevicePlugDirection.NONE;

@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -27,11 +28,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.block.FuseryRouterBlock.*;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
+
 public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity {
     private BlockPos masterPos;
     private FuseryBlockEntity master;
-    private FuseryRouterType routerType = FuseryRouterType.NONE;
-    private Direction facing;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
     private int packedData;
 
@@ -40,11 +42,23 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
     }
 
     public Direction getFacing() {
-        return this.facing;
+        return getBlockState().getValue(FACING);
     }
 
     public FuseryRouterType getRouterType() {
-        return this.routerType;
+        int routerType = getBlockState().getValue(ROUTER_TYPE_FUSERY);
+        if(routerType == ROUTER_TYPE_PLUG_LEFT) {
+            return FuseryRouterType.PLUG_LEFT;
+        } else if(routerType == ROUTER_TYPE_PLUG_RIGHT) {
+            return FuseryRouterType.PLUG_RIGHT;
+        } else if(routerType == ROUTER_TYPE_COG) {
+            return FuseryRouterType.COG;
+        }else if(routerType == ROUTER_TYPE_TANK_RIGHT) {
+            return FuseryRouterType.TANK_RIGHT;
+        } else if(routerType == ROUTER_TYPE_TANK_ACROSS) {
+            return FuseryRouterType.TANK_ACROSS;
+        }
+        return FuseryRouterType.NONE;
     }
 
     public DevicePlugDirection getPlugDirection() {
@@ -62,10 +76,8 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
         return getLevel().getBlockEntity(target);
     }
 
-    public void configure(BlockPos pMasterPos, FuseryRouterType pRouterType, Direction pFacing, DevicePlugDirection pPlugDirection) {
+    public void configure(BlockPos pMasterPos, DevicePlugDirection pPlugDirection) {
         this.masterPos = pMasterPos;
-        this.routerType = pRouterType;
-        this.facing = pFacing;
         this.plugDirection = pPlugDirection;
         getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
     }
@@ -127,7 +139,7 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8 | mapFacingToBitpack(facing) << 4 | mapTypeToBitpack(routerType));
+        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8);
         super.saveAdditional(nbt);
     }
 
@@ -136,8 +148,6 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
         super.load(nbt);
         masterPos = BlockPos.of(nbt.getLong("masterPos"));
         int typeAndFacing = nbt.getInt("typeAndFacing");
-        routerType = unmapTypeFromBitpack(typeAndFacing & 15);
-        facing = unmapFacingFromBitpack((typeAndFacing >> 4) & 15);
         plugDirection = unmapPlugDirFromBitpack(typeAndFacing >> 8);
     }
 
@@ -152,7 +162,7 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
         CompoundTag nbt = new CompoundTag();
 
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8 | mapFacingToBitpack(facing) << 4 | mapTypeToBitpack(routerType));
+        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8);
 
         return nbt;
     }

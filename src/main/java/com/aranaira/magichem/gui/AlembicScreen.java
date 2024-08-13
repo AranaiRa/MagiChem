@@ -4,6 +4,7 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.AlembicBlock;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -62,7 +63,7 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
         if(sGrime > 0)
             gui.blit(TEXTURE, x+182, y+96, 24, 248, sGrime, 8);
 
-        boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT);
+        boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(MagiChemBlockStateProperties.HAS_PASSIVE_HEAT);
         int heat = menu.getHeat();
 
         if(hasPassiveHeat)
@@ -114,7 +115,7 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
                     .append(": ")
                     .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
 
-            boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
+            boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(MagiChemBlockStateProperties.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
             BlockState below = menu.blockEntity.getLevel().getBlockState(menu.blockEntity.getBlockPos().below());
             boolean fastHeaterBlocks = ((below.getBlock() == Blocks.SMOKER) && below.getValue(BlockStateProperties.LIT)) || ((below.getBlock() == Blocks.BLAST_FURNACE) && below.getValue(BlockStateProperties.LIT));
             if(hasPassiveHeat) {
@@ -158,7 +159,7 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
 
         gui.drawString(font, Component.literal(AlembicBlockEntity.getActualEfficiency(0, menu.getGrime(), AlembicBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 4, 0xff000000, false);
 
-        boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
+        boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(MagiChemBlockStateProperties.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
         BlockState below = menu.blockEntity.getLevel().getBlockState(menu.blockEntity.getBlockPos().below());
         boolean fastHeaterBlocks = ((below.getBlock() == Blocks.SMOKER) && below.getValue(BlockStateProperties.LIT)) || ((below.getBlock() == Blocks.BLAST_FURNACE) && below.getValue(BlockStateProperties.LIT));
         float passiveHeatMod = hasPassiveHeat ? 2 : 1;

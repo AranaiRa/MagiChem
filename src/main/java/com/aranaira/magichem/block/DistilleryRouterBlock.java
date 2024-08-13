@@ -26,12 +26,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativeTab, ISpellInteractibleBlock<DistilleryRouterBlock> {
     public DistilleryRouterBlock(Properties pProperties) {
@@ -52,6 +55,8 @@ public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativ
             VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_ABOVE_AGGREGATE_SOUTH, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_SOUTH,
             VOXEL_SHAPE_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_ABOVE_AGGREGATE_EAST, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_EAST,
             VOXEL_SHAPE_LEFT_AGGREGATE_WEST, VOXEL_SHAPE_ABOVE_AGGREGATE_WEST, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_WEST;
+    public static final int
+            ROUTER_TYPE_NONE = 0, ROUTER_TYPE_PLUG_LEFT = 1, ROUTER_TYPE_ABOVE = 2, ROUTER_TYPE_ABOVE_LEFT = 3;
 
     @Nullable
     @Override
@@ -61,29 +66,27 @@ public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativ
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        DistilleryRouterBlockEntity drbe = (DistilleryRouterBlockEntity) pLevel.getBlockEntity(pPos);
-        if(drbe != null) {
-            DistilleryRouterType routerType = drbe.getRouterType();
-            Direction facing = drbe.getFacing();
+        int routerType = pState.getValue(ROUTER_TYPE_DISTILLERY);
+        Direction facing = pState.getValue(FACING);
 
-            //Again, switch statements always default here and I have no idea why
-            if(routerType == DistilleryRouterType.PLUG_LEFT) {
-                if(facing == Direction.NORTH) return VOXEL_SHAPE_LEFT_AGGREGATE_NORTH;
-                else if(facing == Direction.EAST) return VOXEL_SHAPE_LEFT_AGGREGATE_EAST;
-                else if(facing == Direction.SOUTH) return VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH;
-                else if(facing == Direction.WEST) return VOXEL_SHAPE_LEFT_AGGREGATE_WEST;
-            } else if(drbe.getRouterType() == DistilleryRouterType.ABOVE) {
-                if(facing == Direction.NORTH) return VOXEL_SHAPE_ABOVE_AGGREGATE_NORTH;
-                else if(facing == Direction.EAST) return VOXEL_SHAPE_ABOVE_AGGREGATE_EAST;
-                else if(facing == Direction.SOUTH) return VOXEL_SHAPE_ABOVE_AGGREGATE_SOUTH;
-                else if(facing == Direction.WEST) return VOXEL_SHAPE_ABOVE_AGGREGATE_WEST;
-            } else if(drbe.getRouterType() == DistilleryRouterType.ABOVE_LEFT) {
-                if(facing == Direction.NORTH) return VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_NORTH;
-                else if(facing == Direction.EAST) return VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_EAST;
-                else if(facing == Direction.SOUTH) return VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_SOUTH;
-                else if(facing == Direction.WEST) return VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_WEST;
-            }
+        //Again, switch statements always default here and I have no idea why
+        if(routerType == ROUTER_TYPE_PLUG_LEFT) {
+            if(facing == Direction.NORTH) return VOXEL_SHAPE_LEFT_AGGREGATE_NORTH;
+            else if(facing == Direction.EAST) return VOXEL_SHAPE_LEFT_AGGREGATE_EAST;
+            else if(facing == Direction.SOUTH) return VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH;
+            else if(facing == Direction.WEST) return VOXEL_SHAPE_LEFT_AGGREGATE_WEST;
+        } else if(routerType == ROUTER_TYPE_ABOVE) {
+            if(facing == Direction.NORTH) return VOXEL_SHAPE_ABOVE_AGGREGATE_NORTH;
+            else if(facing == Direction.EAST) return VOXEL_SHAPE_ABOVE_AGGREGATE_EAST;
+            else if(facing == Direction.SOUTH) return VOXEL_SHAPE_ABOVE_AGGREGATE_SOUTH;
+            else if(facing == Direction.WEST) return VOXEL_SHAPE_ABOVE_AGGREGATE_WEST;
+        } else if(routerType == ROUTER_TYPE_ABOVE_LEFT) {
+            if(facing == Direction.NORTH) return VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_NORTH;
+            else if(facing == Direction.EAST) return VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_EAST;
+            else if(facing == Direction.SOUTH) return VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_SOUTH;
+            else if(facing == Direction.WEST) return VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_WEST;
         }
+
         return super.getShape(pState, pLevel, pPos, pContext);
     }
 
@@ -101,6 +104,12 @@ public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativ
     @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(ROUTER_TYPE_DISTILLERY);
+        pBuilder.add(FACING);
     }
 
     @Override

@@ -72,7 +72,7 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        ItemStack stack = new ItemStack(ItemInit.STONE_RUNE_BLANK.get());
+        ItemStack stack = new ItemStack(Blocks.LIGHT_BLUE_WOOL);
 
         if(stack.getItem() instanceof BlockItem) {
             float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % ITEM_ROTATE_PERIOD) / ITEM_ROTATE_PERIOD) * 360f;
@@ -227,6 +227,4 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
 
         pPoseStack.popPose();
     }
-
-
 }

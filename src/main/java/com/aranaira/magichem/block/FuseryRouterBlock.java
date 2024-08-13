@@ -19,12 +19,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab {
     public FuseryRouterBlock(Properties pProperties) {
@@ -43,6 +46,8 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
             VOXEL_SHAPE_LEFT_AGGREGATE_WEST, VOXEL_SHAPE_RIGHT_AGGREGATE_WEST, VOXEL_SHAPE_COG_AGGREGATE_WEST,
             VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_TANK_RIGHT_AGGREGATE_WEST,
             VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_NORTH, VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_EAST, VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_SOUTH, VOXEL_SHAPE_TANK_ACROSS_AGGREGATE_WEST;
+    public static final int
+            ROUTER_TYPE_NONE = 0, ROUTER_TYPE_PLUG_LEFT = 1, ROUTER_TYPE_PLUG_RIGHT = 2, ROUTER_TYPE_COG = 3, ROUTER_TYPE_TANK_RIGHT = 4, ROUTER_TYPE_TANK_ACROSS = 5;
 
     @Nullable
     @Override
@@ -106,6 +111,12 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
     @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(ROUTER_TYPE_FUSERY);
+        pBuilder.add(FACING);
     }
 
     @Override

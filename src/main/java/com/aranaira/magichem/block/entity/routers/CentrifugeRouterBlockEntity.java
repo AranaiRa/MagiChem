@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -28,11 +29,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
+
 public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
-    private CentrifugeRouterType routerType = CentrifugeRouterType.NONE;
-    private Direction facing;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
     private int packedData;
 
@@ -41,11 +44,19 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
     }
 
     public Direction getFacing() {
-        return this.facing;
+        return getBlockState().getValue(FACING);
     }
 
     public CentrifugeRouterType getRouterType() {
-        return this.routerType;
+        int routerType = getBlockState().getValue(ROUTER_TYPE_CENTRIFUGE);
+        if(routerType == ROUTER_TYPE_PLUG_LEFT) {
+            return CentrifugeRouterType.PLUG_LEFT;
+        } else if(routerType == ROUTER_TYPE_PLUG_RIGHT) {
+            return CentrifugeRouterType.PLUG_RIGHT;
+        } else if(routerType == ROUTER_TYPE_COG) {
+            return CentrifugeRouterType.COG;
+        }
+        return CentrifugeRouterType.NONE;
     }
 
     public DevicePlugDirection getPlugDirection() {
@@ -63,10 +74,8 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
         return getLevel().getBlockEntity(target);
     }
 
-    public void configure(BlockPos pMasterPos, CentrifugeRouterType pRouterType, Direction pFacing, DevicePlugDirection pPlugDirection) {
+    public void configure(BlockPos pMasterPos, DevicePlugDirection pPlugDirection) {
         this.masterPos = pMasterPos;
-        this.routerType = pRouterType;
-        this.facing = pFacing;
         this.plugDirection = pPlugDirection;
         getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
     }
@@ -128,7 +137,7 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8 | mapFacingToBitpack(facing) << 4 | mapTypeToBitpack(routerType));
+        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8);
         super.saveAdditional(nbt);
     }
 
@@ -137,8 +146,6 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
         super.load(nbt);
         masterPos = BlockPos.of(nbt.getLong("masterPos"));
         int typeAndFacing = nbt.getInt("typeAndFacing");
-        routerType = unmapTypeFromBitpack(typeAndFacing & 15);
-        facing = unmapFacingFromBitpack((typeAndFacing >> 4) & 15);
         plugDirection = unmapPlugDirFromBitpack(typeAndFacing >> 8);
     }
 
@@ -153,7 +160,7 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
         CompoundTag nbt = new CompoundTag();
 
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8 | mapFacingToBitpack(facing) << 4 | mapTypeToBitpack(routerType));
+        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8);
 
         return nbt;
     }

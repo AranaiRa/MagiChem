@@ -4,30 +4,23 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.events.compat.OccultismEventHelper;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.enums.*;
-import com.aranaira.magichem.interop.mna.MnAPlugin;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.item.compat.occultism.OccultRitualTalismanItem;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
-import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.ItemInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.telemetry.events.WorldLoadEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.profiling.jfr.event.WorldLoadFinishedEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -48,21 +41,17 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import org.antlr.v4.misc.MutableInt;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.aranaira.magichem.block.GrandDistilleryBlock.HAS_LABORATORY_UPGRADE;
-import static com.aranaira.magichem.block.GrandDistilleryRouterBlock.ROUTER_TYPE;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 
 @Mod.EventBusSubscriber(
         modid = MagiChemMod.MODID,
@@ -310,7 +299,7 @@ public class CommonEventHandler {
                         }
                     } else if (blockEntity instanceof GrandDistilleryRouterBlockEntity anrbe) {
                         boolean hasLaboratoryUpgrade = state.getValue(HAS_LABORATORY_UPGRADE);
-                        GrandDistilleryRouterType routerType = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE));
+                        GrandDistilleryRouterType routerType = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_GRAND_DISTILLERY));
 
                         if(routerType == GrandDistilleryRouterType.PLUG_BACK_LEFT ||
                            routerType == GrandDistilleryRouterType.PLUG_BACK_RIGHT ||

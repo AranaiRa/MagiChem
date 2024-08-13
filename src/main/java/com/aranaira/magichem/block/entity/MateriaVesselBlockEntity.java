@@ -24,6 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.STACKED;
+
 public class MateriaVesselBlockEntity extends AbstractMateriaStorageBlockEntity  {
 
     public MateriaVesselBlockEntity(BlockPos pos, BlockState state) {
@@ -41,7 +43,7 @@ public class MateriaVesselBlockEntity extends AbstractMateriaStorageBlockEntity 
     public Pair<Vector3, Vector3> getDefaultOriginAndTangent() {
         BlockState state = getBlockState();
         Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        boolean stacked = state.getValue(MateriaVesselBlock.STACKED);
+        boolean stacked = state.getValue(STACKED);
 
         Vector3 origin = Vector3.zero();
         if(stacked) {

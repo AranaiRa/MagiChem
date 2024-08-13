@@ -47,6 +47,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
+
 public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractibleBlock<DistilleryBlock> {
 
     public DistilleryBlock(Properties pProperties) {
@@ -63,7 +65,6 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
             VOXEL_SHAPE_TANK_NORTH, VOXEL_SHAPE_PIPE_LEFT_NORTH, VOXEL_SHAPE_PIPE_RIGHT_NORTH,
 
             VOXEL_SHAPE_AGGREGATE_NORTH, VOXEL_SHAPE_AGGREGATE_EAST, VOXEL_SHAPE_AGGREGATE_SOUTH, VOXEL_SHAPE_AGGREGATE_WEST;
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Nullable
     @Override
@@ -89,8 +90,11 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
         for (Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             if(pLevel.getBlockState(targetPos).isAir()) {
-                pLevel.setBlock(targetPos, state, 3);
-                ((DistilleryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+                pLevel.setBlock(targetPos, state
+                                .setValue(ROUTER_TYPE_DISTILLERY, posAndType.getSecond().ordinal())
+                                .setValue(FACING, facing)
+                        , 3);
+                ((DistilleryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
         }
     }

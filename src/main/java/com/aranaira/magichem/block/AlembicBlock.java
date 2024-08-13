@@ -43,6 +43,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_PASSIVE_HEAT;
+
 public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleBlock<AlembicBlock> {
     public AlembicBlock(Properties properties) {
         super(properties);
@@ -52,8 +55,6 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
     }
 
     private static final VoxelShape VOXEL_SHAPE = Block.box(4,0,4,12,10,12);
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty HAS_PASSIVE_HEAT = BooleanProperty.create("has_passive_heat");
     public static final TagKey<Block> PASSIVE_HEAT_TAG = BlockTags.create(new ResourceLocation("minecraft", "alembic_passive_heat_source"));
 
     @Override

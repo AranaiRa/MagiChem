@@ -1,14 +1,13 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,8 +42,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
 public class ActuatorWaterBlock extends BaseEntityBlock {
     public ActuatorWaterBlock(Properties properties) {
@@ -107,7 +107,7 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
         BlockState state = BlockRegistry.ACTUATOR_WATER_ROUTER.get().defaultBlockState();
         state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
-        state = state.setValue(BaseActuatorRouterBlock.ELEMENT, BaseActuatorRouterBlock.ELEMENT_WATER);
+        state = state.setValue(ACTUATOR_ELEMENT, BaseActuatorRouterBlock.ELEMENT_WATER);
 
         BlockPos targetPos = pPos.offset(0,1,0);
         pLevel.setBlock(targetPos, state, 3);

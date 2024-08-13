@@ -1,11 +1,10 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -14,11 +13,8 @@ import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.ISpellInteractibleBlock;
 import com.mna.api.spells.attributes.Attribute;
 import com.mna.api.spells.base.IModifiedSpellPart;
-import com.mna.api.spells.base.ISpellComponent;
 import com.mna.api.spells.base.ISpellDefinition;
 import com.mna.api.spells.collections.Components;
-import com.mna.api.spells.parts.SpellEffect;
-import com.mna.spells.SpellsInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,7 +35,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -52,6 +47,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
 public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteractibleBlock<ActuatorFireBlock> {
     public ActuatorFireBlock(Properties properties) {
@@ -116,7 +113,7 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
         BlockState state = BlockRegistry.ACTUATOR_FIRE_ROUTER.get().defaultBlockState();
         state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
-        state = state.setValue(BaseActuatorRouterBlock.ELEMENT, BaseActuatorRouterBlock.ELEMENT_FIRE);
+        state = state.setValue(ACTUATOR_ELEMENT, BaseActuatorRouterBlock.ELEMENT_FIRE);
 
         BlockPos targetPos = pPos.offset(0,1,0);
         pLevel.setBlock(targetPos, state, 3);

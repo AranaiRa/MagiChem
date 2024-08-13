@@ -16,15 +16,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -36,6 +31,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.STACKED;
+
 public class MateriaJarBlock extends BaseEntityBlock {
     public MateriaJarBlock(Properties properties) {
         super(properties);
@@ -44,8 +42,6 @@ public class MateriaJarBlock extends BaseEntityBlock {
 
     private static final VoxelShape
             SHAPE_JAR, SHAPE_LID, SHAPE_AGGREGATE;
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    private static final BooleanProperty STACKED = BooleanProperty.create("stacked");
 
     @Nullable
     @Override

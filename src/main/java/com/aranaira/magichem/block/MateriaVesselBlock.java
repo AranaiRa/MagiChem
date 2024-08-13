@@ -36,6 +36,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.STACKED;
+
 public class MateriaVesselBlock extends BaseEntityBlock {
     public MateriaVesselBlock(Properties properties) {
         super(properties);
@@ -45,8 +48,6 @@ public class MateriaVesselBlock extends BaseEntityBlock {
     private static final VoxelShape
             SHAPE_JAR, SHAPE_LID, SHAPE_AGGREGATE,
             SHAPE_BASE_STACKED, SHAPE_LID_STACKED, SHAPE_AGGREGATE_STACKED;
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty STACKED = BooleanProperty.create("stacked");
 
     @Nullable
     @Override

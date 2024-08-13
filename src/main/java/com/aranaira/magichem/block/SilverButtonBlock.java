@@ -18,9 +18,10 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.antlr.v4.misc.MutableInt;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.USER_TIER_TYPE;
+
 public class SilverButtonBlock extends ButtonBlock {
     private static final int ticksToStayPressed = 20;
-    public static final IntegerProperty USER_TIER_TYPE = IntegerProperty.create("user_tier_type", 0, 5);
 
     public SilverButtonBlock(Properties pProperties) {
         super(pProperties, BlockSetType.GOLD, ticksToStayPressed, false);

@@ -2,15 +2,14 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,12 +27,10 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -46,6 +43,8 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
 public class ActuatorAirBlock extends BaseEntityBlock {
     public ActuatorAirBlock(Properties properties) {
@@ -109,7 +108,7 @@ public class ActuatorAirBlock extends BaseEntityBlock {
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
         BlockState state = BlockRegistry.ACTUATOR_AIR_ROUTER.get().defaultBlockState();
         state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
-        state = state.setValue(BaseActuatorRouterBlock.ELEMENT, BaseActuatorRouterBlock.ELEMENT_AIR);
+        state = state.setValue(ACTUATOR_ELEMENT, BaseActuatorRouterBlock.ELEMENT_AIR);
 
         BlockPos targetPos = pPos.offset(0,1,0);
         pLevel.setBlock(targetPos, state, 3);

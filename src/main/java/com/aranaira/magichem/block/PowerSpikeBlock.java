@@ -30,11 +30,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING_OMNI;
+
 public class PowerSpikeBlock extends BaseEntityBlock {
     public PowerSpikeBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
-                this.stateDefinition.any().setValue(FACING, Direction.UP)
+                this.stateDefinition.any().setValue(FACING_OMNI, Direction.UP)
         );
     }
 
@@ -45,8 +47,6 @@ public class PowerSpikeBlock extends BaseEntityBlock {
             VOXEL_SHAPE_SOUTH = Block.box(7,7,0,9,9,3),
             VOXEL_SHAPE_EAST = Block.box(0,7,7,3,9,9),
             VOXEL_SHAPE_WEST = Block.box(13,7,7,16,9,9);
-
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
@@ -65,7 +65,7 @@ public class PowerSpikeBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        switch(state.getValue(FACING)) {
+        switch(state.getValue(FACING_OMNI)) {
             case UP: return VOXEL_SHAPE_UP;
             case NORTH: return VOXEL_SHAPE_NORTH;
             case SOUTH: return VOXEL_SHAPE_SOUTH;
@@ -82,15 +82,15 @@ public class PowerSpikeBlock extends BaseEntityBlock {
         Vec3i targetCoords = new Vec3i(dir.getOpposite().getStepX(),dir.getOpposite().getStepY(),dir.getOpposite().getStepZ());
         BlockState state = context.getLevel().getBlockState(context.getClickedPos().offset(targetCoords));
 
-        return state.is(this) && state.getValue(FACING) == dir
-                ? this.defaultBlockState().setValue(FACING, dir.getOpposite())
-                : this.defaultBlockState().setValue(FACING, dir);
+        return state.is(this) && state.getValue(FACING_OMNI) == dir
+                ? this.defaultBlockState().setValue(FACING_OMNI, dir.getOpposite())
+                : this.defaultBlockState().setValue(FACING_OMNI, dir);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FACING);
+        builder.add(FACING_OMNI);
     }
 
     @Override

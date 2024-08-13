@@ -14,8 +14,9 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.antlr.v4.misc.MutableInt;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.USER_TIER_TYPE;
+
 public class SilverPressurePlateBlock extends PressurePlateBlock {
-    public static final IntegerProperty USER_TIER_TYPE = IntegerProperty.create("user_tier_type", 0, 5);
 
     public SilverPressurePlateBlock(Properties pProperties) {
         super(Sensitivity.EVERYTHING, pProperties, BlockSetType.GOLD);

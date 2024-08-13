@@ -41,6 +41,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_ALCHEMICAL_NEXUS;
+
 public class AlchemicalNexusBlock extends BaseEntityBlock {
     public AlchemicalNexusBlock(Properties properties) {
         super(properties);
@@ -51,7 +54,6 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
 
     private static final VoxelShape
             VOXEL_SHAPE_BASE, VOXEL_SHAPE_DAIS, VOXEL_SHAPE_AGGREGATE;
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
@@ -83,7 +85,7 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             if(pLevel.getBlockState(targetPos).isAir()) {
                 pLevel.setBlock(targetPos, state
-                        .setValue(AlchemicalNexusRouterBlock.ALCHEMICAL_NEXUS_ROUTER_TYPE, posAndType.getSecond().ordinal())
+                        .setValue(ROUTER_TYPE_ALCHEMICAL_NEXUS, posAndType.getSecond().ordinal())
                         .setValue(BlockStateProperties.HORIZONTAL_FACING, facing),
                         3);
                 ((AlchemicalNexusRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
@@ -163,17 +165,6 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
         }
         return offsets;
     }
-
-//    @Override
-//    public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-//        return switch(state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
-//            default -> VOXEL_SHAPE_ERROR;
-//            case NORTH -> VOXEL_SHAPE_NORTH;
-//            case SOUTH -> VOXEL_SHAPE_SOUTH;
-//            case WEST -> VOXEL_SHAPE_WEST;
-//            case EAST -> VOXEL_SHAPE_EAST;
-//        };
-//    }
 
     @Override
     public BlockState mirror(BlockState pState, Mirror pMirror) {

@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -27,14 +26,15 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+
 public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreativeTab {
     public BaseActuatorRouterBlock(Properties pProperties) {
         super(pProperties);
-        this.registerDefaultState(this.defaultBlockState().setValue(ELEMENT, 0).setValue(FACING, Direction.NORTH));
+        this.registerDefaultState(this.defaultBlockState().setValue(ACTUATOR_ELEMENT, 0).setValue(FACING, Direction.NORTH));
     }
 
-    public static final IntegerProperty ELEMENT = IntegerProperty.create("element", 0, 6);
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final int
             ELEMENT_ERROR = 0,
             ELEMENT_ENDER = 1, ELEMENT_EARTH = 2, ELEMENT_WATER = 3,
@@ -63,7 +63,7 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(ELEMENT);
+        pBuilder.add(ACTUATOR_ELEMENT);
         pBuilder.add(FACING);
     }
 
@@ -90,7 +90,7 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        int element = pState.getValue(ELEMENT);
+        int element = pState.getValue(ACTUATOR_ELEMENT);
         Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         if(element == ELEMENT_WATER) {

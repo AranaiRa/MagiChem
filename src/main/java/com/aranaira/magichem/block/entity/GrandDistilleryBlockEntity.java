@@ -9,10 +9,7 @@ import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandDistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
-import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
@@ -54,6 +51,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 
 public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice {
     public static final int
@@ -467,10 +467,10 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             if(facing == Direction.WEST) daisPos = daisPos.east();
 
             BlockState daisState = pLevel.getBlockState(daisPos);
-            boolean isDaisEmittingLight = daisState.getValue(GrandDistilleryRouterBlock.IS_EMITTING_LIGHT);
+            boolean isDaisEmittingLight = daisState.getValue(IS_EMITTING_LIGHT);
 
             if((isDaisEmittingLight && pEntity.particlePercent == 0) || (!isDaisEmittingLight && pEntity.particlePercent == 1)) {
-                BlockState newDaisState = pLevel.getBlockState(daisPos).setValue(GrandDistilleryRouterBlock.IS_EMITTING_LIGHT, sufficientThisTick);
+                BlockState newDaisState = pLevel.getBlockState(daisPos).setValue(IS_EMITTING_LIGHT, sufficientThisTick);
 
                 pLevel.setBlock(daisPos, newDaisState, 3);
                 pLevel.sendBlockUpdated(daisPos, daisState, newDaisState, 3);
@@ -533,7 +533,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     public void applyLaboratoryCharm() {
         BlockPos rootPos = getBlockPos();
         BlockState rootState = getBlockState();
-        BlockState newRootState = getBlockState().setValue(GrandDistilleryBlock.HAS_LABORATORY_UPGRADE, true);
+        BlockState newRootState = getBlockState().setValue(HAS_LABORATORY_UPGRADE, true);
 
         getLevel().setBlock(rootPos, newRootState, 3);
         getLevel().sendBlockUpdated(rootPos, rootState, newRootState, 2);
@@ -545,7 +545,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                     BlockState routerState = getLevel().getBlockState(routerPos);
 
                     if(routerState.getBlock() == BlockRegistry.GRAND_DISTILLERY_ROUTER.get()) {
-                        BlockState newRouterState = routerState.setValue(GrandDistilleryBlock.HAS_LABORATORY_UPGRADE, true);
+                        BlockState newRouterState = routerState.setValue(HAS_LABORATORY_UPGRADE, true);
 
                         getLevel().setBlock(routerPos, newRouterState, 3);
                         getLevel().sendBlockUpdated(routerPos, routerState, newRouterState, 2);

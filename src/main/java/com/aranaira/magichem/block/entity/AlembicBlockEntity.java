@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.AlembicBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -38,6 +39,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_PASSIVE_HEAT;
 
 public class AlembicBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider {
     public static final int
@@ -238,7 +241,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, AlembicBlockEntity::getVar, pEntity::getPoweredOperationTime);
 
         //Particles
-        boolean hasPassiveHeat = pEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT);
+        boolean hasPassiveHeat = pEntity.getBlockState().getValue(HAS_PASSIVE_HEAT);
         if(hasPassiveHeat || pEntity.remainingHeat > 0) {
             int particleCount = 0;
             int particleRate = 0;

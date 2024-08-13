@@ -33,13 +33,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_ALCHEMICAL_NEXUS;
+
 public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCreativeTab {
 
     public AlchemicalNexusRouterBlock(Properties pProperties) {
         super(pProperties);
     }
 
-    public static final IntegerProperty ALCHEMICAL_NEXUS_ROUTER_TYPE = IntegerProperty.create("alchemical_nexus_router_type", 0, 9);
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape
             VOXEL_SHAPE_ERROR,
@@ -98,7 +99,7 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(ALCHEMICAL_NEXUS_ROUTER_TYPE);
+        pBuilder.add(ROUTER_TYPE_ALCHEMICAL_NEXUS);
         pBuilder.add(FACING);
     }
 
@@ -115,13 +116,13 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        Integer routerType = state.getValue(ALCHEMICAL_NEXUS_ROUTER_TYPE);
+        Integer routerType = state.getValue(ROUTER_TYPE_ALCHEMICAL_NEXUS);
         return routerType == TOP_CRYSTAL ? 15 : 0;
     }
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        int routerType = pState.getValue(ALCHEMICAL_NEXUS_ROUTER_TYPE);
+        int routerType = pState.getValue(ROUTER_TYPE_ALCHEMICAL_NEXUS);
         Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         if(routerType == PLUG_LEFT) {

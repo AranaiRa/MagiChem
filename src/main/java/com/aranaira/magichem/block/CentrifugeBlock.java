@@ -36,6 +36,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
+
 public class CentrifugeBlock extends BaseEntityBlock {
     public CentrifugeBlock(Properties properties) {
         super(properties);
@@ -50,7 +53,6 @@ public class CentrifugeBlock extends BaseEntityBlock {
             VOXEL_SHAPE_EAST = Block.box(2,0,0,16,8,14),
             VOXEL_SHAPE_WEST = Block.box(0,0,2,14,8,16),
             VOXEL_SHAPE_ERROR = Block.box(4,4,4,12,12,12);
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
@@ -81,8 +83,11 @@ public class CentrifugeBlock extends BaseEntityBlock {
         for (Triplet<BlockPos, CentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             if(pLevel.getBlockState(targetPos).isAir()) {
-                pLevel.setBlock(targetPos, state, 3);
-                ((CentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+                pLevel.setBlock(targetPos, state
+                                .setValue(ROUTER_TYPE_CENTRIFUGE, posAndType.getSecond().ordinal())
+                                .setValue(FACING, facing)
+                        , 3);
+                ((CentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
         }
     }

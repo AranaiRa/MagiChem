@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.AlembicBlock;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -38,7 +39,7 @@ public class AlembicBlockEntityRenderer implements BlockEntityRenderer<AlembicBl
         Direction renderDir = dir;
 
         boolean isOn = pBlockEntity.getRemainingHeat() > 0;
-        boolean hasPassiveHeat = state.getValue(AlembicBlock.HAS_PASSIVE_HEAT);
+        boolean hasPassiveHeat = state.getValue(MagiChemBlockStateProperties.HAS_PASSIVE_HEAT);
         boolean hasSuperHeat = false;
         if(below.getBlock() == Blocks.BLAST_FURNACE || below.getBlock() == Blocks.SMOKER) {
             hasSuperHeat = below.getValue(BlockStateProperties.LIT) && isOn;

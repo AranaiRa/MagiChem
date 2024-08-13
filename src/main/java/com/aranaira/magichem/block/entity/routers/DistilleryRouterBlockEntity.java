@@ -1,9 +1,12 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.block.DistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -27,11 +30,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
+
 public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity {
     private BlockPos masterPos;
     private DistilleryBlockEntity master;
-    private DistilleryRouterType routerType = DistilleryRouterType.NONE;
-    private Direction facing;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
     private int packedData;
 
@@ -40,11 +45,20 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
     }
 
     public Direction getFacing() {
-        return this.facing;
+        return getBlockState().getValue(FACING);
     }
 
     public DistilleryRouterType getRouterType() {
-        return this.routerType;
+
+        int routerType = getBlockState().getValue(ROUTER_TYPE_CENTRIFUGE);
+        if(routerType == DistilleryRouterBlock.ROUTER_TYPE_PLUG_LEFT) {
+            return DistilleryRouterType.PLUG_LEFT;
+        } else if(routerType == DistilleryRouterBlock.ROUTER_TYPE_ABOVE) {
+            return DistilleryRouterType.ABOVE;
+        } else if(routerType == DistilleryRouterBlock.ROUTER_TYPE_ABOVE_LEFT) {
+            return DistilleryRouterType.ABOVE_LEFT;
+        }
+        return DistilleryRouterType.NONE;
     }
 
     public DevicePlugDirection getPlugDirection() {
@@ -62,10 +76,8 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
         return getLevel().getBlockEntity(target);
     }
 
-    public void configure(BlockPos pMasterPos, DistilleryRouterType pRouterType, Direction pFacing, DevicePlugDirection pPlugDirection) {
+    public void configure(BlockPos pMasterPos, DevicePlugDirection pPlugDirection) {
         this.masterPos = pMasterPos;
-        this.routerType = pRouterType;
-        this.facing = pFacing;
         this.plugDirection = pPlugDirection;
         getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
     }
@@ -127,7 +139,7 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8 | mapFacingToBitpack(facing) << 4 | mapTypeToBitpack(routerType));
+        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8);
         super.saveAdditional(nbt);
     }
 
@@ -136,8 +148,6 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
         super.load(nbt);
         masterPos = BlockPos.of(nbt.getLong("masterPos"));
         int typeAndFacing = nbt.getInt("typeAndFacing");
-        routerType = unmapTypeFromBitpack(typeAndFacing & 15);
-        facing = unmapFacingFromBitpack((typeAndFacing >> 4) & 15);
         plugDirection = unmapPlugDirFromBitpack(typeAndFacing >> 8);
     }
 
@@ -152,7 +162,7 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
         CompoundTag nbt = new CompoundTag();
 
         nbt.putLong("masterPos", masterPos.asLong());
-        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8 | mapFacingToBitpack(facing) << 4 | mapTypeToBitpack(routerType));
+        nbt.putInt("typeAndFacing", mapPlugDirToBitpack(plugDirection) << 8);
 
         return nbt;
     }

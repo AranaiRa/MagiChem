@@ -1,8 +1,10 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -37,6 +39,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
+
 public class FuseryBlock extends BaseEntityBlock {
     public FuseryBlock(Properties properties) {
         super(properties);
@@ -51,7 +55,6 @@ public class FuseryBlock extends BaseEntityBlock {
             VOXEL_SHAPE_EAST = Block.box(2,0,0,16,8,14),
             VOXEL_SHAPE_WEST = Block.box(0,0,2,14,8,16),
             VOXEL_SHAPE_ERROR = Block.box(4,4,4,12,12,12);
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
@@ -82,8 +85,11 @@ public class FuseryBlock extends BaseEntityBlock {
         for (Triplet<BlockPos, FuseryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             if(pLevel.getBlockState(targetPos).isAir()) {
-                pLevel.setBlock(targetPos, state, 3);
-                ((FuseryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getSecond(), facing, posAndType.getThird());
+                pLevel.setBlock(targetPos, state
+                                .setValue(ROUTER_TYPE_FUSERY, posAndType.getSecond().ordinal())
+                                .setValue(FACING, facing)
+                        , 3);
+                ((FuseryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
         }
     }

@@ -21,9 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -31,13 +28,15 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
+
 public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCreativeTab {
     public GrandDistilleryRouterBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(
             this.stateDefinition.any()
                     .setValue(FACING, Direction.NORTH)
-                    .setValue(GrandDistilleryBlock.HAS_LABORATORY_UPGRADE, false)
+                    .setValue(HAS_LABORATORY_UPGRADE, false)
                     .setValue(IS_EMITTING_LIGHT, false)
         );
     }
@@ -97,10 +96,6 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
         VOXEL_SHAPE_TANK_TOP_REAR_RIGHT_TANK_OUTER, VOXEL_SHAPE_TANK_TOP_REAR_RIGHT_TANK_INNER,
         VOXEL_SHAPE_TANK_TOP_REAR_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_TANK_TOP_REAR_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_TANK_TOP_REAR_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_TANK_TOP_REAR_RIGHT_AGGREGATE_WEST;
 
-    private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final IntegerProperty ROUTER_TYPE = IntegerProperty.create("grand_distillery_router_type", 0, 18);
-    public static final BooleanProperty IS_EMITTING_LIGHT = BooleanProperty.create("is_emitting_light");
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
@@ -109,7 +104,7 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, ROUTER_TYPE, GrandDistilleryBlock.HAS_LABORATORY_UPGRADE, IS_EMITTING_LIGHT);
+        pBuilder.add(FACING, ROUTER_TYPE_GRAND_DISTILLERY, HAS_LABORATORY_UPGRADE, IS_EMITTING_LIGHT);
     }
 
     @Override
@@ -117,9 +112,9 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
         BlockState state = pLevel.getBlockState(pPos);
 
         if(state.getBlock() == BlockRegistry.GRAND_DISTILLERY_ROUTER.get()) {
-            GrandDistilleryRouterType routerType = unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE));
+            GrandDistilleryRouterType routerType = unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_GRAND_DISTILLERY));
             Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            boolean hasLaboratoryUpgrade = state.getValue(GrandDistilleryBlock.HAS_LABORATORY_UPGRADE);
+            boolean hasLaboratoryUpgrade = state.getValue(HAS_LABORATORY_UPGRADE);
 
             //Again, switch statements always default here and I have no idea why
             if (routerType == GrandDistilleryRouterType.DAIS) {
@@ -256,7 +251,7 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         //can only emit light if this router is a dais
-        if(state.getValue(ROUTER_TYPE) == 1 && state.getValue(IS_EMITTING_LIGHT)) {
+        if(state.getValue(ROUTER_TYPE_GRAND_DISTILLERY) == 1 && state.getValue(IS_EMITTING_LIGHT)) {
             return 15;
         }
 

@@ -24,6 +24,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec2;
 import org.joml.Quaternionf;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
+
 public class GrandDistilleryBlockEntityRenderer implements BlockEntityRenderer<GrandDistilleryBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_PLUG_BASE = new ResourceLocation(MagiChemMod.MODID, "obj/special/grand_distillery_plug_base");
     public static final ResourceLocation RENDERER_MODEL_PLUG_UPGRADED = new ResourceLocation(MagiChemMod.MODID, "obj/special/grand_distillery_plug_upgraded");
@@ -59,7 +61,7 @@ public class GrandDistilleryBlockEntityRenderer implements BlockEntityRenderer<G
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
         }
 
-        if(state.getValue(GrandDistilleryBlock.HAS_LABORATORY_UPGRADE))
+        if(state.getValue(HAS_LABORATORY_UPGRADE))
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_PLUG_UPGRADED, pPoseStack, pPackedLight, pPackedOverlay);
         else
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_PLUG_BASE, pPoseStack, pPackedLight, pPackedOverlay);

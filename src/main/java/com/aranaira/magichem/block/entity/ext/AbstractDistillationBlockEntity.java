@@ -7,6 +7,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -151,7 +152,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         boolean hasPassiveHeat = false;
         boolean doubleSpeed = false;
         if(pEntity instanceof AlembicBlockEntity abe) {
-            hasPassiveHeat = pEntity.getBlockState().getValue(AlembicBlock.HAS_PASSIVE_HEAT);
+            hasPassiveHeat = pEntity.getBlockState().getValue(MagiChemBlockStateProperties.HAS_PASSIVE_HEAT);
             BlockState below = pLevel.getBlockState(pPos.below());
             doubleSpeed = ((below.getBlock() == Blocks.SMOKER) && below.getValue(BlockStateProperties.LIT)) || ((below.getBlock() == Blocks.BLAST_FURNACE) && below.getValue(BlockStateProperties.LIT));
         }

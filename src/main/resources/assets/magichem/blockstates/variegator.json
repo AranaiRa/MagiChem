@@ -1,6 +1,10 @@
 {
   "variants": {
-    "": {
+    "grounded=false": {
+      "model": "magichem:block/variegator",
+      "x": 180
+    },
+    "grounded=true": {
       "model": "magichem:block/variegator"
     }
   }

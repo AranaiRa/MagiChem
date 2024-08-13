@@ -14,9 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -28,7 +26,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -40,6 +37,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 
 public class GrandDistilleryBlock extends BaseEntityBlock {
 
@@ -59,7 +59,6 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
 
         VOXEL_SHAPE_AGGREGATE_NORTH, VOXEL_SHAPE_AGGREGATE_EAST, VOXEL_SHAPE_AGGREGATE_SOUTH, VOXEL_SHAPE_AGGREGATE_WEST;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty HAS_LABORATORY_UPGRADE = BooleanProperty.create("has_laboratory_upgrade");
 
     @Nullable
     @Override
@@ -91,7 +90,7 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
                         targetPos,
                         state
                                 .setValue(FACING, facing)
-                                .setValue(GrandDistilleryRouterBlock.ROUTER_TYPE, routerType),
+                                .setValue(ROUTER_TYPE_GRAND_DISTILLERY, routerType),
                         3);
                 ((GrandDistilleryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
