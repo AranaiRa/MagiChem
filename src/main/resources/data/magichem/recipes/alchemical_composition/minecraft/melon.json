@@ -1,5 +1,5 @@
 {
-  "type": "magichem:alchemical_composition",
+  "type": "magichem:distillation_fabrication",
   "distill_only": false,
   "output_rate": 0.111,
   "object": { "item": "minecraft:melon_slice" },

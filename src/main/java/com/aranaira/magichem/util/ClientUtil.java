@@ -1,6 +1,6 @@
 package com.aranaira.magichem.util;
 
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
+import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.Level;
@@ -17,6 +17,6 @@ public class ClientUtil {
         if(level == null) {
             return 3;
         }
-        else return AlchemicalInfusionRitualRecipe.getAllOutputs(level).size();
+        else return SublimationRitualRecipe.getAllOutputs(level).size();
     }
 }

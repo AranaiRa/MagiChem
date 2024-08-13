@@ -5,12 +5,10 @@ import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
-import com.aranaira.magichem.util.render.RenderUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -46,7 +44,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             PANEL_INGREDIENTS_U1 = 160, PANEL_INGREDIENTS_U2 = 80, PANEL_INGREDIENTS_U3 = 160, PANEL_INGREDIENTS_U4 = 80, PANEL_INGREDIENTS_U5 = 0,
             PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
             PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102;
-    private AlchemicalCompositionRecipe lastClickedRecipe = null;
+    private DistillationFabricationRecipe lastClickedRecipe = null;
 
     public CircleFabricationScreen(CircleFabricationMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -144,13 +142,13 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         }
     }
 
-    private static List<AlchemicalCompositionRecipe> filteredRecipes = new ArrayList<>();
+    private static List<DistillationFabricationRecipe> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
-        List<AlchemicalCompositionRecipe> fabricationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
+        List<DistillationFabricationRecipe> fabricationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(DistillationFabricationRecipe.Type.INSTANCE);
         filteredRecipes.clear();
 
-        for(AlchemicalCompositionRecipe acr : fabricationRecipeOutputs) {
+        for(DistillationFabricationRecipe acr : fabricationRecipeOutputs) {
             String display = acr.getAlchemyObject().getDisplayName().getString();
             if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase())) && !acr.getIsDistillOnly()) {
                 filteredRecipes.add(acr);
@@ -202,7 +200,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
     private void renderIngredientPanel(GuiGraphics gui, int x, int y) {
         if(menu.blockEntity.getCurrentRecipe() != null) {
-            AlchemicalCompositionRecipe recipe = menu.blockEntity.getCurrentRecipe();
+            DistillationFabricationRecipe recipe = menu.blockEntity.getCurrentRecipe();
 
             //A switch statement doesn't work here and I have no idea why.
             if(recipe.getComponentMateria().size() == 1) {
@@ -292,7 +290,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         if(menu.blockEntity.getCurrentRecipe() == null)
             return;
 
-        AlchemicalCompositionRecipe acr = menu.blockEntity.getCurrentRecipe();
+        DistillationFabricationRecipe acr = menu.blockEntity.getCurrentRecipe();
 
         gui.setColor(1f, 1f, 1f, 0.25f);
         int slotGroup = 0;
@@ -315,7 +313,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        List<AlchemicalCompositionRecipe> snipped = new ArrayList<>();
+        List<DistillationFabricationRecipe> snipped = new ArrayList<>();
         for(int i=recipeFilterRow*3; i<Math.min(filteredRecipes.size(), recipeFilterRow*3 + 15); i++) {
             snipped.add(filteredRecipes.get(i));
         }
@@ -362,7 +360,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         gui.drawString(font ,powerDraw+"/t", 208, 26, 0xff000000, false);
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 45, 0xff000000, false);
 
-        AlchemicalCompositionRecipe recipe = menu.blockEntity.getCurrentRecipe();
+        DistillationFabricationRecipe recipe = menu.blockEntity.getCurrentRecipe();
         if(recipe != null) {
             for (int i = 0; i < recipe.getComponentMateria().size(); i++) {
                 Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + " x ")

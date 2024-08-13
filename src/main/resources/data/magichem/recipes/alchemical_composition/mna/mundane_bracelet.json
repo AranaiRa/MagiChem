@@ -1,5 +1,5 @@
 {
-  "type": "magichem:alchemical_composition",
+  "type": "magichem:distillation_fabrication",
   "distill_only": true,
   "output_rate": 1.0,
   "object": { "item": "mna:mundane_bracelet" },

@@ -7,7 +7,7 @@ import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.VesselData;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
+import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.mna.api.rituals.IRitualContext;
 import com.mna.api.rituals.RitualEffect;
@@ -40,7 +40,7 @@ import java.util.Random;
 
 public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
-    private AlchemicalInfusionRitualRecipe recipe;
+    private SublimationRitualRecipe recipe;
 
     public static final int RITUAL_LIFESPAN = 160;
     private static final Vec3i
@@ -205,7 +205,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         context.getLevel().addFreshEntity(ie);
     }
 
-    public static Pair<VesselData, VesselData> getVesselPositions(Level pLevel, BlockPos pRitualCenter, AlchemicalInfusionRitualRecipe pRecipe) {
+    public static Pair<VesselData, VesselData> getVesselPositions(Level pLevel, BlockPos pRitualCenter, SublimationRitualRecipe pRecipe) {
         Vector3 originLeft = Vector3.zero();
         Vector3 tangentLeftVessel = Vector3.zero();
         Vector3 tangentLeftCenter = Vector3.zero();
@@ -466,7 +466,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         if(query == null)
             return false;
 
-        recipe = AlchemicalInfusionRitualRecipe.getInfusionRitualRecipe(context.getLevel(), new ItemStack(query));
+        recipe = SublimationRitualRecipe.getInfusionRitualRecipe(context.getLevel(), new ItemStack(query));
         if(recipe == null)
             return false;
 

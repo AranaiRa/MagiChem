@@ -4,10 +4,9 @@ import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -66,7 +65,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.CIRCLE_FABRICATION.get());
     }
 
-    public void setInputSlotFilters(AlchemicalCompositionRecipe newRecipe) {
+    public void setInputSlotFilters(DistillationFabricationRecipe newRecipe) {
         if(newRecipe != null) {
             int slotSet = 0;
             for (ItemStack stack : newRecipe.getComponentMateria()) {

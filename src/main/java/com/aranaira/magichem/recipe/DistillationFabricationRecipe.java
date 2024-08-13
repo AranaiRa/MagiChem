@@ -19,22 +19,21 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * This recipe type is used by both the Circle of Fabrication in a straightforward manner and the Alembic/Distillery in reverse.
  */
-public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
+public class DistillationFabricationRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final ItemStack alchemyObject;
     private final NonNullList<ItemStack> componentMateria;
     private final boolean distillOnly;
     private final float outputRate;
 
-    public AlchemicalCompositionRecipe(ResourceLocation id, ItemStack alchemyObject,
-                                    NonNullList<ItemStack> componentMateria, boolean distillOnly, float outputRate) {
+    public DistillationFabricationRecipe(ResourceLocation id, ItemStack alchemyObject,
+                                         NonNullList<ItemStack> componentMateria, boolean distillOnly, float outputRate) {
         this.id = id;
         this.alchemyObject = alchemyObject;
         this.componentMateria = componentMateria;
@@ -108,11 +107,11 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static AlchemicalCompositionRecipe getDistillingRecipe(Level level, ItemStack query) {
-        AlchemicalCompositionRecipe result = null;
-        List<AlchemicalCompositionRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+    public static DistillationFabricationRecipe getDistillingRecipe(Level level, ItemStack query) {
+        DistillationFabricationRecipe result = null;
+        List<DistillationFabricationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 
-        for(AlchemicalCompositionRecipe acr : allRecipes) {
+        for(DistillationFabricationRecipe acr : allRecipes) {
             if(acr.alchemyObject.getItem() == query.getItem()) {
                 result = acr;
                 break;
@@ -122,21 +121,21 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
         return result;
     }
 
-    public static class Type implements RecipeType<AlchemicalCompositionRecipe> {
+    public static class Type implements RecipeType<DistillationFabricationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "alchemical_composition";
+        public static final String ID = "distillation_fabrication";
     }
 
 
-    public static class Serializer implements RecipeSerializer<AlchemicalCompositionRecipe> {
+    public static class Serializer implements RecipeSerializer<DistillationFabricationRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(MagiChemMod.MODID, "alchemical_composition");
+                new ResourceLocation(MagiChemMod.MODID, "distillation_fabrication");
         private static final HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(true, true);
 
         @Override
-        public AlchemicalCompositionRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
+        public DistillationFabricationRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
 
             ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
             if(recipeObject.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
@@ -156,7 +155,7 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
                 if(matQuery != null) {
                     ing = new ItemStack(matQuery);
                 } else {
-                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for alchemical_composition recipe \""+pRecipeId);
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for distillation_fabrication recipe \""+pRecipeId);
                 }
 
                 if(element.getAsJsonObject().has("count"))
@@ -164,11 +163,11 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
                 extractedIngredients.add(ing);
             });
 
-            return new AlchemicalCompositionRecipe(pRecipeId, recipeObject, extractedIngredients, distillOnly, rate);
+            return new DistillationFabricationRecipe(pRecipeId, recipeObject, extractedIngredients, distillOnly, rate);
         }
 
         @Override
-        public @Nullable AlchemicalCompositionRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public @Nullable DistillationFabricationRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             CompoundTag nbt = buf.readNbt();
             if(nbt == null) return null;
 
@@ -192,11 +191,11 @@ public class AlchemicalCompositionRecipe implements Recipe<SimpleContainer> {
                 readComponentMateria.add(componentStack);
             }
 
-            return new AlchemicalCompositionRecipe(id, alchemyObject, readComponentMateria, readDistillOnly, readOutputRate);
+            return new DistillationFabricationRecipe(id, alchemyObject, readComponentMateria, readDistillOnly, readOutputRate);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, AlchemicalCompositionRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, DistillationFabricationRecipe recipe) {
             CompoundTag nbt = new CompoundTag();
             nbt.putBoolean("distillOnly", recipe.distillOnly);
             nbt.putFloat("outputRate", recipe.outputRate);

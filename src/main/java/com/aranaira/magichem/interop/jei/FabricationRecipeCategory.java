@@ -2,8 +2,7 @@ package com.aranaira.magichem.interop.jei;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.JEIPlugin;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
-import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -17,7 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class FabricationRecipeCategory implements IRecipeCategory<AlchemicalCompositionRecipe> {
+public class FabricationRecipeCategory implements IRecipeCategory<DistillationFabricationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "fabrication");
     public static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/jei_recipecategory_01.png");
@@ -31,7 +30,7 @@ public class FabricationRecipeCategory implements IRecipeCategory<AlchemicalComp
     }
 
     @Override
-    public RecipeType<AlchemicalCompositionRecipe> getRecipeType() {
+    public RecipeType<DistillationFabricationRecipe> getRecipeType() {
         return JEIPlugin.FABRICATION_TYPE;
     }
 
@@ -51,7 +50,7 @@ public class FabricationRecipeCategory implements IRecipeCategory<AlchemicalComp
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, AlchemicalCompositionRecipe recipe, IFocusGroup group) {
+    public void setRecipe(IRecipeLayoutBuilder builder, DistillationFabricationRecipe recipe, IFocusGroup group) {
 
         builder.addSlot(RecipeIngredientRole.OUTPUT,40,88).addItemStack(recipe.getAlchemyObject());
 

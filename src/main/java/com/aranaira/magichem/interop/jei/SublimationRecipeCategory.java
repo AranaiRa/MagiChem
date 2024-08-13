@@ -3,8 +3,7 @@ package com.aranaira.magichem.interop.jei;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.interop.JEIPlugin;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
+import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.capabilities.IPlayerProgression;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
@@ -26,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class SublimationRecipeCategory implements IRecipeCategory<AlchemicalInfusionRecipe> {
+public class SublimationRecipeCategory implements IRecipeCategory<SublimationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "sublimation");
     public static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/jei_recipecategory_03.png");
@@ -40,7 +39,7 @@ public class SublimationRecipeCategory implements IRecipeCategory<AlchemicalInfu
     }
 
     @Override
-    public RecipeType<AlchemicalInfusionRecipe> getRecipeType() {
+    public RecipeType<SublimationRecipe> getRecipeType() {
         return JEIPlugin.SUBLIMATION_TYPE;
     }
 
@@ -60,7 +59,7 @@ public class SublimationRecipeCategory implements IRecipeCategory<AlchemicalInfu
     }
 
     @Override
-    public void draw(AlchemicalInfusionRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(SublimationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
 
         int stages = recipe.getStages(false).size();
@@ -123,7 +122,7 @@ public class SublimationRecipeCategory implements IRecipeCategory<AlchemicalInfu
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, AlchemicalInfusionRecipe recipe, IFocusGroup group) {
+    public void setRecipe(IRecipeLayoutBuilder builder, SublimationRecipe recipe, IFocusGroup group) {
 
         int stages = recipe.getStages(false).size();
         int verticalShift = (int)(21f * (5 - stages));
@@ -156,7 +155,7 @@ public class SublimationRecipeCategory implements IRecipeCategory<AlchemicalInfu
     }
 
     @Override
-    public List<Component> getTooltipStrings(AlchemicalInfusionRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(SublimationRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 
         return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
     }

@@ -6,8 +6,6 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -31,15 +29,15 @@ import java.util.List;
 /**
  * This recipe type is used by the Ritual of the Balanced Scales.
  */
-public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
+public class SublimationRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final int tier, wisdom;
     private final ItemStack alchemyObject;
     private final NonNullList<InfusionStage> stages;
     private static final NonNullList<ItemStack> allPossibleOutputs = NonNullList.create();
 
-    public AlchemicalInfusionRecipe(ResourceLocation pID, int pTier, int pWisdom, ItemStack pAlchemyObject,
-                                    NonNullList<InfusionStage> pStages) {
+    public SublimationRecipe(ResourceLocation pID, int pTier, int pWisdom, ItemStack pAlchemyObject,
+                             NonNullList<InfusionStage> pStages) {
         this.id = pID;
         this.stages = pStages;
         this.tier = pTier;
@@ -117,11 +115,11 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static AlchemicalInfusionRecipe getInfusionRecipe(Level level, ItemStack query) {
-        AlchemicalInfusionRecipe result = null;
-        List<AlchemicalInfusionRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+    public static SublimationRecipe getInfusionRecipe(Level level, ItemStack query) {
+        SublimationRecipe result = null;
+        List<SublimationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 
-        for(AlchemicalInfusionRecipe airr : allRecipes) {
+        for(SublimationRecipe airr : allRecipes) {
             if(airr.alchemyObject.getItem() == query.getItem()) {
                 result = airr;
                 break;
@@ -135,29 +133,29 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
         if(allPossibleOutputs.size() > 0)
             return allPossibleOutputs;
 
-        List<AlchemicalInfusionRecipe> allRecipes = pLevel.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
-        for(AlchemicalInfusionRecipe airr : allRecipes) {
+        List<SublimationRecipe> allRecipes = pLevel.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+        for(SublimationRecipe airr : allRecipes) {
             allPossibleOutputs.add(airr.alchemyObject.copy());
         }
 
         return allPossibleOutputs;
     }
 
-    public static class Type implements RecipeType<AlchemicalInfusionRecipe> {
+    public static class Type implements RecipeType<SublimationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
         public static final String ID = "alchemical_infusion_ritual";
     }
 
 
-    public static class Serializer implements RecipeSerializer<AlchemicalInfusionRecipe> {
+    public static class Serializer implements RecipeSerializer<SublimationRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
                 new ResourceLocation(MagiChemMod.MODID, "alchemical_infusion_ritual");
         private static final HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(true, true);
 
         @Override
-        public AlchemicalInfusionRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
+        public SublimationRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
             ItemStack recipeObject = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "object"));
             if(recipeObject.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
                 recipeObject = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:barrier")));
@@ -203,11 +201,11 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
                 extractedStages.add(new InfusionStage(experienceThisStage, items, materia));
             });
 
-            return new AlchemicalInfusionRecipe(pRecipeId, tier, wisdom, recipeObject, extractedStages);
+            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeObject, extractedStages);
         }
 
         @Override
-        public @Nullable AlchemicalInfusionRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public @Nullable SublimationRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             CompoundTag nbt = buf.readNbt();
             CompoundTag nbtAlchemyObject = nbt.getCompound("alchemyObject");
             CompoundTag nbtStages = nbt.getCompound("stages");
@@ -270,11 +268,11 @@ public class AlchemicalInfusionRecipe implements Recipe<SimpleContainer> {
                 infusionStages.add(is);
             }
 
-            return new AlchemicalInfusionRecipe(id, tier, wisdom, alchemyObject, infusionStages);
+            return new SublimationRecipe(id, tier, wisdom, alchemyObject, infusionStages);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, AlchemicalInfusionRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, SublimationRecipe recipe) {
             CompoundTag nbt = new CompoundTag();
 
             nbt.putInt("tier", recipe.getTier());

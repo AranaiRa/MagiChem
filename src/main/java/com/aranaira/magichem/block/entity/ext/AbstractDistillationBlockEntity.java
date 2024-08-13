@@ -1,7 +1,5 @@
 package com.aranaira.magichem.block.entity.ext;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.AlembicBlock;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
@@ -9,7 +7,7 @@ import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.AdmixtureItem;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -166,7 +164,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             int processingSlot = processing.getFirst();
             ItemStack processingItem = processing.getSecond();
 
-            AlchemicalCompositionRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
+            DistillationFabricationRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
             if(recipe != null) {
                 if (canCraftItem(pEntity, recipe, pVarFunc)) {
                     if (pEntity.progress > operationTicks) {
@@ -273,10 +271,10 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     // RECIPE HANDLING
     ////////////////////
 
-    protected static AlchemicalCompositionRecipe getRecipeInSlot(AbstractDistillationBlockEntity entity, int slot) {
+    protected static DistillationFabricationRecipe getRecipeInSlot(AbstractDistillationBlockEntity entity, int slot) {
         Level level = entity.level;
 
-        AlchemicalCompositionRecipe recipe = AlchemicalCompositionRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(slot));
+        DistillationFabricationRecipe recipe = DistillationFabricationRecipe.getDistillingRecipe(level, entity.itemHandler.getStackInSlot(slot));
 
         if(recipe != null) {
             return recipe;
@@ -285,7 +283,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return null;
     }
 
-    protected static boolean canCraftItem(AbstractDistillationBlockEntity pEntity, AlchemicalCompositionRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
+    protected static boolean canCraftItem(AbstractDistillationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
         SimpleContainer cont = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=pVarFunc.apply(IDs.SLOT_OUTPUT_START); i<pVarFunc.apply(IDs.SLOT_OUTPUT_START)+pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
             cont.setItem(i-pVarFunc.apply(IDs.SLOT_OUTPUT_START), pEntity.itemHandler.getStackInSlot(i).copy());
@@ -311,7 +309,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return hasSpace;
     }
 
-    protected static void craftItem(AbstractDistillationBlockEntity pEntity, AlchemicalCompositionRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
+    protected static void craftItem(AbstractDistillationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
         SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
             outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));

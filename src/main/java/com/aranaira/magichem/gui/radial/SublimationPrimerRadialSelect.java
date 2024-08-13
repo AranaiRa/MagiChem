@@ -1,7 +1,7 @@
 package com.aranaira.magichem.gui.radial;
 
 import com.aranaira.magichem.item.SublimationPrimerItem;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
+import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.google.common.collect.Lists;
 import com.mna.KeybindInit;
 import com.mna.events.ClientEventHandler;
@@ -17,7 +17,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.LiteralContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -45,7 +44,7 @@ public class SublimationPrimerRadialSelect extends Screen {
         this.offhand = offhand;
         this.stackEquipped = this.getHandItem();
 
-        NonNullList<ItemStack> allOutputs = AlchemicalInfusionRitualRecipe.getAllOutputs(mc.level);
+        NonNullList<ItemStack> allOutputs = SublimationRitualRecipe.getAllOutputs(mc.level);
         this.inventory = new ItemStackHandler(allOutputs.size());
         int i=0;
         for(ItemStack is : allOutputs) {

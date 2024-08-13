@@ -2,20 +2,17 @@ package com.aranaira.magichem.interop.mna.guide;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.InfusionStage;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
-import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.mna.api.guidebook.RecipeRendererBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
 public class RecipeInfusion extends RecipeRendererBase {
-    private AlchemicalInfusionRecipe recipe;
+    private SublimationRecipe recipe;
     private static final ResourceLocation TEXTURE = new ResourceLocation(MagiChemMod.MODID, "textures/gui/guide/alchemical_infusion.png");
 
     public RecipeInfusion(int xIn, int yIn) {
@@ -161,7 +158,7 @@ public class RecipeInfusion extends RecipeRendererBase {
 
     public void init_internal(ResourceLocation pRecipeLocation) {
         Optional<? extends net.minecraft.world.item.crafting.Recipe<?>> pattern = this.minecraft.level.getRecipeManager().byKey(pRecipeLocation);
-        if(pattern.isPresent() && pattern.get() instanceof AlchemicalInfusionRecipe air) {
+        if(pattern.isPresent() && pattern.get() instanceof SublimationRecipe air) {
             this.recipe = air;
         }
     }

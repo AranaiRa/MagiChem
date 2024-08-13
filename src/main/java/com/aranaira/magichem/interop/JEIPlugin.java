@@ -2,12 +2,11 @@ package com.aranaira.magichem.interop;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.jei.*;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
+import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.SublimationRecipe;
+import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.ItemInit;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -27,18 +26,18 @@ import java.util.Objects;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    public static RecipeType<AlchemicalCompositionRecipe> DISTILLATION_TYPE =
-            new RecipeType<>(DistillationRecipeCategory.UID, AlchemicalCompositionRecipe.class);
-    public static RecipeType<AlchemicalCompositionRecipe> FABRICATION_TYPE =
-            new RecipeType<>(FabricationRecipeCategory.UID, AlchemicalCompositionRecipe.class);
+    public static RecipeType<DistillationFabricationRecipe> DISTILLATION_TYPE =
+            new RecipeType<>(DistillationRecipeCategory.UID, DistillationFabricationRecipe.class);
+    public static RecipeType<DistillationFabricationRecipe> FABRICATION_TYPE =
+            new RecipeType<>(FabricationRecipeCategory.UID, DistillationFabricationRecipe.class);
     public static RecipeType<FixationSeparationRecipe> FIXATION_TYPE =
             new RecipeType<>(FixationRecipeCategory.UID, FixationSeparationRecipe.class);
     public static RecipeType<FixationSeparationRecipe> SEPARATION_TYPE =
             new RecipeType<>(SeparationRecipeCategory.UID, FixationSeparationRecipe.class);
-    public static RecipeType<AlchemicalInfusionRitualRecipe> SUBLIMATION_RITUAL_TYPE =
-            new RecipeType<>(SublimationRitualRecipeCategory.UID, AlchemicalInfusionRitualRecipe.class);
-    public static RecipeType<AlchemicalInfusionRecipe> SUBLIMATION_TYPE =
-            new RecipeType<>(SublimationRecipeCategory.UID, AlchemicalInfusionRecipe.class);
+    public static RecipeType<SublimationRitualRecipe> SUBLIMATION_RITUAL_TYPE =
+            new RecipeType<>(SublimationRitualRecipeCategory.UID, SublimationRitualRecipe.class);
+    public static RecipeType<SublimationRecipe> SUBLIMATION_TYPE =
+            new RecipeType<>(SublimationRecipeCategory.UID, SublimationRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -65,11 +64,11 @@ public class JEIPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
-        List<AlchemicalCompositionRecipe> recipesDistillation = rm.getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE);
+        List<DistillationFabricationRecipe> recipesDistillation = rm.getAllRecipesFor(DistillationFabricationRecipe.Type.INSTANCE);
         registration.addRecipes(DISTILLATION_TYPE, recipesDistillation);
 
-        List<AlchemicalCompositionRecipe> recipesFabrication = new ArrayList<>();
-        for(AlchemicalCompositionRecipe acr : recipesDistillation) {
+        List<DistillationFabricationRecipe> recipesFabrication = new ArrayList<>();
+        for(DistillationFabricationRecipe acr : recipesDistillation) {
             if(!acr.getIsDistillOnly())  recipesFabrication.add(acr);
         }
         registration.addRecipes(FABRICATION_TYPE, recipesFabrication);
@@ -78,10 +77,10 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipes(FIXATION_TYPE, recipesFixationSeparation);
         registration.addRecipes(SEPARATION_TYPE, recipesFixationSeparation);
 
-        List<AlchemicalInfusionRitualRecipe> recipesSublimationRitual = rm.getAllRecipesFor(AlchemicalInfusionRitualRecipe.Type.INSTANCE);
+        List<SublimationRitualRecipe> recipesSublimationRitual = rm.getAllRecipesFor(SublimationRitualRecipe.Type.INSTANCE);
         registration.addRecipes(SUBLIMATION_RITUAL_TYPE, recipesSublimationRitual);
 
-        List<AlchemicalInfusionRecipe> recipesSublimation = rm.getAllRecipesFor(AlchemicalInfusionRecipe.Type.INSTANCE);
+        List<SublimationRecipe> recipesSublimation = rm.getAllRecipesFor(SublimationRecipe.Type.INSTANCE);
         registration.addRecipes(SUBLIMATION_TYPE, recipesSublimation);
     }
 

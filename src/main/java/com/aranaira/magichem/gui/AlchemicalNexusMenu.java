@@ -3,7 +3,7 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.foundation.InfusionStage;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
+import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -91,7 +91,7 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
         return blockEntity.getFluidInTank(0).getAmount();
     }
 
-    public AlchemicalInfusionRecipe getCurrentRecipe() {
+    public SublimationRecipe getCurrentRecipe() {
         return blockEntity.getCurrentRecipe();
     }
 

@@ -1,9 +1,8 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
-import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
 import com.aranaira.magichem.networking.SublimationPrimerSyncRecipeC2SPacket;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
+import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.ClientUtil;
 import com.mna.KeybindInit;
@@ -103,7 +102,7 @@ public class SublimationPrimerItem extends Item implements IRadialInventorySelec
             Level level = ClientUtil.tryGetClientLevel();
 
             if(level != null) {
-                NonNullList<ItemStack> allOutputs = AlchemicalInfusionRitualRecipe.getAllOutputs(level);
+                NonNullList<ItemStack> allOutputs = SublimationRitualRecipe.getAllOutputs(level);
                 String key = ForgeRegistries.ITEMS.getKey(allOutputs.get(i).getItem()).toString();
                 CompoundTag nbt = itemStack.getOrCreateTag();
                 nbt.putString("recipe", key);

@@ -9,7 +9,7 @@
         }
       ],
       "recipe": {
-        "type": "magichem:alchemical_composition",
+        "type": "magichem:distillation_fabrication",
         "distill_only": false,
         "output_rate": 1.0,
         "object": {

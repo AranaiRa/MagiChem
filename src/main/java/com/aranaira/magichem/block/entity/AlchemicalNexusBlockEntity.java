@@ -2,23 +2,18 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
-import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
-import com.aranaira.magichem.capabilities.grime.GrimeProvider;
-import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
-import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.gui.AlchemicalNexusMenu;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
+import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.*;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
@@ -74,7 +69,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.of(() -> this);
 
     protected FluidStack containedSlurry = FluidStack.EMPTY;
-    protected AlchemicalInfusionRecipe currentRecipe;
+    protected SublimationRecipe currentRecipe;
     protected ContainerData data;
     protected AlchemicalNexusAnimSpec cachedSpec;
     protected int
@@ -116,7 +111,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             @Override
             protected void onContentsChanged(int slot) {
                 if(slot == SLOT_RECIPE) {
-                    currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(level, getStackInSlot(SLOT_RECIPE));
+                    currentRecipe = SublimationRecipe.getInfusionRecipe(level, getStackInSlot(SLOT_RECIPE));
                     setChanged();
                 }
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
@@ -230,7 +225,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
-        currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
+        currentRecipe = SublimationRecipe.getInfusionRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
     }
 
     @Override
@@ -372,7 +367,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
             if(anbe.doDeferredRecipeLinkages) {
                 if (!anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty() && anbe.currentRecipe == null) {
-                    anbe.currentRecipe = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
+                    anbe.currentRecipe = SublimationRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
                 }
                 if(anbe.animStage != ANIM_STAGE_IDLE) {
                     anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
@@ -893,7 +888,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public void setRecipeFromOutput(Level pLevel, ItemStack pQuery) {
-        AlchemicalInfusionRecipe air = AlchemicalInfusionRecipe.getInfusionRecipe(pLevel, pQuery);
+        SublimationRecipe air = SublimationRecipe.getInfusionRecipe(pLevel, pQuery);
         if(air != null) {
             this.currentRecipe = air;
             this.itemHandler.setStackInSlot(SLOT_RECIPE, air.getAlchemyObject());
@@ -989,7 +984,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     // DATA SLOT HANDLING
     ////////////////////
 
-    public AlchemicalInfusionRecipe getCurrentRecipe() {
+    public SublimationRecipe getCurrentRecipe() {
         return this.currentRecipe;
     }
 

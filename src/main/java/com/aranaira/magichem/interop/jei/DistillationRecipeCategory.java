@@ -2,10 +2,8 @@ package com.aranaira.magichem.interop.jei;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.JEIPlugin;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
-import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -23,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class DistillationRecipeCategory implements IRecipeCategory<AlchemicalCompositionRecipe> {
+public class DistillationRecipeCategory implements IRecipeCategory<DistillationFabricationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "distillation");
     public static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/jei_recipecategory_01.png");
@@ -37,7 +35,7 @@ public class DistillationRecipeCategory implements IRecipeCategory<AlchemicalCom
     }
 
     @Override
-    public RecipeType<AlchemicalCompositionRecipe> getRecipeType() {
+    public RecipeType<DistillationFabricationRecipe> getRecipeType() {
         return JEIPlugin.DISTILLATION_TYPE;
     }
 
@@ -57,7 +55,7 @@ public class DistillationRecipeCategory implements IRecipeCategory<AlchemicalCom
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, AlchemicalCompositionRecipe recipe, IFocusGroup group) {
+    public void setRecipe(IRecipeLayoutBuilder builder, DistillationFabricationRecipe recipe, IFocusGroup group) {
 
         builder.addSlot(RecipeIngredientRole.INPUT,40,6).addItemStack(recipe.getAlchemyObject());
 
@@ -69,12 +67,12 @@ public class DistillationRecipeCategory implements IRecipeCategory<AlchemicalCom
     }
 
     @Override
-    public List<Component> getTooltipStrings(AlchemicalCompositionRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(DistillationFabricationRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 
         return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
     }
 
-    public void draw(AlchemicalCompositionRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
+    public void draw(DistillationFabricationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.font != null) {
             if(recipe.getOutputRate() < 1.0f) {

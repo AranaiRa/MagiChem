@@ -10,7 +10,7 @@ import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.AlchemicalNexusButtonRecipeSelector;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRecipe;
+import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -31,7 +31,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import org.antlr.v4.misc.MutableInt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +67,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             TOOLTIP_EXPERIENCE_X = 193, TOOLTIP_EXPERIENCE_Y = 54, TOOLTIP_EXPERIENCE_W = 59, TOOLTIP_EXPERIENCE_H = 13,
             TOOLTIP_OPTIME_X = 193, TOOLTIP_OPTIME_Y = 73, TOOLTIP_OPTIME_W = 59, TOOLTIP_OPTIME_H = 13,
             TOOLTIP_RECIPE_ZONE_X = -77, TOOLTIP_RECIPE_ZONE_Y = 22, TOOLTIP_RECIPE_ZONE_W = 54, TOOLTIP_RECIPE_ZONE_H = 90;
-    private AlchemicalInfusionRecipe lastRecipe = null;
+    private SublimationRecipe lastRecipe = null;
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
     private ItemStack lastRecipeResult = ItemStack.EMPTY;
     private int recipeTierCap = 1;
@@ -93,13 +92,13 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     private List<ItemStack> filteredRecipeOutputs = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
-        List<AlchemicalInfusionRecipe> sublimationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(AlchemicalInfusionRecipe.Type.INSTANCE);
+        List<SublimationRecipe> sublimationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(SublimationRecipe.Type.INSTANCE);
         filteredRecipeOutputs.clear();
 
         recipeFilterRowTotal = (int)Math.ceil(sublimationRecipeOutputs.size() / 3.0f);
         recipeFilterRow = 0;
 
-        for(AlchemicalInfusionRecipe iar : sublimationRecipeOutputs) {
+        for(SublimationRecipe iar : sublimationRecipeOutputs) {
             String display = iar.getAlchemyObject().getDisplayName().getString();
             if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
                 if(iar.getTier() <= recipeTierCap)

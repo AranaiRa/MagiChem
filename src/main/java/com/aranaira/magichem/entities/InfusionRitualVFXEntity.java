@@ -1,22 +1,16 @@
 package com.aranaira.magichem.entities;
 
 import com.aranaira.magichem.foundation.VesselData;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
-import com.aranaira.magichem.registry.EntitiesRegistry;
+import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.aranaira.magichem.ritual.RitualEffectAlchemicalInfusion;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
-import com.mna.entities.faction.base.BaseFactionMob;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -33,7 +27,7 @@ import java.util.Random;
 public class InfusionRitualVFXEntity extends Entity implements IEntityAdditionalSpawnData {
     private static final Random r = new Random();
     private BlockPos ritualCenter;
-    private AlchemicalInfusionRitualRecipe recipe;
+    private SublimationRitualRecipe recipe;
     Pair<VesselData, VesselData> vesselData;
     private int remainingTicks, state;
     private static final int
@@ -44,7 +38,7 @@ public class InfusionRitualVFXEntity extends Entity implements IEntityAdditional
         super(pEntityType, pLevel);
     }
 
-    public void configure(BlockPos pRitualCenter, AlchemicalInfusionRitualRecipe pRecipe) {
+    public void configure(BlockPos pRitualCenter, SublimationRitualRecipe pRecipe) {
         this.ritualCenter = pRitualCenter;
         this.recipe = pRecipe;
 
@@ -71,7 +65,7 @@ public class InfusionRitualVFXEntity extends Entity implements IEntityAdditional
     protected void readAdditionalSaveData(CompoundTag nbt) {
         String key = nbt.getString("recipe");
         Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
-        this.recipe = AlchemicalInfusionRitualRecipe.getInfusionRitualRecipe(this.level(), new ItemStack(query));
+        this.recipe = SublimationRitualRecipe.getInfusionRitualRecipe(this.level(), new ItemStack(query));
 
         this.ritualCenter = BlockPos.of(nbt.getLong("ritualCenter"));
 
@@ -115,7 +109,7 @@ public class InfusionRitualVFXEntity extends Entity implements IEntityAdditional
     @Override
     public void readSpawnData(FriendlyByteBuf additionalData) {
         ItemStack query = additionalData.readItem();
-        this.recipe = AlchemicalInfusionRitualRecipe.getInfusionRitualRecipe(this.level(), query);
+        this.recipe = SublimationRitualRecipe.getInfusionRitualRecipe(this.level(), query);
 
         this.ritualCenter = BlockPos.of(additionalData.readLong());
 

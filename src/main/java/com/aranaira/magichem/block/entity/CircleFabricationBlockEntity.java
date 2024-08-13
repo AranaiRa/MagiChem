@@ -2,7 +2,7 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
+import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.mna.tools.math.MathUtils;
@@ -68,7 +68,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     private int
             craftingProgress = 0,
             powerUsageSetting = 1;
-    private AlchemicalCompositionRecipe currentRecipe;
+    private DistillationFabricationRecipe currentRecipe;
     private String currentRecipeID = "";
     private boolean hasSufficientPower = false;
 
@@ -86,7 +86,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     public void setCurrentRecipeByOutput(Item item) {
         currentRecipe = null;
         currentRecipeID = "";
-        level.getRecipeManager().getAllRecipesFor(AlchemicalCompositionRecipe.Type.INSTANCE).stream().filter(
+        level.getRecipeManager().getAllRecipesFor(DistillationFabricationRecipe.Type.INSTANCE).stream().filter(
                 acr -> acr.getAlchemyObject().getItem() == item).findFirst().ifPresent(filteredACR -> {
                     currentRecipe = filteredACR;
                     currentRecipeID = filteredACR.getId().toString();
@@ -94,11 +94,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     private void setCurrentRecipeByRecipeID() {
-        currentRecipe = (AlchemicalCompositionRecipe) level.getRecipeManager().byKey(new ResourceLocation(currentRecipeID)).orElse(null);
+        currentRecipe = (DistillationFabricationRecipe) level.getRecipeManager().byKey(new ResourceLocation(currentRecipeID)).orElse(null);
     }
 
     @Nullable
-    public AlchemicalCompositionRecipe getCurrentRecipe() {
+    public DistillationFabricationRecipe getCurrentRecipe() {
         if(currentRecipe == null) {
             setCurrentRecipeByRecipeID();
         }
@@ -190,7 +190,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             entity.hasSufficientPower = entity.ENERGY_STORAGE.getEnergyStored() >= entity.getPowerDraw();
         }
 
-        AlchemicalCompositionRecipe recipe = entity.getCurrentRecipe();
+        DistillationFabricationRecipe recipe = entity.getCurrentRecipe();
         if(entity.hasSufficientPower) {
             if(canCraftItem(entity, recipe)) {
                 entity.ENERGY_STORAGE.extractEnergy(entity.getPowerDraw(), false);
@@ -252,7 +252,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         }
     }
 
-    private static boolean canCraftItem(CircleFabricationBlockEntity entity, AlchemicalCompositionRecipe recipe){
+    private static boolean canCraftItem(CircleFabricationBlockEntity entity, DistillationFabricationRecipe recipe){
         if(recipe == null) {
             return false;
         }
@@ -292,7 +292,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
         return true;
     }
 
-    private static void craftItem(CircleFabricationBlockEntity entity, AlchemicalCompositionRecipe recipe) {
+    private static void craftItem(CircleFabricationBlockEntity entity, DistillationFabricationRecipe recipe) {
         int bottlesToInsert = 0;
         for(ItemStack is : recipe.getComponentMateria()) {
             bottlesToInsert += is.getCount();

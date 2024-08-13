@@ -2,8 +2,7 @@ package com.aranaira.magichem.interop.jei;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.JEIPlugin;
-import com.aranaira.magichem.recipe.AlchemicalCompositionRecipe;
-import com.aranaira.magichem.recipe.AlchemicalInfusionRitualRecipe;
+import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -14,15 +13,13 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class SublimationRitualRecipeCategory implements IRecipeCategory<AlchemicalInfusionRitualRecipe> {
+public class SublimationRitualRecipeCategory implements IRecipeCategory<SublimationRitualRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "sublimation_ritual");
     public static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/jei/jei_recipecategory_02.png");
@@ -36,7 +33,7 @@ public class SublimationRitualRecipeCategory implements IRecipeCategory<Alchemic
     }
 
     @Override
-    public RecipeType<AlchemicalInfusionRitualRecipe> getRecipeType() {
+    public RecipeType<SublimationRitualRecipe> getRecipeType() {
         return JEIPlugin.SUBLIMATION_RITUAL_TYPE;
     }
 
@@ -56,7 +53,7 @@ public class SublimationRitualRecipeCategory implements IRecipeCategory<Alchemic
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, AlchemicalInfusionRitualRecipe recipe, IFocusGroup group) {
+    public void setRecipe(IRecipeLayoutBuilder builder, SublimationRitualRecipe recipe, IFocusGroup group) {
 
         builder.addSlot(RecipeIngredientRole.OUTPUT,40,88).addItemStack(recipe.getAlchemyObject());
 
@@ -73,7 +70,7 @@ public class SublimationRitualRecipeCategory implements IRecipeCategory<Alchemic
     }
 
     @Override
-    public List<Component> getTooltipStrings(AlchemicalInfusionRitualRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(SublimationRitualRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 
         return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
     }
