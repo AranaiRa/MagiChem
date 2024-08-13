@@ -286,11 +286,11 @@
   "item.magichem.admixture_wizard": "Admixture of the Wizard",
   "item.magichem.admixture_wizard.short": "Wizard",
 
-  "feedback.ritual.alchemical_infusion.novessel": "This ritual requires Materia Jars or Vessels in very specific locations. Make sure there's a Materia Jar or Vessel with the proper type of materia in the \"crook\" of the scale pattern on both sides.",
-  "feedback.ritual.alchemical_infusion.insufficient.a": "This recipe requires ",
-  "feedback.ritual.alchemical_infusion.insufficient.b": "Please provide ",
-  "feedback.ritual.alchemical_infusion.insufficient.and": " and ",
-  "feedback.ritual.alchemical_infusion.insufficient.more": " more ",
+  "feedback.ritual.sublimation.novessel": "This ritual requires Materia Jars or Vessels in very specific locations. Make sure there's a Materia Jar or Vessel with the proper type of materia in the \"crook\" of the scale pattern on both sides.",
+  "feedback.ritual.sublimation.insufficient.a": "This recipe requires ",
+  "feedback.ritual.sublimation.insufficient.b": "Please provide ",
+  "feedback.ritual.sublimation.insufficient.and": " and ",
+  "feedback.ritual.sublimation.insufficient.more": " more ",
 
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",
@@ -528,8 +528,8 @@
   "construct.magichem:collect_experience": "Collect Experience",
   "construct.magichem:study": "Study",
 
-  "gui.mna.codex_search.recipe.alchemical_infusion": "Nexus Sublimation > ",
-  "gui.mna.codex_search.recipe.alchemical_infusion_ritual": "Ritual Sublimation > ",
+  "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
+  "gui.mna.codex_search.recipe.sublimation_ritual": "Ritual Sublimation > ",
 
   "gui.mna.parameter.clean_alchemical_apparatus.point": "What alchemical device should the construct clean using water in its tank?",
 

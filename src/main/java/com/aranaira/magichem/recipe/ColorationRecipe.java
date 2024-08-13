@@ -43,7 +43,7 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
         this.chargeUsage = pChargeUsage;
         this.craftingTimeMultiplier = pCraftingTimeMultiplier;
         this.colorlessDefault = pColorlessDefault;
-        this.potentialOutputs = new HashMap<>();
+        this.potentialOutputs = pPotentialOutputs;
     }
 
     /**

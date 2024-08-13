@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class RecipeInfusion extends RecipeRendererBase {
     private SublimationRecipe recipe;
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MagiChemMod.MODID, "textures/gui/guide/alchemical_infusion.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MagiChemMod.MODID, "textures/gui/guide/sublimation.png");
 
     public RecipeInfusion(int xIn, int yIn) {
         super(xIn, yIn);

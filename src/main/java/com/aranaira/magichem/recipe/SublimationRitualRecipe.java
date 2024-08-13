@@ -131,14 +131,14 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer> {
     public static class Type implements RecipeType<SublimationRitualRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "alchemical_infusion_ritual";
+        public static final String ID = "sublimation_ritual";
     }
 
 
     public static class Serializer implements RecipeSerializer<SublimationRitualRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(MagiChemMod.MODID, "alchemical_infusion_ritual");
+                new ResourceLocation(MagiChemMod.MODID, "sublimation_ritual");
         private static final HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(true, true);
 
         @Override
@@ -162,7 +162,7 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer> {
                 if(itemQuery != null) {
                     ing = new ItemStack(itemQuery);
                 } else {
-                    MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for alchemical_infusion_ritual recipe \""+pRecipeId);
+                    MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for sublimation_ritual recipe \""+pRecipeId);
                 }
 
                 extractedIngredients.add(ing);

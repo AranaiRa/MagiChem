@@ -384,12 +384,12 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/iris_argenti"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/iris_argenti"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/iris_argenti"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/iris_argenti"
       },
       {
         "type": "crafting",
@@ -429,8 +429,8 @@
         "location": "magichem:rituals/balanced_scales"
       },
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/perfected_electrum"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/perfected_electrum"
       }
     ]
   },
@@ -715,8 +715,8 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/catalyst_core"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/catalyst_core"
       },
       {
         "type": "runesmithing",
@@ -1850,8 +1850,8 @@
         "location": "magichem:rituals/balanced_scales"
       },
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/materia_vessel"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/materia_vessel"
       }
     ]
   },
@@ -2216,8 +2216,8 @@
         "location": "magichem:shaped/materia_jar"
       },
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/materia_vessel"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/materia_vessel"
       }
     ]
   },
@@ -2248,12 +2248,12 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/occulted_cinder"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/occulted_cinder"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/occulted_cinder"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/occulted_cinder"
       }
     ]
   },
@@ -2284,12 +2284,12 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/perfected_electrum"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/perfected_electrum"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/perfected_electrum"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/perfected_electrum"
       }
     ]
   },
@@ -2327,12 +2327,12 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/iris_argenti"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/iris_argenti"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/iris_argenti"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/iris_argenti"
       },
       {
         "type": "crafting",
@@ -2413,12 +2413,12 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/catalytic_carbon"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/catalytic_carbon"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/catalytic_carbon"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/catalytic_carbon"
       }
     ]
   },
@@ -2449,12 +2449,12 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/thunderstone"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/thunderstone"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/thunderstone"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/thunderstone"
       }
     ]
   },
@@ -2513,12 +2513,12 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/liquid_light_bucket"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/liquid_light_bucket"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/liquid_light_bucket"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/liquid_light_bucket"
       }
     ]
   },
@@ -2563,12 +2563,12 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/winter_charge"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/winter_charge"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/winter_charge"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/winter_charge"
       }
     ]
   },
@@ -2642,8 +2642,8 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/construct_pressure_plate"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/construct_pressure_plate"
       },
       {
         "type": "crafting",
@@ -2747,8 +2747,8 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/charging_talisman"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/charging_talisman"
       },
       {
         "type": "manaweaving_altar",
@@ -2810,20 +2810,20 @@
         "location": "magichem:shaped/cog_components"
       },
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/sublime_cog_components"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/sublime_cog_components"
       },
       {
         "type": "runesmithing",
         "location": "magichem:runeforging/tube_components"
       },
       {
-        "type": "alchemical_infusion_ritual",
-        "location": "magichem:alchemical_infusion_ritual/magichem/sublime_tube_components"
+        "type": "sublimation_ritual",
+        "location": "magichem:sublimation_ritual/magichem/sublime_tube_components"
       },
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/magichemical_mechanism"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/magichemical_mechanism"
       }
     ]
   },
@@ -2863,8 +2863,8 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/compat/occultism/occult_ritual_talisman"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/compat/occultism/occult_ritual_talisman"
       },
       {
         "type": "crafting",
@@ -2946,8 +2946,8 @@
     ],
     "related_recipes": [
       {
-        "type": "alchemical_infusion",
-        "location": "magichem:alchemical_infusion/magichem/grand_distillery"
+        "type": "sublimation",
+        "location": "magichem:sublimation/magichem/grand_distillery"
       },
       {
         "type": "eldrin_altar",

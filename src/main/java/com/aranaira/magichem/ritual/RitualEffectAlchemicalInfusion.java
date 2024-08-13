@@ -100,7 +100,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
         //Materia vessels missing at one or both spots, we should inform the player
         if (lv.vesselBlockEntity == null || rv.vesselBlockEntity == null) {
-            context.getCaster().sendSystemMessage(Component.translatable("feedback.ritual.alchemical_infusion.novessel"));
+            context.getCaster().sendSystemMessage(Component.translatable("feedback.ritual.sublimation.novessel"));
 
             if(!context.getCaster().isCreative())
                 returnReagentsToWorld(context);
@@ -138,11 +138,11 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
             missingSecond -= rv.vesselBlockEntity.getCurrentStock();
 
         MutableComponent errorMessage = Component.empty()
-                .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.a"))
+                .append(Component.translatable("feedback.ritual.sublimation.insufficient.a"))
                 .append(Component.literal(recipe.getComponentMateria().getFirst().getCount() + "").withStyle(ChatFormatting.GOLD))
                 .append(Component.literal(" x "))
                 .append(Component.translatable("item.magichem." + ForgeRegistries.ITEMS.getKey(recipe.getComponentMateria().getFirst().getItem()).getPath()).withStyle(ChatFormatting.GOLD))
-                .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.and"))
+                .append(Component.translatable("feedback.ritual.sublimation.insufficient.and"))
                 .append(Component.literal(recipe.getComponentMateria().getSecond().getCount() + "").withStyle(ChatFormatting.GOLD))
                 .append(Component.literal(" x "))
                 .append(Component.translatable("item.magichem." + ForgeRegistries.ITEMS.getKey(recipe.getComponentMateria().getSecond().getItem()).getPath()).withStyle(ChatFormatting.GOLD))
@@ -151,31 +151,31 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
         if(missingFirst > 0 && missingSecond > 0) {
             errorMessage.append("\n\n")
-                    .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.b"))
+                    .append(Component.translatable("feedback.ritual.sublimation.insufficient.b"))
                     .append(Component.literal(missingFirst+"").withStyle(ChatFormatting.GOLD))
-                    .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.more"))
+                    .append(Component.translatable("feedback.ritual.sublimation.insufficient.more"))
                     .append(Component.translatable("item.magichem."+ForgeRegistries.ITEMS.getKey(recipe.getComponentMateria().getFirst().getItem()).getPath()).withStyle(ChatFormatting.GOLD))
-                    .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.and"))
+                    .append(Component.translatable("feedback.ritual.sublimation.insufficient.and"))
                     .append(Component.literal(missingSecond+"").withStyle(ChatFormatting.GOLD))
-                    .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.more"))
+                    .append(Component.translatable("feedback.ritual.sublimation.insufficient.more"))
                     .append(Component.translatable("item.magichem."+ForgeRegistries.ITEMS.getKey(recipe.getComponentMateria().getSecond().getItem()).getPath()).withStyle(ChatFormatting.GOLD))
                     .append(Component.literal(".")
                     );
         }
         else if(missingFirst > 0) {
             errorMessage.append("\n\n")
-                    .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.b"))
+                    .append(Component.translatable("feedback.ritual.sublimation.insufficient.b"))
                     .append(Component.literal(missingFirst+"").withStyle(ChatFormatting.GOLD))
-                    .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.more"))
+                    .append(Component.translatable("feedback.ritual.sublimation.insufficient.more"))
                     .append(Component.translatable("item.magichem."+ForgeRegistries.ITEMS.getKey(recipe.getComponentMateria().getFirst().getItem()).getPath()).withStyle(ChatFormatting.GOLD))
                     .append(Component.literal(".")
                     );
         }
         else if(missingSecond > 0) {
             errorMessage.append("\n\n")
-                    .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.b"))
+                    .append(Component.translatable("feedback.ritual.sublimation.insufficient.b"))
                     .append(Component.literal(missingSecond+"").withStyle(ChatFormatting.GOLD))
-                    .append(Component.translatable("feedback.ritual.alchemical_infusion.insufficient.more"))
+                    .append(Component.translatable("feedback.ritual.sublimation.insufficient.more"))
                     .append(Component.translatable("item.magichem."+ForgeRegistries.ITEMS.getKey(recipe.getComponentMateria().getSecond().getItem()).getPath()).withStyle(ChatFormatting.GOLD))
                     .append(Component.literal(".")
                     );
@@ -383,7 +383,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
         //Queue up the shlorps
         DelayedEventQueue.pushEvent(context.getLevel(),
-                new TimedDelayedEvent<DelayDataShlorps>("alchemical_infusion_ritual_shlorps", 60,
+                new TimedDelayedEvent<DelayDataShlorps>("sublimation_ritual_shlorps", 60,
                         new DelayDataShlorps(context, vesselData),
                         this::createShlorps
                         )
@@ -392,7 +392,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         //Queue up the item craft
         Vec3 itemPos = new Vec3(context.getCenter().getX()+0.5, context.getCenter().getY()+RITUAL_VFX_HEIGHT, context.getCenter().getZ()+0.5);
         DelayedEventQueue.pushEvent(context.getLevel(),
-                new TimedDelayedEvent<DelayDataOutputItem>("alchemical_infusion_ritual_output", RITUAL_LIFESPAN + 160,
+                new TimedDelayedEvent<DelayDataOutputItem>("sublimation_ritual_output", RITUAL_LIFESPAN + 160,
                         new DelayDataOutputItem(context.getLevel(), itemPos, recipe.getAlchemyObject().copy()),
                         this::createOutputItem
                         )

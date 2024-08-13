@@ -144,14 +144,14 @@ public class SublimationRecipe implements Recipe<SimpleContainer> {
     public static class Type implements RecipeType<SublimationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "alchemical_infusion_ritual";
+        public static final String ID = "sublimation_ritual";
     }
 
 
     public static class Serializer implements RecipeSerializer<SublimationRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(MagiChemMod.MODID, "alchemical_infusion_ritual");
+                new ResourceLocation(MagiChemMod.MODID, "sublimation_ritual");
         private static final HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(true, true);
 
         @Override
@@ -182,7 +182,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer> {
                     if(itemQuery != null) {
                         items.add(new ItemStack(itemQuery));
                     } else {
-                        MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for alchemical_infusion recipe \""+pRecipeId);
+                        MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for sublimation recipe \""+pRecipeId);
                     }
                 });
 
@@ -194,7 +194,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer> {
                     if(materiaQuery != null) {
                         materia.add(new ItemStack(materiaQuery, count));
                     } else {
-                        MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for alchemical_infusion recipe \""+pRecipeId);
+                        MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+key+"\" for sublimation recipe \""+pRecipeId);
                     }
                 });
 
@@ -242,7 +242,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer> {
                         int count = nbtThisIngredient.getInt("count");
 
                         if(item == null)
-                            MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+rloc+"\" for alchemical_infusion recipe \""+id+"\"");
+                            MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+rloc+"\" for sublimation recipe \""+id+"\"");
                         else
                             componentItems.add(new ItemStack(item, count));
                     }
@@ -258,7 +258,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer> {
                         int count = nbtThisMateria.getInt("count");
 
                         if(item == null)
-                            MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+rloc+"\" for alchemical_infusion recipe \""+id+"\"");
+                            MagiChemMod.LOGGER.warn("&&& Couldn't find materia \""+rloc+"\" for sublimation recipe \""+id+"\"");
                         else
                             componentMateria.add(new ItemStack(item, count));
                     }

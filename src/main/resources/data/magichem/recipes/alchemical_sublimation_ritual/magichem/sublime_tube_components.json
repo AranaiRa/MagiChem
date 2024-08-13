@@ -1,5 +1,5 @@
 {
-  "type": "magichem:alchemical_infusion_ritual",
+  "type": "magichem:sublimation_ritual",
   "object": {
     "item": "magichem:sublime_tube_components"
   },

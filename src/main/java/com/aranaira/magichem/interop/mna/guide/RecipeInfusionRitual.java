@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class RecipeInfusionRitual extends RecipeRendererBase {
     private SublimationRitualRecipe recipe;
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MagiChemMod.MODID, "textures/gui/guide/alchemical_infusion_ritual.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MagiChemMod.MODID, "textures/gui/guide/sublimation_ritual.png");
     private static final ItemStack SUBLIMATION_PRIMER = new ItemStack(ItemRegistry.SUBLIMATION_PRIMER.get());
 
     public RecipeInfusionRitual(int xIn, int yIn) {
