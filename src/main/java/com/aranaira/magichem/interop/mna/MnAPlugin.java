@@ -1,15 +1,15 @@
 package com.aranaira.magichem.interop.mna;
 
-import com.aranaira.magichem.interop.mna.guide.RecipeInfusion;
-import com.aranaira.magichem.interop.mna.guide.RecipeInfusionRitual;
+import com.aranaira.magichem.interop.mna.guide.RecipeSublimation;
+import com.aranaira.magichem.interop.mna.guide.RecipeSublimationRitual;
 import com.mna.guide.recipe.init.RecipeRenderers;
 
 public class MnAPlugin {
-    public static final String ALCHEMICAL_INFUSION_RITUAL = "sublimation_ritual";
-    public static final String ALCHEMICAL_INFUSION = "sublimation";
+    public static final String SUBLIMATION_RITUAL = "sublimation_ritual";
+    public static final String SUBLIMATION = "sublimation";
 
     public static void register() {
-        RecipeRenderers.registerRecipeRenderer(ALCHEMICAL_INFUSION_RITUAL, RecipeInfusionRitual.class);
-        RecipeRenderers.registerRecipeRenderer(ALCHEMICAL_INFUSION, RecipeInfusion.class);
+        RecipeRenderers.registerRecipeRenderer(SUBLIMATION_RITUAL, RecipeSublimationRitual.class);
+        RecipeRenderers.registerRecipeRenderer(SUBLIMATION, RecipeSublimation.class);
     }
 }

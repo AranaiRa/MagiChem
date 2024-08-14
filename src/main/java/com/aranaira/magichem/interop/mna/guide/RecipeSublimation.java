@@ -11,11 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Optional;
 
-public class RecipeInfusion extends RecipeRendererBase {
+public class RecipeSublimation extends RecipeRendererBase {
     private SublimationRecipe recipe;
     private static final ResourceLocation TEXTURE = new ResourceLocation(MagiChemMod.MODID, "textures/gui/guide/sublimation.png");
 
-    public RecipeInfusion(int xIn, int yIn) {
+    public RecipeSublimation(int xIn, int yIn) {
         super(xIn, yIn);
     }
 
@@ -122,33 +122,6 @@ public class RecipeInfusion extends RecipeRendererBase {
                     }
                 }
             }
-
-//            for(int i=0;i<recipe.getIngredientItemStacks().size();i++) {
-//                this.renderItemStack(pGuiGraphics, recipe.getIngredientItemStacks().get(i),
-//                        (int)((float)this.getX() / this.scale + 69.0f + i*32.0f),
-//                        (int)((float)this.getY() / this.scale + 37.0f)
-//                );
-//            }
-//
-//            this.renderItemStack(pGuiGraphics, SUBLIMATION_PRIMER,
-//                    (int)((float)this.getX() / this.scale + 101.0f),
-//                    (int)((float)this.getY() / this.scale + 69.0f)
-//            );
-//
-//            this.renderItemStack(pGuiGraphics, recipe.getComponentMateria().getFirst(),
-//                    (int)((float)this.getX() / this.scale + 118.0f),
-//                    (int)((float)this.getY() / this.scale + 117.0f)
-//            );
-//
-//            this.renderItemStack(pGuiGraphics, recipe.getComponentMateria().getSecond(),
-//                    (int)((float)this.getX() / this.scale + 118.0f),
-//                    (int)((float)this.getY() / this.scale + 135.0f)
-//            );
-//
-//            this.renderItemStack(pGuiGraphics, recipe.getAlchemyObject(),
-//                    (int)((float)this.getX() / this.scale + 101.0f),
-//                    (int)((float)this.getY() / this.scale + 195.0f)
-//            );
         }
     }
 
@@ -158,8 +131,8 @@ public class RecipeInfusion extends RecipeRendererBase {
 
     public void init_internal(ResourceLocation pRecipeLocation) {
         Optional<? extends net.minecraft.world.item.crafting.Recipe<?>> pattern = this.minecraft.level.getRecipeManager().byKey(pRecipeLocation);
-        if(pattern.isPresent() && pattern.get() instanceof SublimationRecipe air) {
-            this.recipe = air;
+        if(pattern.isPresent() && pattern.get() instanceof SublimationRecipe sr) {
+            this.recipe = sr;
         }
     }
 

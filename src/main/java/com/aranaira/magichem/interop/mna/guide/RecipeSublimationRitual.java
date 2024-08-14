@@ -10,12 +10,12 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
-public class RecipeInfusionRitual extends RecipeRendererBase {
+public class RecipeSublimationRitual extends RecipeRendererBase {
     private SublimationRitualRecipe recipe;
     private static final ResourceLocation TEXTURE = new ResourceLocation(MagiChemMod.MODID, "textures/gui/guide/sublimation_ritual.png");
     private static final ItemStack SUBLIMATION_PRIMER = new ItemStack(ItemRegistry.SUBLIMATION_PRIMER.get());
 
-    public RecipeInfusionRitual(int xIn, int yIn) {
+    public RecipeSublimationRitual(int xIn, int yIn) {
         super(xIn, yIn);
     }
 
@@ -56,8 +56,8 @@ public class RecipeInfusionRitual extends RecipeRendererBase {
 
     public void init_internal(ResourceLocation pRecipeLocation) {
         Optional<? extends net.minecraft.world.item.crafting.Recipe<?>> pattern = this.minecraft.level.getRecipeManager().byKey(pRecipeLocation);
-        if(pattern.isPresent() && pattern.get() instanceof SublimationRitualRecipe airr) {
-            this.recipe = airr;
+        if(pattern.isPresent() && pattern.get() instanceof SublimationRitualRecipe srr) {
+            this.recipe = srr;
         }
     }
 
