@@ -1,0 +1,87 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "botania:white_petal_block"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "botania:red_petal_block"
+          },
+          {
+            "color": "orange",
+            "item": "botania:orange_petal_block"
+          },
+          {
+            "color": "yellow",
+            "item": "botania:yellow_petal_block"
+          },
+          {
+            "color": "lime",
+            "item": "botania:lime_petal_block"
+          },
+          {
+            "color": "green",
+            "item": "botania:green_petal_block"
+          },
+          {
+            "color": "cyan",
+            "item": "botania:cyan_petal_block"
+          },
+          {
+            "color": "light_blue",
+            "item": "botania:light_blue_petal_block"
+          },
+          {
+            "color": "blue",
+            "item": "botania:blue_petal_block"
+          },
+          {
+            "color": "purple",
+            "item": "botania:purple_petal_block"
+          },
+          {
+            "color": "magenta",
+            "item": "botania:magenta_petal_block"
+          },
+          {
+            "color": "pink",
+            "item": "botania:pink_petal_block"
+          },
+          {
+            "color": "brown",
+            "item": "botania:brown_petal_block"
+          },
+          {
+            "color": "black",
+            "item": "botania:black_petal_block"
+          },
+          {
+            "color": "gray",
+            "item": "botania:gray_petal_block"
+          },
+          {
+            "color": "light_gray",
+            "item": "botania:light_gray_petal_block"
+          },
+          {
+            "color": "white",
+            "item": "botania:white_petal_block"
+          }
+        ]
+      }
+    }
+  ]
+}

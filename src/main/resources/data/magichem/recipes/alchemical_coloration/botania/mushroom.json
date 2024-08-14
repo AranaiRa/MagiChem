@@ -1,0 +1,87 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "botania:white_mushroom"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "botania:red_mushroom"
+          },
+          {
+            "color": "orange",
+            "item": "botania:orange_mushroom"
+          },
+          {
+            "color": "yellow",
+            "item": "botania:yellow_mushroom"
+          },
+          {
+            "color": "lime",
+            "item": "botania:lime_mushroom"
+          },
+          {
+            "color": "green",
+            "item": "botania:green_mushroom"
+          },
+          {
+            "color": "cyan",
+            "item": "botania:cyan_mushroom"
+          },
+          {
+            "color": "light_blue",
+            "item": "botania:light_blue_mushroom"
+          },
+          {
+            "color": "blue",
+            "item": "botania:blue_mushroom"
+          },
+          {
+            "color": "purple",
+            "item": "botania:purple_mushroom"
+          },
+          {
+            "color": "magenta",
+            "item": "botania:magenta_mushroom"
+          },
+          {
+            "color": "pink",
+            "item": "botania:pink_mushroom"
+          },
+          {
+            "color": "brown",
+            "item": "botania:brown_mushroom"
+          },
+          {
+            "color": "black",
+            "item": "botania:black_mushroom"
+          },
+          {
+            "color": "gray",
+            "item": "botania:gray_mushroom"
+          },
+          {
+            "color": "light_gray",
+            "item": "botania:light_gray_mushroom"
+          },
+          {
+            "color": "white",
+            "item": "botania:white_mushroom"
+          }
+        ]
+      }
+    }
+  ]
+}

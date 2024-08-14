@@ -1,0 +1,47 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "minecraft:chiseled_quartz_block"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "botania:chiseled_red_quartz"
+          },
+          {
+            "color": "orange",
+            "item": "botania:chiseled_blaze_quartz"
+          },
+          {
+            "color": "yellow",
+            "item": "botania:chiseled_sunny_quartz"
+          },
+          {
+            "color": "lime",
+            "item": "botania:chiseled_elf_quartz"
+          },
+          {
+            "color": "light_blue",
+            "item": "botania:chiseled_mana_quartz"
+          },
+          {
+            "color": "purple",
+            "item": "botania:chiseled_lavender_quartz"
+          }
+        ]
+      }
+    }
+  ]
+}

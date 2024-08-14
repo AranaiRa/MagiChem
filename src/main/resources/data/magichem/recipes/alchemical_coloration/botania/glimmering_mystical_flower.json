@@ -1,0 +1,87 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "botania:white_shiny_flower"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "botania:red_shiny_flower"
+          },
+          {
+            "color": "orange",
+            "item": "botania:orange_shiny_flower"
+          },
+          {
+            "color": "yellow",
+            "item": "botania:yellow_shiny_flower"
+          },
+          {
+            "color": "lime",
+            "item": "botania:lime_shiny_flower"
+          },
+          {
+            "color": "green",
+            "item": "botania:green_shiny_flower"
+          },
+          {
+            "color": "cyan",
+            "item": "botania:cyan_shiny_flower"
+          },
+          {
+            "color": "light_blue",
+            "item": "botania:light_blue_shiny_flower"
+          },
+          {
+            "color": "blue",
+            "item": "botania:blue_shiny_flower"
+          },
+          {
+            "color": "purple",
+            "item": "botania:purple_shiny_flower"
+          },
+          {
+            "color": "magenta",
+            "item": "botania:magenta_shiny_flower"
+          },
+          {
+            "color": "pink",
+            "item": "botania:pink_shiny_flower"
+          },
+          {
+            "color": "brown",
+            "item": "botania:brown_shiny_flower"
+          },
+          {
+            "color": "black",
+            "item": "botania:black_shiny_flower"
+          },
+          {
+            "color": "gray",
+            "item": "botania:gray_shiny_flower"
+          },
+          {
+            "color": "light_gray",
+            "item": "botania:light_gray_shiny_flower"
+          },
+          {
+            "color": "white",
+            "item": "botania:white_shiny_flower"
+          }
+        ]
+      }
+    }
+  ]
+}

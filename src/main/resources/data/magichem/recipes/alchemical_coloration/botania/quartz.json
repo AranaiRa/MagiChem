@@ -1,0 +1,47 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "minecraft:quartz"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "botania:quartz_red"
+          },
+          {
+            "color": "orange",
+            "item": "botania:quartz_blaze"
+          },
+          {
+            "color": "yellow",
+            "item": "botania:quartz_sunny"
+          },
+          {
+            "color": "lime",
+            "item": "botania:quartz_elven"
+          },
+          {
+            "color": "light_blue",
+            "item": "botania:quartz_mana"
+          },
+          {
+            "color": "purple",
+            "item": "botania:quartz_lavender"
+          }
+        ]
+      }
+    }
+  ]
+}
