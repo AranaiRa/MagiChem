@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:white_carpet"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:red_carpet"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:orange_carpet"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:yellow_carpet"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:lime_carpet"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:green_carpet"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:cyan_carpet"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:light_blue_carpet"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:blue_carpet"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:purple_carpet"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:magenta_carpet"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:pink_carpet"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:brown_carpet"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:black_carpet"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:gray_carpet"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:light_gray_carpet"
+    },
+    {
+      "color": "white",
+      "item": "minecraft:white_carpet"
+    }
+  ]
+}

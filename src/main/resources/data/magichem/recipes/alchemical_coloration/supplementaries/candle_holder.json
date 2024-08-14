@@ -1,0 +1,87 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries:candle_holder"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "supplementaries:candle_holder_white"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "supplementaries:candle_holder_red"
+          },
+          {
+            "color": "orange",
+            "item": "supplementaries:candle_holder_orange"
+          },
+          {
+            "color": "yellow",
+            "item": "supplementaries:candle_holder_yellow"
+          },
+          {
+            "color": "lime",
+            "item": "supplementaries:candle_holder_lime"
+          },
+          {
+            "color": "green",
+            "item": "supplementaries:candle_holder_green"
+          },
+          {
+            "color": "cyan",
+            "item": "supplementaries:candle_holder_cyan"
+          },
+          {
+            "color": "light_blue",
+            "item": "supplementaries:candle_holder_light_blue"
+          },
+          {
+            "color": "blue",
+            "item": "supplementaries:candle_holder_blue"
+          },
+          {
+            "color": "purple",
+            "item": "supplementaries:candle_holder_purple"
+          },
+          {
+            "color": "magenta",
+            "item": "supplementaries:candle_holder_magenta"
+          },
+          {
+            "color": "pink",
+            "item": "supplementaries:candle_holder_pink"
+          },
+          {
+            "color": "brown",
+            "item": "supplementaries:candle_holder_brown"
+          },
+          {
+            "color": "black",
+            "item": "supplementaries:candle_holder_black"
+          },
+          {
+            "color": "gray",
+            "item": "supplementaries:candle_holder_gray"
+          },
+          {
+            "color": "light_gray",
+            "item": "supplementaries:candle_holder_light_gray"
+          },
+          {
+            "color": "white",
+            "item": "supplementaries:candle_holder_white"
+          }
+        ]
+      }
+    }
+  ]
+}

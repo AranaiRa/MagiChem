@@ -1,0 +1,87 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries:trapped_present"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "supplementaries:trapped_present_white"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "supplementaries:trapped_present_red"
+          },
+          {
+            "color": "orange",
+            "item": "supplementaries:trapped_present_orange"
+          },
+          {
+            "color": "yellow",
+            "item": "supplementaries:trapped_present_yellow"
+          },
+          {
+            "color": "lime",
+            "item": "supplementaries:trapped_present_lime"
+          },
+          {
+            "color": "green",
+            "item": "supplementaries:trapped_present_green"
+          },
+          {
+            "color": "cyan",
+            "item": "supplementaries:trapped_present_cyan"
+          },
+          {
+            "color": "light_blue",
+            "item": "supplementaries:trapped_present_light_blue"
+          },
+          {
+            "color": "blue",
+            "item": "supplementaries:trapped_present_blue"
+          },
+          {
+            "color": "purple",
+            "item": "supplementaries:trapped_present_purple"
+          },
+          {
+            "color": "magenta",
+            "item": "supplementaries:trapped_present_magenta"
+          },
+          {
+            "color": "pink",
+            "item": "supplementaries:trapped_present_pink"
+          },
+          {
+            "color": "brown",
+            "item": "supplementaries:trapped_present_brown"
+          },
+          {
+            "color": "black",
+            "item": "supplementaries:trapped_present_black"
+          },
+          {
+            "color": "gray",
+            "item": "supplementaries:trapped_present_gray"
+          },
+          {
+            "color": "light_gray",
+            "item": "supplementaries:trapped_present_light_gray"
+          },
+          {
+            "color": "white",
+            "item": "supplementaries:trapped_present_white"
+          }
+        ]
+      }
+    }
+  ]
+}

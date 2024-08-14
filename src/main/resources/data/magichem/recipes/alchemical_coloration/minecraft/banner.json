@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:white_banner"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:red_banner"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:orange_banner"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:yellow_banner"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:lime_banner"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:green_banner"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:cyan_banner"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:light_blue_banner"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:blue_banner"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:purple_banner"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:magenta_banner"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:pink_banner"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:brown_banner"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:black_banner"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:gray_banner"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:light_gray_banner"
+    },
+    {
+      "color": "white",
+      "item": "minecraft:white_banner"
+    }
+  ]
+}

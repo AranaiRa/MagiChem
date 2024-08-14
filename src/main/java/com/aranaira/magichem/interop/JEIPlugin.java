@@ -2,10 +2,7 @@ package com.aranaira.magichem.interop;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.jei.*;
-import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
-import com.aranaira.magichem.recipe.SublimationRecipe;
-import com.aranaira.magichem.recipe.SublimationRitualRecipe;
-import com.aranaira.magichem.recipe.FixationSeparationRecipe;
+import com.aranaira.magichem.recipe.*;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.mna.items.ItemInit;
 import mezz.jei.api.IModPlugin;
@@ -38,6 +35,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(SublimationRitualRecipeCategory.UID, SublimationRitualRecipe.class);
     public static RecipeType<SublimationRecipe> SUBLIMATION_TYPE =
             new RecipeType<>(SublimationRecipeCategory.UID, SublimationRecipe.class);
+    public static RecipeType<ColorationRecipe> COLORATION_TYPE =
+            new RecipeType<>(ColorationRecipeCategory.UID, ColorationRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -58,6 +57,8 @@ public class JEIPlugin implements IModPlugin {
                 SublimationRitualRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 SublimationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                ColorationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -82,12 +83,16 @@ public class JEIPlugin implements IModPlugin {
 
         List<SublimationRecipe> recipesSublimation = rm.getAllRecipesFor(SublimationRecipe.Type.INSTANCE);
         registration.addRecipes(SUBLIMATION_TYPE, recipesSublimation);
+
+        List<ColorationRecipe> recipesColoration = rm.getAllRecipesFor(ColorationRecipe.Type.INSTANCE);
+        registration.addRecipes(COLORATION_TYPE, recipesColoration);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ALEMBIC.get(), 1), DISTILLATION_TYPE);
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.DISTILLERY.get(), 1), DISTILLATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_DISTILLERY.get(), 1), DISTILLATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CENTRIFUGE.get(), 1), SEPARATION_TYPE);
         
@@ -98,6 +103,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ItemInit.RUNE_RITUAL_METAL.get(), 1).setHoverName(Component.translatable("magichem:rituals/balanced_scales")), SUBLIMATION_RITUAL_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ALCHEMICAL_NEXUS.get(), 1), SUBLIMATION_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.VARIEGATOR.get(), 1), COLORATION_TYPE);
 
         IModPlugin.super.registerRecipeCatalysts(registration);
     }

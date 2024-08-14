@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:white_bed"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:red_bed"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:orange_bed"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:yellow_bed"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:lime_bed"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:green_bed"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:cyan_bed"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:light_blue_bed"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:blue_bed"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:purple_bed"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:magenta_bed"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:pink_bed"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:brown_bed"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:black_bed"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:gray_bed"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:light_gray_bed"
+    },
+    {
+      "color": "white",
+      "item": "minecraft:white_bed"
+    }
+  ]
+}

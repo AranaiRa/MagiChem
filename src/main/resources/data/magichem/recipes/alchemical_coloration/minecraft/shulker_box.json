@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:shulker_box"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:red_shulker_box"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:orange_shulker_box"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:yellow_shulker_box"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:lime_shulker_box"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:green_shulker_box"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:cyan_shulker_box"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:light_blue_shulker_box"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:blue_shulker_box"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:purple_shulker_box"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:magenta_shulker_box"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:pink_shulker_box"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:brown_shulker_box"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:black_shulker_box"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:gray_shulker_box"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:light_gray_shulker_box"
+    },
+    {
+      "color": "white",
+      "item": "minecraft:white_shulker_box"
+    }
+  ]
+}

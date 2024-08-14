@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "mna:stone_rune_blank"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "mna:stone_rune_red"
+    },
+    {
+      "color": "orange",
+      "item": "mna:stone_rune_orange"
+    },
+    {
+      "color": "yellow",
+      "item": "mna:stone_rune_yellow"
+    },
+    {
+      "color": "lime",
+      "item": "mna:stone_rune_lime"
+    },
+    {
+      "color": "green",
+      "item": "mna:stone_rune_green"
+    },
+    {
+      "color": "cyan",
+      "item": "mna:stone_rune_cyan"
+    },
+    {
+      "color": "light_blue",
+      "item": "mna:stone_rune_light_blue"
+    },
+    {
+      "color": "blue",
+      "item": "mna:stone_rune_blue"
+    },
+    {
+      "color": "purple",
+      "item": "mna:stone_rune_purple"
+    },
+    {
+      "color": "magenta",
+      "item": "mna:stone_rune_magenta"
+    },
+    {
+      "color": "pink",
+      "item": "mna:stone_rune_pink"
+    },
+    {
+      "color": "brown",
+      "item": "mna:stone_rune_brown"
+    },
+    {
+      "color": "black",
+      "item": "mna:stone_rune_black"
+    },
+    {
+      "color": "gray",
+      "item": "mna:stone_rune_gray"
+    },
+    {
+      "color": "light_gray",
+      "item": "mna:stone_rune_light_gray"
+    },
+    {
+      "color": "white",
+      "item": "mna:stone_rune_white"
+    }
+  ]
+}

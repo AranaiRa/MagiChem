@@ -76,7 +76,10 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
         return componentsCopy;
     }
 
-    public HashMap<DyeColor, ItemStack> getResultsAsMap() {
+    public HashMap<DyeColor, ItemStack> getResultsAsMap(boolean copy) {
+        if(!copy)
+            return potentialOutputs;
+
         HashMap<DyeColor, ItemStack> resultsCopy = new HashMap<>();
         for(DyeColor color : potentialOutputs.keySet()) {
             resultsCopy.put(color, potentialOutputs.get(color).copy());

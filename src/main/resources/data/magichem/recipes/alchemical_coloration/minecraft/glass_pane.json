@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:glass_pane"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:red_stained_glass_pane"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:orange_stained_glass_pane"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:yellow_stained_glass_pane"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:lime_stained_glass_pane"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:green_stained_glass_pane"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:cyan_stained_glass_pane"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:light_blue_stained_glass_pane"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:blue_stained_glass_pane"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:purple_stained_glass_pane"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:magenta_stained_glass_pane"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:pink_stained_glass_pane"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:brown_stained_glass_pane"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:black_stained_glass_pane"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:gray_stained_glass_pane"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:light_gray_stained_glass_pane"
+    },
+    {
+      "color": "white",
+      "item": "minecraft:white_stained_glass_pane"
+    }
+  ]
+}

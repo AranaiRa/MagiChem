@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:candle"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:red_candle"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:orange_candle"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:yellow_candle"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:lime_candle"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:green_candle"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:cyan_candle"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:light_blue_candle"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:blue_candle"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:purple_candle"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:magenta_candle"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:pink_candle"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:brown_candle"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:black_candle"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:gray_candle"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:light_gray_candle"
+    },
+    {
+      "color": "white",
+      "item": "minecraft:white_candle"
+    }
+  ]
+}

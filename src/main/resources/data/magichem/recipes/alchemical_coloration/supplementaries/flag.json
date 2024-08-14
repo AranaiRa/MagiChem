@@ -1,0 +1,87 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries:flag_white"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "supplementaries:flag_white"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "supplementaries:flag_red"
+          },
+          {
+            "color": "orange",
+            "item": "supplementaries:flag_orange"
+          },
+          {
+            "color": "yellow",
+            "item": "supplementaries:flag_yellow"
+          },
+          {
+            "color": "lime",
+            "item": "supplementaries:flag_lime"
+          },
+          {
+            "color": "green",
+            "item": "supplementaries:flag_green"
+          },
+          {
+            "color": "cyan",
+            "item": "supplementaries:flag_cyan"
+          },
+          {
+            "color": "light_blue",
+            "item": "supplementaries:flag_light_blue"
+          },
+          {
+            "color": "blue",
+            "item": "supplementaries:flag_blue"
+          },
+          {
+            "color": "purple",
+            "item": "supplementaries:flag_purple"
+          },
+          {
+            "color": "magenta",
+            "item": "supplementaries:flag_magenta"
+          },
+          {
+            "color": "pink",
+            "item": "supplementaries:flag_pink"
+          },
+          {
+            "color": "brown",
+            "item": "supplementaries:flag_brown"
+          },
+          {
+            "color": "black",
+            "item": "supplementaries:flag_black"
+          },
+          {
+            "color": "gray",
+            "item": "supplementaries:flag_gray"
+          },
+          {
+            "color": "light_gray",
+            "item": "supplementaries:flag_light_gray"
+          },
+          {
+            "color": "white",
+            "item": "supplementaries:flag_white"
+          }
+        ]
+      }
+    }
+  ]
+}

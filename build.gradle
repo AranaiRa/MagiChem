@@ -151,10 +151,11 @@ dependencies {
     implementation fg.deobf("curse.maven:occultism-361026:5553847")
     implementation fg.deobf("curse.maven:modonomicon-538392:5551799")
     implementation fg.deobf("curse.maven:smartbrainlib-661293:5513411")
-    //implementation fg.deobf("curse.maven:selene-499980:5068161")
-    //implementation fg.deobf("curse.maven:supplementaries-412082:5075373")
+    implementation fg.deobf("curse.maven:selene-499980:5619074")
+//    implementation fg.deobf("curse.maven:amendments-896746:5467925")
+    implementation fg.deobf("curse.maven:supplementaries-412082:5458843")
     implementation fg.deobf("curse.maven:patchouli-306770:4966125")
-    //implementation fg.deobf("curse.maven:botania-225643:5002307")
+    implementation fg.deobf("curse.maven:botania-225643:5594997")
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

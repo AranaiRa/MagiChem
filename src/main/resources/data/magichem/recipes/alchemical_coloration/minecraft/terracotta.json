@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:terracotta"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:red_terracotta"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:orange_terracotta"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:yellow_terracotta"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:lime_terracotta"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:green_terracotta"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:cyan_terracotta"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:light_blue_terracotta"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:blue_terracotta"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:purple_terracotta"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:magenta_terracotta"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:pink_terracotta"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:brown_terracotta"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:black_terracotta"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:gray_terracotta"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:light_gray_terracotta"
+    },
+    {
+      "color": "white",
+      "item": "minecraft:white_terracotta"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:tube_coral"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:fire_coral"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:horn_coral"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:tube_coral"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:bubble_coral"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:brain_coral"
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries:present"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "colorless_default": {
+          "item": "supplementaries:present_white"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "supplementaries:present_red"
+          },
+          {
+            "color": "orange",
+            "item": "supplementaries:present_orange"
+          },
+          {
+            "color": "yellow",
+            "item": "supplementaries:present_yellow"
+          },
+          {
+            "color": "lime",
+            "item": "supplementaries:present_lime"
+          },
+          {
+            "color": "green",
+            "item": "supplementaries:present_green"
+          },
+          {
+            "color": "cyan",
+            "item": "supplementaries:present_cyan"
+          },
+          {
+            "color": "light_blue",
+            "item": "supplementaries:present_light_blue"
+          },
+          {
+            "color": "blue",
+            "item": "supplementaries:present_blue"
+          },
+          {
+            "color": "purple",
+            "item": "supplementaries:present_purple"
+          },
+          {
+            "color": "magenta",
+            "item": "supplementaries:present_magenta"
+          },
+          {
+            "color": "pink",
+            "item": "supplementaries:present_pink"
+          },
+          {
+            "color": "brown",
+            "item": "supplementaries:present_brown"
+          },
+          {
+            "color": "black",
+            "item": "supplementaries:present_black"
+          },
+          {
+            "color": "gray",
+            "item": "supplementaries:present_gray"
+          },
+          {
+            "color": "light_gray",
+            "item": "supplementaries:present_light_gray"
+          },
+          {
+            "color": "white",
+            "item": "supplementaries:present_white"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "minecraft:white_concrete"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:red_concrete"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:orange_concrete"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:yellow_concrete"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:lime_concrete"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:green_concrete"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:cyan_concrete"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:light_blue_concrete"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:blue_concrete"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:purple_concrete"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:magenta_concrete"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:pink_concrete"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:brown_concrete"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:black_concrete"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:gray_concrete"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:light_gray_concrete"
+    },
+    {
+      "color": "white",
+      "item": "minecraft:white_concrete"
+    }
+  ]
+}
