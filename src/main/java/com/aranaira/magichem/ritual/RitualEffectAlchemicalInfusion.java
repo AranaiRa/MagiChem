@@ -7,6 +7,8 @@ import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.VesselData;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.MateriaJarItem;
+import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.mna.api.rituals.IRitualContext;
@@ -93,6 +95,33 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         VesselData lv = vesselData.getFirst();
         VesselData rv = vesselData.getSecond();
 
+        //Check to make sure an unfortunate player isn't about to void a bunch of materia
+        boolean ingredientHasContainedMateria = false;
+        for(ItemStack is : context.getCollectedReagents()) {
+            if (is.getItem() instanceof MateriaVesselItem || is.getItem() instanceof MateriaJarItem) {
+                CompoundTag nbt = is.getTag();
+                if (nbt != null) {
+                    if (nbt.contains("type")) {
+                        ingredientHasContainedMateria = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(ingredientHasContainedMateria) {
+            MutableComponent errorMessage = Component.empty()
+                    .append(Component.translatable("feedback.ritual.sublimation.materia_in_ingredient"));
+
+            context.getCaster().sendSystemMessage(errorMessage);
+
+            if(!context.getCaster().isCreative()) {
+                returnReagentsToWorld(context);
+            }
+
+            return false;
+        }
+
         InfusionRitualVFXEntity irve = new InfusionRitualVFXEntity(EntitiesRegistry.INFUSION_RITUAL_VFX_ENTITY.get(), context.getLevel());
         irve.configure(context.getCenter(), recipe);
         irve.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY(), context.getCenter().getZ() + 0.5);
@@ -120,7 +149,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         else if (recipe.getComponentMateria().getSecond().getItem() == rv.vesselBlockEntity.getMateriaType())
             secondVesselSufficient = rv.vesselBlockEntity.getCurrentStock() >= recipe.getComponentMateria().getSecond().getCount();
 
-        if (firstVesselSufficient && secondVesselSufficient) {
+        if (firstVesselSufficient && secondVesselSufficient && !ingredientHasContainedMateria) {
             return true;
         }
 
@@ -192,9 +221,9 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
     }
 
     private void returnReagentsToWorld(IRitualContext context) {
-        for (ItemStack is : recipe.getIngredientItemStacks()) {
+        for (ItemStack is : context.getCollectedReagents()) {
             ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
-            ie.setItem(is.copy());
+            ie.setItem(is);
             ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
             context.getLevel().addFreshEntity(ie);
         }

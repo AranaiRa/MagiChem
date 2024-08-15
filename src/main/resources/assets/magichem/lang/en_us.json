@@ -291,6 +291,7 @@
   "feedback.ritual.sublimation.insufficient.b": "Please provide ",
   "feedback.ritual.sublimation.insufficient.and": " and ",
   "feedback.ritual.sublimation.insufficient.more": " more ",
+  "feedback.ritual.sublimation.materia_in_ingredient": "One of the supplied ingredients is a Materia Jar or Materia Vessel that contains materia. Please empty the container out before using it as an ingredient.",
 
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",

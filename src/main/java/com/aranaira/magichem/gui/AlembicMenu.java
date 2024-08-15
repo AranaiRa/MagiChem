@@ -32,7 +32,7 @@ public class AlembicMenu extends AbstractContainerMenu {
 
     public AlembicMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuRegistry.ALEMBIC_MENU.get(), id);
-        checkContainerSize(inv, 14);
+        checkContainerSize(inv, AlembicBlockEntity.SLOT_COUNT);
         blockEntity = (AlembicBlockEntity) entity;
         this.level = inv.player.level();
         this.data = data;
