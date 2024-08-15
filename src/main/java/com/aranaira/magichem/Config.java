@@ -262,7 +262,7 @@ public class Config
             .comment("The amount of Smoke and Steam, in mB, the Gale Pressurizer's internal tanks can hold.")
             .defineInRange("galePressurizerTankCapacity", 2000, 500, Integer.MAX_VALUE);
 
-    //----------------GALE PRESSURIZER
+    //----------------OCCULT MATRIX
 
     private static final ForgeConfigSpec.IntValue OCCULT_MATRIX_OPERATION_TIME = BUILDER
             .comment("The amount of time, in ticks, an Occult Matrix goes between drawing more Eldrin power.")
@@ -271,6 +271,36 @@ public class Config
     private static final ForgeConfigSpec.IntValue OCCULT_MATRIX_TANK_CAPACITY = BUILDER
             .comment("The amount of Academic Slurry, in mB, the Gale Pressurizer's internal tanks can hold.")
             .defineInRange("occultMatrixTankCapacity", 72000, 500, Integer.MAX_VALUE);
+
+    //----------------VARIEGATOR
+
+    private static final ForgeConfigSpec.IntValue VARIEGATOR_OPERATION_TIME_SLOW = BUILDER
+            .comment("The amount of time, in ticks, a Variegator requires to dye something if there is insufficient dye/Admixture of Color.")
+            .defineInRange("variegatorOperationTimeSlow", 1200, 1, 12000);
+
+    private static final ForgeConfigSpec.IntValue VARIEGATOR_OPERATION_TIME_FAST = BUILDER
+            .comment("The amount of time, in ticks, a Variegator requires to dye something if appropriate dye/Admixture of Color is provided.")
+            .defineInRange("variegatorOperationTimeFast", 50, 1, 6000);
+
+    private static final ForgeConfigSpec.IntValue VARIEGATOR_MATCHED_COLOR_TIME_DISCOUNT = BUILDER
+            .comment("What percentage the crafting time is reduced by if both Admixture of Color and a full bar of the appropriate dye are present. This is linearly reduced with the fill of the dye gauge.")
+            .defineInRange("variegatorMatchedColorTimeDiscount", 80, 0, 99);
+
+    private static final ForgeConfigSpec.IntValue VARIEGATOR_MAX_DYE = BUILDER
+            .comment("The number of units each of the Variegator's dye gauges can hold.")
+            .defineInRange("variegatorMaxDye", 256, 16, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue VARIEGATOR_DYE_PER_ITEM = BUILDER
+            .comment("How many units of dye each dye item inserted into the Variegator is worth.")
+            .defineInRange("variegatorDyePerItem", 4, 1, 64);
+
+    private static final ForgeConfigSpec.IntValue VARIEGATOR_MAX_ADMIXTURE = BUILDER
+            .comment("The number of units the Variegator's Admixture of Color gauge can hold.")
+            .defineInRange("variegatorMaxAdmixture", 10, 1, 512);
+
+    private static final ForgeConfigSpec.IntValue VARIEGATOR_ADMIXTURE_PER_ITEM = BUILDER
+            .comment("How many units of dye each dram of Admixture of Color inserted into the Variegator is worth.")
+            .defineInRange("variegatorAdmixturePerItem", 0, 0, 100);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
@@ -330,7 +360,14 @@ public class Config
         galePressurizerOperationTime,
         galePressurizerTankCapacity,
         occultMatrixOperationTime,
-        occultMatrixTankCapacity;
+        occultMatrixTankCapacity,
+        variegatorOperationTimeSlow,
+        variegatorOperationTimeFast,
+        variegatorMatchedColorTimeDiscount,
+        variegatorMaxDye,
+        variegatorDyePerItem,
+        variegatorMaxAdmixture,
+        variegatorAdmixturePerItem;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -396,5 +433,12 @@ public class Config
         galePressurizerTankCapacity = GALE_PRESSURIZER_TANK_CAPACITY.get();
         occultMatrixOperationTime = OCCULT_MATRIX_OPERATION_TIME.get();
         occultMatrixTankCapacity = OCCULT_MATRIX_TANK_CAPACITY.get();
+        variegatorOperationTimeSlow = VARIEGATOR_OPERATION_TIME_SLOW.get();
+        variegatorOperationTimeFast = VARIEGATOR_OPERATION_TIME_FAST.get();
+        variegatorMatchedColorTimeDiscount = VARIEGATOR_MATCHED_COLOR_TIME_DISCOUNT.get();
+        variegatorMaxDye = VARIEGATOR_MAX_DYE.get();
+        variegatorDyePerItem = VARIEGATOR_DYE_PER_ITEM.get();
+        variegatorMaxAdmixture = VARIEGATOR_MAX_ADMIXTURE.get();
+        variegatorAdmixturePerItem = VARIEGATOR_ADMIXTURE_PER_ITEM.get();
     }
 }
