@@ -25,6 +25,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.util.FakePlayer;
 import org.jetbrains.annotations.Nullable;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
@@ -82,7 +83,11 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be instanceof CentrifugeRouterBlockEntity crbe) {
             if(crbe.getRouterType() == CentrifugeRouterType.COG) {
-                crbe.getMaster().activateCog();
+                if(pPlayer instanceof FakePlayer fp) {
+                    crbe.getMaster().activateCog(true);
+                } else {
+                    crbe.getMaster().activateCog();
+                }
             } else {
                 CentrifugeBlockEntity master = crbe.getMaster();
                 return master.getBlockState().getBlock().use(master.getBlockState(), pLevel, master.getBlockPos(), pPlayer, pHand, pHit);

@@ -1,6 +1,5 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.VariegatorBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;

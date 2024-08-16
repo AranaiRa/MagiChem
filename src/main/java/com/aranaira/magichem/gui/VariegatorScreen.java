@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -8,6 +9,12 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.HashMap;
 
 public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
     private static final ResourceLocation TEXTURE =
@@ -18,9 +25,31 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
             PANEL_ADMIXTURE_U = 176, PANEL_ADMIXTURE_V = 58, PANEL_ADMIXTURE_W = 18, PANEL_ADMIXTURE_H = 63,
             PANEL_COLORS_U = 0, PANEL_COLORS_V = 161, PANEL_COLORS_W = 191, PANEL_COLORS_H = 32,
             PANEL_COLORLESS_U = 0, PANEL_COLORLESS_V = 193, PANEL_COLORS_S = 11;
+    private static final ItemStack
+        STACK_ADMIXTURE_COLOR = new ItemStack(ItemRegistry.getAdmixturesMap(false, false).get("color"));
+    private static final HashMap<DyeColor, ItemStack> STACK_DYES = new HashMap<>();
 
     public VariegatorScreen(VariegatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+
+        if(STACK_DYES.size() == 0) {
+            STACK_DYES.put(DyeColor.RED, new ItemStack(Items.RED_DYE));
+            STACK_DYES.put(DyeColor.ORANGE, new ItemStack(Items.ORANGE_DYE));
+            STACK_DYES.put(DyeColor.YELLOW, new ItemStack(Items.YELLOW_DYE));
+            STACK_DYES.put(DyeColor.LIME, new ItemStack(Items.LIME_DYE));
+            STACK_DYES.put(DyeColor.GREEN, new ItemStack(Items.GREEN_DYE));
+            STACK_DYES.put(DyeColor.CYAN, new ItemStack(Items.CYAN_DYE));
+            STACK_DYES.put(DyeColor.LIGHT_BLUE, new ItemStack(Items.LIGHT_BLUE_DYE));
+            STACK_DYES.put(DyeColor.BLUE, new ItemStack(Items.BLUE_DYE));
+            STACK_DYES.put(DyeColor.PURPLE, new ItemStack(Items.PURPLE_DYE));
+            STACK_DYES.put(DyeColor.MAGENTA, new ItemStack(Items.MAGENTA_DYE));
+            STACK_DYES.put(DyeColor.PINK, new ItemStack(Items.PINK_DYE));
+            STACK_DYES.put(DyeColor.BROWN, new ItemStack(Items.BROWN_DYE));
+            STACK_DYES.put(DyeColor.BLACK, new ItemStack(Items.BLACK_DYE));
+            STACK_DYES.put(DyeColor.GRAY, new ItemStack(Items.GRAY_DYE));
+            STACK_DYES.put(DyeColor.LIGHT_GRAY, new ItemStack(Items.LIGHT_GRAY_DYE));
+            STACK_DYES.put(DyeColor.WHITE, new ItemStack(Items.WHITE_DYE));
+        }
     }
 
     @Override

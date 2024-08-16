@@ -409,9 +409,14 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         cogAngle = (cogAngle + cogSpeed) % 360.0f;
     }
 
-    public void activateCog(){
+    public void activateCog() {
+        activateCog(false);
+    }
+
+    public void activateCog(boolean isFakePlayer){
         if(remainingAnimus < TORQUE_GAIN_ON_COG_ACTIVATION) {
-            remainingTorque = Math.max(remainingTorque, TORQUE_GAIN_ON_COG_ACTIVATION);
+            int torqueMultiplier = isFakePlayer ? 3 : 1;
+            remainingTorque = Math.max(remainingTorque, TORQUE_GAIN_ON_COG_ACTIVATION * torqueMultiplier);
             syncAndSave();
         }
     }

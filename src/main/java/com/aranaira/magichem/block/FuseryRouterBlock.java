@@ -25,6 +25,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.util.FakePlayer;
 import org.jetbrains.annotations.Nullable;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
@@ -98,7 +99,11 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be instanceof FuseryRouterBlockEntity frbe) {
             if(frbe.getRouterType() == FuseryRouterType.COG) {
-                frbe.getMaster().activateCog();
+                if(pPlayer instanceof FakePlayer fp) {
+                    frbe.getMaster().activateCog(true);
+                } else {
+                    frbe.getMaster().activateCog();
+                }
             } else {
                 FuseryBlockEntity master = frbe.getMaster();
                 return master.getBlockState().getBlock().use(master.getBlockState(), pLevel, master.getBlockPos(), pPlayer, pHand, pHit);
