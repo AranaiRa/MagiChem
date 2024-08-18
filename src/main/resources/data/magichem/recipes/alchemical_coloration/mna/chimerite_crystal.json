@@ -1,0 +1,74 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "mna:chimerite_crystal_white"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "mna:chimerite_crystal_red"
+    },
+    {
+      "color": "orange",
+      "item": "mna:chimerite_crystal_orange"
+    },
+    {
+      "color": "yellow",
+      "item": "mna:chimerite_crystal_yellow"
+    },
+    {
+      "color": "lime",
+      "item": "mna:chimerite_crystal_lime"
+    },
+    {
+      "color": "green",
+      "item": "mna:chimerite_crystal_green"
+    },
+    {
+      "color": "cyan",
+      "item": "mna:chimerite_crystal_cyan"
+    },
+    {
+      "color": "light_blue",
+      "item": "mna:chimerite_crystal_light_blue"
+    },
+    {
+      "color": "blue",
+      "item": "mna:chimerite_crystal_blue"
+    },
+    {
+      "color": "purple",
+      "item": "mna:chimerite_crystal_purple"
+    },
+    {
+      "color": "magenta",
+      "item": "mna:chimerite_crystal_magenta"
+    },
+    {
+      "color": "pink",
+      "item": "mna:chimerite_crystal_pink"
+    },
+    {
+      "color": "brown",
+      "item": "mna:chimerite_crystal_brown"
+    },
+    {
+      "color": "black",
+      "item": "mna:chimerite_crystal_black"
+    },
+    {
+      "color": "gray",
+      "item": "mna:chimerite_crystal_gray"
+    },
+    {
+      "color": "light_gray",
+      "item": "mna:chimerite_crystal_light_gray"
+    },
+    {
+      "color": "white",
+      "item": "mna:chimerite_crystal_white"
+    }
+  ]
+}

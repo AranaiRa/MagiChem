@@ -13,72 +13,72 @@
         "charge_usage": 8,
         "crafting_time_multiplier": 1.0,
         "colorless_default": {
-          "item": "botania:white_mysticaldouble_flower"
+          "item": "botania:white_double_flower"
         },
         "outputs": [
           {
             "color": "red",
-            "item": "botania:red_mysticaldouble_flower"
+            "item": "botania:red_double_flower"
           },
           {
             "color": "orange",
-            "item": "botania:orange_mysticaldouble_flower"
+            "item": "botania:orange_double_flower"
           },
           {
             "color": "yellow",
-            "item": "botania:yellow_mysticaldouble_flower"
+            "item": "botania:yellow_double_flower"
           },
           {
             "color": "lime",
-            "item": "botania:lime_mysticaldouble_flower"
+            "item": "botania:lime_double_flower"
           },
           {
             "color": "green",
-            "item": "botania:green_mysticaldouble_flower"
+            "item": "botania:green_double_flower"
           },
           {
             "color": "cyan",
-            "item": "botania:cyan_mysticaldouble_flower"
+            "item": "botania:cyan_double_flower"
           },
           {
             "color": "light_blue",
-            "item": "botania:light_blue_mysticaldouble_flower"
+            "item": "botania:light_blue_double_flower"
           },
           {
             "color": "blue",
-            "item": "botania:blue_mysticaldouble_flower"
+            "item": "botania:blue_double_flower"
           },
           {
             "color": "purple",
-            "item": "botania:purple_mysticaldouble_flower"
+            "item": "botania:purple_double_flower"
           },
           {
             "color": "magenta",
-            "item": "botania:magenta_mysticaldouble_flower"
+            "item": "botania:magenta_double_flower"
           },
           {
             "color": "pink",
-            "item": "botania:pink_mysticaldouble_flower"
+            "item": "botania:pink_double_flower"
           },
           {
             "color": "brown",
-            "item": "botania:brown_mysticaldouble_flower"
+            "item": "botania:brown_double_flower"
           },
           {
             "color": "black",
-            "item": "botania:black_mysticaldouble_flower"
+            "item": "botania:black_double_flower"
           },
           {
             "color": "gray",
-            "item": "botania:gray_mysticaldouble_flower"
+            "item": "botania:gray_double_flower"
           },
           {
             "color": "light_gray",
-            "item": "botania:light_gray_mysticaldouble_flower"
+            "item": "botania:light_gray_double_flower"
           },
           {
             "color": "white",
-            "item": "botania:white_mysticaldouble_flower"
+            "item": "botania:white_double_flower"
           }
         ]
       }

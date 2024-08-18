@@ -288,7 +288,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_MAX_DYE = BUILDER
             .comment("The number of units each of the Variegator's dye gauges can hold.")
-            .defineInRange("variegatorMaxDye", 256, 16, Integer.MAX_VALUE);
+            .defineInRange("variegatorMaxDye", 256, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_DYE_PER_ITEM = BUILDER
             .comment("How many units of dye each dye item inserted into the Variegator is worth.")
@@ -296,11 +296,11 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_MAX_ADMIXTURE = BUILDER
             .comment("The number of units the Variegator's Admixture of Color gauge can hold.")
-            .defineInRange("variegatorMaxAdmixture", 10, 1, 512);
+            .defineInRange("variegatorMaxAdmixture", 512, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_ADMIXTURE_PER_ITEM = BUILDER
             .comment("How many units of dye each dram of Admixture of Color inserted into the Variegator is worth.")
-            .defineInRange("variegatorAdmixturePerItem", 0, 0, 100);
+            .defineInRange("variegatorAdmixturePerItem", 6, 1, 64);
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
