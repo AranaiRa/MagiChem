@@ -433,6 +433,8 @@
   "tooltip.magichem.gui.variegator.color.current.part1": "Currently set to ",
   "tooltip.magichem.gui.variegator.color.current.part2": ".",
   "tooltip.magichem.gui.variegator.color.colorless": "Colorless",
+  "tooltip.magichem.gui.variegator.admixture.part1": "If present, Admixture of Color will be used before specific dyes. Admixture of Color must be present to un-dye.",
+  "tooltip.magichem.gui.variegator.admixture.part2": "If both Admixture of Color and the specific dye are present, the Coloration process will be accelerated based on how full the dye gauge is. Only the Admixture will be consumed.",
 
   "tooltip.magichem.gui.eldrin.air": "Eldrin Power (Air)",
   "tooltip.magichem.gui.eldrin.arcane": "Eldrin Power (Arcane)",

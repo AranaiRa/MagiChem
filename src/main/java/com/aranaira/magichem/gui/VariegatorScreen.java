@@ -220,6 +220,32 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
 
             pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pMouseX, pMouseY);
         }
+
+        if (pMouseX >= x + 15 && pMouseX <= x + 15 + PANEL_ADMIXTURE_W &&
+                pMouseY >= y + 6 && pMouseY <= y + 6 + PANEL_ADMIXTURE_H) {
+            int fill = Math.min(menu.blockEntity.dyeAdmixture, Config.variegatorMaxAdmixture);
+            float fillPercent = ((float)fill / Config.variegatorMaxAdmixture) * 100f;
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("item.magichem.admixture_color").withStyle(ChatFormatting.GOLD))
+                    .append(":"));
+            tooltipContents.add(Component.empty()
+                    .append(Component.literal(fill+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(Config.variegatorMaxAdmixture+"").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(" (").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(String.format("%.1f", fillPercent)+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(")").withStyle(ChatFormatting.DARK_GRAY))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.variegator.admixture.part1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.variegator.admixture.part2")));
+
+            pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pMouseX, pMouseY);
+        }
     }
 
 }

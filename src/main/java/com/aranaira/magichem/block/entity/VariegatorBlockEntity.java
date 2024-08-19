@@ -373,13 +373,13 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
 
         if(sufficientAdmixture && sufficientDye) {
             float fillPct = (float) currentDye / (float) Config.variegatorMaxDye;
-            float discount = fillPct * ((100f - Config.variegatorMatchedColorTimeDiscount) / 100f);
+            float discount = 1.0f - (fillPct * ((Config.variegatorMatchedColorTimeDiscount) / 100f));
 
-            return Math.round(discount * Config.variegatorOperationTimeFast);
+            return Math.max(1, Math.round(discount * Config.variegatorOperationTimeFast));
         } else if(sufficientAdmixture || sufficientDye) {
-            return Config.variegatorOperationTimeFast;
+            return Math.max(1, Config.variegatorOperationTimeFast);
         } else {
-            return Config.variegatorOperationTimeSlow;
+            return Math.max(1, Config.variegatorOperationTimeSlow);
         }
     }
 
