@@ -1,7 +1,10 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.gui.VariegatorMenu;
+import com.aranaira.magichem.recipe.ColorationRecipe;
+import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -14,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -34,6 +38,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.function.Function;
+
 public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -49,9 +56,27 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
         dyeGreen, dyeCyan, dyeLightBlue, dyeBlue,
         dyePurple, dyeMagenta, dyePink, dyeBrown,
         dyeBlack, dyeGray, dyeLightGray, dyeWhite;
+    private ColorationRecipe currentRecipe;
     private static final ItemStack ADMIXTURE_COLOR_STACK = new ItemStack(ItemRegistry.getAdmixturesMap(false, false).get("color"));
+    public static final DyeColor[] COLOR_GUI_ORDER = {
+            DyeColor.WHITE, DyeColor.LIGHT_GRAY, DyeColor.GRAY, DyeColor.BLACK,
+            DyeColor.BROWN, DyeColor.RED, DyeColor.ORANGE, DyeColor.YELLOW,
+            DyeColor.LIME, DyeColor.GREEN, DyeColor.CYAN, DyeColor.LIGHT_BLUE,
+            DyeColor.BLUE, DyeColor.PURPLE, DyeColor.MAGENTA, DyeColor.PINK
+    };
 
     private ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            if(slot == SLOT_DYE_BOTTLES) {
+                return false;
+            } else if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
+                return false;
+            }
+
+            return super.isItemValid(slot, stack);
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -279,8 +304,150 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
                     if(changed)
                         vbe.syncAndSave();
                 }
+
+                //Crafting logic
+                {
+                    ColorationRecipe recipe = getActiveRecipe(vbe);
+                    int operationTicks = getOperationTicks(vbe);
+
+                    if(recipe != null) {
+                        if(canCraftItem(vbe, recipe)) {
+                            if(vbe.progress > operationTicks) {
+                                craftItem(vbe, recipe);
+                            } else {
+                                vbe.progress++;
+                            }
+                        }
+                    } else {
+                        vbe.progress = 0;
+                    }
+                }
             }
         }
+    }
+
+    protected static void craftItem(VariegatorBlockEntity pEntity, ColorationRecipe pRecipe) {
+        DyeColor color = DyeColor.WHITE;
+        if(pEntity.selectedColor != -1) color = COLOR_GUI_ORDER[pEntity.selectedColor];
+
+        ItemStack result;
+        if(pEntity.selectedColor == -1)
+            result = pRecipe.getColorlessDefault().copy();
+        else
+            result = pRecipe.getResultsAsMap(false).get(color).copy();
+
+        SimpleContainer output = pEntity.getContentsOfOutputSlots();
+        output.addItem(result);
+        pEntity.setContentsOfOutputSlots(output);
+
+        getCurrentProcessingStack(pEntity).shrink(1);
+
+        pEntity.progress = 0;
+        pEntity.syncAndSave();
+    }
+
+    public static int getOperationTicks(VariegatorBlockEntity pEntity) {
+        if(pEntity.currentRecipe == null)
+            return 1;
+
+        int currentAdmixture = pEntity.dyeAdmixture;
+        int currentDye;
+        if(pEntity.selectedColor == -1)
+            currentDye = -1;
+        else
+            currentDye = pEntity.getDyeFillByColor(COLOR_GUI_ORDER[pEntity.selectedColor]);
+
+        boolean sufficientDye = currentDye >= pEntity.currentRecipe.getChargeUsage();
+        boolean sufficientAdmixture = currentAdmixture >= pEntity.currentRecipe.getChargeUsage();
+
+        if(sufficientAdmixture && sufficientDye) {
+            float fillPct = (float) currentDye / (float) Config.variegatorMaxDye;
+            float discount = fillPct * ((100f - Config.variegatorMatchedColorTimeDiscount) / 100f);
+
+            return Math.round(discount * Config.variegatorOperationTimeFast);
+        } else if(sufficientAdmixture || sufficientDye) {
+            return Config.variegatorOperationTimeFast;
+        } else {
+            return Config.variegatorOperationTimeSlow;
+        }
+    }
+
+    public SimpleContainer getContentsOfOutputSlots() {
+        SimpleContainer output = new SimpleContainer(SLOT_OUTPUT_COUNT);
+
+        for(int i = SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            output.setItem(i-SLOT_OUTPUT_START, itemHandler.getStackInSlot(i));
+        }
+
+        return output;
+    }
+
+    public void setContentsOfOutputSlots(SimpleContainer replacementInventory) {
+        for(int i = SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            itemHandler.setStackInSlot(i, replacementInventory.getItem(i-SLOT_OUTPUT_START));
+        }
+    }
+
+    ////////////////////
+    // RECIPE HANDLING
+    ////////////////////
+
+    protected static ItemStack getCurrentProcessingStack(VariegatorBlockEntity pEntity) {
+        ItemStack query;
+
+        for(int i=SLOT_INPUT_COUNT-1; i>=0; i--) {
+            query = pEntity.itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+
+            if(!query.isEmpty()) {
+                return query;
+            }
+        }
+
+        return ItemStack.EMPTY;
+    }
+
+    protected static ColorationRecipe getActiveRecipe(VariegatorBlockEntity pEntity) {
+        Level level = pEntity.level;
+
+        ItemStack query = getCurrentProcessingStack(pEntity);
+        if(!query.isEmpty()) {
+            if(pEntity.currentRecipe != null) {
+                HashMap<DyeColor, ItemStack> allResults = pEntity.currentRecipe.getResultsAsMap(false);
+
+                if(pEntity.currentRecipe.getColorlessDefault().getItem() == query.getItem())
+                    return pEntity.currentRecipe;
+                //Iterate through all the possible results of the current recipe
+                //If one of them matches, the current recipe is fine, and we don't have to check the registry
+                for(ItemStack result : allResults.values()) {
+                    if(result.getItem() == query.getItem()) {
+                        return pEntity.currentRecipe;
+                    }
+                }
+
+                //Otherwise we're checkin' the registry
+                ColorationRecipe recipe = ColorationRecipe.getColorationRecipe(level, query);
+                pEntity.currentRecipe = recipe;
+                return recipe;
+            } else {
+                ColorationRecipe recipe = ColorationRecipe.getColorationRecipe(level, query);
+                pEntity.currentRecipe = recipe;
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+    public static boolean canCraftItem(VariegatorBlockEntity pEntity, ColorationRecipe pRecipe) {
+        DyeColor color = DyeColor.WHITE;
+        if(pEntity.selectedColor != -1) color = COLOR_GUI_ORDER[pEntity.selectedColor];
+
+        ItemStack result;
+        if(pEntity.selectedColor == -1)
+            result = pRecipe.getColorlessDefault();
+        else
+            result = pRecipe.getResultsAsMap(false).get(color);
+
+        return pEntity.getContentsOfOutputSlots().canAddItem(result);
     }
 
     public int getDyeFillByColor(DyeColor pColor) {

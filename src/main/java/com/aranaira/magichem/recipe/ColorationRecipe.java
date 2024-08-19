@@ -91,6 +91,14 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
         return colorlessDefault.copy();
     }
 
+    public int getChargeUsage() {
+        return chargeUsage;
+    }
+
+    public float getCraftingTimeMultiplier() {
+        return craftingTimeMultiplier;
+    }
+
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;

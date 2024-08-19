@@ -48,6 +48,12 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
             SHARD_BOB_HEIGHT = 0.03125f, SHARD_DRIFT_DISTANCE = 0.0625f,
             CENTER_CRYSTAL_BOB_HEIGHT = 0.0625f,
             BEAM_TEX_U1 = 0.0f, BEAM_TEX_V1 = 0.515625f, BEAM_TEX_U2 = 0.015625f, BEAM_TEX_V2 = 0.53125f;
+    private static final DyeColor[] COLOR_GUI_ORDER = {
+            DyeColor.WHITE, DyeColor.LIGHT_GRAY, DyeColor.GRAY, DyeColor.BLACK,
+            DyeColor.BROWN, DyeColor.RED, DyeColor.ORANGE, DyeColor.YELLOW,
+            DyeColor.LIME, DyeColor.GREEN, DyeColor.CYAN, DyeColor.LIGHT_BLUE,
+            DyeColor.BLUE, DyeColor.PURPLE, DyeColor.MAGENTA, DyeColor.PINK
+    };
 
     final TextureAtlasSprite bodyTexture;
 
@@ -59,7 +65,12 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
     public void render(VariegatorBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         float rotL = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 180) / 180f) * 360f;
         float rotS = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 360) / 360f) * -360f;
-        DyeColor color = DyeColor.LIGHT_BLUE;
+        int colorID = pBlockEntity.selectedColor;
+        DyeColor color;
+        if(colorID != -1)
+            color = COLOR_GUI_ORDER[colorID];
+        else
+            color = DyeColor.WHITE; //temp
 
         pPoseStack.pushPose();
         if(!pBlockEntity.getBlockState().getValue(MagiChemBlockStateProperties.GROUNDED)){

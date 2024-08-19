@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
+
+import static com.aranaira.magichem.block.entity.VariegatorBlockEntity.*;
 
 public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
     private static final ResourceLocation TEXTURE =
@@ -31,16 +35,11 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
             PANEL_INSERTION_U = 176, PANEL_INSERTION_V = 0, PANEL_INSERTION_W = 32, PANEL_INSERTION_H = 58,
             PANEL_ADMIXTURE_U = 176, PANEL_ADMIXTURE_V = 58, PANEL_ADMIXTURE_W = 18, PANEL_ADMIXTURE_H = 63,
             PANEL_COLORS_U = 0, PANEL_COLORS_V = 161, PANEL_COLORS_W = 191, PANEL_COLORS_H = 32,
-            PANEL_COLORLESS_U = 0, PANEL_COLORLESS_V = 193, PANEL_COLORLESS_S = 11;
+            PANEL_COLORLESS_U = 0, PANEL_COLORLESS_V = 193, PANEL_COLORLESS_S = 11,
+            PROGRESS_BAR_SIZE = 28;
     private static final ItemStack
         STACK_ADMIXTURE_COLOR = new ItemStack(ItemRegistry.getAdmixturesMap(false, false).get("color"));
     private static final HashMap<DyeColor, ItemStack> STACK_DYES = new HashMap<>();
-    private static final DyeColor[] COLOR_GUI_ORDER = {
-            DyeColor.WHITE, DyeColor.LIGHT_GRAY, DyeColor.GRAY, DyeColor.BLACK,
-            DyeColor.BROWN, DyeColor.RED, DyeColor.ORANGE, DyeColor.YELLOW,
-            DyeColor.LIME, DyeColor.GREEN, DyeColor.CYAN, DyeColor.LIGHT_BLUE,
-            DyeColor.BLUE, DyeColor.PURPLE, DyeColor.MAGENTA, DyeColor.PINK
-    };
     private List<ImageButton> buttons = new ArrayList<>();
 
     public VariegatorScreen(VariegatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
@@ -114,6 +113,9 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
         else {
             pGuiGraphics.renderItem(STACK_DYES.get(COLOR_GUI_ORDER[menu.blockEntity.selectedColor]), x + 80, y + 56);
         }
+
+        //progress bar
+        pGuiGraphics.blit(TEXTURE, x + 74, y + 20, 0, 228, getScaledProgress(), PROGRESS_BAR_SIZE);
     }
 
     private void initializeColorSelectionButtons() {
@@ -131,6 +133,10 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
             menu.blockEntity.syncAndSave();
         }));
         buttons.add(colorlessButton);
+    }
+
+    private int getScaledProgress() {
+        return Math.min(PROGRESS_BAR_SIZE, PROGRESS_BAR_SIZE * menu.blockEntity.progress / getOperationTicks(menu.blockEntity));
     }
 
     @Override
