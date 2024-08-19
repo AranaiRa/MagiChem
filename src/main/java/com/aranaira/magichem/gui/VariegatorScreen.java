@@ -3,7 +3,10 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.networking.GrandDeviceSyncDataC2SPacket;
+import com.aranaira.magichem.networking.VariegatorSyncDataC2SPacket;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -122,15 +125,19 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
         for(int i=0; i<COLOR_GUI_ORDER.length; i++) {
             int finalI = i;
             ImageButton colorButton = this.addRenderableWidget(new ImageButton(this.leftPos - 9 + (12 * i), this.topPos - 37, 12, 31, 0, 0, TEXTURE, button -> {
-                menu.blockEntity.selectedColor = finalI;
-                menu.blockEntity.syncAndSave();
+                PacketRegistry.sendToServer(new VariegatorSyncDataC2SPacket(
+                        menu.blockEntity.getBlockPos(),
+                        finalI
+                ));
             }));
             buttons.add(colorButton);
         }
 
         ImageButton colorlessButton = this.addRenderableWidget(new ImageButton(this.leftPos + 4, this.topPos + 6, 11, 11, 0, 0, TEXTURE, button -> {
-            menu.blockEntity.selectedColor = -1;
-            menu.blockEntity.syncAndSave();
+            PacketRegistry.sendToServer(new VariegatorSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    -1
+            ));
         }));
         buttons.add(colorlessButton);
     }
@@ -145,10 +152,7 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
 
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
-        pGuiGraphics.drawString(font, "x:"+(pMouseX - x)+"   y:"+(pMouseY - y), -150, 0, 0xffffffcc, true);
-
-        pGuiGraphics.drawString(font, "mx:"+pMouseX+"   my:"+pMouseY, -150, 20, 0xffffffcc, true);
-        pGuiGraphics.drawString(font, "!x:"+(x - 7)+"   !y:"+(y - 37), -150, 40, 0xffffffcc, true);
+        pGuiGraphics.drawString(font, "sP:"+getScaledProgress(), -150, 0, 0xffffffcc, true);
     }
 
     @Override

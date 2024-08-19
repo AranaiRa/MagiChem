@@ -63,6 +63,12 @@ public class PacketRegistry {
                 .encoder(GrandDeviceSyncDataC2SPacket::toBytes)
                 .consumerMainThread(GrandDeviceSyncDataC2SPacket::handle)
                 .add();
+
+        net.messageBuilder(VariegatorSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(VariegatorSyncDataC2SPacket::new)
+                .encoder(VariegatorSyncDataC2SPacket::toBytes)
+                .consumerMainThread(VariegatorSyncDataC2SPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

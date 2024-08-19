@@ -47,7 +47,8 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
     public static final int
         SLOT_COUNT = 8,
         SLOT_DYE_INPUT = 0, SLOT_DYE_BOTTLES = 1, SLOT_INPUT_START = 2, SLOT_INPUT_COUNT = 3, SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT = 3,
-        DATA_COUNT = 1;
+        DATA_COUNT = 1,
+        DATA_PROGRESS = 0;
     public int
         progress = 0, selectedColor = -1;
     public int
@@ -86,12 +87,15 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
     private ContainerData data = new ContainerData() {
         @Override
         public int get(int pIndex) {
+            if(pIndex == DATA_PROGRESS)
+                return VariegatorBlockEntity.this.progress;
             return 0;
         }
 
         @Override
         public void set(int pIndex, int pValue) {
-
+            if(pIndex == DATA_PROGRESS)
+                VariegatorBlockEntity.this.progress = pValue;
         }
 
         @Override
@@ -264,16 +268,16 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
                     ItemStack insert = vbe.itemHandler.getStackInSlot(SLOT_DYE_INPUT);
                     ItemStack bottles = vbe.itemHandler.getStackInSlot(SLOT_DYE_BOTTLES);
                     //Check if we're inserting Admixture of Color
-                    if(insert.getItem() == ADMIXTURE_COLOR_STACK.getItem()) {
+                    if (insert.getItem() == ADMIXTURE_COLOR_STACK.getItem()) {
                         //Make sure there's somewhere for the bottles to go
-                        if(bottles.getCount() < vbe.itemHandler.getSlotLimit(SLOT_DYE_BOTTLES)) {
+                        if (bottles.getCount() < vbe.itemHandler.getSlotLimit(SLOT_DYE_BOTTLES)) {
 
                             //Allow overfill by one item for GUI aesthetic reasons
                             if (vbe.dyeAdmixture < Config.variegatorMaxAdmixture) {
                                 vbe.dyeAdmixture += Config.variegatorAdmixturePerItem;
 
                                 insert.shrink(1);
-                                if(bottles.isEmpty()) {
+                                if (bottles.isEmpty()) {
                                     bottles = new ItemStack(Items.GLASS_BOTTLE, 1);
                                 } else {
                                     bottles.grow(1);
@@ -285,10 +289,10 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
                         }
                     }
                     //Otherwise, check if we're inserting dye
-                    else if(insert.getItem() instanceof DyeItem) {
+                    else if (insert.getItem() instanceof DyeItem) {
                         DyeColor color = DyeColor.getColor(insert);
 
-                        if(color != null) {
+                        if (color != null) {
                             int fill = vbe.getDyeFillByColor(color);
                             //Allow overfill by one item for GUI aesthetic reasons
                             if (fill < Config.variegatorMaxDye) {
@@ -301,26 +305,27 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
                         }
                     }
 
-                    if(changed)
+                    if (changed)
                         vbe.syncAndSave();
                 }
+            }
 
-                //Crafting logic
-                {
-                    ColorationRecipe recipe = getActiveRecipe(vbe);
-                    int operationTicks = getOperationTicks(vbe);
+            //Crafting logic
+            {
+                ColorationRecipe recipe = getActiveRecipe(vbe);
+                int operationTicks = getOperationTicks(vbe);
 
-                    if(recipe != null) {
-                        if(canCraftItem(vbe, recipe)) {
-                            if(vbe.progress > operationTicks) {
+                if(recipe != null) {
+                    if(canCraftItem(vbe, recipe)) {
+                        if(vbe.progress > operationTicks) {
+                            if(!pLevel.isClientSide())
                                 craftItem(vbe, recipe);
-                            } else {
-                                vbe.progress++;
-                            }
+                        } else {
+                            vbe.progress++;
                         }
-                    } else {
-                        vbe.progress = 0;
                     }
+                } else {
+                    vbe.progress = 0;
                 }
             }
         }
@@ -341,6 +346,12 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
         pEntity.setContentsOfOutputSlots(output);
 
         getCurrentProcessingStack(pEntity).shrink(1);
+
+        if(pEntity.dyeAdmixture > 0)
+            pEntity.dyeAdmixture--;
+        else if(pEntity.selectedColor != -1){
+            pEntity.setDyeFillByColor(color, pEntity.getDyeFillByColor(color) - 1);
+        }
 
         pEntity.progress = 0;
         pEntity.syncAndSave();
@@ -392,7 +403,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
     // RECIPE HANDLING
     ////////////////////
 
-    protected static ItemStack getCurrentProcessingStack(VariegatorBlockEntity pEntity) {
+    public static ItemStack getCurrentProcessingStack(VariegatorBlockEntity pEntity) {
         ItemStack query;
 
         for(int i=SLOT_INPUT_COUNT-1; i>=0; i--) {

@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -92,7 +93,16 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        ItemStack stack = new ItemStack(Blocks.LIGHT_BLUE_WOOL);
+        ItemStack stack = VariegatorBlockEntity.getCurrentProcessingStack(pBlockEntity);
+
+        if(stack == ItemStack.EMPTY) {
+            SimpleContainer outputs = pBlockEntity.getContentsOfOutputSlots();
+            for(int i=outputs.getContainerSize()-1; i>=0; i--) {
+                stack = outputs.getItem(i);
+                if(stack != ItemStack.EMPTY)
+                    break;
+            }
+        }
 
         if(stack.getItem() instanceof BlockItem) {
             float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % ITEM_ROTATE_PERIOD) / ITEM_ROTATE_PERIOD) * 360f;
@@ -107,7 +117,7 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
             Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, world, 0);
 
             pPoseStack.popPose();
-        } else {
+        } else if(stack != ItemStack.EMPTY) {
             float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % ITEM_ROTATE_PERIOD) / ITEM_ROTATE_PERIOD) * 360f;
 
             pPoseStack.pushPose();
@@ -168,6 +178,23 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
+
+        //temp until animation drivers are set up
+        {
+            ItemStack stack = VariegatorBlockEntity.getCurrentProcessingStack(pBlockEntity);
+
+            if(stack == ItemStack.EMPTY) {
+                SimpleContainer outputs = pBlockEntity.getContentsOfOutputSlots();
+                for(int i=outputs.getContainerSize()-1; i>=0; i--) {
+                    stack = outputs.getItem(i);
+                    if(stack != ItemStack.EMPTY)
+                        break;
+                }
+            }
+
+            if(stack == ItemStack.EMPTY)
+                return;
+        }
 
         Vector3 endPos = new Vector3(0.501, 1.5, 0.5);
 
