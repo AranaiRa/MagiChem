@@ -4,6 +4,6 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:green_dye" },
   "components": [
-    { "item": "magichem:admixture_change", "count": 2 }
+    { "item": "magichem:admixture_color", "count": 2 }
   ]
 }
