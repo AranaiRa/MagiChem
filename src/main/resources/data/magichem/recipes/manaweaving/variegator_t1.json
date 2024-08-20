@@ -1,0 +1,17 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:variegator",
+  "tier": 1,
+  "items": [
+    "mna:chimerite_gem",
+    "minecraft:gold_ingot",
+    "mna:transmuted_silver",
+    "magichem:admixture_color",
+    "mna:decoration/arcane_sandstone",
+    "magichem:cog_components",
+    "mna:decoration/arcane_sandstone"
+  ],
+  "patterns": [
+    "mna:square"
+  ]
+}

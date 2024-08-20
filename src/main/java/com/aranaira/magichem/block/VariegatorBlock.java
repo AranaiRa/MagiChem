@@ -116,16 +116,6 @@ public class VariegatorBlock extends BaseEntityBlock {
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    public static void destroyRouters(LevelAccessor pLevel, BlockPos pPos) {
-        BlockState state = pLevel.getBlockState(pPos);
-
-        if(state.getValue(MagiChemBlockStateProperties.GROUNDED)) {
-            pLevel.destroyBlock(pPos.above(), true);
-        } else {
-            pLevel.destroyBlock(pPos.below(), true);
-        }
-    }
-
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {

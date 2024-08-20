@@ -50,8 +50,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 @Mod.EventBusSubscriber(
         modid = MagiChemMod.MODID,
@@ -235,11 +234,12 @@ public class CommonEventHandler {
             GrandDistilleryBlock.destroyRouters(event.getLevel(), gdrbe.getMasterPos(), gdrbe.getFacing());
         }
         else if(entity instanceof VariegatorBlockEntity vbe) {
-            VariegatorBlock.destroyRouters(event.getLevel(), vbe.getBlockPos());
+            BlockPos router = state.getValue(GROUNDED) ? pos.above() : pos.below();
+            event.getLevel().destroyBlock(router, true);
         }
         else if(entity instanceof VariegatorRouterBlockEntity vrbe) {
-            event.getLevel().destroyBlock(vrbe.getMasterPos(), true);
-            VariegatorBlock.destroyRouters(event.getLevel(), vrbe.getMasterPos());
+            BlockPos master = state.getValue(GROUNDED) ? pos.below() : pos.above();
+            event.getLevel().destroyBlock(master, true);
         }
         else if(entity instanceof DirectionalPluginBlockEntity dpbe) {
             event.getLevel().destroyBlock(dpbe.getBlockPos().above(), true);
