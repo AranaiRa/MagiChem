@@ -234,6 +234,13 @@ public class CommonEventHandler {
             event.getLevel().destroyBlock(gdrbe.getMasterPos(), true);
             GrandDistilleryBlock.destroyRouters(event.getLevel(), gdrbe.getMasterPos(), gdrbe.getFacing());
         }
+        else if(entity instanceof VariegatorBlockEntity vbe) {
+            VariegatorBlock.destroyRouters(event.getLevel(), vbe.getBlockPos());
+        }
+        else if(entity instanceof VariegatorRouterBlockEntity vrbe) {
+            event.getLevel().destroyBlock(vrbe.getMasterPos(), true);
+            VariegatorBlock.destroyRouters(event.getLevel(), vrbe.getMasterPos());
+        }
         else if(entity instanceof DirectionalPluginBlockEntity dpbe) {
             event.getLevel().destroyBlock(dpbe.getBlockPos().above(), true);
         }

@@ -165,6 +165,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> VARIEGATOR_ROUTER = registerBlock("variegator_router",
+            () -> new VariegatorRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> EXPERIENCE_EXCHANGER = registerBlock("experience_exchanger",
             () -> new ExperienceExchangerBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
