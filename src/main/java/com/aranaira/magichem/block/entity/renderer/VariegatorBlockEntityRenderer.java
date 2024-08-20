@@ -192,14 +192,14 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
                 }
             }
 
-            if(stack == ItemStack.EMPTY)
+            if(pBlockEntity.beamFill == 0)
                 return;
         }
 
         Vector3 endPos = new Vector3(0.501, 1.5, 0.5);
 
         RenderUtils.generateLinearVolumetricBeam(new Vector3(0.5, 1.96875, 0.5), endPos, 0.0078125f, bodyTexture,
-                ColorUtils.getRGBAIntTint(pColor, 255), 1f, pPoseStack, pBuffer, pPackedLight,
+                ColorUtils.getRGBAIntTint(pColor, 255), pBlockEntity.beamFill + VariegatorBlockEntity.FILL_RATE * pPartialTick, pPoseStack, pBuffer, pPackedLight,
                 BEAM_TEX_U1, BEAM_TEX_V1, BEAM_TEX_U2, BEAM_TEX_V2);
 
         //Long limbs
@@ -208,7 +208,7 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
             double z = Math.cos(Math.toRadians(pLongLimbThetaD + 180*i)) * 0.404197;
 
             RenderUtils.generateLinearVolumetricBeam(new Vector3(0.5 + x, 1.66742, 0.5 + z), endPos, 0.0078125f, bodyTexture,
-                    ColorUtils.getRGBAIntTint(pColor, 255), 1f, pPoseStack, pBuffer, pPackedLight,
+                    ColorUtils.getRGBAIntTint(pColor, 255), pBlockEntity.beamFill + VariegatorBlockEntity.FILL_RATE * pPartialTick, pPoseStack, pBuffer, pPackedLight,
                     BEAM_TEX_U1, BEAM_TEX_V1, BEAM_TEX_U2, BEAM_TEX_V2);
         }
 
@@ -218,7 +218,7 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
             double z = Math.cos(Math.toRadians(pShortLimbThetaD - 120*i)) * 0.404197;
 
             RenderUtils.generateLinearVolumetricBeam(new Vector3(0.5 + x, 1.33258, 0.5 + z), endPos, 0.0078125f, bodyTexture,
-                    ColorUtils.getRGBAIntTint(pColor, 255), 1f, pPoseStack, pBuffer, pPackedLight,
+                    ColorUtils.getRGBAIntTint(pColor, 255), pBlockEntity.beamFill + VariegatorBlockEntity.FILL_RATE * pPartialTick, pPoseStack, pBuffer, pPackedLight,
                     BEAM_TEX_U1, BEAM_TEX_V1, BEAM_TEX_U2, BEAM_TEX_V2);
         }
 
@@ -257,8 +257,7 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        float fill = (float)Math.min(1,(Math.max(0,(Math.sin(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_DRIFT_PERIOD) / (float)SHARD_DRIFT_PERIOD * Math.PI * 2) + 0.5f))));
-        fill = 1f;
+        float fill = pBlockEntity.beamFill;
 
         pPoseStack.pushPose();
 

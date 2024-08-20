@@ -1,13 +1,17 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.gui.VariegatorMenu;
 import com.aranaira.magichem.recipe.ColorationRecipe;
-import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.render.ColorUtils;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,12 +38,11 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.function.Function;
+import java.util.Random;
 
 public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -65,6 +68,11 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
             DyeColor.LIME, DyeColor.GREEN, DyeColor.CYAN, DyeColor.LIGHT_BLUE,
             DyeColor.BLUE, DyeColor.PURPLE, DyeColor.MAGENTA, DyeColor.PINK
     };
+    public static final float
+        FILL_RATE = 0.03f;
+    public float
+            beamFill;
+    private static final Random r = new Random();
 
     private ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -307,6 +315,42 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
 
                     if (changed)
                         vbe.syncAndSave();
+                }
+            } else {
+                //Animation drivers
+                {
+                    boolean hasItem = !getCurrentProcessingStack(vbe).isEmpty() ||
+                            !vbe.itemHandler.getStackInSlot(SLOT_OUTPUT_START).isEmpty() ||
+                            !vbe.itemHandler.getStackInSlot(SLOT_OUTPUT_START + 1).isEmpty() ||
+                            !vbe.itemHandler.getStackInSlot(SLOT_OUTPUT_START + 2).isEmpty();
+
+                    if(hasItem) {
+                        vbe.beamFill = Math.min(1, vbe.beamFill + FILL_RATE);
+                    } else {
+                        vbe.beamFill = Math.max(0, vbe.beamFill - FILL_RATE);
+                    }
+
+                    //Spawn particles
+                    if(vbe.beamFill == 1){
+                        float vOffset = pState.getValue(MagiChemBlockStateProperties.GROUNDED) ? 1.5f : -0.5f;
+                        Vector3 center = new Vector3(pPos.getX() + 0.5, pPos.getY() + vOffset, pPos.getZ() + 0.5);
+
+                        if(vbe.selectedColor != -1) {
+                            if (vbe.getLevel().getGameTime() % 8 == 0) {
+                                int[] color = ColorUtils.getRGBIntTint(COLOR_GUI_ORDER[vbe.selectedColor]);
+
+                                for (int i = 0; i < 6; i++) {
+                                    Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                                    vbe.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                                    .setColor(color[0], color[1], color[2], 128)
+                                                    .setScale(0.09f).setMaxAge(16)
+                                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                            center.x, center.y, center.z,
+                                            0, 0, 0);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
