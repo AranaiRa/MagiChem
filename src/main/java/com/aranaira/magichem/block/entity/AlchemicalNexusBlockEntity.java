@@ -538,8 +538,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     if(anbe.currentRecipe.getStages(false).size() > (anbe.craftingStage + 1)) {
                         anbe.createOrUpdateInProgressHolder(anbe.getCraftingStage());
                         anbe.craftingStage++;
-                        int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
-                        int fluidCost = experienceCost * Config.fluidPerXPPoint;
+//                        int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
+//                        int fluidCost = experienceCost * Config.fluidPerXPPoint;
+                        int experienceCost = anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience * Config.fluidPerXPPoint;
+                        int fluidCost = experienceCost + getBaseExperienceCostPerStage(anbe.getPowerLevel());
 
                         anbe.progress = anbe.cachedSpec.ticksInRampCancel;
                         anbe.remainingFluidForSatisfaction = Math.round((float)fluidCost * (1f - anbe.reductionRate));
