@@ -2,6 +2,7 @@
 	"replace": false,
 	"values": [
 		"magichem:silver_dust",
-		"magichem:tarnished_silver_lump"
+		"magichem:tarnished_silver_lump",
+		"magichem:focusing_catalyst_core_depleted"
 	]
 }
