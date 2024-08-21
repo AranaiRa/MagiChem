@@ -40,6 +40,10 @@ public class Config
             .comment("How many experience points a Studying construct generates from master study materials.")
             .defineInRange("constructStudyExperienceMaster", 18, 4, Integer.MAX_VALUE);
 
+    private static final ForgeConfigSpec.IntValue HOUSE_OF_ALCHEMY_DISTILLATION_EFFICIENCY_BONUS = BUILDER
+            .comment("The Efficiency that Nigredo, Albedo, Citrinitas, and Rubedo receive during distillation. A percentage of the distance between the actual device Efficiency and 100% Efficiency.")
+            .defineInRange("houseOfAlchemyDistillationEfficiencyBonus", 50, 0, 100);
+
     //----------------FIXATION PROCESS
 
     private static final ForgeConfigSpec.IntValue FIXATION_BASE_SLURRY_COST = BUILDER
@@ -311,6 +315,7 @@ public class Config
         constructStudyExperienceSimple,
         constructStudyExperienceAdvanced,
         constructStudyExperienceMaster,
+        houseOfAlchemyDistillationEfficiencyBonus,
         fixationBaseSlurryCost,
         fixationSlurryCompoundCost,
         fixationFailureRefund,
@@ -383,6 +388,7 @@ public class Config
         constructStudyExperienceSimple = CONSTRUCT_STUDY_EXPERIENCE_SIMPLE.get();
         constructStudyExperienceAdvanced = CONSTRUCT_STUDY_EXPERIENCE_ADVANCED.get();
         constructStudyExperienceMaster = CONSTRUCT_STUDY_EXPERIENCE_MASTER.get();
+        houseOfAlchemyDistillationEfficiencyBonus = HOUSE_OF_ALCHEMY_DISTILLATION_EFFICIENCY_BONUS.get();
         fixationBaseSlurryCost = FIXATION_BASE_SLURRY_COST.get();
         fixationSlurryCompoundCost = FIXATION_SLURRY_COMPOUND_COST.get();
         fixationFailureRefund = FIXATION_FAILURE_REFUND.get();

@@ -1,8 +1,6 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.capabilities.grime.GrimeProvider;
-import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -13,6 +11,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import static com.aranaira.magichem.registry.ItemRegistry.NIGREGO;
+import static com.aranaira.magichem.registry.ItemRegistry.ALBEDO;
+import static com.aranaira.magichem.registry.ItemRegistry.CITRINITAS;
+import static com.aranaira.magichem.registry.ItemRegistry.RUBEDO;
 
 public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
     protected int efficiencyMod;
@@ -37,11 +40,17 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
                 int count = stack.getCount();
                 for (int i = 0; i < count; i++) {
                     boolean doShrink = false;
-                    if (r.nextInt(100) > efficiency)
-                        doShrink = true;
-                    else if (outputRate < 1.0) {
-                        if(r.nextFloat() > outputRate)
+                    int adjustedEfficiency = efficiency;
+                    if(stack.getItem() == NIGREGO || stack.getItem() == ALBEDO || stack.getItem() == CITRINITAS || stack.getItem() == RUBEDO)
+                        adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float)Config.houseOfAlchemyDistillationEfficiencyBonus / 100f));
+
+                    if(adjustedEfficiency < 100) {
+                        if (r.nextInt(100) > adjustedEfficiency)
                             doShrink = true;
+                        else if (outputRate < 1.0) {
+                            if (r.nextFloat() > outputRate)
+                                doShrink = true;
+                        }
                     }
 
                     if(doShrink) {
