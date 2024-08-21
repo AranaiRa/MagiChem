@@ -1150,7 +1150,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "is an advanced device capable of performing "
+            "text": " is an advanced device capable of performing "
           },
           {
             "text": "Sublimation",
@@ -1170,7 +1170,7 @@
         "value": "",
         "json": [
           {
-            "text": "On the far left side is a panel with fifteen slots used to select what you want the Alchemical Nexus to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Sublimation symbol in the center.\n\nThe alchemical Sublimation symbol in the center represents the progress on the current craft. It begins filling once all ingredients and materia are provided, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots, the rightmost group of five for materia and the leftmost group for ingredient items. When a recipe is selected, two slots will be reserved for each type of item and materia required by the recipe and no items can be inserted. Materia cannot be directly inserted, only drawn from nearby Jars or Vessels.\n\nIn the top right is a single slot that can take a Rune of Marking or a Book of Marks. The Alchemical Nexus will try to draw materia from Jars or Vessels placed at the marked location(s).\n\nBetween the mark slot and the output slots is a gauge that displays how many stages the current recipe has. Recipes with multiple stages will pause after crafting and wait for new ingredients and materia.\n\nDirectly above the alchemical Sublimation symbol is a slot used by recipes with more than one stage. If you wish to abort a multi stage craft, remove the "
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Alchemical Nexus to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Sublimation symbol in the center.\n\nThe alchemical Sublimation symbol in the center represents the progress on the current craft. It begins filling once all ingredients and materia are provided, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Sublimation symbol are ten slots, the rightmost group of five for materia and the leftmost group for ingredient items. When a recipe is selected, two slots will be reserved for each type of item and materia required by the recipe and no items can be inserted. Materia cannot be directly inserted, only drawn from nearby Jars or Vessels.\n\nIn the top right is a single slot that can take a Rune of Marking or a Book of Marks. The Alchemical Nexus will try to draw materia from Jars or Vessels placed at the marked location(s).\n\nBetween the mark slot and the output slots is a gauge that displays how many stages the current recipe has. Recipes with multiple stages will pause after crafting and wait for new ingredients and materia.\n\nDirectly above the alchemical Sublimation symbol is a slot used by recipes with more than one stage. If you wish to abort a multi stage craft, remove the "
           },
           {
             "text": "Sublimation in Progress",
