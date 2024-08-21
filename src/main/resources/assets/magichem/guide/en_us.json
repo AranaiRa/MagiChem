@@ -276,6 +276,49 @@
       {
         "type": "manaweaving-altar",
         "location": "magichem:manaweaving/distillery"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:alchemical_sublimation/magichem/grand_distillery"
+      }
+    ]
+  },
+  "Process: Coloration": {
+    "index": "1111",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Coloration"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Color",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is to transform an object to a differently pigmented state. Coloration is performed at a "
+          },
+          {
+            "text": "Variegator",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/variegator"
       }
     ]
   },
@@ -1020,8 +1063,74 @@
       }
     ]
   },
-  "Alchemical Nexus": {
+  "Variegator": {
     "index": "1206",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Variegator"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Variegator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a device capable of performing "
+          },
+          {
+            "text": "Coloration",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Coloration process is normally very slow, but supplying the Variegator with "
+          },
+          {
+            "text": "dye",
+            "color": "dark_purple"
+          },
+          {
+            "text": " speeds up the process significantly. One piece of dye can Color several items.\n\nThe Variegator can also be supplied with "
+          },
+          {
+            "text": "Admixture of Color",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to further enhance its speed. Admixture of Color acts as any dye and can be used to un-dye certain items. If the Variegator also has dye of a matching color, the process is further sped up based on how full the dye reservoir is. The dye is not consumed, only the Admixture of Color is.\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The alchemical Coloration symbol at the center represents how complete the current process is.\n\nThe three slots to the left of that are for input items. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe three slots to the right of the alchemical Coloration symbol hold items that have finished being Colored.\n\nThe slot below the alchemical Coloration symbol shows the currently selected color.\n\nThe sixteen gauges at the top are the dye reservoirs. Clicking one of these reservoirs sets the current color. The exact amount of dye in each reservoir is reported in its tooltip.\n\nThe tall gauge to the left is the Admixture of Color reservoir. The exact amount of Admixture of Color stored is reported in its tooltip.\n\nThe small, round, checkered button to the upper left of the Admxiture of Color reservoir can be clicked to set the Variegator to un-dye items."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/variegator"
+      }
+    ]
+  },
+  "Alchemical Nexus": {
+    "index": "1207",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -2873,7 +2982,7 @@
     ]
   },
   "Grand Distillery": {
-    "index": "1207",
+    "index": "1208",
     "category": "magichem",
     "tier": 4,
     "sections": [
