@@ -47,7 +47,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         SLOT_COUNT = 13,
         SLOT_BOTTLES = 0,
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
-        SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 8,
+        SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 9,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 50,
         DATA_COUNT = 3, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_REMAINING_HEAT = 2;
     private static final Random r = new Random();
