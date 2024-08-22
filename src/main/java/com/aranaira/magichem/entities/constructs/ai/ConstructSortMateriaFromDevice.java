@@ -12,6 +12,7 @@ import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.ConstructCapability;
@@ -26,11 +27,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -46,7 +49,6 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
     private MateriaItem filter;
     private ETaskPhase phase = ETaskPhase.SETUP;
     private int waitTimer;
-    private ItemStack materiaInTransit;
 
     public ConstructSortMateriaFromDevice(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
@@ -58,7 +60,6 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         filter = null;
         jarTargetEntity = null;
         jarTargetPos = null;
-        materiaInTransit = null;
     }
 
     @Override
@@ -67,13 +68,30 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         if(isFullyConfigured()) {
             switch (this.phase) {
                 case SETUP -> {
-                    this.setMoveTarget(takeFromTarget);
-                    this.phase = ETaskPhase.MOVE_TO_DEVICE;
+                    CompoundTag persistentData = construct.asEntity().getPersistentData();
+                    boolean skipToInsertion = false;
+                    if(persistentData.contains("transitMateria")) {
+                        CompoundTag transitMateriaNBT = persistentData.getCompound("transitMateria");
+                        if(!transitMateriaNBT.getString("id").equals("minecraft:air")) {
+                            skipToInsertion = true;
+                        }
+                    }
+
+                    if(skipToInsertion) {
+                        this.waitTimer = 21;
+                        this.filter = (MateriaItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(persistentData.getCompound("transitMateria").getString("id")));
+                        this.phase = ETaskPhase.WAIT_AT_DEVICE;
+                        this.setTargetVessel(this.filter);
+                    } else {
+                        this.setMoveTarget(takeFromTarget);
+                        this.phase = ETaskPhase.MOVE_TO_DEVICE;
+                    }
                 }
                 case MOVE_TO_DEVICE -> {
                     if (doMove(2.0F)) {
                         this.waitTimer = 21;
                         boolean foundTargetAndSource = this.selectMateriaStackFromSource();
+
                         if(this.filter != null) {
                             if(foundTargetAndSource) {
                                 this.phase = ETaskPhase.WAIT_AT_DEVICE;
@@ -188,7 +206,13 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                     }
                     int amountToShrink = Math.min(stackLimit, stack.getCount());
                     stack.shrink(amountToShrink);
-                    this.materiaInTransit = new ItemStack(filter, amountToShrink);
+
+                    ItemStack transitMateria = new ItemStack(filter, amountToShrink);
+                    CompoundTag nbt = construct.asEntity().getPersistentData();
+                    nbt.put("transitMateria", transitMateria.serializeNBT());
+
+                    construct.asEntity().addAdditionalSaveData(nbt);
+                    CompoundTag constructNBT = construct.asEntity().getPersistentData();
                     return true;
                 } else {
                     String targetMateria = getTranslatedNameFromItem(this.filter);
@@ -211,14 +235,24 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
     }
 
     private int doMateriaTransfer() {
-        int transferredAmount;
-        if (this.jarTargetEntity.getMateriaType() == null) {
-            this.jarTargetEntity.setContents(filter, materiaInTransit.getCount());
-            transferredAmount = materiaInTransit.getCount();
-        } else {
-            transferredAmount = jarTargetEntity.fill(materiaInTransit.getCount(), this.voidExcess);
+        ItemStack transitMateria = ItemStack.EMPTY;
+        CompoundTag constructNBT = construct.asEntity().getPersistentData();
+        if(constructNBT.contains("transitMateria")) {
+            CompoundTag itemTag = constructNBT.getCompound("transitMateria");
+            Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemTag.getString("id")));
+            int count = itemTag.getByte("Count");
+            transitMateria = new ItemStack(item, count);
         }
-        materiaInTransit = ItemStack.EMPTY;
+        int transferredAmount;
+
+        if (this.jarTargetEntity.getMateriaType() == null) {
+            this.jarTargetEntity.setContents(filter, transitMateria.getCount());
+            transferredAmount = transitMateria.getCount();
+        } else {
+            transferredAmount = jarTargetEntity.fill(transitMateria.getCount(), this.voidExcess);
+        }
+        constructNBT.put("transitMateria", ItemStack.EMPTY.serializeNBT());
+        construct.asEntity().addAdditionalSaveData(constructNBT);
         return transferredAmount;
     }
 
