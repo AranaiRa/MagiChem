@@ -92,12 +92,14 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         if(isFullyConfigured()) {
             switch (this.phase) {
                 case SETUP -> {
+                    this.filter = null;
+
                     //check to see if there was materia in transit; pick up where we left off if so
                     CompoundTag persistentData = construct.asEntity().getPersistentData();
                     boolean skipToInsertion = false;
                     if(persistentData.contains("transitMateria")) {
                         CompoundTag transitMateriaNBT = persistentData.getCompound("transitMateria");
-                        if(!transitMateriaNBT.getString("id").equals("minecraft:air")) {
+                        if(!(transitMateriaNBT.getString("id").equals("minecraft:air"))) {
                             skipToInsertion = true;
                         }
                     }
@@ -173,7 +175,9 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                         boolean foundTargetAndSource = this.selectMateriaStackFromSource();
                         CompoundTag persistentData = construct.asEntity().getPersistentData();
                         if(persistentData.contains("transitMateria")) {
-                            this.filter = (MateriaItem) ForgeRegistries.ITEMS.getValue(new ResourceLocation(persistentData.getCompound("transitMateria").getString("id")));
+                            if(!persistentData.getCompound("transitMateria").getString("id").equals("minecraft:air")) {
+                                this.filter = (MateriaItem) ForgeRegistries.ITEMS.getValue(new ResourceLocation(persistentData.getCompound("transitMateria").getString("id")));
+                            }
                         }
 
                         if(this.filter != null) {

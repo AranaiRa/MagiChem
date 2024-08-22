@@ -16,6 +16,7 @@ import net.minecraftforge.registries.RegisterEvent;
 public class ConstructTasksRegistry {
 
     public static final ConstructTask SORT_MATERIA_FROM_DEVICE = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/sort_materia_from_device.png"), ConstructSortMateriaFromDevice.class, true, false);
+    public static final ConstructTask SORT_MATERIA_FROM_CONTAINER = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/sort_materia_from_container.png"), ConstructSortMateriaFromContainer.class, true, false);
     public static final ConstructTask QUERY_CHECK_VESSEL = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_materia_vessel_fill.png"), ConstructCheckVessel.class, true, false, true);
     public static final ConstructTask COLLECT_EXPERIENCE = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/collect_experience.png"), ConstructCollectExperience.class, true, false);
     public static final ConstructTask STUDY = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/study.png"), ConstructStudy.class, true, false);
@@ -26,6 +27,7 @@ public class ConstructTasksRegistry {
     public static void registerTasks(RegisterEvent event) {
         event.register(ManaAndArtificeMod.getConstructTaskRegistry().getRegistryKey(), (helper) -> {
             helper.register(new ResourceLocation(MagiChemMod.MODID, "sort_materia"), SORT_MATERIA_FROM_DEVICE);
+            helper.register(new ResourceLocation(MagiChemMod.MODID, "sort_materia_from_container"), SORT_MATERIA_FROM_CONTAINER);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "query_check_vessel"), QUERY_CHECK_VESSEL);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "collect_experience"), COLLECT_EXPERIENCE);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "study"), STUDY);
