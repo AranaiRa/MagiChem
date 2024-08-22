@@ -1,6 +1,10 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
+import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.foundation.ISortFromContainerBlacklist;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.ConstructCapability;
@@ -10,10 +14,17 @@ import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskAreaParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskBooleanParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
+import com.mna.tools.InventoryUtilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
 
@@ -41,7 +52,38 @@ public class ConstructSortMateriaFromContainer extends ConstructAITask<Construct
 
     @Override
     public void tick() {
+        super.tick();
+        if(isFullyConfigured()) {
+            switch(this.phase) {
+                case SETUP -> {
+                    this.setMoveTarget(takeFromTarget);
+                    this.phase = ETaskPhase.MOVE_TO_CONTAINER;
+                }
+                case MOVE_TO_CONTAINER -> {
+                    if (doMove(2.0F)) {
+                        this.waitTimer = 21;
 
+                        BlockEntity be = construct.asEntity().level().getBlockEntity(this.takeFromTarget);
+                        if(be != null) {
+                            if(!(be instanceof ISortFromContainerBlacklist))
+                            be.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(cap -> {
+                                for(int i=0; i<cap.getSlots(); i++) {
+                                    ItemStack stack = cap.getStackInSlot(i);
+
+                                    if(!stack.isEmpty())
+                                        continue;
+
+                                    if(stack.getItem() instanceof MateriaItem) {
+
+                                        break;
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

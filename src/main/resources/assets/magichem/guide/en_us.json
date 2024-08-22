@@ -1651,7 +1651,48 @@
             "color": "dark_purple"
           },
           {
-            "text": " inside, it can move 32 additional drams of materia per operation."
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Advanced Sorting"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The materia sorting process can be greatly sped up if the construct has a "
+          },
+          {
+            "text": "Smart Head",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a "
+          },
+          {
+            "text": "Caster Arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in addition to the required Fluid Nozzle, and is made entirely of "
+          },
+          {
+            "text": "Tier 3 or higher materials",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhen all of these requirements are met, the construct can direct the materia to "
+          },
+          {
+            "text": "fly through the air",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to its destination instead of needing to physically move the materia from location to location."
           }
         ]
       }

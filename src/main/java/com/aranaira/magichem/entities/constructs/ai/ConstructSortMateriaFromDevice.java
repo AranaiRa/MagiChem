@@ -192,7 +192,6 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                     }
                 }
                 case CREATE_SHLORP -> {
-                    this.waitTimer = 72;
                     InteractionHand interactionHand = construct.getHandWithCapability(ConstructCapability.CAST_SPELL).get();
                     if(interactionHand == InteractionHand.MAIN_HAND)
                         construct.forceAnimation(Animations.CHANNEL_LEFT, false);
@@ -200,6 +199,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                         construct.forceAnimation(Animations.CHANNEL_RIGHT, false);
 
                     int amount = doShlorpCreation();
+                    this.waitTimer = Math.round(amount * 1.5f) + 22;
                     if(amount > 0) {
                         this.pushDiagnosticMessage("I moved " + amount + " " + getTranslatedNameFromItem(this.filter) + " to a vessel, boss. Bloop!", true);
                         this.phase = ETaskPhase.WAIT_AT_VESSEL;
@@ -339,6 +339,10 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             transitMateria = new ItemStack(item, count);
             transferredAmount = count;
         }
+
+        //force the type on the destination container to prevent voiding a ton of materia types
+        if(jarTargetEntity.getMateriaType() == null)
+            jarTargetEntity.setContents((MateriaItem)transitMateria.getItem(),0);
 
         //create shlorp here
         if(!transitMateria.isEmpty()) {

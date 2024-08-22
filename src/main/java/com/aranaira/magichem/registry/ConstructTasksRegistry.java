@@ -27,7 +27,7 @@ public class ConstructTasksRegistry {
     public static void registerTasks(RegisterEvent event) {
         event.register(ManaAndArtificeMod.getConstructTaskRegistry().getRegistryKey(), (helper) -> {
             helper.register(new ResourceLocation(MagiChemMod.MODID, "sort_materia"), SORT_MATERIA_FROM_DEVICE);
-            helper.register(new ResourceLocation(MagiChemMod.MODID, "sort_materia_from_container"), SORT_MATERIA_FROM_CONTAINER);
+//            helper.register(new ResourceLocation(MagiChemMod.MODID, "sort_materia_from_container"), SORT_MATERIA_FROM_CONTAINER);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "query_check_vessel"), QUERY_CHECK_VESSEL);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "collect_experience"), COLLECT_EXPERIENCE);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "study"), STUDY);
