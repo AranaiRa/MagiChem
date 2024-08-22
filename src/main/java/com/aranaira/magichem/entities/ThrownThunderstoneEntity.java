@@ -3,6 +3,9 @@ package com.aranaira.magichem.entities;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -86,5 +89,12 @@ public class ThrownThunderstoneEntity extends ThrowableItemProjectile {
     @Override
     protected Item getDefaultItem() {
         return DISPLAY_STACK.getItem();
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if(pSource.typeHolder().is(DamageTypes.FELL_OUT_OF_WORLD))
+            return super.hurt(pSource, pAmount);
+        return false;
     }
 }
