@@ -33,6 +33,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -88,7 +89,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
 
         @Override
         protected void onContentsChanged(int slot) {
-            setChanged();
+            syncAndSave();
             super.onContentsChanged(slot);
         }
     };
@@ -592,5 +593,14 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
                 dyeWhite = pValue;
             }
         }
+    }
+
+    ////////////////////
+    // INTERACTION AND VFX
+    ////////////////////
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-1, -2, -1), getBlockPos().offset(1,2,1));
     }
 }
