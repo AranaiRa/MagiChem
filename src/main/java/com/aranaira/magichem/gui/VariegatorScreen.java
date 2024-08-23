@@ -148,11 +148,6 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-        Font font = Minecraft.getInstance().font;
-
-        int x = (width - PANEL_MAIN_W) / 2;
-        int y = (height - PANEL_MAIN_H) / 2;
-        pGuiGraphics.drawString(font, "sP:"+getScaledProgress(), -150, 0, 0xffffffcc, true);
     }
 
     @Override

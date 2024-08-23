@@ -275,7 +275,7 @@ public class TooltipLoreItem extends Item {
         }
         else if(pStack.getItem() == ItemRegistry.MALFORMED_BRINDLE_GLASS.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.amplifyingprism")
+                    Component.translatable("tooltip.magichem.wasteproduct")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
