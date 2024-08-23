@@ -394,7 +394,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
         if(pEntity.dyeAdmixture > 0)
             pEntity.dyeAdmixture--;
         else if(pEntity.selectedColor != -1){
-            pEntity.setDyeFillByColor(color, pEntity.getDyeFillByColor(color) - 1);
+            pEntity.setDyeFillByColor(color, Math.max(0, pEntity.getDyeFillByColor(color) - 1));
         }
 
         pEntity.progress = 0;

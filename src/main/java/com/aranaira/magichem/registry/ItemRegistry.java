@@ -146,11 +146,11 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> REFRACTIVE_CRYSTAL_GRIT = ITEMS.register("refractive_crystal_grit",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> REFRACTIVE_CRYSTAL_SAND = ITEMS.register("refractive_crystal_sand",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> REFRACTIVE_CRYSTAL_GLASS = ITEMS.register("refractive_crystal_glass",
@@ -158,27 +158,27 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_RED = ITEMS.register("brindle_grit_red",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_YELLOW = ITEMS.register("brindle_grit_yellow",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_GREEN = ITEMS.register("brindle_grit_green",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_CYAN = ITEMS.register("brindle_grit_cyan",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_BLUE = ITEMS.register("brindle_grit_blue",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_MAGENTA = ITEMS.register("brindle_grit_magenta",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     ///////////////
