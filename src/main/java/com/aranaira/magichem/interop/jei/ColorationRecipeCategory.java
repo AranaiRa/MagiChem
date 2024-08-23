@@ -103,7 +103,7 @@ public class ColorationRecipeCategory implements IRecipeCategory<ColorationRecip
                     builder.addSlot(RecipeIngredientRole.OUTPUT, slotPos.x, slotPos.y - 360000).addItemStack(stack);
                 }
 
-                if (stack.getItem() == recipe.getColorlessDefault().getItem()) {
+                if (stack.getItem() == recipe.getColorlessDefault().getItem() && stack.getItem() != ItemRegistry.REFRACTIVE_CRYSTAL_GRIT.get()) {
                     defaultMatchesOtherOutput = true;
                 }
             }

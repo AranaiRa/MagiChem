@@ -1,0 +1,18 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "colorless_default": {
+    "item": "magichem:refractive_crystal_grit"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "magichem:brindle_grit_red"
+    },
+    {
+      "color": "cyan",
+      "item": "magichem:refractive_crystal_grit"
+    }
+  ]
+}

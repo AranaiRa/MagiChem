@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:refractive_crystal_grit" },
+    { "item": "magichem:refractive_crystal_grit" },
+    { "item": "magichem:refractive_crystal_grit" },
+    { "item": "magichem:refractive_crystal_grit" },
+    { "item": "magichem:refractive_crystal_grit" },
+    { "item": "magichem:refractive_crystal_grit" }
+  ],
+  "result": {
+    "item": "magichem:refractive_crystal_sand"
+  }
+}

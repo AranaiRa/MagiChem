@@ -173,6 +173,116 @@ public class TooltipLoreItem extends Item {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_RED.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.brindlegrit_red")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_YELLOW.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.brindlegrit_yellow")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_GREEN.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.brindlegrit_green")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_CYAN.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.brindlegrit_cyan")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_BLUE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.brindlegrit_blue")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_MAGENTA.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.brindlegrit_magenta")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.REFRACTIVE_CRYSTAL_GRIT.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.refractivecrystalgrit")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.REFRACTIVE_CRYSTAL_SAND.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.refractivecrystalsand")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.REFRACTIVE_CRYSTAL_GLASS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.refractivecrystalglass")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.AMPLIFYING_PRISM.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.amplifyingprism")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.powerreagent")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.MALFORMED_BRINDLE_GLASS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.amplifyingprism")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

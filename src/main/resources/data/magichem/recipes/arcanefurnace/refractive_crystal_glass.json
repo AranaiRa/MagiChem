@@ -1,0 +1,8 @@
+{
+	"type": "mna:arcane-furnace",
+	"tier": 4,
+	"input": "magichem:refractive_crystal_sand",
+	"output": "magichem:refractive_crystal_glass",
+	"outputQuantity": 1,
+	"burnTime": 100
+}

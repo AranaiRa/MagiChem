@@ -29,30 +29,6 @@ public class ItemRegistry {
     // MAGICHEM ITEMS
     ///////////////
 
-    public static final RegistryObject<TooltipLoreItem> SILVER_DUST = ITEMS.register("silver_dust",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
-    );
-
-    public static final RegistryObject<TooltipLoreItem> FOCUSING_CATALYST = ITEMS.register("focusing_catalyst",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
-    );
-
-    public static final RegistryObject<TooltipLoreItem> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
-    );
-
-    public static final RegistryObject<TooltipLoreItem> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
-    );
-
-    public static final RegistryObject<TooltipLoreItem> CATALYST_CORE = ITEMS.register("focusing_catalyst_core",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
-    );
-
-    public static final RegistryObject<TooltipLoreItem> CATALYST_CASING = ITEMS.register("focusing_catalyst_casing",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
-    );
-
     public static final RegistryObject<SublimationPrimerItem> SUBLIMATION_PRIMER = ITEMS.register("sublimation_primer",
             () -> new SublimationPrimerItem(new Item.Properties().stacksTo(1))
     );
@@ -105,6 +81,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> GLASS_CUTTING_TOOLS = ITEMS.register("glass_cutting_tools",
+            () -> new TooltipLoreItem(new Item.Properties().durability(4))
+    );
+
     public static final RegistryObject<TooltipLoreItem> LABORATORY_CHARM = ITEMS.register("laboratory_charm",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -127,6 +107,78 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
             () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
+    );
+
+    ///////////////
+    // CIRCLE OF POWER ITEMS
+    ///////////////
+
+    public static final RegistryObject<TooltipLoreItem> SILVER_DUST = ITEMS.register("silver_dust",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> FOCUSING_CATALYST = ITEMS.register("focusing_catalyst",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CATALYST_CORE = ITEMS.register("focusing_catalyst_core",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CATALYST_CASING = ITEMS.register("focusing_catalyst_casing",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> AMPLIFYING_PRISM = ITEMS.register("amplifying_prism",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> MALFORMED_BRINDLE_GLASS = ITEMS.register("malformed_brindle_glass",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> REFRACTIVE_CRYSTAL_GRIT = ITEMS.register("refractive_crystal_grit",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> REFRACTIVE_CRYSTAL_SAND = ITEMS.register("refractive_crystal_sand",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> REFRACTIVE_CRYSTAL_GLASS = ITEMS.register("refractive_crystal_glass",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_RED = ITEMS.register("brindle_grit_red",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_YELLOW = ITEMS.register("brindle_grit_yellow",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_GREEN = ITEMS.register("brindle_grit_green",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_CYAN = ITEMS.register("brindle_grit_cyan",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_BLUE = ITEMS.register("brindle_grit_blue",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_MAGENTA = ITEMS.register("brindle_grit_magenta",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     ///////////////
