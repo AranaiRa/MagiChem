@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:laboratory_charm"
+    },
+    "title": {
+      "translate": "advancements.magichem.laboratory_charm.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.laboratory_charm.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:grand_distillery",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:laboratory_charm"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

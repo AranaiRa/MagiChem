@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:grand_distillery"
+    },
+    "title": {
+      "translate": "advancements.magichem.grand_distillery.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.grand_distillery.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:distillery",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:grand_distillery"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

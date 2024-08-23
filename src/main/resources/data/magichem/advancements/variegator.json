@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:variegator"
+    },
+    "title": {
+      "translate": "advancements.magichem.variegator.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.variegator.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:alembic",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:variegator"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
