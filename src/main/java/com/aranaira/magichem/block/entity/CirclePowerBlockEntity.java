@@ -46,7 +46,10 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
                 case SLOT_REAGENT_2 ->
                         stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get() ||
                         stack.getItem() == ItemRegistry.DEBUG_ORB.get();
-                case SLOT_REAGENT_3, SLOT_REAGENT_4 ->
+                case SLOT_REAGENT_3 ->
+                        stack.getItem() == ItemRegistry.AMPLIFYING_PRISM.get() ||
+                        stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                case SLOT_REAGENT_4 ->
                         stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                 case SLOT_RECHARGE ->
                         stack.getCapability(ForgeCapabilities.ENERGY).isPresent();
@@ -103,14 +106,16 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
     private static final int
             maxProgressReagentTier1 = 640,
             maxProgressReagentTier2 = 2160,
-            maxProgressReagentTier3 = 1280,
+            maxProgressReagentTier3 = 3680,
             maxProgressReagentTier4 = 1280;
 
     public static final Item
             REAGENT_TIER1 =  ItemRegistry.SILVER_DUST.get(),
             REAGENT_TIER2 =  ItemRegistry.FOCUSING_CATALYST.get(),
+            REAGENT_TIER3 =  ItemRegistry.AMPLIFYING_PRISM.get(),
             WASTE_TIER1 =  ItemRegistry.TARNISHED_SILVER_LUMP.get(),
-            WASTE_TIER2 =  ItemRegistry.WARPED_FOCUSING_CATALYST.get();
+            WASTE_TIER2 =  ItemRegistry.WARPED_FOCUSING_CATALYST.get(),
+            WASTE_TIER3 =  ItemRegistry.MALFORMED_BRINDLE_GLASS.get();
     private NonNullList<ItemStack> itemsForRemoteCharging = NonNullList.create();
 
     @Override
@@ -192,6 +197,12 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             else
                 inventory.addItem(new ItemStack(WASTE_TIER2, 1));
         }
+        if(progressReagentTier3 > 0) {
+            if (itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get())
+                inventory.addItem(new ItemStack(ItemRegistry.DEBUG_ORB.get(), 1));
+            else
+                inventory.addItem(new ItemStack(WASTE_TIER3, 1));
+        }
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
@@ -219,6 +230,8 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         if(entity.ENERGY_STORAGE.getEnergyStored() < getEnergyLimit(entity)) {
             processReagent(level, pos, state, entity, 1);
             processReagent(level, pos, state, entity, 2);
+            processReagent(level, pos, state, entity, 3);
+            processReagent(level, pos, state, entity, 4);
 
             generatePower(entity);
         }
@@ -269,7 +282,10 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             entity.incrementProgress(2);
         }
 
-        if(getProgressByTier(entity, 3) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+        if(getProgressByTier(entity, 3) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == REAGENT_TIER3) {
+            entity.itemHandler.setStackInSlot(SLOT_REAGENT_3, ItemStack.EMPTY);
+            entity.incrementProgress(3);
+        } else if(getProgressByTier(entity, 2) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get()) {
             entity.incrementProgress(3);
         }
 
@@ -302,6 +318,10 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         else if(tier == 2) {
             if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() != ItemRegistry.DEBUG_ORB.get())
                 wasteProduct = new ItemStack(WASTE_TIER2, 1);
+        }
+        else if(tier == 3) {
+            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() != ItemRegistry.DEBUG_ORB.get())
+                wasteProduct = new ItemStack(WASTE_TIER3, 1);
         }
 
         if(wasteProduct != null)
@@ -385,8 +405,15 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         }
         if(reagentTier == 3) {
             //Just do the thing if there's a debug orb in the slot
-            if (entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get())
+            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get())
                 return true;
+
+            query = entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == REAGENT_TIER2;
+            //Otherwise, consume the reagent if we don't have an existing one "burning"
+            if(query && getProgressByTier(entity, 3) == 0) {
+                entity.itemHandler.setStackInSlot(SLOT_REAGENT_3, ItemStack.EMPTY);
+                entity.incrementProgress(3);
+            }
         }
         if(reagentTier == 4) {
             //Just do the thing if there's a debug orb in the slot
