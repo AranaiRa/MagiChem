@@ -283,6 +283,12 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.GLASS_CUTTING_TOOLS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.glasscuttingtools")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

@@ -82,7 +82,7 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> GLASS_CUTTING_TOOLS = ITEMS.register("glass_cutting_tools",
-            () -> new TooltipLoreItem(new Item.Properties().durability(4))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> LABORATORY_CHARM = ITEMS.register("laboratory_charm",

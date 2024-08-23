@@ -1,8 +1,15 @@
 {
 	"type": "mna:runeforging",
 	"tier": 4,
-	"material": "magichem:refractive_crystal_glass",
+	"material": "magichem:glass_cutting_tools",
 	"hits": 10,
-	"pattern": "magichem:glass_cutting_tools",
-	"output": "magichem:amplifying_prism"
+	"pattern": "magichem:refractive_crystal_glass",
+	"output": "magichem:amplifying_prism",
+	"byproducts": [
+		{
+			"item": "magichem:glass_cutting_tools",
+			"chance": 1,
+			"count": 1
+		}
+	]
 }

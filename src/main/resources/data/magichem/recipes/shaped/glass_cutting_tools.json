@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "V"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "V": {
+      "item": "mna:vinteum_ingot"
+    }
+  },
+  "result": {
+    "item": "magichem:glass_cutting_tools"
+  }
+}
