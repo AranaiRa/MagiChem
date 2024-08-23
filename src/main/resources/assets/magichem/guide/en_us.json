@@ -710,10 +710,10 @@
             "color": "dark_purple"
           },
           {
-            "text": " on a Runic Anvil, and Catalyst Cores can be made by performing the "
+            "text": " on a Runic Anvil, and Catalyst Cores can be made on the "
           },
           {
-            "text": "Ritual of the Balanced Scales",
+            "text": "Alchemical Nexus",
             "color": "dark_purple"
           },
           {
@@ -724,7 +724,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " as a waste product.\n\n\n\n"
+            "text": " as a waste product.\n\n\n\n\n"
           }
         ]
       },
@@ -768,6 +768,102 @@
       {
         "type": "runesmithing",
         "location": "magichem:runeforging/reagent_2_reprocessing"
+      }
+    ]
+  },
+  "Amplifying Prism": {
+    "index": "1406",
+    "category": "magichem",
+    "tier": 4,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Amplifying Prism"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An "
+          },
+          {
+            "text": "Amplifying Prism",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is yet another energy-generating reagent used in the Circle of Power. Amplifying Prisms can be made at Tier 4 by shaping a lump of "
+          },
+          {
+            "text": "Refractive Crystal Glass",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with "
+          },
+          {
+            "text": "Glass Cutting Tools",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on a Runic Anvil. Refractive Crystal Glass can be made on the "
+          },
+          {
+            "text": "Alchemical Nexus",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Prism has a long burn time and ejects "
+          },
+          {
+            "text": "Malformed Brindle Glass",
+            "color": "dark_purple"
+          },
+          {
+            "text": " as a waste product.\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Reprocessing"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A Construct can grind Malformed Brindle Glass into six piles of "
+          },
+          {
+            "text": "Brindle Grit",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", each bearing a different color impurity.\n\nEach color-tinged grit can have its color impurity removed by crafting it together with the appropriate counterbalancing dye or by processing it with Alchemical Coloration on the Variegator. Variegators set to use the counterbalancing color can do this process for free, albeit slowly, but a Variegator set to un-dye will require Admixture of Color.\n\nOnce all six piles of grit have had their color impurities purged, they can be crafted together into a pile of "
+          },
+          {
+            "text": "Refractive Crystal Sand",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Refractive Crystal Sand can be smelted in a Runeforge to create Refractive Crystal Glass, which can be re-carved into an Amplifying Prism on the Runic Anvil along with Glass Cutting Tools."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "runesmithing",
+        "location": "magichem:runeforging/reagent_3_creation"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/refractive_crystal_glass"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/glass_cutting_tools"
       }
     ]
   },
