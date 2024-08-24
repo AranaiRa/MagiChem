@@ -3170,6 +3170,51 @@
       }
     ]
   },
+  "Bleached Amethyst Shard": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "required_advancement": "magichem:coloring_cauldron",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Bleached Amethyst Shard"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An amethyst drained of all of its natural color in the "
+          },
+          {
+            "text": "Coloring Cauldron",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Only a White operation can bleach the crystal, the shard will resist any other color.\n\nBleached Amethyst Shards are ideal for focusing colored light; they are a core component of replacing a Coloring Cauldron with a "
+          },
+          {
+            "text": "Variegator",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/coloring_cauldron"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/variegator"
+      }
+    ]
+  },
   "Grand Distillery": {
     "index": "1208",
     "category": "magichem",
@@ -3219,7 +3264,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\n\n\n\n\n\n\n\n"
+            "text": ".\n\nThe Grand Distillery requires a significant amount of FE even at its minimum settings; a Circle of Power with "
+          },
+          {
+            "text": "two reagents",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or more should be sufficient."
           }
         ]
       },
