@@ -35,13 +35,16 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final int chargeUsage;
     private final float craftingTimeMultiplier;
+    private final boolean validOnCauldron, validOnVariegator;
     private final ItemStack colorlessDefault;
     private final HashMap<DyeColor, ItemStack> potentialOutputs;
 
-    public ColorationRecipe(ResourceLocation id, int pChargeUsage, float pCraftingTimeMultiplier, ItemStack pColorlessDefault, HashMap<DyeColor, ItemStack> pPotentialOutputs) {
+    public ColorationRecipe(ResourceLocation id, int pChargeUsage, float pCraftingTimeMultiplier, boolean pValidOnCauldron, boolean pValidOnVariegator, ItemStack pColorlessDefault, HashMap<DyeColor, ItemStack> pPotentialOutputs) {
         this.id = id;
         this.chargeUsage = pChargeUsage;
         this.craftingTimeMultiplier = pCraftingTimeMultiplier;
+        this.validOnCauldron = pValidOnCauldron;
+        this.validOnVariegator = pValidOnVariegator;
         this.colorlessDefault = pColorlessDefault;
         this.potentialOutputs = pPotentialOutputs;
     }
@@ -99,6 +102,14 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
         return craftingTimeMultiplier;
     }
 
+    public boolean isValidOnCauldron() {
+        return validOnCauldron;
+    }
+
+    public boolean isValidOnVariegator() {
+        return validOnVariegator;
+    }
+
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
         return true;
@@ -146,6 +157,32 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
         return result;
     }
 
+    public static ColorationRecipe getFilteredColorationRecipe(Level level, ItemStack query, boolean filterForVariegator) {
+        ColorationRecipe result = null;
+        List<ColorationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(ColorationRecipe.Type.INSTANCE);
+
+        for(ColorationRecipe cr : allRecipes) {
+            if(cr.colorlessDefault.getItem() == query.getItem()) {
+                if((filterForVariegator && cr.isValidOnVariegator()) || (!filterForVariegator && cr.isValidOnCauldron())) {
+                    result = cr;
+                    break;
+                }
+            }
+            for(DyeColor color : cr.potentialOutputs.keySet()) {
+                if(cr.potentialOutputs.get(color).getItem() == query.getItem()) {
+                    if((filterForVariegator && cr.isValidOnVariegator()) || (!filterForVariegator && cr.isValidOnCauldron())) {
+                        result = cr;
+                        break;
+                    }
+                }
+            }
+            if(result != null)
+                break;
+        }
+
+        return result;
+    }
+
     public static class Type implements RecipeType<ColorationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
@@ -163,6 +200,8 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
 
             int chargeUsage = GsonHelper.getAsInt(pSerializedRecipe, "charge_usage", 1);
             float craftingTimeMultiplier = GsonHelper.getAsFloat(pSerializedRecipe, "crafting_time_multiplier", 1.0f);
+            boolean validOnCauldron = GsonHelper.getAsBoolean(pSerializedRecipe, "valid_on_cauldron", true);
+            boolean validOnVariegator = GsonHelper.getAsBoolean(pSerializedRecipe, "valid_on_variegator", true);
 
             ItemStack colorlessDefault = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "colorless_default"));
             if(colorlessDefault.getItem() == ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air")))
@@ -188,7 +227,7 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
                 extractedOutputs.put(DyeColor.byName(color, DyeColor.WHITE), ing);
             });
 
-            return new ColorationRecipe(pRecipeId, chargeUsage, craftingTimeMultiplier, colorlessDefault, extractedOutputs);
+            return new ColorationRecipe(pRecipeId, chargeUsage, craftingTimeMultiplier, validOnCauldron, validOnVariegator, colorlessDefault, extractedOutputs);
         }
 
         @Override
@@ -199,6 +238,8 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
 
             int chargeUsage = nbt.getInt("chargeUsage");
             float craftingTimeMultiplier = nbt.getFloat("craftingTimeMultiplier");
+            boolean validOnCauldron = nbt.getBoolean("validOnCauldron");
+            boolean validOnVariegator = nbt.getBoolean("validOnVariegator");
 
             ItemStack colorlessDefault = ItemStack.EMPTY;
             if(nbt.contains("colorlessDefault")) {
@@ -227,7 +268,7 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
                 }
             }
 
-            return new ColorationRecipe(id, chargeUsage, craftingTimeMultiplier, colorlessDefault, outputs);
+            return new ColorationRecipe(id, chargeUsage, craftingTimeMultiplier, validOnCauldron, validOnVariegator, colorlessDefault, outputs);
         }
 
         @Override
@@ -235,6 +276,8 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
             CompoundTag nbt = new CompoundTag();
             nbt.putInt("chargeUsage", recipe.chargeUsage);
             nbt.putFloat("craftingTimeMultiplier", recipe.craftingTimeMultiplier);
+            nbt.putBoolean("validOnCauldron", recipe.validOnCauldron);
+            nbt.putBoolean("validOnVariegator", recipe.validOnVariegator);
 
             CompoundTag colorlessDefault = new CompoundTag();
             colorlessDefault.putString("item", ForgeRegistries.ITEMS.getKey(recipe.getColorlessDefault().getItem()).toString());

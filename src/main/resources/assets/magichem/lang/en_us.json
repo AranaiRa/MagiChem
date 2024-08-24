@@ -4,6 +4,7 @@
 
   "item.magichem.alchemical_waste": "Alchemical Waste",
   "item.magichem.amplifying_prism": "Amplifying Prism",
+  "item.magichem.bleached_amethyst_shard": "Bleached Amethyst Shard",
   "item.magichem.brindle_grit_red": "Red-Tinged Brindle Grit",
   "item.magichem.brindle_grit_yellow": "Yellow-Tinged Brindle Grit",
   "item.magichem.brindle_grit_green": "Green-Tinged Brindle Grit",
@@ -334,6 +335,7 @@
 
   "tooltip.magichem.alchemicalwaste": "A mistake, or perhaps a failure. It smells unbelievably foul.",
   "tooltip.magichem.alchemicalwaste.ext": "Created by breaking devices without extracting materia first.",
+  "tooltip.magichem.bleachedamethystshard": "An Amethyst Shard drained of all of its color.",
   "tooltip.magichem.catalyticcarbon": "Burns for a drastically longer time than coal and enhances the Inferno Engine.",
   "tooltip.magichem.chargingtalisman": "Draws FE through a Power Spike to recharge FE-consuming items.",
   "tooltip.magichem.cleaningbrush": "Used to clean the Grime out of alchemical devices.",
@@ -540,6 +542,11 @@
   "tooltip.magichem.gui.actuator.arcane.tank": "Reservoir (Academic Slurry)",
   "tooltip.magichem.gui.actuator.arcane.tank.line1": "How much Academic Slurry is currently stored inside of the Occult Matrix.",
   "tooltip.magichem.gui.actuator.arcane.tank.line2": "Current Academic Slurry: ",
+
+  "tooltip.magichem.jei.coloration.cauldron.part1": "This recipe ",
+  "tooltip.magichem.jei.coloration.cauldron.part2": " be crafted in a Coloring Cauldron",
+  "tooltip.magichem.jei.coloration.variegator.part1": "This recipe ",
+  "tooltip.magichem.jei.coloration.variegator.part2": " be crafted in a Variegator",
 
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
   "log.magichem.powerspike.bind": "Power Spike bound to this Circle of Power.",

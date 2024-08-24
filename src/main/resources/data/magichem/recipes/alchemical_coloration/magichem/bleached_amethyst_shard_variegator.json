@@ -5,16 +5,16 @@
   "valid_on_cauldron": false,
   "valid_on_variegator": true,
   "colorless_default": {
-    "item": "magichem:refractive_crystal_grit"
+    "item": "minecraft:amethyst_shard"
   },
   "outputs": [
     {
-      "color": "blue",
-      "item": "magichem:brindle_grit_blue"
+      "color": "purple",
+      "item": "minecraft:amethyst_shard"
     },
     {
-      "color": "yellow",
-      "item": "magichem:refractive_crystal_grit"
+      "color": "white",
+      "item": "magichem:bleached_amethyst_shard"
     }
   ]
 }

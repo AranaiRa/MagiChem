@@ -104,6 +104,7 @@ public class JEIPlugin implements IModPlugin {
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ALCHEMICAL_NEXUS.get(), 1), SUBLIMATION_TYPE);
 
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.COLORING_CAULDRON.get(), 1), COLORATION_TYPE);
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.VARIEGATOR.get(), 1), COLORATION_TYPE);
 
         IModPlugin.super.registerRecipeCatalysts(registration);

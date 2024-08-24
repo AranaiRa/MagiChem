@@ -130,6 +130,18 @@ public class ColorationRecipeCategory implements IRecipeCategory<ColorationRecip
             gui.renderItem(dyeStack, dyePos.x, dyePos.y);
         }
 
+        if(recipe.isValidOnCauldron()) {
+            gui.blit(TEXTURE, 29, 163, 242, 0, 14, 16);
+        } else {
+            gui.blit(TEXTURE, 29, 163, 242, 16, 14, 16);
+        }
+
+        if(recipe.isValidOnVariegator()) {
+            gui.blit(TEXTURE, 103, 163, 242, 0, 14, 16);
+        } else {
+            gui.blit(TEXTURE, 103, 163, 242, 16, 14, 16);
+        }
+
         IRecipeCategory.super.draw(recipe, recipeSlotsView, gui, mouseX, mouseY);
     }
 }

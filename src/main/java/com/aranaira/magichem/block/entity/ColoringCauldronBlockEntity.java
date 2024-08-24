@@ -71,7 +71,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         }
 
         if(containedItem.isEmpty()) {
-            final ColorationRecipe recipeQuery = ColorationRecipe.getColorationRecipe(getLevel(), pStack);
+            final ColorationRecipe recipeQuery = ColorationRecipe.getFilteredColorationRecipe(getLevel(), pStack, false);
             if (recipeQuery != null) {
                 containedItem = pStack.copy();
                 containedItem.setCount(1);
@@ -291,6 +291,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         pLevel.addFreshEntity(ie);
         containedItem = ItemStack.EMPTY;
         readyToCollect = false;
+        recipe = null;
         syncAndSave();
     }
 

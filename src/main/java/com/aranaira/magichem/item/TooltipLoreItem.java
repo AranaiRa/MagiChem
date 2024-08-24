@@ -289,6 +289,12 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.BLEACHED_AMETHYST_SHARD.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.bleachedamethystshard")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

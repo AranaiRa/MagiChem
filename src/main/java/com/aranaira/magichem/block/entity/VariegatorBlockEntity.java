@@ -481,11 +481,11 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
                 }
 
                 //Otherwise we're checkin' the registry
-                ColorationRecipe recipe = ColorationRecipe.getColorationRecipe(level, query);
+                ColorationRecipe recipe = ColorationRecipe.getFilteredColorationRecipe(level, query, true);
                 pEntity.currentRecipe = recipe;
                 return recipe;
             } else {
-                ColorationRecipe recipe = ColorationRecipe.getColorationRecipe(level, query);
+                ColorationRecipe recipe = ColorationRecipe.getFilteredColorationRecipe(level, query, true);
                 pEntity.currentRecipe = recipe;
                 return recipe;
             }
@@ -502,6 +502,9 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
             result = pRecipe.getColorlessDefault();
         else
             result = pRecipe.getResultsAsMap(false).get(color);
+
+        if(result == null)
+            return false;
 
         return pEntity.getContentsOfOutputSlots().canAddItem(result);
     }

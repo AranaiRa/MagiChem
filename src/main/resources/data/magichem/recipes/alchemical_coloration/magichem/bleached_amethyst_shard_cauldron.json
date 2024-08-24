@@ -1,0 +1,76 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 2.0,
+  "valid_on_cauldron": true,
+  "valid_on_variegator": false,
+  "colorless_default": {
+    "item": "minecraft:amethyst_shard"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "orange",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "yellow",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "lime",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "green",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "cyan",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "light_blue",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "blue",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "purple",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "magenta",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "pink",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "brown",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "black",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "gray",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "light_gray",
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "color": "white",
+      "item": "magichem:bleached_amethyst_shard"
+    }
+  ]
+}

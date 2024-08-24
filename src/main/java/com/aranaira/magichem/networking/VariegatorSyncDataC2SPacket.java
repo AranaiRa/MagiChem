@@ -39,6 +39,7 @@ public class VariegatorSyncDataC2SPacket {
         context.enqueueWork(() -> {
             if(entity instanceof VariegatorBlockEntity vbe) {
                 vbe.selectedColor = selectedColor;
+                vbe.progress = 0;
                 vbe.syncAndSave();
             }
         });

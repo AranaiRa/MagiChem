@@ -81,6 +81,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> BLEACHED_AMETHYST_SHARD = ITEMS.register("bleached_amethyst_shard",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> GLASS_CUTTING_TOOLS = ITEMS.register("glass_cutting_tools",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
