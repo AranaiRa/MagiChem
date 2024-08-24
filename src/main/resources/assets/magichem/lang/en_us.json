@@ -57,6 +57,7 @@
   "block.magichem.magichemical_mechanism": "Magichemical Mechanism",
   "block.magichem.centrifuge": "Centrifuge",
   "block.magichem.centrifuge_router": "Centrifuge",
+  "block.magichem.coloring_cauldron": "Coloring Cauldron",
   "block.magichem.distillery": "Distillery",
   "block.magichem.distillery_router": "Distillery",
   "block.magichem.fusery": "Fusery",
@@ -578,6 +579,13 @@
 
   "gui.mna.parameter.study.point": "Where is the Study Desk that the construct should study at?",
 
+  "hud.magichem.coloring_cauldron.current_item.processing": "Coloring ",
+  "hud.magichem.coloring_cauldron.current_item.waiting": " Complete",
+  "hud.magichem.coloring_cauldron.dye_list": "Possible Colors:",
+  "hud.magichem.coloring_cauldron.dye_list.waiting": "Waiting for Dyes...",
+  "hud.magichem.coloring_cauldron.remaining.part1": "Can color ",
+  "hud.magichem.coloring_cauldron.remaining.part2": " more items",
+
   "advancements.magichem.root.title" : "MagiChem",
   "advancements.magichem.root.description" : "Begin delving into the magic of alchemy",
 
@@ -601,6 +609,8 @@
   "advancements.magichem.circle_power_reagent_3.description" : "Use the Alchemical Nexus and a Runic Anvil to create an Amplifying Prism to improve your Circle of Power",
   "advancements.magichem.cleaning.title" : "A Clean Workshop is a Safe Workshop",
   "advancements.magichem.cleaning.description" : "Use a Cleaning Brush to scrub the Alchemical Waste out of an Alembic",
+  "advancements.magichem.coloring_cauldron.title" : "Cooking Up Colors",
+  "advancements.magichem.coloring_cauldron.description" : "Craft a Coloring Cauldron",
   "advancements.magichem.debug_orb.title" : "You're Not Supposed to Have This",
   "advancements.magichem.debug_orb.description" : "Acquire an Orb of Alchemical Creativity (an item for debugging)",
   "advancements.magichem.distillery.title" : "No More Furnace Loading",

@@ -2,6 +2,9 @@ package com.aranaira.magichem.util.render;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 public class ColorUtils {
     private static final int[]
@@ -127,5 +130,27 @@ public class ColorUtils {
     public static float[] getARGBFloatTint(DyeColor pColorCode, float pAlpha) {
         float[] out = getRGBFloatTint(pColorCode);
         return new float[]{pAlpha, out[0], out[1], out[2]};
+    }
+
+    public Item getDyeItemFromID(int pID) {
+        return switch(pID) {
+            case 0 -> Items.RED_DYE;
+            case 1 -> Items.ORANGE_DYE;
+            case 2 -> Items.YELLOW_DYE;
+            case 3 -> Items.LIME_DYE;
+            case 4 -> Items.GREEN_DYE;
+            case 5 -> Items.CYAN_DYE;
+            case 6 -> Items.LIGHT_BLUE_DYE;
+            case 7 -> Items.BLUE_DYE;
+            case 8 -> Items.PURPLE_DYE;
+            case 9 -> Items.MAGENTA_DYE;
+            case 10 -> Items.PINK_DYE;
+            case 11 -> Items.BROWN_DYE;
+            case 12 -> Items.BLACK_DYE;
+            case 13 -> Items.GRAY_DYE;
+            case 14 -> Items.LIGHT_GRAY_DYE;
+            case 15 -> Items.WHITE_DYE;
+            default -> null;
+        };
     }
 }

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:cauldron" },
+    { "item": "mna:manaweaving_altar" },
+    { "item": "mna:animus_dust" },
+    { "tag": "minecraft:logs" }
+  ],
+  "result": {
+    "item": "magichem:coloring_cauldron"
+  }
+}

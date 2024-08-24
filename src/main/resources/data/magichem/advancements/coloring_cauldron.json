@@ -1,20 +1,20 @@
 {
   "display": {
     "icon": {
-      "item": "magichem:variegator"
+      "item": "magichem:coloring_cauldron"
     },
     "title": {
-      "translate": "advancements.magichem.variegator.title"
+      "translate": "advancements.magichem.coloring_cauldron.title"
     },
     "description": {
-      "translate": "advancements.magichem.variegator.description"
+      "translate": "advancements.magichem.coloring_cauldron.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:coloring_cauldron",
+  "parent": "magichem:alembic",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -22,7 +22,7 @@
         "items": [
           {
             "items": [
-              "magichem:variegator"
+              "magichem:coloring_cauldron"
             ]
           }
         ]

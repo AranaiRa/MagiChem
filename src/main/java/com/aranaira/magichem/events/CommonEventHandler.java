@@ -279,6 +279,28 @@ public class CommonEventHandler {
                         event.getGuiGraphics().drawString(font, textRow2, x + 4, y + 14, 0xffffff, true);
                         event.getGuiGraphics().drawString(font, textRow3, x + 4, y + 24, 0xffffff, true);
                     }
+                } else if (blockEntity instanceof ColoringCauldronBlockEntity ccbe) {
+                    if(ccbe.hasItem()) {
+                        final List<String> infoReadout = ccbe.getInfoReadout();
+                        event.getGuiGraphics().drawString(font, infoReadout.get(0), x + 4, y + 4, 0xffffff, true);
+
+                        if(!ccbe.isReadyToCollect()) {
+                            if (ccbe.hasColors()) {
+                                event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.remaining.part1")
+                                        .append(Component.literal(""+ccbe.getOperationsRemaining())
+                                        .append(Component.translatable("hud.magichem.coloring_cauldron.remaining.part2"))),
+                                        x + 4, y + 20, 0xffffff, true);
+
+                                event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list"), x + 4, y + 36, 0xffffff, true);
+
+                                for(int i=1; i<infoReadout.size(); i++) {
+                                    event.getGuiGraphics().drawString(font, infoReadout.get(i), x + 10, y + 36 + (i * 12), 0xffffff, true);
+                                }
+                            } else {
+                                event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list.waiting"), x + 4, y + 20, 0xffffff, true);
+                            }
+                        }
+                    }
                 } else if (Minecraft.getInstance().player.isCrouching()) {
                     List<MutableComponent> components = new ArrayList<>();
                     BlockState state = blockEntity.getBlockState();

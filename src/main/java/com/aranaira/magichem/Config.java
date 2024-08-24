@@ -276,15 +276,21 @@ public class Config
             .comment("The amount of Academic Slurry, in mB, the Gale Pressurizer's internal tanks can hold.")
             .defineInRange("occultMatrixTankCapacity", 72000, 500, Integer.MAX_VALUE);
 
+    //----------------COLORING CAULDRON
+
+    private static final ForgeConfigSpec.IntValue COLORING_CAULDRON_BASE_OPERATION_TIME = BUILDER
+            .comment("The amount of time, in ticks, that it takes for a Coloring Cauldron with one dye to color an item. This time is exponentially reduced with more dyes down to a quarter at 15 dyes.")
+            .defineInRange("coloringCauldronBaseOperationTime", 600, 10, Integer.MAX_VALUE);
+
     //----------------VARIEGATOR
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_OPERATION_TIME_SLOW = BUILDER
             .comment("The amount of time, in ticks, a Variegator requires to dye something if there is insufficient dye/Admixture of Color.")
-            .defineInRange("variegatorOperationTimeSlow", 1200, 1, 12000);
+            .defineInRange("variegatorOperationTimeSlow", 1200, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_OPERATION_TIME_FAST = BUILDER
             .comment("The amount of time, in ticks, a Variegator requires to dye something if appropriate dye/Admixture of Color is provided.")
-            .defineInRange("variegatorOperationTimeFast", 50, 1, 6000);
+            .defineInRange("variegatorOperationTimeFast", 50, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_MATCHED_COLOR_TIME_DISCOUNT = BUILDER
             .comment("What percentage the crafting time is reduced by if both Admixture of Color and a full bar of the appropriate dye are present. This is linearly reduced with the fill of the dye gauge.")
@@ -366,6 +372,7 @@ public class Config
         galePressurizerTankCapacity,
         occultMatrixOperationTime,
         occultMatrixTankCapacity,
+        coloringCauldronBaseOperationTime,
         variegatorOperationTimeSlow,
         variegatorOperationTimeFast,
         variegatorMatchedColorTimeDiscount,
@@ -439,6 +446,7 @@ public class Config
         galePressurizerTankCapacity = GALE_PRESSURIZER_TANK_CAPACITY.get();
         occultMatrixOperationTime = OCCULT_MATRIX_OPERATION_TIME.get();
         occultMatrixTankCapacity = OCCULT_MATRIX_TANK_CAPACITY.get();
+        coloringCauldronBaseOperationTime = COLORING_CAULDRON_BASE_OPERATION_TIME.get();
         variegatorOperationTimeSlow = VARIEGATOR_OPERATION_TIME_SLOW.get();
         variegatorOperationTimeFast = VARIEGATOR_OPERATION_TIME_FAST.get();
         variegatorMatchedColorTimeDiscount = VARIEGATOR_MATCHED_COLOR_TIME_DISCOUNT.get();

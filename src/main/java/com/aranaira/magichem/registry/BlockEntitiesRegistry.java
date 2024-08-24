@@ -122,6 +122,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(ActuatorArcaneRouterBlockEntity::new, BlockRegistry.ACTUATOR_ARCANE_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<ColoringCauldronBlockEntity>> COLORING_CAULDRON_BE = BLOCK_ENTITIES.register("coloring_cauldron", () ->
+            BlockEntityType.Builder.of(ColoringCauldronBlockEntity::new, BlockRegistry.COLORING_CAULDRON.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<VariegatorBlockEntity>> VARIEGATOR_BE = BLOCK_ENTITIES.register("variegator", () ->
             BlockEntityType.Builder.of(VariegatorBlockEntity::new, BlockRegistry.VARIEGATOR.get()).build(null)
     );
