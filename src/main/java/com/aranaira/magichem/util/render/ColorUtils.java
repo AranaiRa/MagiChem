@@ -23,7 +23,7 @@ public class ColorUtils {
         INT_BLACK      = {50, 50, 50},
         INT_GRAY       = {120, 120, 120},
         INT_LIGHT_GRAY = {170, 170, 170},
-        INT_WHITE      = {255, 255, 255};
+        INT_WHITE      = {254, 254, 254};
     private static final float[]
         FLOAT_RED        = {1.00f, 0.20f, 0.20f},
         FLOAT_ORANGE     = {1.00f, 0.55f, 0.20f},
@@ -40,7 +40,7 @@ public class ColorUtils {
         FLOAT_BLACK      = {0.20f, 0.20f, 0.20f},
         FLOAT_GRAY       = {0.47f, 0.47f, 0.47f},
         FLOAT_LIGHT_GRAY = {0.67f, 0.67f, 0.67f},
-        FLOAT_WHITE      = {1.00f, 1.00f, 1.00f};
+        FLOAT_WHITE      = {0.99f, 0.99f, 0.99f};
 
     public static int[] getRGBIntTint(DyeColor pColorCode) {
         return switch(pColorCode) {
@@ -151,6 +151,53 @@ public class ColorUtils {
             case 14 -> Items.LIGHT_GRAY_DYE;
             case 15 -> Items.WHITE_DYE;
             default -> null;
+        };
+    }
+
+    public static DyeColor getDyeColorFromID(int pID) {
+        return switch(pID) {
+            case 0 -> DyeColor.RED;
+            case 1 -> DyeColor.ORANGE;
+            case 2 -> DyeColor.YELLOW;
+            case 3 -> DyeColor.LIME;
+            case 4 -> DyeColor.GREEN;
+            case 5 -> DyeColor.CYAN;
+            case 6 -> DyeColor.LIGHT_BLUE;
+            case 7 -> DyeColor.BLUE;
+            case 8 -> DyeColor.PURPLE;
+            case 9 -> DyeColor.MAGENTA;
+            case 10 -> DyeColor.PINK;
+            case 11 -> DyeColor.BROWN;
+            case 12 -> DyeColor.BLACK;
+            case 13 -> DyeColor.GRAY;
+            case 14 -> DyeColor.LIGHT_GRAY;
+            case 15 -> DyeColor.WHITE;
+            default -> null;
+        };
+    }
+
+    public static int getIDFromDyeColor(DyeColor pColor) {
+        if(pColor == null)
+            return -1;
+
+        return switch(pColor) {
+            case RED -> 0;
+            case ORANGE -> 1;
+            case YELLOW -> 2;
+            case LIME -> 3;
+            case GREEN -> 4;
+            case CYAN -> 5;
+            case LIGHT_BLUE -> 6;
+            case BLUE -> 7;
+            case PURPLE -> 8;
+            case MAGENTA -> 9;
+            case PINK -> 10;
+            case BROWN -> 11;
+            case BLACK -> 12;
+            case GRAY -> 13;
+            case LIGHT_GRAY -> 14;
+            case WHITE -> 15;
+            default -> -1;
         };
     }
 }

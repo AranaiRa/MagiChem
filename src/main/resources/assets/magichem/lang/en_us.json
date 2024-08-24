@@ -319,6 +319,7 @@
   "tooltip.magichem.alembic": "Breaks down blocks and items into their component Materia. Requires a heat source underneath.",
   "tooltip.magichem.centrifuge": "Breaks down Admixtures into their component Materia.",
   "tooltip.magichem.circlefabrication": "Uses Materia and FE to create a wide variety of items and blocks.",
+  "tooltip.magichem.coloringcauldron": "Changes the color of items to a different, semi-random color.",
   "tooltip.magichem.distillery": "Breaks down blocks and items into their component Materia.",
   "tooltip.magichem.experienceexchanger": "Place on top of a Brimming Urn. Transfers Academic Slurry to and from a Crystal of Memories.",
   "tooltip.magichem.fusery": "Combines component Materia into Admixtures.",
@@ -329,6 +330,7 @@
   "tooltip.magichem.materiavessel": "Stores a very large amount of Materia. A Vessel bearing Essentia will automatically display a label.",
   "tooltip.magichem.powerspike": "Transfers energy from a Circle of Power.",
   "tooltip.magichem.powerspike.target": "Drawing FE from",
+  "tooltip.magichem.variegator": "Changes the color of items.",
 
   "tooltip.magichem.alchemicalwaste": "A mistake, or perhaps a failure. It smells unbelievably foul.",
   "tooltip.magichem.alchemicalwaste.ext": "Created by breaking devices without extracting materia first.",

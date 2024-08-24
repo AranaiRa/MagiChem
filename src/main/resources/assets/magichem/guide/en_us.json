@@ -303,10 +303,10 @@
             "color": "dark_purple"
           },
           {
-            "text": " is to transform an object to a differently pigmented state. Coloration is performed at a "
+            "text": " is to transform an object to a differently pigmented state. Basic coloration is performed at a "
           },
           {
-            "text": "Variegator",
+            "text": "Coloring Cauldron",
             "color": "dark_purple"
           },
           {
@@ -316,6 +316,10 @@
       }
     ],
     "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/coloring_cauldron"
+      },
       {
         "type": "manaweaving-altar",
         "location": "magichem:manaweaving/variegator"
@@ -1159,9 +1163,57 @@
       }
     ]
   },
+  "Coloring Cauldron": {
+    "index": "1206",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Coloring Cauldron"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Coloring Cauldron",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a device capable of performing simple, if imprecise, "
+          },
+          {
+            "text": "Coloration",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nYou must supply one or more pieces of dye in addition to the item to color. After waiting for the item to steep in the Cauldron for awhile, the item will transform into a color "
+          },
+          {
+            "text": "other than",
+            "italic": true
+          },
+          {
+            "text": " the dye supplied.\n\nYou can supply multiple pieces of dye to remove other colors from the pool of potential colors. Each additional dye allows you to color an additional item with the same pool of potential colors. Only one piece of each color of dye can be added to the Coloring Cauldron until all the dye inside has been used up.\n\nItems are inserted into the Coloring Cauldron by throwing them. The coloring process takes about a minute if only a single piece of dye is supplied, but this time is significantly reduced by adding more pieces of dye.",
+            "italic": false
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/coloring_cauldron"
+      }
+    ]
+  },
   "Variegator": {
     "index": "1206",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",

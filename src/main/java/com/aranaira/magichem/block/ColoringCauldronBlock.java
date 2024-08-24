@@ -82,7 +82,7 @@ public class ColoringCauldronBlock extends BaseEntityBlock {
         VOXEL_SHAPE_FOOT_NS = Block.box(6, 0, 0, 10, 2, 16);
         VOXEL_SHAPE_FOOT_EW = Block.box(0, 0, 6, 16, 2, 10);
         VOXEL_SHAPE_BODY = Block.box(2, 2, 2, 14, 13, 14);
-        VOXEL_SHAPE_RIM = Block.box(1, 13, 1, 15, 14.875, 15);
+        VOXEL_SHAPE_RIM = Block.box(1, 13, 1, 15, 15, 15);
 
         VOXEL_SHAPE_AGGREGATE = Shapes.or(VOXEL_SHAPE_FOOT_NS, VOXEL_SHAPE_FOOT_EW, VOXEL_SHAPE_BODY, VOXEL_SHAPE_RIM);
     }

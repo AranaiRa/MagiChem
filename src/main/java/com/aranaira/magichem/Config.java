@@ -280,7 +280,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue COLORING_CAULDRON_BASE_OPERATION_TIME = BUILDER
             .comment("The amount of time, in ticks, that it takes for a Coloring Cauldron with one dye to color an item. This time is exponentially reduced with more dyes down to a quarter at 15 dyes.")
-            .defineInRange("coloringCauldronBaseOperationTime", 600, 10, Integer.MAX_VALUE);
+            .defineInRange("coloringCauldronBaseOperationTime", 1200, 10, Integer.MAX_VALUE);
 
     //----------------VARIEGATOR
 

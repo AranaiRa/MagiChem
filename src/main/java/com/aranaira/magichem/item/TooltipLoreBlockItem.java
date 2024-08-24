@@ -103,6 +103,18 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.COLORING_CAULDRON.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.coloringcauldron")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.VARIEGATOR.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.variegator")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.EXPERIENCE_EXCHANGER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.experienceexchanger")

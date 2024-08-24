@@ -3,10 +3,15 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.recipe.ColorationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.util.render.ColorUtils;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -42,6 +47,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     private ItemStack containedItem = ItemStack.EMPTY;
     private ColorationRecipe recipe = null;
     private static final Random r = new Random();
+    private DyeColor lastSuccessfulCraft = null;
 
     public ColoringCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.COLORING_CAULDRON_BE.get(), pos, state);
@@ -139,6 +145,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("bitpackedColors", this.bitpackedColors);
         nbt.putInt("operationsRemaining", this.operationsRemaining);
+        nbt.putInt("lastSuccessfulCraft", ColorUtils.getIDFromDyeColor(this.lastSuccessfulCraft));
         nbt.putBoolean("readyToCollect", this.readyToCollect);
         super.saveAdditional(nbt);
     }
@@ -152,7 +159,16 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         progress = nbt.getInt("craftingProgress");
         bitpackedColors = nbt.getInt("bitpackedColors");
         operationsRemaining = nbt.getInt("operationsRemaining");
+        lastSuccessfulCraft = ColorUtils.getDyeColorFromID(nbt.getInt("lastSuccessfulCraft"));
+
+        boolean doParticles = !readyToCollect && nbt.getBoolean("readyToCollect");
         readyToCollect = nbt.getBoolean("readyToCollect");
+
+        if(doParticles && getLevel() != null) {
+            if(getLevel().isClientSide()) {
+                generateCompletionParticles(this, lastSuccessfulCraft);
+            }
+        }
     }
 
     @Override
@@ -162,6 +178,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("bitpackedColors", this.bitpackedColors);
         nbt.putInt("operationsRemaining", this.operationsRemaining);
+        nbt.putInt("lastSuccessfulCraft", ColorUtils.getIDFromDyeColor(this.lastSuccessfulCraft));
         nbt.putBoolean("readyToCollect", this.readyToCollect);
         return nbt;
     }
@@ -174,6 +191,14 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
 
     public boolean hasItem() {
         return !containedItem.isEmpty();
+    }
+
+    public int getBitpackedColors() {
+        return bitpackedColors;
+    }
+
+    public ItemStack getItem() {
+        return containedItem;
     }
 
     public boolean hasColors() {
@@ -190,6 +215,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
 
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, ColoringCauldronBlockEntity pBlockEntity) {
         if(!pLevel.isClientSide() && pBlockEntity.bitpackedColors != 0) {
+            boolean sync = false;
             if(pBlockEntity.recipe != null && !pBlockEntity.readyToCollect) {
                 pBlockEntity.progress--;
 
@@ -200,17 +226,64 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
                     final HashMap<DyeColor, ItemStack> resultsAsMap = pBlockEntity.recipe.getResultsAsMap(false);
                     DyeColor color = pBlockEntity.pickRandomColorFromInverseBitpack(resultsAsMap.keySet());
                     pBlockEntity.containedItem = resultsAsMap.get(color).copy();
+                    pBlockEntity.lastSuccessfulCraft = color;
 
                     pBlockEntity.recipe = null;
-                    pBlockEntity.syncAndSave();
+                    sync = true;
                 }
             }
 
             if(pBlockEntity.operationsRemaining <= 0) {
                 pBlockEntity.bitpackedColors = 0;
                 pBlockEntity.operationsRemaining = 0;
+                sync = true;
             }
+
+            if(sync)
+                pBlockEntity.syncAndSave();
         }
+    }
+
+    public static void generateCompletionParticles(ColoringCauldronBlockEntity pBlockEntity, DyeColor pColor) {
+        Vector3 origin = new Vector3(pBlockEntity.getBlockPos()).add(new Vector3(0.5, 0.75, 0.5));
+        int[] tint = ColorUtils.getRGBIntTint(pColor);
+
+        int count = 20;
+        for(int i=0; i<count; i++) {
+            double spreadRadius = 0.175d;
+
+            double x = Math.cos(Math.toRadians((360d / count) * i)) * spreadRadius;
+            double z = Math.sin(Math.toRadians((360d / count) * i)) * spreadRadius;
+
+            Vector3 pos = origin.add(new Vector3(x, 0, z));
+
+            pBlockEntity.getLevel().addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                            .setScale(0.0875f).setMaxAge(72 + r.nextInt(196))
+                            .setMover(new ParticleLerpMover(pos.x, pos.y, pos.z, pos.x, pos.y + 0.75, pos.z))
+                            .setColor(tint[0], tint[1], tint[2], 64),
+                    pos.x, pos.y, pos.z,
+                    0, 0, 0);
+        }
+
+        count = 40;
+        for (int i = 0; i < count; ++i) {
+            double sx = (-0.5D + Math.random()) * 0.075D;
+            double sy = 0.03D + ((double) i / 20.0D) * 0.02D;
+            double sz = (-0.5D + Math.random()) * 0.075D;
+
+            Vector3 pos = origin.add(new Vector3(0, 0.5f, 0));
+
+            pBlockEntity.getLevel().addParticle(new MAParticleType(ParticleInit.BLUE_SPARKLE_GRAVITY.get())
+                            .setColor(tint[0], tint[1], tint[2], 255),
+                    pos.x, pos.y, pos.z,
+                    sx, sy, sz);
+        }
+
+        Vector3 pos = origin.add(new Vector3(0, 0.5f, 0));
+        pBlockEntity.getLevel().addParticle(new MAParticleType(ParticleInit.BLUE_SPARKLE_STATIONARY.get())
+                        .setColor(tint[0], tint[1], tint[2], 64).setScale(0.625f).setMaxAge(60),
+                pos.x, pos.y, pos.z,
+                0, 0, 0);
     }
 
     public void collectItem(Level pLevel, Player pPlayer) {
@@ -226,7 +299,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     }
 
     private DyeColor pickRandomColorFromInverseBitpack(Set<DyeColor> validColors) {
-        ArrayList<DyeColor> colorOptions = getInverseBitpackedColors();
+        ArrayList<DyeColor> colorOptions = getColorsFromInverseBitpack();
 
         colorOptions.removeIf(color -> !validColors.contains(color));
 
@@ -238,7 +311,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     }
 
     @NotNull
-    private ArrayList<DyeColor> getInverseBitpackedColors() {
+    public ArrayList<DyeColor> getColorsFromInverseBitpack() {
         ArrayList<DyeColor> colorOptions = new ArrayList<>();
 
         if((bitpackedColors & BITPACK_RED) == 0)        colorOptions.add(DyeColor.RED);
@@ -261,6 +334,30 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         return colorOptions;
     }
 
+    @NotNull
+    public ArrayList<DyeColor> getColorsFromBitpack() {
+        ArrayList<DyeColor> colorOptions = new ArrayList<>();
+
+        if((bitpackedColors & BITPACK_RED) == BITPACK_RED)               colorOptions.add(DyeColor.RED);
+        if((bitpackedColors & BITPACK_ORANGE) == BITPACK_ORANGE)         colorOptions.add(DyeColor.ORANGE);
+        if((bitpackedColors & BITPACK_YELLOW) == BITPACK_YELLOW)         colorOptions.add(DyeColor.YELLOW);
+        if((bitpackedColors & BITPACK_LIME) == BITPACK_LIME)             colorOptions.add(DyeColor.LIME);
+        if((bitpackedColors & BITPACK_GREEN) == BITPACK_GREEN)           colorOptions.add(DyeColor.GREEN);
+        if((bitpackedColors & BITPACK_CYAN) == BITPACK_CYAN)             colorOptions.add(DyeColor.CYAN);
+        if((bitpackedColors & BITPACK_LIGHT_BLUE) == BITPACK_LIGHT_BLUE) colorOptions.add(DyeColor.LIGHT_BLUE);
+        if((bitpackedColors & BITPACK_BLUE) == BITPACK_BLUE)             colorOptions.add(DyeColor.BLUE);
+        if((bitpackedColors & BITPACK_PURPLE) == BITPACK_PURPLE)         colorOptions.add(DyeColor.PURPLE);
+        if((bitpackedColors & BITPACK_MAGENTA) == BITPACK_MAGENTA)       colorOptions.add(DyeColor.MAGENTA);
+        if((bitpackedColors & BITPACK_PINK) == BITPACK_PINK)             colorOptions.add(DyeColor.PINK);
+        if((bitpackedColors & BITPACK_BROWN) == BITPACK_BROWN)           colorOptions.add(DyeColor.BROWN);
+        if((bitpackedColors & BITPACK_BLACK) == BITPACK_BLACK)           colorOptions.add(DyeColor.BLACK);
+        if((bitpackedColors & BITPACK_GRAY) == BITPACK_GRAY)             colorOptions.add(DyeColor.GRAY);
+        if((bitpackedColors & BITPACK_LIGHT_GRAY) == BITPACK_LIGHT_GRAY) colorOptions.add(DyeColor.LIGHT_GRAY);
+        if((bitpackedColors & BITPACK_WHITE) == BITPACK_WHITE)           colorOptions.add(DyeColor.WHITE);
+
+        return colorOptions;
+    }
+
     public List<String> getInfoReadout() {
         List<String> output = new ArrayList<>();
 
@@ -272,7 +369,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
             output.add(Component.translatable("hud.magichem.coloring_cauldron.current_item.processing").getString() + itemName);
 
         List<String> lineBreaker = new ArrayList<>();
-        for (DyeColor color : getInverseBitpackedColors()) {
+        for (DyeColor color : getColorsFromInverseBitpack()) {
             lineBreaker.add(Component.translatable("item.minecraft.firework_star."+color.getName()).getString());
 
             if(lineBreaker.size() == 4) {
