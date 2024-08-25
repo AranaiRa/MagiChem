@@ -505,6 +505,9 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
 
         if(result == null)
             return false;
+        if(result.getItem() == getCurrentProcessingStack(pEntity).getItem()) {
+            return false;
+        }
 
         return pEntity.getContentsOfOutputSlots().canAddItem(result);
     }
