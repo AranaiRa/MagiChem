@@ -88,7 +88,9 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot == SLOT_BOTTLES)
-                    return true;
+                    return stack.getItem() == Items.GLASS_BOTTLE || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                if(slot == SLOT_BOTTLES_OUTPUT)
+                    return false;
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
                     if(currentRecipe != null) {
                         if(((slot - SLOT_INPUT_START) / 2) >= currentRecipe.getComponentMateria().size())

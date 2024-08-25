@@ -80,6 +80,8 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             if(slot == SLOT_DYE_BOTTLES) {
                 return false;
+            } else if(slot == SLOT_DYE_INPUT) {
+                return stack.getItem() instanceof DyeItem || stack.getItem() == ADMIXTURE_COLOR_STACK.getItem();
             } else if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
                 return false;
             }

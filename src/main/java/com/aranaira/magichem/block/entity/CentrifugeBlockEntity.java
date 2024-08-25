@@ -78,7 +78,9 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot == SLOT_BOTTLES)
-                    return true;
+                    return stack.getItem() == Items.GLASS_BOTTLE || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                if(slot == SLOT_BOTTLES_OUTPUT)
+                    return false;
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
                     return stack.getItem() instanceof AdmixtureItem;
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
