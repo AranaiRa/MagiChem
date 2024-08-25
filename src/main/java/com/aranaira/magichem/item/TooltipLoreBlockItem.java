@@ -217,6 +217,17 @@ public class TooltipLoreBlockItem extends BlockItem {
                     }
                 }
             }
+            else if (stack.getItem() == BlockRegistry.VARIEGATOR.get().asItem()) {
+                CompoundTag nbt = stack.getOrCreateTag();
+                VariegatorBlockEntity abe = (VariegatorBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(abe != null) {
+                    if (nbt.contains("inventory")) {
+                        abe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                    } if (nbt.contains("colors")) {
+                        abe.unpackColorsFromCompoundTag(nbt.getCompound("colors"));
+                    }
+                }
+            }
         }
         return result;
     }

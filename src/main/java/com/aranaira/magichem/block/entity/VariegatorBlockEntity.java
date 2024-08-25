@@ -172,7 +172,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
         unpackColorsFromCompoundTag(nbt.getCompound("colors"));
     }
 
-    private CompoundTag packColorsToCompoundTag() {
+    public CompoundTag packColorsToCompoundTag() {
         CompoundTag colors = new CompoundTag();
 
         colors.putInt("admixture", dyeAdmixture);
@@ -196,7 +196,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
         return colors;
     }
 
-    private void unpackColorsFromCompoundTag(CompoundTag nbt) {
+    public void unpackColorsFromCompoundTag(CompoundTag nbt) {
         dyeAdmixture = nbt.getInt("admixture");
         dyeRed = nbt.getInt("red");
         dyeOrange = nbt.getInt("orange");
@@ -250,10 +250,6 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
         stack.setTag(nbt);
 
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
-    }
-
-    public void unpackDyeGaugesFromNBT(CompoundTag pColorTag) {
-        unpackColorsFromCompoundTag(pColorTag);
     }
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
