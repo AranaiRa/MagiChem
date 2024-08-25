@@ -1,14 +1,18 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
+import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -22,10 +26,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabricationMenu> {
     private static final ResourceLocation TEXTURE =
@@ -335,9 +341,47 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
     @Override
     protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
-        super.renderTooltip(pGuiGraphics, pX, pY);
 
-        //do special tooltips here
+        Font font = Minecraft.getInstance().font;
+        List<Component> tooltipContents = new ArrayList<>();
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+        boolean doOriginalTooltip = true;
+
+        //Selected Recipe
+        if(pX >= x+79 && pX <= x+97 &&
+                pY >= y+79 && pY <= y+97) {
+            if(menu.blockEntity.getCurrentRecipe() == null) {
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            } else {
+                ItemStack recipeItem = menu.blockEntity.getCurrentRecipe().getAlchemyObject();
+                if (recipeItem == ItemStack.EMPTY) {
+                    tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                } else {
+                    tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                }
+            }
+        }
+
+        //Items in recipe picker
+        if(pX >= x-71 && pX <= x-17 &&
+                pY >= y+42 && pY <= y+132) {
+            int mx = pX - (x-71);
+            int my = pY - (y+42);
+            int id = ((my / 18) * 3) + ((mx / 18) % 3);
+
+            if(id < filteredRecipes.size()) {
+                if (id >= 0 && id < 16) {
+                    ItemStack stackUnderMouse = filteredRecipes.get(id).getAlchemyObject();
+                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                }
+            }
+        }
+
+        if(doOriginalTooltip)
+            super.renderTooltip(pGuiGraphics, pX, pY);
+
+        pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
     }
 
     protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
