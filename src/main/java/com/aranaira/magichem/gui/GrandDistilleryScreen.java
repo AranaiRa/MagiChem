@@ -14,6 +14,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -21,9 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity.*;
+
 public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistilleryMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_grand_distillery.png");
+    private static final ResourceLocation TEXTURE_EXT =
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 204,
             PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 80, PANEL_GRIME_H = 80, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
@@ -84,10 +89,24 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
         int sGrime = GrandDistilleryBlockEntity.getScaledGrime(menu.getGrime());
         if(sGrime > 0)
             gui.blit(TEXTURE, x+181, y+78, 24, 248, sGrime, 8);
+
+        if(!menu.blockEntity.getPowerSufficiency()) {
+            renderPowerWarning(gui, x, y);
+        }
     }
 
     private void renderGrimePanel(GuiGraphics gui, int x, int y) {
         gui.blit(TEXTURE, x, y, PANEL_GRIME_U, PANEL_GRIME_V, PANEL_GRIME_W, PANEL_GRIME_H);
+    }
+
+    protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
+        long cycle = Minecraft.getInstance().level.getGameTime() % 20;
+
+        gui.blit(TEXTURE_EXT, x+10, y-30, 0, 230, 156, 26);
+        if(cycle < 10) {
+            gui.blit(TEXTURE_EXT, x + 17, y - 23, 156, 244, 12, 12);
+            gui.blit(TEXTURE_EXT, x + 147, y - 23, 156, 244, 12, 12);
+        }
     }
 
     @Override
@@ -180,5 +199,11 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
         int secWhole = opTicks / 20;
         int secPartial = (opTicks % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 32, PANEL_GRIME_Y + 27, 0xff000000, false);
+
+        if(!menu.blockEntity.getPowerSufficiency()) {
+            MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width/2, -40, 0xff000000, false);
+        }
     }
 }

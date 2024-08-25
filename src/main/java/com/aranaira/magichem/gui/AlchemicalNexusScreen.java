@@ -45,8 +45,6 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_alchemicalnexus.png");
     private static final ResourceLocation TEXTURE_SLURRY =
             new ResourceLocation(MagiChemMod.MODID, "textures/block/fluid/experience_still.png");
-    private static final ResourceLocation TEXTURE_INGREDIENTS =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private static final ResourceLocation TEXTURE_EXT =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private ImageButton
