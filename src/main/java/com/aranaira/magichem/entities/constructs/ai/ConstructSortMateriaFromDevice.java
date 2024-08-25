@@ -188,22 +188,27 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                         } else {
                             this.pushDiagnosticMessage("The device I'm monitoring is empty right now. I'll just wait for a bit!", false);
                             this.phase = ETaskPhase.WAIT_TO_FAIL;
+                            construct.clearForcedAnimation();
                         }
                     }
                 }
                 case CREATE_SHLORP -> {
-                    InteractionHand interactionHand = construct.getHandWithCapability(ConstructCapability.CAST_SPELL).get();
-                    if(interactionHand == InteractionHand.MAIN_HAND)
-                        construct.forceAnimation(Animations.CHANNEL_LEFT, false);
-                    else
-                        construct.forceAnimation(Animations.CHANNEL_RIGHT, false);
 
                     int amount = doShlorpCreation();
                     this.waitTimer = Math.round(amount * 1.5f) + 22;
                     if(amount > 0) {
+
+                        InteractionHand interactionHand = construct.getHandWithCapability(ConstructCapability.CAST_SPELL).get();
+                        if(interactionHand == InteractionHand.MAIN_HAND)
+                            construct.forceAnimation(Animations.CHANNEL_LEFT, true);
+                        else
+                            construct.forceAnimation(Animations.CHANNEL_RIGHT, true);
+
                         this.pushDiagnosticMessage("I moved " + amount + " " + getTranslatedNameFromItem(this.filter) + " to a vessel, boss. Bloop!", true);
                         this.phase = ETaskPhase.WAIT_AT_VESSEL;
+
                     } else {
+
                         this.pushDiagnosticMessage("I couldn't find a jar to put the " + getTranslatedNameFromItem(this.filter) + " in. Sorry, boss!", true);
                         this.phase = ETaskPhase.WAIT_TO_FAIL;
                     }

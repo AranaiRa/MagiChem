@@ -3,6 +3,7 @@ package com.aranaira.magichem.entities.constructs.ai;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
+import com.mna.api.entities.construct.Animations;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstruct;
 import com.mna.api.entities.construct.ai.ConstructAITask;
@@ -87,6 +88,7 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                         this.studyCyclesRemaining = 6;
                         this.waitTimer = 85 - construct.getIntelligence();
                         this.phase = ETaskPhase.STUDY_CYCLE;
+                        construct.forceAnimation(Animations.READING, true);
                     }
                 }
                 case STUDY_CYCLE -> {
@@ -120,6 +122,7 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                     ItemStack learningItem = construct.asEntity().getItemInHand(learningItemHand.get());
                     learningItem.shrink(1);
                     construct.asEntity().setItemInHand(learningItemHand.get(), learningItem.isEmpty() ? ItemStack.EMPTY : learningItem);
+                    construct.clearForcedAnimation();
                     pushDiagnosticMessage("What an interesting read! I brokeded the book though...", false);
                     setSuccessCode();
 
