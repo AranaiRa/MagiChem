@@ -560,6 +560,8 @@
   "gui.magichem.insufficientsteam": "Insufficient Steam!",
   "gui.magichem.insufficientsmoke": "Insufficient Smoke!",
   "gui.magichem.insufficientsteamsmoke": "Insufficient Steam/Smoke!",
+  "gui.magichem.waitingforslurry": "Waiting for Slurry...",
+  "gui.magichem.waitingformateria": "Waiting for Materia...",
 
   "construct.magichem:sort_materia": "Sort Materia from Device",
   "construct.magichem:sort_materia_from_container": "Sort Materia from Container",

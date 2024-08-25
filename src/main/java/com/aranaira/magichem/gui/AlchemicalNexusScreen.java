@@ -25,6 +25,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
@@ -37,12 +38,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity.*;
+
 public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNexusMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_alchemicalnexus.png");
     private static final ResourceLocation TEXTURE_SLURRY =
             new ResourceLocation(MagiChemMod.MODID, "textures/block/fluid/experience_still.png");
     private static final ResourceLocation TEXTURE_INGREDIENTS =
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
+    private static final ResourceLocation TEXTURE_EXT =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private ImageButton
             b_powerLevelUp, b_powerLevelDown;
@@ -202,9 +207,13 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         pGuiGraphics.blit(TEXTURE, x + 182, y + 55 + (30 - powerLevel), 100, 256 - powerLevel, 8, powerLevel);
 
         //progress gauge
-        if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING) {
+        if(menu.blockEntity.getAnimStage() == ANIM_STAGE_CRAFTING) {
             int scaledProgress = menu.blockEntity.getScaledProgress(PROGRESS_BAR_WIDTH);
             pGuiGraphics.blit(TEXTURE, x + 74, y + 38, 0, 228, scaledProgress, 28);
+        }
+
+        if(menu.blockEntity.getAnimStage() == ANIM_STAGE_SHLORPS || menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CIRCLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
+            renderMateriaWaitWarning(pGuiGraphics, x, y);
         }
     }
 
@@ -298,6 +307,16 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 else
                     pGuiGraphics.blit(TEXTURE, pX + x + i * STAGE_INDICATOR_W, pY + y, STAGE_INDICATOR_U, STAGE_INDICATOR_V + activeShift, STAGE_INDICATOR_W, STAGE_INDICATOR_H, 256, 256);
             }
+        }
+    }
+
+    protected void renderMateriaWaitWarning(GuiGraphics gui, int x, int y) {
+        long cycle = Minecraft.getInstance().level.getGameTime() % 20;
+
+        gui.blit(TEXTURE_EXT, x+10, y-30, 0, 230, 156, 26);
+        if(cycle < 10) {
+            gui.blit(TEXTURE_EXT, x + 17, y - 23, 156, 244, 12, 12);
+            gui.blit(TEXTURE_EXT, x + 147, y - 23, 156, 244, 12, 12);
         }
     }
 
@@ -484,7 +503,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                                 .append(Component.literal("" + required).withStyle(ChatFormatting.DARK_AQUA))
                                 .append(" provided").withStyle(ChatFormatting.DARK_GRAY)
                         );
-                    } else if (animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING ||
+                    } else if (animStage == ANIM_STAGE_CRAFTING ||
                                animStage == AlchemicalNexusBlockEntity.ANIM_STAGE_RAMP_CRAFTING) {
                         tooltipContents.add(Component.empty()
                                 .append(Component.literal("" + required).withStyle(ChatFormatting.DARK_AQUA))
@@ -599,5 +618,16 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         Font font = Minecraft.getInstance().font;
         pGuiGraphics.drawString(font ,experienceDraw+" mB", 208, 44, 0xff000000, false);
         pGuiGraphics.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 63, 0xff000000, false);
+
+        if(menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CIRCLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
+            MutableComponent warningText = Component.translatable("gui.magichem.waitingforslurry");
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            pGuiGraphics.drawString(font, warningText, 89 - width / 2, -33, 0xff000000, false);
+        }
+        else if(menu.blockEntity.getAnimStage() == ANIM_STAGE_SHLORPS) {
+            MutableComponent warningText = Component.translatable("gui.magichem.waitingformateria");
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            pGuiGraphics.drawString(font, warningText, 89 - width / 2, -33, 0xff000000, false);
+        }
     }
 }
