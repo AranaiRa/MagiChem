@@ -2,7 +2,7 @@
   "type": "magichem:distillation_fabrication",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:blackstone" },
+  "object": { "item": "minecraft:gilded_blackstone" },
   "components": [
     { "item": "magichem:admixture_demon", "count": 4 },
     { "item": "magichem:admixture_darkness", "count": 4 },

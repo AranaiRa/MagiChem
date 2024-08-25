@@ -66,7 +66,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     public static final float
             CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f;
     private int powerUsageSetting = 1;
-    private boolean hasSufficientPower = false;
+    private boolean
+            hasSufficientPower = false, redstonePaused = false;
 
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private static final int[] POWER_DRAW = { //TODO: Convert this to config
@@ -215,6 +216,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
+        nbt.putBoolean("redstonePaused", this.redstonePaused);
         super.saveAdditional(nbt);
     }
 
@@ -226,6 +228,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
         powerUsageSetting = nbt.getInt("powerUsageSetting");
+        redstonePaused = nbt.getBoolean("redstonePaused");
     }
 
     @Override
@@ -236,6 +239,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
+        nbt.putBoolean("redstonePaused", this.redstonePaused);
         return nbt;
     }
 
@@ -281,6 +285,11 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
     public boolean getPowerSufficiency() {
         return hasSufficientPower;
+    }
+
+    public void setRedstonePaused(boolean pPaused) {
+        redstonePaused = pPaused;
+        syncAndSave();
     }
 
     @Override
@@ -362,7 +371,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             circlePercent = Math.max(0, circlePercent - CIRCLE_FILL_RATE);
         }
 
-        if(hasSufficientPower) {
+        if(hasSufficientPower && !redstonePaused) {
             particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
         } else {
             particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
@@ -443,7 +452,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandDistilleryBlockEntity pEntity) {
-        if(!pEntity.getLevel().isClientSide()) {
+        if(!pEntity.getLevel().isClientSide() && !pEntity.redstonePaused) {
             int powerDraw = pEntity.getPowerDraw();
             boolean sufficientThisTick = pEntity.ENERGY_STORAGE.getEnergyStored() >= powerDraw;
 
@@ -523,7 +532,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             }
         }
 
-        AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, GrandDistilleryBlockEntity::getVar, pEntity::getPoweredOperationTime);
+        if(!pEntity.redstonePaused)
+            AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, GrandDistilleryBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
 
     public Integer getPoweredOperationTime(Void unused) {

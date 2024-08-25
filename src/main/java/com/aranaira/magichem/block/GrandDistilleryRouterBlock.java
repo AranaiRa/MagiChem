@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -246,6 +247,29 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        BlockState state = pLevel.getBlockState(pNeighborPos);
+
+        if(state.hasProperty(BlockStateProperties.POWERED)) {
+            boolean powered = state.getValue(BlockStateProperties.POWERED);
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if(be instanceof GrandDistilleryRouterBlockEntity gdrbe) {
+                if(gdrbe.getMaster() != null)
+                    gdrbe.getMaster().setRedstonePaused(powered);
+            }
+        } else if(state.hasProperty(BlockStateProperties.POWER)) {
+            int power = state.getValue(BlockStateProperties.POWER);
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if(be instanceof GrandDistilleryRouterBlockEntity gdrbe) {
+                if(gdrbe.getMaster() != null)
+                    gdrbe.getMaster().setRedstonePaused(power > 0);
+            }
+        }
+
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
     }
 
     @Override
