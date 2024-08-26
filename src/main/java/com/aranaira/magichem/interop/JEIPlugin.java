@@ -37,6 +37,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(SublimationRecipeCategory.UID, SublimationRecipe.class);
     public static RecipeType<ColorationRecipe> COLORATION_TYPE =
             new RecipeType<>(ColorationRecipeCategory.UID, ColorationRecipe.class);
+    public static RecipeType<ConjurationRecipe> CONJURATION_TYPE =
+            new RecipeType<>(ConjurationRecipeCategory.UID, ConjurationRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -59,6 +61,8 @@ public class JEIPlugin implements IModPlugin {
                 SublimationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 ColorationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                ConjurationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -86,6 +90,9 @@ public class JEIPlugin implements IModPlugin {
 
         List<ColorationRecipe> recipesColoration = rm.getAllRecipesFor(ColorationRecipe.Type.INSTANCE);
         registration.addRecipes(COLORATION_TYPE, recipesColoration);
+
+        List<ConjurationRecipe> recipesConjuration = rm.getAllRecipesFor(ConjurationRecipe.Type.INSTANCE);
+        registration.addRecipes(CONJURATION_TYPE, recipesConjuration);
     }
 
     @Override

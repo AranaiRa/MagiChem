@@ -213,6 +213,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties())
     );
 
+    public static final RegistryObject<Item> DUMMY_PROCESS_CONJURATION = ITEMS.register("dummy/process_conjuration",
+            () -> new Item(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DUMMY_PROCESS_SUBLIMATION = ITEMS.register("dummy/process_sublimation",
             () -> new Item(new Item.Properties())
     );

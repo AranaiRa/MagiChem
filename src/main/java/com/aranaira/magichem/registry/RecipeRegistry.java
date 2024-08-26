@@ -27,6 +27,9 @@ public class RecipeRegistry {
     public static final RegistryObject<RecipeSerializer<ColorationRecipe>> COLORATION_SERIALIZER =
             SERIALIZERS.register("coloration", () -> ColorationRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<ConjurationRecipe>> CONJURATION_SERIALIZER =
+            SERIALIZERS.register("conjuration", () -> ConjurationRecipe.Serializer.INSTANCE);
+
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
     }

@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This recipe type is used by the Admixer/Fusion Crucible in a straightforward manner and the Centrifuge/Excision Engine in reverse.
+ * This recipe type is used by the Coloring Cauldron and the Variegator.
  */
 public class ColorationRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;

@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "minecraft:cobblestone",
+  "materia": "magichem:admixture_stone",
+  "passive": {
+    "item": "minecraft:cobblestone",
+    "count": 1,
+    "period": 50
+  },
+  "supplied": {
+    "item": "minecraft:cobblestone",
+    "count": 16,
+    "period": 20,
+    "charge_usage": 1
+  }
+}
