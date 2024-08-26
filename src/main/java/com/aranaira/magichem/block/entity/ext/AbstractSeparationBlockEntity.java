@@ -288,9 +288,6 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                 if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
                     grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
                 }
-                if (dpbe instanceof ActuatorArcaneBlockEntity aabe) {
-                    aabe.generateAcademicSlurry();
-                }
             }
 
             if (grimeToAdd > 0) {
@@ -303,7 +300,30 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         //Fill Bottle Slot
         //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
         //TODO: Remove this once the bottle slot stack size has been expanded
-        ItemStack bottles = pEntity.itemHandler.insertItem(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert * totalCycles), false);
+        int slotLimit = pEntity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT));
+        ItemStack contained = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT));
+        int inserted = bottlesToInsert * totalCycles;
+        ItemStack bottles;
+
+        if(contained.isEmpty()) {
+            if(inserted > 64) {
+                bottles = new ItemStack(Items.GLASS_BOTTLE, inserted - 64);
+                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, 64));
+            } else {
+                bottles = ItemStack.EMPTY;
+                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, inserted));
+            }
+        } else {
+            int remainingSpace = slotLimit - contained.getCount();
+            if(inserted <= remainingSpace) {
+                bottles = ItemStack.EMPTY;
+                contained.grow(inserted);
+            } else {
+                bottles = new ItemStack(Items.GLASS_BOTTLE, remainingSpace - inserted);
+                contained.setCount(slotLimit);
+            }
+        }
+
         SimpleContainer bottleSpill = new SimpleContainer(5);
         while(bottles.getCount() > 0) {
             int count = bottles.getCount();

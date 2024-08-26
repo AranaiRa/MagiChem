@@ -352,9 +352,6 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
                     grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
                 }
-                if (dpbe instanceof ActuatorArcaneBlockEntity aabe) {
-                    aabe.generateAcademicSlurry();
-                }
             }
 
             if (grimeToAdd > 0) {
