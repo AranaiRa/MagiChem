@@ -147,7 +147,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     }
 
     public int getSlurryReductionRate() {
-        return SLURRY_REDUCTION[this.powerLevel];
+        return SLURRY_REDUCTION[getIsPaused(this) ? 0 : this.powerLevel];
     }
 
     public static int getSlurryReductionRate(int pPowerLevel) {
@@ -239,7 +239,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        if((flags & FLAG_IS_REDUCTION_MODE) == 0) {
+        if((flags & FLAG_IS_REDUCTION_MODE) == 0 && !getIsPaused(this)) {
             fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), getSlurryGeneratedPerOperation() * pCyclesCompleted), FluidAction.EXECUTE);
         }
 
@@ -410,10 +410,6 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
     }
 
     public void handleAnimationDrivers() {
-
-    }
-
-    public void generateAcademicSlurry() {
 
     }
 
