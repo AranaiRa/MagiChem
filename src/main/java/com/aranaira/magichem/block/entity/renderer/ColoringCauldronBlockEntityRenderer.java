@@ -30,6 +30,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 
+import static com.aranaira.magichem.block.entity.ColoringCauldronBlockEntity.*;
+
 public class ColoringCauldronBlockEntityRenderer implements BlockEntityRenderer<ColoringCauldronBlockEntity> {
     private static final ResourceLocation TEXTURE_WATER = new ResourceLocation("minecraft", "block/water_still");
 
@@ -101,7 +103,12 @@ public class ColoringCauldronBlockEntityRenderer implements BlockEntityRenderer<
 
         if(pBlockEntity.hasColors()) {
             ArrayList<DyeColor> colors = pBlockEntity.getColorsFromInverseBitpack();
-            colors.removeIf(c -> c == DyeColor.BLACK || c == DyeColor.GRAY || c == DyeColor.LIGHT_GRAY || c == DyeColor.WHITE);
+            int bitpackedColors = pBlockEntity.getBitpackedColors();
+            int inverseBitpackedColors = ~bitpackedColors & 65535;
+            int filter = BITPACK_BLACK | BITPACK_GRAY | BITPACK_LIGHT_GRAY | BITPACK_WHITE;
+            if((inverseBitpackedColors & ~filter) > 0) {
+                colors.removeIf(c -> c == DyeColor.BLACK || c == DyeColor.GRAY || c == DyeColor.LIGHT_GRAY || c == DyeColor.WHITE);
+            }
 
             final int period = 100;
 
@@ -109,10 +116,19 @@ public class ColoringCauldronBlockEntityRenderer implements BlockEntityRenderer<
             float delta = (spectrumTime % period) / period; //0..1 range for lerping
             int index = (int) Math.floor(spectrumTime / period);
 
-            DyeColor current = colors.get(index);
+            DyeColor current;
             DyeColor previous;
-            if(index == 0) previous = colors.get(colors.size() - 1);
-            else previous = colors.get(index - 1);
+            if(colors.size() > 1) {
+                current = colors.get(index);
+                if(index == 0) previous = colors.get(colors.size() - 1);
+                else previous = colors.get(index - 1);
+            } else if(colors.size() == 1) {
+                current = colors.get(0);
+                previous = colors.get(0);
+            } else {
+                current = DyeColor.WHITE;
+                previous = DyeColor.WHITE;
+            }
 
             int[] currentRGB = ColorUtils.getRGBIntTint(current);
             int[] previousRGB = ColorUtils.getRGBIntTint(previous);

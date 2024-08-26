@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:brindle_grit_red",
+    "magichem:brindle_grit_yellow",
+    "magichem:brindle_grit_green",
+    "magichem:brindle_grit_cyan",
+    "magichem:brindle_grit_blue",
+    "magichem:brindle_grit_magenta"
+  ]
+}
