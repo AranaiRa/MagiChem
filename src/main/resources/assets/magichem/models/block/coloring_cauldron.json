@@ -2,7 +2,7 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "minecraft:block/copper_block"
+    "particle": "minecraft:block/polished_deepslate"
   },
   "children": {
     "part1": {
