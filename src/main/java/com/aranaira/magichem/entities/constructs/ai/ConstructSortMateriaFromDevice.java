@@ -327,8 +327,14 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         } else {
             transferredAmount = jarTargetEntity.fill(transitMateria.getCount(), this.voidExcess);
         }
-        constructNBT.put("transitMateria", ItemStack.EMPTY.serializeNBT());
-        construct.asEntity().addAdditionalSaveData(constructNBT);
+
+        if(transferredAmount == transitMateria.getCount()) {
+            constructNBT.put("transitMateria", ItemStack.EMPTY.serializeNBT());
+            construct.asEntity().addAdditionalSaveData(constructNBT);
+        } else {
+            transitMateria.setCount(transitMateria.getCount() - transferredAmount);
+            constructNBT.getCompound("transitMateria").putInt("Count", transferredAmount);
+        }
         return transferredAmount;
     }
 
@@ -420,11 +426,21 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 jarTargetEntity = mvbe;
                 jarTargetPos = map.get(mvbe);
                 foundFilter = true;
-                break;
+                if(voidExcess)
+                    break;
             }
+
+            if(foundFilter && firstEmpty != null)
+                break;
         }
 
-        if(!foundFilter) {
+        if(!voidExcess) {
+            if(foundFilter && jarTargetEntity.getCurrentStock() >= jarTargetEntity.getStorageLimit()) {
+                jarTargetEntity = firstEmpty;
+                jarTargetPos = firstEmptyPos;
+            }
+        }
+        else if(!foundFilter) {
             jarTargetEntity = firstEmpty;
             jarTargetPos = firstEmptyPos;
         }
