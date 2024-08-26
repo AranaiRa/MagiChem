@@ -2,33 +2,13 @@
   "type": "mna:crushing",
   "tier": 3,
   "input": "magichem:malformed_brindle_glass",
-  "output": "magichem:brindle_grit_red",
+  "output": "minecraft:sand",
   "output_quantity": 1,
   "byproducts": [
     {
-      "item": "magichem:brindle_grit_yellow",
+      "tag": "minecraft:magichem_brindle_grit",
       "chance": 1,
-      "count": 1
-    },
-    {
-      "item": "magichem:brindle_grit_green",
-      "chance": 1,
-      "count": 1
-    },
-    {
-      "item": "magichem:brindle_grit_cyan",
-      "chance": 1,
-      "count": 1
-    },
-    {
-      "item": "magichem:brindle_grit_blue",
-      "chance": 1,
-      "count": 1
-    },
-    {
-      "item": "magichem:brindle_grit_magenta",
-      "chance": 1,
-      "count": 1
+      "rolls": 6
     }
   ]
 }
