@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "minecraft:granite",
+  "materia": "magichem:admixture_stone",
+  "passive": {
+    "item": "minecraft:granite",
+    "count": 1,
+    "period": 50
+  },
+  "supplied": {
+    "item": "minecraft:granite",
+    "count": 16,
+    "period": 20,
+    "charge_usage": 1
+  }
+}

@@ -37,7 +37,7 @@ public class ConjurationRecipeCategory implements IRecipeCategory<ConjurationRec
     private final IDrawable icon;
 
     public ConjurationRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 48, 16);
+        this.background = helper.createDrawable(TEXTURE, 0, 110, 96, 110);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemRegistry.DUMMY_PROCESS_CONJURATION.get()));
     }
 
@@ -63,9 +63,10 @@ public class ConjurationRecipeCategory implements IRecipeCategory<ConjurationRec
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ConjurationRecipe recipe, IFocusGroup group) {
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 0, 0).addItemStack(recipe.getPassiveData(false).getFirst());
-        builder.addSlot(RecipeIngredientRole.INPUT, 16, 0).addItemStack(new ItemStack(recipe.getMateria()));
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 32, 0).addItemStack(recipe.getSuppliedData(false).getFirst());
+        builder.addSlot(RecipeIngredientRole.INPUT, 40, 4).addItemStack(new ItemStack(recipe.getCatalyst()));
+        builder.addSlot(RecipeIngredientRole.INPUT, 74, 49).addItemStack(new ItemStack(recipe.getMateria()));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 6, 88).addItemStack(recipe.getPassiveData(false).getFirst());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 74, 88).addItemStack(recipe.getSuppliedData(false).getFirst());
     }
 
     @Override

@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "minecraft:netherrack",
+  "materia": "magichem:admixture_demon",
+  "passive": {
+    "item": "minecraft:netherrack",
+    "count": 1,
+    "period": 100
+  },
+  "supplied": {
+    "item": "minecraft:netherrack",
+    "count": 8,
+    "period": 20,
+    "charge_usage": 1
+  }
+}

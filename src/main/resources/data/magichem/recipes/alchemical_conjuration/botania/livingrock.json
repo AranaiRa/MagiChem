@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:conjuration",
+        "catalyst": "botania:livingrock",
+        "materia": "magichem:admixture_stone",
+        "passive": {
+          "item": "botania:livingrock",
+          "count": 1,
+          "period": 50
+        },
+        "supplied": {
+          "item": "botania:livingrock",
+          "count": 16,
+          "period": 20,
+          "charge_usage": 1
+        }
+      }
+    }
+  ]
+}

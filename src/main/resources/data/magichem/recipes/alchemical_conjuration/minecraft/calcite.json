@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "minecraft:calcite",
+  "materia": "magichem:admixture_crystal",
+  "passive": {
+    "item": "minecraft:calcite",
+    "count": 1,
+    "period": 50
+  },
+  "supplied": {
+    "item": "minecraft:calcite",
+    "count": 8,
+    "period": 20,
+    "charge_usage": 1
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "mna:decoration/arcane_sandstone",
+  "materia": "magichem:admixture_stone",
+  "passive": {
+    "item": "mna:decoration/arcane_sandstone",
+    "count": 1,
+    "period": 50
+  },
+  "supplied": {
+    "item": "mna:decoration/arcane_sandstone",
+    "count": 16,
+    "period": 20,
+    "charge_usage": 1
+  }
+}
