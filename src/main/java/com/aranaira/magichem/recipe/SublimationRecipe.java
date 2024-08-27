@@ -6,6 +6,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mna.api.tools.MATags;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -176,13 +177,18 @@ public class SublimationRecipe implements Recipe<SimpleContainer> {
                 NonNullList<ItemStack> materia = NonNullList.create();
 
                 itemArray.forEach(itemElement -> {
-                    String key = itemElement.getAsJsonObject().get("item").getAsString();
-
-                    Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
-                    if(itemQuery != null) {
-                        items.add(new ItemStack(itemQuery));
+                    if(itemElement.getAsJsonObject().has("tag")) {
+                        String key = itemElement.getAsJsonObject().get("tag").getAsString();
+//                        MATags.getItemTagContents(new ResourceLocation(key));
                     } else {
-                        MagiChemMod.LOGGER.warn("&&& Couldn't find item \""+key+"\" for sublimation recipe \""+pRecipeId);
+                        String key = itemElement.getAsJsonObject().get("item").getAsString();
+
+                        Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
+                        if (itemQuery != null) {
+                            items.add(new ItemStack(itemQuery));
+                        } else {
+                            MagiChemMod.LOGGER.warn("&&& Couldn't find item \"" + key + "\" for sublimation recipe \"" + pRecipeId);
+                        }
                     }
                 });
 

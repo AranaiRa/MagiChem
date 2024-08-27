@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:bleached_amethyst_shard" },
+    { "tag": "minecraft:wooden_slabs" },
+    { "item": "magichem:admixture_light" }
+  ],
+  "result": {
+    "item": "magichem:crystal_candle",
+    "count": 1
+  }
+}

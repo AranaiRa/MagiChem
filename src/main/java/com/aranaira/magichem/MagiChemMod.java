@@ -179,6 +179,8 @@ public class MagiChemMod
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_RING1);
             event.register(ExperienceExchangerBlockEntityRenderer.RENDER_MODEL_RING2);
 
+            event.register(CrystalCandleBlockEntityRenderer.RENDERER_CRYSTAL_CANDLE);
+
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_OPEN);
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_CLOSED);
         }

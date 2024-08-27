@@ -138,6 +138,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(ExperienceExchangerBlockEntity::new, BlockRegistry.EXPERIENCE_EXCHANGER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<CrystalCandleBlockEntity>> CRYSTAL_CANDLE_BE = BLOCK_ENTITIES.register("crystal_candle", () ->
+            BlockEntityType.Builder.of(CrystalCandleBlockEntity::new, BlockRegistry.CRYSTAL_CANDLE.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

@@ -195,6 +195,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> CRYSTAL_CANDLE = registerBlock("crystal_candle",
+            () -> new CrystalCandleBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).noCollission())
+    );
+
     public static final RegistryObject<Block> OCCULTED_CINDER = registerBlock("occulted_cinder",
             () -> new OccultedCinderBlock(BlockBehaviour.Properties.of()
                     .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false), false)

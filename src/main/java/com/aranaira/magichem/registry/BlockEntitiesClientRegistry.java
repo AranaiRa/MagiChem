@@ -30,5 +30,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.COLORING_CAULDRON_BE.get(), ColoringCauldronBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.VARIEGATOR_BE.get(), VariegatorBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.EXPERIENCE_EXCHANGER_BE.get(), ExperienceExchangerBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.CRYSTAL_CANDLE_BE.get(), CrystalCandleBlockEntityRenderer::new);
     }
 }

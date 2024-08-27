@@ -1,0 +1,41 @@
+{
+    "parent": "forge:item/default",
+    "loader": "forge:composite",
+    "textures": {
+        "particle": "minecraft:block/quartz"
+    },
+    "children": {
+        "part1": {
+            "loader": "forge:obj",
+            "automatic_culling": false,
+            "shade_quads": true,
+            "flip_v": true,
+            "emissive_ambient": false,
+            "model": "magichem:models/obj/crystal_candle_inventory.obj"
+        }
+    },
+    "display": {
+        "ground": {
+            "translation": [0, 0, 0]
+        },
+        "firstperson_righthand": {
+            "translation": [0, 2, 0]
+        },
+        "firstperson_lefthand": {
+            "translation": [0, 2, 0]
+        },
+        "thirdperson_righthand": {
+            "rotation": [0, 0, 0],
+            "translation": [0, 5, -0.5]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [0, 0, 0],
+            "translation": [0, 5, -0.5]
+        },
+        "gui": {
+            "rotation": [30, 0, -45],
+            "scale": [2.8, 2.8, 2.8],
+            "translation": [0, 0, 0]
+        }
+    }
+}

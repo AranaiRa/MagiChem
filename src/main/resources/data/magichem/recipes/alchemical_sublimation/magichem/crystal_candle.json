@@ -1,0 +1,21 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:crystal_candle",
+    "count": 32
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "magichem:bleached_amethyst_shard" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_light", "count": 26 }
+      ]
+    }
+  ]
+}

@@ -3215,6 +3215,36 @@
       }
     ]
   },
+  "Crystal Candle": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Crystal Candle"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "In addition to its gravity-defying and color-transmitting properties, bleached amethyst is an ideal medium for alchemically-distilled light.\n\nThese hovering, glowing crystals can be used to light up a workshop with some magical flair."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/crystal_candle"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/crystal_candle"
+      }
+    ]
+  },
   "Grand Distillery": {
     "index": "1208",
     "category": "magichem",
