@@ -11,7 +11,7 @@
       "recipe": {
         "type": "magichem:conjuration",
         "catalyst": "botania:livingrock",
-        "materia": "magichem:admixture_stone",
+        "materia": "magichem:essentia_verdant",
         "passive": {
           "item": "botania:livingrock",
           "count": 1,

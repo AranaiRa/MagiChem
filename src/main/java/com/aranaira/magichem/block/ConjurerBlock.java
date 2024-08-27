@@ -17,6 +17,7 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class ConjurerBlock extends BaseEntityBlock {
+
     public ConjurerBlock(Properties pProperties) {
         super(pProperties);
     }

@@ -47,6 +47,8 @@
   "item.magichem.smoke_bucket": "Smoke Bucket",
   "item.magichem.steam_bucket": "Steam Bucket",
 
+  "item.magichem.dummy.process_coloration": "Alchemical Coloration",
+  "item.magichem.dummy.process_conjuration": "Alchemical Conjuration",
   "item.magichem.dummy.process_fixation": "Alchemical Fixation",
   "item.magichem.dummy.process_separation": "Alchemical Separation",
   "item.magichem.dummy.process_distillation": "Alchemical Distillation",
@@ -59,6 +61,8 @@
   "block.magichem.centrifuge": "Centrifuge",
   "block.magichem.centrifuge_router": "Centrifuge",
   "block.magichem.coloring_cauldron": "Coloring Cauldron",
+  "block.magichem.conjurer": "Conjurer",
+  "block.magichem.conjurer_router": "Conjurer",
   "block.magichem.crystal_candle": "Crystal Candle",
   "block.magichem.distillery": "Distillery",
   "block.magichem.distillery_router": "Distillery",
