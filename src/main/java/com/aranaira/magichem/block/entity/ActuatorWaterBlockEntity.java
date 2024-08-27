@@ -510,7 +510,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
                     containedSteam = FluidStack.EMPTY;
                 if(incomingAmount - extantAmount > 0)
                     setChanged();
-                return new FluidStack(fluid, incomingAmount - extantAmount);
+                return new FluidStack(fluid, Math.min(incomingAmount, extantAmount));
             }
         }
         return fluidStack;

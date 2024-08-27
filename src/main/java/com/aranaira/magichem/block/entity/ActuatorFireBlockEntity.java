@@ -592,7 +592,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                     containedSmoke = FluidStack.EMPTY;
                 if(incomingAmount - extantAmount > 0)
                     setChanged();
-                return new FluidStack(fluid, incomingAmount - extantAmount);
+                return new FluidStack(fluid, Math.min(incomingAmount, extantAmount));
             }
         }
 
