@@ -21,6 +21,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<CirclePowerMenu>> CIRCLE_POWER_MENU =
             registerMenuType(CirclePowerMenu::new, "circle_power");
 
+    public static final RegistryObject<MenuType<ConjurerMenu>> CONJURER_MENU =
+            registerMenuType(ConjurerMenu::new, "conjurer");
+
     public static final RegistryObject<MenuType<AlembicMenu>> ALEMBIC_MENU =
             registerMenuType(AlembicMenu::new, "alembic");
 
