@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -47,7 +48,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     private MateriaItem
         materiaType;
     private ConjurationRecipe recipe;
-    public static HashMap<String, EssentiaItem> materiaMap = ItemRegistry.getEssentiaMap(false, false);
+    public static HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(false, false);
 
     private ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -56,7 +57,14 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
                 ConjurationRecipe recipeQuery = ConjurationRecipe.getConjurationRecipe(level, stack);
                 return recipeQuery != null;
             } else if(slot == SLOT_MATERIA_INPUT) {
-                return stack.getItem() instanceof MateriaItem;
+                if(recipe == null)
+                    return false;
+
+                if(stack.getItem() instanceof MateriaItem mi) {
+                    return recipe.getMateria() == mi;
+                }
+
+                return false;
             } else if(slot == SLOT_OUTPUT || slot == SLOT_BOTTLES) {
                 return false;
             }
@@ -74,22 +82,6 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
 
         @Override
         protected void onContentsChanged(int slot) {
-            if(slot == SLOT_CATALYST) {
-                boolean resetMateria = false;
-                ItemStack catalyst = itemHandler.getStackInSlot(SLOT_CATALYST);
-                recipe = ConjurationRecipe.getConjurationRecipe(level, itemHandler.getStackInSlot(SLOT_CATALYST));
-
-                if(catalyst.isEmpty()) {
-                    materiaType = null;
-                    materiaAmount = 0;
-                } else if(recipe != null) {
-                    if(materiaType != recipe.getMateria()) {
-                        materiaType = null;
-                        materiaAmount = 0;
-                    }
-                }
-                progress = 0;
-            }
             setChanged();
             super.onContentsChanged(slot);
         }
@@ -133,7 +125,10 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
-        nbt.putString("materiaType", this.materiaType.getMateriaName());
+        if(this.materiaType == null)
+            nbt.putString("materiaType", "null");
+        else
+            nbt.putString("materiaType", this.materiaType.getMateriaName());
         nbt.putInt("materiaAmount", this.materiaAmount);
 
         super.saveAdditional(nbt);
@@ -156,7 +151,10 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
-        nbt.putInt("materiaType", this.progress);
+        if(this.materiaType == null)
+            nbt.putString("materiaType", "null");
+        else
+            nbt.putString("materiaType", this.materiaType.getMateriaName());
         nbt.putInt("materiaAmount", this.materiaAmount);
 
         return nbt;
@@ -200,50 +198,105 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public int getScaledMateria() {
-        return 28 * materiaAmount / Config.conjurerMateriaCapacity;
+        return (16 * Math.min(Config.conjurerMateriaCapacity, materiaAmount)) / Config.conjurerMateriaCapacity;
     }
 
     public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, ConjurerBlockEntity entity) {
-        if(entity.recipe != null) {
-            boolean isPassiveMode = true;
-            if(entity.materiaAmount > 0 && entity.materiaType == entity.recipe.getMateria())
-                isPassiveMode = false;
+        ItemStack catalystStack = entity.itemHandler.getStackInSlot(SLOT_CATALYST);
+        boolean syncThisTick = false;
+        if(entity.recipe == null) {
+            if(!catalystStack.isEmpty()) {
+                ConjurationRecipe newRecipe = ConjurationRecipe.getConjurationRecipe(level, catalystStack);
 
-            if(canCraftItem(entity, isPassiveMode)) {
-                entity.progress++;
-
-                if (isPassiveMode) {
-                    final Pair<ItemStack, Integer> data = entity.recipe.getPassiveData(false);
-                    if (entity.progress >= data.getSecond()) {
-                        ItemStack outputStack = entity.itemHandler.getStackInSlot(SLOT_OUTPUT);
-                        if(outputStack.isEmpty()) {
-                            outputStack = data.getFirst().copy();
-                        } else {
-                            outputStack.grow(data.getFirst().getCount());
-                        }
-                        entity.itemHandler.setStackInSlot(SLOT_OUTPUT, outputStack);
-                        entity.progress = 0;
-                        entity.syncAndSave();
+                if (newRecipe != null) {
+                    if (entity.materiaType != newRecipe.getMateria()) {
+                        entity.materiaType = null;
+                        entity.materiaAmount = 0;
                     }
-                } else {
-                    final Triplet<ItemStack, Integer, Integer> data = entity.recipe.getSuppliedData(false);
-                    if (entity.progress >= data.getSecond()) {
-                        ItemStack outputStack = entity.itemHandler.getStackInSlot(SLOT_OUTPUT);
-                        if(outputStack.isEmpty()) {
-                            outputStack = data.getFirst().copy();
-                        } else {
-                            outputStack.grow(data.getFirst().getCount());
+
+                    entity.recipe = newRecipe;
+                    syncThisTick = true;
+                }
+            }
+        } else if(catalystStack.getItem() != entity.recipe.getCatalyst()) {
+            entity.recipe = null;
+            syncThisTick = true;
+        } else {
+            //Materia insertion
+            if(!level.isClientSide()){
+                ItemStack insert = entity.itemHandler.getStackInSlot(SLOT_MATERIA_INPUT);
+                ItemStack bottles = entity.itemHandler.getStackInSlot(SLOT_BOTTLES);
+
+                if(insert.getItem() == entity.recipe.getMateria()) {
+                    boolean allowInsertion = false;
+                    if(entity.materiaType == null) allowInsertion = true;
+                    else if(entity.materiaType == insert.getItem()) allowInsertion = true;
+
+                    if(allowInsertion) {
+                        if(bottles.getCount() < entity.itemHandler.getSlotLimit(SLOT_BOTTLES)) {
+                            //Allow overfilling the gauge by one item for GUI aesthetic reasons
+                            if(entity.materiaAmount < Config.conjurerMateriaCapacity) {
+                                entity.materiaAmount += Config.conjurerPointsPerDram;
+                                entity.materiaType = (MateriaItem)insert.getItem();
+
+                                insert.shrink(1);
+                                if(bottles.isEmpty()) {
+                                    bottles = new ItemStack(Items.GLASS_BOTTLE, 1);
+                                } else {
+                                    bottles.grow(1);
+                                }
+                                entity.itemHandler.setStackInSlot(SLOT_BOTTLES, bottles);
+                                syncThisTick = true;
+                            }
                         }
-                        entity.itemHandler.setStackInSlot(SLOT_OUTPUT, outputStack);
-                        entity.progress = 0;
-                        entity.materiaAmount -= data.getThird();
-                        if(entity.materiaAmount <= 0)
-                            entity.materiaType = null;
-                        entity.syncAndSave();
+                    }
+                }
+            }
+
+            //Crafting logic
+            {
+                boolean isPassiveMode = true;
+                if (entity.materiaAmount > 0 && entity.materiaType == entity.recipe.getMateria())
+                    isPassiveMode = false;
+
+                if (canCraftItem(entity, isPassiveMode)) {
+                    entity.progress++;
+
+                    if (isPassiveMode) {
+                        final Pair<ItemStack, Integer> data = entity.recipe.getPassiveData(false);
+                        if (entity.progress >= data.getSecond()) {
+                            ItemStack outputStack = entity.itemHandler.getStackInSlot(SLOT_OUTPUT);
+                            if (outputStack.isEmpty()) {
+                                outputStack = data.getFirst().copy();
+                            } else {
+                                outputStack.grow(data.getFirst().getCount());
+                            }
+                            entity.itemHandler.setStackInSlot(SLOT_OUTPUT, outputStack);
+                            entity.progress = 0;
+                            entity.syncAndSave();
+                        }
+                    } else {
+                        final Triplet<ItemStack, Integer, Integer> data = entity.recipe.getSuppliedData(false);
+                        if (entity.progress >= data.getSecond()) {
+                            ItemStack outputStack = entity.itemHandler.getStackInSlot(SLOT_OUTPUT);
+                            if (outputStack.isEmpty()) {
+                                outputStack = data.getFirst().copy();
+                            } else {
+                                outputStack.grow(data.getFirst().getCount());
+                            }
+                            entity.itemHandler.setStackInSlot(SLOT_OUTPUT, outputStack);
+                            entity.progress = 0;
+                            entity.materiaAmount -= data.getThird();
+                            if (entity.materiaAmount <= 0)
+                                entity.materiaType = null;
+                            entity.syncAndSave();
+                        }
                     }
                 }
             }
         }
+
+        if(syncThisTick) entity.syncAndSave();
     }
 
     private static boolean canCraftItem(ConjurerBlockEntity entity, boolean isPassiveMode) {

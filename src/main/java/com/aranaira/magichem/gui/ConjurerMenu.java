@@ -1,6 +1,8 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.ConjurerBlockEntity;
+import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.ConjurationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.jetbrains.annotations.NotNull;
 
 import static com.aranaira.magichem.block.entity.ConjurerBlockEntity.*;
 
@@ -32,11 +35,29 @@ public class ConjurerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, SLOT_CATALYST, 44, 22));
+            this.addSlot(new SlotItemHandler(handler, SLOT_CATALYST, 44, 22) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    ConjurationRecipe recipeQuery = ConjurationRecipe.getConjurationRecipe(level, stack);
+                    return recipeQuery != null;
+                }
+            });
 
             this.addSlot(new SlotItemHandler(handler, SLOT_OUTPUT, 116, 22));
 
-            this.addSlot(new SlotItemHandler(handler, SLOT_MATERIA_INPUT, 152, 17));
+            this.addSlot(new SlotItemHandler(handler, SLOT_MATERIA_INPUT, 152, 17) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    if(blockEntity.getRecipe() == null)
+                        return false;
+
+                    if(stack.getItem() instanceof MateriaItem mi) {
+                        return blockEntity.getRecipe().getMateria() == mi;
+                    }
+
+                    return false;
+                }
+            });
 
             this.addSlot(new SlotItemHandler(handler, SLOT_BOTTLES, 152, 43));
         });

@@ -40,16 +40,32 @@ public class ConjurerScreen extends AbstractContainerScreen<ConjurerMenu> {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
+        //Main panel
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
+        //Progress gauge
         int sp = menu.blockEntity.getScaledProgress();
         pGuiGraphics.blit(TEXTURE, x + 74, y + 11, 0, 230, sp, 26);
 
+        //Materia indicator
         if(menu.blockEntity.getRecipe() != null) {
             if (menu.blockEntity.getRecipe().getMateria() != materiaStack.getItem()) {
                 materiaStack = new ItemStack(menu.blockEntity.getRecipe().getMateria());
             }
             pGuiGraphics.renderItem(materiaStack, x + 80, y + 50);
+
+            //Materia fill gauge
+            if(menu.blockEntity.getMateriaType() != null) {
+                int sm = menu.blockEntity.getScaledMateria();
+                int packedColor = menu.blockEntity.getMateriaType().getMateriaColor();
+                int rI = (packedColor & 0x00ff0000) >> 16;
+                int gI = (packedColor & 0x0000ff00) >> 8;
+                int bI = (packedColor & 0x000000ff);
+
+                pGuiGraphics.setColor(rI / 255f, gI / 255f, bI / 255f, 1f);
+                pGuiGraphics.blit(TEXTURE, x + 102, y + 66 - sm, 253, 0, 3, sm);
+                pGuiGraphics.setColor(1f, 1f, 1f, 1f);
+            }
         }
     }
 

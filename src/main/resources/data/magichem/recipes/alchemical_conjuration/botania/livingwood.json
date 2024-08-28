@@ -10,15 +10,15 @@
       ],
       "recipe": {
         "type": "magichem:conjuration",
-        "catalyst": "botania:livingrock",
+        "catalyst": "botania:livingwood",
         "materia": "magichem:essentia_verdant",
         "passive": {
-          "item": "botania:livingrock",
+          "item": "botania:livingwood",
           "count": 1,
           "period": 50
         },
         "supplied": {
-          "item": "botania:livingrock",
+          "item": "botania:livingwood",
           "count": 16,
           "period": 20,
           "charge_usage": 1
