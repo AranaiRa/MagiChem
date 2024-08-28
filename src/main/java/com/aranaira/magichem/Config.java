@@ -312,6 +312,16 @@ public class Config
             .comment("How many units of dye each dram of Admixture of Color inserted into the Variegator is worth.")
             .defineInRange("variegatorAdmixturePerItem", 15, 1, 64);
 
+    //----------------CONJURER
+
+    private static final ForgeConfigSpec.IntValue CONJURER_MATERIA_CAPACITY = BUILDER
+            .comment("The maximum capacity of the Conjurer's materia gauge.")
+            .defineInRange("conjurerMateriaCapacity", 100, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue CONJURER_POINTS_PER_DRAM = BUILDER
+            .comment("The number of points that a single dram of materia adds to the materia gauge.")
+            .defineInRange("conjurerPointsPerDram", 4, 1, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -379,7 +389,9 @@ public class Config
         variegatorMaxDye,
         variegatorDyePerItem,
         variegatorMaxAdmixture,
-        variegatorAdmixturePerItem;
+        variegatorAdmixturePerItem,
+        conjurerMateriaCapacity,
+        conjurerPointsPerDram;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -454,5 +466,7 @@ public class Config
         variegatorDyePerItem = VARIEGATOR_DYE_PER_ITEM.get();
         variegatorMaxAdmixture = VARIEGATOR_MAX_ADMIXTURE.get();
         variegatorAdmixturePerItem = VARIEGATOR_ADMIXTURE_PER_ITEM.get();
+        conjurerMateriaCapacity = CONJURER_MATERIA_CAPACITY.get();
+        conjurerPointsPerDram = CONJURER_POINTS_PER_DRAM.get();
     }
 }
