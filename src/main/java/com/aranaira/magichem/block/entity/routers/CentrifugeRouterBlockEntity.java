@@ -1,10 +1,12 @@
 package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
@@ -33,7 +35,7 @@ import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
 
-public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity {
+public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -251,5 +253,11 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
     @Override
     public int clean() {
         return getMaster().clean();
+    }
+
+    @Override
+    public void destroyMaster() {
+        getLevel().destroyBlock(getMasterPos(), true);
+        CentrifugeBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
     }
 }

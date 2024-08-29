@@ -1,10 +1,12 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.DistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
@@ -34,7 +36,7 @@ import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
 
-public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity {
+public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
     private DistilleryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -253,5 +255,11 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
     @Override
     public int clean() {
         return getMaster().clean();
+    }
+
+    @Override
+    public void destroyMaster() {
+        getLevel().destroyBlock(getMasterPos(), true);
+        DistilleryBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
     }
 }

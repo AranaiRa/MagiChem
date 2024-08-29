@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.ConjurerMenu;
 import com.aranaira.magichem.item.MateriaItem;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
-public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
+public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
 
     protected LazyOptional<IItemHandler>
             lazyInsertionItemHandler = LazyOptional.empty(),
@@ -374,5 +375,11 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,4,1));
+    }
+
+    @Override
+    public void destroyRouters() {
+        getLevel().destroyBlock(getBlockPos().above(), true);
+        getLevel().destroyBlock(getBlockPos().above().above(), true);
     }
 }

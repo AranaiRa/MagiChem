@@ -1,14 +1,17 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,9 +21,12 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 
-public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice {
+public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
     private GrandDistilleryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -208,5 +214,17 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
     @Override
     public int clean() {
         return getMaster().clean();
+    }
+
+    @Override
+    public void destroyMaster() {
+        if(getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+            ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
+            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), charmStack);
+            getLevel().addFreshEntity(ie);
+        }
+
+        getLevel().destroyBlock(getMasterPos(), true);
+        GrandDistilleryBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
     }
 }

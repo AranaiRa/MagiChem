@@ -62,7 +62,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler {
+public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction {
 
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -1239,5 +1239,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         int id = super.satisfy(pQuery);
         syncAndSave();
         return id;
+    }
+
+    @Override
+    public void destroyRouters() {
+        AlchemicalNexusBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 }

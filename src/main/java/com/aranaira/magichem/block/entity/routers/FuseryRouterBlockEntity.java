@@ -1,9 +1,11 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
@@ -31,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.aranaira.magichem.block.FuseryRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity {
+public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
     private FuseryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -257,5 +259,11 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
     @Override
     public int clean() {
         return getMaster().clean();
+    }
+
+    @Override
+    public void destroyMaster() {
+        getLevel().destroyBlock(getMasterPos(), true);
+        FuseryBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
     }
 }

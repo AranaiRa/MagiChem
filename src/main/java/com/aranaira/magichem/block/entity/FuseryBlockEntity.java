@@ -7,6 +7,7 @@ import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
@@ -51,7 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider {
+public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 21,
@@ -472,5 +473,10 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-2, 0, -2), getBlockPos().offset(2,1,2));
+    }
+
+    @Override
+    public void destroyRouters() {
+        FuseryBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 }

@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.gui.VariegatorMenu;
 import com.aranaira.magichem.recipe.ColorationRecipe;
@@ -45,7 +46,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Random;
 
-public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.GROUNDED;
+
+public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     public static final int
@@ -606,5 +609,11 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-1, -2, -1), getBlockPos().offset(1,2,1));
+    }
+
+    @Override
+    public void destroyRouters() {
+        BlockPos router = getBlockState().getValue(GROUNDED) ? getBlockPos().above() : getBlockPos().below();
+        getLevel().destroyBlock(router, true);
     }
 }

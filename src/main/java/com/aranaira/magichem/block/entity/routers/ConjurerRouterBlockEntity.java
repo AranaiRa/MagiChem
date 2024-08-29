@@ -1,11 +1,7 @@
 package com.aranaira.magichem.block.entity.routers;
 
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ConjurerBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
@@ -31,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.aranaira.magichem.block.ConjurerRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CONJURER;
 
-public class ConjurerRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab {
+public class ConjurerRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
     private ConjurerBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -120,5 +116,16 @@ public class ConjurerRouterBlockEntity extends BlockEntity implements MenuProvid
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return getMaster().createMenu(pContainerId, pPlayerInventory, pPlayer);
+    }
+
+    @Override
+    public void destroyMaster() {
+        if(getBlockState().getValue(ROUTER_TYPE_CONJURER) == ROUTER_TYPE_MIDDLE) {
+            getLevel().destroyBlock(getBlockPos().above(), true);
+            getLevel().destroyBlock(getBlockPos().below(), true);
+        } else if(getBlockState().getValue(ROUTER_TYPE_CONJURER) == ROUTER_TYPE_TOP) {
+            getLevel().destroyBlock(getBlockPos().below(), true);
+            getLevel().destroyBlock(getBlockPos().below().below(), true);
+        }
     }
 }

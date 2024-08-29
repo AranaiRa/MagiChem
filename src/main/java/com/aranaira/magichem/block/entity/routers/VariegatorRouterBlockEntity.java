@@ -6,6 +6,7 @@ import com.aranaira.magichem.block.entity.VariegatorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -29,10 +30,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class VariegatorRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab {
+public class VariegatorRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
     private VariegatorBlockEntity master;
 
@@ -122,4 +122,9 @@ public class VariegatorRouterBlockEntity extends BlockEntity implements MenuProv
     }
 
 
+    @Override
+    public void destroyMaster() {
+        BlockPos master = getBlockState().getValue(GROUNDED) ? getBlockPos().below() : getBlockPos().above();
+        getLevel().destroyBlock(master, true);
+    }
 }

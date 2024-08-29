@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BaseActuatorRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab {
+public class BaseActuatorRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
     private BlockEntity master;
     private Direction facing;
@@ -139,5 +140,10 @@ public class BaseActuatorRouterBlockEntity extends BlockEntity implements MenuPr
     @Override
     public Component getDisplayName() {
         return null;
+    }
+
+    @Override
+    public void destroyMaster() {
+        getLevel().destroyBlock(getBlockPos().below(), true);
     }
 }

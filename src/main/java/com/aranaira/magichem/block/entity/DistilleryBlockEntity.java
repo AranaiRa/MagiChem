@@ -8,6 +8,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
@@ -52,7 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins {
+public class DistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IRequiresRouterCleanupOnDestruction {
     public static final int
         SLOT_COUNT = 26,
         SLOT_BOTTLES = 0, SLOT_FUEL = 1,
@@ -428,5 +429,10 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
 
             default -> -1;
         };
+    }
+
+    @Override
+    public void destroyRouters() {
+        DistilleryBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 }

@@ -10,6 +10,8 @@ import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -186,66 +188,10 @@ public class CommonEventHandler {
         BlockPos pos = event.getPos();
         BlockEntity entity = event.getLevel().getBlockEntity(pos);
 
-        if(entity instanceof CentrifugeBlockEntity cbe) {
-            CentrifugeBlock.destroyRouters(event.getLevel(), cbe.getBlockPos(), cbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
-        }
-        else if(entity instanceof CentrifugeRouterBlockEntity crbe) {
-            event.getLevel().destroyBlock(crbe.getMasterPos(), true);
-            CentrifugeBlock.destroyRouters(event.getLevel(), crbe.getMasterPos(), crbe.getFacing());
-        }
-        else if(entity instanceof DistilleryBlockEntity dbe) {
-            DistilleryBlock.destroyRouters(event.getLevel(), dbe.getBlockPos(), dbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
-        }
-        else if(entity instanceof DistilleryRouterBlockEntity drbe) {
-            event.getLevel().destroyBlock(drbe.getMasterPos(), true);
-            DistilleryBlock.destroyRouters(event.getLevel(), drbe.getMasterPos(), drbe.getFacing());
-        }
-        else if(entity instanceof FuseryBlockEntity dbe) {
-            FuseryBlock.destroyRouters(event.getLevel(), dbe.getBlockPos(), dbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
-        }
-        else if(entity instanceof FuseryRouterBlockEntity frbe) {
-            event.getLevel().destroyBlock(frbe.getMasterPos(), true);
-            FuseryBlock.destroyRouters(event.getLevel(), frbe.getMasterPos(), frbe.getFacing());
-        }
-        else if(entity instanceof AlchemicalNexusBlockEntity anbe) {
-            AlchemicalNexusBlock.destroyRouters(event.getLevel(), anbe.getBlockPos(), anbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
-        }
-        else if(entity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
-            event.getLevel().destroyBlock(anrbe.getMasterPos(), true);
-            AlchemicalNexusBlock.destroyRouters(event.getLevel(), anrbe.getMasterPos(), anrbe.getFacing());
-        }
-        else if(entity instanceof GrandDistilleryBlockEntity gdbe) {
-            if(state.getValue(HAS_LABORATORY_UPGRADE)) {
-                ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
-                ItemEntity ie = new ItemEntity((Level)event.getLevel(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), charmStack);
-                event.getLevel().addFreshEntity(ie);
-            }
-
-            GrandDistilleryBlock.destroyRouters(event.getLevel(), gdbe.getBlockPos(), gdbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
-        }
-        else if(entity instanceof GrandDistilleryRouterBlockEntity gdrbe) {
-            if(state.getValue(HAS_LABORATORY_UPGRADE)) {
-                ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
-                ItemEntity ie = new ItemEntity((Level)event.getLevel(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), charmStack);
-                event.getLevel().addFreshEntity(ie);
-            }
-
-            event.getLevel().destroyBlock(gdrbe.getMasterPos(), true);
-            GrandDistilleryBlock.destroyRouters(event.getLevel(), gdrbe.getMasterPos(), gdrbe.getFacing());
-        }
-        else if(entity instanceof VariegatorBlockEntity vbe) {
-            BlockPos router = state.getValue(GROUNDED) ? pos.above() : pos.below();
-            event.getLevel().destroyBlock(router, true);
-        }
-        else if(entity instanceof VariegatorRouterBlockEntity vrbe) {
-            BlockPos master = state.getValue(GROUNDED) ? pos.below() : pos.above();
-            event.getLevel().destroyBlock(master, true);
-        }
-        else if(entity instanceof DirectionalPluginBlockEntity dpbe) {
-            event.getLevel().destroyBlock(dpbe.getBlockPos().above(), true);
-        }
-        else if(entity instanceof BaseActuatorRouterBlockEntity barbe) {
-            event.getLevel().destroyBlock(barbe.getMasterPos(), true);
+        if(entity instanceof IRequiresRouterCleanupOnDestruction irrcod) {
+            irrcod.destroyRouters();
+        } else if(entity instanceof IDestroysMasterOnDestruction idmod) {
+            idmod.destroyMaster();
         }
 
         Block block = state.getBlock();

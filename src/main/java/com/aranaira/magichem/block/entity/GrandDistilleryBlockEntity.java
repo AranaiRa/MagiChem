@@ -31,6 +31,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -56,7 +57,7 @@ import java.util.List;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 
-public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice {
+public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction {
     public static final int
         SLOT_COUNT = 25,
         SLOT_BOTTLES = 0,
@@ -592,5 +593,16 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
             default -> -1;
         };
+    }
+
+    @Override
+    public void destroyRouters() {
+        if(getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+            ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
+            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), charmStack);
+            getLevel().addFreshEntity(ie);
+        }
+
+        GrandDistilleryBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 }

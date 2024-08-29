@@ -1,9 +1,11 @@
 package com.aranaira.magichem.block.entity.routers;
 
+import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
@@ -30,7 +32,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver {
+public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver, IDestroysMasterOnDestruction {
 
     private BlockPos masterPos;
     private AlchemicalNexusBlockEntity master;
@@ -254,5 +256,11 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     @Override
     public int insertStack(ItemStack pStack) {
         return getMaster().insertStack(pStack);
+    }
+
+    @Override
+    public void destroyMaster() {
+        getLevel().destroyBlock(getMasterPos(), true);
+        AlchemicalNexusBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
     }
 }

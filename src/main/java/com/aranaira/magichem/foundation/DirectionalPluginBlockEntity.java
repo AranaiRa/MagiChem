@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.UUID;
 
-public abstract class DirectionalPluginBlockEntity extends BlockEntity {
+public abstract class DirectionalPluginBlockEntity extends BlockEntity implements IRequiresRouterCleanupOnDestruction {
     protected Player owner;
     protected UUID ownerUUID;
 
@@ -47,4 +47,9 @@ public abstract class DirectionalPluginBlockEntity extends BlockEntity {
     }
 
     public abstract void processCompletedOperation(int pCyclesCompleted);
+
+    @Override
+    public void destroyRouters() {
+        getLevel().destroyBlock(getBlockPos().above(), true);
+    }
 }
