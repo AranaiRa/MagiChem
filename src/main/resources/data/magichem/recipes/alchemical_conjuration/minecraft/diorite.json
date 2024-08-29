@@ -5,7 +5,7 @@
   "passive": {
     "item": "minecraft:diorite",
     "count": 1,
-    "period": 50
+    "period": 160
   },
   "supplied": {
     "item": "minecraft:diorite",

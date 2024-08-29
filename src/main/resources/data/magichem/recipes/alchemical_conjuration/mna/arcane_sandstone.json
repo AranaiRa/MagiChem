@@ -5,7 +5,7 @@
   "passive": {
     "item": "mna:decoration/arcane_sandstone",
     "count": 1,
-    "period": 50
+    "period": 160
   },
   "supplied": {
     "item": "mna:decoration/arcane_sandstone",

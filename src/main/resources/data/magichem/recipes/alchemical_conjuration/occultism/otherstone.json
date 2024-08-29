@@ -15,11 +15,11 @@
         "passive": {
           "item": "occultism:otherstone",
           "count": 1,
-          "period": 50
+          "period": 320
         },
         "supplied": {
           "item": "occultism:otherstone",
-          "count": 16,
+          "count": 8,
           "period": 20,
           "charge_usage": 1
         }

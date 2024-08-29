@@ -5,7 +5,7 @@
   "passive": {
     "item": "minecraft:stone",
     "count": 1,
-    "period": 100
+    "period": 320
   },
   "supplied": {
     "item": "minecraft:stone",
