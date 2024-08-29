@@ -3,7 +3,6 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.ConjurerMenu;
-import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ConjurationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -20,17 +19,20 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,11 +40,31 @@ import java.util.HashMap;
 
 public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
 
-    protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    protected LazyOptional<IItemHandler>
+            lazyInsertionItemHandler = LazyOptional.empty(),
+            lazyExtractionItemHandler = LazyOptional.empty(),
+            lazyCombinedItemHandler = LazyOptional.empty();
+    protected ContainerData data = new ContainerData() {
+        @Override
+        public int get(int pIndex) {
+            return 0;
+        }
+
+        @Override
+        public void set(int pIndex, int pValue) {
+
+        }
+
+        @Override
+        public int getCount() {
+            return DATA_COUNT;
+        }
+    };
 
     public static final int
-        SLOT_COUNT = 4,
-        SLOT_CATALYST = 0, SLOT_OUTPUT = 1, SLOT_MATERIA_INPUT = 2, SLOT_BOTTLES = 3;
+        SLOT_INSERTION_COUNT = 2, SLOT_INSERTION_CATALYST = 0, SLOT_INSERTION_MATERIA = 1,
+        SLOT_EXTRACTION_COUNT = 2, SLOT_EXTRACTION_OUTPUT = 0, SLOT_EXTRACTION_BOTTLES = 1,
+        DATA_COUNT = 0;
     private int
         progress, materiaAmount;
     private MateriaItem
@@ -50,13 +72,13 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     private ConjurationRecipe recipe;
     public static HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(false, false);
 
-    private ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
+    private final ItemStackHandler itemInsertionHandler = new ItemStackHandler(SLOT_INSERTION_COUNT) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(slot == SLOT_CATALYST) {
+            if(slot == SLOT_INSERTION_CATALYST) {
                 ConjurationRecipe recipeQuery = ConjurationRecipe.getConjurationRecipe(level, stack);
                 return recipeQuery != null;
-            } else if(slot == SLOT_MATERIA_INPUT) {
+            } else if(slot == SLOT_INSERTION_MATERIA) {
                 if(recipe == null)
                     return false;
 
@@ -65,8 +87,6 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
                 }
 
                 return false;
-            } else if(slot == SLOT_OUTPUT || slot == SLOT_BOTTLES) {
-                return false;
             }
 
             return super.isItemValid(slot, stack);
@@ -74,10 +94,23 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
 
         @Override
         public int getSlotLimit(int slot) {
-            if(slot == SLOT_CATALYST)
+            if(slot == SLOT_INSERTION_CATALYST)
                 return 1;
 
             return super.getSlotLimit(slot);
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            super.onContentsChanged(slot);
+        }
+    };
+
+    private final ItemStackHandler itemExtractionHandler = new ItemStackHandler(SLOT_EXTRACTION_COUNT) {
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return true;
         }
 
         @Override
@@ -98,7 +131,9 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public void onLoad() {
         super.onLoad();
-        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyInsertionItemHandler = LazyOptional.of(() -> itemInsertionHandler);
+        lazyExtractionItemHandler = LazyOptional.of(() -> itemExtractionHandler);
+        lazyCombinedItemHandler = LazyOptional.of(() -> new CombinedInvWrapper(itemInsertionHandler, itemExtractionHandler));
     }
 
     @Override
@@ -109,21 +144,35 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
-            return lazyItemHandler.cast();
+            if(side == null)
+                return lazyCombinedItemHandler.cast();
+            else if(side == Direction.UP)
+                return lazyInsertionItemHandler.cast();
+            else
+                return lazyExtractionItemHandler.cast();
         }
 
         return super.getCapability(cap, side);
     }
 
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyInsertionItemHandler.invalidate();
+        lazyExtractionItemHandler.invalidate();
+        lazyCombinedItemHandler.invalidate();
+    }
+
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new ConjurerMenu(pContainerId, pPlayerInventory, this, null);
+        return new ConjurerMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.put("insertionInventory", itemInsertionHandler.serializeNBT());
+        nbt.put("extractionInventory", itemExtractionHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         if(this.materiaType == null)
             nbt.putString("materiaType", "null");
@@ -137,19 +186,19 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        itemInsertionHandler.deserializeNBT(nbt.getCompound("insertionInventory"));
+        itemExtractionHandler.deserializeNBT(nbt.getCompound("extractionInventory"));
         progress = nbt.getInt("craftingProgress");
         String materiaQuery = nbt.getString("materiaType");
         materiaType = materiaMap.get(materiaQuery);
         materiaAmount = nbt.getInt("materiaAmount");
-
-        recipe = ConjurationRecipe.getConjurationRecipe(level, itemHandler.getStackInSlot(SLOT_CATALYST));
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
-        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.put("insertionInventory", itemInsertionHandler.serializeNBT());
+        nbt.put("extractionInventory", itemExtractionHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         if(this.materiaType == null)
             nbt.putString("materiaType", "null");
@@ -202,7 +251,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, ConjurerBlockEntity entity) {
-        ItemStack catalystStack = entity.itemHandler.getStackInSlot(SLOT_CATALYST);
+        ItemStack catalystStack = entity.itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST);
         boolean syncThisTick = false;
         if(entity.recipe == null) {
             if(!catalystStack.isEmpty()) {
@@ -224,8 +273,8 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
         } else {
             //Materia insertion
             if(!level.isClientSide()){
-                ItemStack insert = entity.itemHandler.getStackInSlot(SLOT_MATERIA_INPUT);
-                ItemStack bottles = entity.itemHandler.getStackInSlot(SLOT_BOTTLES);
+                ItemStack insert = entity.itemInsertionHandler.getStackInSlot(SLOT_INSERTION_MATERIA);
+                ItemStack bottles = entity.itemExtractionHandler.getStackInSlot(SLOT_EXTRACTION_BOTTLES);
 
                 if(insert.getItem() == entity.recipe.getMateria()) {
                     boolean allowInsertion = false;
@@ -233,7 +282,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
                     else if(entity.materiaType == insert.getItem()) allowInsertion = true;
 
                     if(allowInsertion) {
-                        if(bottles.getCount() < entity.itemHandler.getSlotLimit(SLOT_BOTTLES)) {
+                        if(bottles.getCount() < entity.itemExtractionHandler.getSlotLimit(SLOT_EXTRACTION_BOTTLES)) {
                             //Allow overfilling the gauge by one item for GUI aesthetic reasons
                             if(entity.materiaAmount < Config.conjurerMateriaCapacity) {
                                 entity.materiaAmount += Config.conjurerPointsPerDram;
@@ -245,7 +294,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
                                 } else {
                                     bottles.grow(1);
                                 }
-                                entity.itemHandler.setStackInSlot(SLOT_BOTTLES, bottles);
+                                entity.itemExtractionHandler.setStackInSlot(SLOT_EXTRACTION_BOTTLES, bottles);
                                 syncThisTick = true;
                             }
                         }
@@ -265,26 +314,26 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
                     if (isPassiveMode) {
                         final Pair<ItemStack, Integer> data = entity.recipe.getPassiveData(false);
                         if (entity.progress >= data.getSecond()) {
-                            ItemStack outputStack = entity.itemHandler.getStackInSlot(SLOT_OUTPUT);
+                            ItemStack outputStack = entity.itemExtractionHandler.getStackInSlot(SLOT_EXTRACTION_OUTPUT);
                             if (outputStack.isEmpty()) {
                                 outputStack = data.getFirst().copy();
                             } else {
                                 outputStack.grow(data.getFirst().getCount());
                             }
-                            entity.itemHandler.setStackInSlot(SLOT_OUTPUT, outputStack);
+                            entity.itemExtractionHandler.setStackInSlot(SLOT_EXTRACTION_OUTPUT, outputStack);
                             entity.progress = 0;
                             entity.syncAndSave();
                         }
                     } else {
                         final Triplet<ItemStack, Integer, Integer> data = entity.recipe.getSuppliedData(false);
                         if (entity.progress >= data.getSecond()) {
-                            ItemStack outputStack = entity.itemHandler.getStackInSlot(SLOT_OUTPUT);
+                            ItemStack outputStack = entity.itemExtractionHandler.getStackInSlot(SLOT_EXTRACTION_OUTPUT);
                             if (outputStack.isEmpty()) {
                                 outputStack = data.getFirst().copy();
                             } else {
                                 outputStack.grow(data.getFirst().getCount());
                             }
-                            entity.itemHandler.setStackInSlot(SLOT_OUTPUT, outputStack);
+                            entity.itemExtractionHandler.setStackInSlot(SLOT_EXTRACTION_OUTPUT, outputStack);
                             entity.progress = 0;
                             entity.materiaAmount -= data.getThird();
                             if (entity.materiaAmount <= 0)
@@ -300,11 +349,11 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private static boolean canCraftItem(ConjurerBlockEntity entity, boolean isPassiveMode) {
-        if(entity.itemHandler.getStackInSlot(SLOT_CATALYST).isEmpty())
+        if(entity.itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST).isEmpty())
             return false;
 
-        ItemStack outputStack = entity.itemHandler.getStackInSlot(SLOT_OUTPUT);
-        int slotLimit = entity.itemHandler.getSlotLimit(SLOT_OUTPUT);
+        ItemStack outputStack = entity.itemExtractionHandler.getStackInSlot(SLOT_EXTRACTION_OUTPUT);
+        int slotLimit = entity.itemExtractionHandler.getSlotLimit(SLOT_EXTRACTION_OUTPUT);
 
         if(outputStack.isEmpty())
             return true;
@@ -320,5 +369,10 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider {
                 return false;
             return slotLimit >= outputStack.getCount() + data.getFirst().getCount();
         }
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,4,1));
     }
 }
