@@ -18,6 +18,7 @@ public class MagiChemBlockStateProperties {
     public static final IntegerProperty ACTUATOR_ELEMENT = IntegerProperty.create("element", 0, 6);
     public static final IntegerProperty ROUTER_TYPE_ALCHEMICAL_NEXUS = IntegerProperty.create("alchemical_nexus_router_type", 0, 9);
     public static final IntegerProperty ROUTER_TYPE_CENTRIFUGE = IntegerProperty.create("centrifuge_router_type", 0, 3);
+    public static final IntegerProperty ROUTER_TYPE_CONJURER = IntegerProperty.create("conjurer_router_type", 0, 2);
     public static final IntegerProperty ROUTER_TYPE_DISTILLERY = IntegerProperty.create("distillery_router_type", 0, 3);
     public static final IntegerProperty ROUTER_TYPE_FUSERY = IntegerProperty.create("fusery_router_type", 0, 5);
     public static final IntegerProperty ROUTER_TYPE_GRAND_DISTILLERY = IntegerProperty.create("grand_distillery_router_type", 0, 18);
