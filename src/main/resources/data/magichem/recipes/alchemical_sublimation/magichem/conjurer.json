@@ -1,0 +1,39 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:conjurer"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "magichem:cog_components" },
+        { "item": "minecraft:water_bucket" },
+        { "item": "minecraft:lava_bucket" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_earth", "count": 36 },
+        { "item": "magichem:essentia_air", "count": 36 },
+        { "item": "magichem:essentia_water", "count": 36 },
+        { "item": "magichem:essentia_fire", "count": 36 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:chimerite_gem" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "magichem:bleached_amethyst_shard" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_wizard", "count": 20 },
+        { "item": "magichem:essentia_verdant", "count": 36 },
+        { "item": "magichem:essentia_mineral", "count": 36 }
+      ]
+    }
+  ]
+}

@@ -627,6 +627,8 @@
   "advancements.magichem.cleaning.description" : "Use a Cleaning Brush to scrub the Alchemical Waste out of an Alembic",
   "advancements.magichem.coloring_cauldron.title" : "Cooking Up Colors",
   "advancements.magichem.coloring_cauldron.description" : "Craft a Coloring Cauldron",
+  "advancements.magichem.conjurer.title" : "Ex Nihilo",
+  "advancements.magichem.conjurer.description" : "Craft a Conjurer for an unlimited supply of simple raw materials",
   "advancements.magichem.debug_orb.title" : "You're Not Supposed to Have This",
   "advancements.magichem.debug_orb.description" : "Acquire an Orb of Alchemical Creativity (an item for debugging)",
   "advancements.magichem.distillery.title" : "No More Furnace Loading",

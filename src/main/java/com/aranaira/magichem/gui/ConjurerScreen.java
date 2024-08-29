@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -78,10 +79,16 @@ public class ConjurerScreen extends AbstractContainerScreen<ConjurerMenu> {
         int y = (height - PANEL_MAIN_H) / 2;
         boolean doOriginalTooltip = true;
 
-        if (pX >= x + 80 && pX <= x + 96 &&
-                pY >= y + 50 && pY <= y + 66) {
+        if (pX >= x + 79 && pX <= x + 106 &&
+                pY >= y + 48 && pY <= y + 68) {
 
             tooltipContents.addAll(materiaStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.literal("" + Math.min(Config.conjurerMateriaCapacity, menu.blockEntity.getMateriaAmount())).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal("" + Config.conjurerMateriaCapacity).withStyle(ChatFormatting.DARK_AQUA))
+            );
         }
 
 

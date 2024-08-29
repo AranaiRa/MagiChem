@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:conjurer"
+    },
+    "title": {
+      "translate": "advancements.magichem.conjurer.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.conjurer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:alchemical_nexus",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:conjurer"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
