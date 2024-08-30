@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -145,11 +146,13 @@ public class TooltipLoreBlockItem extends BlockItem {
     @Override
     public InteractionResult place(BlockPlaceContext pContext) {
         ItemStack stack = pContext.getItemInHand();
+
+        CompoundTag nbt = stack.getOrCreateTag();
+        Item cachedItem = stack.getItem();
         InteractionResult result = super.place(pContext);
 
         if(result != InteractionResult.FAIL) {
-            if (stack.getItem() == BlockRegistry.ALEMBIC.get().asItem()) {
-                CompoundTag nbt = stack.getOrCreateTag();
+            if (cachedItem == BlockRegistry.ALEMBIC.get().asItem()) {
                 AlembicBlockEntity abe = (AlembicBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
                 if(abe != null) {
                     if (nbt.contains("inventory")) {
@@ -160,8 +163,7 @@ public class TooltipLoreBlockItem extends BlockItem {
                     }
                 }
             }
-            else if (stack.getItem() == BlockRegistry.CENTRIFUGE.get().asItem()) {
-                CompoundTag nbt = stack.getOrCreateTag();
+            else if (cachedItem == BlockRegistry.CENTRIFUGE.get().asItem()) {
                 CentrifugeBlockEntity cbe = (CentrifugeBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
                 if(cbe != null) {
                     if (nbt.contains("inventory")) {
@@ -172,8 +174,7 @@ public class TooltipLoreBlockItem extends BlockItem {
                     }
                 }
             }
-            else if (stack.getItem() == BlockRegistry.DISTILLERY.get().asItem()) {
-                CompoundTag nbt = stack.getOrCreateTag();
+            else if (cachedItem == BlockRegistry.DISTILLERY.get().asItem()) {
                 DistilleryBlockEntity dbe = (DistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
                 if(dbe != null) {
                     if (nbt.contains("inventory")) {
@@ -184,8 +185,7 @@ public class TooltipLoreBlockItem extends BlockItem {
                     }
                 }
             }
-            else if (stack.getItem() == BlockRegistry.FUSERY.get().asItem()) {
-                CompoundTag nbt = stack.getOrCreateTag();
+            else if (cachedItem == BlockRegistry.FUSERY.get().asItem()) {
                 FuseryBlockEntity abe = (FuseryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
                 if(abe != null) {
                     if (nbt.contains("inventory")) {
@@ -196,8 +196,7 @@ public class TooltipLoreBlockItem extends BlockItem {
                     }
                 }
             }
-            else if (stack.getItem() == BlockRegistry.ALCHEMICAL_NEXUS.get().asItem()) {
-                CompoundTag nbt = stack.getOrCreateTag();
+            else if (cachedItem == BlockRegistry.ALCHEMICAL_NEXUS.get().asItem()) {
                 AlchemicalNexusBlockEntity anbe = (AlchemicalNexusBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
                 if(anbe != null) {
                     if (nbt.contains("inventory")) {
@@ -205,8 +204,7 @@ public class TooltipLoreBlockItem extends BlockItem {
                     }
                 }
             }
-            else if (stack.getItem() == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
-                CompoundTag nbt = stack.getOrCreateTag();
+            else if (cachedItem == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
                 GrandDistilleryBlockEntity gdbe = (GrandDistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
                 if(gdbe != null) {
                     if (nbt.contains("inventory")) {
@@ -217,8 +215,7 @@ public class TooltipLoreBlockItem extends BlockItem {
                     }
                 }
             }
-            else if (stack.getItem() == BlockRegistry.VARIEGATOR.get().asItem()) {
-                CompoundTag nbt = stack.getOrCreateTag();
+            else if (cachedItem == BlockRegistry.VARIEGATOR.get().asItem()) {
                 VariegatorBlockEntity abe = (VariegatorBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
                 if(abe != null) {
                     if (nbt.contains("inventory")) {
