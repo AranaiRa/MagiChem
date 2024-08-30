@@ -1,21 +1,27 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ConjurerBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ConjurationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector2i;
 
 import static com.aranaira.magichem.block.entity.ConjurerBlockEntity.*;
 
@@ -59,9 +65,37 @@ public class ConjurerMenu extends AbstractContainerMenu {
         }
     }
 
+    private static final int SLOT_INVENTORY_BEGIN = 0;
+    private static final int SLOT_INVENTORY_COUNT = 36;
+
+    private static final Pair<Item, Integer>[] DIRSPEC = null;
+    private static final Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
+            new Vector2i( //Input slots
+                    SLOT_INVENTORY_COUNT + SLOT_INSERTION_CATALYST,
+                    SLOT_INVENTORY_COUNT + SLOT_INSERTION_CATALYST),
+            new Vector2i( //Input slots
+                    SLOT_INVENTORY_COUNT + SLOT_INSERTION_MATERIA,
+                    SLOT_INVENTORY_COUNT + SLOT_INSERTION_MATERIA),
+            new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
+    };
+    private static final Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
+            new Vector2i( //Input slots
+                    SLOT_INVENTORY_COUNT + SLOT_EXTRACTION_BOTTLES,
+                    SLOT_INVENTORY_COUNT + SLOT_EXTRACTION_BOTTLES),
+            new Vector2i( //Input slots
+                    SLOT_INVENTORY_COUNT + SLOT_EXTRACTION_OUTPUT,
+                    SLOT_INVENTORY_COUNT + SLOT_EXTRACTION_OUTPUT),
+            new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
+    };
+    private static final Pair<Integer, Vector2i> SPEC_CONTAINER = null;
+
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        return null;
+        ItemStack result = InventoryHelper.quickMoveStackHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY, SPEC_CONTAINER);
+
+        slots.get(pIndex).set(result);
+
+        return ItemStack.EMPTY;
     }
 
     @Override
