@@ -8,6 +8,9 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ConjurationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
 
@@ -61,6 +65,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
             return DATA_COUNT;
         }
     };
+    private static final Random r = new Random();
 
     public static final int
         SLOT_INSERTION_COUNT = 2, SLOT_INSERTION_CATALYST = 0, SLOT_INSERTION_MATERIA = 1,
@@ -302,6 +307,10 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
                     }
                 }
             }
+            //Particles
+            else {
+                entity.generateParticles();
+            }
 
             //Crafting logic
             {
@@ -381,5 +390,58 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
     public void destroyRouters() {
         getLevel().destroyBlock(getBlockPos().above(), true);
         getLevel().destroyBlock(getBlockPos().above().above(), true);
+    }
+
+    public void generateParticles() {
+        Vector3 center = new Vector3(getBlockPos().getX() + 0.5, getBlockPos().getY() + 1.5, getBlockPos().getZ() + 0.5);
+
+        //Spike lightning
+        if (getLevel().getGameTime() % 16 == 0) {
+
+            Vector3[] offsets = new Vector3[]{
+                    new Vector3(0.25, 0.125, 0.25),
+                    new Vector3(0.25, 0.125, -0.25),
+                    new Vector3(-0.25, 0.125, -0.25),
+                    new Vector3(-0.25, 0.125, 0.25),
+                    new Vector3(0.25, -0.125, 0.25),
+                    new Vector3(0.25, -0.125, -0.25),
+                    new Vector3(-0.25, -0.125, -0.25),
+                    new Vector3(-0.25, -0.125, 0.25)
+            };
+
+            for(int i=0; i<8; i++) {
+                if(r.nextFloat() < 0.375f) {
+                    getLevel().addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                    .setScale(2.5f).setMaxAge(32),
+                            center.x + offsets[i].x, center.y + offsets[i].y, center.z + offsets[i].z,
+                            center.x, center.y, center.z);
+                }
+            }
+        }
+        //Vertical lightning
+        if (getLevel().getGameTime() % 4 == 0) {
+
+            Vector3[] offsets = new Vector3[]{
+                    new Vector3(0, 0.5625, 0),
+                    new Vector3(0, -0.5625, 0),
+            };
+
+            for(int i=0; i<2; i++) {
+                getLevel().addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                .setMaxAge(20),
+                        center.x + offsets[i].x, center.y + offsets[i].y, center.z + offsets[i].z,
+                        center.x, center.y, center.z);
+            }
+        }
+        //Sparks
+        {
+            for (int i = 0; i < 2; i++) {
+                getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setGravity(r.nextFloat() * 0.005f).setMaxAge(30).setScale(0.025f)
+                                .setColor(96, 96, r.nextInt(128) + 127),
+                        center.x, center.y, center.z,
+                        r.nextDouble() * 0.05 - 0.025, r.nextDouble() * 0.035, r.nextDouble() * 0.05 - 0.025);
+            }
+        }
     }
 }
