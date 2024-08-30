@@ -11,6 +11,7 @@ import com.aranaira.magichem.item.MateriaJarItem;
 import com.aranaira.magichem.item.MateriaVesselItem;
 import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.aranaira.magichem.registry.EntitiesRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.rituals.IRitualContext;
 import com.mna.api.rituals.RitualEffect;
 import com.mna.api.timing.DelayedEventQueue;
@@ -222,10 +223,12 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
 
     private void returnReagentsToWorld(IRitualContext context) {
         for (ItemStack is : context.getCollectedReagents()) {
-            ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
-            ie.setItem(is);
-            ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
-            context.getLevel().addFreshEntity(ie);
+            if(is.getItem() != ItemRegistry.SUBLIMATION_PRIMER.get()) {
+                ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
+                ie.setItem(is);
+                ie.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY() + 1, context.getCenter().getZ() + 0.5);
+                context.getLevel().addFreshEntity(ie);
+            }
         }
         //Also refund PVD
         ItemEntity ie = new ItemEntity(EntityType.ITEM, context.getLevel());
