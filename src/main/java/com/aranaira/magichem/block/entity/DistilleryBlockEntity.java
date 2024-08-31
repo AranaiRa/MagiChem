@@ -72,6 +72,17 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
 
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
+                    ItemStack item = super.extractItem(slot, amount, simulate);
+                    item.removeTagKey("CustomModelData");
+                    return item;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+
+            @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {

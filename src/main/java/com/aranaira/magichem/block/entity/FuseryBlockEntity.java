@@ -77,6 +77,17 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
 
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
+                    ItemStack item = super.extractItem(slot, amount, simulate);
+                    item.removeTagKey("CustomModelData");
+                    return item;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+
+            @Override
             protected void onContentsChanged(int slot) {
                 if(slot == SLOT_RECIPE)
                     currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, getStackInSlot(SLOT_RECIPE));

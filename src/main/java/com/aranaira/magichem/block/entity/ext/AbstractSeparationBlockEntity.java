@@ -10,6 +10,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -266,6 +267,10 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
             for (ItemStack item : componentMateria) {
                 if (outputSlots.canAddItem(item)) {
+                    CompoundTag nbt = item.getOrCreateTag();
+                    nbt.putInt("CustomModelData", 1);
+                    item.setTag(nbt);
+                    
                     outputSlots.addItem(item);
                 } else {
                     pEntity.isStalled = true;
