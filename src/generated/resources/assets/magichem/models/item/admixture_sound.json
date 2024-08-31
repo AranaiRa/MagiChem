@@ -3,5 +3,13 @@
   "textures": {
     "layer0": "magichem:item/phial_admixture_fill",
     "layer1": "magichem:item/phial_admixture"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "magichem:item/materia_unbottled"
+    }
+  ]
 }

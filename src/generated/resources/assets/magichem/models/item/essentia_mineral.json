@@ -4,5 +4,13 @@
     "layer0": "magichem:item/phial_essentia_fill",
     "layer1": "magichem:item/phial_essentia",
     "layer2": "magichem:item/overlays/essentiaoverlay_mineral"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "magichem:item/essentia_unbottled_mineral"
+    }
+  ]
 }

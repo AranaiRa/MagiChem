@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "magichem:item/materia_unbottled_layer0",
+    "layer1": "magichem:item/materia_unbottled_layer1",
+    "layer2": "magichem:item/overlays/essentiaoverlay_water"
+  }
+}
