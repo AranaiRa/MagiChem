@@ -270,7 +270,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     CompoundTag nbt = item.getOrCreateTag();
                     nbt.putInt("CustomModelData", 1);
                     item.setTag(nbt);
-                    
+
                     outputSlots.addItem(item);
                 } else {
                     pEntity.isStalled = true;
