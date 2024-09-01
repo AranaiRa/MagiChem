@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BS ",
+    "S S",
+    " S "
+  ],
+  "key": {
+    "B": {
+      "item": "magichem:bleached_amethyst_shard"
+    },
+    "S": {
+      "item": "mna:transmuted_silver"
+    }
+  },
+  "result": {
+    "item": "mna:bangle"
+  }
+}
