@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "minecraft:basalt",
+  "materia": "magichem:admixture_demon",
+  "passive": {
+    "item": "minecraft:basalt",
+    "count": 1,
+    "period": 320
+  },
+  "supplied": {
+    "item": "minecraft:basalt",
+    "count": 8,
+    "period": 20,
+    "charge_usage": 1
+  }
+}
