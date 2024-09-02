@@ -570,6 +570,7 @@
 
   "construct.magichem:sort_materia": "Sort Materia from Device",
   "construct.magichem:sort_materia_from_container": "Sort Materia from Container",
+  "construct.magichem:provide_materia": "Provide Materia",
   "construct.magichem:query_check_vessel": "Condition: Check Vessel Fill",
   "construct.magichem:clean_alchemical_apparatus": "Clean Alchemical Device",
   "construct.magichem:query_has_grime_level": "Condition: Has Grime Level",
@@ -582,8 +583,13 @@
   "gui.mna.parameter.clean_alchemical_apparatus.point": "What alchemical device should the construct clean using water in its tank?",
 
   "gui.mna.parameter.sort_materia.point": "What alchemical device should the construct remove materia from?",
-  "gui.mna.parameter.sort_materia.area": "What area should the construct look for Materia Vessels inside of?",
-  "gui.mna.parameter.sort_materia.boolean": "Should the construct void excess materia that won't fit inside of a Materia Vessel?",
+  "gui.mna.parameter.sort_materia.area": "What area should the construct look for Materia Jars or Vessels inside of?",
+  "gui.mna.parameter.sort_materia.boolean": "Should the construct void excess materia that won't fit inside of a Materia Jar or Vessel?",
+
+  "gui.mna.parameter.provide_materia.point": "What alchemical device should the construct provide materia to?",
+  "gui.mna.parameter.provide_materia.area": "What area should the construct look for Materia Vessels inside of?",
+  "gui.mna.parameter.provide_materia.int": "How many crafts worth of materia should the construct try to transport at once?",
+  "gui.mna.parameter.provide_materia.boolean": "If the construct can't find all of the materia necessary, should it deliver what it can find anyway?",
 
   "gui.mna.parameter.query_check_vessel.point": "What Materia Vessel should the construct look at?",
   "gui.mna.parameter.query_check_vessel.int": "What percentage full must the Materia Vessel be?",

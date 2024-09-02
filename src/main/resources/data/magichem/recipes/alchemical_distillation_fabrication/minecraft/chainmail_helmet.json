@@ -1,0 +1,10 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:chainmail_helmet" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_protection", "count": 5 }
+  ]
+}

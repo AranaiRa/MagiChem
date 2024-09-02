@@ -2,21 +2,18 @@ package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.block.MateriaJarBlock;
 import com.aranaira.magichem.block.MateriaVesselBlock;
-import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.aranaira.magichem.registry.EntitiesRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.*;
@@ -25,7 +22,6 @@ import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskAreaParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskBooleanParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
-import com.mna.items.ItemInit;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -274,13 +270,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
 
                 if(hasDestination) {
 
-                    int stackLimit = Math.max(2, construct.getConstructData().getAffinityScore(Affinity.ARCANE) * 4);
-                    if (construct.getConstructData().calculateFluidCapacity() > 0) {
-                        FluidStack fluidInTank = construct.getFluidInTank(0);
-                        fluidInTank.getAmount();
-                        if (fluidInTank.isEmpty())
-                            stackLimit += 32;
-                    }
+                    int stackLimit = getCollectionLimit();
                     int amountToShrink = Math.min(stackLimit, stack.getCount());
                     stack.shrink(amountToShrink);
 
@@ -300,6 +290,17 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             }
         }
         return false;
+    }
+
+    private int getCollectionLimit() {
+        int stackLimit = Math.max(2, construct.getConstructData().getAffinityScore(Affinity.ARCANE) * 4);
+        if (construct.getConstructData().calculateFluidCapacity() > 0) {
+            FluidStack fluidInTank = construct.getFluidInTank(0);
+            fluidInTank.getAmount();
+            if (fluidInTank.isEmpty())
+                stackLimit += 32;
+        }
+        return stackLimit;
     }
 
     @NotNull

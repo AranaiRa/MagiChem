@@ -1,9 +1,12 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.gui.VariegatorMenu;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ColorationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -15,6 +18,7 @@ import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -44,11 +48,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.GROUNDED;
 
-public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
+public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IShlorpReceiver {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     public static final int
@@ -269,110 +274,108 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         return new VariegatorMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
-    public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pState, E e) {
-        if(e instanceof VariegatorBlockEntity vbe) {
-            if(!pLevel.isClientSide()) {
-                //Consume items in the insertion slot
-                {
-                    boolean changed = false;
-                    ItemStack insert = vbe.itemHandler.getStackInSlot(SLOT_DYE_INPUT);
-                    ItemStack bottles = vbe.itemHandler.getStackInSlot(SLOT_DYE_BOTTLES);
-                    //Check if we're inserting Admixture of Color
-                    if (insert.getItem() == ADMIXTURE_COLOR_STACK.getItem()) {
-                        //Make sure there's somewhere for the bottles to go
-                        if (bottles.getCount() < vbe.itemHandler.getSlotLimit(SLOT_DYE_BOTTLES)) {
+    public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pState, VariegatorBlockEntity pEntity) {
+        if(!pLevel.isClientSide()) {
+            //Consume items in the insertion slot
+            {
+                boolean changed = false;
+                ItemStack insert = pEntity.itemHandler.getStackInSlot(SLOT_DYE_INPUT);
+                ItemStack bottles = pEntity.itemHandler.getStackInSlot(SLOT_DYE_BOTTLES);
+                //Check if we're inserting Admixture of Color
+                if (insert.getItem() == ADMIXTURE_COLOR_STACK.getItem()) {
+                    //Make sure there's somewhere for the bottles to go
+                    if (bottles.getCount() < pEntity.itemHandler.getSlotLimit(SLOT_DYE_BOTTLES)) {
 
-                            //Allow overfill by one item for GUI aesthetic reasons
-                            if (vbe.dyeAdmixture < Config.variegatorMaxAdmixture) {
-                                vbe.dyeAdmixture += Config.variegatorAdmixturePerItem;
+                        //Allow overfill by one item for GUI aesthetic reasons
+                        if (pEntity.dyeAdmixture < Config.variegatorMaxAdmixture) {
+                            pEntity.dyeAdmixture += Config.variegatorAdmixturePerItem;
 
-                                insert.shrink(1);
-                                if (bottles.isEmpty()) {
-                                    bottles = new ItemStack(Items.GLASS_BOTTLE, 1);
-                                } else {
-                                    bottles.grow(1);
-                                }
-                                vbe.itemHandler.setStackInSlot(SLOT_DYE_BOTTLES, bottles);
-
-                                changed = true;
+                            insert.shrink(1);
+                            if (bottles.isEmpty()) {
+                                bottles = new ItemStack(Items.GLASS_BOTTLE, 1);
+                            } else {
+                                bottles.grow(1);
                             }
+                            pEntity.itemHandler.setStackInSlot(SLOT_DYE_BOTTLES, bottles);
+
+                            changed = true;
                         }
                     }
-                    //Otherwise, check if we're inserting dye
-                    else if (insert.getItem() instanceof DyeItem) {
-                        DyeColor color = DyeColor.getColor(insert);
-
-                        if (color != null) {
-                            int fill = vbe.getDyeFillByColor(color);
-                            //Allow overfill by one item for GUI aesthetic reasons
-                            if (fill < Config.variegatorMaxDye) {
-                                vbe.setDyeFillByColor(color, fill + Config.variegatorDyePerItem);
-
-                                insert.shrink(1);
-
-                                changed = true;
-                            }
-                        }
-                    }
-
-                    if (changed)
-                        vbe.syncAndSave();
                 }
-            } else {
-                //Animation drivers
-                {
-                    boolean hasItem = !getCurrentProcessingStack(vbe).isEmpty() ||
-                            !vbe.itemHandler.getStackInSlot(SLOT_OUTPUT_START).isEmpty() ||
-                            !vbe.itemHandler.getStackInSlot(SLOT_OUTPUT_START + 1).isEmpty() ||
-                            !vbe.itemHandler.getStackInSlot(SLOT_OUTPUT_START + 2).isEmpty();
+                //Otherwise, check if we're inserting dye
+                else if (insert.getItem() instanceof DyeItem) {
+                    DyeColor color = DyeColor.getColor(insert);
 
-                    if(hasItem) {
-                        vbe.beamFill = Math.min(1, vbe.beamFill + FILL_RATE);
-                    } else {
-                        vbe.beamFill = Math.max(0, vbe.beamFill - FILL_RATE);
+                    if (color != null) {
+                        int fill = pEntity.getDyeFillByColor(color);
+                        //Allow overfill by one item for GUI aesthetic reasons
+                        if (fill < Config.variegatorMaxDye) {
+                            pEntity.setDyeFillByColor(color, fill + Config.variegatorDyePerItem);
+
+                            insert.shrink(1);
+
+                            changed = true;
+                        }
                     }
+                }
 
-                    //Spawn particles
-                    if(vbe.beamFill == 1){
-                        float vOffset = pState.getValue(MagiChemBlockStateProperties.GROUNDED) ? 1.5f : -0.5f;
-                        Vector3 center = new Vector3(pPos.getX() + 0.5, pPos.getY() + vOffset, pPos.getZ() + 0.5);
+                if (changed)
+                    pEntity.syncAndSave();
+            }
+        } else {
+            //Animation drivers
+            {
+                boolean hasItem = !getCurrentProcessingStack(pEntity).isEmpty() ||
+                        !pEntity.itemHandler.getStackInSlot(SLOT_OUTPUT_START).isEmpty() ||
+                        !pEntity.itemHandler.getStackInSlot(SLOT_OUTPUT_START + 1).isEmpty() ||
+                        !pEntity.itemHandler.getStackInSlot(SLOT_OUTPUT_START + 2).isEmpty();
 
-                        if(vbe.selectedColor != -1) {
-                            if (vbe.getLevel().getGameTime() % 8 == 0) {
-                                int[] color = ColorUtils.getRGBIntTint(COLOR_GUI_ORDER[vbe.selectedColor]);
+                if(hasItem) {
+                    pEntity.beamFill = Math.min(1, pEntity.beamFill + FILL_RATE);
+                } else {
+                    pEntity.beamFill = Math.max(0, pEntity.beamFill - FILL_RATE);
+                }
 
-                                for (int i = 0; i < 6; i++) {
-                                    Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
-                                    vbe.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
-                                                    .setColor(color[0], color[1], color[2], 128)
-                                                    .setScale(0.09f).setMaxAge(16)
-                                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
-                                            center.x, center.y, center.z,
-                                            0, 0, 0);
-                                }
+                //Spawn particles
+                if(pEntity.beamFill == 1){
+                    float vOffset = pState.getValue(GROUNDED) ? 1.5f : -0.5f;
+                    Vector3 center = new Vector3(pPos.getX() + 0.5, pPos.getY() + vOffset, pPos.getZ() + 0.5);
+
+                    if(pEntity.selectedColor != -1) {
+                        if (pEntity.getLevel().getGameTime() % 8 == 0) {
+                            int[] color = ColorUtils.getRGBIntTint(COLOR_GUI_ORDER[pEntity.selectedColor]);
+
+                            for (int i = 0; i < 6; i++) {
+                                Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                                .setColor(color[0], color[1], color[2], 128)
+                                                .setScale(0.09f).setMaxAge(16)
+                                                .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                        center.x, center.y, center.z,
+                                        0, 0, 0);
                             }
                         }
                     }
                 }
             }
+        }
 
-            //Crafting logic
-            {
-                ColorationRecipe recipe = getActiveRecipe(vbe);
-                int operationTicks = getOperationTicks(vbe);
+        //Crafting logic
+        {
+            ColorationRecipe recipe = getActiveRecipe(pEntity);
+            int operationTicks = getOperationTicks(pEntity);
 
-                if(recipe != null) {
-                    if(canCraftItem(vbe, recipe)) {
-                        if(vbe.progress > operationTicks) {
-                            if(!pLevel.isClientSide())
-                                craftItem(vbe, recipe);
-                        } else {
-                            vbe.progress++;
-                        }
+            if(recipe != null) {
+                if(canCraftItem(pEntity, recipe)) {
+                    if(pEntity.progress > operationTicks) {
+                        if(!pLevel.isClientSide())
+                            craftItem(pEntity, recipe);
+                    } else {
+                        pEntity.progress++;
                     }
-                } else {
-                    vbe.progress = 0;
                 }
+            } else {
+                pEntity.progress = 0;
             }
         }
     }
@@ -615,5 +618,79 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
     public void destroyRouters() {
         BlockPos router = getBlockState().getValue(GROUNDED) ? getBlockPos().above() : getBlockPos().below();
         getLevel().destroyBlock(router, true);
+    }
+
+    ////////////////////
+    // MATERIA PROVISION AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean needsProvisioning() {
+        //We don't need provisioning if something is en route
+        if(activeProvisionRequests.contains((MateriaItem)ADMIXTURE_COLOR_STACK.getItem()))
+            return false;
+
+        return dyeAdmixture < Config.variegatorMaxAdmixture / 2;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        //Don't report that we have a materia need if there's already a pile incoming
+        if(!activeProvisionRequests.contains((MateriaItem)ADMIXTURE_COLOR_STACK.getItem())) {
+
+            //Otherwise, only report that Admixture of Color is necessary if we're below half capacity
+            if (dyeAdmixture < Config.variegatorMaxAdmixture) {
+                int needed = Math.max(0, Config.variegatorMaxAdmixture - dyeAdmixture);
+                if (needed > 0)
+                    result.put((MateriaItem) ADMIXTURE_COLOR_STACK.getItem(), (int)Math.ceil((float)needed / Config.variegatorAdmixturePerItem));
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(!activeProvisionRequests.contains(pMateriaItem))
+            activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(pStack.getItem() == ADMIXTURE_COLOR_STACK.getItem()) {
+            activeProvisionRequests.remove((MateriaItem)ADMIXTURE_COLOR_STACK.getItem());
+            dyeAdmixture += Config.variegatorAdmixturePerItem * pStack.getCount();
+            syncAndSave();
+        }
+    }
+
+    @Override
+    public int canAcceptStack(ItemStack pStack) {
+        int max = Config.variegatorMaxAdmixture / Config.variegatorAdmixturePerItem;
+        int capacity = max - pStack.getCount();
+
+        return Math.max(0, capacity);
+    }
+
+    @Override
+    public int insertStack(ItemStack pStack) {
+        if(pStack.getItem() == ADMIXTURE_COLOR_STACK.getItem()) {
+            int insertable = canAcceptStack(pStack);
+
+            dyeAdmixture += insertable * Config.variegatorAdmixturePerItem;
+            syncAndSave();
+            return pStack.getCount() - insertable;
+        }
+
+        return pStack.getCount();
     }
 }
