@@ -3,25 +3,32 @@ package com.aranaira.magichem.entities.constructs.ai;
 import com.aranaira.magichem.block.MateriaJarBlock;
 import com.aranaira.magichem.block.MateriaVesselBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
+import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.*;
 import com.mna.api.entities.construct.ai.ConstructAITask;
 import com.mna.api.entities.construct.ai.parameter.*;
+import com.mna.tools.math.Vector3;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
@@ -77,38 +84,57 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                 case SETUP -> {
                     this.filter = null;
 
-                    //TODO: should check to see if there's materia waiting in NBT
+                    //check to see if there was materia in transit; pick up where we left off if so
+                    CompoundTag persistentData = construct.asEntity().getPersistentData();
+                    boolean skipToInsertion = false;
+                    if(persistentData.contains("transitMateria")) {
+                        CompoundTag transitMateriaNBT = persistentData.getCompound("transitMateria");
+                        if(!(transitMateriaNBT.getString("id").equals("minecraft:air"))) {
+                            skipToInsertion = true;
+                        }
+                    }
 
-                    BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
-                    if(be instanceof IMateriaProvisionRequester impr) {
-                        if(impr.needsProvisioning()) {
-                            final Map<AbstractMateriaStorageBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
+                    if(skipToInsertion) {
+                        this.waitTimer = 21;
+                        this.filter = (MateriaItem)ForgeRegistries.ITEMS.getValue(new ResourceLocation(persistentData.getCompound("transitMateria").getString("id")));
+                        this.phase = ETaskPhase.WAIT_AT_VESSEL;
+                    } else {
+                        if(isAdvancedMode) {
+                            this.setMoveTarget(this.deviceTargetPos);
+                            this.phase = ETaskPhase.MOVE_TO_MIDPOINT;
+                        } else {
+                            BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
+                            if (be instanceof IMateriaProvisionRequester impr) {
+                                if (impr.needsProvisioning()) {
+                                    final Map<AbstractMateriaStorageBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
 
-                            boolean foundTarget = false;
-                            for (MateriaItem mi : impr.getProvisioningNeeds().keySet()) {
-                                for(AbstractMateriaStorageBlockEntity amsbe : allVessels.keySet()) {
-                                    if(amsbe.getMateriaType() == mi) {
-                                        this.jarTargetEntity = amsbe;
-                                        this.filter = mi;
+                                    boolean foundTarget = false;
+                                    for (MateriaItem mi : impr.getProvisioningNeeds().keySet()) {
+                                        for (AbstractMateriaStorageBlockEntity amsbe : allVessels.keySet()) {
+                                            if (amsbe.getMateriaType() == mi) {
+                                                this.jarTargetEntity = amsbe;
+                                                this.filter = mi;
 
-                                        this.waitTimer = 21;
-                                        this.phase = ETaskPhase.MOVE_TO_VESSEL;
-                                        this.takeFromTarget = allVessels.get(amsbe);
-                                        this.setMoveTarget(this.takeFromTarget);
-                                        foundTarget = true;
-                                        break;
+                                                this.waitTimer = 21;
+                                                this.phase = ETaskPhase.MOVE_TO_VESSEL;
+                                                this.takeFromTarget = allVessels.get(amsbe);
+                                                this.setMoveTarget(this.takeFromTarget);
+                                                foundTarget = true;
+                                                break;
+                                            }
+                                        }
                                     }
+                                    //diagnostic message that there isn't a jar with the right materia in zone
+
+                                    if (!foundTarget) {
+                                        this.waitTimer = 21;
+                                        this.phase = ETaskPhase.WAIT_TO_FAIL;
+                                    }
+                                } else {
+                                    this.waitTimer = 21;
+                                    this.phase = ETaskPhase.WAIT_TO_FAIL;
                                 }
                             }
-                            //diagnostic message that there isn't a jar with the right materia in zone
-
-                            if(!foundTarget) {
-                                this.waitTimer = 21;
-                                this.phase = ETaskPhase.WAIT_TO_FAIL;
-                            }
-                        } else {
-                            this.waitTimer = 21;
-                            this.phase = ETaskPhase.WAIT_TO_FAIL;
                         }
                     }
                 }
@@ -162,6 +188,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                 transitMateria = new ItemStack(item, count);
 
                                 impr.provide(transitMateria);
+                                constructNBT.put("transitMateria", ItemStack.EMPTY.serializeNBT());
 
                                 this.waitTimer = 21;
                                 this.phase = ETaskPhase.WAIT_AT_DEVICE;
@@ -173,6 +200,99 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                     this.waitTimer--;
                     if(this.waitTimer <= 0) {
                         this.setSuccessCode();
+                    }
+                }
+                case MOVE_TO_MIDPOINT -> {
+                    if(doMove(5.0F)) {
+                        BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
+                        if(be instanceof IMateriaProvisionRequester impr) {
+                            if(impr.needsProvisioning()) {
+                                final Map<AbstractMateriaStorageBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
+
+                                boolean foundTarget = false;
+                                for (MateriaItem mi : impr.getProvisioningNeeds().keySet()) {
+                                    for (AbstractMateriaStorageBlockEntity amsbe : allVessels.keySet()) {
+                                        if (amsbe.getMateriaType() == mi) {
+                                            this.filter = mi;
+                                            this.jarTargetEntity = amsbe;
+                                            foundTarget = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if(foundTarget) {
+                                    this.phase = ETaskPhase.CREATE_SHLORP;
+                                }
+                            } else {
+                                this.pushDiagnosticMessage("The device I'm monitoring doesn't need any materia provided right now. I'll just wait for a bit!", false);
+                                this.waitTimer = 41;
+                                this.phase = ETaskPhase.WAIT_TO_FAIL;
+                                construct.clearForcedAnimation();
+                            }
+                        }
+                    }
+                }
+                case CREATE_SHLORP -> {
+                    BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
+                    if(be instanceof IMateriaProvisionRequester impr) {
+                        if (impr.needsProvisioning()) {
+                            if (impr.getProvisioningNeeds().containsKey(filter)) {
+                                final int required = impr.getProvisioningNeeds().get(filter);
+
+                                int collectionLimit = Math.min(required * craftCount, getCollectionLimit());
+                                if (jarTargetEntity.getMateriaType() == filter) {
+                                    ItemStack extracted = jarTargetEntity.extractMateria(collectionLimit);
+                                    this.waitTimer = Math.round(extracted.getCount() * 1.5f) + 22;
+
+                                    if(extracted.getCount() > 0) {
+                                        //create shlorp
+                                        {
+                                            if(!extracted.isEmpty()) {
+                                                impr.setProvisioningInProgress(filter);
+
+                                                Level level = construct.asEntity().level();
+                                                BlockEntity startpoint = jarTargetEntity;
+                                                BlockEntity endpoint = level.getBlockEntity(deviceTargetPos);
+
+                                                if (endpoint != null && startpoint != null) {
+                                                    Vector3 sP, sO, sT;
+                                                    Vector3 eP = new Vector3(endpoint.getBlockPos().getX(), endpoint.getBlockPos().getY(), endpoint.getBlockPos().getZ());
+
+                                                    sP = new Vector3(startpoint.getBlockPos().getX(), startpoint.getBlockPos().getY(), startpoint.getBlockPos().getZ());
+
+                                                    Pair<Vector3, Vector3> defaultOriginAndTangent = jarTargetEntity.getDefaultOriginAndTangent();
+                                                    sO = defaultOriginAndTangent.getFirst();
+                                                    sT = defaultOriginAndTangent.getSecond();
+
+                                                    ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
+                                                    shlorp.setPos(new Vec3(sP.x, sP.y, sP.z));
+                                                    shlorp.configure(
+                                                            sP, sO, sT,
+                                                            eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 2.5f + 1f),
+                                                            0.035f, 0.0625f,
+                                                            4 + extracted.getCount(),
+                                                            (MateriaItem) extracted.getItem(),
+                                                            extracted.getCount(),
+                                                            ShlorpParticleMode.NONE);
+                                                    level.addFreshEntity(shlorp);
+                                                }
+                                            }
+                                        }
+
+                                        InteractionHand interactionHand = construct.getHandWithCapability(ConstructCapability.CAST_SPELL).get();
+                                        if(interactionHand == InteractionHand.MAIN_HAND)
+                                            construct.forceAnimation(Animations.CHANNEL_LEFT, true);
+                                        else
+                                            construct.forceAnimation(Animations.CHANNEL_RIGHT, true);
+
+                                        this.pushDiagnosticMessage("I moved " + extracted.getCount() + " " + getTranslatedNameFromItem(this.filter) + " to the device, boss. Shloop!", true);
+                                    }
+
+                                    this.phase = ETaskPhase.WAIT_AT_DEVICE;
+                                }
+                            }
+                        }
                     }
                 }
                 case WAIT_TO_FAIL -> {
