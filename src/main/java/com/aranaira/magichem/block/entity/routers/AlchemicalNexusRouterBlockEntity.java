@@ -2,13 +2,11 @@ package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
@@ -249,13 +247,13 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     }
 
     @Override
-    public int canAcceptStack(ItemStack pStack) {
-        return getMaster().canAcceptStack(pStack);
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        return getMaster().canAcceptStackFromShlorp(pStack);
     }
 
     @Override
-    public int insertStack(ItemStack pStack) {
-        return getMaster().insertStack(pStack);
+    public int insertStackFromShlorp(ItemStack pStack) {
+        return getMaster().insertStackFromShlorp(pStack);
     }
 
     @Override

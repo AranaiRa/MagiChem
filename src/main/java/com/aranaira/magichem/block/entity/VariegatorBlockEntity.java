@@ -674,7 +674,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
     }
 
     @Override
-    public int canAcceptStack(ItemStack pStack) {
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
         int max = Config.variegatorMaxAdmixture / Config.variegatorAdmixturePerItem;
         int capacity = max - pStack.getCount();
 
@@ -682,15 +682,11 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
     }
 
     @Override
-    public int insertStack(ItemStack pStack) {
+    public int insertStackFromShlorp(ItemStack pStack) {
         if(pStack.getItem() == ADMIXTURE_COLOR_STACK.getItem()) {
-            int insertable = canAcceptStack(pStack);
-
-            dyeAdmixture += insertable * Config.variegatorAdmixturePerItem;
-            syncAndSave();
-            return pStack.getCount() - insertable;
+            provide(pStack);
         }
 
-        return pStack.getCount();
+        return 0;
     }
 }

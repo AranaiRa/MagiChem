@@ -1,7 +1,9 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.ConjurerMenu;
 import com.aranaira.magichem.item.MateriaItem;
@@ -14,6 +16,7 @@ import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -41,9 +44,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
-public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
+public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester {
 
     protected LazyOptional<IItemHandler>
             lazyInsertionItemHandler = LazyOptional.empty(),
@@ -443,5 +447,78 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
                         r.nextDouble() * 0.05 - 0.025, r.nextDouble() * 0.035, r.nextDouble() * 0.05 - 0.025);
             }
         }
+    }
+
+    ////////////////////
+    // MATERIA PROVISION AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean needsProvisioning() {
+        //We don't need provisioning if something is en route
+        if(activeProvisionRequests.contains(recipe.getMateria()))
+            return false;
+
+        return materiaAmount < Config.conjurerMateriaCapacity / 2;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        //We obviously don't need materia provided if we don't have a recipe
+        if(recipe != null) {
+            //Don't report that we have a materia need if there's already a pile incoming
+            if (!activeProvisionRequests.contains(recipe.getMateria())) {
+                //Otherwise, only report that Admixture of Color is necessary if we're below half capacity
+                if (materiaAmount < Config.variegatorMaxAdmixture) {
+                    int needed = Math.max(0, Config.conjurerMateriaCapacity - materiaAmount);
+                    if (needed > 0)
+                        result.put(recipe.getMateria(), (int) Math.ceil((float) needed / Config.conjurerPointsPerDram));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(!activeProvisionRequests.contains(pMateriaItem))
+            activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(pStack.getItem() == recipe.getMateria()) {
+            activeProvisionRequests.remove(recipe.getMateria());
+            materiaAmount += Config.conjurerPointsPerDram * pStack.getCount();
+            materiaType = recipe.getMateria();
+            syncAndSave();
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        int max = (int)Math.ceil((float)Config.conjurerMateriaCapacity / (float)Config.conjurerPointsPerDram);
+        int capacity = max - pStack.getCount();
+
+        return Math.max(0, capacity);
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() == recipe.getMateria()) {
+            provide(pStack);
+        }
+
+        return 0;
     }
 }

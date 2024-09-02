@@ -190,7 +190,7 @@ public abstract class AbstractMateriaStorageBlockEntity extends BlockEntity impl
     public abstract int getStorageLimit();
 
     @Override
-    public int canAcceptStack(ItemStack pStack) {
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
         if(pStack.getItem() instanceof MateriaItem mi) {
             if(getMateriaType() == mi) {
                 int remainingSpace = getStorageLimit() - currentStock;
@@ -203,7 +203,7 @@ public abstract class AbstractMateriaStorageBlockEntity extends BlockEntity impl
     }
 
     @Override
-    public int insertStack(ItemStack pStack) {
+    public int insertStackFromShlorp(ItemStack pStack) {
         if(pStack.getItem() instanceof MateriaItem mi) {
             int count = pStack.getCount();
             if(this.currentMateriaType == null) {

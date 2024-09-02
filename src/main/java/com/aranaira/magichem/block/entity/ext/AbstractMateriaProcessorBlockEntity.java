@@ -76,7 +76,7 @@ public class AbstractMateriaProcessorBlockEntity extends BlockEntity implements 
     }
 
     @Override
-    public int canAcceptStack(ItemStack pStack) {
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
         for(Triplet<MateriaItem, Integer, Boolean> pair : satisfactionDemands) {
             if(pStack.getItem() instanceof MateriaItem mi) {
                 if(mi == pair.getFirst())
@@ -88,7 +88,7 @@ public class AbstractMateriaProcessorBlockEntity extends BlockEntity implements 
     }
 
     @Override
-    public int insertStack(ItemStack pStack) {
+    public int insertStackFromShlorp(ItemStack pStack) {
         satisfy(pStack);
 
         return -1;

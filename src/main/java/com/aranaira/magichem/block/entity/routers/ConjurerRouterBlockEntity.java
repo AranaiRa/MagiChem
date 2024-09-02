@@ -2,7 +2,10 @@ package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.entity.ConjurerBlockEntity;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -16,6 +19,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,10 +28,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+
 import static com.aranaira.magichem.block.ConjurerRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CONJURER;
 
-public class ConjurerRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction {
+public class ConjurerRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester {
     private BlockPos masterPos;
     private ConjurerBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -127,5 +133,40 @@ public class ConjurerRouterBlockEntity extends BlockEntity implements MenuProvid
             getLevel().destroyBlock(getBlockPos().below(), true);
             getLevel().destroyBlock(getBlockPos().below().below(), true);
         }
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        return getMaster().needsProvisioning();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        return getMaster().getProvisioningNeeds();
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        getMaster().setProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        getMaster().cancelProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        getMaster().provide(pStack);
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        return getMaster().canAcceptStackFromShlorp(pStack);
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        return getMaster().insertStackFromShlorp(pStack);
     }
 }
