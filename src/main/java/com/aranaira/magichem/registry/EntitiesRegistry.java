@@ -1,7 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.entities.InfusionRitualVFXEntity;
+import com.aranaira.magichem.entities.SublimationRitualVFXEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.entities.ThrownThunderstoneEntity;
 import net.minecraft.world.entity.EntityType;
@@ -20,7 +20,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class EntitiesRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES;
     public static final RegistryObject<EntityType<ShlorpEntity>> SHLORP_ENTITY;
-    public static final RegistryObject<EntityType<InfusionRitualVFXEntity>> INFUSION_RITUAL_VFX_ENTITY;
+    public static final RegistryObject<EntityType<SublimationRitualVFXEntity>> INFUSION_RITUAL_VFX_ENTITY;
     public static final RegistryObject<EntityType<ThrownThunderstoneEntity>> THROWN_THUNDERSTONE_ENTITY;
 
     public static void register(IEventBus eventBus) {
@@ -37,7 +37,7 @@ public class EntitiesRegistry {
         );
 
         INFUSION_RITUAL_VFX_ENTITY = ENTITY_TYPES.register("infusion_ritual_vfx", () ->
-                Builder.of(InfusionRitualVFXEntity::new, MobCategory.MISC)
+                Builder.of(SublimationRitualVFXEntity::new, MobCategory.MISC)
                 .sized(0.1f, 0.8f)
                 .build(MagiChemMod.MODID+":infusion_ritual_vfx")
         );

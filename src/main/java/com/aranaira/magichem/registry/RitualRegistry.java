@@ -1,7 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.ritual.RitualEffectAlchemicalInfusion;
+import com.aranaira.magichem.ritual.RitualEffectAlchemicalSublimation;
 import com.mna.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,7 +21,7 @@ public class RitualRegistry {
                     //Ritual of the Balanced Scales
                     helper.register(
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-balanced_scales"),
-                            new RitualEffectAlchemicalInfusion(new ResourceLocation(MagiChemMod.MODID, "rituals/balanced_scales"))
+                            new RitualEffectAlchemicalSublimation(new ResourceLocation(MagiChemMod.MODID, "rituals/balanced_scales"))
                     );
                 });
     }

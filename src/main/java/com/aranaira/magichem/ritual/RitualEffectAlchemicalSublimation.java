@@ -2,7 +2,7 @@ package com.aranaira.magichem.ritual;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
-import com.aranaira.magichem.entities.InfusionRitualVFXEntity;
+import com.aranaira.magichem.entities.SublimationRitualVFXEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.VesselData;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
@@ -41,7 +41,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class RitualEffectAlchemicalInfusion extends RitualEffect {
+public class RitualEffectAlchemicalSublimation extends RitualEffect {
 
     private SublimationRitualRecipe recipe;
 
@@ -55,7 +55,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
             RITUAL_VFX_HEIGHT = 2.25f;
     private static final Random r = new Random();
 
-    public RitualEffectAlchemicalInfusion(ResourceLocation ritualName) {
+    public RitualEffectAlchemicalSublimation(ResourceLocation ritualName) {
         super(ritualName);
     }
 
@@ -123,7 +123,7 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
             return false;
         }
 
-        InfusionRitualVFXEntity irve = new InfusionRitualVFXEntity(EntitiesRegistry.INFUSION_RITUAL_VFX_ENTITY.get(), context.getLevel());
+        SublimationRitualVFXEntity irve = new SublimationRitualVFXEntity(EntitiesRegistry.INFUSION_RITUAL_VFX_ENTITY.get(), context.getLevel());
         irve.configure(context.getCenter(), recipe);
         irve.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY(), context.getCenter().getZ() + 0.5);
         context.getLevel().addFreshEntity(irve);
@@ -449,30 +449,28 @@ public class RitualEffectAlchemicalInfusion extends RitualEffect {
         VesselData lv = pVesselData.getFirst();
         VesselData rv = pVesselData.getSecond();
         Vector3 centerPos = new Vector3(pContext.getCenter()).add(new Vector3(0.5, RITUAL_VFX_HEIGHT, 0.5));
-        boolean isFirstVessel;
 
         ShlorpEntity shlorpLeft = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pContext.getLevel());
-        isFirstVessel = lv.vesselBlockEntity.getMateriaType() == pVesselData.getFirst().type;
         shlorpLeft.setPos(new Vec3(lv.origin.x, lv.origin.y, lv.origin.z));
         shlorpLeft.configure(
                 lv.origin, Vector3.zero(), lv.tangentVessel,
                 centerPos, Vector3.zero(), lv.tangentCenter,
                 0.035f, 0.03125f,
-                2 + Math.min(40, isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount),
-                isFirstVessel ? pVesselData.getFirst().type : pVesselData.getSecond().type,
-                isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount,
+                2 + Math.min(40, pVesselData.getFirst().amount),
+                pVesselData.getFirst().type,
+                pVesselData.getFirst().amount,
                 ShlorpParticleMode.INVERSE_ENTRY_TANGENT);
         pContext.getLevel().addFreshEntity(shlorpLeft);
 
         ShlorpEntity shlorpRight = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), pContext.getLevel());
-        isFirstVessel = rv.vesselBlockEntity.getMateriaType() == pVesselData.getFirst().type;
         shlorpRight.setPos(new Vec3(rv.origin.x, rv.origin.y, rv.origin.z));
         shlorpRight.configure(
                 rv.origin, Vector3.zero(), rv.tangentVessel,
                 centerPos, Vector3.zero(), rv.tangentCenter,
                 0.035f, 0.03125f,
-                2 + Math.min(40, isFirstVessel ? pVesselData.getFirst().amount : pVesselData.getSecond().amount),
-                pVesselData.getSecond().type, pVesselData.getSecond().amount,
+                2 + Math.min(40, pVesselData.getSecond().amount),
+                pVesselData.getSecond().type,
+                pVesselData.getSecond().amount,
                 ShlorpParticleMode.INVERSE_ENTRY_TANGENT);
         pContext.getLevel().addFreshEntity(shlorpRight);
     }

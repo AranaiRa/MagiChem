@@ -2,7 +2,7 @@ package com.aranaira.magichem.entities;
 
 import com.aranaira.magichem.foundation.VesselData;
 import com.aranaira.magichem.recipe.SublimationRitualRecipe;
-import com.aranaira.magichem.ritual.RitualEffectAlchemicalInfusion;
+import com.aranaira.magichem.ritual.RitualEffectAlchemicalSublimation;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mojang.datafixers.util.Pair;
@@ -24,7 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Random;
 
-public class InfusionRitualVFXEntity extends Entity implements IEntityAdditionalSpawnData {
+public class SublimationRitualVFXEntity extends Entity implements IEntityAdditionalSpawnData {
     private static final Random r = new Random();
     private BlockPos ritualCenter;
     private SublimationRitualRecipe recipe;
@@ -32,9 +32,9 @@ public class InfusionRitualVFXEntity extends Entity implements IEntityAdditional
     private int remainingTicks, state;
     private static final int
             STATE_ERROR = -1, STATE_WINDUP = 0, STATE_BUILDUP = 1, STATE_BOOM = 2, STATE_CLEANUP = 3,
-            DURATION_ERROR = 200, DURATION_WINDUP = 10, DURATION_BUILDUP = RitualEffectAlchemicalInfusion.RITUAL_LIFESPAN - 4, DURATION_BOOM = 4;
+            DURATION_ERROR = 200, DURATION_WINDUP = 10, DURATION_BUILDUP = RitualEffectAlchemicalSublimation.RITUAL_LIFESPAN - 4, DURATION_BOOM = 4;
 
-    public InfusionRitualVFXEntity(EntityType<?> pEntityType, Level pLevel) {
+    public SublimationRitualVFXEntity(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
@@ -73,7 +73,7 @@ public class InfusionRitualVFXEntity extends Entity implements IEntityAdditional
     }
 
     private void doInitialStateCheck() {
-        this.vesselData = RitualEffectAlchemicalInfusion.getVesselPositions(this.level(), ritualCenter, recipe);
+        this.vesselData = RitualEffectAlchemicalSublimation.getVesselPositions(this.level(), ritualCenter, recipe);
         VesselData lv = vesselData.getFirst();
         VesselData rv = vesselData.getSecond();
 
@@ -124,7 +124,7 @@ public class InfusionRitualVFXEntity extends Entity implements IEntityAdditional
     @Override
     public void tick() {
         if(ritualCenter != null && recipe != null){
-            Vec3 center = new Vec3(ritualCenter.getX() + 0.5D, ritualCenter.getY() + RitualEffectAlchemicalInfusion.RITUAL_VFX_HEIGHT, ritualCenter.getZ() + 0.5D);
+            Vec3 center = new Vec3(ritualCenter.getX() + 0.5D, ritualCenter.getY() + RitualEffectAlchemicalSublimation.RITUAL_VFX_HEIGHT, ritualCenter.getZ() + 0.5D);
 
             //putter about for a bit
             if (state == STATE_ERROR) {
@@ -163,7 +163,7 @@ public class InfusionRitualVFXEntity extends Entity implements IEntityAdditional
             //build up the visuals
             else if (state == STATE_BUILDUP) {
                 //center orb
-                float centerScale = (float) (RitualEffectAlchemicalInfusion.RITUAL_LIFESPAN - remainingTicks) / (float) RitualEffectAlchemicalInfusion.RITUAL_LIFESPAN;
+                float centerScale = (float) (RitualEffectAlchemicalSublimation.RITUAL_LIFESPAN - remainingTicks) / (float) RitualEffectAlchemicalSublimation.RITUAL_LIFESPAN;
                 this.level().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
                                 .setColor(22, 94, 69).setScale(0.2f + 2.2f * centerScale),
                         center.x, center.y, center.z,
