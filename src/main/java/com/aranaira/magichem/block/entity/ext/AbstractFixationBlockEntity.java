@@ -247,6 +247,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         int bottlesToInsert = 0;
         SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
 
+        //TODO: Handle case where both bottled and unbottled items are present at the same time
         for(ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
             bottlesToInsert += is.getCount();
         }
@@ -283,17 +284,33 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
 
             //Remove component items from inputs
             for (ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
-                inputs.removeItemType(is.getItem(), is.getCount());
+                ItemStack itemsToRemove = is.copy();
+
+                for(int i=pVarFunc.apply(IDs.SLOT_INPUT_START) + pVarFunc.apply(IDs.SLOT_INPUT_COUNT) - 1; i>=pVarFunc.apply(IDs.SLOT_INPUT_START); i--) {
+                    ItemStack stackInSlot = pEntity.itemHandler.getStackInSlot(i);
+                    if(stackInSlot.isEmpty())
+                        continue;
+
+                    if(stackInSlot.getItem() == itemsToRemove.getItem()) {
+                        int removalLimit = Math.max(stackInSlot.getCount(), itemsToRemove.getCount());
+                        if (stackInSlot.hasTag()) {
+                            CompoundTag nbt = stackInSlot.getTag();
+                            if (nbt.contains("CustomModelData")) {
+                                bottlesToInsert -= removalLimit;
+                            }
+                        }
+                        stackInSlot.shrink(removalLimit);
+                        pEntity.itemHandler.setStackInSlot(i, stackInSlot);
+
+                        if (stackInSlot.isEmpty())
+                            break;
+                    }
+                }
             }
 
             //Overwrite final output slots with the outcome
             for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
                 pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, output.getItem(i));
-            }
-
-            //Overwrite final input slots with the outcome
-            for (int i = 0; i < pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
-                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START) + i, inputs.getItem(i));
             }
 
             //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
