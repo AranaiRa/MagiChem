@@ -212,6 +212,23 @@ public class MateriaVesselBlock extends BaseEntityBlock {
         return stack;
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+            if(amsbe.getCurrentStock() > 0) {
+                return Math.max(1, Math.round(amsbe.getCurrentStockPercent() * 15));
+            }
+        }
+
+        return super.getAnalogOutputSignal(pState, pLevel, pPos);
+    }
+
     static {
         SHAPE_JAR = Block.box(3.0D, 0.0D,  3.0D, 13.0D, 14.0D, 13.0D);
         SHAPE_LID = Block.box(5.0D, 12.5D, 5.0D, 11.0D, 15.5D, 11.0D);

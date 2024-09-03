@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -158,6 +159,23 @@ public class MateriaJarBlock extends BaseEntityBlock {
         }
 
         return stack;
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+            if(amsbe.getCurrentStock() > 0) {
+                return Math.max(1, Math.round(amsbe.getCurrentStockPercent() * 15));
+            }
+        }
+
+        return super.getAnalogOutputSignal(pState, pLevel, pPos);
     }
 
     static {
