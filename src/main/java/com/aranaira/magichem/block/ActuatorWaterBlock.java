@@ -8,6 +8,7 @@ import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -197,9 +198,16 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
                         }
                         //If container is empty or has steam
                         else if(fluidInItem.isEmpty() || fluidInItem.getFluid() == FluidRegistry.STEAM.get()) {
-                            int capacity = cap.fill(new FluidStack(FluidRegistry.STEAM.get(), Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
-                            FluidStack drainedFS = awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), Math.min(capacity, awbe.getFluidInTank(ActuatorWaterBlockEntity.TANK_ID_STEAM).getAmount())), IFluidHandler.FluidAction.EXECUTE);
-                            cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+                            if(player.getItemInHand(hand).getItem() == Items.BUCKET) {
+                                if(awbe.getFluidInTank(0).getAmount() >= 1000) {
+                                    awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                                    player.setItemInHand(hand, new ItemStack(ItemRegistry.STEAM_BUCKET.get()));
+                                }
+                            } else {
+                                int capacity = cap.fill(new FluidStack(FluidRegistry.STEAM.get(), Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                                FluidStack drainedFS = awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), Math.min(capacity, awbe.getFluidInTank(ActuatorWaterBlockEntity.TANK_ID_STEAM).getAmount())), IFluidHandler.FluidAction.EXECUTE);
+                                cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+                            }
                         }
                     });
                 }

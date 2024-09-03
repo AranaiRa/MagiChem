@@ -8,6 +8,7 @@ import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.ISpellInteractibleBlock;
@@ -23,6 +24,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -190,9 +192,16 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
 
                         //If container is empty or has steam
                         if(fluid.isEmpty() || fluid.getFluid() == FluidRegistry.SMOKE.get()) {
-                            int capacity = cap.fill(new FluidStack(FluidRegistry.SMOKE.get(), Config.infernoEngineTankCapacity), IFluidHandler.FluidAction.SIMULATE);
-                            FluidStack drainedFS = afbe.drain(new FluidStack(FluidRegistry.SMOKE.get(), Math.min(capacity, afbe.getFluidInTank(0).getAmount())), IFluidHandler.FluidAction.EXECUTE);
-                            cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+                            if(player.getItemInHand(hand).getItem() == Items.BUCKET) {
+                                if(afbe.getFluidInTank(0).getAmount() >= 1000) {
+                                    afbe.drain(new FluidStack(FluidRegistry.SMOKE.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
+                                    player.setItemInHand(hand, new ItemStack(ItemRegistry.SMOKE_BUCKET.get()));
+                                }
+                            } else {
+                                int capacity = cap.fill(new FluidStack(FluidRegistry.SMOKE.get(), Config.infernoEngineTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                                FluidStack drainedFS = afbe.drain(new FluidStack(FluidRegistry.SMOKE.get(), Math.min(capacity, afbe.getFluidInTank(0).getAmount())), IFluidHandler.FluidAction.EXECUTE);
+                                cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
+                            }
                         }
                     });
                 }

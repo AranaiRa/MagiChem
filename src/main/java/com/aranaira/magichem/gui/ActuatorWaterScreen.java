@@ -114,10 +114,10 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
     protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
         long cycle = Minecraft.getInstance().level.getGameTime() % 20;
 
-        gui.blit(TEXTURE, x+10, y-30, 0, 230, 156, 26);
+        gui.blit(TEXTURE, x+2, y-30, 0, 230, 172, 26);
         if(cycle < 10) {
-            gui.blit(TEXTURE, x + 17, y - 23, 156, 244, 12, 12);
-            gui.blit(TEXTURE, x + 147, y - 23, 156, 244, 12, 12);
+            gui.blit(TEXTURE, x + 9, y - 23, 172, 244, 12, 12);
+            gui.blit(TEXTURE, x + 155, y - 23, 172, 244, 12, 12);
         }
     }
 
