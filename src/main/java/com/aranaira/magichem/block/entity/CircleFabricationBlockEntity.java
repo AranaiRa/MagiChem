@@ -215,7 +215,21 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     public void dropInventoryToWorld() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
         for (int i = 0; i< itemHandler.getSlots(); i++) {
-            inventory.setItem(i, itemHandler.getStackInSlot(i));
+            final ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+            boolean dropItem = false;
+            if(stackInSlot.getItem() instanceof MateriaItem) {
+                if(stackInSlot.hasTag()) {
+                    if(!stackInSlot.getTag().contains("CustomModelData")) {
+                        dropItem = true;
+                    }
+                } else {
+                    dropItem = true;
+                }
+            } else {
+                dropItem = true;
+            }
+
+            if(dropItem) inventory.setItem(i, stackInSlot);
         }
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
@@ -346,7 +360,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
                     continue;
 
                 if(stackInSlot.getItem() == itemsToRemove.getItem()) {
-                    int removalLimit = Math.max(stackInSlot.getCount(), itemsToRemove.getCount());
+                    int removalLimit = Math.min(stackInSlot.getCount(), itemsToRemove.getCount());
                     if (stackInSlot.hasTag()) {
                         CompoundTag nbt = stackInSlot.getTag();
                         if (nbt.contains("CustomModelData")) {
