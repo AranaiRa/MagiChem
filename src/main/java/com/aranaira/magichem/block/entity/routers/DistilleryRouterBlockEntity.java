@@ -33,8 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
@@ -52,7 +51,7 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
 
     public DistilleryRouterType getRouterType() {
 
-        int routerType = getBlockState().getValue(ROUTER_TYPE_CENTRIFUGE);
+        int routerType = getBlockState().getValue(ROUTER_TYPE_DISTILLERY);
         if(routerType == DistilleryRouterBlock.ROUTER_TYPE_PLUG_LEFT) {
             return DistilleryRouterType.PLUG_LEFT;
         } else if(routerType == DistilleryRouterBlock.ROUTER_TYPE_ABOVE) {
