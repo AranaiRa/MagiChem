@@ -1,13 +1,19 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
+import com.aranaira.magichem.item.AdmixtureItem;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.mna.tools.math.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
@@ -39,10 +45,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
-public class CircleFabricationBlockEntity extends BlockEntity implements MenuProvider, ContainerData, Consumer<FriendlyByteBuf> {
+public class CircleFabricationBlockEntity extends BlockEntity implements MenuProvider, ContainerData, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester {
     public static final int
             SLOT_COUNT = 21,
             SLOT_BOTTLES = 0,
@@ -73,6 +81,36 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     private boolean hasSufficientPower = false;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                if(currentRecipe != null) {
+                    if(((slot - SLOT_INPUT_START) / 2) >= currentRecipe.getComponentMateria().size())
+                        return false;
+                    ItemStack component = currentRecipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
+                    return stack.getItem().equals(component.getItem());
+                } else {
+                    return false;
+                }
+            }
+
+            return super.isItemValid(slot, stack);
+        }
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                ItemStack item = super.extractItem(slot, amount, simulate);
+                if (item.hasTag()) {
+                    CompoundTag nbt = item.getTag();
+                    if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
+                }
+                return item;
+            }
+
+            return super.extractItem(slot, amount, simulate);
+        }
+
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -298,6 +336,32 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             bottlesToInsert += is.getCount();
         }
 
+        //Remove component items from inputs
+        for (ItemStack is : entity.currentRecipe.getComponentMateria()) {
+            ItemStack itemsToRemove = is.copy();
+
+            for(int i = SLOT_INPUT_START + SLOT_INPUT_COUNT - 1; i>=SLOT_INPUT_START; i--) {
+                ItemStack stackInSlot = entity.itemHandler.getStackInSlot(i);
+                if(stackInSlot.isEmpty())
+                    continue;
+
+                if(stackInSlot.getItem() == itemsToRemove.getItem()) {
+                    int removalLimit = Math.max(stackInSlot.getCount(), itemsToRemove.getCount());
+                    if (stackInSlot.hasTag()) {
+                        CompoundTag nbt = stackInSlot.getTag();
+                        if (nbt.contains("CustomModelData")) {
+                            bottlesToInsert -= removalLimit;
+                        }
+                    }
+                    stackInSlot.shrink(removalLimit);
+                    entity.itemHandler.setStackInSlot(i, stackInSlot);
+
+                    if (stackInSlot.isEmpty())
+                        break;
+                }
+            }
+        }
+
         //TODO: Uncommment the original line once the bottle slot stack size has been expanded
         //Fill Bottle Slot
         //entity.itemHandler.insertItem(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert), false);
@@ -319,18 +383,6 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
             bottles.setCount(count);
         }
         Containers.dropContents(entity.getLevel(), entity.getBlockPos(), bottleSpill);
-
-        //Consume Materia
-        for(ItemStack materia : recipe.getComponentMateria()) {
-            int remaining = materia.getCount();
-            for(int i=SLOT_INPUT_START + SLOT_INPUT_COUNT - 1; i >= SLOT_INPUT_START; i--) {
-                if(entity.itemHandler.getStackInSlot(i).getItem() == materia.getItem()) {
-                    remaining = remaining - entity.itemHandler.extractItem(i, remaining, false).getCount();
-                    if (remaining == 0)
-                        break;
-                }
-            }
-        }
 
         SimpleContainer insert = getOutputAsContainer(entity);
         insert.addItem(recipe.getAlchemyObject());
@@ -478,5 +530,120 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     public CircleFabricationBlockEntity readFrom(FriendlyByteBuf friendlyByteBuf){
         this.hasSufficientPower = friendlyByteBuf.readBoolean();
         return this;
+    }
+
+    ////////////////////
+    // MATERIA PROVISION AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean needsProvisioning() {
+        if(currentRecipe == null)
+            return false;
+
+        return getProvisioningNeeds().size() > 0;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        if(currentRecipe != null) {
+            for (ItemStack recipeMateria : currentRecipe.getComponentMateria()) {
+                if(activeProvisionRequests.contains((MateriaItem)recipeMateria.getItem()))
+                    continue;
+
+                int amountToAdd = recipeMateria.getCount();
+                for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                    ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+                    if(stackInSlot.getItem() == recipeMateria.getItem()) {
+                        amountToAdd -= stackInSlot.getCount();
+
+                        if(amountToAdd <= 0)
+                            break;
+                    }
+                }
+
+                if(amountToAdd > 0)
+                    result.put((MateriaItem)recipeMateria.getItem(), amountToAdd);
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        CompoundTag nbt = pStack.getOrCreateTag();
+        nbt.putInt("CustomModelData", 1);
+        pStack.setTag(nbt);
+        if(!pStack.isEmpty()) {
+            activeProvisionRequests.remove((MateriaItem) pStack.getItem());
+
+            boolean changed = false;
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (itemHandler.isItemValid(i, pStack)) {
+                    ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+                    if (stackInSlot.isEmpty()) {
+                        int slotLimit = itemHandler.getSlotLimit(i);
+                        if (pStack.getCount() <= slotLimit) {
+                            itemHandler.setStackInSlot(i, pStack.copy());
+                            pStack.shrink(pStack.getCount());
+                            changed = true;
+                        } else {
+                            ItemStack copy = pStack.copy();
+                            copy.setCount(slotLimit);
+                            pStack.shrink(slotLimit);
+                            itemHandler.setStackInSlot(i, copy);
+                            changed = true;
+                        }
+
+                        if (pStack.isEmpty())
+                            break;
+                    } else if (stackInSlot.hasTag()) {
+                        CompoundTag nbtInSlot = stackInSlot.getTag();
+                        if (nbtInSlot.contains("CustomModelData")) {
+                            int capacity = (itemHandler.getSlotLimit(i) - stackInSlot.getCount());
+                            int delta = Math.min(capacity, pStack.getCount());
+                            stackInSlot.grow(delta);
+                            pStack.shrink(delta);
+
+                            changed = true;
+
+                            if (pStack.isEmpty())
+                                break;
+                        }
+                    }
+                }
+            }
+
+            if (changed) {
+                syncAndSave();
+            }
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        return pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+
+        return 0;
     }
 }
