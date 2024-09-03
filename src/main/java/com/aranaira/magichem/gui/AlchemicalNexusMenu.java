@@ -7,6 +7,7 @@ import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
+import com.mna.items.ItemInit;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,6 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
+
+import static com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity.*;
 
 public class AlchemicalNexusMenu extends AbstractContainerMenu {
     public final AlchemicalNexusBlockEntity blockEntity;
@@ -48,9 +51,9 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER, 80, -5));
 
             //Input item slots
-            for(int i = AlchemicalNexusBlockEntity.SLOT_INPUT_START; i< AlchemicalNexusBlockEntity.SLOT_INPUT_START + AlchemicalNexusBlockEntity.SLOT_INPUT_COUNT; i++)
+            for(int i = SLOT_INPUT_START; i< SLOT_INPUT_START + AlchemicalNexusBlockEntity.SLOT_INPUT_COUNT; i++)
             {
-                this.addSlot(new SlotItemHandler(handler, i, 22, -5 + (i - AlchemicalNexusBlockEntity.SLOT_INPUT_START) * 18));
+                this.addSlot(new SlotItemHandler(handler, i, 22, -5 + (i - SLOT_INPUT_START) * 18));
             }
 
             //Output item slots
@@ -112,11 +115,14 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
     private static final int SLOT_INVENTORY_BEGIN = 0;
     private static final int SLOT_INVENTORY_COUNT = 36;
 
-    private static final Pair<Item, Integer>[] DIRSPEC = new Pair[]{};
+    private static final Pair<Item, Integer>[] DIRSPEC = new Pair[]{
+            new Pair<>(ItemInit.BOOK_MARKS.get(), SLOT_INVENTORY_COUNT + SLOT_MARKS),
+            new Pair<>(ItemInit.RUNE_MARKING.get(), SLOT_INVENTORY_COUNT + SLOT_MARKS)
+    };
     private static final Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i( //Input slots
-                    SLOT_INVENTORY_COUNT + AlchemicalNexusBlockEntity.SLOT_INPUT_START - 1,
-                    SLOT_INVENTORY_COUNT + AlchemicalNexusBlockEntity.SLOT_INPUT_START + AlchemicalNexusBlockEntity.SLOT_INPUT_COUNT),
+                    SLOT_INVENTORY_COUNT + SLOT_INPUT_START - 1,
+                    SLOT_INVENTORY_COUNT + SLOT_INPUT_START + AlchemicalNexusBlockEntity.SLOT_INPUT_COUNT),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
     private static final Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
