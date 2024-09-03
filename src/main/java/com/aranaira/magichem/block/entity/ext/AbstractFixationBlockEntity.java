@@ -292,7 +292,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                         continue;
 
                     if(stackInSlot.getItem() == itemsToRemove.getItem()) {
-                        int removalLimit = Math.max(stackInSlot.getCount(), itemsToRemove.getCount());
+                        int removalLimit = Math.min(stackInSlot.getCount(), itemsToRemove.getCount());
                         if (stackInSlot.hasTag()) {
                             CompoundTag nbt = stackInSlot.getTag();
                             if (nbt.contains("CustomModelData")) {
