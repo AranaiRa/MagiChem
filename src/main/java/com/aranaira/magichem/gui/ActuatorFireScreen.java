@@ -76,7 +76,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
         //power level
-        int plH = menu.getPowerLevel() * 2;
+        int plH = menu.blockEntity.getPowerLevel() * 2;
         int plY = POWER_H - plH;
         gui.blit(TEXTURE, x + POWER_X, y + POWER_Y + plY, POWER_U, plY, POWER_W, plH);
 
@@ -86,20 +86,20 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
 
         //fuel burn
-        if(menu.getRemainingFuelTime() > 0) {
-            int fH = ActuatorFireBlockEntity.getScaledFuel(menu.getRemainingFuelTime(), menu.getFuelDuration());
+        if(menu.blockEntity.getRemainingFuelTime() > 0) {
+            int fH = ActuatorFireBlockEntity.getScaledFuel(menu.blockEntity.getRemainingFuelTime(), menu.blockEntity.getFuelDuration());
             int fY = FUEL_GAUGE_H - fH;
             gui.blit(TEXTURE, x + FUEL_GAUGE_X, y + FUEL_GAUGE_Y + fY, FUEL_GAUGE_U, FUEL_GAUGE_V + fY, FUEL_GAUGE_W, fH);
         }
 
         //smoke gauge
-        int steamH = ActuatorFireBlockEntity.getScaledSmoke(menu.getSmokeInTank());
+        int steamH = ActuatorFireBlockEntity.getScaledSmoke(menu.blockEntity.getSmokeInTank());
         gui.setColor(0.2f, 0.1875f, 0.1875f, 1.0f);
         gui.blit(TEXTURE_SMOKE, x + SMOKE_X, y + SMOKE_Y, 11, 0, SMOKE_W, steamH, 16, 16);
         gui.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         //Time icon if mode calls for it
-        if(!ActuatorFireBlockEntity.getIsPowerReductionMode(menu.getFlags()))
+        if(!ActuatorFireBlockEntity.getIsPowerReductionMode(menu.blockEntity.getFlags()))
             gui.blit(TEXTURE, x + 101, y + 11, 176, 56, 11, 11);
 
         //Essentia insertion
@@ -158,15 +158,15 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
                     .append(Component.translatable("tooltip.magichem.gui.actuator.fire.tank.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorFireBlockEntity.getSmokePerProcess(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ActuatorFireBlockEntity.getSmokePerProcess(menu.blockEntity.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.fire.tank.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.fire.tank.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.getSmokeInTank() + " / " + Config.infernoEngineTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSmokeInTank() + " / " + Config.infernoEngineTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(Component.literal(String.format("%.1f", ActuatorFireBlockEntity.getSmokePercent(menu.getSmokeInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(String.format("%.1f", ActuatorFireBlockEntity.getSmokePercent(menu.blockEntity.getSmokeInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -175,7 +175,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         if(mouseX >= x+ TOOLTIP_REDUCTION_X && mouseX <= x+ TOOLTIP_REDUCTION_X + TOOLTIP_REDUCTION_W &&
                 mouseY >= y+ TOOLTIP_REDUCTION_Y && mouseY <= y+ TOOLTIP_REDUCTION_Y + TOOLTIP_REDUCTION_H) {
 
-            boolean powerReductionMode = ActuatorFireBlockEntity.getIsPowerReductionMode(menu.getFlags());
+            boolean powerReductionMode = ActuatorFireBlockEntity.getIsPowerReductionMode(menu.blockEntity.getFlags());
 
             if(powerReductionMode) {
                 tooltipContents.add(Component.empty()
@@ -264,15 +264,15 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         Font font = Minecraft.getInstance().font;
 
         //Efficiency increase
-        if((menu.getFlags() & ActuatorFireBlockEntity.FLAG_IS_SATISFIED) == ActuatorFireBlockEntity.FLAG_IS_SATISFIED)
-            gui.drawString(font, Component.literal("-"+ ActuatorFireBlockEntity.getReductionRate(menu.getPowerLevel(), menu.getFlags())+"%"), 114, 17, 0xff000000, false);
+        if(menu.blockEntity.getIsSatisfied())
+            gui.drawString(font, Component.literal("-"+ ActuatorFireBlockEntity.getReductionRate(menu.blockEntity.getPowerLevel(), menu.blockEntity.getFlags())+"%"), 114, 17, 0xff000000, false);
         else
             gui.drawString(font, Component.literal("-"), 114, 17, 0xffaa0000, false);
 
         //Smoke generation
-        gui.drawString(font, Component.literal(ActuatorFireBlockEntity.getSmokePerProcess(menu.getPowerLevel()) + "mB"), 114, 32, 0xff000000, false);
+        gui.drawString(font, Component.literal(ActuatorFireBlockEntity.getSmokePerProcess(menu.blockEntity.getPowerLevel()) + "mB"), 114, 32, 0xff000000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorFireBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 114, 47, 0xff000000, false);
+        gui.drawString(font, Component.literal(""+ActuatorFireBlockEntity.getEldrinPowerUsage(menu.blockEntity.getPowerLevel())), 114, 47, 0xff000000, false);
     }
 }

@@ -23,8 +23,6 @@ import java.util.Optional;
 public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_actuator_air.png");
-    private static final ResourceLocation TEXTURE_EXT =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private static final ResourceLocation TEXTURE_GAS =
             new ResourceLocation("minecraft", "textures/block/water_still.png");
     public static final int
@@ -77,33 +75,38 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
         //power level
-        int plH = 2 + (menu.getPowerLevel() - 1) * 12;
+        int plH = 2 + (menu.blockEntity.getPowerLevel() - 1) * 12;
         int plY = POWER_H - plH;
         gui.blit(TEXTURE, x + POWER_X, y + POWER_Y + plY, POWER_U, plY, POWER_W, plH);
 
         //progress symbol
-        int sH = getScaledEldrinTime();
+        int sH = menu.blockEntity.getScaledCycleTime();
         int sY = SYMBOL_H - sH;
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
 
         //smoke gauge
-        int smokeH = ActuatorAirBlockEntity.getScaledSmoke(menu.getSmokeInTank());
+        int smokeH = ActuatorAirBlockEntity.getScaledSmoke(menu.blockEntity.getSmokeInTank());
         gui.setColor(0.2f, 0.1875f, 0.1875f, 1.0f);
         gui.blit(TEXTURE_GAS, x + SMOKE_X, y + GAS_Y, 11, 0, GAS_W, smokeH, 16, 16);
         gui.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         //steam gauge
-        int steamH = ActuatorAirBlockEntity.getScaledSteam(menu.getSteamInTank());
+        int steamH = ActuatorAirBlockEntity.getScaledSteam(menu.blockEntity.getSteamInTank());
         gui.blit(TEXTURE_GAS, x + STEAM_X, y + GAS_Y, 11, 0, GAS_W, steamH, 16, 16);
 
-        boolean sufficientSmoke = menu.getSmokeInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel());
-        boolean sufficientSteam = menu.getSteamInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel());
+        boolean sufficientSmoke = menu.blockEntity.getSmokeInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel());
+        boolean sufficientSteam = menu.blockEntity.getSteamInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel());
         //Insufficient input warnings
-        if(menu.getPowerLevel() == 2 && !(sufficientSmoke || sufficientSteam)) {
+        if(menu.blockEntity.getPowerLevel() == 2 && !(sufficientSmoke || sufficientSteam)) {
             renderPowerWarning(gui, x, y);
-        } else if(menu.getPowerLevel() == 3 && !(sufficientSmoke && sufficientSteam)) {
+        } else if(menu.blockEntity.getPowerLevel() == 3 && !(sufficientSmoke && sufficientSteam)) {
             renderPowerWarning(gui, x, y);
         }
+
+        //Essentia insertion
+        gui.blit(TEXTURE, x + 151, y + 3, 0, 172, 40, 58);
+        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / Config.actuatorMateriaBufferMaximum);
+        gui.blit(TEXTURE, x + 159, y + 11 + (42 - sM), 200, 0, 2, sM);
     }
 
     @Override
@@ -154,10 +157,10 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank1.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.getSmokeInTank() + " / " + Config.galePressurizerTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSmokeInTank() + " / " + Config.galePressurizerTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(Component.literal(String.format("%.1f", ActuatorAirBlockEntity.getSmokePercent(menu.getSmokeInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(String.format("%.1f", ActuatorAirBlockEntity.getSmokePercent(menu.blockEntity.getSmokeInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -173,10 +176,10 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.air.tank2.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.getSteamInTank() + " / " + Config.galePressurizerTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSteamInTank() + " / " + Config.galePressurizerTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(Component.literal(String.format("%.1f", ActuatorAirBlockEntity.getSteamPercent(menu.getSmokeInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(String.format("%.1f", ActuatorAirBlockEntity.getSteamPercent(menu.blockEntity.getSmokeInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -216,7 +219,7 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
                     .append(Component.translatable("tooltip.magichem.gui.actuator.gasconsume.line1")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.gasconsume.line2.p"+menu.getPowerLevel()))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.gasconsume.line2.p"+menu.blockEntity.getPowerLevel()))
             );
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -225,19 +228,50 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float drawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
+            float singleDrawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
+            float doubleDrawTime = Config.actuatorDoubleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.eldrin.air").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.air").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line1.air")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2a"))
-                    .append(Component.literal(String.format("%.1f", drawTime)).withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2b"))
-            );
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2a"))
+                    .append(Component.literal(String.format("%.1f", singleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2b"))
+                    .append(Component.literal(String.format("%.1f", doubleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2c")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Essentia
+        if(mouseX >= x+158 && mouseX <= x+161 &&
+                mouseY >= y+10 && mouseY <= y+54) {
+
+            int current = menu.blockEntity.getStoredMateria();
+            int max = Config.actuatorMateriaBufferMaximum;
+            float percent = (float)current / (float)max;
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.air").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line1.air")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add((Component.empty())
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2a"))
+                    .append(Component.literal(Config.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2b")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(Math.min(max, current) + " / " + max).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, percent) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }
@@ -247,29 +281,29 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         Font font = Minecraft.getInstance().font;
 
         //Batch size
-        if(((menu.getFlags() & ActuatorAirBlockEntity.FLAG_IS_SATISFIED) == ActuatorAirBlockEntity.FLAG_IS_SATISFIED) && ((menu.getFlags() & ActuatorAirBlockEntity.FLAG_GAS_SATISFACTION) == ActuatorAirBlockEntity.FLAG_GAS_SATISFACTION))
-            gui.drawString(font, Component.literal("x" + (ActuatorAirBlockEntity.getRawBatchSize(menu.getPowerLevel()))), 112, 12, 0xff000000, false);
+        if(menu.blockEntity.getIsSatisfied() && menu.blockEntity.getIsGasSatsified())
+            gui.drawString(font, Component.literal("x" + (ActuatorAirBlockEntity.getRawBatchSize(menu.blockEntity.getPowerLevel()))), 112, 12, 0xff000000, false);
         else
             gui.drawString(font, Component.literal("1"), 112, 12, 0xffaa0000, false);
 
         //Operation time
-        float penaltyRate = ActuatorAirBlockEntity.getPenaltyRate(menu.getPowerLevel());
+        float penaltyRate = ActuatorAirBlockEntity.getPenaltyRate(menu.blockEntity.getPowerLevel());
         gui.drawString(font, Component.literal("x" + String.format("%.1f", penaltyRate)), 112, 26, 0xff000000, false);
 
         //Gas usage
-        gui.drawString(font, Component.literal(ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel()) + "mB"), 112, 40, 0xff000000, false);
+        gui.drawString(font, Component.literal(ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel()) + "mB"), 112, 40, 0xff000000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorAirBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 112, 54, 0xff000000, false);
+        gui.drawString(font, Component.literal(""+ActuatorAirBlockEntity.getEldrinPowerUsage(menu.blockEntity.getPowerLevel())), 112, 54, 0xff000000, false);
 
-        boolean sufficientSmoke = menu.getSmokeInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel());
-        boolean sufficientSteam = menu.getSteamInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.getPowerLevel());
+        boolean sufficientSmoke = menu.blockEntity.getSmokeInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel());
+        boolean sufficientSteam = menu.blockEntity.getSteamInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel());
         //power warning
-        if((menu.getPowerLevel() == 2 && !(sufficientSmoke || sufficientSteam)) || (menu.getPowerLevel() == 3 && !(sufficientSmoke && sufficientSteam))) {
+        if((menu.blockEntity.getPowerLevel() == 2 && !(sufficientSmoke || sufficientSteam)) || (menu.blockEntity.getPowerLevel() == 3 && !(sufficientSmoke && sufficientSteam))) {
             MutableComponent warningText;
-            if (menu.getPowerLevel() == 2) {
+            if (menu.blockEntity.getPowerLevel() == 2) {
                 warningText = Component.translatable("gui.magichem.insufficientsteamsmoke");
-            } else if (menu.getPowerLevel() == 3) {
+            } else if (menu.blockEntity.getPowerLevel() == 3) {
                 if (sufficientSmoke && !sufficientSteam)
                     warningText = Component.translatable("gui.magichem.insufficientsteam");
                 else if (!sufficientSmoke && sufficientSteam)
@@ -284,9 +318,5 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
         }
-    }
-
-    private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.actuatorSingleSuppliedPeriod;
     }
 }

@@ -80,35 +80,40 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
         //power level
-        int plH = menu.getPowerLevel() * 2;
+        int plH = menu.blockEntity.getPowerLevel() * 2;
         int plY = POWER_H - plH;
         gui.blit(TEXTURE, x + POWER_X, y + POWER_Y + plY, POWER_U, plY, POWER_W, plH);
 
         //progress symbol
-        int sH = getScaledEldrinTime();
+        int sH = menu.blockEntity.getScaledCycleTime();
         int sY = SYMBOL_H - sH;
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
 
         //grime gauge
-        if(menu.getGrimeInTank() > 0) {
-            int grimeH = ActuatorEarthBlockEntity.getScaledGrime(menu.getGrimeInTank());
+        if(menu.blockEntity.getGrimeInTank() > 0) {
+            int grimeH = ActuatorEarthBlockEntity.getScaledGrime(menu.blockEntity.getGrimeInTank());
             gui.blit(TEXTURE, x + GRIME_X, y + GRIME_Y + FLUID_GAUGE_H - grimeH, GRIME_U, GRIME_V, GRIME_W, grimeH, 256, 256);
         }
 
         //rarefied grime gauge
-        if(menu.getRarefiedGrimeInTank() > 0) {
-            int rarefiedGrimeH = ActuatorEarthBlockEntity.getScaledRarefiedGrime(menu.getRarefiedGrimeInTank());
+        if(menu.blockEntity.getRarefiedGrimeInTank() > 0) {
+            int rarefiedGrimeH = ActuatorEarthBlockEntity.getScaledRarefiedGrime(menu.blockEntity.getRarefiedGrimeInTank());
             gui.blit(TEXTURE, x + RAREFIED_GRIME_X, y + RAREFIED_GRIME_Y + FLUID_GAUGE_H - rarefiedGrimeH, RAREFIED_GRIME_U, RAREFIED_GRIME_V, RAREFIED_GRIME_W, rarefiedGrimeH, 256, 256);
         }
 
         //sand gauge
-        int sandH = ActuatorEarthBlockEntity.getScaledSand(menu.getSandInTank());
+        int sandH = ActuatorEarthBlockEntity.getScaledSand(menu.blockEntity.getSandInTank());
         RenderSystem.setShaderTexture(1, TEXTURE_SAND);
         gui.blit(TEXTURE_SAND, x + SAND_X, y + SAND_Y + FLUID_GAUGE_H - sandH, 0, 0, SAND_W, sandH, 16, 16);
 
-        if(menu.getSandInTank() < ActuatorEarthBlockEntity.getSandPerOperation(menu.getPowerLevel())) {
+        if(menu.blockEntity.getSandInTank() < ActuatorEarthBlockEntity.getSandPerOperation(menu.blockEntity.getPowerLevel())) {
             renderPowerWarning(gui, x, y);
         }
+
+        //Essentia insertion
+        gui.blit(TEXTURE, x + 167, y + 3, 0, 172, 40, 58);
+        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / Config.actuatorMateriaBufferMaximum);
+        gui.blit(TEXTURE, x + 175, y + 11 + (42 - sM), 200, 0, 2, sM);
     }
 
     @Override
@@ -148,19 +153,14 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
-        //progress symbol
-        int sH = getScaledEldrinTime();
-        int sY = SYMBOL_H - sH;
-        gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
-
         //Grime Tank
         if(mouseX >= x+ TOOLTIP_GRIME_X && mouseX <= x+ TOOLTIP_GRIME_X + TOOLTIP_GRIME_W &&
                 mouseY >= y+ TOOLTIP_GRIME_Y && mouseY <= y+ TOOLTIP_GRIME_Y + TOOLTIP_GRIME_H) {
 
-            float grimePercent = ((float)menu.getGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
-            int grimeWasteCount = menu.getGrimeInTank() / Config.grimePerWaste;
-            float rarefiedPercent = ((float)menu.getRarefiedGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
-            int rarefiedWasteCount = menu.getRarefiedGrimeInTank() / Config.grimePerWaste;
+            float grimePercent = ((float)menu.blockEntity.getGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
+            int grimeWasteCount = menu.blockEntity.getGrimeInTank() / Config.grimePerWaste;
+            float rarefiedPercent = ((float)menu.blockEntity.getRarefiedGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
+            int rarefiedWasteCount = menu.blockEntity.getRarefiedGrimeInTank() / Config.grimePerWaste;
 
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1").withStyle(ChatFormatting.GOLD))
@@ -203,15 +203,15 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.getSandInTank() + " / " + Config.quakeRefinerySandCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSandInTank() + " / " + Config.quakeRefinerySandCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(Component.literal(String.format("%.1f", ActuatorEarthBlockEntity.getSandPercent(menu.getSandInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(String.format("%.1f", ActuatorEarthBlockEntity.getSandPercent(menu.blockEntity.getSandInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -248,19 +248,50 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float drawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
+            float singleDrawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
+            float doubleDrawTime = Config.actuatorDoubleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.eldrin.earth").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.earth").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line1.earth")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2a"))
-                    .append(Component.literal(String.format("%.1f", drawTime)).withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2b"))
-            );
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2a"))
+                    .append(Component.literal(String.format("%.1f", singleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2b"))
+                    .append(Component.literal(String.format("%.1f", doubleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2c")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Essentia
+        if(mouseX >= x+174 && mouseX <= x+177 &&
+                mouseY >= y+10 && mouseY <= y+54) {
+
+            int current = menu.blockEntity.getStoredMateria();
+            int max = Config.actuatorMateriaBufferMaximum;
+            float percent = (float)current / (float)max;
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.earth").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line1.earth")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add((Component.empty())
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2a"))
+                    .append(Component.literal(Config.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2b")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(Math.min(max, current) + " / " + max).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, percent) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }
@@ -270,26 +301,22 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         Font font = Minecraft.getInstance().font;
 
         //Grime Reduction
-        if((menu.getFlags() & ActuatorEarthBlockEntity.FLAG_IS_SATISFIED) == ActuatorEarthBlockEntity.FLAG_IS_SATISFIED)
-            gui.drawString(font, Component.literal("-"+ActuatorEarthBlockEntity.getGrimeReductionRate(menu.getPowerLevel())+"%"), 128, 17, 0xff000000, false);
+        if(menu.blockEntity.getIsSatisfied())
+            gui.drawString(font, Component.literal("-"+ActuatorEarthBlockEntity.getGrimeReductionRate(menu.blockEntity.getPowerLevel())+"%"), 128, 17, 0xff000000, false);
         else
             gui.drawString(font, Component.literal("-"), 128, 17, 0xffaa0000, false);
 
         //Sand per Operation
-        gui.drawString(font, Component.literal(ActuatorEarthBlockEntity.getSandPerOperation(menu.getPowerLevel())+"mB"), 128, 32, 0xff000000, false);
+        gui.drawString(font, Component.literal(ActuatorEarthBlockEntity.getSandPerOperation(menu.blockEntity.getPowerLevel())+"mB"), 128, 32, 0xff000000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorEarthBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 128, 47, 0xff000000, false);
+        gui.drawString(font, Component.literal(""+ActuatorEarthBlockEntity.getEldrinPowerUsage(menu.blockEntity.getPowerLevel())), 128, 47, 0xff000000, false);
 
         //Warning label
-        if(menu.getSandInTank() < ActuatorEarthBlockEntity.getSandPerOperation(menu.getPowerLevel())) {
+        if(menu.blockEntity.getSandInTank() < ActuatorEarthBlockEntity.getSandPerOperation(menu.blockEntity.getPowerLevel())) {
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientsand");
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
         }
-    }
-
-    private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.actuatorSingleSuppliedPeriod;
     }
 }

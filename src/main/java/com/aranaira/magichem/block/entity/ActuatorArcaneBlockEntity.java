@@ -4,19 +4,20 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.IPluginDevice;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.ActuatorArcaneMenu;
 import com.aranaira.magichem.gui.ActuatorArcaneScreen;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.items.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -28,12 +29,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -45,38 +48,23 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IFluidHandler, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile {
+import java.util.HashMap;
+import java.util.Map;
+
+public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IFluidHandler, IPluginDevice, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
             SLURRY_PER_OPERATION = {0, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20},
             SLURRY_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
     public static final int
-            SLOT_COUNT = 2, SLOT_INPUT = 0, SLOT_OUTPUT = 1,
-            DATA_COUNT = 4, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SLURRY = 3,
-            FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2, FLAG_IS_REDUCTION_MODE = 4;
+            MAX_POWER_LEVEL = 13,
+            SLOT_COUNT = 4, SLOT_INPUT = 0, SLOT_OUTPUT = 1, SLOT_ESSENTIA_INSERTION = 2, SLOT_BOTTLES = 3,
+            FLAG_IS_REDUCTION_MODE = 1;
     private int
-            powerLevel = 1,
-            remainingEldrinTime = -1,
             flags;
-    private float
-            remainingEldrinForSatisfaction;
     protected ContainerData data;
-
-    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            boolean hasFluidCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
-            boolean isCrystalOfMemories = stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get();
-            boolean isDebugOrb = stack.getItem() == ItemRegistry.DEBUG_ORB.get();
-            return hasFluidCap || isCrystalOfMemories || (slot == SLOT_INPUT && isDebugOrb);
-        }
-    };
+    private static final MateriaItem ESSENTIA_ARCANE = ItemRegistry.getEssentiaMap(false, false).get("arcane");
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
@@ -94,38 +82,53 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
-                return switch(pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorArcaneBlockEntity.this.remainingEldrinTime;
-                    case DATA_POWER_LEVEL -> ActuatorArcaneBlockEntity.this.powerLevel;
-                    case DATA_FLAGS -> ActuatorArcaneBlockEntity.this.flags;
-                    case DATA_SLURRY -> ActuatorArcaneBlockEntity.this.containedSlurry.getAmount();
-                    default -> -1;
-                };
+                return 0;
             }
 
             @Override
             public void set(int pIndex, int pValue) {
-                switch (pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorArcaneBlockEntity.this.remainingEldrinTime = pValue;
-                    case DATA_POWER_LEVEL -> ActuatorArcaneBlockEntity.this.powerLevel = pValue;
-                    case DATA_FLAGS -> ActuatorArcaneBlockEntity.this.flags = pValue;
-                    case DATA_SLURRY -> {
-                        if(ActuatorArcaneBlockEntity.this.containedSlurry == FluidStack.EMPTY) {
-                            ActuatorArcaneBlockEntity.this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pValue);
-                        } else {
-                            ActuatorArcaneBlockEntity.this.containedSlurry.setAmount(pValue);
-                        }
-                    }
-                }
+
             }
 
             @Override
             public int getCount() {
-                return DATA_COUNT;
+                return 0;
             }
         };
 
-        this.flags = FLAG_IS_SATISFIED;
+        this.flags = 0;
+
+        this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                if(slot == SLOT_INPUT || slot == SLOT_OUTPUT) {
+                    boolean hasFluidCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
+                    boolean isCrystalOfMemories = stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get();
+                    boolean isDebugOrb = stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                    return hasFluidCap || isCrystalOfMemories || (slot == SLOT_INPUT && isDebugOrb);
+                } else if(slot == SLOT_ESSENTIA_INSERTION) {
+                    if(stack.getItem() instanceof MateriaItem mi) {
+                        return mi == ESSENTIA_ARCANE;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot == SLOT_ESSENTIA_INSERTION) {
+                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
+                        return ItemStack.EMPTY;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
     }
 
     public int getEldrinPowerUsage() {
@@ -145,7 +148,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     }
 
     public int getSlurryReductionRate() {
-        return SLURRY_REDUCTION[getIsPaused(this) ? 0 : this.powerLevel];
+        return SLURRY_REDUCTION[getPaused() ? 0 : this.powerLevel];
     }
 
     public static int getSlurryReductionRate(int pPowerLevel) {
@@ -157,35 +160,29 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     }
 
     public float getSlurryPercent() {
-        return (float)this.data.get(DATA_SLURRY) / Config.occultMatrixTankCapacity;
+        return (float)containedSlurry.getAmount() / Config.occultMatrixTankCapacity;
     }
 
     public static int getScaledSlurry(int pSlurryAmount) {
         return pSlurryAmount * ActuatorArcaneScreen.FLUID_GAUGE_H / Config.occultMatrixTankCapacity;
     }
 
-    public int getPowerLevel() {
-        return this.powerLevel;
+    public int getSlurryInTank() {
+        return containedSlurry.getAmount();
     }
 
-    public void increasePowerLevel() {
-        this.powerLevel = Math.min(13, this.powerLevel + 1);
-    }
-
-    public void decreasePowerLevel() {
-        this.powerLevel = Math.max(1, this.powerLevel - 1);
-    }
-
-    @Override
-    public void setPowerLevel(int pPowerLevel) {
-        this.powerLevel = pPowerLevel;
+    public boolean getIsReductionMode() {
+        return (flags & FLAG_IS_REDUCTION_MODE) == FLAG_IS_REDUCTION_MODE;
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("remainingEldrinTime", remainingEldrinTime);
+        nbt.putInt("remainingCycleTime", remainingCycleTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("storedMateria", storedMateria);
+        nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
+        nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
         if(ownerUUID != null)
@@ -197,8 +194,11 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     public void load(CompoundTag nbt) {
         super.load(nbt);
         this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
+        this.remainingCycleTime = nbt.getInt("remainingCycleTime");
         this.powerLevel = nbt.getInt("powerLevel");
+        this.storedMateria = nbt.getInt("storedMateria");
+        this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
+        this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
         if(this.containedSlurry == FluidStack.EMPTY)
             this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), nbt.getInt("containedSlurry"));
         else
@@ -220,8 +220,11 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("remainingEldrinTime", remainingEldrinTime);
+        nbt.putInt("remainingCycleTime", remainingCycleTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("storedMateria", storedMateria);
+        nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
+        nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
         if(ownerUUID != null)
@@ -237,33 +240,16 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        if((flags & FLAG_IS_REDUCTION_MODE) == 0 && !getIsPaused(this)) {
+        if((flags & FLAG_IS_REDUCTION_MODE) == 0 && !this.getPaused()) {
             fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), getSlurryGeneratedPerOperation() * pCyclesCompleted), FluidAction.EXECUTE);
         }
 
         syncAndSave();
     }
 
-    public static boolean getIsSatisfied(ActuatorArcaneBlockEntity entity) {
-        boolean satisfied = (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
-        boolean paused = (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
-        return satisfied && !paused;
-    }
-
-    public static boolean getIsPaused(ActuatorArcaneBlockEntity entity) {
-        return (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
-    }
-
-    public static void setPaused(ActuatorArcaneBlockEntity entity, boolean pauseState) {
-        if(pauseState) {
-            entity.flags = entity.flags | FLAG_IS_PAUSED;
-        } else {
-            entity.flags = entity.flags & ~FLAG_IS_PAUSED;
-        }
-        entity.syncAndSave();
-    }
-
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+        AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorArcaneBlockEntity::getValue);
+
         if(t instanceof ActuatorArcaneBlockEntity aabe) {
             if (level.isClientSide()) {
                 aabe.handleAnimationDrivers();
@@ -373,38 +359,18 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     }
 
     public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorArcaneBlockEntity entity, boolean reductionMode) {
-        Player ownerCheck = entity.getOwner();
-        int powerDraw = entity.getEldrinPowerUsage();
+        boolean changed = AbstractDirectionalPluginBlockEntity.delegatedTick(level, pos, state, entity,
+                ActuatorArcaneBlockEntity::getValue,
+                ActuatorArcaneBlockEntity::getAffinity,
+                ActuatorArcaneBlockEntity::getPowerDraw,
+                ActuatorArcaneBlockEntity::handleAuxiliaryRequirements);
 
+        int pre = entity.flags;
         if(reductionMode) entity.flags = entity.flags | FLAG_IS_REDUCTION_MODE;
         else entity.flags = entity.flags & ~FLAG_IS_REDUCTION_MODE;
+        if(pre != entity.flags) changed = true;
 
-        if(ownerCheck != null && !getIsPaused(entity)) {
-            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.ARCANE, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
-            entity.remainingEldrinForSatisfaction -= consumption;
-
-            //Eldrin processing
-            if(entity.remainingEldrinTime <= 0) {
-                if(entity.remainingEldrinForSatisfaction <= 0) {
-                    entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.actuatorSingleSuppliedPeriod;
-                }
-
-                if(!getIsSatisfied(entity)) {
-                    entity.syncAndSave();
-                }
-            }
-            entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
-
-            if(entity.remainingEldrinTime >= 0) entity.flags = entity.flags | ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED;
-            else {
-                if(getIsSatisfied(entity)) {
-                    entity.flags = entity.flags & ~ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED;
-                    entity.syncAndSave();
-                } else
-                    entity.flags = entity.flags & ~ActuatorArcaneBlockEntity.FLAG_IS_SATISFIED;
-            }
-        }
+        if(changed) entity.syncAndSave();
     }
 
     public void handleAnimationDrivers() {
@@ -523,5 +489,114 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         if(containedSlurry.getAmount() > 0)
             setChanged();
         return drain(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), maxDrain), fluidAction);
+    }
+
+    public static Affinity getAffinity(Void v) {
+        return Affinity.ARCANE;
+    }
+
+    ////////////////////
+    // PROVISIONING AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(activeProvisionRequests.size() > 0)
+            return false;
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION);
+        }
+        return insertionStack.isEmpty();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+
+        if(insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2) {
+            result.put(ESSENTIA_ARCANE, itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) - insertionStack.getCount());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(pMateriaItem == ESSENTIA_ARCANE)
+            activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(pStack.getItem() == ESSENTIA_ARCANE) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+            } else {
+                insertionStack.grow(pStack.getCount());
+            }
+            itemHandler.setStackInSlot(SLOT_ESSENTIA_INSERTION, insertionStack);
+
+            syncAndSave();
+
+            activeProvisionRequests.remove((MateriaItem)pStack.getItem());
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() == ESSENTIA_ARCANE) {
+            return 0;
+        }
+        return pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+        return 0;
+    }
+
+    ////////////////////
+    // STATIC RETRIEVAL
+    ////////////////////
+
+    public static int getValue(IDs id) {
+        return switch (id) {
+            case SLOT_COUNT -> SLOT_COUNT;
+            case SLOT_ESSENTIA_INSERTION -> SLOT_ESSENTIA_INSERTION;
+            case SLOT_BOTTLES -> SLOT_BOTTLES;
+            case MAX_POWER_LEVEL -> MAX_POWER_LEVEL;
+        };
+    }
+
+    public static int getPowerDraw(AbstractDirectionalPluginBlockEntity entity) {
+        if(entity == null)
+            return 1;
+        return ELDRIN_POWER_USAGE[entity.getPowerLevel()];
+    }
+
+    public static boolean handleAuxiliaryRequirements(AbstractDirectionalPluginBlockEntity entity) {
+        entity.satisfyAuxiliaryRequirements();
+        return true;
     }
 }

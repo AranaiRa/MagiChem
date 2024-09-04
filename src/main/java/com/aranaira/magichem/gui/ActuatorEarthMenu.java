@@ -1,11 +1,13 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
+import com.mna.api.affinity.Affinity;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,6 +22,9 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
+import static com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity.*;
+import static com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity.*;
+
 public class ActuatorEarthMenu extends AbstractContainerMenu {
 
     public final ActuatorEarthBlockEntity blockEntity;
@@ -32,7 +37,7 @@ public class ActuatorEarthMenu extends AbstractContainerMenu {
             SLOT_RAREFIED_WASTE_X = 84, SLOT_RAREFIED_WASTE_Y = 43;
 
     public ActuatorEarthMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorEarthBlockEntity.DATA_COUNT));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(DATA_COUNT));
     }
 
     public ActuatorEarthMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -46,9 +51,13 @@ public class ActuatorEarthMenu extends AbstractContainerMenu {
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             //Sand slot
-            this.addSlot(new SlotItemHandler(handler, ActuatorEarthBlockEntity.SLOT_SAND, SLOT_SAND_X, SLOT_SAND_Y));
-            this.addSlot(new SlotItemHandler(handler, ActuatorEarthBlockEntity.SLOT_WASTE, SLOT_WASTE_X, SLOT_WASTE_Y));
-            this.addSlot(new SlotItemHandler(handler, ActuatorEarthBlockEntity.SLOT_RAREFIED_WASTE, SLOT_RAREFIED_WASTE_X, SLOT_RAREFIED_WASTE_Y));
+            this.addSlot(new SlotItemHandler(handler, SLOT_SAND, SLOT_SAND_X, SLOT_SAND_Y));
+            this.addSlot(new SlotItemHandler(handler, SLOT_WASTE, SLOT_WASTE_X, SLOT_WASTE_Y));
+            this.addSlot(new SlotItemHandler(handler, SLOT_RAREFIED_WASTE, SLOT_RAREFIED_WASTE_X, SLOT_RAREFIED_WASTE_Y));
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_ESSENTIA_INSERTION, 183, 15));
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_BOTTLES, 183, 41));
         });
 
         addDataSlots(data);
@@ -73,51 +82,31 @@ public class ActuatorEarthMenu extends AbstractContainerMenu {
         }
     }
 
-    public int getPowerLevel() {
-        return data.get(ActuatorEarthBlockEntity.DATA_POWER_LEVEL);
-    }
-
-    public int getFlags() {
-        return data.get(ActuatorEarthBlockEntity.DATA_FLAGS);
-    }
-
     public void incrementPowerLevel() {
-        int previous = getPowerLevel();
-        int current = Math.min(13, getPowerLevel() + 1);
+        int previous = blockEntity.getPowerLevel();
+        int current = Math.min(getValue(IDs.MAX_POWER_LEVEL), blockEntity.getPowerLevel() + 1);
         if(previous != current) {
             PacketRegistry.sendToServer(new ActuatorSyncPowerLevelC2SPacket(
-                    blockEntity.getBlockPos(), true
+                    blockEntity.getBlockPos(), true, Affinity.EARTH
             ));
         }
     }
 
     public void decrementPowerLevel() {
-        int previous = getPowerLevel();
-        int current = Math.max(1, getPowerLevel() - 1);
+        int previous = blockEntity.getPowerLevel();
+        int current = Math.max(1, blockEntity.getPowerLevel() - 1);
         if(previous != current) {
             PacketRegistry.sendToServer(new ActuatorSyncPowerLevelC2SPacket(
-                    blockEntity.getBlockPos(), false
+                    blockEntity.getBlockPos(), false, Affinity.EARTH
             ));
         }
     }
-
-    public int getRemainingEldrinTime() {
-        return data.get(ActuatorEarthBlockEntity.DATA_REMAINING_ELDRIN_TIME);
-    }
-
-    public int getSandInTank() {
-        return data.get(ActuatorEarthBlockEntity.DATA_SAND);
-    }
-
-    public int getGrimeInTank() { return data.get(ActuatorEarthBlockEntity.DATA_GRIME); }
-
-    public int getRarefiedGrimeInTank() { return data.get(ActuatorEarthBlockEntity.DATA_RAREFIED_GRIME); }
 
     private static final int
             SLOT_INVENTORY_BEGIN = 0,
             SLOT_INVENTORY_COUNT = 36;
     Pair<Item, Integer>[] DIRSPEC = new Pair[]{
-            new Pair<>(Items.SAND, SLOT_INVENTORY_COUNT + ActuatorEarthBlockEntity.SLOT_SAND)
+            new Pair<>(Items.SAND, SLOT_INVENTORY_COUNT + SLOT_SAND)
     };
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)

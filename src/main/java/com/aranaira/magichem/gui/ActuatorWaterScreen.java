@@ -79,7 +79,7 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
         //power level
-        int plH = menu.getPowerLevel() * 2;
+        int plH = menu.blockEntity.getPowerLevel() * 2;
         int plY = POWER_H - plH;
         gui.blit(TEXTURE, x + POWER_X, y + POWER_Y + plY, POWER_U, plY, POWER_W, plH);
 
@@ -89,17 +89,17 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
 
         //water gauge
-        int waterH = ActuatorWaterBlockEntity.getScaledWater(menu.getWaterInTank());
+        int waterH = ActuatorWaterBlockEntity.getScaledWater(menu.blockEntity.getWaterInTank());
         gui.setColor(0.2f, 0.375f, 0.725f, 1.0f);
         RenderSystem.setShaderTexture(1, TEXTURE_WATER);
         gui.blit(TEXTURE_WATER, x + WATER_X, y + WATER_Y + FLUID_GAUGE_H - waterH, 0, 0, WATER_W, waterH, 16, 16);
         gui.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         //steam gauge
-        int steamH = ActuatorWaterBlockEntity.getScaledSteam(menu.getSteamInTank());
+        int steamH = ActuatorWaterBlockEntity.getScaledSteam(menu.blockEntity.getSteamInTank());
         gui.blit(TEXTURE_WATER, x + STEAM_X, y + STEAM_Y, 11, 0, STEAM_W, steamH, 16, 16);
 
-        if(menu.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel())) {
+        if(menu.blockEntity.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel())) {
             renderPowerWarning(gui, x, y);
         }
 
@@ -156,15 +156,15 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.getWaterInTank() + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getWaterInTank() + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                     .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(String.format("%.1f", ActuatorWaterBlockEntity.getWaterPercent(menu.getWaterInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(String.format("%.1f", ActuatorWaterBlockEntity.getWaterPercent(menu.blockEntity.getWaterInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -179,15 +179,15 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.blockEntity.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.getSteamInTank() + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSteamInTank() + " / " + Config.delugePurifierTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(Component.literal(String.format("%.1f", ActuatorWaterBlockEntity.getSteamPercent(menu.getSteamInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(String.format("%.1f", ActuatorWaterBlockEntity.getSteamPercent(menu.blockEntity.getSteamInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                             .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -286,27 +286,25 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         Font font = Minecraft.getInstance().font;
 
         //Efficiency increase
-        if((menu.getFlags() & ActuatorWaterBlockEntity.FLAG_IS_SATISFIED) == ActuatorWaterBlockEntity.FLAG_IS_SATISFIED)
-            gui.drawString(font, Component.literal("+"+ActuatorWaterBlockEntity.getEfficiencyIncrease(menu.getPowerLevel())+"%"), 109, 12, 0xff000000, false);
+        if(menu.blockEntity.getIsSatisfied())
+            gui.drawString(font, Component.literal("+"+ActuatorWaterBlockEntity.getEfficiencyIncrease(menu.blockEntity.getPowerLevel())+"%"), 109, 12, 0xff000000, false);
         else
             gui.drawString(font, Component.literal("   0%"), 109, 12, 0xffaa0000, false);
 
         //Water consumption rate
-        gui.drawString(font, Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel())+"mB"), 109, 26, 0xff000000, false);
+        gui.drawString(font, Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel())+"mB"), 109, 26, 0xff000000, false);
 
         //Steam production rate
-        gui.drawString(font, Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.getPowerLevel())+"mB"), 109, 40, 0xff000000, false);
+        gui.drawString(font, Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.blockEntity.getPowerLevel())+"mB"), 109, 40, 0xff000000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 109, 54, 0xff000000, false);
+        gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.blockEntity.getPowerLevel())), 109, 54, 0xff000000, false);
 
         //Warning label
-        if(menu.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel())) {
+        if(menu.blockEntity.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel())) {
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientwater");
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
         }
-
-        gui.drawString(font, ""+menu.blockEntity.remainingCycleTime, -75, 0, 0xffffffff, true);
     }
 }

@@ -106,7 +106,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
-                if (ActuatorFireBlockEntity.getIsSatisfied(fire) && pEntity.remainingHeat <= 20) {
+                if (fire.getIsSatisfied() && pEntity.remainingHeat <= 20) {
                     if(!(pEntity instanceof GrandDistilleryBlockEntity)) {
                         pEntity.remainingHeat = 1000;
                         pEntity.heatDuration = 1000;
@@ -125,7 +125,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
                 int pre = pEntity.batchSize;
 
-                if(ActuatorAirBlockEntity.getIsSatisfied(air)) {
+                if(air.getIsSatisfied()) {
                     pEntity.batchSize = air.getBatchSize();
                 } else
                     pEntity.batchSize = 1;
@@ -471,7 +471,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected static void updateActuatorValues(AbstractDistillationBlockEntity entity) {
         for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
-                entity.efficiencyMod = ActuatorWaterBlockEntity.getIsSatisfied(water) ? water.getEfficiencyIncrease() : 0;
+                entity.efficiencyMod = water.getIsSatisfied() ? water.getEfficiencyIncrease() : 0;
             }
         }
     }

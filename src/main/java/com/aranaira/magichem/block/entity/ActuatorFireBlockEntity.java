@@ -56,7 +56,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
+public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
@@ -66,62 +66,22 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
             POWER_REDUCTION_FUEL_NORMAL = {0, 30, 32.5f, 35, 37.5f, 40, 42.5f, 45, 47.5f, 50, 52.5f, 55, 57.5f, 60},
             POWER_REDUCTION_FUEL_SUPER = {0, 36, 39, 42, 45, 48, 51, 54, 57, 60 ,63, 66, 69, 72};
     public static final int
+            MAX_POWER_LEVEL = 13,
             SLOT_COUNT = 3,
-            SLOT_FUEL = 0, SLOT_MATERIA_INSERTION = 1, SLOT_BOTTLES = 2,
-            DATA_COUNT = 6, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3, DATA_REMAINING_FUEL_TIME = 4, DATA_FUEL_DURATION = 5,
+            SLOT_FUEL = 0, SLOT_ESSENTIA_INSERTION = 1, SLOT_BOTTLES = 2,
             FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_FUEL_NORMAL = 4, FLAG_FUEL_SUPER = 8, FLAG_FUEL_SATISFACTION_TYPE = 12, FLAG_IS_PAUSED = 16;
     private static final float
             PIPE_VIBRATION_ACCELERATION = 0.002f;
     private int
-            powerLevel = 1,
-            remainingCycleTime = -1,
             remainingFuelTime = -1,
             fuelDuration = -1,
-            flags,
-            storedMateria = 0,
-            remainingMateriaForSatisfaction;
+            flags;
     private float
-            remainingEldrinForSatisfaction,
             pipeVibrationIntensity = 0;
-    private boolean
-            drewEldrinThisCycle = false,
-            drewMateriaThisCycle = false;
     protected ContainerData data;
     private FluidStack containedSmoke;
     private final LazyOptional<IFluidHandler> fluidHandler;
     private static final MateriaItem ESSENTIA_FIRE = ItemRegistry.getEssentiaMap(false, false).get("fire");
-
-    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(slot == SLOT_FUEL) {
-                if (stack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get() ||
-                        stack.getItem() == ItemInit.FLUID_JUG.get())
-                    return true;
-                return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
-            } else if(slot == SLOT_MATERIA_INSERTION) {
-                if(stack.getItem() instanceof MateriaItem mi) {
-                    return mi == ESSENTIA_FIRE;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if(slot == SLOT_MATERIA_INSERTION) {
-                if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION)))
-                    return ItemStack.EMPTY;
-            }
-
-            return super.extractItem(slot, amount, simulate);
-        }
-    };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
@@ -138,43 +98,55 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
-                return switch(pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorFireBlockEntity.this.remainingCycleTime;
-                    case DATA_POWER_LEVEL -> ActuatorFireBlockEntity.this.powerLevel;
-                    case DATA_FLAGS -> ActuatorFireBlockEntity.this.flags;
-                    case DATA_SMOKE -> ActuatorFireBlockEntity.this.containedSmoke.getAmount();
-                    case DATA_REMAINING_FUEL_TIME -> ActuatorFireBlockEntity.this.remainingFuelTime;
-                    case DATA_FUEL_DURATION -> ActuatorFireBlockEntity.this.fuelDuration;
-                    default -> -1;
-                };
+                return 0;
             }
 
             @Override
             public void set(int pIndex, int pValue) {
-                switch (pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorFireBlockEntity.this.remainingCycleTime = pValue;
-                    case DATA_POWER_LEVEL -> ActuatorFireBlockEntity.this.powerLevel = pValue;
-                    case DATA_FLAGS -> ActuatorFireBlockEntity.this.flags = pValue;
-                    case DATA_SMOKE -> {
-                        if(ActuatorFireBlockEntity.this.containedSmoke == FluidStack.EMPTY)
-                            ActuatorFireBlockEntity.this.containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), pValue);
-                        else
-                            ActuatorFireBlockEntity.this.containedSmoke.setAmount(pValue);
-                    }
-                    case DATA_REMAINING_FUEL_TIME -> ActuatorFireBlockEntity.this.remainingFuelTime = pValue;
-                    case DATA_FUEL_DURATION -> ActuatorFireBlockEntity.this.fuelDuration = pValue;
-                }
+
             }
 
             @Override
             public int getCount() {
-                return DATA_COUNT;
+                return 0;
             }
         };
 
         this.containedSmoke = FluidStack.EMPTY;
         this.fluidHandler = LazyOptional.of(() -> this);
-        this.flags = FLAG_IS_SATISFIED;
+        this.flags = 0;
+
+        this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                if(slot == SLOT_FUEL) {
+                    if (stack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get() ||
+                            stack.getItem() == ItemInit.FLUID_JUG.get())
+                        return true;
+                    return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
+                } else if(slot == SLOT_ESSENTIA_INSERTION) {
+                    if(stack.getItem() instanceof MateriaItem mi) {
+                        return mi == ESSENTIA_FIRE;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot == SLOT_ESSENTIA_INSERTION) {
+                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
+                        return ItemStack.EMPTY;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
     }
 
     public boolean getIsFuelled() {
@@ -239,21 +211,12 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         return SMOKE_PER_PROCESS[pPowerLevel];
     }
 
-    public int getPowerLevel() {
-        return this.powerLevel;
+    public int getFlags() {
+        return flags;
     }
 
-    public void increasePowerLevel() {
-        this.powerLevel = Math.min(13, this.powerLevel + 1);
-    }
-
-    public void decreasePowerLevel() {
-        this.powerLevel = Math.max(1, this.powerLevel - 1);
-    }
-
-    @Override
-    public void setPowerLevel(int pPowerLevel) {
-        this.powerLevel = pPowerLevel;
+    public int getSmokeInTank() {
+        return containedSmoke.getAmount();
     }
 
     public void setFuelDuration(int pNewFuelDuration, boolean superFuel) {
@@ -274,7 +237,9 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
-        nbt.putBoolean("drewMateriaThisCycle", drewMateriaThisCycle);
+        nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putInt("fuelDuration", fuelDuration);
+        nbt.putInt("remainingFuelTime", remainingFuelTime);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("flags", flags);
         if(ownerUUID != null)
@@ -290,7 +255,9 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         this.powerLevel = nbt.getInt("powerLevel");
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
-        this.drewMateriaThisCycle = nbt.getBoolean("drewMateriaThisCycle");
+        this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
+        this.fuelDuration = nbt.getInt("fuelDuration");
+        this.remainingFuelTime = nbt.getInt("remainingFuelTime");
         this.flags = nbt.getInt("flags");
 
         int nbtSmoke = nbt.getInt("tankSmoke");
@@ -317,7 +284,9 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
-        nbt.putBoolean("drewMateriaThisCycle", drewMateriaThisCycle);
+        nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putInt("fuelDuration", fuelDuration);
+        nbt.putInt("remainingFuelTime", remainingFuelTime);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("flags", flags);
         if(ownerUUID != null)
@@ -338,25 +307,6 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         syncAndSave();
     }
 
-    public static boolean getIsSatisfied(ActuatorFireBlockEntity entity) {
-        boolean satisfied = (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
-        boolean paused = (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
-        return satisfied && !paused;
-    }
-
-    public static boolean getIsPaused(ActuatorFireBlockEntity entity) {
-        return (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
-    }
-
-    public static void setPaused(ActuatorFireBlockEntity entity, boolean pauseState) {
-        if(pauseState) {
-            entity.flags = entity.flags | FLAG_IS_PAUSED;
-        } else {
-            entity.flags = entity.flags & ~FLAG_IS_PAUSED;
-        }
-        entity.syncAndSave();
-    }
-
     public static boolean getIsFuelled(ActuatorFireBlockEntity entity) {
         return (entity.flags & FLAG_FUEL_NORMAL) == FLAG_FUEL_NORMAL;
     }
@@ -370,36 +320,13 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+        AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorFireBlockEntity::getValue);
+
         if(t instanceof ActuatorFireBlockEntity entity) {
-            //Try inserting materia
-            if(!level.isClientSide()) {
-                if (entity.storedMateria < Config.actuatorMateriaBufferMaximum) {
-                    ItemStack insertionStack = entity.itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
-                    ItemStack bottleStack = entity.itemHandler.getStackInSlot(SLOT_BOTTLES);
-
-                    if (!insertionStack.isEmpty()) {
-                        if (bottleStack.getCount() < entity.itemHandler.getSlotLimit(SLOT_BOTTLES)) {
-                            if(!InventoryHelper.isMateriaUnbottled(insertionStack)){
-                                if (bottleStack.isEmpty())
-                                    bottleStack = new ItemStack(Items.GLASS_BOTTLE);
-                                else
-                                    bottleStack.grow(1);
-                            }
-
-                            insertionStack.shrink(1);
-                            entity.storedMateria += Config.actuatorMateriaUnitsPerDram;
-
-                            entity.itemHandler.setStackInSlot(SLOT_MATERIA_INSERTION, insertionStack);
-                            entity.itemHandler.setStackInSlot(SLOT_BOTTLES, bottleStack);
-                            entity.syncAndSave();
-                        }
-                    }
-                }
-            }
             //Particle work
-            else {
-                float smoke = entity.data.get(DATA_SMOKE);
-                if (smoke > 0 && !getIsPaused(entity)) {
+            if(level.isClientSide()) {
+                float smoke = entity.containedSmoke.getAmount();
+                if (smoke > 0 && !entity.getPaused()) {
                     float mappedSmokePercent = Math.max(0, ((smoke / Config.infernoEngineTankCapacity) - 0.5f) * 2);
                     if (mappedSmokePercent > 0f) {
                         int spawnModulus = 5 - (int) Math.floor(mappedSmokePercent * 4);
@@ -462,117 +389,68 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     }
 
     public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorFireBlockEntity entity) {
-        Player ownerCheck = entity.getOwner();
-        int powerDraw = entity.getEldrinPowerUsage();
-        boolean changed = false;
+        boolean changed = AbstractDirectionalPluginBlockEntity.delegatedTick(level, pos, state, entity,
+                ActuatorFireBlockEntity::getValue,
+                ActuatorFireBlockEntity::getAffinity,
+                ActuatorFireBlockEntity::getPowerDraw,
+                ActuatorFireBlockEntity::handleAuxiliaryRequirements);
 
-        if (ownerCheck != null) {
-            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.FIRE, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
-            if(consumption > 0)
-                entity.remainingEldrinForSatisfaction -= consumption;
-            if (entity.remainingMateriaForSatisfaction > 0) {
-                int materiaConsumption = Math.min(entity.remainingMateriaForSatisfaction, entity.storedMateria);
-                if(materiaConsumption > 0) {
-                    entity.storedMateria -= materiaConsumption;
-                    entity.remainingMateriaForSatisfaction -= materiaConsumption;
-                    changed = true;
-                }
-            }
+        Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        BlockEntity be = level.getBlockEntity(pos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ()));
+        if (be instanceof IPoweredAlchemyDevice ipad) {
+            int old = entity.flags;
+            entity.flags = entity.flags | FLAG_REDUCTION_TYPE_POWER;
+            if(entity.flags != old) changed = true;
+        }
 
-            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-            BlockEntity be = level.getBlockEntity(pos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ()));
-            if (be instanceof IPoweredAlchemyDevice ipad) {
-                int old = entity.flags;
-                entity.flags = entity.flags | FLAG_REDUCTION_TYPE_POWER;
-                if(entity.flags != old) changed = true;
-            }
+        if (!entity.getPaused()) {
+            //Fuel processing
+            if (entity.remainingFuelTime <= 0) {
+                ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
+                if (!fuelStack.isEmpty()) {
+                    int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
+                    if (fuelStack.getItem() == ItemRegistry.CATALYTIC_CARBON.get())
+                        entity.flags = (entity.flags | FLAG_FUEL_SUPER) & ~FLAG_FUEL_NORMAL;
+                    else
+                        entity.flags = (entity.flags | FLAG_FUEL_NORMAL) & ~FLAG_FUEL_SUPER;
 
-            if (!getIsPaused(entity)) {
-                //Fuel processing
-                if (entity.remainingFuelTime <= 0) {
-                    ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
-                    if (!fuelStack.isEmpty()) {
-                        int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
-                        if (fuelStack.getItem() == ItemRegistry.CATALYTIC_CARBON.get())
-                            entity.flags = (entity.flags | FLAG_FUEL_SUPER) & ~FLAG_FUEL_NORMAL;
-                        else
-                            entity.flags = (entity.flags | FLAG_FUEL_NORMAL) & ~FLAG_FUEL_SUPER;
-
-                        if (fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
-                            LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-                            AtomicReference<Integer> mi = new AtomicReference<>(0);
-                            cap.ifPresent(handler -> {
-                                FluidStack fluidInTank = handler.getFluidInTank(0);
-                                if (fluidInTank.getAmount() > 0) {
-                                    if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
-                                        FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
-                                        float proportion = operation.getAmount() / 1000f;
-                                        int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                                        mi.set((int) (lavaBurnTime * proportion));
-                                    }
+                    if (fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
+                        LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                        AtomicReference<Integer> mi = new AtomicReference<>(0);
+                        cap.ifPresent(handler -> {
+                            FluidStack fluidInTank = handler.getFluidInTank(0);
+                            if (fluidInTank.getAmount() > 0) {
+                                if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
+                                    FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                                    float proportion = operation.getAmount() / 1000f;
+                                    int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                                    mi.set((int) (lavaBurnTime * proportion));
                                 }
-                            });
-                            burnTime = mi.get();
-                        } else if (fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
-                            burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                        } else if (fuelStack.getItem() == Items.LAVA_BUCKET) {
-                            fuelStack = new ItemStack(Items.BUCKET);
-                        } else {
-                            fuelStack.shrink(1);
-                        }
-
-                        entity.fuelDuration = burnTime;
-                        entity.remainingFuelTime = burnTime;
-                        entity.itemHandler.setStackInSlot(0, fuelStack);
-                        changed = true;
+                            }
+                        });
+                        burnTime = mi.get();
+                    } else if (fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
+                        burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                    } else if (fuelStack.getItem() == Items.LAVA_BUCKET) {
+                        fuelStack = new ItemStack(Items.BUCKET);
                     } else {
-                        if (getIsFuelled(entity) || getIsSuperFuelled(entity)) {
-                            entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
-                            changed = true;
-                        } else {
-                            entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
-                        }
-                    }
-                } else {
-                    entity.remainingFuelTime = Math.max(-1, entity.remainingFuelTime - 1);
-                }
-
-                //Eldrin processing
-                if (entity.remainingCycleTime <= 0) {
-                    if (entity.remainingEldrinForSatisfaction <= 0) {
-                        entity.remainingEldrinForSatisfaction = powerDraw;
-                        entity.drewEldrinThisCycle = true;
-                    } else {
-                        entity.drewEldrinThisCycle = false;
+                        fuelStack.shrink(1);
                     }
 
-                    if (entity.remainingMateriaForSatisfaction <= 0) {
-                        entity.remainingMateriaForSatisfaction = powerDraw;
-                        entity.drewMateriaThisCycle = true;
-                    } else {
-                        entity.drewMateriaThisCycle = false;
-                    }
-
-                    if (entity.drewEldrinThisCycle && entity.drewMateriaThisCycle) {
-                        entity.remainingCycleTime = Config.actuatorDoubleSuppliedPeriod;
-                    } else if (entity.drewEldrinThisCycle || entity.drewMateriaThisCycle)
-                        entity.remainingCycleTime = Config.actuatorSingleSuppliedPeriod;
-
-                    if(entity.drewEldrinThisCycle || entity.drewMateriaThisCycle)
-                        changed = true;
-                }
-                //process fuel reduction if present
-            }
-            entity.remainingCycleTime = Math.max(-1, entity.remainingCycleTime - 1);
-
-            if (entity.drewMateriaThisCycle || entity.drewEldrinThisCycle)
-                entity.flags = entity.flags | ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
-            else {
-                if (getIsSatisfied(entity)) {
-                    entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+                    entity.fuelDuration = burnTime;
+                    entity.remainingFuelTime = burnTime;
+                    entity.itemHandler.setStackInSlot(0, fuelStack);
                     changed = true;
-                } else
-                    entity.flags = entity.flags & ~ActuatorFireBlockEntity.FLAG_IS_SATISFIED;
+                } else {
+                    if (getIsFuelled(entity) || getIsSuperFuelled(entity)) {
+                        entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+                        changed = true;
+                    } else {
+                        entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
+                    }
+                }
+            } else {
+                entity.remainingFuelTime = Math.max(-1, entity.remainingFuelTime - 1);
             }
         }
 
@@ -580,7 +458,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     }
 
     public void handleAnimationDrivers() {
-        if(remainingCycleTime >= 0 && !getIsPaused(this))
+        if(remainingCycleTime >= 0 && !this.getPaused())
             pipeVibrationIntensity = Math.min(1.0f, pipeVibrationIntensity + PIPE_VIBRATION_ACCELERATION);
         else
             pipeVibrationIntensity = Math.max(0.0f, pipeVibrationIntensity - PIPE_VIBRATION_ACCELERATION * 2.5f);
@@ -612,10 +490,6 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         return new ActuatorFireMenu(i, inventory, this, this.data);
     }
 
-    public static float getWaterPercent(int pWaterAmount) {
-        return (float)pWaterAmount * 100f / Config.infernoEngineTankCapacity;
-    }
-
     public static float getSmokePercent(int pSmokeAmount) {
         return (float)pSmokeAmount * 100f / Config.infernoEngineTankCapacity;
     }
@@ -624,12 +498,16 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         return pSmokeAmount * ActuatorFireScreen.FLUID_GAUGE_H / Config.infernoEngineTankCapacity;
     }
 
-    public static int getScaledFuel(int pFuelAmount, int pFuelDuration) {
-        return (int)(((float)pFuelAmount / (float)pFuelDuration) * ActuatorFireScreen.FUEL_GAUGE_H);
+    public int getRemainingFuelTime() {
+        return remainingFuelTime;
     }
 
-    public int getScaledCycleTime() {
-        return remainingCycleTime * ActuatorFireScreen.SYMBOL_H / ((drewMateriaThisCycle && drewEldrinThisCycle) ? Config.actuatorDoubleSuppliedPeriod : Config.actuatorSingleSuppliedPeriod);
+    public int getFuelDuration() {
+        return fuelDuration;
+    }
+
+    public static int getScaledFuel(int pFuelAmount, int pFuelDuration) {
+        return (int)(((float)pFuelAmount / (float)pFuelDuration) * ActuatorFireScreen.FUEL_GAUGE_H);
     }
 
     public float getPipeVibrationIntensity() {
@@ -707,6 +585,10 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,2,1));
     }
 
+    public static Affinity getAffinity(Void v) {
+        return Affinity.FIRE;
+    }
+
     ////////////////////
     // PROVISIONING AND SHLORPS
     ////////////////////
@@ -722,9 +604,9 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     public boolean needsProvisioning() {
         if(activeProvisionRequests.size() > 0)
             return false;
-        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
         if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
-            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA_INSERTION);
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION);
         }
         return insertionStack.isEmpty();
     }
@@ -733,10 +615,10 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
         Map<MateriaItem, Integer> result = new HashMap<>();
 
-        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
 
-        if(insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA_INSERTION) / 2) {
-            result.put(ESSENTIA_FIRE, itemHandler.getSlotLimit(SLOT_MATERIA_INSERTION) - insertionStack.getCount());
+        if(insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2) {
+            result.put(ESSENTIA_FIRE, itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) - insertionStack.getCount());
         }
 
         return result;
@@ -756,18 +638,17 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     @Override
     public void provide(ItemStack pStack) {
         if(pStack.getItem() == ESSENTIA_FIRE) {
-            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
 
             if(insertionStack.isEmpty()) {
                 insertionStack = pStack.copy();
                 CompoundTag nbt = new CompoundTag();
                 nbt.putInt("CustomModelData", 1);
                 insertionStack.setTag(nbt);
-                itemHandler.setStackInSlot(SLOT_MATERIA_INSERTION, insertionStack);
             } else {
                 insertionStack.grow(pStack.getCount());
-                itemHandler.setStackInSlot(SLOT_MATERIA_INSERTION, insertionStack);
             }
+            itemHandler.setStackInSlot(SLOT_ESSENTIA_INSERTION, insertionStack);
 
             syncAndSave();
 
@@ -787,5 +668,29 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     public int insertStackFromShlorp(ItemStack pStack) {
         provide(pStack);
         return 0;
+    }
+
+    ////////////////////
+    // STATIC RETRIEVAL
+    ////////////////////
+
+    public static int getValue(IDs id) {
+        return switch (id) {
+            case SLOT_COUNT -> SLOT_COUNT;
+            case SLOT_ESSENTIA_INSERTION -> SLOT_ESSENTIA_INSERTION;
+            case SLOT_BOTTLES -> SLOT_BOTTLES;
+            case MAX_POWER_LEVEL -> MAX_POWER_LEVEL;
+        };
+    }
+
+    public static int getPowerDraw(AbstractDirectionalPluginBlockEntity entity) {
+        if(entity == null)
+            return 1;
+        return ELDRIN_POWER_USAGE[entity.getPowerLevel()];
+    }
+
+    public static boolean handleAuxiliaryRequirements(AbstractDirectionalPluginBlockEntity entity) {
+        entity.satisfyAuxiliaryRequirements();
+        return true;
     }
 }

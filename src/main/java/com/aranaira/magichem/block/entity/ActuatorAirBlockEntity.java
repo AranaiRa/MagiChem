@@ -2,12 +2,16 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IPluginDevice;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.gui.ActuatorAirMenu;
 import com.aranaira.magichem.gui.ActuatorAirScreen;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
@@ -15,6 +19,7 @@ import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleOrbitMover;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -25,6 +30,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -37,11 +43,16 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler {
+import java.util.HashMap;
+import java.util.Map;
+
+public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 140, 500},
@@ -49,22 +60,21 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     private static final float[]
             POWER_PENALTY = {1.0f, 1.5f, 2.25f, 3.375f};
     public static final int
+            SLOT_COUNT = 2, SLOT_ESSENTIA_INSERTION = 0, SLOT_BOTTLES = 1, MAX_POWER_LEVEL = 3,
             TANK_SMOKE = 0, TANK_STEAM = 1,
-            DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SMOKE = 3, DATA_STEAM = 4,
-            FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_GAS_SATISFACTION = 4, FLAG_IS_PAUSED = 8;
+            FLAG_GAS_SATISFACTION = 1;
     private static final float
             FAN_ACCELERATION_RATE = 0.09f, FAN_TOP_SPEED = 24.0f;
     private int
-            powerLevel = 1,
-            remainingEldrinTime = -1,
             flags;
-    private float
-            remainingEldrinForSatisfaction;
     public float
             fanAngle = 0, fanSpeed = 0;
     protected ContainerData data;
     private FluidStack containedSmoke, containedSteam;
     private final LazyOptional<IFluidHandler> fluidHandler;
+    private static final MateriaItem ESSENTIA_AIR = ItemRegistry.getEssentiaMap(false, false).get("air");
+
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     public ActuatorAirBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -80,59 +90,55 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
-                return switch(pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorAirBlockEntity.this.remainingEldrinTime;
-                    case DATA_POWER_LEVEL -> ActuatorAirBlockEntity.this.powerLevel;
-                    case DATA_FLAGS -> ActuatorAirBlockEntity.this.flags;
-                    case DATA_SMOKE -> ActuatorAirBlockEntity.this.containedSmoke.getAmount();
-                    case DATA_STEAM -> ActuatorAirBlockEntity.this.containedSteam.getAmount();
-                    default -> -1;
-                };
+                return 0;
             }
 
             @Override
             public void set(int pIndex, int pValue) {
-                switch (pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorAirBlockEntity.this.remainingEldrinTime = pValue;
-                    case DATA_POWER_LEVEL -> ActuatorAirBlockEntity.this.powerLevel = pValue;
-                    case DATA_FLAGS -> ActuatorAirBlockEntity.this.flags = pValue;
-                    case DATA_SMOKE -> {
-                        if(ActuatorAirBlockEntity.this.containedSmoke == FluidStack.EMPTY)
-                            ActuatorAirBlockEntity.this.containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), pValue);
-                        else
-                            ActuatorAirBlockEntity.this.containedSmoke.setAmount(pValue);
-                    }
-                    case DATA_STEAM -> {
-                        if(ActuatorAirBlockEntity.this.containedSteam == FluidStack.EMPTY)
-                            ActuatorAirBlockEntity.this.containedSteam = new FluidStack(FluidRegistry.STEAM.get(), pValue);
-                        else
-                            ActuatorAirBlockEntity.this.containedSteam.setAmount(pValue);
-                    }
-                }
+
             }
 
             @Override
             public int getCount() {
-                return DATA_COUNT;
+                return 0;
             }
         };
 
         this.containedSmoke = FluidStack.EMPTY;
         this.containedSteam = FluidStack.EMPTY;
         this.fluidHandler = LazyOptional.of(() -> this);
-        this.flags = FLAG_IS_SATISFIED;
+        this.flags = 0;
+
+        this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                if(slot == SLOT_ESSENTIA_INSERTION) {
+                    if(stack.getItem() instanceof MateriaItem mi) {
+                        return mi == ESSENTIA_AIR;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot == SLOT_ESSENTIA_INSERTION) {
+                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
+                        return ItemStack.EMPTY;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
     }
 
-    public boolean getIsPowerReductionMode() {
-        return (this.flags & FLAG_REDUCTION_TYPE_POWER) == FLAG_REDUCTION_TYPE_POWER;
-    }
-
-    public static boolean getIsPowerReductionMode(int pFlags) {
-        return (pFlags & FLAG_REDUCTION_TYPE_POWER) == FLAG_REDUCTION_TYPE_POWER;
-    }
-
-    public static boolean getIsGasSatsified(int pFlags) {
-        return (pFlags & FLAG_GAS_SATISFACTION) == FLAG_GAS_SATISFACTION;
+    public boolean getIsGasSatsified() {
+        return (flags & FLAG_GAS_SATISFACTION) == FLAG_GAS_SATISFACTION;
     }
 
     public static int getRawBatchSize(int pPowerLevel) {
@@ -203,10 +209,26 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         this.powerLevel = pPowerLevel;
     }
 
+    public int getFlags() {
+        return flags;
+    }
+
+    public int getSmokeInTank() {
+        return containedSmoke.getAmount();
+    }
+
+    public int getSteamInTank() {
+        return containedSteam.getAmount();
+    }
+
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.putInt("remainingEldrinTime", remainingEldrinTime);
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("remainingCycleTime", remainingCycleTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("storedMateria", storedMateria);
+        nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
+        nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -218,8 +240,13 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
+        this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        this.remainingCycleTime = nbt.getInt("remainingCycleTime");
         this.powerLevel = nbt.getInt("powerLevel");
+        this.storedMateria = nbt.getInt("storedMateria");
+        this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
+        this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
+        this.flags = nbt.getInt("flags");
 
         int nbtSmoke = nbt.getInt("tankSmoke");
         if(nbtSmoke > 0)
@@ -242,13 +269,18 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     @Override
     public void onLoad() {
         super.onLoad();
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putInt("remainingEldrinTime", remainingEldrinTime);
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("remainingCycleTime", remainingCycleTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("storedMateria", storedMateria);
+        nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
+        nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -268,7 +300,9 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         consumeGasses();
     }
 
-    private void consumeGasses() {
+    private boolean consumeGasses() {
+        int pre = flags;
+
         //Do nothing, there is no gas cost
         if (powerLevel == 1) {
             flags = flags | FLAG_GAS_SATISFACTION;
@@ -306,41 +340,21 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             } else
                 flags = flags & ~FLAG_GAS_SATISFACTION;
         }
-        syncAndSave();
-    }
 
-    public static boolean getIsSatisfied(ActuatorAirBlockEntity entity) {
-        boolean satisfied = (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
-        boolean paused = (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
-        return satisfied && !paused;
-    }
-
-    public static boolean getIsPaused(ActuatorAirBlockEntity entity) {
-        return (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
-    }
-
-    public static void setPaused(ActuatorAirBlockEntity entity, boolean pauseState) {
-        if(pauseState) {
-            entity.flags = entity.flags | FLAG_IS_PAUSED;
-        } else {
-            entity.flags = entity.flags & ~FLAG_IS_PAUSED;
-        }
-        entity.syncAndSave();
+        return pre != flags;
     }
 
     public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, T t) {
+        AbstractDirectionalPluginBlockEntity.tick(pLevel, pPos, pBlockState, t, ActuatorAirBlockEntity::getValue);
+
         if(t instanceof ActuatorAirBlockEntity aabe) {
             if(pLevel.isClientSide()) {
                 aabe.handleAnimationDrivers();
             }
 
-            if(!getIsPaused(aabe)) {
-                //try to consume gasses if necessary
-                if ((aabe.flags & FLAG_GAS_SATISFACTION) != FLAG_GAS_SATISFACTION)
-                    aabe.consumeGasses();
-
+            if(!aabe.getPaused()) {
                 //particle work goes here
-                if (getIsSatisfied(aabe)) {
+                if (aabe.getIsSatisfied()) {
                     int spawnModulus = 3;
                     Vector3f mid = new Vector3f(0f, 1.53125f, 0f);
 
@@ -385,46 +399,17 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorAirBlockEntity entity) {
-        Player ownerCheck = entity.getOwner();
-        int powerDraw = entity.getEldrinPowerUsage();
+        boolean changed = AbstractDirectionalPluginBlockEntity.delegatedTick(level, pos, state, entity,
+                ActuatorAirBlockEntity::getValue,
+                ActuatorAirBlockEntity::getAffinity,
+                ActuatorAirBlockEntity::getPowerDraw,
+                ActuatorAirBlockEntity::handleAuxiliaryRequirements);
 
-        if(ownerCheck != null && !getIsPaused(entity)) {
-            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.WIND, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
-            entity.remainingEldrinForSatisfaction -= consumption;
-
-            //Eldrin processing
-            if(entity.remainingEldrinTime <= 0) {
-                if(entity.remainingEldrinForSatisfaction <= 0) {
-                    entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.actuatorSingleSuppliedPeriod;
-                    }
-
-                    if(!getIsSatisfied(entity)) {
-                        entity.syncAndSave();
-                    }
-                    //process fuel reduction if present
-            }
-            entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
-
-            if(entity.remainingEldrinTime >= 0) {
-                if(!getIsSatisfied(entity)) {
-                    entity.flags = entity.flags | ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
-                    entity.syncAndSave();
-                } else
-                    entity.flags = entity.flags | ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
-            }
-            else {
-                if(getIsSatisfied(entity)) {
-                    entity.flags = entity.flags & ~ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
-                    entity.syncAndSave();
-                } else
-                    entity.flags = entity.flags & ~ActuatorAirBlockEntity.FLAG_IS_SATISFIED;
-            }
-        }
+        if(changed) entity.syncAndSave();
     }
 
     public void handleAnimationDrivers() {
-        if(getIsSatisfied(this)) {
+        if(this.getIsSatisfied() && !this.getPaused()) {
             if(fanSpeed == 0) fanSpeed += FAN_ACCELERATION_RATE * 4;
             fanSpeed = Math.min(fanSpeed + FAN_ACCELERATION_RATE, FAN_TOP_SPEED);
         } else {
@@ -435,6 +420,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
         if(cap == ForgeCapabilities.FLUID_HANDLER) return fluidHandler.cast();
 
         return super.getCapability(cap, side);
@@ -443,6 +429,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
+        this.lazyItemHandler.invalidate();
         this.fluidHandler.invalidate();
     }
 
@@ -556,5 +543,118 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,2,1));
+    }
+
+    public static Affinity getAffinity(Void v) {
+        return Affinity.WIND;
+    }
+
+    ////////////////////
+    // PROVISIONING AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(activeProvisionRequests.size() > 0)
+            return false;
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION);
+        }
+        return insertionStack.isEmpty();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+
+        if(insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2) {
+            result.put(ESSENTIA_AIR, itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) - insertionStack.getCount());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(pMateriaItem == ESSENTIA_AIR)
+            activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(pStack.getItem() == ESSENTIA_AIR) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+            } else {
+                insertionStack.grow(pStack.getCount());
+            }
+            itemHandler.setStackInSlot(SLOT_ESSENTIA_INSERTION, insertionStack);
+
+            syncAndSave();
+
+            activeProvisionRequests.remove((MateriaItem)pStack.getItem());
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() == ESSENTIA_AIR) {
+            return 0;
+        }
+        return pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+        return 0;
+    }
+
+    ////////////////////
+    // STATIC RETRIEVAL
+    ////////////////////
+
+    public static int getValue(IDs id) {
+        return switch (id) {
+            case SLOT_COUNT -> SLOT_COUNT;
+            case SLOT_ESSENTIA_INSERTION -> SLOT_ESSENTIA_INSERTION;
+            case SLOT_BOTTLES -> SLOT_BOTTLES;
+            case MAX_POWER_LEVEL -> MAX_POWER_LEVEL;
+        };
+    }
+
+    public static int getPowerDraw(AbstractDirectionalPluginBlockEntity entity) {
+        if(entity == null)
+            return 1;
+        return ELDRIN_POWER_USAGE[entity.getPowerLevel()];
+    }
+
+    public static boolean handleAuxiliaryRequirements(AbstractDirectionalPluginBlockEntity entity) {
+        if(entity instanceof ActuatorAirBlockEntity aabe) {
+            aabe.consumeGasses();
+            if(aabe.getIsGasSatsified()) aabe.satisfyAuxiliaryRequirements();
+            return aabe.getIsGasSatsified();
+        }
+        return false;
     }
 }

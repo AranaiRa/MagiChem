@@ -2,11 +2,13 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
+import com.mna.api.affinity.Affinity;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,6 +22,9 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
+import static com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity.*;
+import static com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity.IDs.MAX_POWER_LEVEL;
+
 public class ActuatorArcaneMenu extends AbstractContainerMenu {
 
     public final ActuatorArcaneBlockEntity blockEntity;
@@ -31,7 +36,7 @@ public class ActuatorArcaneMenu extends AbstractContainerMenu {
             SLOT_OUTPUT_X = 84, SLOT_OUTPUT_Y = 39;
 
     public ActuatorArcaneMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorArcaneBlockEntity.DATA_COUNT));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(0));
     }
 
     public ActuatorArcaneMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -46,6 +51,10 @@ public class ActuatorArcaneMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, ActuatorArcaneBlockEntity.SLOT_INPUT, SLOT_INPUT_X, SLOT_INPUT_Y));
             this.addSlot(new SlotItemHandler(handler, ActuatorArcaneBlockEntity.SLOT_OUTPUT, SLOT_OUTPUT_X, SLOT_OUTPUT_Y));
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_ESSENTIA_INSERTION, 174, 15));
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_BOTTLES, 174, 41));
         });
 
         addDataSlots(data);
@@ -70,44 +79,24 @@ public class ActuatorArcaneMenu extends AbstractContainerMenu {
         }
     }
 
-    public int getPowerLevel() {
-        return data.get(ActuatorArcaneBlockEntity.DATA_POWER_LEVEL);
-    }
-
-    public int getFlags() {
-        return data.get(ActuatorArcaneBlockEntity.DATA_FLAGS);
-    }
-
-    public int getSlurryInTank() {
-        return data.get(ActuatorArcaneBlockEntity.DATA_SLURRY);
-    }
-
-    public boolean getIsReductionMode() {
-        return (this.data.get(ActuatorArcaneBlockEntity.DATA_FLAGS) & ActuatorArcaneBlockEntity.FLAG_IS_REDUCTION_MODE) == ActuatorArcaneBlockEntity.FLAG_IS_REDUCTION_MODE;
-    }
-
     public void incrementPowerLevel() {
-        int previous = getPowerLevel();
-        int current = Math.min(13, getPowerLevel() + 1);
+        int previous = blockEntity.getPowerLevel();
+        int current = Math.min(getValue(MAX_POWER_LEVEL), blockEntity.getPowerLevel() + 1);
         if(previous != current) {
             PacketRegistry.sendToServer(new ActuatorSyncPowerLevelC2SPacket(
-                    blockEntity.getBlockPos(), true
+                    blockEntity.getBlockPos(), true, Affinity.ARCANE
             ));
         }
     }
 
     public void decrementPowerLevel() {
-        int previous = getPowerLevel();
-        int current = Math.max(1, getPowerLevel() - 1);
+        int previous = blockEntity.getPowerLevel();
+        int current = Math.max(1, blockEntity.getPowerLevel() - 1);
         if(previous != current) {
             PacketRegistry.sendToServer(new ActuatorSyncPowerLevelC2SPacket(
-                    blockEntity.getBlockPos(), false
+                    blockEntity.getBlockPos(), false, Affinity.ARCANE
             ));
         }
-    }
-
-    public int getRemainingEldrinTime() {
-        return data.get(ActuatorArcaneBlockEntity.DATA_REMAINING_ELDRIN_TIME);
     }
 
     private static final int

@@ -1,13 +1,10 @@
 package com.aranaira.magichem.networking;
 
-import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import com.aranaira.magichem.registry.ItemRegistry;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;

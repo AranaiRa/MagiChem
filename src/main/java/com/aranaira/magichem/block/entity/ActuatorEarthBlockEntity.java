@@ -2,12 +2,15 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IPluginDevice;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.gui.ActuatorEarthMenu;
 import com.aranaira.magichem.gui.ActuatorEarthScreen;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
@@ -16,6 +19,7 @@ import com.mna.particles.types.movers.ParticleVelocityMover;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -42,44 +46,31 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile {
+import java.util.HashMap;
+import java.util.Map;
+
+public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
             SAND_PER_OPERATION = {0, 45, 50, 55, 60, 70, 80, 90, 105, 120, 135, 155, 175, 200},
             GRIME_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
     public static final int
-            SLOT_COUNT = 3, SLOT_SAND = 0, SLOT_WASTE = 1, SLOT_RAREFIED_WASTE = 2,
+            MAX_POWER_LEVEL = 13,
+            SLOT_COUNT = 5, SLOT_SAND = 0, SLOT_WASTE = 1, SLOT_RAREFIED_WASTE = 2, SLOT_ESSENTIA_INSERTION = 3, SLOT_BOTTLES = 4,
             DATA_COUNT = 6, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SAND = 3, DATA_GRIME = 4, DATA_RAREFIED_GRIME = 5,
             FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2,
             STAMPER_ANIMATION_PERIOD = 10;
     private int
-            powerLevel = 1,
-            remainingEldrinTime = -1,
             remainingSand = 0,
             currentGrime = 0,
             currentRarefiedGrime = 0,
             flags;
-    private float
-            remainingEldrinForSatisfaction;
     public float
             stamperDepth = 0,
             stamperDepthNextTick = 0;
     protected ContainerData data;
-
-    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(slot == SLOT_SAND)
-                return stack.getItem().equals(Items.SAND) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
-            return false;
-        }
-    };
+    private static final MateriaItem ESSENTIA_EARTH = ItemRegistry.getEssentiaMap(false, false).get("earth");
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
@@ -94,36 +85,50 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
-                return switch(pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorEarthBlockEntity.this.remainingEldrinTime;
-                    case DATA_POWER_LEVEL -> ActuatorEarthBlockEntity.this.powerLevel;
-                    case DATA_FLAGS -> ActuatorEarthBlockEntity.this.flags;
-                    case DATA_SAND -> ActuatorEarthBlockEntity.this.remainingSand;
-                    case DATA_GRIME -> ActuatorEarthBlockEntity.this.currentGrime;
-                    case DATA_RAREFIED_GRIME -> ActuatorEarthBlockEntity.this.currentRarefiedGrime;
-                    default -> -1;
-                };
+                return 0;
             }
 
             @Override
             public void set(int pIndex, int pValue) {
-                switch (pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorEarthBlockEntity.this.remainingEldrinTime = pValue;
-                    case DATA_POWER_LEVEL -> ActuatorEarthBlockEntity.this.powerLevel = pValue;
-                    case DATA_FLAGS -> ActuatorEarthBlockEntity.this.flags = pValue;
-                    case DATA_SAND -> ActuatorEarthBlockEntity.this.remainingSand = pValue;
-                    case DATA_GRIME -> ActuatorEarthBlockEntity.this.currentGrime = pValue;
-                    case DATA_RAREFIED_GRIME -> ActuatorEarthBlockEntity.this.currentRarefiedGrime = pValue;
-                }
+
             }
 
             @Override
             public int getCount() {
-                return DATA_COUNT;
+                return 0;
             }
         };
 
-        this.flags = FLAG_IS_SATISFIED;
+        this.flags = 0;
+
+        itemHandler = new ItemStackHandler(SLOT_COUNT) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                if(slot == SLOT_SAND)
+                    return stack.getItem().equals(Items.SAND) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                else if(slot == SLOT_ESSENTIA_INSERTION) {
+                    if(stack.getItem() instanceof MateriaItem mi) {
+                        return mi == ESSENTIA_EARTH;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot == SLOT_ESSENTIA_INSERTION) {
+                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)))
+                        return ItemStack.EMPTY;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
     }
 
     public int getEldrinPowerUsage() {
@@ -150,28 +155,14 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         return GRIME_REDUCTION[pPowerLevel];
     }
 
-    public int getPowerLevel() {
-        return this.powerLevel;
-    }
-
-    public void increasePowerLevel() {
-        this.powerLevel = Math.min(13, this.powerLevel + 1);
-    }
-
-    public void decreasePowerLevel() {
-        this.powerLevel = Math.max(1, this.powerLevel - 1);
-    }
-
-    @Override
-    public void setPowerLevel(int pPowerLevel) {
-        this.powerLevel = pPowerLevel;
-    }
-
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("remainingEldrinTime", remainingEldrinTime);
+        nbt.putInt("remainingCycleTime", remainingCycleTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("storedMateria", storedMateria);
+        nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
+        nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
@@ -185,8 +176,11 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     public void load(CompoundTag nbt) {
         super.load(nbt);
         this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
+        this.remainingCycleTime = nbt.getInt("remainingCycleTime");
         this.powerLevel = nbt.getInt("powerLevel");
+        this.storedMateria = nbt.getInt("storedMateria");
+        this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
+        this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
         this.remainingSand = nbt.getInt("remainingSand");
         this.currentGrime = nbt.getInt("currentGrime");
         this.currentRarefiedGrime = nbt.getInt("currentRarefiedGrime");
@@ -206,8 +200,11 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putInt("remainingEldrinTime", remainingEldrinTime);
+        nbt.putInt("remainingCycleTime", remainingCycleTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("storedMateria", storedMateria);
+        nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
+        nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
@@ -228,16 +225,6 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         syncAndSave();
     }
 
-    public static boolean getIsSatisfied(ActuatorEarthBlockEntity entity) {
-        boolean satisfied = (entity.flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED;
-        boolean paused = (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
-        return satisfied && !paused;
-    }
-
-    public static boolean getIsPaused(ActuatorEarthBlockEntity entity) {
-        return (entity.flags & FLAG_IS_PAUSED) == FLAG_IS_PAUSED;
-    }
-
     public static void setPaused(ActuatorEarthBlockEntity entity, boolean pauseState) {
         if(pauseState) {
             entity.flags = entity.flags | FLAG_IS_PAUSED;
@@ -248,12 +235,14 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+        AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorEarthBlockEntity::getValue);
+
         if(t instanceof ActuatorEarthBlockEntity aebe) {
             if (level.isClientSide()) {
                 aebe.handleAnimationDrivers();
             }
 
-            if (!getIsPaused(aebe)) {
+            if (!aebe.getPaused()) {
                 //Fill the internal sand buffer
                 if(aebe.itemHandler.getStackInSlot(SLOT_SAND).getItem() == ItemRegistry.DEBUG_ORB.get()) {
                     aebe.remainingSand = Config.quakeRefinerySandCapacity;
@@ -306,41 +295,19 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorEarthBlockEntity entity) {
-        Player ownerCheck = entity.getOwner();
-        int powerDraw = entity.getEldrinPowerUsage();
+        boolean changed = AbstractDirectionalPluginBlockEntity.delegatedTick(level, pos, state, entity,
+                ActuatorEarthBlockEntity::getValue,
+                ActuatorEarthBlockEntity::getAffinity,
+                ActuatorEarthBlockEntity::getPowerDraw,
+                ActuatorEarthBlockEntity::handleAuxiliaryRequirements);
 
-        if(ownerCheck != null && !getIsPaused(entity)) {
-            float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.EARTH, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
-            entity.remainingEldrinForSatisfaction -= consumption;
-
-            //Eldrin processing
-            if(entity.remainingEldrinTime <= 0) {
-                if(entity.remainingEldrinForSatisfaction <= 0) {
-                    entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.actuatorSingleSuppliedPeriod;
-                }
-
-                if(!getIsSatisfied(entity)) {
-                    entity.syncAndSave();
-                }
-            }
-            entity.remainingEldrinTime = Math.max(-1, entity.remainingEldrinTime - 1);
-
-            if(entity.remainingEldrinTime >= 0) entity.flags = entity.flags | ActuatorEarthBlockEntity.FLAG_IS_SATISFIED;
-            else {
-                if(getIsSatisfied(entity)) {
-                    entity.flags = entity.flags & ~ActuatorEarthBlockEntity.FLAG_IS_SATISFIED;
-                    entity.syncAndSave();
-                } else
-                    entity.flags = entity.flags & ~ActuatorEarthBlockEntity.FLAG_IS_SATISFIED;
-            }
-        }
+        if(changed) entity.syncAndSave();
     }
 
     public void handleAnimationDrivers() {
         boolean doDriverUpdate = true;
 
-        if((!getIsSatisfied(this) || (remainingSand < getSandPerOperation()))) {
+        if((!getIsSatisfied() || (remainingSand < getSandPerOperation()))) {
             if(stamperDepth == 0) {
                 doDriverUpdate = false;
                 stamperDepthNextTick = 0;
@@ -446,6 +413,10 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         return overflow;
     }
 
+    public int getSandInTank() {
+        return remainingSand;
+    }
+
     public static float getSandPercent(int pSandAmount) {
         return (float)pSandAmount * 100f / Config.quakeRefinerySandCapacity;
     }
@@ -456,6 +427,14 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
 
     public static int getScaledSand(int pSandAmount) {
         return pSandAmount * ActuatorEarthScreen.FLUID_GAUGE_H / Config.quakeRefinerySandCapacity;
+    }
+
+    public int getGrimeInTank() {
+        return currentGrime;
+    }
+
+    public int getRarefiedGrimeInTank() {
+        return currentRarefiedGrime;
     }
 
     public static float getGrimePercent(int pGrimeAmount) {
@@ -477,5 +456,114 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,2,1));
+    }
+
+    public static Affinity getAffinity(Void v) {
+        return Affinity.EARTH;
+    }
+
+    ////////////////////
+    // PROVISIONING AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(activeProvisionRequests.size() > 0)
+            return false;
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION);
+        }
+        return insertionStack.isEmpty();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+
+        if(insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2) {
+            result.put(ESSENTIA_EARTH, itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) - insertionStack.getCount());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(pMateriaItem == ESSENTIA_EARTH)
+            activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(pStack.getItem() == ESSENTIA_EARTH) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
+
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+            } else {
+                insertionStack.grow(pStack.getCount());
+            }
+            itemHandler.setStackInSlot(SLOT_ESSENTIA_INSERTION, insertionStack);
+
+            syncAndSave();
+
+            activeProvisionRequests.remove((MateriaItem)pStack.getItem());
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() == ESSENTIA_EARTH) {
+            return 0;
+        }
+        return pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+        return 0;
+    }
+
+    ////////////////////
+    // STATIC RETRIEVAL
+    ////////////////////
+
+    public static int getValue(IDs id) {
+        return switch (id) {
+            case SLOT_COUNT -> SLOT_COUNT;
+            case SLOT_ESSENTIA_INSERTION -> SLOT_ESSENTIA_INSERTION;
+            case SLOT_BOTTLES -> SLOT_BOTTLES;
+            case MAX_POWER_LEVEL -> MAX_POWER_LEVEL;
+        };
+    }
+
+    public static int getPowerDraw(AbstractDirectionalPluginBlockEntity entity) {
+        if(entity == null)
+            return 1;
+        return ELDRIN_POWER_USAGE[entity.getPowerLevel()];
+    }
+
+    public static boolean handleAuxiliaryRequirements(AbstractDirectionalPluginBlockEntity entity) {
+        entity.satisfyAuxiliaryRequirements();
+        return true;
     }
 }

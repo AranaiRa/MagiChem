@@ -1,11 +1,14 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity.IDs;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
+import com.mna.api.affinity.Affinity;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,6 +22,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
+import static com.aranaira.magichem.block.entity.ActuatorAirBlockEntity.*;
+
 public class ActuatorAirMenu extends AbstractContainerMenu {
 
     public final ActuatorAirBlockEntity blockEntity;
@@ -29,7 +34,7 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
         SLOT_FUEL_X = 70, SLOT_FUEL_Y = 36;
 
     public ActuatorAirMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(ActuatorAirBlockEntity.DATA_COUNT));
+        this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(0));
     }
 
     public ActuatorAirMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -42,7 +47,9 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, SLOT_FUEL_X, SLOT_FUEL_Y));
+            this.addSlot(new SlotItemHandler(handler, SLOT_ESSENTIA_INSERTION, 167, 15));
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_BOTTLES, 167, 41));
         });
 
         addDataSlots(data);
@@ -67,41 +74,25 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
         }
     }
 
-    public int getPowerLevel() {
-        return data.get(ActuatorAirBlockEntity.DATA_POWER_LEVEL);
-    }
-
-    public int getFlags() {
-        return data.get(ActuatorAirBlockEntity.DATA_FLAGS);
-    }
-
     public void incrementPowerLevel() {
-        int previous = getPowerLevel();
-        int current = Math.min(3, getPowerLevel() + 1);
+        int previous = blockEntity.getPowerLevel();
+        int current = Math.min(getValue(IDs.MAX_POWER_LEVEL), blockEntity.getPowerLevel() + 1);
         if(previous != current) {
             PacketRegistry.sendToServer(new ActuatorSyncPowerLevelC2SPacket(
-                    blockEntity.getBlockPos(), true
+                    blockEntity.getBlockPos(), true, Affinity.WIND
             ));
         }
     }
 
     public void decrementPowerLevel() {
-        int previous = getPowerLevel();
-        int current = Math.max(1, getPowerLevel() - 1);
+        int previous = blockEntity.getPowerLevel();
+        int current = Math.max(1, blockEntity.getPowerLevel() - 1);
         if(previous != current) {
             PacketRegistry.sendToServer(new ActuatorSyncPowerLevelC2SPacket(
-                    blockEntity.getBlockPos(), false
+                    blockEntity.getBlockPos(), false, Affinity.WIND
             ));
         }
     }
-
-    public int getRemainingEldrinTime() {
-        return data.get(ActuatorAirBlockEntity.DATA_REMAINING_ELDRIN_TIME);
-    }
-
-    public int getSmokeInTank() { return data.get(ActuatorAirBlockEntity.DATA_SMOKE); }
-
-    public int getSteamInTank() { return data.get(ActuatorAirBlockEntity.DATA_STEAM); }
 
     private static final int
             SLOT_INVENTORY_BEGIN = 0,

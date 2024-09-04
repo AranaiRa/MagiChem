@@ -96,7 +96,7 @@ public class ActuatorAirBlock extends BaseEntityBlock {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {
             if(be instanceof ActuatorAirBlockEntity aabe) {
-                ActuatorAirBlockEntity.setPaused(aabe, pLevel.hasNeighborSignal(pPos));
+                aabe.setPaused(pLevel.hasNeighborSignal(pPos));
             }
         }
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
