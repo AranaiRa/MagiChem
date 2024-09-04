@@ -6,7 +6,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.Triplet;
@@ -45,7 +45,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemStackHandler;
-import org.antlr.v4.misc.MutableInt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -323,7 +322,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         pluginDevices.clear();
 
         //Start by grabbing the actuator plugged into the main block
-        if(getPlugEntity() instanceof DirectionalPluginBlockEntity dpbe)
+        if(getPlugEntity() instanceof AbstractDirectionalPluginBlockEntity dpbe)
             pluginDevices.add(dpbe);
 
         List<BlockEntity> query = new ArrayList<>();
@@ -336,7 +335,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         for(BlockEntity be : query) {
             if (be instanceof DistilleryRouterBlockEntity crbe) {
                 BlockEntity pe = crbe.getPlugEntity();
-                if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
     }
@@ -360,7 +359,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, DistilleryBlockEntity pEntity) {
         if(!pEntity.getLevel().isClientSide()) {
-            for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+            for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
                 if (dpbe instanceof ActuatorFireBlockEntity fire) {
                     if (!pEntity.itemHandler.getStackInSlot(SLOT_FUEL).isEmpty()) {
                         //try to push fuel to an open slot in an inferno engine if there is one

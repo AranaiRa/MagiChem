@@ -4,11 +4,9 @@ import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.DistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -32,7 +30,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction {
@@ -89,7 +86,7 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
     }
 
     @Override
-    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
         getMaster().removePlugin(pPlugin);
     }
 

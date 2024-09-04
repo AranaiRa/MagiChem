@@ -232,12 +232,9 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pLevel.isClientSide) {
-            if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_WATER_BE.get()) {
-                return ActuatorWaterBlockEntity::tick;
-            }
+        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_WATER_BE.get()) {
+            return ActuatorWaterBlockEntity::tick;
         }
-
         return null;
     }
 

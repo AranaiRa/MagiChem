@@ -28,7 +28,7 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
     private static final ResourceLocation TEXTURE_STEAM =
             TEXTURE_WATER;
             //new ResourceLocation(MagiChemMod.MODID, "textures/block/steam.png");
-    private static final int
+    public static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 159,
             SYMBOL_X = 55, SYMBOL_Y = 21, SYMBOL_U = 184, SYMBOL_V = 0, SYMBOL_W = 15, SYMBOL_H = 21,
             POWER_X = 41, POWER_Y = 19, POWER_U = 176, POWER_V = 0, POWER_W = 8, POWER_H = 26,
@@ -84,7 +84,7 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         gui.blit(TEXTURE, x + POWER_X, y + POWER_Y + plY, POWER_U, plY, POWER_W, plH);
 
         //progress symbol
-        int sH = getScaledEldrinTime();
+        int sH = menu.blockEntity.getScaledCycleTime();
         int sY = SYMBOL_H - sH;
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
 
@@ -102,6 +102,11 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         if(menu.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.getPowerLevel())) {
             renderPowerWarning(gui, x, y);
         }
+
+        //Essentia insertion
+        gui.blit(TEXTURE, x + 149, y + 3, 0, 172, 40, 58);
+        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / Config.actuatorMateriaBufferMaximum);
+        gui.blit(TEXTURE, x + 157, y + 11 + (42 - sM), 200, 0, 2, sM);
     }
 
     @Override
@@ -228,19 +233,50 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float drawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
+            float singleDrawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
+            float doubleDrawTime = Config.actuatorDoubleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.eldrin.water").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.fire").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line1.fire")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2a"))
-                    .append(Component.literal(String.format("%.1f", drawTime)).withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2b"))
-            );
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2a"))
+                    .append(Component.literal(String.format("%.1f", singleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2b"))
+                    .append(Component.literal(String.format("%.1f", doubleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2c")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Essentia
+        if(mouseX >= x+156 && mouseX <= x+159 &&
+                mouseY >= y+10 && mouseY <= y+54) {
+
+            int current = menu.blockEntity.getStoredMateria();
+            int max = Config.actuatorMateriaBufferMaximum;
+            float percent = (float)current / (float)max;
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.water").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line1.water")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add((Component.empty())
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2a"))
+                    .append(Component.literal(Config.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2b")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(Math.min(max, current) + " / " + max).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, percent) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }
@@ -270,9 +306,7 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
         }
-    }
 
-    private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.actuatorSingleSuppliedPeriod;
+        gui.drawString(font, ""+menu.blockEntity.remainingCycleTime, -75, 0, 0xffffffff, true);
     }
 }

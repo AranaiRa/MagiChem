@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
@@ -20,7 +21,6 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
-import com.mna.particles.types.movers.ParticleVelocityMover;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -402,7 +402,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         for(BlockEntity be : query) {
             if (be instanceof FuseryRouterBlockEntity frbe) {
                 BlockEntity pe = frbe.getPlugEntity();
-                if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
     }

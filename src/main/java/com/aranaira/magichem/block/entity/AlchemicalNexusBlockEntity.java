@@ -4,6 +4,7 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
@@ -77,7 +78,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected boolean
         isStalled = false, doDeferredRecipeLinkages = false;
     protected Random r = new Random();
-    protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
+    protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
 
     public static final int
             FLUID_BAR_HEIGHT = 88,
@@ -353,7 +354,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 anbe.spawnParticles();
             } else {
                 anbe.reductionRate = 0;
-                for (DirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
+                for (AbstractDirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
                     if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                         ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pBlockState, arcane, true);
                         float newReductionRate = arcane.getSlurryReductionRate() / 100f;
@@ -1211,13 +1212,13 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         for(BlockEntity be : query) {
             if (be instanceof AlchemicalNexusRouterBlockEntity anrbe) {
                 BlockEntity pe = anrbe.getPlugEntity();
-                if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
     }
 
     @Override
-    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
         this.pluginDevices.remove(pPlugin);
         if(pPlugin instanceof ActuatorArcaneBlockEntity) {
             reductionRate = 0.0f;

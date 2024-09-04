@@ -2,18 +2,15 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.CentrifugeBlock;
-import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
-import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -341,7 +338,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         for(BlockEntity be : query) {
             if (be instanceof CentrifugeRouterBlockEntity crbe) {
                 BlockEntity pe = crbe.getPlugEntity();
-                if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
     }

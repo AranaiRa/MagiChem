@@ -3,7 +3,6 @@ package com.aranaira.magichem.block.entity.ext;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.mojang.datafixers.util.Pair;
@@ -42,7 +41,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             progress = 0, batchSize = 1, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
 
     protected ItemStackHandler itemHandler;
-    protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
+    protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
 
     ////////////////////
     // CONSTRUCTOR
@@ -87,7 +86,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     ////////////////////
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractSeparationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
-        for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+        for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
                 if (ActuatorFireBlockEntity.getIsSatisfied(fire) && pEntity.remainingTorque <= 20) {
@@ -149,7 +148,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     } else {
                         pEntity.incrementProgress();
                         //tick actuators
-                        for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+                        for(AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
                             if(dpbe instanceof ActuatorWaterBlockEntity water) {
                                 ActuatorWaterBlockEntity.delegatedTick(pLevel, pPos, pState, water);
                             }
@@ -289,7 +288,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             }
 
             //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
-            for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+            for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
                 if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
                     grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
                 }
@@ -399,7 +398,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     ////////////////////
 
     protected static void updateActuatorValues(AbstractSeparationBlockEntity entity) {
-        for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
+        for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
                 entity.efficiencyMod = ActuatorWaterBlockEntity.getIsSatisfied(water) ? water.getEfficiencyIncrease() : 0;
             }
@@ -407,7 +406,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     }
 
     public static void resolveActuators(AbstractSeparationBlockEntity pEntity, int pCyclesCompleted) {
-        for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+        for(AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             dpbe.processCompletedOperation(pCyclesCompleted);
         }
     }
@@ -418,7 +417,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     }
 
     @Override
-    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
         this.pluginDevices.remove(pPlugin);
         if(pPlugin instanceof ActuatorWaterBlockEntity) {
             efficiencyMod = 0;

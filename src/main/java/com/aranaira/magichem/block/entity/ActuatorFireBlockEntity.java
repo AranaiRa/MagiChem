@@ -1,10 +1,10 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.ActuatorFireMenu;
 import com.aranaira.magichem.gui.ActuatorFireScreen;
-import com.aranaira.magichem.gui.ActuatorWaterScreen;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -28,7 +28,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -57,7 +56,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
+public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
@@ -107,7 +106,7 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                 return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
             } else if(slot == SLOT_MATERIA_INSERTION) {
                 if(stack.getItem() instanceof MateriaItem mi) {
-                    return mi.getMateriaName().equals("fire");
+                    return mi == ESSENTIA_FIRE;
                 }
             }
             return false;
@@ -473,9 +472,11 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
                 entity.remainingEldrinForSatisfaction -= consumption;
             if (entity.remainingMateriaForSatisfaction > 0) {
                 int materiaConsumption = Math.min(entity.remainingMateriaForSatisfaction, entity.storedMateria);
-                entity.storedMateria -= materiaConsumption;
-                entity.remainingMateriaForSatisfaction -= materiaConsumption;
-                changed = true;
+                if(materiaConsumption > 0) {
+                    entity.storedMateria -= materiaConsumption;
+                    entity.remainingMateriaForSatisfaction -= materiaConsumption;
+                    changed = true;
+                }
             }
 
             Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
@@ -722,10 +723,8 @@ public class ActuatorFireBlockEntity extends DirectionalPluginBlockEntity implem
         if(activeProvisionRequests.size() > 0)
             return false;
         ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
-        if(insertionStack.hasTag()) {
-            if(insertionStack.getTag().contains("CustomModelData")) {
-                return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA_INSERTION);
-            }
+        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA_INSERTION);
         }
         return insertionStack.isEmpty();
     }

@@ -1,7 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.ActuatorAirMenu;
@@ -41,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler {
+public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 140, 500},

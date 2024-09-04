@@ -3,13 +3,12 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.gui.ActuatorArcaneMenu;
 import com.aranaira.magichem.gui.ActuatorArcaneScreen;
-import com.aranaira.magichem.gui.ActuatorWaterScreen;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -34,7 +33,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -47,7 +45,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IFluidHandler, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile {
+public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IFluidHandler, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},

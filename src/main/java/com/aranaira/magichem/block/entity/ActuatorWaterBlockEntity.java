@@ -1,13 +1,15 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.IBlockWithPowerLevel;
-import com.aranaira.magichem.foundation.IPluginDevice;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.ActuatorWaterMenu;
 import com.aranaira.magichem.gui.ActuatorWaterScreen;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
@@ -15,6 +17,7 @@ import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -25,8 +28,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,18 +40,21 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler {
+import java.util.HashMap;
+import java.util.Map;
+
+public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IBlockWithPowerLevel, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 5, 15, 30, 50, 75, 105, 140, 180, 225, 275, 335, 410, 500},
@@ -55,28 +62,64 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
             STEAM_PER_PROCESS = {0, 3, 5, 7, 10, 13, 17, 22, 27, 33, 39, 46, 53, 61},
             EFFICIENCY_INCREASE = {0, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40};
     public static final int
+            SLOT_COUNT = 2,
+            SLOT_MATERIA_INSERTION = 0, SLOT_BOTTLES = 1,
             TANK_ID_WATER = 0, TANK_ID_STEAM = 1,
             DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_WATER = 3, DATA_STEAM = 4;
     public static final int
             FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2;
-    private int
+    public int
             powerLevel = 1,
-            remainingEldrinTime,
-            flags;
+            remainingCycleTime,
+            flags,
+            storedMateria = 0,
+            remainingMateriaForSatisfaction;
     private float
             remainingEldrinForSatisfaction;
+    private boolean
+            drewEldrinThisCycle = false,
+            drewMateriaThisCycle = false;
     protected ContainerData data;
     private FluidStack
             containedWater, containedSteam;
     private final LazyOptional<IFluidHandler> fluidHandler;
+    private static final MateriaItem ESSENTIA_WATER = ItemRegistry.getEssentiaMap(false, false).get("water");
     private static final Random random = new Random();
+    
+    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            if(slot == SLOT_MATERIA_INSERTION) {
+                if(stack.getItem() instanceof MateriaItem mi) {
+                    return mi == ESSENTIA_WATER;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if(slot == SLOT_MATERIA_INSERTION) {
+                if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION)))
+                    return ItemStack.EMPTY;
+            }
+
+            return super.extractItem(slot, amount, simulate);
+        }
+    };
+
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
     public ActuatorWaterBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
         this.containedWater = FluidStack.EMPTY;
         this.containedSteam = FluidStack.EMPTY;
         this.fluidHandler = LazyOptional.of(() -> this);
-        this.flags = FLAG_IS_SATISFIED;
     }
 
     public ActuatorWaterBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -86,7 +129,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
             @Override
             public int get(int pIndex) {
                 return switch(pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorWaterBlockEntity.this.remainingEldrinTime;
+                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorWaterBlockEntity.this.remainingCycleTime;
                     case DATA_POWER_LEVEL -> ActuatorWaterBlockEntity.this.powerLevel;
                     case DATA_FLAGS -> ActuatorWaterBlockEntity.this.flags;
                     case DATA_WATER -> ActuatorWaterBlockEntity.this.containedWater.getAmount();
@@ -98,7 +141,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
             @Override
             public void set(int pIndex, int pValue) {
                 switch (pIndex) {
-                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorWaterBlockEntity.this.remainingEldrinTime = pValue;
+                    case DATA_REMAINING_ELDRIN_TIME -> ActuatorWaterBlockEntity.this.remainingCycleTime = pValue;
                     case DATA_POWER_LEVEL -> ActuatorWaterBlockEntity.this.powerLevel = pValue;
                     case DATA_FLAGS -> ActuatorWaterBlockEntity.this.flags = pValue;
                     case DATA_WATER -> {
@@ -179,8 +222,12 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.putInt("remainingEldrinTime", remainingEldrinTime);
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("remainingCycleTime", remainingCycleTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("storedMateria", storedMateria);
+        nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
+        nbt.putBoolean("drewMateriaThisCycle", drewMateriaThisCycle);
         nbt.putInt("tankWater", this.containedWater.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -192,8 +239,12 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        this.remainingEldrinTime = nbt.getInt("remainingEldrinTime");
+        this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        this.remainingCycleTime = nbt.getInt("remainingCycleTime");
         this.powerLevel = nbt.getInt("powerLevel");
+        this.storedMateria = nbt.getInt("storedMateria");
+        this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
+        this.drewMateriaThisCycle = nbt.getBoolean("drewMateriaThisCycle");
         this.flags = nbt.getInt("flags");
 
         int nbtWater = nbt.getInt("tankWater");
@@ -213,10 +264,20 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     }
 
     @Override
+    public void onLoad() {
+        super.onLoad();
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+    }
+
+    @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putInt("remainingEldrinTime", remainingEldrinTime);
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("remainingCycleTime", remainingCycleTime);
         nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("storedMateria", storedMateria);
+        nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
+        nbt.putBoolean("drewMateriaThisCycle", drewMateriaThisCycle);
         nbt.putInt("tankWater", this.containedWater.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -256,93 +317,124 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
         entity.syncAndSave();
     }
 
+    public int getStoredMateria() {
+        return storedMateria;
+    }
+
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        if(t instanceof ActuatorWaterBlockEntity awbe) {
+        if(t instanceof ActuatorWaterBlockEntity entity) {
+            //Try inserting materia
+            if(!level.isClientSide()) {
+                if (entity.storedMateria < Config.actuatorMateriaBufferMaximum) {
+                    ItemStack insertionStack = entity.itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
+                    ItemStack bottleStack = entity.itemHandler.getStackInSlot(SLOT_BOTTLES);
 
-            float water = awbe.getWaterPercent();
-            if(water > 0 && !getIsPaused(awbe)) {
-                Vector3f mid = new Vector3f(0f, 1.5625f, 0f);
-                Vector3f left = new Vector3f(0f, 1.03125f, 0f);
-                Vector3f right = new Vector3f(0f, 1.03125f, 0f);
+                    if (!insertionStack.isEmpty()) {
+                        if (bottleStack.getCount() < entity.itemHandler.getSlotLimit(SLOT_BOTTLES)) {
+                            if(!InventoryHelper.isMateriaUnbottled(insertionStack)){
+                                if (bottleStack.isEmpty())
+                                    bottleStack = new ItemStack(Items.GLASS_BOTTLE);
+                                else
+                                    bottleStack.grow(1);
+                            }
 
-                Vector2f leftSpeed = new Vector2f();
+                            insertionStack.shrink(1);
+                            entity.storedMateria += Config.actuatorMateriaUnitsPerDram;
 
-                Direction dir = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-                if(dir == Direction.NORTH) {
-                    mid.x = 0.5f;
-                    mid.z = 0.6875f;
-                    left.x = 0.09375f;
-                    left.z = 0.3125f;
-                    right.x = 0.90625f;
-                    right.z = 0.3125f;
-                    leftSpeed.x = -0.04f;
-                    leftSpeed.y = 0.0f;
+                            entity.itemHandler.setStackInSlot(SLOT_MATERIA_INSERTION, insertionStack);
+                            entity.itemHandler.setStackInSlot(SLOT_BOTTLES, bottleStack);
+                            entity.syncAndSave();
+                        }
+                    }
                 }
-                if(dir == Direction.EAST) {
-                    mid.x = 0.3125f;
-                    mid.z = 0.5f;
-                    left.x = 0.6875f;
-                    left.z = 0.09375f;
-                    right.x = 0.6875f;
-                    right.z = 0.90625f;
-                    leftSpeed.x = 0.0f;
-                    leftSpeed.y = -0.04f;
-                }
-                if(dir == Direction.SOUTH) {
-                    mid.x = 0.5f;
-                    mid.z = 0.3125f;
-                    left.x = 0.90625f;
-                    left.z = 0.6875f;
-                    right.x = 0.09375f;
-                    right.z = 0.6875f;
-                    leftSpeed.x = 0.04f;
-                    leftSpeed.y = 0.0f;
-                }
-                if(dir == Direction.WEST) {
-                    mid.x = 0.6875f;
-                    mid.z = 0.5f;
-                    left.x = 0.3125f;
-                    left.z = 0.09375f;
-                    right.x = 0.3125f;
-                    right.z = 0.90625f;
-                    leftSpeed.x = 0.0f;
-                    leftSpeed.y = -0.04f;
-                }
+            }
+            //Particle work
+            else {
+                float water = entity.getWaterPercent();
+                if (water > 0 && !getIsPaused(entity)) {
+                    Vector3f mid = new Vector3f(0f, 1.5625f, 0f);
+                    Vector3f left = new Vector3f(0f, 1.03125f, 0f);
+                    Vector3f right = new Vector3f(0f, 1.03125f, 0f);
 
-                //Spawn drip particles
-                for(int i=0; i<3; i++) {
-                    Vector2f dripShift = new Vector2f((random.nextFloat() * 2.0f - 1.0f) * 0.05f, (random.nextFloat() * 2.0f - 1.0f) * 0.05f);
+                    Vector2f leftSpeed = new Vector2f();
 
-                    double dripX = pos.getX() + mid.x + dripShift.x;
-                    double dripY = pos.getY() + mid.y;
-                    double dripZ = pos.getZ() + mid.z + dripShift.y;
-
-                    level.addParticle(new MAParticleType(ParticleInit.DRIP.get()).setMaxAge(13)
-                                .setMover(new ParticleLerpMover(dripX, dripY, dripZ, pos.getX() + mid.x, dripY - 1.0f, pos.getZ() + mid.z)),
-                            dripX, dripY, dripZ,
-                            0, 0, 0);
-                }
-
-                //Spawn steam jets
-                float steam = awbe.data.get(DATA_STEAM);
-                if((int)steam > Config.delugePurifierTankCapacity / 2) {
-                    float mappedSteamPercent = Math.max(0, ((steam / Config.delugePurifierTankCapacity) - 0.5f) * 2) * 2;
-                    int spawnModulus = (int)Math.ceil(mappedSteamPercent * 5);
-
-                    long time = level.getGameTime();
-
-                    if(time % 20 <= spawnModulus) {
-                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                                        .setPhysics(true).setScale(0.065f).setMaxAge(10),
-                                pos.getX() + left.x, pos.getY() + left.y, pos.getZ() + left.z,
-                                leftSpeed.x, 0.075f, leftSpeed.y);
+                    Direction dir = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                    if (dir == Direction.NORTH) {
+                        mid.x = 0.5f;
+                        mid.z = 0.6875f;
+                        left.x = 0.09375f;
+                        left.z = 0.3125f;
+                        right.x = 0.90625f;
+                        right.z = 0.3125f;
+                        leftSpeed.x = -0.04f;
+                        leftSpeed.y = 0.0f;
+                    }
+                    if (dir == Direction.EAST) {
+                        mid.x = 0.3125f;
+                        mid.z = 0.5f;
+                        left.x = 0.6875f;
+                        left.z = 0.09375f;
+                        right.x = 0.6875f;
+                        right.z = 0.90625f;
+                        leftSpeed.x = 0.0f;
+                        leftSpeed.y = -0.04f;
+                    }
+                    if (dir == Direction.SOUTH) {
+                        mid.x = 0.5f;
+                        mid.z = 0.3125f;
+                        left.x = 0.90625f;
+                        left.z = 0.6875f;
+                        right.x = 0.09375f;
+                        right.z = 0.6875f;
+                        leftSpeed.x = 0.04f;
+                        leftSpeed.y = 0.0f;
+                    }
+                    if (dir == Direction.WEST) {
+                        mid.x = 0.6875f;
+                        mid.z = 0.5f;
+                        left.x = 0.3125f;
+                        left.z = 0.09375f;
+                        right.x = 0.3125f;
+                        right.z = 0.90625f;
+                        leftSpeed.x = 0.0f;
+                        leftSpeed.y = -0.04f;
                     }
 
-                    if((time + 10) % 20 <= spawnModulus) {
-                        level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
-                                        .setPhysics(true).setScale(0.065f).setMaxAge(10),
-                                pos.getX() + right.x, pos.getY() + right.y, pos.getZ() + right.z,
-                                -leftSpeed.x, 0.075f, -leftSpeed.y);
+                    //Spawn drip particles
+                    for (int i = 0; i < 3; i++) {
+                        Vector2f dripShift = new Vector2f((random.nextFloat() * 2.0f - 1.0f) * 0.05f, (random.nextFloat() * 2.0f - 1.0f) * 0.05f);
+
+                        double dripX = pos.getX() + mid.x + dripShift.x;
+                        double dripY = pos.getY() + mid.y;
+                        double dripZ = pos.getZ() + mid.z + dripShift.y;
+
+                        level.addParticle(new MAParticleType(ParticleInit.DRIP.get()).setMaxAge(13)
+                                        .setMover(new ParticleLerpMover(dripX, dripY, dripZ, pos.getX() + mid.x, dripY - 1.0f, pos.getZ() + mid.z)),
+                                dripX, dripY, dripZ,
+                                0, 0, 0);
+                    }
+
+                    //Spawn steam jets
+                    float steam = entity.data.get(DATA_STEAM);
+                    if ((int) steam > Config.delugePurifierTankCapacity / 2) {
+                        float mappedSteamPercent = Math.max(0, ((steam / Config.delugePurifierTankCapacity) - 0.5f) * 2) * 2;
+                        int spawnModulus = (int) Math.ceil(mappedSteamPercent * 5);
+
+                        long time = level.getGameTime();
+
+                        if (time % 20 <= spawnModulus) {
+                            level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
+                                            .setPhysics(true).setScale(0.065f).setMaxAge(10),
+                                    pos.getX() + left.x, pos.getY() + left.y, pos.getZ() + left.z,
+                                    leftSpeed.x, 0.075f, leftSpeed.y);
+                        }
+
+                        if ((time + 10) % 20 <= spawnModulus) {
+                            level.addParticle(new MAParticleType(ParticleInit.COZY_SMOKE.get())
+                                            .setPhysics(true).setScale(0.065f).setMaxAge(10),
+                                    pos.getX() + right.x, pos.getY() + right.y, pos.getZ() + right.z,
+                                    -leftSpeed.x, 0.075f, -leftSpeed.y);
+                        }
                     }
                 }
             }
@@ -352,32 +444,66 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorWaterBlockEntity entity) {
         Player ownerCheck = entity.getOwner();
         int powerDraw = entity.getEldrinPowerUsage();
+        boolean changed = false;
 
-        if(ownerCheck != null && !getIsPaused(entity)) {
+        if(ownerCheck != null) {
             float consumption = entity.consume(ownerCheck, pos, pos.getCenter(), Affinity.WATER, Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
-            entity.remainingEldrinForSatisfaction -= consumption;
-
-            if(entity.remainingEldrinTime <= 0) {
-                if(entity.remainingEldrinForSatisfaction <= 0) {
-                    int fluidOp = getWaterPerOperation(entity.powerLevel);
-                    if(entity.containedWater.getAmount() >= fluidOp) {
-                        entity.drain(new FluidStack(Fluids.WATER, fluidOp), FluidAction.EXECUTE);
-                        entity.remainingEldrinForSatisfaction = powerDraw;
-                        entity.remainingEldrinTime = Config.actuatorSingleSuppliedPeriod;
-                    }
+            if(consumption > 0)
+                entity.remainingEldrinForSatisfaction -= consumption;
+            if (entity.remainingMateriaForSatisfaction > 0) {
+                int materiaConsumption = Math.min(entity.remainingMateriaForSatisfaction, entity.storedMateria);
+                if(materiaConsumption > 0) {
+                    entity.storedMateria -= materiaConsumption;
+                    entity.remainingMateriaForSatisfaction -= materiaConsumption;
+                    changed = true;
                 }
-            } else {
-                entity.remainingEldrinTime--;
             }
 
-            if(entity.remainingEldrinTime > 0) entity.flags = entity.flags | ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
-            else if(entity.remainingEldrinForSatisfaction == 0 && entity.containedWater.getAmount() > getWaterPerOperation(entity.powerLevel)) entity.flags = entity.flags | ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
-            else entity.flags = entity.flags & ~ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
+            if(!getIsPaused(entity)) {
+                //Eldrin processing
+                if (entity.remainingCycleTime <= 0) {
+                    if (entity.remainingEldrinForSatisfaction <= 0) {
+                        entity.remainingEldrinForSatisfaction = powerDraw;
+                        entity.drewEldrinThisCycle = true;
+                    } else {
+                        entity.drewEldrinThisCycle = false;
+                    }
+
+                    if (entity.remainingMateriaForSatisfaction <= 0) {
+                        entity.remainingMateriaForSatisfaction = powerDraw;
+                        entity.drewMateriaThisCycle = true;
+                    } else {
+                        entity.drewMateriaThisCycle = false;
+                    }
+
+                    if (entity.drewEldrinThisCycle && entity.drewMateriaThisCycle) {
+                        entity.remainingCycleTime = Config.actuatorDoubleSuppliedPeriod;
+                    } else if (entity.drewEldrinThisCycle || entity.drewMateriaThisCycle)
+                        entity.remainingCycleTime = Config.actuatorSingleSuppliedPeriod;
+
+                    if (entity.drewEldrinThisCycle || entity.drewMateriaThisCycle)
+                        changed = true;
+                }
+            }
+            entity.remainingCycleTime = Math.max(-1, entity.remainingCycleTime - 1);
+
+            if (entity.drewMateriaThisCycle || entity.drewEldrinThisCycle)
+                entity.flags = entity.flags | ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
+            else {
+                if (getIsSatisfied(entity)) {
+                    entity.flags = entity.flags & ~ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
+                    changed = true;
+                } else
+                    entity.flags = entity.flags & ~ActuatorWaterBlockEntity.FLAG_IS_SATISFIED;
+            }
         }
+
+        if(changed) entity.syncAndSave();
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
         if(cap == ForgeCapabilities.FLUID_HANDLER) return fluidHandler.cast();
 
         return super.getCapability(cap, side);
@@ -386,6 +512,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
+        this.lazyItemHandler.invalidate();
         this.fluidHandler.invalidate();
     }
 
@@ -418,6 +545,10 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
 
     public static int getScaledSteam(int pSteamAmount) {
         return pSteamAmount * ActuatorWaterScreen.FLUID_GAUGE_H / Config.delugePurifierTankCapacity;
+    }
+
+    public int getScaledCycleTime() {
+        return remainingCycleTime * ActuatorWaterScreen.SYMBOL_H / ((drewMateriaThisCycle && drewEldrinThisCycle) ? Config.actuatorDoubleSuppliedPeriod : Config.actuatorSingleSuppliedPeriod);
     }
 
     @Override
@@ -527,5 +658,87 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,2,1));
+    }
+
+    ////////////////////
+    // PROVISIONING AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(activeProvisionRequests.size() > 0)
+            return false;
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
+        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA_INSERTION);
+        }
+        return insertionStack.isEmpty();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
+
+        if(insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA_INSERTION) / 2) {
+            result.put(ESSENTIA_WATER, itemHandler.getSlotLimit(SLOT_MATERIA_INSERTION) - insertionStack.getCount());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(pMateriaItem == ESSENTIA_WATER)
+            activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(pStack.getItem() == ESSENTIA_WATER) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INSERTION);
+
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+                itemHandler.setStackInSlot(SLOT_MATERIA_INSERTION, insertionStack);
+            } else {
+                insertionStack.grow(pStack.getCount());
+                itemHandler.setStackInSlot(SLOT_MATERIA_INSERTION, insertionStack);
+            }
+
+            syncAndSave();
+
+            activeProvisionRequests.remove((MateriaItem)pStack.getItem());
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() == ESSENTIA_WATER) {
+            return 0;
+        }
+        return pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+        return 0;
     }
 }

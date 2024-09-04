@@ -3,7 +3,6 @@ package com.aranaira.magichem.block.entity.ext;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.AdmixtureItem;
@@ -47,7 +46,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             progress = 0, batchSize = 1, remainingHeat = 0, heatDuration = 0, pluginLinkageCountdown = 3;
 
     protected ItemStackHandler itemHandler;
-    protected List<DirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
+    protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
 
     private static HashMap<String, AdmixtureItem> admixturesMap = ItemRegistry.getAdmixturesMap(false, true);
     private static final NonNullList<AdmixtureItem> admixturesForRandomSelection = NonNullList.create();
@@ -104,7 +103,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     ////////////////////
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractDistillationBlockEntity pEntity, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
-        for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+        for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
                 if (ActuatorFireBlockEntity.getIsSatisfied(fire) && pEntity.remainingHeat <= 20) {
@@ -353,7 +352,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             }
 
             //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
-            for (DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+            for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
                 if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
                     grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
                 }
@@ -470,7 +469,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     ////////////////////
 
     protected static void updateActuatorValues(AbstractDistillationBlockEntity entity) {
-        for(DirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
+        for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
                 entity.efficiencyMod = ActuatorWaterBlockEntity.getIsSatisfied(water) ? water.getEfficiencyIncrease() : 0;
             }
@@ -478,7 +477,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     public static void resolveActuators(AbstractDistillationBlockEntity pEntity, int pCyclesCompleted) {
-        for(DirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+        for(AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             dpbe.processCompletedOperation(pCyclesCompleted);
         }
     }
@@ -490,7 +489,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     @Override
-    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
         this.pluginDevices.remove(pPlugin);
         if(pPlugin instanceof ActuatorWaterBlockEntity) {
             efficiencyMod = 0;

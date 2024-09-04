@@ -2,7 +2,7 @@ package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
@@ -80,7 +80,7 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     }
 
     @Override
-    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
         getMaster().removePlugin(pPlugin);
     }
 

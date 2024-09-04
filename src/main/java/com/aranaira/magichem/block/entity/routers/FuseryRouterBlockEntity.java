@@ -3,10 +3,9 @@ package com.aranaira.magichem.block.entity.routers;
 import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -90,7 +89,7 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
     }
 
     @Override
-    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
         getMaster().removePlugin(pPlugin);
     }
 

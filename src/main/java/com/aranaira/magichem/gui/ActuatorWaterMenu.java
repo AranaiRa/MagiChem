@@ -15,7 +15,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
+
+import static com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity.*;
 
 public class ActuatorWaterMenu extends AbstractContainerMenu {
 
@@ -35,6 +39,12 @@ public class ActuatorWaterMenu extends AbstractContainerMenu {
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
+
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+            this.addSlot(new SlotItemHandler(handler, SLOT_MATERIA_INSERTION, 165, 15));
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_BOTTLES, 165, 41));
+        });
 
         addDataSlots(data);
     }

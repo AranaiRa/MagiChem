@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AbstractMateriaProcessorBlockEntity extends BlockEntity implements IShlorpReceiver {
+public abstract class AbstractMateriaProcessorBlockEntity extends BlockEntity implements IShlorpReceiver {
 
     protected NonNullList<Triplet<MateriaItem, Integer, Boolean>> satisfactionDemands = NonNullList.create();
 

@@ -223,9 +223,9 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             tooltipContents.add((Component.empty())
                     .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2a"))
                     .append(Component.literal(String.format("%.1f", singleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2b"))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2b"))
                     .append(Component.literal(String.format("%.1f", doubleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2c")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2c")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 

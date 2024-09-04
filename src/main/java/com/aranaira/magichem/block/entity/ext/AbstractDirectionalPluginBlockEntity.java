@@ -1,5 +1,7 @@
-package com.aranaira.magichem.foundation;
+package com.aranaira.magichem.block.entity.ext;
 
+import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -10,11 +12,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.UUID;
 
-public abstract class DirectionalPluginBlockEntity extends BlockEntity implements IRequiresRouterCleanupOnDestruction {
+public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity implements IRequiresRouterCleanupOnDestruction {
     protected Player owner;
     protected UUID ownerUUID;
 
-    public DirectionalPluginBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+    public AbstractDirectionalPluginBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
     }
 

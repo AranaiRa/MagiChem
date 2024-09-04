@@ -4,7 +4,7 @@ import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.foundation.DirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
@@ -26,7 +26,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -94,7 +93,7 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
     }
 
     @Override
-    public void removePlugin(DirectionalPluginBlockEntity pPlugin) {
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
         getMaster().removePlugin(pPlugin);
     }
 

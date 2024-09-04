@@ -1,17 +1,14 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.GrandDistilleryBlock;
-import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
-import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandDistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
-import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.gui.GrandDistilleryMenu;
 import com.aranaira.magichem.item.MateriaItem;
@@ -350,7 +347,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         pluginDevices.clear();
 
         //Start by grabbing the actuator plugged into the main block
-        if(getPlugEntity() instanceof DirectionalPluginBlockEntity dpbe)
+        if(getPlugEntity() instanceof AbstractDirectionalPluginBlockEntity dpbe)
             pluginDevices.add(dpbe);
 
         List<BlockEntity> query = new ArrayList<>();
@@ -363,7 +360,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         for(BlockEntity be : query) {
             if (be instanceof GrandDistilleryRouterBlockEntity gdrbe) {
                 BlockEntity pe = gdrbe.getPlugEntity();
-                if(pe instanceof DirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
     }
