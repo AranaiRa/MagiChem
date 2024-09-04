@@ -37,7 +37,7 @@
         { "item": "magichem:admixture_luck", "count": 52 },
         { "item": "magichem:admixture_construct", "count": 36 },
         { "item": "magichem:admixture_mana", "count": 36 },
-        { "item": "magichem:essentia_albedo", "count": 64 }
+        { "item": "magichem:essentia_albedo", "count": 48 }
       ]
     },
     {
@@ -54,7 +54,7 @@
         { "item": "magichem:admixture_storm", "count": 52 },
         { "item": "magichem:admixture_sorcery", "count": 36 },
         { "item": "magichem:admixture_thought", "count": 36 },
-        { "item": "magichem:essentia_citrinitas", "count": 32 }
+        { "item": "magichem:essentia_citrinitas", "count": 24 }
       ]
     }
   ]
