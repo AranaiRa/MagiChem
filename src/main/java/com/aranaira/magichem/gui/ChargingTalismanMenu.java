@@ -80,8 +80,17 @@ public class ChargingTalismanMenu extends AbstractContainerMenu {
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(slot == SLOT_SPIKE)
-                return stack.getItem() == BlockRegistry.POWER_SPIKE.get().asItem();
+            if(slot == SLOT_SPIKE) {
+                if(stack.getItem() == BlockRegistry.POWER_SPIKE.get().asItem()) {
+                    if(stack.hasTag()) {
+                        if (stack.getTag().contains("magichem.powerspike.targetpos")) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
             else if(slot == SLOT_CHARGEABLE_ITEM)
                 return stack.getCapability(ForgeCapabilities.ENERGY).isPresent();
             return false;
