@@ -240,7 +240,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        if((flags & FLAG_IS_REDUCTION_MODE) == 0 && !this.getPaused()) {
+        if((flags & FLAG_IS_REDUCTION_MODE) == 0 && !this.getPaused() && getIsSatisfied()) {
             fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), getSlurryGeneratedPerOperation() * pCyclesCompleted), FluidAction.EXECUTE);
         }
 
