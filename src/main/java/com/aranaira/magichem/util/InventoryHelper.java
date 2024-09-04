@@ -2,6 +2,7 @@ package com.aranaira.magichem.util;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -215,5 +216,16 @@ public class InventoryHelper {
             b = new Vector2i(pExclude+1, pMaxExclusive);
         }
         return new Pair<>(a, b);
+    }
+
+    public static boolean isMateriaUnbottled(ItemStack pStack) {
+        if(pStack.hasTag()) {
+            final CompoundTag tag = pStack.getTag();
+            if(tag.contains("CustomModelData")) {
+                final int cmd = tag.getInt("CustomModelData");
+                return cmd == 1;
+            }
+        }
+        return false;
     }
 }

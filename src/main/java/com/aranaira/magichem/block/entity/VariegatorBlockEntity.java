@@ -627,6 +627,11 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
     private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
 
     @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
     public boolean needsProvisioning() {
         //We don't need provisioning if something is en route
         if(activeProvisionRequests.contains((MateriaItem)ADMIXTURE_COLOR_STACK.getItem()))

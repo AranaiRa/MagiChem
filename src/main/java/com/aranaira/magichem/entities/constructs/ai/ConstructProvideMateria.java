@@ -240,7 +240,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                             if (impr.getProvisioningNeeds().containsKey(filter)) {
                                 final int required = impr.getProvisioningNeeds().get(filter);
 
-                                int collectionLimit = Math.min(required * craftCount, getCollectionLimit());
+                                int collectionLimit = Math.min(required * (impr.allowIncreasedDeliverySize() ? craftCount : 1), getCollectionLimit());
                                 if (jarTargetEntity.getMateriaType() == filter) {
                                     ItemStack extracted = jarTargetEntity.extractMateria(collectionLimit);
                                     this.waitTimer = Math.round(extracted.getCount() * 1.5f) + 22;
@@ -270,11 +270,11 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                                     shlorp.configure(
                                                             sP, sO, sT,
                                                             eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 2.5f + 1f),
-                                                            0.035f, 0.0625f,
+                                                            0.035f, 0.125f,
                                                             4 + extracted.getCount(),
                                                             (MateriaItem) extracted.getItem(),
                                                             extracted.getCount(),
-                                                            ShlorpParticleMode.NONE);
+                                                            ShlorpParticleMode.DESTINATION_TANGENT);
                                                     level.addFreshEntity(shlorp);
                                                 }
                                             }

@@ -131,6 +131,11 @@ public class VariegatorRouterBlockEntity extends BlockEntity implements MenuProv
     }
 
     @Override
+    public boolean allowIncreasedDeliverySize() {
+        return getMaster().allowIncreasedDeliverySize();
+    }
+
+    @Override
     public boolean needsProvisioning() {
         return getMaster().needsProvisioning();
     }

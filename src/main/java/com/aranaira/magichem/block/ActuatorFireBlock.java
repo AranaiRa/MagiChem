@@ -227,12 +227,9 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pLevel.isClientSide) {
-            if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_FIRE_BE.get()) {
-                return ActuatorFireBlockEntity::tick;
-            }
+        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_FIRE_BE.get()) {
+            return ActuatorFireBlockEntity::tick;
         }
-
         return null;
     }
 

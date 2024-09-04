@@ -136,6 +136,11 @@ public class ConjurerRouterBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
+    public boolean allowIncreasedDeliverySize() {
+        return getMaster().allowIncreasedDeliverySize();
+    }
+
+    @Override
     public boolean needsProvisioning() {
         return getMaster().needsProvisioning();
     }

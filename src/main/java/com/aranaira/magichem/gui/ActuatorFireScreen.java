@@ -81,7 +81,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         gui.blit(TEXTURE, x + POWER_X, y + POWER_Y + plY, POWER_U, plY, POWER_W, plH);
 
         //progress symbol
-        int sH = getScaledEldrinTime();
+        int sH = menu.blockEntity.getScaledCycleTime();
         int sY = SYMBOL_H - sH;
         gui.blit(TEXTURE, x + SYMBOL_X, y + SYMBOL_Y + sY, SYMBOL_U, sY, SYMBOL_W, sH);
 
@@ -211,19 +211,50 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float drawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
+            float singleDrawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
+            float doubleDrawTime = Config.actuatorDoubleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.eldrin.fire").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.fire").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line1.fire")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2a"))
-                    .append(Component.literal(String.format("%.1f", drawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2a"))
+                    .append(Component.literal(String.format("%.1f", singleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2b"))
-            );
+                    .append(Component.literal(String.format("%.1f", doubleDrawTime)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.eldrin.line2c")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Essentia
+        if(mouseX >= x+160 && mouseX <= x+163 &&
+                mouseY >= y+10 && mouseY <= y+54) {
+
+            int current = menu.blockEntity.getStoredMateria();
+            int max = Config.actuatorMateriaBufferMaximum;
+            float percent = (float)current / (float)max;
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.fire").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line1.fire")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add((Component.empty())
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2a"))
+                    .append(Component.literal(Config.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2b")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(Math.min(max, current) + " / " + max).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, percent) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }
@@ -243,9 +274,5 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorFireBlockEntity.getEldrinPowerUsage(menu.getPowerLevel())), 114, 47, 0xff000000, false);
-    }
-
-    private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.actuatorSingleSuppliedPeriod;
     }
 }

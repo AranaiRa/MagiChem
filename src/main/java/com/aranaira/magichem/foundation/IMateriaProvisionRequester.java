@@ -6,6 +6,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Map;
 
 public interface IMateriaProvisionRequester {
+    boolean allowIncreasedDeliverySize();
+
     boolean needsProvisioning();
 
     Map<MateriaItem, Integer> getProvisioningNeeds();

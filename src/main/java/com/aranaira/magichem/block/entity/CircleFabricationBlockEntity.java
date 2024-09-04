@@ -553,6 +553,11 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
 
     @Override
+    public boolean allowIncreasedDeliverySize() {
+        return true;
+    }
+
+    @Override
     public boolean needsProvisioning() {
         if(currentRecipe == null)
             return false;
