@@ -29,7 +29,7 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
 
     public static Pair<Integer, NonNullList<ItemStack>> applyEfficiencyToCraftingResult(NonNullList<ItemStack> query, int efficiency, float outputRate, int grimeSuccess, int grimeFail) {
         int grime = 0;
-        if(efficiency < 100) {
+        if(efficiency < 100 || outputRate < 1.0f) {
             ArrayList<ItemStack> modifiableQuery = new ArrayList<>();
             for (ItemStack stack : query) {
                 modifiableQuery.add(new ItemStack(stack.getItem(), stack.getCount()));
@@ -44,7 +44,7 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
                     if(stack.getItem() == NIGREGO || stack.getItem() == ALBEDO || stack.getItem() == CITRINITAS || stack.getItem() == RUBEDO)
                         adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float)Config.houseOfAlchemyDistillationEfficiencyBonus / 100f));
 
-                    if(adjustedEfficiency < 100) {
+                    if(adjustedEfficiency < 100 || outputRate < 1.0f) {
                         if (r.nextInt(100) > adjustedEfficiency)
                             doShrink = true;
                         else if (outputRate < 1.0) {
