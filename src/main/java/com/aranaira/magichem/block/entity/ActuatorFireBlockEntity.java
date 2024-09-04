@@ -320,9 +320,12 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorFireBlockEntity::getValue);
+        boolean changed = AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorFireBlockEntity::getValue);
 
         if(t instanceof ActuatorFireBlockEntity entity) {
+            if(changed && !level.isClientSide())
+                entity.syncAndSave();
+
             //Particle work
             if(level.isClientSide()) {
                 float smoke = entity.containedSmoke.getAmount();

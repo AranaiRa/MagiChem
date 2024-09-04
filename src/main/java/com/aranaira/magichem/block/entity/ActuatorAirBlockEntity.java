@@ -345,16 +345,19 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, T t) {
-        AbstractDirectionalPluginBlockEntity.tick(pLevel, pPos, pBlockState, t, ActuatorAirBlockEntity::getValue);
+        boolean changed = AbstractDirectionalPluginBlockEntity.tick(pLevel, pPos, pBlockState, t, ActuatorAirBlockEntity::getValue);
 
-        if(t instanceof ActuatorAirBlockEntity aabe) {
+        if(t instanceof ActuatorAirBlockEntity entity) {
+            if(changed && !pLevel.isClientSide())
+                entity.syncAndSave();
+
             if(pLevel.isClientSide()) {
-                aabe.handleAnimationDrivers();
+                entity.handleAnimationDrivers();
             }
 
-            if(!aabe.getPaused()) {
+            if(!entity.getPaused()) {
                 //particle work goes here
-                if (aabe.getIsSatisfied()) {
+                if (entity.getIsSatisfied()) {
                     int spawnModulus = 3;
                     Vector3f mid = new Vector3f(0f, 1.53125f, 0f);
 

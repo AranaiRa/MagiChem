@@ -199,7 +199,7 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
         }
 
         //Essentia
-        if(mouseX >= x+160 && mouseX <= x+163 &&
+        if(mouseX >= x+165 && mouseX <= x+168 &&
                 mouseY >= y+10 && mouseY <= y+54) {
 
             int current = menu.blockEntity.getStoredMateria();

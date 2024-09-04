@@ -248,18 +248,21 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorArcaneBlockEntity::getValue);
+        boolean changed = AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorArcaneBlockEntity::getValue);
 
-        if(t instanceof ActuatorArcaneBlockEntity aabe) {
+        if(t instanceof ActuatorArcaneBlockEntity entity) {
+            if(changed && !level.isClientSide())
+                entity.syncAndSave();
+
             if (level.isClientSide()) {
-                aabe.handleAnimationDrivers();
+                entity.handleAnimationDrivers();
             }
 
             if (!level.isClientSide()) {
                 //Handle item slots
                 {
-                    ItemStack inputItem = aabe.itemHandler.getStackInSlot(SLOT_INPUT);
-                    ItemStack outputItem = aabe.itemHandler.getStackInSlot(SLOT_OUTPUT);
+                    ItemStack inputItem = entity.itemHandler.getStackInSlot(SLOT_INPUT);
+                    ItemStack outputItem = entity.itemHandler.getStackInSlot(SLOT_OUTPUT);
 
                     //Fill the slurry buffer from a waiting item
                     if (inputItem != ItemStack.EMPTY) {
@@ -269,10 +272,10 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
                             CompoundTag crystalNBT = inputItem.getOrCreateTag();
                             if (crystalNBT.contains("stored_xp")) {
                                 int availableExperiencePoints = crystalNBT.getInt("stored_xp");
-                                int availableTankCapacity = aabe.getTankCapacity(0) - aabe.containedSlurry.getAmount();
+                                int availableTankCapacity = entity.getTankCapacity(0) - entity.containedSlurry.getAmount();
 
                                 int pointsToConvert = Math.min(availableExperiencePoints, availableTankCapacity / Config.fluidPerXPPoint);
-                                aabe.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pointsToConvert * Config.fluidPerXPPoint), FluidAction.EXECUTE);
+                                entity.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pointsToConvert * Config.fluidPerXPPoint), FluidAction.EXECUTE);
                                 crystalNBT.putInt("stored_xp", availableExperiencePoints - pointsToConvert);
                                 inputItem.setTag(crystalNBT);
                             }
@@ -282,25 +285,25 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
                             if (handler.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
                                 FluidStack simulatedDrain = handler.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
                                 FluidStack executedFill = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), simulatedDrain.getAmount());
-                                executedFill.setAmount(aabe.fill(executedFill, FluidAction.EXECUTE));
+                                executedFill.setAmount(entity.fill(executedFill, FluidAction.EXECUTE));
                                 handler.drain(executedFill, FluidAction.EXECUTE);
                             }
                         } else if (inputItem.getItem() == ItemRegistry.DEBUG_ORB.get()) {
-                            if(aabe.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get())
-                                aabe.containedSlurry.setAmount(aabe.getTankCapacity(0));
+                            if(entity.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get())
+                                entity.containedSlurry.setAmount(entity.getTankCapacity(0));
                             else
-                                aabe.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), aabe.getTankCapacity(0));
+                                entity.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), entity.getTankCapacity(0));
                         }
                     }
 
                     //Empty the slurry buffer into a waiting item
-                    if (outputItem != ItemStack.EMPTY && aabe.containedSlurry.getAmount() > 0) {
+                    if (outputItem != ItemStack.EMPTY && entity.containedSlurry.getAmount() > 0) {
                         LazyOptional<IFluidHandlerItem> outputCap = outputItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
 
                         if (outputItem.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get()) {
                             CompoundTag crystalNBT = outputItem.getOrCreateTag();
 
-                            int availableSlurry = aabe.containedSlurry.getAmount();
+                            int availableSlurry = entity.containedSlurry.getAmount();
                             int availableCrystalCapacity = 20000;
                             int currentCrystalFill = 0;
 
@@ -315,7 +318,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
                                 pointsToConvert = currentCrystalFill + pointsToConvert - availableCrystalCapacity;
                             }
 
-                            aabe.drain(pointsToConvert * Config.fluidPerXPPoint, FluidAction.EXECUTE);
+                            entity.drain(pointsToConvert * Config.fluidPerXPPoint, FluidAction.EXECUTE);
                             int newCrystalFill = Math.min(20000, Math.max(0, currentCrystalFill + pointsToConvert));
 
                             crystalNBT.putInt("stored_xp", newCrystalFill);
@@ -324,19 +327,19 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
                             IFluidHandlerItem handler = outputCap.resolve().get();
 
                             if (handler.getFluidInTank(0) == FluidStack.EMPTY || handler.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
-                                FluidStack simulatedDrain = aabe.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
+                                FluidStack simulatedDrain = entity.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
                                 simulatedDrain.setAmount(Integer.MAX_VALUE - simulatedDrain.getAmount());
                                 FluidStack executedFill = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), simulatedDrain.getAmount());
                                 executedFill.setAmount(handler.fill(executedFill, FluidAction.EXECUTE));
-                                aabe.drain(executedFill, FluidAction.EXECUTE);
+                                entity.drain(executedFill, FluidAction.EXECUTE);
                             }
                         }
                     }
                 }
 
                 //Handle pushing to device reservoirs
-                if((aabe.flags & FLAG_IS_REDUCTION_MODE) == FLAG_IS_REDUCTION_MODE) {
-                    ICanTakePlugins targetMachine = aabe.getTargetMachine();
+                if((entity.flags & FLAG_IS_REDUCTION_MODE) == FLAG_IS_REDUCTION_MODE) {
+                    ICanTakePlugins targetMachine = entity.getTargetMachine();
                     LazyOptional<IFluidHandler> fluidCap = LazyOptional.empty();
 
                     if(targetMachine instanceof FuseryRouterBlockEntity frbe) {
@@ -347,10 +350,10 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
 
                     if(fluidCap.isPresent()) {
                         IFluidHandler handler = fluidCap.resolve().get();
-                        int simulatedFill = handler.fill(aabe.containedSlurry, FluidAction.SIMULATE);
+                        int simulatedFill = handler.fill(entity.containedSlurry, FluidAction.SIMULATE);
                         if(simulatedFill > 0) {
-                            handler.fill(aabe.containedSlurry, FluidAction.EXECUTE);
-                            aabe.drain(simulatedFill, FluidAction.EXECUTE);
+                            handler.fill(entity.containedSlurry, FluidAction.EXECUTE);
+                            entity.drain(simulatedFill, FluidAction.EXECUTE);
                         }
                     }
                 }

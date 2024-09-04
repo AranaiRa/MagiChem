@@ -69,7 +69,8 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
             DATA_COUNT = 5, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_WATER = 3, DATA_STEAM = 4;
     public static final int
             FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2;
-    public int
+    private int
+            remainingWaterForSatisfaction = 1,
             flags;
     protected ContainerData data;
     private FluidStack
@@ -263,9 +264,12 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorWaterBlockEntity::getValue);
+        boolean changed = AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorWaterBlockEntity::getValue);
 
         if(t instanceof ActuatorWaterBlockEntity entity) {
+            if(changed && !level.isClientSide())
+                entity.syncAndSave();
+
             //Particle work
             if(level.isClientSide()) {
                 float water = entity.getWaterPercent();
@@ -366,6 +370,10 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
                 ActuatorWaterBlockEntity::getPowerDraw,
                 ActuatorWaterBlockEntity::handleAuxiliaryRequirements);
 
+        if(!entity.isPaused && entity.remainingCycleTime <= 0) {
+            entity.remainingWaterForSatisfaction = entity.getWaterPerOperation();
+        }
+
         if(changed) entity.syncAndSave();
     }
 
@@ -448,11 +456,6 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
 
     @Override
     public int fill(FluidStack fluidStack, FluidAction fluidAction) {
-        if(fluidAction.execute()) {
-            setChanged();
-            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-        }
-
         //Water is insert-only
         Fluid fluid = fluidStack.getFluid();
         int incomingAmount = fluidStack.getAmount();
@@ -463,55 +466,63 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
             //Hit capacity
             if(query < 0) {
                 int actualTransfer = Config.delugePurifierTankCapacity - extantAmount;
-                if(fluidAction == FluidAction.EXECUTE)
+                if(fluidAction == FluidAction.EXECUTE) {
                     this.containedWater = new FluidStack(Fluids.WATER, extantAmount + actualTransfer);
+                    syncAndSave();
+                }
                 return actualTransfer;
             } else {
-                if(fluidAction == FluidAction.EXECUTE)
+                if(fluidAction == FluidAction.EXECUTE) {
                     this.containedWater = new FluidStack(Fluids.WATER, extantAmount + incomingAmount);
+                    syncAndSave();
+                }
                 return incomingAmount;
             }
         }
+
         return 0;
     }
 
     @Override
     public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
-        if(fluidAction.execute()) {
-            setChanged();
-            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-        }
-
         //Steam is extract only
         Fluid fluid = fluidStack.getFluid();
         int incomingAmount = fluidStack.getAmount();
         if(fluid == Fluids.WATER) {
             int extantAmount = containedWater.getAmount();
             if(extantAmount >= incomingAmount) {
-                if(fluidAction == FluidAction.EXECUTE)
+                if(fluidAction == FluidAction.EXECUTE) {
                     containedWater.shrink(incomingAmount);
+                    syncAndSave();
+                }
                 return new FluidStack(fluid, incomingAmount);
             } else {
-                if(fluidAction == FluidAction.EXECUTE)
+                if(fluidAction == FluidAction.EXECUTE) {
                     containedWater = FluidStack.EMPTY;
+                    syncAndSave();
+                }
                 return new FluidStack(fluid, incomingAmount - extantAmount);
             }
         }
         else if(fluid == FluidRegistry.STEAM.get()) {
             int extantAmount = containedSteam.getAmount();
             if(extantAmount >= incomingAmount) {
-                if(fluidAction == FluidAction.EXECUTE)
+                if(fluidAction == FluidAction.EXECUTE) {
                     containedSteam.shrink(incomingAmount);
-                setChanged();
+                    syncAndSave();
+                }
                 return new FluidStack(fluid, incomingAmount);
             } else {
-                if(fluidAction == FluidAction.EXECUTE)
-                    containedSteam = FluidStack.EMPTY;
-                if(incomingAmount - extantAmount > 0)
-                    setChanged();
+                if(incomingAmount - extantAmount > 0) {
+                    if (fluidAction == FluidAction.EXECUTE) {
+                        containedSteam = FluidStack.EMPTY;
+                        syncAndSave();
+                    }
+                }
                 return new FluidStack(fluid, Math.min(incomingAmount, extantAmount));
             }
         }
+
         return fluidStack;
     }
 
@@ -635,10 +646,16 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     public static boolean handleAuxiliaryRequirements(AbstractDirectionalPluginBlockEntity entity) {
         if(entity instanceof ActuatorWaterBlockEntity awbe) {
             if(!entity.isAuxiliaryRequirementSatisfied()) {
-                if(awbe.containedWater.getAmount() >= awbe.getWaterPerOperation()) {
-                    awbe.containedWater.setAmount(awbe.containedWater.getAmount() - awbe.getWaterPerOperation());
-                    awbe.satisfyAuxiliaryRequirements();
-                    return true;
+                if(awbe.containedWater.getAmount() > 0) {
+                    if(awbe.remainingWaterForSatisfaction > 0) {
+                        int consumption = Math.min(awbe.remainingWaterForSatisfaction, awbe.containedWater.getAmount());
+                        awbe.containedWater.setAmount(awbe.containedWater.getAmount() - consumption);
+                        awbe.remainingWaterForSatisfaction -= consumption;
+                        if(awbe.remainingWaterForSatisfaction <= 0) {
+                            awbe.satisfyAuxiliaryRequirements();
+                            return true;
+                        }
+                    }
                 }
             }
         }

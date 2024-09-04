@@ -235,32 +235,35 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorEarthBlockEntity::getValue);
+        boolean changed = AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorEarthBlockEntity::getValue);
 
-        if(t instanceof ActuatorEarthBlockEntity aebe) {
+        if(t instanceof ActuatorEarthBlockEntity entity) {
+            if(changed && !level.isClientSide())
+                entity.syncAndSave();
+
             if (level.isClientSide()) {
-                aebe.handleAnimationDrivers();
+                entity.handleAnimationDrivers();
             }
 
-            if (!aebe.getPaused()) {
+            if (!entity.getPaused()) {
                 //Fill the internal sand buffer
-                if(aebe.itemHandler.getStackInSlot(SLOT_SAND).getItem() == ItemRegistry.DEBUG_ORB.get()) {
-                    aebe.remainingSand = Config.quakeRefinerySandCapacity;
+                if(entity.itemHandler.getStackInSlot(SLOT_SAND).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                    entity.remainingSand = Config.quakeRefinerySandCapacity;
                 }
-                else if (Config.quakeRefinerySandCapacity - aebe.remainingSand >= 1000) {
-                    ItemStack sandStack = aebe.itemHandler.getStackInSlot(SLOT_SAND);
+                else if (Config.quakeRefinerySandCapacity - entity.remainingSand >= 1000) {
+                    ItemStack sandStack = entity.itemHandler.getStackInSlot(SLOT_SAND);
                     if (!sandStack.isEmpty()) {
                         sandStack.shrink(1);
-                        aebe.itemHandler.setStackInSlot(SLOT_SAND, sandStack);
-                        aebe.remainingSand += 1000;
-                        aebe.syncAndSave();
+                        entity.itemHandler.setStackInSlot(SLOT_SAND, sandStack);
+                        entity.remainingSand += 1000;
+                        entity.syncAndSave();
                     }
                 }
 
                 //Dump grime to waste
-                if (aebe.currentGrime > Config.grimePerWaste) {
-                    ItemStack wasteStack = aebe.itemHandler.getStackInSlot(SLOT_WASTE);
-                    int maxWasteToAdd = aebe.currentGrime / Config.grimePerWaste;
+                if (entity.currentGrime > Config.grimePerWaste) {
+                    ItemStack wasteStack = entity.itemHandler.getStackInSlot(SLOT_WASTE);
+                    int maxWasteToAdd = entity.currentGrime / Config.grimePerWaste;
                     int actualWasteToAdd;
                     if (wasteStack == ItemStack.EMPTY) {
                         actualWasteToAdd = Math.min(maxWasteToAdd, 64);
@@ -269,15 +272,15 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                         actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
                         wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
                     }
-                    aebe.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
-                    aebe.currentGrime -= actualWasteToAdd * Config.grimePerWaste;
-                    aebe.syncAndSave();
+                    entity.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
+                    entity.currentGrime -= actualWasteToAdd * Config.grimePerWaste;
+                    entity.syncAndSave();
                 }
 
                 //Dump rarefied
-                if (aebe.currentRarefiedGrime > Config.grimePerWaste) {
-                    ItemStack wasteStack = aebe.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE);
-                    int maxWasteToAdd = aebe.currentRarefiedGrime / Config.grimePerWaste;
+                if (entity.currentRarefiedGrime > Config.grimePerWaste) {
+                    ItemStack wasteStack = entity.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE);
+                    int maxWasteToAdd = entity.currentRarefiedGrime / Config.grimePerWaste;
                     int actualWasteToAdd;
                     if (wasteStack == ItemStack.EMPTY) {
                         actualWasteToAdd = Math.min(maxWasteToAdd, 64);
@@ -286,9 +289,9 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                         actualWasteToAdd = Math.min(64 - wasteStack.getCount(), maxWasteToAdd);
                         wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
                     }
-                    aebe.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
-                    aebe.currentRarefiedGrime -= actualWasteToAdd * Config.grimePerWaste;
-                    aebe.syncAndSave();
+                    entity.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
+                    entity.currentRarefiedGrime -= actualWasteToAdd * Config.grimePerWaste;
+                    entity.syncAndSave();
                 }
             }
         }

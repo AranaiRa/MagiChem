@@ -30,9 +30,9 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
     protected boolean
         drewEldrinThisCycle = false, drewEssentiaThisCycle = false, metAuxiliaryRequirementsThisCycle = false, isPaused = false;
     protected int
-        powerLevel = 1, remainingCycleTime = -1, storedMateria = 0, remainingEssentiaForSatisfaction = 0;
+        powerLevel = 1, remainingCycleTime = 3, storedMateria = 0, remainingEssentiaForSatisfaction = 1;
     protected float
-        remainingEldrinForSatisfaction = 0;
+        remainingEldrinForSatisfaction = 1;
     protected ItemStackHandler itemHandler;
 
     public AbstractDirectionalPluginBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
@@ -123,7 +123,9 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
         return remainingCycleTime * 21 / ((drewEssentiaThisCycle && drewEldrinThisCycle) ? Config.actuatorDoubleSuppliedPeriod : Config.actuatorSingleSuppliedPeriod);
     }
 
-    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t, Function<IDs, Integer> pVarFunc) {
+    public static <T extends BlockEntity> boolean tick(Level level, BlockPos pos, BlockState blockState, T t, Function<IDs, Integer> pVarFunc) {
+        boolean changed = false;
+
         if(t instanceof AbstractDirectionalPluginBlockEntity entity) {
             //Try inserting materia
             if(!level.isClientSide()) {
@@ -145,7 +147,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
 
                             entity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_ESSENTIA_INSERTION), insertionStack);
                             entity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES), bottleStack);
-                            entity.syncAndSave();
+                            changed = true;
                         }
                     }
                 }
@@ -156,11 +158,13 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
                 }
             }
         }
+
+        return changed;
     }
 
     public static boolean delegatedTick(Level level, BlockPos pos, BlockState state, AbstractDirectionalPluginBlockEntity entity, Function<IDs, Integer> pVarFunc, Function<Void, Affinity> pGetAffinity, Function<AbstractDirectionalPluginBlockEntity, Integer> pGetPowerDraw, Function<AbstractDirectionalPluginBlockEntity, Boolean> pAuxiliaryRequirementHandler) {
         Player ownerCheck = entity.getOwner();
-        int powerDraw = pGetPowerDraw.apply(null);
+        int powerDraw = pGetPowerDraw.apply(entity);
         boolean changed = false;
 
         if (ownerCheck != null) {
@@ -205,7 +209,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
                 } else if ((entity.drewEldrinThisCycle || entity.drewEssentiaThisCycle) && entity.metAuxiliaryRequirementsThisCycle)
                     entity.remainingCycleTime = Config.actuatorSingleSuppliedPeriod;
 
-                if(entity.drewEldrinThisCycle || entity.drewEssentiaThisCycle)
+                if((entity.drewEldrinThisCycle || entity.drewEssentiaThisCycle) && entity.metAuxiliaryRequirementsThisCycle)
                     changed = true;
 
                 //Aux requirements are set by subclasses mid-cycle
