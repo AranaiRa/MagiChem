@@ -218,11 +218,25 @@ public class Config
             .comment("How much of one type of Admixture can be stored inside of a Materia Vessel.")
             .defineInRange("materiaVesselAdmixtureCapacity", 1800, 64, Integer.MAX_VALUE);
 
-    //----------------DELUGE PURIFIER
+    //----------------GENERAL ACTUATORS
 
-    private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_OPERATION_TIME = BUILDER
-            .comment("The amount of time, in ticks, a Deluge Purifier goes between drawing more Eldrin power.")
-            .defineInRange("delugePurifierOperationTime", 300, 1, 6000);
+    private static final ForgeConfigSpec.IntValue ACTUATOR_SINGLE_SUPPLIED_PERIOD = BUILDER
+            .comment("The amount of time, in ticks, that actuators take in between drawing Eldrin power or consuming materia units when only one of the two is present.")
+            .defineInRange("actuatorSingleSuppliedPeriod", 300, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue ACTUATOR_DOUBLE_SUPPLIED_PERIOD = BUILDER
+            .comment("The amount of time, in ticks, that actuators take in between drawing Eldrin power and consuming materia units when both are present.")
+            .defineInRange("actuatorDoubleSuppliedPeriod", 900, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue ACTUATOR_MATERIA_BUFFER_MAXIMUM = BUILDER
+            .comment("The amount of materia units that an actuator can store.")
+            .defineInRange("actuatorMateriaBufferMaximum", 1000, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue ACTUATOR_MATERIA_UNITS_PER_DRAM = BUILDER
+            .comment("The number of materia units that an Actuator gets from a single dram of materia")
+            .defineInRange("actuatorMateriaUnitsPerDram", 200, 1, Integer.MAX_VALUE);
+
+    //----------------DELUGE PURIFIER
 
     private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_TANK_CAPACITY = BUILDER
             .comment("The amount of Water and Steam, in mB, the Deluge Purifier's internal tanks can hold.")
@@ -230,19 +244,11 @@ public class Config
 
     //----------------INFERNO ENGINE
 
-    private static final ForgeConfigSpec.IntValue INFERNO_ENGINE_OPERATION_TIME = BUILDER
-            .comment("The amount of time, in ticks, an Inferno Engine goes between drawing more Eldrin power.")
-            .defineInRange("infernoEngineOperationTime", 300, 1, 6000);
-
     private static final ForgeConfigSpec.IntValue INFERNO_ENGINE_TANK_CAPACITY = BUILDER
             .comment("The amount of Smoke, in mB, the Inferno Engine's internal tank can hold.")
             .defineInRange("infernoEngineTankCapacity", 2000, 500, Integer.MAX_VALUE);
 
     //----------------QUAKE REFINERY
-
-    private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_OPERATION_TIME = BUILDER
-            .comment("The amount of time, in ticks, a Quake Refinery goes between drawing more Eldrin power.")
-            .defineInRange("quakeRefineryOperationTime", 300, 1, 6000);
 
     private static final ForgeConfigSpec.IntValue QUAKE_REFINERY_SAND_CAPACITY = BUILDER
             .comment("The amount of sand that can be stored in the Quake Refinery's internal buffer.")
@@ -258,19 +264,11 @@ public class Config
 
     //----------------GALE PRESSURIZER
 
-    private static final ForgeConfigSpec.IntValue GALE_PRESSURIZER_OPERATION_TIME = BUILDER
-            .comment("The amount of time, in ticks, a Gale Pressurizer goes between drawing more Eldrin power.")
-            .defineInRange("galePressurizerOperationTime", 300, 1, 6000);
-
     private static final ForgeConfigSpec.IntValue GALE_PRESSURIZER_TANK_CAPACITY = BUILDER
             .comment("The amount of Smoke and Steam, in mB, the Gale Pressurizer's internal tanks can hold.")
             .defineInRange("galePressurizerTankCapacity", 2000, 500, Integer.MAX_VALUE);
 
     //----------------OCCULT MATRIX
-
-    private static final ForgeConfigSpec.IntValue OCCULT_MATRIX_OPERATION_TIME = BUILDER
-            .comment("The amount of time, in ticks, an Occult Matrix goes between drawing more Eldrin power.")
-            .defineInRange("occultMatrixOperationTime", 300, 1, 6000);
 
     private static final ForgeConfigSpec.IntValue OCCULT_MATRIX_TANK_CAPACITY = BUILDER
             .comment("The amount of Academic Slurry, in mB, the Gale Pressurizer's internal tanks can hold.")
@@ -370,17 +368,16 @@ public class Config
         materiaJarAdmixtureCapacity,
         materiaVesselEssentiaCapacity,
         materiaVesselAdmixtureCapacity,
-        delugePurifierOperationTime,
+        actuatorSingleSuppliedPeriod,
+        actuatorDoubleSuppliedPeriod,
+        actuatorMateriaBufferMaximum,
+        actuatorMateriaUnitsPerDram,
         delugePurifierTankCapacity,
-        infernoEngineOperationTime,
         infernoEngineTankCapacity,
-        quakeRefineryOperationTime,
         quakeRefinerySandCapacity,
         quakeRefineryGrimeCapacity,
         quakeRefineryRarefiedRate,
-        galePressurizerOperationTime,
         galePressurizerTankCapacity,
-        occultMatrixOperationTime,
         occultMatrixTankCapacity,
         coloringCauldronBaseOperationTime,
         variegatorOperationTimeSlow,
@@ -446,17 +443,16 @@ public class Config
         materiaJarAdmixtureCapacity = MATERIA_JAR_ADMIXTURE_CAPACITY.get();
         materiaVesselEssentiaCapacity = MATERIA_VESSEL_ESSENTIA_CAPACITY.get();
         materiaVesselAdmixtureCapacity = MATERIA_VESSEL_ADMIXTURE_CAPACITY.get();
-        delugePurifierOperationTime = DELUGE_PURIFIER_OPERATION_TIME.get();
+        actuatorSingleSuppliedPeriod = ACTUATOR_SINGLE_SUPPLIED_PERIOD.get();
+        actuatorDoubleSuppliedPeriod = ACTUATOR_DOUBLE_SUPPLIED_PERIOD.get();
+        actuatorMateriaBufferMaximum = ACTUATOR_MATERIA_BUFFER_MAXIMUM.get();
+        actuatorMateriaUnitsPerDram = ACTUATOR_MATERIA_UNITS_PER_DRAM.get();
         delugePurifierTankCapacity = DELUGE_PURIFIER_TANK_CAPACITY.get();
-        infernoEngineOperationTime = INFERNO_ENGINE_OPERATION_TIME.get();
         infernoEngineTankCapacity = INFERNO_ENGINE_TANK_CAPACITY.get();
-        quakeRefineryOperationTime = QUAKE_REFINERY_OPERATION_TIME.get();
         quakeRefinerySandCapacity = QUAKE_REFINERY_SAND_CAPACITY.get();
         quakeRefineryGrimeCapacity = QUAKE_REFINERY_GRIME_CAPACITY.get();
         quakeRefineryRarefiedRate = QUAKE_REFINERY_RAREFIED_RATE.get();
-        galePressurizerOperationTime = GALE_PRESSURIZER_OPERATION_TIME.get();
         galePressurizerTankCapacity = GALE_PRESSURIZER_TANK_CAPACITY.get();
-        occultMatrixOperationTime = OCCULT_MATRIX_OPERATION_TIME.get();
         occultMatrixTankCapacity = OCCULT_MATRIX_TANK_CAPACITY.get();
         coloringCauldronBaseOperationTime = COLORING_CAULDRON_BASE_OPERATION_TIME.get();
         variegatorOperationTimeSlow = VARIEGATOR_OPERATION_TIME_SLOW.get();

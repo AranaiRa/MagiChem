@@ -323,7 +323,7 @@ public class ActuatorEarthBlockEntity extends DirectionalPluginBlockEntity imple
             if(entity.remainingEldrinTime <= 0) {
                 if(entity.remainingEldrinForSatisfaction <= 0) {
                     entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.quakeRefineryOperationTime;
+                    entity.remainingEldrinTime = Config.actuatorSingleSuppliedPeriod;
                 }
 
                 if(!getIsSatisfied(entity)) {

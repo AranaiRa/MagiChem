@@ -389,7 +389,7 @@ public class ActuatorArcaneBlockEntity extends DirectionalPluginBlockEntity impl
             if(entity.remainingEldrinTime <= 0) {
                 if(entity.remainingEldrinForSatisfaction <= 0) {
                     entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.occultMatrixOperationTime;
+                    entity.remainingEldrinTime = Config.actuatorSingleSuppliedPeriod;
                 }
 
                 if(!getIsSatisfied(entity)) {

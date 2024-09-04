@@ -175,7 +175,7 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float drawTime = Config.quakeRefineryOperationTime / 20.0f;
+            float drawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
@@ -209,6 +209,6 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
     }
 
     private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.quakeRefineryOperationTime;
+        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.actuatorSingleSuppliedPeriod;
     }
 }

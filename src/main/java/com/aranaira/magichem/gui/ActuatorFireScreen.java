@@ -102,6 +102,10 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         if(!ActuatorFireBlockEntity.getIsPowerReductionMode(menu.getFlags()))
             gui.blit(TEXTURE, x + 101, y + 11, 176, 56, 11, 11);
 
+        //Essentia insertion
+        gui.blit(TEXTURE, x + 153, y + 3, 0, 172, 40, 58);
+        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / Config.actuatorMateriaBufferMaximum);
+        gui.blit(TEXTURE, x + 161, y + 11 + (42 - sM), 200, 0, 2, sM);
     }
 
     @Override
@@ -207,7 +211,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float drawTime = Config.quakeRefineryOperationTime / 20.0f;
+            float drawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
@@ -242,6 +246,6 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
     }
 
     private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.infernoEngineOperationTime;
+        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.actuatorSingleSuppliedPeriod;
     }
 }

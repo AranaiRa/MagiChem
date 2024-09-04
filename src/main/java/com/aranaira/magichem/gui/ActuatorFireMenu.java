@@ -19,6 +19,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
+import static com.aranaira.magichem.block.entity.ActuatorFireBlockEntity.*;
+
 public class ActuatorFireMenu extends AbstractContainerMenu {
 
     public final ActuatorFireBlockEntity blockEntity;
@@ -34,7 +36,7 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
 
     public ActuatorFireMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuRegistry.ACTUATOR_FIRE_MENU.get(), id);
-        checkContainerSize(inv, ActuatorFireBlockEntity.SLOT_COUNT);
+        checkContainerSize(inv, SLOT_COUNT);
         blockEntity = (ActuatorFireBlockEntity) entity;
         this.level = inv.player.level();
         this.data = data;
@@ -43,7 +45,11 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, SLOT_FUEL_X, SLOT_FUEL_Y));
+            this.addSlot(new SlotItemHandler(handler, SLOT_FUEL, SLOT_FUEL_X, SLOT_FUEL_Y));
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_MATERIA_INSERTION, 169, 15));
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_BOTTLES, 169, 41));
         });
 
         addDataSlots(data);

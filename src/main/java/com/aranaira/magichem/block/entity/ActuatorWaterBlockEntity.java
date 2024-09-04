@@ -363,7 +363,7 @@ public class ActuatorWaterBlockEntity extends DirectionalPluginBlockEntity imple
                     if(entity.containedWater.getAmount() >= fluidOp) {
                         entity.drain(new FluidStack(Fluids.WATER, fluidOp), FluidAction.EXECUTE);
                         entity.remainingEldrinForSatisfaction = powerDraw;
-                        entity.remainingEldrinTime = Config.delugePurifierOperationTime;
+                        entity.remainingEldrinTime = Config.actuatorSingleSuppliedPeriod;
                     }
                 }
             } else {

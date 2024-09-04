@@ -225,7 +225,7 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float drawTime = Config.galePressurizerOperationTime / 20.0f;
+            float drawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
@@ -287,6 +287,6 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
     }
 
     private int getScaledEldrinTime() {
-        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.galePressurizerOperationTime;
+        return menu.getRemainingEldrinTime() * SYMBOL_H / Config.actuatorSingleSuppliedPeriod;
     }
 }

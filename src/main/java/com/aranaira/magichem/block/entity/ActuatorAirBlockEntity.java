@@ -396,7 +396,7 @@ public class ActuatorAirBlockEntity extends DirectionalPluginBlockEntity impleme
             if(entity.remainingEldrinTime <= 0) {
                 if(entity.remainingEldrinForSatisfaction <= 0) {
                     entity.remainingEldrinForSatisfaction = powerDraw;
-                    entity.remainingEldrinTime = Config.galePressurizerOperationTime;
+                    entity.remainingEldrinTime = Config.actuatorSingleSuppliedPeriod;
                     }
 
                     if(!getIsSatisfied(entity)) {
