@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -362,6 +363,27 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
             if(pLevel.isClientSide()) {
                 entity.handleAnimationDrivers();
+            }
+
+            if(entity.itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                int preSteam = entity.getSteamInTank();
+                if (entity.containedSteam.isEmpty()) {
+                    entity.containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Config.galePressurizerTankCapacity);
+                } else {
+                    entity.containedSteam.setAmount(Config.galePressurizerTankCapacity);
+                }
+
+                int preSmoke = entity.getSmokeInTank();
+                if (entity.containedSmoke.isEmpty()) {
+                    entity.containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Config.galePressurizerTankCapacity);
+                } else {
+                    entity.containedSmoke.setAmount(Config.galePressurizerTankCapacity);
+                }
+
+                if((preSteam != entity.getSteamInTank()) || (preSmoke != entity.getSmokeInTank()))
+                    changed = true;
+
+                if(changed) entity.syncAndSave();
             }
 
             if(!entity.getPaused()) {
