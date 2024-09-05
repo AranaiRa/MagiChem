@@ -391,12 +391,12 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         int overflow = pGrimeToAdd;
 
         //Determine how much grime is being added
-        if((flags & FLAG_IS_SATISFIED) == FLAG_IS_SATISFIED) {
+        if(getIsSatisfied()) {
             float rate = Math.min(1, (float)pGrimeToAdd / 1000f);
             int sandConsumption = (int)Math.ceil((float)getSandPerOperation() * rate);
 
-            if (remainingSand >= getSandPerOperation()) {
-                remainingSand -= getSandPerOperation();
+            if (remainingSand >= sandConsumption) {
+                remainingSand -= sandConsumption;
 
                 //Reduce insertion and generate rarefied grime
                 reduction = Math.round((float) pGrimeToAdd * ((float) getGrimeReductionRate()) / 100.0f);
