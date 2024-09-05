@@ -179,7 +179,7 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
                     .append(Component.literal(menu.blockEntity.getSteamInTank() + " / " + Config.galePressurizerTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(Component.literal(String.format("%.1f", ActuatorAirBlockEntity.getSteamPercent(menu.blockEntity.getSmokeInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(String.format("%.1f", ActuatorAirBlockEntity.getSteamPercent(menu.blockEntity.getSteamInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }

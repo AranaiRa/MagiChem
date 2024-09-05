@@ -61,10 +61,11 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             POWER_PENALTY = {1.0f, 1.5f, 2.25f, 3.375f};
     public static final int
             SLOT_COUNT = 2, SLOT_ESSENTIA_INSERTION = 0, SLOT_BOTTLES = 1, MAX_POWER_LEVEL = 3,
-            TANK_SMOKE = 0, TANK_STEAM = 1,
-            FLAG_GAS_SATISFACTION = 1;
+            TANK_SMOKE = 0, TANK_STEAM = 1;
     private static final float
             FAN_ACCELERATION_RATE = 0.09f, FAN_TOP_SPEED = 24.0f;
+    private boolean
+            isGasSatisfied = false;
     private int
             flags;
     public float
@@ -140,7 +141,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public boolean getIsGasSatsified() {
-        return (flags & FLAG_GAS_SATISFACTION) == FLAG_GAS_SATISFACTION;
+        return isGasSatisfied;
     }
 
     public static int getRawBatchSize(int pPowerLevel) {
@@ -161,7 +162,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public float getPenaltyRate() {
-        if((flags & FLAG_GAS_SATISFACTION) != FLAG_GAS_SATISFACTION)
+        if(powerLevel > 1 && !isGasSatisfied)
             return 1;
         return POWER_PENALTY[this.powerLevel];
     }
@@ -231,6 +232,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("isGasSatisfied", isGasSatisfied);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -248,6 +250,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
+        this.isGasSatisfied = nbt.getBoolean("isGasSatisfied");
         this.flags = nbt.getInt("flags");
 
         int nbtSmoke = nbt.getInt("tankSmoke");
@@ -258,7 +261,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
         int nbtSteam = nbt.getInt("tankSteam");
         if(nbtSteam > 0)
-            this.containedSteam = new FluidStack(FluidRegistry.STEAM.get(), nbtSmoke);
+            this.containedSteam = new FluidStack(FluidRegistry.STEAM.get(), nbtSteam);
         else
             this.containedSteam = FluidStack.EMPTY;
 
@@ -283,6 +286,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("isGasSatisfied", isGasSatisfied);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -303,11 +307,11 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     private boolean consumeGasses() {
-        int pre = flags;
+        boolean changed = false;
 
         //Do nothing, there is no gas cost
         if (powerLevel == 1) {
-            flags = flags | FLAG_GAS_SATISFACTION;
+            isGasSatisfied = true;
         }
         //Consume from the higher of Smoke or Steam
         else if (powerLevel == 2) {
@@ -315,17 +319,19 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
             if(containedSteam.getAmount() >= containedSmoke.getAmount()) {
                 if(containedSteam.getAmount() >= cost) {
-                    containedSteam.setAmount(containedSteam.getAmount() - cost);
-                    flags = flags | FLAG_GAS_SATISFACTION;
+                    containedSteam.setAmount(Math.max(0,containedSteam.getAmount() - cost));
+                    changed = true;
+                    isGasSatisfied = true;
                 } else {
-                    flags = flags & ~FLAG_GAS_SATISFACTION;
+                    isGasSatisfied = false;
                 }
             } else {
                 if(containedSmoke.getAmount() >= cost) {
-                    containedSmoke.setAmount(containedSmoke.getAmount() - cost);
-                    flags = flags | FLAG_GAS_SATISFACTION;
+                    containedSmoke.setAmount(Math.max(0,containedSmoke.getAmount() - cost));
+                    changed = true;
+                    isGasSatisfied = true;
                 } else {
-                    flags = flags & ~FLAG_GAS_SATISFACTION;
+                    isGasSatisfied = false;
                 }
             }
 
@@ -335,15 +341,16 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             int cost = getGasPerProcess();
 
             if(containedSmoke.getAmount() >= cost && containedSteam.getAmount() >= cost) {
-                containedSmoke.setAmount(containedSmoke.getAmount() - cost);
-                containedSteam.setAmount(containedSteam.getAmount() - cost);
-
-                flags = flags | FLAG_GAS_SATISFACTION;
-            } else
-                flags = flags & ~FLAG_GAS_SATISFACTION;
+                containedSmoke.setAmount(Math.max(0,containedSmoke.getAmount() - cost));
+                containedSteam.setAmount(Math.max(0,containedSteam.getAmount() - cost));
+                changed = true;
+                isGasSatisfied = true;
+            } else {
+                isGasSatisfied = false;
+            }
         }
 
-        return pre != flags;
+        return changed;
     }
 
     public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, T t) {
@@ -410,7 +417,12 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
                 ActuatorAirBlockEntity::getPowerDraw,
                 ActuatorAirBlockEntity::handleAuxiliaryRequirements);
 
-        if(changed) entity.syncAndSave();
+        if(!entity.isPaused && entity.remainingCycleTime <= 0) {
+            entity.isGasSatisfied = false;
+        }
+
+        if(changed)
+            entity.syncAndSave();
     }
 
     public void handleAnimationDrivers() {
@@ -500,15 +512,16 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
             if (query < 0) {
                 int actualTransfer = Config.galePressurizerTankCapacity - extantAmount;
-                if(fluidAction == FluidAction.EXECUTE)
+                if(fluidAction == FluidAction.EXECUTE) {
                     this.containedSmoke = new FluidStack(fluid, extantAmount + actualTransfer);
-                if(actualTransfer > 0)
-                    setChanged();
+                    syncAndSave();
+                }
                 return actualTransfer;
             } else {
-                if (fluidAction == FluidAction.EXECUTE)
+                if (fluidAction == FluidAction.EXECUTE) {
                     this.containedSmoke = new FluidStack(fluid, extantAmount + incomingAmount);
-                setChanged();
+                    syncAndSave();
+                }
                 return incomingAmount;
             }
         } else if(fluid == FluidRegistry.STEAM.get()) {
@@ -519,14 +532,14 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
                 int actualTransfer = Config.galePressurizerTankCapacity - extantAmount;
                 if(fluidAction == FluidAction.EXECUTE) {
                     this.containedSteam = new FluidStack(fluid, extantAmount + actualTransfer);
+                    syncAndSave();
                 }
-                if(actualTransfer > 0)
-                    setChanged();
                 return actualTransfer;
             } else {
-                if (fluidAction == FluidAction.EXECUTE)
+                if (fluidAction == FluidAction.EXECUTE) {
                     this.containedSteam = new FluidStack(fluid, extantAmount + incomingAmount);
-                setChanged();
+                    syncAndSave();
+                }
                 return incomingAmount;
             }
         } else {
@@ -656,9 +669,11 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
     public static boolean handleAuxiliaryRequirements(AbstractDirectionalPluginBlockEntity entity) {
         if(entity instanceof ActuatorAirBlockEntity aabe) {
-            aabe.consumeGasses();
-            if(aabe.getIsGasSatsified()) aabe.satisfyAuxiliaryRequirements();
-            return aabe.getIsGasSatsified();
+            if(!aabe.isGasSatisfied) {
+                boolean changed = aabe.consumeGasses();
+                if (aabe.getIsGasSatsified()) aabe.satisfyAuxiliaryRequirements();
+                return changed;
+            }
         }
         return false;
     }
