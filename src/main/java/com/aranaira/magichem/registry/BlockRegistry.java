@@ -205,6 +205,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> BLEACHED_AMETHYST_BLOCK = registerBlock("bleached_amethyst_block",
+            () -> new BleachedAmethystBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> CRYSTAL_CANDLE = registerBlock("crystal_candle",
             () -> new CrystalCandleBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).noCollission())

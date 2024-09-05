@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "magichem:bleached_amethyst_shard"
+    }
+  },
+  "result": {
+    "item": "magichem:bleached_amethyst_block"
+  }
+}
