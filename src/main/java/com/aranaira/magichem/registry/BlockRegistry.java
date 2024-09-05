@@ -80,11 +80,6 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
-    public static final RegistryObject<Block> CONJURER = registerBlock("conjurer",
-            () -> new ConjurerBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
-    );
-
     public static final RegistryObject<Block> CONJURER_ROUTER = registerBlock("conjurer_router",
             () -> new ConjurerRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
@@ -182,6 +177,11 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> VARIEGATOR_ROUTER = registerBlock("variegator_router",
             () -> new VariegatorRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> CONJURER = registerBlock("conjurer",
+            () -> new ConjurerBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 

@@ -326,6 +326,45 @@
       }
     ]
   },
+  "Process: Conjuration": {
+    "index": "1104",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Conjuration"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Conjure",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is to form matter from the ambient creative power of the planet itself, seemingly out of nothing at all. Conjuration is performed at the "
+          },
+          {
+            "text": "Conjurer",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe simplest form of conjuration is familiar to many, even alchemical laymen—the cobblestone produced when water and lava touch. Through practical application of alchemical principles, many other natural materials can also be Conjured."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/conjurer"
+      }
+    ]
+  },
   "Alembic": {
     "index": "1200",
     "category": "magichem",
@@ -1278,7 +1317,7 @@
     ]
   },
   "Alchemical Nexus": {
-    "index": "1207",
+    "index": "1208",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -1358,7 +1397,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is a device that consumes Eldrin power (and other reagents) in order to enhance an alchemical device. The Alembic is too simple and crude to make use of Elemental Actuators, but all other devices have at least two ports that an Elemental Actuator can be plugged into. Looking at a port while sneaking will provide you with a list of what Elemental Actuators are compatible with the device.\n\nSlotting multiple copies of an Elemental Actuator into the same device has no effect; only one of the Actuators will have any effect on the target device.\n\nElemental Actuators that use Earth, Water, Air, and Fire Eldrin power can be crafted at Tier 3, while those that use Arcane and Ender Eldrin power can be crafted at Tier 4."
+            "text": " is a device that consumes elemental Essentia and/or Eldrin power (and other reagents) in order to enhance an alchemical device. An elemental actuator supplied with both Essentia and appropriate Eldrin power becomes much more effcient, consuming both resources at a much slower rate.\n\nThe Alembic is too simple and crude to make use of Elemental Actuators, but all other devices have at least two ports that an Elemental Actuator can be plugged into. Looking at a port while sneaking will provide you with a list of what Elemental Actuators are compatible with the device.\n\nSlotting multiple copies of an Elemental Actuator into the same device has no effect; only one of the Actuators will have any effect on the target device.\n\nElemental Actuators that use Earth, Water, Air, and Fire Eldrin power can be crafted at Tier 3, while those that use Arcane and Ender Eldrin power can be crafted at Tier 4."
           }
         ]
       }
@@ -1379,6 +1418,10 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/actuator_air"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/actuator_arcane"
       }
     ]
   },
@@ -1403,7 +1446,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Earth Eldrin power. It must also be supplied with sand, some of which is consumed every operation.\n\nWhen the device the Quake Refinery is modifying finishes an operation, the Grime produced is reduced and stored inside the Refinery's impressively large internal buffer.\n\nA portion of the reduced Grime becomes Rarefied Waste instead of Alchemical Waste. The Quake Refinery doesn't need to be cleaned; waste can be directly extracted instead.\n\n\n\n\n\n\n\n"
+            "text": " is an Elemental Actuator that uses Earth Essentia and/or Earth Eldrin power. It must also be supplied with sand, some of which is consumed every operation.\n\nWhen the device the Quake Refinery is modifying finishes an operation, the Grime produced is reduced and stored inside the Refinery's impressively large internal buffer.\n\nA portion of the reduced Grime becomes Rarefied Waste instead of Alchemical Waste. The Quake Refinery doesn't need to be cleaned; waste can be directly extracted instead.\n\n\n\n\n\n\n\n"
           }
         ]
       },
@@ -1458,7 +1501,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Water Eldrin power. It must also be supplied with water, some of which is consumed every operation.\n\nThe device the Deluge Purifier is modifying benefits from increased Efficiency."
+            "text": " is an Elemental Actuator that uses Water Essentia and/or Water Eldrin power. It must also be supplied with water, some of which is consumed every operation.\n\nThe device the Deluge Purifier is modifying benefits from increased Efficiency.\n\n\n\n\n\n\n\n\n\n\n"
           }
         ]
       },
@@ -1518,7 +1561,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate a Distillery, Centrifuge, or Fusery.\n"
+            "text": " is an Elemental Actuator that uses Fire Essentia and/or Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate a Distillery, Centrifuge, or Fusery.\n"
           }
         ]
       },
@@ -1578,7 +1621,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Air Eldrin Power.\n\nWhen modifying an alchemical device, a Gale Pressurizer increases the "
+            "text": " is an Elemental Actuator that uses Air Essentia and/or Air Eldrin Power.\n\nWhen modifying an alchemical device, a Gale Pressurizer increases the "
           },
           {
             "text": "number of items that can be processed simultaneously",
@@ -1659,7 +1702,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Arcane Eldrin Power.\n\nWhen modifying an alchemical device that consumes Academic Slurry, the Occult Matrix "
+            "text": " is an Elemental Actuator that uses Arcane Essentia and/or Arcane Eldrin Power.\n\nWhen modifying an alchemical device that consumes Academic Slurry, the Occult Matrix "
           },
           {
             "text": "reduces the amount of Slurry consumed",
@@ -1673,7 +1716,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " whenever the linked device completes an operation.\n\n\n\n\n\n\n\n"
+            "text": " whenever the linked device completes an operation.\n\n\n\n\n\n"
           }
         ]
       },
@@ -1779,6 +1822,144 @@
           },
           {
             "text": ".\n\nThe construct is capable of moving two drams of materia per operation by default. If the construct was summoned with "
+          },
+          {
+            "text": "Arcane affinity",
+            "color": "dark_purple"
+          },
+          {
+            "text": " it can move up to four drams per level of affinity instead.\n\nIf the construct has a "
+          },
+          {
+            "text": "tank torso",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with "
+          },
+          {
+            "text": "no fluid",
+            "color": "dark_purple"
+          },
+          {
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Advanced Sorting"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The materia sorting process can be greatly sped up if the construct has a "
+          },
+          {
+            "text": "Smart Head",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a "
+          },
+          {
+            "text": "Caster Arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in addition to the required Fluid Nozzle, and is made entirely of "
+          },
+          {
+            "text": "Tier 3 or higher materials",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhen all of these requirements are met, the construct can direct the materia to "
+          },
+          {
+            "text": "fly through the air",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to its destination instead of needing to physically move the materia from location to location."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Command: Provide Materia": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Provide Materia"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause a construct to extract materia from Jars or Vessels within a specified area and attempt to insert it into a materia-using alchemical device.\n\nConstructs can provide materia to the "
+          },
+          {
+            "text": "Alembic",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Conjurer",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Distillery",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Fusery",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Grand Distillery",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Variegator",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", or any "
+          },
+          {
+            "text": "Elemental Actuator",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nProviding materia requires a "
+          },
+          {
+            "text": "fluid nozzle arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". The construct is capable of moving two drams of materia per operation by default. If the construct was summoned with "
           },
           {
             "text": "Arcane affinity",
@@ -2991,14 +3172,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " to extract materia.\n\nYou can insert the orb into an Experience Exchanger or an Occult Matrix. It acts as an "
+            "text": " to extract materia.\n\nYou can insert the orb into the materia slot of any elemental actuator. It acts as an "
           },
           {
             "text": "infinite source",
             "color": "dark_purple"
           },
           {
-            "text": " of Academic Slurry.\n\nYou can insert the orb into a Quake Refinery or an Occult Matrix. It acts as an "
+            "text": " of power, and if inserted into a Deluge Purifier additionally supplies water.\n\nYou can insert the orb into an Experience Exchanger or Occult Matrix. It acts as an "
+          },
+          {
+            "text": "infinite source",
+            "color": "dark_purple"
+          },
+          {
+            "text": "of Academic Slurry.\n\nYou can insert the orb into the sand slot of a Quake Refinery. It acts as an "
           },
           {
             "text": "infinite source",
@@ -3246,7 +3434,7 @@
     ]
   },
   "Grand Distillery": {
-    "index": "1208",
+    "index": "1209",
     "category": "magichem",
     "tier": 4,
     "sections": [
@@ -3386,6 +3574,46 @@
       {
         "type": "eldrin_altar",
         "location": "magichem:eldrin_altar/laboratory_charm"
+      }
+    ]
+  },
+  "Conjurer": {
+    "index": "1207",
+    "category": "magichem",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Conjurer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Conjurer makes use of a modified version of the natural process by which cobblestone is created when water and lava touch. It can "
+          },
+          {
+            "text": "create a large variety of items seemingly out of nothing",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", provided the correct conjuring catalyst is provided—usually the item itself.\n\nThe conjuration process is relatively slow, but costs nothing. If provided with a "
+          },
+          {
+            "text": "particular type of materia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " determined by the item being conjured, the process is drastically sped up and produces much larger batches at once."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/conjurer"
       }
     ]
   },
