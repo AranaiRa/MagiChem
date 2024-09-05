@@ -2,7 +2,7 @@
     "parent": "forge:item/default",
     "loader": "forge:composite",
     "textures": {
-        "particle": "minecraft:block/quartz"
+        "particle": "magichem:block/bleached_amethyst_block"
     },
     "children": {
         "part1": {
