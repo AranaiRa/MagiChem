@@ -116,6 +116,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.CONJURER.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.conjurer")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.EXPERIENCE_EXCHANGER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.experienceexchanger")
@@ -136,6 +142,12 @@ public class TooltipLoreBlockItem extends BlockItem {
             pTooltipComponents.add(Component.empty());
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.magichemicalmechanism.ext")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.CRYSTAL_CANDLE.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.crystalcandle")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }

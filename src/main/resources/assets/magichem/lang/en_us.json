@@ -326,6 +326,8 @@
   "tooltip.magichem.centrifuge": "Breaks down Admixtures into their component Materia.",
   "tooltip.magichem.circlefabrication": "Uses Materia and FE to create a wide variety of items and blocks.",
   "tooltip.magichem.coloringcauldron": "Changes the color of items to a different, semi-random color.",
+  "tooltip.magichem.conjurer": "Creates certain blocks out of thin air. Works faster and in greater quantity if supplied with some materia.",
+  "tooltip.magichem.crystalcandle": "A colorless crystal that defies gravity. Can be used as a light source.",
   "tooltip.magichem.distillery": "Breaks down blocks and items into their component Materia.",
   "tooltip.magichem.experienceexchanger": "Place on top of a Brimming Urn. Transfers Academic Slurry to and from a Crystal of Memories.",
   "tooltip.magichem.fusery": "Combines component Materia into Admixtures.",
