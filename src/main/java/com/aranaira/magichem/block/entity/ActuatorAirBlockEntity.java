@@ -118,7 +118,9 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(stack.getItem() instanceof MateriaItem mi) {
+                    if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                        return true;
+                    else if(stack.getItem() instanceof MateriaItem mi) {
                         return mi == ESSENTIA_AIR;
                     }
                 }

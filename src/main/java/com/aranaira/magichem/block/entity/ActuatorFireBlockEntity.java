@@ -130,7 +130,9 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
                         return true;
                     return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
                 } else if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(stack.getItem() instanceof MateriaItem mi) {
+                    if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                        return true;
+                    else if(stack.getItem() instanceof MateriaItem mi) {
                         return mi == ESSENTIA_FIRE;
                     }
                 }

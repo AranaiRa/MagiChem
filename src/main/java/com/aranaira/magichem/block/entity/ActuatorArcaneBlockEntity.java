@@ -112,7 +112,9 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
                     boolean isDebugOrb = stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                     return hasFluidCap || isCrystalOfMemories || (slot == SLOT_INPUT && isDebugOrb);
                 } else if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(stack.getItem() instanceof MateriaItem mi) {
+                    if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                        return true;
+                    else if(stack.getItem() instanceof MateriaItem mi) {
                         return mi == ESSENTIA_ARCANE;
                     }
                 }

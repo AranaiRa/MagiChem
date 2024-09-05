@@ -112,7 +112,9 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                 if(slot == SLOT_SAND)
                     return stack.getItem().equals(Items.SAND) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                 else if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(stack.getItem() instanceof MateriaItem mi) {
+                    if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                        return true;
+                    else if(stack.getItem() instanceof MateriaItem mi) {
                         return mi == ESSENTIA_EARTH;
                     }
                 }

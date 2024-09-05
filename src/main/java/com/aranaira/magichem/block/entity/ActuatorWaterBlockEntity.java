@@ -122,7 +122,9 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot == SLOT_ESSENTIA_INSERTION) {
-                    if(stack.getItem() instanceof MateriaItem mi) {
+                    if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                        return true;
+                    else if(stack.getItem() instanceof MateriaItem mi) {
                         return mi == ESSENTIA_WATER;
                     }
                 }
@@ -269,6 +271,17 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
         if(t instanceof ActuatorWaterBlockEntity entity) {
             if(changed && !level.isClientSide())
                 entity.syncAndSave();
+            if(entity.itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                int pre = entity.getWaterInTank();
+                if(entity.containedWater.isEmpty()) {
+                    entity.containedWater = new FluidStack(Fluids.WATER, Config.delugePurifierTankCapacity);
+                } else {
+                    entity.containedWater.setAmount(Config.delugePurifierTankCapacity);
+                }
+
+                if(pre != entity.getWaterInTank())
+                    changed = true;
+            }
 
             //Particle work
             if(level.isClientSide()) {

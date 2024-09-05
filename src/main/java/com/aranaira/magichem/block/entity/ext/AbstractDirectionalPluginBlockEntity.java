@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
@@ -134,7 +135,13 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
                     ItemStack bottleStack = entity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES));
 
                     if (!insertionStack.isEmpty()) {
-                        if (bottleStack.getCount() < entity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES))) {
+                        if (insertionStack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                            int pre = entity.storedMateria;
+                            entity.storedMateria = Config.actuatorMateriaBufferMaximum;
+                            if(entity.storedMateria != pre)
+                                changed = true;
+                        }
+                        else if (bottleStack.getCount() < entity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES))) {
                             if(!InventoryHelper.isMateriaUnbottled(insertionStack)){
                                 if (bottleStack.isEmpty())
                                     bottleStack = new ItemStack(Items.GLASS_BOTTLE);
