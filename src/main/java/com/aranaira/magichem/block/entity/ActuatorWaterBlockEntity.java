@@ -281,6 +281,8 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
 
                 if(pre != entity.getWaterInTank())
                     changed = true;
+
+                if(changed) entity.syncAndSave();
             }
 
             //Particle work
@@ -668,6 +670,9 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
                             awbe.satisfyAuxiliaryRequirements();
                             return true;
                         }
+                    } else {
+                        awbe.satisfyAuxiliaryRequirements();
+                        return true;
                     }
                 }
             }

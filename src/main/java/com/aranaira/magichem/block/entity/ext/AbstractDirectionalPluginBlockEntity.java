@@ -213,16 +213,15 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
 
                 if (entity.drewEldrinThisCycle && entity.drewEssentiaThisCycle && entity.metAuxiliaryRequirementsThisCycle) {
                     entity.remainingCycleTime = Config.actuatorDoubleSuppliedPeriod;
-                } else if ((entity.drewEldrinThisCycle || entity.drewEssentiaThisCycle) && entity.metAuxiliaryRequirementsThisCycle)
+                    entity.metAuxiliaryRequirementsThisCycle = false;
+                } else if ((entity.drewEldrinThisCycle || entity.drewEssentiaThisCycle) && entity.metAuxiliaryRequirementsThisCycle) {
                     entity.remainingCycleTime = Config.actuatorSingleSuppliedPeriod;
+                    entity.metAuxiliaryRequirementsThisCycle = false;
+                }
 
-                if((entity.drewEldrinThisCycle || entity.drewEssentiaThisCycle) && entity.metAuxiliaryRequirementsThisCycle)
+                if((entity.drewEldrinThisCycle || entity.drewEssentiaThisCycle))
                     changed = true;
-
-                //Aux requirements are set by subclasses mid-cycle
-                entity.metAuxiliaryRequirementsThisCycle = false;
             }
-
             entity.remainingCycleTime = Math.max(-1, entity.remainingCycleTime - 1);
         }
 
