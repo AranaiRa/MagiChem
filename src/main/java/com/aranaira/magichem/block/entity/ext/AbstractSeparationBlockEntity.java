@@ -5,6 +5,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -76,7 +77,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    private void syncAndSave() {
+    protected void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
@@ -247,7 +248,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     }
 
     protected static void craftItem(AbstractSeparationBlockEntity pEntity, FixationSeparationRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
-        int bottlesToInsert = 1;
+        int bottlesToInsert = 0;
 
         SimpleContainer outputSlots = new SimpleContainer(9);
         for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
@@ -282,6 +283,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
                 }
                 ItemStack processingSlotContents = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
+                if(!InventoryHelper.isMateriaUnbottled(processingSlotContents)) {
+                    bottlesToInsert++;
+                }
                 processingSlotContents.shrink(1);
                 if (processingSlotContents.getCount() == 0)
                     pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
@@ -306,24 +310,23 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         //TODO: Remove this once the bottle slot stack size has been expanded
         int slotLimit = pEntity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT));
         ItemStack contained = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT));
-        int inserted = bottlesToInsert * totalCycles;
         ItemStack bottles;
 
         if(contained.isEmpty()) {
-            if(inserted > 64) {
-                bottles = new ItemStack(Items.GLASS_BOTTLE, inserted - 64);
+            if(bottlesToInsert > 64) {
+                bottles = new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert - 64);
                 pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, 64));
             } else {
                 bottles = ItemStack.EMPTY;
-                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, inserted));
+                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT), new ItemStack(Items.GLASS_BOTTLE, bottlesToInsert));
             }
         } else {
             int remainingSpace = slotLimit - contained.getCount();
-            if(inserted <= remainingSpace) {
+            if(bottlesToInsert <= remainingSpace) {
                 bottles = ItemStack.EMPTY;
-                contained.grow(inserted);
+                contained.grow(bottlesToInsert);
             } else {
-                bottles = new ItemStack(Items.GLASS_BOTTLE, remainingSpace - inserted);
+                bottles = new ItemStack(Items.GLASS_BOTTLE, remainingSpace - bottlesToInsert);
                 contained.setCount(slotLimit);
             }
         }

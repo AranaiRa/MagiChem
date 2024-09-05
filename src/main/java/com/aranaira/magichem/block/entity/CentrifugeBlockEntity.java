@@ -7,16 +7,21 @@ import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -39,9 +44,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
+public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester {
     public static final int
         SLOT_COUNT = 14,
         SLOT_BOTTLES = 13, SLOT_BOTTLES_OUTPUT = 0,
@@ -67,6 +74,10 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(slot)))
+                        return ItemStack.EMPTY;
+                }
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
                     ItemStack item = super.extractItem(slot, amount, simulate);
                     item.removeTagKey("CustomModelData");
@@ -386,5 +397,101 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     @Override
     public void destroyRouters() {
         CentrifugeBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
+    ////////////////////
+    // PROVISIONING AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+    private static final List<AdmixtureItem> admixtureList = ItemRegistry.getAdmixtures();
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return true;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        //make sure there's space to PUT the provision
+        int openSlots = 0;
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            if(itemHandler.getStackInSlot(i).isEmpty()) {
+                openSlots++;
+            }
+        }
+
+        //make sure there aren't enough stacks on the way
+        return openSlots - activeProvisionRequests.size() > 0;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        for (AdmixtureItem ai : admixtureList) {
+            if(!activeProvisionRequests.contains(ai))
+                result.put(ai, 1);
+        }
+
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty())
+                result.remove((MateriaItem)itemHandler.getStackInSlot(i).getItem());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        CompoundTag nbt = new CompoundTag();
+        nbt.putInt("CustomModelData", 1);
+        pStack.setTag(nbt);
+
+        SimpleContainer inputSlots = new SimpleContainer(SLOT_INPUT_COUNT);
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            inputSlots.setItem(i-SLOT_INPUT_START, itemHandler.getStackInSlot(i));
+        }
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            if (itemHandler.getStackInSlot(i).isEmpty()) {
+                inputSlots.setItem(i-SLOT_INPUT_START, pStack);
+                break;
+            } else if(itemHandler.getStackInSlot(i).getItem() == pStack.getItem()) {
+                if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(i))) {
+                    inputSlots.getItem(i-SLOT_INPUT_START).grow(pStack.getCount());
+                    break;
+                }
+            }
+        }
+
+        for(int i=0; i<SLOT_INPUT_COUNT; i++) {
+            itemHandler.setStackInSlot(SLOT_INPUT_START+i, inputSlots.getItem(i));
+        }
+
+        cancelProvisioningInProgress((MateriaItem)pStack.getItem());
+
+        syncAndSave();
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        return needsProvisioning() ? 0 : pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+
+        return 0;
     }
 }

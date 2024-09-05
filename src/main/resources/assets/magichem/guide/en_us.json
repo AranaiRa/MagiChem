@@ -1906,7 +1906,7 @@
             "text": "This command will cause a construct to extract materia from Jars or Vessels within a specified area and attempt to insert it into a materia-using alchemical device.\n\nConstructs can provide materia to the "
           },
           {
-            "text": "Alembic",
+            "text": "Centrifuge",
             "color": "dark_purple"
           },
           {
@@ -1920,21 +1920,7 @@
             "text": ", "
           },
           {
-            "text": "Distillery",
-            "color": "dark_purple"
-          },
-          {
-            "text": ", "
-          },
-          {
             "text": "Fusery",
-            "color": "dark_purple"
-          },
-          {
-            "text": ", "
-          },
-          {
-            "text": "Grand Distillery",
             "color": "dark_purple"
           },
           {
