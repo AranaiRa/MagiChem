@@ -263,13 +263,13 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
 
                                                     Pair<Vector3, Vector3> defaultOriginAndTangent = jarTargetEntity.getDefaultOriginAndTangent();
                                                     sO = defaultOriginAndTangent.getFirst();
-                                                    sT = defaultOriginAndTangent.getSecond();
+                                                    sT = defaultOriginAndTangent.getSecond().scale(6);
 
                                                     ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
                                                     shlorp.setPos(new Vec3(sP.x, sP.y, sP.z));
                                                     shlorp.configure(
                                                             sP, sO, sT,
-                                                            eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 2.5f + 1f),
+                                                            eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 3.0f + 3f),
                                                             0.035f, 0.125f,
                                                             4 + extracted.getCount(),
                                                             (MateriaItem) extracted.getItem(),

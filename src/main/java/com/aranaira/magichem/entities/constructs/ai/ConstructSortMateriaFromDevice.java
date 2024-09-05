@@ -364,14 +364,14 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
 
             if (endpoint != null && startpoint != null) {
                 Vector3 sP = new Vector3(startpoint.getBlockPos().getX(), startpoint.getBlockPos().getY(), startpoint.getBlockPos().getZ());
-                Vector3 eP = Vector3.zero(), eO = Vector3.zero(), eT = Vector3.zero();
+                Vector3 eP = Vector3.zero(), eO = Vector3.zero(), eT = Vector3.up().scale(6);
 
                 if (endpoint instanceof AbstractMateriaStorageBlockEntity amsbe) {
                     eP = new Vector3(endpoint.getBlockPos().getX(), endpoint.getBlockPos().getY(), endpoint.getBlockPos().getZ());
 
                     Pair<Vector3, Vector3> defaultOriginAndTangent = amsbe.getDefaultOriginAndTangent();
                     eO = defaultOriginAndTangent.getFirst();
-                    eT = defaultOriginAndTangent.getSecond();
+                    eT = defaultOriginAndTangent.getSecond().scale(6);
                 }
 
                 ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);

@@ -63,7 +63,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction {
+public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester {
 
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -1231,6 +1231,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         pluginLinkageCountdown = 3;
     }
 
+    @Override
+    public void destroyRouters() {
+        AlchemicalNexusBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
     ////////////////////
     // SHLORP HANDLING
     ////////////////////
@@ -1243,7 +1248,50 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     @Override
-    public void destroyRouters() {
-        AlchemicalNexusBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(animStage == ANIM_STAGE_SHLORPS) {
+            return getDemandedMateriaNotInTransit().size() > 0;
+        }
+        return false;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        for (Triplet<MateriaItem, Integer, Boolean> demand : satisfactionDemands) {
+            if(!demand.getThird()) {
+                if(demand.getSecond() > 0)
+                    result.put(demand.getFirst(), demand.getSecond());
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        markInTransit(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        for (int i = 0; i < satisfactionDemands.size(); i++) {
+            Triplet<MateriaItem, Integer, Boolean> demand = satisfactionDemands.get(i);
+            if (demand.getFirst() == pMateriaItem) {
+                satisfactionDemands.set(i, new Triplet<>(demand.getFirst(), demand.getSecond(), false));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        satisfy(pStack);
     }
 }
