@@ -5,9 +5,11 @@ import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -30,7 +32,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver, IDestroysMasterOnDestruction {
+import java.util.Map;
+
+public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver, IDestroysMasterOnDestruction, IMateriaProvisionRequester {
 
     private BlockPos masterPos;
     private AlchemicalNexusBlockEntity master;
@@ -260,5 +264,35 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     public void destroyMaster() {
         getLevel().destroyBlock(getMasterPos(), true);
         AlchemicalNexusBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
+    }
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return getMaster().allowIncreasedDeliverySize();
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        return getMaster().needsProvisioning();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        return getMaster().getProvisioningNeeds();
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        getMaster().setProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        getMaster().cancelProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        getMaster().provide(pStack);
     }
 }
