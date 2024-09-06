@@ -22,8 +22,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
+import static com.aranaira.magichem.block.entity.ActuatorAirBlockEntity.SLOT_ESSENTIA_INSERTION;
 import static com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity.*;
-import static com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity.*;
 
 public class ActuatorEarthMenu extends AbstractContainerMenu {
 
@@ -106,6 +106,7 @@ public class ActuatorEarthMenu extends AbstractContainerMenu {
             SLOT_INVENTORY_BEGIN = 0,
             SLOT_INVENTORY_COUNT = 36;
     Pair<Item, Integer>[] DIRSPEC = new Pair[]{
+            new Pair<>(ESSENTIA_EARTH, SLOT_INVENTORY_COUNT + SLOT_ESSENTIA_INSERTION),
             new Pair<>(Items.SAND, SLOT_INVENTORY_COUNT + SLOT_SAND)
     };
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {

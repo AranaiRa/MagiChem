@@ -74,7 +74,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     protected ContainerData data;
     private FluidStack containedSmoke, containedSteam;
     private final LazyOptional<IFluidHandler> fluidHandler;
-    private static final MateriaItem ESSENTIA_AIR = ItemRegistry.getEssentiaMap(false, false).get("air");
+    public static final MateriaItem ESSENTIA_AIR = ItemRegistry.getEssentiaMap(false, false).get("air");
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 

@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEnti
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity.IDs;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -97,7 +98,10 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
     private static final int
             SLOT_INVENTORY_BEGIN = 0,
             SLOT_INVENTORY_COUNT = 36;
-    Pair<Item, Integer>[] DIRSPEC = new Pair[]{};
+    Pair<Item, Integer>[] DIRSPEC = new Pair[]{
+            new Pair<>(ESSENTIA_AIR, SLOT_INVENTORY_COUNT + SLOT_ESSENTIA_INSERTION),
+            new Pair<>(ItemRegistry.DEBUG_ORB.get(), SLOT_INVENTORY_COUNT + SLOT_ESSENTIA_INSERTION)
+    };
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };

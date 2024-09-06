@@ -70,7 +70,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
             stamperDepth = 0,
             stamperDepthNextTick = 0;
     protected ContainerData data;
-    private static final MateriaItem ESSENTIA_EARTH = ItemRegistry.getEssentiaMap(false, false).get("earth");
+    public static final MateriaItem ESSENTIA_EARTH = ItemRegistry.getEssentiaMap(false, false).get("earth");
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 

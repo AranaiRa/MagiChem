@@ -20,6 +20,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
+import static com.aranaira.magichem.block.entity.ActuatorAirBlockEntity.SLOT_ESSENTIA_INSERTION;
 import static com.aranaira.magichem.block.entity.ActuatorFireBlockEntity.*;
 
 public class ActuatorFireMenu extends AbstractContainerMenu {
@@ -98,7 +99,9 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
     private static final int
             SLOT_INVENTORY_BEGIN = 0,
             SLOT_INVENTORY_COUNT = 36;
-    Pair<Item, Integer>[] DIRSPEC = new Pair[]{};
+    Pair<Item, Integer>[] DIRSPEC = new Pair[]{
+            new Pair<>(ESSENTIA_FIRE, SLOT_INVENTORY_COUNT + SLOT_ESSENTIA_INSERTION)
+    };
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_COUNT, SLOT_INVENTORY_COUNT + 1), //Fuel slot
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)

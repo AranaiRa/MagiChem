@@ -76,7 +76,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     private FluidStack
             containedWater, containedSteam;
     private final LazyOptional<IFluidHandler> fluidHandler;
-    private static final MateriaItem ESSENTIA_WATER = ItemRegistry.getEssentiaMap(false, false).get("water");
+    public static final MateriaItem ESSENTIA_WATER = ItemRegistry.getEssentiaMap(false, false).get("water");
     private static final Random random = new Random();
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();

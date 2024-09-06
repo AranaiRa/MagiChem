@@ -64,7 +64,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     private int
             flags;
     protected ContainerData data;
-    private static final MateriaItem ESSENTIA_ARCANE = ItemRegistry.getEssentiaMap(false, false).get("arcane");
+    public static final MateriaItem ESSENTIA_ARCANE = ItemRegistry.getEssentiaMap(false, false).get("arcane");
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();

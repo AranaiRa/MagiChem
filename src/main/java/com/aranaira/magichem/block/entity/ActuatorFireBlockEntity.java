@@ -81,7 +81,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     protected ContainerData data;
     private FluidStack containedSmoke;
     private final LazyOptional<IFluidHandler> fluidHandler;
-    private static final MateriaItem ESSENTIA_FIRE = ItemRegistry.getEssentiaMap(false, false).get("fire");
+    public static final MateriaItem ESSENTIA_FIRE = ItemRegistry.getEssentiaMap(false, false).get("fire");
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
