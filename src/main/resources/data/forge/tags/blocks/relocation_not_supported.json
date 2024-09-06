@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:actuator_air",
+    "magichem:actuator_air_router",
+    "magichem:actuator_arcane",
+    "magichem:actuator_arcane_router",
+    "magichem:actuator_earth",
+    "magichem:actuator_earth_router",
+    "magichem:actuator_fire",
+    "magichem:actuator_fire_router",
+    "magichem:actuator_water",
+    "magichem:actuator_water_router",
+    "magichem:centrifuge",
+    "magichem:centrifuge_router",
+    "magichem:circle_power",
+    "magichem:circle_power_router",
+    "magichem:conjurer",
+    "magichem:conjurer_router",
+    "magichem:distillery",
+    "magichem:distillery_router",
+    "magichem:grand_distillery",
+    "magichem:grand_distillery_router",
+    "magichem:fusery",
+    "magichem:fusery_router",
+    "magichem:distillery",
+    "magichem:distillery_router",
+    "magichem:variegator",
+    "magichem:variegator_router",
+
+    "magichem:power_spike"
+  ]
+}
