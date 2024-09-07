@@ -43,9 +43,9 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
     private static final int
-            PANEL_MAIN_W = 176, PANEL_MAIN_H = 192,
-            PANEL_RECIPE_X = 176, PANEL_RECIPE_Y = 0, PANEL_RECIPE_W = 80, PANEL_RECIPE_H = 126,
-            PANEL_POWER_X = 176, PANEL_POWER_Y = 126, PANEL_POWER_W = 80, PANEL_POWER_H = 66,
+            PANEL_MAIN_W = 181, PANEL_MAIN_H = 192,
+            PANEL_RECIPE_U = 160, PANEL_RECIPE_V = 96, PANEL_RECIPE_W = 81, PANEL_RECIPE_H = 126,
+            PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66,
             PANEL_INGREDIENTS_X = 176, PANEL_INGREDIENTS_Y = 85, PANEL_INGREDIENTS_W = 80,
             PANEL_INGREDIENTS_U1 = 160, PANEL_INGREDIENTS_U2 = 80, PANEL_INGREDIENTS_U3 = 160, PANEL_INGREDIENTS_U4 = 80, PANEL_INGREDIENTS_U5 = 0,
             PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
@@ -91,7 +91,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     }
 
     private void initializePowerLevelButtons(){
-        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 126, 12, 7, 232, 242, TEXTURE, button -> {
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 167, this.topPos + 126, 12, 7, 232, 242, TEXTURE, button -> {
             menu.blockEntity.incrementPowerUsageSetting();
             Item recipeTarget = null;
             if(menu.blockEntity.getCurrentRecipe() != null) {
@@ -103,7 +103,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                     menu.blockEntity.getPowerUsageSetting()
             ));
         }));
-        b_powerLevelDown = this.addRenderableWidget(new ImageButton(180, 126, 12, 7, 244, 242, TEXTURE, button -> {
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 167, this.topPos + 126, 12, 7, 244, 242, TEXTURE, button -> {
             menu.blockEntity.decrementPowerUsageSetting();
             Item recipeTarget = null;
             if(menu.blockEntity.getCurrentRecipe() != null) {
@@ -122,11 +122,11 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         for(int y=0; y<5; y++) {
             for(int x=0; x<3; x++) {
                 recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new FabricationButtonRecipeSelector(
-                        this, c, this.leftPos, this.topPos, 18, 18, 92, 220, TEXTURE, button -> {
+                        this, c, this.leftPos, this.topPos, 18, 18, 54, 220, TEXTURE, button -> {
 
                             CircleFabricationScreen query = (CircleFabricationScreen) ((FabricationButtonRecipeSelector) button).getScreen();
                             query.setActiveRecipe(((FabricationButtonRecipeSelector) button).getArrayIndex());
-                })), x*18 - 71, y*18 + 42);
+                })), x*18 - 78, y*18 + 39);
                 c++;
             }
         }
@@ -172,19 +172,21 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        //Panels
-        gui.blit(TEXTURE, x - 78, y + 13, PANEL_RECIPE_X, PANEL_RECIPE_Y, PANEL_RECIPE_W, PANEL_RECIPE_H);
-        gui.blit(TEXTURE, x + 176, y + 19, PANEL_POWER_X, PANEL_POWER_Y, PANEL_POWER_W, PANEL_POWER_H);
+        //Main Panel
         gui.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
+
+        //Recipe Selector Panel
+        gui.blit(TEXTURE_EXT, x - 85, y + 10, PANEL_RECIPE_U, PANEL_RECIPE_V, PANEL_RECIPE_W, PANEL_RECIPE_H);
+
+        //Power Settings Panel
+        gui.blit(TEXTURE_EXT, x + 163, y + 19, PANEL_POWER_U, PANEL_POWER_V, PANEL_POWER_W, PANEL_POWER_H);
 
         renderProgressBar(gui, x + 55, y + 12);
 
-        //RenderSystem.setShader(GameRenderer::getBlockShader);
-        renderSelectedRecipe(gui, x + 79, y + 79);
+        renderSelectedRecipe(gui, x + 84, y + 79);
 
-        //RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        renderPowerLevelBar(gui, x + 182, y + 37);
-        renderIngredientPanel(gui, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
+        renderPowerLevelBar(gui, x + 169, y + 37);
+//        renderIngredientPanel(gui, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
 
         renderSlotGhosts(gui);
 
@@ -238,11 +240,11 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        b_powerLevelUp.setPosition(x+180, y+26);
+        b_powerLevelUp.setPosition(x+167, y+26);
         b_powerLevelUp.active = true;
         b_powerLevelUp.visible = true;
 
-        b_powerLevelDown.setPosition(x+180, y+71);
+        b_powerLevelDown.setPosition(x+167, y+71);
         b_powerLevelDown.active = true;
         b_powerLevelDown.visible = true;
 
@@ -256,12 +258,12 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private void renderPowerLevelBar(GuiGraphics gui, int x, int y) {
         int powerLevel = menu.blockEntity.getPowerUsageSetting();
 
-        gui.blit(TEXTURE, x, y + (30 - powerLevel), 84, 256 - powerLevel, 8, powerLevel);
+        gui.blit(TEXTURE, x, y + (30 - powerLevel), 46, 256 - powerLevel, 8, powerLevel);
     }
 
     private void renderSelectedRecipe(GuiGraphics gui, int x, int y) {
         if(menu.blockEntity.getCurrentRecipe() == null) {
-            gui.blit(TEXTURE, x, y, 66, 238, 18, 18);
+            gui.blit(TEXTURE, x, y, 28, 238, 18, 18);
         }
         else {
             gui.renderItem(menu.blockEntity.getCurrentRecipe().getAlchemyObject(), x+1, y+1);
@@ -278,8 +280,8 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        recipeFilterBox.setX(xOrigin - 70);
-        recipeFilterBox.setY(yOrigin + 21);
+        recipeFilterBox.setX(xOrigin - 78);
+        recipeFilterBox.setY(yOrigin + 17);
 
         if(recipeFilterBox.getValue().isEmpty())
             recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
@@ -301,8 +303,8 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         gui.setColor(1f, 1f, 1f, 0.25f);
         int slotGroup = 0;
         for(ItemStack stack : acr.getComponentMateria()) {
-            gui.renderItem(stack, xOrigin + 8, yOrigin+8 + (18*slotGroup));
-            gui.renderItem(stack, xOrigin + 26, yOrigin+8 + (18*slotGroup));
+            gui.renderItem(stack, xOrigin + 31, yOrigin+8 + (18*slotGroup));
+            gui.renderItem(stack, xOrigin + 49, yOrigin+8 + (18*slotGroup));
             slotGroup++;
         }
         gui.setColor(1f, 1f, 1f, 1f);
@@ -330,7 +332,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
             for(int y=0; y<5; y++) {
                 for (int x = 0; x < 3; x++) {
-                    gui.renderItem(snipped.get(c).getAlchemyObject(), xOrigin-70 + x*18, yOrigin+43 + y*18);
+                    gui.renderItem(snipped.get(c).getAlchemyObject(), xOrigin-77 + x*18, yOrigin+40 + y*18);
                     c++;
                     if(c >= cLimit) break;
                 }
@@ -378,6 +380,24 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             }
         }
 
+        //Item ghosts
+        if(menu.blockEntity.getCurrentRecipe() != null) {
+            if (pX >= x + 30 && pX <= x + 66 &&
+                    pY >= y + 7 && pY <= y + 96) {
+                int recipeIndex = (pY - (y + 7)) / 18;
+                int left = pX <= x + 48 ? 0 : 1;
+                int slotIndex = recipeIndex * 2 + left;
+
+                ItemStack stackInSlot = menu.inputSlots[slotIndex].getItem();
+
+                if(stackInSlot.isEmpty() && recipeIndex < menu.blockEntity.getCurrentRecipe().getComponentMateria().size()) {
+                    String name = menu.blockEntity.getCurrentRecipe().getComponentMateria().get(recipeIndex).getDisplayName().getString();
+                    tooltipContents.add(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY));
+                }
+
+            }
+        }
+
         if(doOriginalTooltip)
             super.renderTooltip(pGuiGraphics, pX, pY);
 
@@ -401,17 +421,16 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int secPartial = (menu.blockEntity.getOperationTicks() % 20) * 5;
 
         Font font = Minecraft.getInstance().font;
-        gui.drawString(font ,powerDraw+"/t", 208, 26, 0xff000000, false);
-        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 45, 0xff000000, false);
+        gui.drawString(font ,powerDraw+"/t", 193, 26, 0xff000000, false);
+        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 193, 45, 0xff000000, false);
 
         DistillationFabricationRecipe recipe = menu.blockEntity.getCurrentRecipe();
         if(recipe != null) {
             for (int i = 0; i < recipe.getComponentMateria().size(); i++) {
-                Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + " x ")
-                        .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipe.getComponentMateria().get(i).getItem()+".short"));
-                gui.pose().scale(0.5f, 0.5f, 0.5f);
-                gui.drawString(font, text, 400, 169 + i * 36, 0xff000000, false);
-                gui.pose().scale(2.0f, 2.0f, 2.0f);
+                Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + "");
+                int rightAlignShift = 17 - font.width(text.getString());
+
+                gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
             }
         }
 

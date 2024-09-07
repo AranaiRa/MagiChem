@@ -38,12 +38,12 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 56, 67, true));
+            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 82, -5, true));
 
             for(int i=CircleFabricationBlockEntity.SLOT_INPUT_START;
             i < CircleFabricationBlockEntity.SLOT_INPUT_START + CircleFabricationBlockEntity.SLOT_INPUT_COUNT; i++) {
                 int shiftedSlot = i - CircleFabricationBlockEntity.SLOT_INPUT_START;
-                OnlyMateriaInputSlot slot = new OnlyMateriaInputSlot(handler, i, 8 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2)));
+                OnlyMateriaInputSlot slot = new OnlyMateriaInputSlot(handler, i, 28 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2)));
                 inputSlots[shiftedSlot] = slot;
                 this.addSlot(slot);
             }
@@ -51,7 +51,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
             for(int i=CircleFabricationBlockEntity.SLOT_OUTPUT_START;
                 i < CircleFabricationBlockEntity.SLOT_OUTPUT_START + CircleFabricationBlockEntity.SLOT_OUTPUT_COUNT; i++) {
                 int shiftedSlot = i - CircleFabricationBlockEntity.SLOT_OUTPUT_START;
-                this.addSlot(new OnlyMateriaInputSlot(handler, i, 134 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
+                this.addSlot(new OnlyMateriaInputSlot(handler, i, 118 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
             }
 
             setInputSlotFilters(blockEntity.getCurrentRecipe());
@@ -79,14 +79,14 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for(int i=0; i<3; i++) {
             for(int l=0; l<9; l++) {
-                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 97 + i*18)));
+                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 10 + l*18, 95 + i*18)));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for(int i=0; i<9; i++) {
-            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 155)));
+            this.addSlot((new Slot(playerInventory, i, 10 + i*18, 153)));
         }
     }
 
