@@ -252,7 +252,15 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        if(nbt.getCompound("inventory").size() != itemHandler.getSlots()) {
+            ItemStackHandler temp = new ItemStackHandler(nbt.getCompound("inventory").size());
+            temp.deserializeNBT(nbt.getCompound("inventory"));
+            for(int i=0; i<temp.getSlots(); i++) {
+                itemHandler.setStackInSlot(i, temp.getStackInSlot(i));
+            }
+        } else {
+            this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        }
         this.remainingCycleTime = nbt.getInt("remainingCycleTime");
         this.powerLevel = nbt.getInt("powerLevel");
         this.storedMateria = nbt.getInt("storedMateria");
