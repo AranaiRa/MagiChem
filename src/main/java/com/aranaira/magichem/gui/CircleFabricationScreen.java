@@ -144,7 +144,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             ));
             lastClickedRecipe = filteredRecipes.get(trueIndex);
             menu.setInputSlotFilters(lastClickedRecipe);
-            menu.blockEntity.setCurrentRecipeByOutput(lastClickedRecipe.getAlchemyObject().getItem());
+            menu.blockEntity.setCurrentRecipe(lastClickedRecipe.getAlchemyObject());
         }
     }
 
@@ -186,11 +186,10 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderSelectedRecipe(gui, x + 84, y + 79);
 
         renderPowerLevelBar(gui, x + 169, y + 37);
-//        renderIngredientPanel(gui, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
 
         renderSlotGhosts(gui);
 
-        if(!menu.getHasSufficientPower()) {
+        if(!menu.blockEntity.hasSufficientPower()) {
             RenderSystem.setShaderTexture(0, TEXTURE_EXT);
             renderPowerWarning(gui, x, y);
         }
@@ -204,35 +203,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         updateDisplayedRecipes(recipeFilterBox.getValue());
         renderRecipeOptions(gui);
         updateFilterBoxContents();
-    }
-
-    private void renderIngredientPanel(GuiGraphics gui, int x, int y) {
-        if(menu.blockEntity.getCurrentRecipe() != null) {
-            DistillationFabricationRecipe recipe = menu.blockEntity.getCurrentRecipe();
-
-            //A switch statement doesn't work here and I have no idea why.
-            if(recipe.getComponentMateria().size() == 1) {
-                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U1, PANEL_INGREDIENTS_V1, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H1);
-            }
-            else if(recipe.getComponentMateria().size() == 2) {
-                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U2, PANEL_INGREDIENTS_V2, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H2);
-            }
-            else if(recipe.getComponentMateria().size() == 3) {
-                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U3, PANEL_INGREDIENTS_V3, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H3);
-            }
-            else if(recipe.getComponentMateria().size() == 4) {
-                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U4, PANEL_INGREDIENTS_V4, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H4);
-            }
-            else if(recipe.getComponentMateria().size() == 5) {
-                gui.blit(TEXTURE_EXT, x, y, PANEL_INGREDIENTS_U5, PANEL_INGREDIENTS_V5, PANEL_INGREDIENTS_W, PANEL_INGREDIENTS_H5);
-            }
-
-            for(int i=0; i<recipe.getComponentMateria().size(); i++) {
-                gui.renderItem(recipe.getComponentMateria().get(i), x+4, y+7 + i*18);
-            }
-        }
-
-        RenderSystem.setShaderTexture(0, TEXTURE);
     }
 
     private void renderButtons() {
@@ -434,7 +404,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             }
         }
 
-        if(!menu.getHasSufficientPower()) {
+        if(!menu.blockEntity.hasSufficientPower()) {
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width/2, -33, 0xff000000, false);

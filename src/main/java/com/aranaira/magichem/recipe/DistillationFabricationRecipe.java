@@ -121,6 +121,22 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer> {
         return result;
     }
 
+    public static DistillationFabricationRecipe getFabricatingRecipe(Level level, ItemStack query) {
+        DistillationFabricationRecipe result = null;
+        List<DistillationFabricationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+
+        for(DistillationFabricationRecipe acr : allRecipes) {
+            if(acr.alchemyObject.getItem() == query.getItem()) {
+                result = acr;
+                if(acr.distillOnly)
+                    return null;
+                break;
+            }
+        }
+
+        return result;
+    }
+
     public static class Type implements RecipeType<DistillationFabricationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();

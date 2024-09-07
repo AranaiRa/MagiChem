@@ -46,7 +46,6 @@ public class FabricationSyncDataC2SPacket {
 
         context.enqueueWork(() -> {
             if(entity instanceof CircleFabricationBlockEntity cfbe) {
-                cfbe.setCurrentRecipeByOutput(recipeItem);
                 cfbe.setPowerUsageSetting(powerUsageSetting);
                 cfbe.syncAndSave();
             }

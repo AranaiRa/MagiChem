@@ -21,7 +21,6 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
     public final CircleFabricationBlockEntity blockEntity;
     private final Level level;
     public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[CircleFabricationBlockEntity.SLOT_INPUT_COUNT];
-    private DataSlot dataHasSufficientPower;
 
     public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, ((CircleFabricationBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos())).readFrom(extraData));
@@ -56,8 +55,6 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
 
             setInputSlotFilters(blockEntity.getCurrentRecipe());
         });
-
-        this.dataHasSufficientPower = this.addDataSlot(DataSlot.forContainer(blockEntity, CircleFabricationBlockEntity.DATA_HAS_SUFFICIENT_POWER));
     }
 
     @Override
@@ -144,13 +141,5 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         }
         sourceSlot.onTake(playerIn, sourceStack);
         return copyOfSourceStack;
-    }
-
-    // --------------------------------------
-    // Data slot accessors
-    // --------------------------------------
-
-    public boolean getHasSufficientPower(){
-        return this.dataHasSufficientPower.get() == 1;
     }
 }
