@@ -41,10 +41,6 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> TARNISHED_SILVER_LUMP = ITEMS.register("tarnished_silver_lump",
-            () -> new TooltipLoreItem(new Item.Properties())
-    );
-
     public static final RegistryObject<TooltipLoreItem> ALCHEMICAL_WASTE = ITEMS.register("alchemical_waste",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -121,24 +117,28 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<TooltipLoreItem> TARNISHED_SILVER_LUMP = ITEMS.register("tarnished_silver_lump",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
+    );
+
     public static final RegistryObject<TooltipLoreItem> FOCUSING_CATALYST = ITEMS.register("focusing_catalyst",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> WARPED_FOCUSING_CATALYST = ITEMS.register("focusing_catalyst_warped",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
     );
 
     public static final RegistryObject<TooltipLoreItem> DEPLETED_CATALYST_CORE = ITEMS.register("focusing_catalyst_core_depleted",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
     );
 
     public static final RegistryObject<TooltipLoreItem> CATALYST_CORE = ITEMS.register("focusing_catalyst_core",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
     );
 
     public static final RegistryObject<TooltipLoreItem> CATALYST_CASING = ITEMS.register("focusing_catalyst_casing",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
     );
 
     public static final RegistryObject<TooltipLoreItem> AMPLIFYING_PRISM = ITEMS.register("amplifying_prism",
@@ -146,7 +146,7 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> MALFORMED_BRINDLE_GLASS = ITEMS.register("malformed_brindle_glass",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
     );
 
     public static final RegistryObject<TooltipLoreItem> REFRACTIVE_CRYSTAL_GRIT = ITEMS.register("refractive_crystal_grit",
