@@ -1,6 +1,8 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
@@ -9,6 +11,7 @@ import com.aranaira.magichem.gui.ConjurerMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ConjurationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
@@ -22,6 +25,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -445,6 +449,39 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
                                 .setColor(96, 96, r.nextInt(128) + 127),
                         center.x, center.y, center.z,
                         r.nextDouble() * 0.05 - 0.025, r.nextDouble() * 0.035, r.nextDouble() * 0.05 - 0.025);
+            }
+        }
+    }
+
+    public void packInventoryToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.CONJURER.get());
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.putInt("materiaAmount", materiaAmount);
+        nbt.put("insertionInventory", itemInsertionHandler.serializeNBT());
+        nbt.put("extractionInventory", itemExtractionHandler.serializeNBT());
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
+        if(pInventoryTag.contains("extractionInventory"))
+            itemExtractionHandler.deserializeNBT(pInventoryTag.getCompound("extractionInventory"));
+        if(pInventoryTag.contains("insertionInventory"))
+            itemInsertionHandler.deserializeNBT(pInventoryTag.getCompound("insertionInventory"));
+
+        ItemStack catalystStack = itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST);
+        if(!catalystStack.isEmpty()) {
+            ConjurationRecipe recipeQuery = ConjurationRecipe.getConjurationRecipe(getLevel(), catalystStack);
+            if(recipeQuery != null) {
+                recipe = recipeQuery;
+
+                if(pInventoryTag.contains("materiaAmount")) {
+                    materiaAmount = pInventoryTag.getInt("materiaAmount");
+                    materiaType = recipe.getMateria();
+                }
             }
         }
     }

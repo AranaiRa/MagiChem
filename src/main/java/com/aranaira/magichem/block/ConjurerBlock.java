@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
+import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.ConjurerBlockEntity;
 import com.aranaira.magichem.block.entity.routers.ConjurerRouterBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
@@ -99,6 +100,17 @@ public class ConjurerBlock extends BaseEntityBlock {
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return VOXEL_SHAPE_AGGREGATE;
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if(blockEntity instanceof ConjurerBlockEntity) {
+                ((ConjurerBlockEntity) blockEntity).packInventoryToBlockItem();
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     static {

@@ -228,13 +228,19 @@ public class TooltipLoreBlockItem extends BlockItem {
                 }
             }
             else if (cachedItem == BlockRegistry.VARIEGATOR.get().asItem()) {
-                VariegatorBlockEntity abe = (VariegatorBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(abe != null) {
+                VariegatorBlockEntity vbe = (VariegatorBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(vbe != null) {
                     if (nbt.contains("inventory")) {
-                        abe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        vbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
                     } if (nbt.contains("colors")) {
-                        abe.unpackColorsFromCompoundTag(nbt.getCompound("colors"));
+                        vbe.unpackColorsFromCompoundTag(nbt.getCompound("colors"));
                     }
+                }
+            }
+            else if (cachedItem == BlockRegistry.CONJURER.get().asItem()) {
+                ConjurerBlockEntity cbe = (ConjurerBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                if(cbe != null) {
+                    cbe.unpackInventoryFromNBT(nbt);
                 }
             }
         }
