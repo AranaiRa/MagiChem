@@ -205,7 +205,7 @@ public class CircleFabricationBlockEntity extends BlockEntity implements MenuPro
     }
 
     public static int getScaledProgress(CircleFabricationBlockEntity entity) {
-        return entity.getCraftingProgress() * PROGRESS_BAR_WIDTH / entity.getOperationTicks();
+        return entity.getCraftingProgress() * 28 / entity.getOperationTicks();
     }
 
     public int getCraftingProgress(){

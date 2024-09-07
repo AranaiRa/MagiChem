@@ -181,7 +181,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         //Power Settings Panel
         gui.blit(TEXTURE_EXT, x + 163, y + 19, PANEL_POWER_U, PANEL_POWER_V, PANEL_POWER_W, PANEL_POWER_H);
 
-        renderProgressBar(gui, x + 55, y + 12);
+        renderProgressBar(gui, x + 79, y + 39);
 
         renderSelectedRecipe(gui, x + 84, y + 79);
 
@@ -273,7 +273,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private void renderProgressBar(GuiGraphics gui, int x, int y) {
         int sp = CircleFabricationBlockEntity.getScaledProgress(menu.blockEntity);
         if(sp > 0)
-            gui.blit(TEXTURE, x, y , 0, 199, sp, CircleFabricationBlockEntity.PROGRESS_BAR_HEIGHT);
+            gui.blit(TEXTURE, x, y , 0, 230, sp, 26);
     }
 
     private void renderFilterBox() {
