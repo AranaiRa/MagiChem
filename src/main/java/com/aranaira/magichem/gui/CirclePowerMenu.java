@@ -17,6 +17,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
+import static com.aranaira.magichem.block.entity.CirclePowerBlockEntity.*;
+
 public class CirclePowerMenu extends AbstractContainerMenu {
 
     public final CirclePowerBlockEntity blockEntity;
@@ -38,7 +40,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_1, 26, 18) {
+            this.addSlot(new SlotItemHandler(handler, SLOT_REAGENT_1, 26, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.SILVER_DUST.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
@@ -47,7 +49,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_2, 62, 18) {
+            this.addSlot(new SlotItemHandler(handler, SLOT_REAGENT_2, 62, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
@@ -56,7 +58,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_3, 98, 18) {
+            this.addSlot(new SlotItemHandler(handler, SLOT_REAGENT_3, 98, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.AMPLIFYING_PRISM.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
@@ -65,7 +67,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_4, 134, 18) {
+            this.addSlot(new SlotItemHandler(handler, SLOT_REAGENT_4, 134, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
@@ -74,7 +76,31 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_RECHARGE, 188, 32));
+            this.addSlot(new SlotItemHandler(handler, SLOT_RECHARGE, 188, 18));
+            this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_1, 26, 57) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+            });
+            this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_2, 62, 57) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+            });
+            this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_3, 98, 57) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+            });
+            this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_4, 134, 57) {
+                @Override
+                public boolean mayPlace(@NotNull ItemStack stack) {
+                    return false;
+                }
+            });
         });
 
         addDataSlots(data);
@@ -102,7 +128,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
     public int getScaledProgress(int tier) {
         int BAR_WIDTH = 22;
         int progress = data.get(tier-1);
-        int max = CirclePowerBlockEntity.getMaxProgressByTier(tier);
+        int max = getMaxProgressByTier(tier);
 
         if(max == 0 || max == -1)
             return -1;

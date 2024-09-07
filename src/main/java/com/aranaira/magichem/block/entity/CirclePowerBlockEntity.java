@@ -11,6 +11,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -20,6 +23,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,9 +38,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider {
     public static final int
-        SLOT_REAGENT_1 = 0, SLOT_REAGENT_2 = 1, SLOT_REAGENT_3 = 2, SLOT_REAGENT_4 = 3, SLOT_RECHARGE = 4;
+        SLOT_COUNT = 9,
+        SLOT_REAGENT_1 = 0, SLOT_REAGENT_2 = 1, SLOT_REAGENT_3 = 2, SLOT_REAGENT_4 = 3, SLOT_RECHARGE = 4,
+        WASTE_REAGENT_1 = 5, WASTE_REAGENT_2 = 6, WASTE_REAGENT_3 = 7, WASTE_REAGENT_4 = 8;
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(5) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             return switch(slot) {
@@ -53,7 +59,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
                         stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                 case SLOT_RECHARGE ->
                         stack.getCapability(ForgeCapabilities.ENERGY).isPresent();
-                default -> super.isItemValid(slot, stack);
+                default -> false;
             };
         }
 
@@ -170,12 +176,32 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
     @Override
     public void load(@NotNull CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        if(nbt.getCompound("inventory").getInt("Size") != itemHandler.getSlots()) {
+            ItemStackHandler temp = new ItemStackHandler(nbt.getCompound("inventory").size());
+            temp.deserializeNBT(nbt.getCompound("inventory"));
+            for(int i=0; i<temp.getSlots(); i++) {
+                itemHandler.setStackInSlot(i, temp.getStackInSlot(i));
+            }
+        } else {
+            this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        }
         progressReagentTier1 = nbt.getInt("progressReagentTier1");
         progressReagentTier2 = nbt.getInt("progressReagentTier2");
         progressReagentTier3 = nbt.getInt("progressReagentTier3");
         progressReagentTier4 = nbt.getInt("progressReagentTier4");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedEnergy"));
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("progressReagentTier1", this.progressReagentTier1);
+        nbt.putInt("progressReagentTier2", this.progressReagentTier2);
+        nbt.putInt("progressReagentTier3", this.progressReagentTier3);
+        nbt.putInt("progressReagentTier4", this.progressReagentTier4);
+        nbt.putInt("storedEnergy", this.ENERGY_STORAGE.getEnergyStored());
+        return nbt;
     }
 
     public void dropInventoryToWorld() {
@@ -309,23 +335,59 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
     /* GENERATOR REAGENT USE LOGIC */
 
     private static void ejectWaste(int tier, Level level, CirclePowerBlockEntity entity) {
+        if(entity.itemHandler.getStackInSlot(tier - 1).getItem() == ItemRegistry.DEBUG_ORB.get())
+            return;
+
+        ItemStack wasteInSlot = null;
         ItemStack wasteProduct = null;
+        Item wasteItem = null;
+        boolean eject = false;
+        int slot = -1;
+        int slotLimit = -1;
 
         if(tier == 1) {
-            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() != ItemRegistry.DEBUG_ORB.get())
-                wasteProduct = new ItemStack(WASTE_TIER1, 1);
+            slot = WASTE_REAGENT_1;
+            wasteItem = WASTE_TIER1;
+        } else if(tier == 2) {
+            slot = WASTE_REAGENT_2;
+            wasteItem = WASTE_TIER2;
+        } else if(tier == 3) {
+            slot = WASTE_REAGENT_3;
+            wasteItem = WASTE_TIER3;
+        } else if(tier == 4) {
+            slot = WASTE_REAGENT_4;
+            wasteItem = Items.COD;
+        } else {
+            return;
         }
-        else if(tier == 2) {
-            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() != ItemRegistry.DEBUG_ORB.get())
-                wasteProduct = new ItemStack(WASTE_TIER2, 1);
-        }
-        else if(tier == 3) {
-            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() != ItemRegistry.DEBUG_ORB.get())
-                wasteProduct = new ItemStack(WASTE_TIER3, 1);
+        wasteProduct = new ItemStack(wasteItem, 1);
+        wasteInSlot = entity.itemHandler.getStackInSlot(slot);
+        slotLimit = wasteProduct.getItem().getMaxStackSize(wasteProduct);
+
+        if (wasteInSlot.isEmpty()) {
+            entity.itemHandler.setStackInSlot(slot, wasteProduct);
+            entity.syncAndSave();
+        } else if (wasteInSlot.getCount() < slotLimit) {
+            wasteInSlot.grow(1);
+            entity.itemHandler.setStackInSlot(slot, wasteInSlot);
+            entity.syncAndSave();
+        } else {
+            eject = true;
         }
 
-        if(wasteProduct != null)
+        if(eject)
             Containers.dropItemStack(level, entity.worldPosition.getX(), entity.worldPosition.getY()+0.125, entity.worldPosition.getZ(), wasteProduct);
+    }
+
+    public void syncAndSave() {
+        this.setChanged();
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     private void resetProgress(int tier) {
