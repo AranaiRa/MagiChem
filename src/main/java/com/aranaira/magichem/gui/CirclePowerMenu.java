@@ -38,7 +38,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_1, 26, 32) {
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_1, 26, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.SILVER_DUST.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
@@ -47,7 +47,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_2, 62, 32) {
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_2, 62, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.FOCUSING_CATALYST.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
@@ -56,7 +56,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_3, 98, 32) {
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_3, 98, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.AMPLIFYING_PRISM.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
@@ -65,7 +65,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                         return false;
                 }
             });
-            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_4, 134, 32) {
+            this.addSlot(new SlotItemHandler(handler, CirclePowerBlockEntity.SLOT_REAGENT_4, 134, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
                     if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
@@ -88,14 +88,14 @@ public class CirclePowerMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for(int i=0; i<3; i++) {
             for(int l=0; l<9; l++) {
-                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 71 + i*18)));
+                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 85 + i*18)));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for(int i=0; i<9; i++) {
-            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 129)));
+            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 143)));
         }
     }
 

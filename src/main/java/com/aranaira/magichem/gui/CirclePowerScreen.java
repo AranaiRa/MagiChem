@@ -30,7 +30,7 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
         RenderSystem.setShaderTexture(0, TEXTURE);
 
         int w = 176;
-        int h = 139;
+        int h = 167;
 
         int x = (width - w) / 2;
         int y = (height - h) / 2;
