@@ -177,7 +177,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        if(nbt.getCompound("inventory").size() != itemHandler.getSlots()) {
+        if(nbt.getCompound("inventory").getInt("Size") != itemHandler.getSlots()) {
             ItemStackHandler temp = new ItemStackHandler(nbt.getCompound("inventory").size());
             temp.deserializeNBT(nbt.getCompound("inventory"));
             for(int i=0; i<temp.getSlots(); i++) {

@@ -20,7 +20,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
-import static com.aranaira.magichem.block.entity.ActuatorAirBlockEntity.SLOT_ESSENTIA_INSERTION;
 import static com.aranaira.magichem.block.entity.ActuatorFireBlockEntity.*;
 
 public class ActuatorFireMenu extends AbstractContainerMenu {
