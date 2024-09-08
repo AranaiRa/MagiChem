@@ -3,14 +3,17 @@ package com.aranaira.magichem.block.entity.ext;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.util.InventoryHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -99,6 +102,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
                     if (pEntity.progress > pEntity.operationTicks) {
                         if (!pLevel.isClientSide()) {
                             craftItem(pEntity, pEntity.recipe, pVarFunc);
+                            pEntity.resetProgress();
                             changed = true;
                         }
                     } else {
@@ -202,15 +206,60 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i));
         }
 
+        int bottlesGenerated = 0;
         for (ItemStack item : pRecipe.getComponentMateria()) {
+            int totalThisIngredient = item.getCount();
+
+            //tally up bottles
+            for (int i=0; i<inputSlots.getContainerSize(); i++) {
+                ItemStack stackInSlot = inputSlots.getItem(i);
+                if(stackInSlot.getItem() == item.getItem()) {
+                    if(!InventoryHelper.isMateriaUnbottled(stackInSlot)) {
+                        int limit = Math.min(totalThisIngredient, stackInSlot.getCount());
+                        bottlesGenerated += limit;
+                        totalThisIngredient -= limit;
+                    }
+                }
+            }
+
             inputSlots.removeItemType(item.getItem(), item.getCount());
         }
 
         outputSlots.addItem(pRecipe.getAlchemyObject().copy());
 
-        pEntity.setContentsOfOutputSlots(outputSlots, pVarFunc);
+        for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
+        }
 
         resolveActuators(pEntity);
+
+        //Put bottles into output slot, eject the rest
+        ItemStack bottleStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES));
+        int spillCount;
+        int limit = pEntity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES));
+        if(bottleStack.getCount() >= limit) {
+            spillCount = bottlesGenerated;
+        } else if(bottleStack.getCount() > 0) {
+            int delta = Math.min(limit - bottleStack.getCount(), bottlesGenerated);
+            bottleStack.grow(delta);
+            spillCount = bottlesGenerated - delta;
+        } else {
+            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES), new ItemStack(Items.GLASS_BOTTLE, Math.min(limit, bottlesGenerated)));
+            spillCount = Math.max(0, bottlesGenerated - limit);
+        }
+
+        while(spillCount > 0) {
+            ItemStack spillStack = new ItemStack(Items.GLASS_BOTTLE);
+            int maxStackSizeBottles = spillStack.getMaxStackSize();
+            int delta = Math.min(spillCount, maxStackSizeBottles);
+            spillStack.setCount(delta);
+
+            ItemEntity ie = new ItemEntity(pEntity.getLevel(), pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 0.5, pEntity.getBlockPos().getZ() + 0.5, spillStack);
+            pEntity.getLevel().addFreshEntity(ie);
+
+            spillCount -= delta;
+
+        }
     }
 
     ////////////////////
