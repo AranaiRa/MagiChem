@@ -1,0 +1,5 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 1
+
+newmtl None
+map_Kd minecraft:block/stone

@@ -205,6 +205,9 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     public void dropInventoryToWorld() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
         for (int i = 0; i< itemHandler.getSlots(); i++) {
+            if(i == SLOT_RECIPE)
+                continue;
+
             final ItemStack stackInSlot = itemHandler.getStackInSlot(i);
             boolean dropItem = false;
             if(stackInSlot.getItem() instanceof MateriaItem) {

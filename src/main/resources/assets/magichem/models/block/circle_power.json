@@ -1,85 +1,24 @@
 {
-	"credit": "Made with Blockbench",
-	"render_type": "cutout",
-	"texture_size": [64, 64],
-	"textures": {
-		"0": "magichem:block/magic_circle",
-		"particle": "magichem:block/breakparticle_dull_iron"
-	},
-	"elements": [
-		{
-			"from": [0, 0, 0],
-			"to": [16, 6, 16],
-			"faces": {
-				"north": {"uv": [0, 8, 4, 10], "texture": "#0"},
-				"east": {"uv": [0, 8, 4, 10], "texture": "#0"},
-				"south": {"uv": [0, 8, 4, 10], "texture": "#0"},
-				"west": {"uv": [0, 8, 4, 10], "texture": "#0"},
-				"up": {"uv": [0, 0, 4, 4], "texture": "#0"},
-				"down": {"uv": [0, 4, 4, 8], "texture": "#0"}
-			}
-		},
-		{
-			"from": [8, 8, -8],
-			"to": [24, 8, 24],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
-			"faces": {
-				"up": {"uv": [4, 8, 8, 0], "texture": "#0"},
-				"down": {"uv": [4, 0, 8, 8], "texture": "#0"}
-			}
-		},
-		{
-			"from": [-8, 8, -8],
-			"to": [8, 8, 24],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
-			"faces": {
-				"up": {"uv": [8, 8, 4, 0], "texture": "#0"},
-				"down": {"uv": [8, 8, 4, 0], "texture": "#0"}
-			}
-		}
-	],
-	"groups": [
-		0,
-		{
-			"name": "group",
-			"origin": [0, 0, 0],
-			"color": 0,
-			"children": [1, 2]
-		}
-	],"display": {
-		"thirdperson_righthand": {
-			"scale": [0.4, 0.4, 0.4],
-			"rotation": [-15, 0, 0],
-			"translation": [0, -2, -1]
-		},
-		"thirdperson_lefthand": {
-			"scale": [0.4, 0.4, 0.4],
-			"rotation": [-15, 0, 0],
-			"translation": [0, -2, -1]
-		},
-		"firstperson_righthand": {
-			"scale": [0.4, 0.4, 0.4],
-			"rotation": [-15, 0, 0],
-			"translation": [2, 0, 0]
-		},
-		"firstperson_lefthand": {
-			"scale": [0.4, 0.4, 0.4],
-			"rotation": [-15, 0, 0],
-			"translation": [2, 0, 0]
-		},
-		"gui": {
-			"rotation": [29, 225, 0],
-			"scale": [0.45, 0.45, 0.45],
-			"translation": [0, 0, 0]
-		},
-		"fixed": {
-			"rotation": [-90, 0, 0],
-			"scale": [0.5,0.5,0.5]
-		},
-		"ground": {
-			"rotation": [0, -180, 0],
-			"translation": [0, 0.25, -0.5],
-			"scale": [0.25, 0.25, 0.25]
-		}
-	}
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "textures": {
+    "particle": "minecraft:block/stone"
+  },
+  "children": {
+    "part1": {
+      "loader": "forge:obj",
+      "automatic_culling": false,
+      "shade_quads": true,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "magichem:models/obj/circle_power_body.obj"
+    }
+  },
+  "display": {
+    "gui": {
+      "rotation": [29, 45, 0],
+      "scale": [0.6, 0.6, 0.6],
+      "translation": [0, 0, 0]
+    }
+  }
 }
