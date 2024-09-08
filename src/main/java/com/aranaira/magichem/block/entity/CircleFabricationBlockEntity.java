@@ -38,9 +38,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -69,51 +67,62 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     private int
             powerUsageSetting = 1;
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                if(recipe != null) {
-                    if(((slot - SLOT_INPUT_START) / 2) >= recipe.getComponentMateria().size())
-                        return false;
-                    ItemStack component = recipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
-                    return stack.getItem().equals(component.getItem());
-                } else {
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                ItemStack item = super.extractItem(slot, amount, simulate);
-                if (item.hasTag()) {
-                    CompoundTag nbt = item.getTag();
-                    if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
-                }
-                return item;
-            }
-
-            return super.extractItem(slot, amount, simulate);
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-        }
-    };
-
     public CircleFabricationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.CIRCLE_FABRICATION_BE.get(), pos, state);
+
+        itemHandler = new ItemStackHandler(SLOT_COUNT) {
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(recipe != null) {
+                        if(((slot - SLOT_INPUT_START) / 2) >= recipe.getComponentMateria().size())
+                            return false;
+                        ItemStack component = recipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
+                        return stack.getItem() == component.getItem();
+                    } else {
+                        return false;
+                    }
+                }
+
+                return false;
+            }
+
+            @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    ItemStack item = super.extractItem(slot, amount, simulate);
+                    if (item.hasTag()) {
+                        CompoundTag nbt = item.getTag();
+                        if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
+                    }
+                    return item;
+                }
+
+                return super.extractItem(slot, amount, simulate);
+            }
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                DistillationFabricationRecipe pre = recipe;
+                if(slot == SLOT_RECIPE) {
+                    getCurrentRecipe();
+                }
+                if(recipe != pre)
+                    syncAndSave();
+            }
+        };
     }
 
     @Nullable
     public DistillationFabricationRecipe getCurrentRecipe() {
         if(recipe == null) {
-            if(!itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty()) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                recipe = DistillationFabricationRecipe.getFabricatingRecipe(getLevel(), itemHandler.getStackInSlot(SLOT_RECIPE));
+            }
+        } else if(recipe.getAlchemyObject() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
                 recipe = DistillationFabricationRecipe.getFabricatingRecipe(getLevel(), itemHandler.getStackInSlot(SLOT_RECIPE));
             }
         }

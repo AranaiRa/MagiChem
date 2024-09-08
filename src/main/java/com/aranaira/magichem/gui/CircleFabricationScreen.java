@@ -45,11 +45,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private static final int
             PANEL_MAIN_W = 181, PANEL_MAIN_H = 192,
             PANEL_RECIPE_U = 160, PANEL_RECIPE_V = 96, PANEL_RECIPE_W = 81, PANEL_RECIPE_H = 126,
-            PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66,
-            PANEL_INGREDIENTS_X = 176, PANEL_INGREDIENTS_Y = 85, PANEL_INGREDIENTS_W = 80,
-            PANEL_INGREDIENTS_U1 = 160, PANEL_INGREDIENTS_U2 = 80, PANEL_INGREDIENTS_U3 = 160, PANEL_INGREDIENTS_U4 = 80, PANEL_INGREDIENTS_U5 = 0,
-            PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
-            PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102;
+            PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
     private DistillationFabricationRecipe lastClickedRecipe = null;
 
     public CircleFabricationScreen(CircleFabricationMenu menu, Inventory inventory, Component component) {
@@ -143,8 +139,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                     menu.blockEntity.getPowerUsageSetting()
             ));
             lastClickedRecipe = filteredRecipes.get(trueIndex);
-            menu.setInputSlotFilters(lastClickedRecipe);
-            menu.blockEntity.setCurrentRecipe(lastClickedRecipe.getAlchemyObject());
         }
     }
 

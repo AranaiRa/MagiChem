@@ -15,12 +15,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.SlotItemHandler;
+
+import static com.aranaira.magichem.block.entity.CircleFabricationBlockEntity.SLOT_INPUT_COUNT;
+import static com.aranaira.magichem.block.entity.CircleFabricationBlockEntity.SLOT_INPUT_START;
 
 public class CircleFabricationMenu extends AbstractContainerMenu {
 
     public final CircleFabricationBlockEntity blockEntity;
     private final Level level;
-    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[CircleFabricationBlockEntity.SLOT_INPUT_COUNT];
+    public SlotItemHandler[] inputSlots = new SlotItemHandler[SLOT_INPUT_COUNT];
 
     public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, ((CircleFabricationBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos())).readFrom(extraData));
@@ -39,10 +43,9 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 82, -5, true));
 
-            for(int i=CircleFabricationBlockEntity.SLOT_INPUT_START;
-            i < CircleFabricationBlockEntity.SLOT_INPUT_START + CircleFabricationBlockEntity.SLOT_INPUT_COUNT; i++) {
-                int shiftedSlot = i - CircleFabricationBlockEntity.SLOT_INPUT_START;
-                OnlyMateriaInputSlot slot = new OnlyMateriaInputSlot(handler, i, 28 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2)));
+            for(int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                int shiftedSlot = i - SLOT_INPUT_START;
+                SlotItemHandler slot = new SlotItemHandler(handler, i, 28 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2)));
                 inputSlots[shiftedSlot] = slot;
                 this.addSlot(slot);
             }
@@ -50,27 +53,14 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
             for(int i=CircleFabricationBlockEntity.SLOT_OUTPUT_START;
                 i < CircleFabricationBlockEntity.SLOT_OUTPUT_START + CircleFabricationBlockEntity.SLOT_OUTPUT_COUNT; i++) {
                 int shiftedSlot = i - CircleFabricationBlockEntity.SLOT_OUTPUT_START;
-                this.addSlot(new OnlyMateriaInputSlot(handler, i, 118 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
+                this.addSlot(new SlotItemHandler(handler, i, 118 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
             }
-
-            setInputSlotFilters(blockEntity.getCurrentRecipe());
         });
     }
 
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.CIRCLE_FABRICATION.get());
-    }
-
-    public void setInputSlotFilters(DistillationFabricationRecipe newRecipe) {
-        if(newRecipe != null) {
-            int slotSet = 0;
-            for (ItemStack stack : newRecipe.getComponentMateria()) {
-                inputSlots[(slotSet * 2)].setSlotFilter((MateriaItem) stack.getItem());
-                inputSlots[(slotSet * 2) + 1].setSlotFilter((MateriaItem) stack.getItem());
-                slotSet++;
-            }
-        }
     }
 
     private void addPlayerInventory(Inventory playerInventory) {
