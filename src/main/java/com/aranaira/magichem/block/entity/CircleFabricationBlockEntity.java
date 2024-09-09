@@ -96,6 +96,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                         if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
                     }
                     return item;
+                } else if(slot == SLOT_RECIPE) {
+                    return ItemStack.EMPTY;
                 }
 
                 return super.extractItem(slot, amount, simulate);

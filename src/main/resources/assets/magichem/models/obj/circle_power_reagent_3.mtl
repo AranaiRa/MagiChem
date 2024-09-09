@@ -1,8 +1,5 @@
 # Blender MTL File: 'chem devices.blend'
-# Material Count: 2
-
-newmtl CHIMERITE
-map_Kd mna:block/oreblockchimerite
+# Material Count: 1
 
 newmtl CIRCLE_POWER
 map_Kd magichem:block/circle_power
