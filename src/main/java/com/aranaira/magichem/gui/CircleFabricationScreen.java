@@ -330,9 +330,9 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         }
 
         //Items in recipe picker
-        if(pX >= x-71 && pX <= x-17 &&
+        if(pX >= x-78 && pX <= x-25 &&
                 pY >= y+42 && pY <= y+132) {
-            int mx = pX - (x-71);
+            int mx = pX - (x-78);
             int my = pY - (y+42);
             int id = ((my / 18) * 3) + ((mx / 18) % 3);
 
