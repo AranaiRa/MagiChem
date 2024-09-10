@@ -16,6 +16,7 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
@@ -53,6 +54,7 @@ import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
+import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
 public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction {
     public static final int
@@ -82,14 +84,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
     public float circlePercent = 0f;
     public float particlePercent = 0f;
-    private static final int[][] PARTICLE_COLORS = {
-            {64, 2, 2},
-            {32, 32, 2},
-            {2, 64, 2},
-            {2, 32, 32},
-            {2, 2, 64},
-            {32, 2, 32}
-    };
 
     ////////////////////
     // CONSTRUCTOR
@@ -513,7 +507,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             int colorIndex = r.nextInt(6);
             if (pEntity.getLevel().getGameTime() % 8 == 0) {
                 pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                .setColor(PARTICLE_COLORS[colorIndex][0], PARTICLE_COLORS[colorIndex][1], PARTICLE_COLORS[colorIndex][2])
+                                .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2])
                                 .setScale(0.4f * pEntity.particlePercent).setMaxAge(80),
                         center.x, center.y, center.z,
                         0, 0, 0);
@@ -527,7 +521,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                 for (int i = 0; i < 2; i++) {
                     Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
                     pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
-                                    .setColor(PARTICLE_COLORS[colorIndex][0], PARTICLE_COLORS[colorIndex][1], PARTICLE_COLORS[colorIndex][2], 128)
+                                    .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2], 128)
                                     .setScale(0.09f).setMaxAge(16)
                                     .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
                             center.x + offset.x, center.y + offset.y, center.z + offset.z,

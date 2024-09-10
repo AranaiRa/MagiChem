@@ -2,10 +2,17 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.renderer.CirclePowerBlockEntityRenderer;
 import com.aranaira.magichem.gui.CirclePowerMenu;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.mna.api.capabilities.WellspringNode;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.particles.types.movers.ParticleVelocityMover;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -27,6 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -36,11 +44,25 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
+import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
+
 public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider {
     public static final int
         SLOT_COUNT = 9,
         SLOT_REAGENT_1 = 0, SLOT_REAGENT_2 = 1, SLOT_REAGENT_3 = 2, SLOT_REAGENT_4 = 3, SLOT_RECHARGE = 4,
         WASTE_REAGENT_1 = 5, WASTE_REAGENT_2 = 6, WASTE_REAGENT_3 = 7, WASTE_REAGENT_4 = 8;
+    public float
+        circleFillPercent;
+    public static int
+            REAGENT_2_ROTATION_PERIOD = 480, REAGENT_2_BOB_PERIOD = 200,
+            REAGENT_3_ROTATION_PERIOD = 720, REAGENT_3_BOB_PERIOD = 300;
+    public static float
+        CIRCLE_FILL_RATE = 0.015f,
+        REAGENT_2_BOB_HEIGHT = 0.0625f,
+        REAGENT_3_BOB_HEIGHT = 0.0625f;
+    private static final Random r = new Random();
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
@@ -248,6 +270,128 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
 
     public static void tick(Level level, BlockPos pos, BlockState state, CirclePowerBlockEntity entity) {
         if(level.isClientSide()) {
+            entity.handleAnimationDrivers();
+
+            //Particle Work
+            {
+                boolean has1 = entity.hasReagent(1);
+                boolean has2 = entity.hasReagent(2);
+                boolean has3 = entity.hasReagent(3);
+
+                if(has1) {
+                    float rot1 = CirclePowerBlockEntityRenderer.getReagent1Rotation(level, 0.5f);
+                    int total = 12;
+                    for(int i=0; i<total; i++) {
+                        double radianWiggle = ((Math.PI * 2) / (double)total) * (r.nextDouble() - 0.5);
+
+                        double x = Math.cos((Math.PI * 2) * i / (double)total + rot1 + radianWiggle);
+                        double z = Math.sin((Math.PI * 2) * i / (double)total + rot1 + radianWiggle);
+
+                        double rx = r.nextDouble() - 0.5;
+                        double ry = r.nextDouble();
+                        double rz = r.nextDouble() - 0.5;
+
+                        Vector3 mid = new Vector3(0.5, 0.75, 0.5).add(new Vector3(x, 0, z).scale(1.9f));
+
+                        level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                        .setMaxAge(20 + r.nextInt(30)).setScale(0.03f + r.nextFloat() * 0.03f)
+                                        .setColor(150+r.nextInt(75), 150+r.nextInt(75), 150+r.nextInt(75))
+                                        .setMover(new ParticleVelocityMover(rx * 0.03, 0.01 + ry * 0.02, rz * 0.03, true)),
+                                pos.getX() + mid.x, pos.getY() + mid.y, pos.getZ() + mid.z,
+                                0, 0, 0);
+                    }
+                }
+
+                if(has2 && has1) {
+                    double catalystMidpoint = 1.75 + CirclePowerBlockEntityRenderer.getReagent2BobHeight(level, 0.5f);
+
+                    //upper lightning
+                    if(level.getGameTime() % 20 == 0) {
+                        double top = catalystMidpoint + 0.546875;
+
+                        int total = 3;
+                        for(int i=0; i<total; i++) {
+                            double radianWiggle = ((Math.PI * 2) / (double) total) * (r.nextDouble() - 0.5);
+
+                            double x = Math.cos((Math.PI * 2) + radianWiggle);
+                            double z = Math.sin((Math.PI * 2) + radianWiggle);
+
+                            Vector3 inner = new Vector3(0.5, top, 0.5);
+                            Vector3 outer = new Vector3(0.5, 0.75, 0.5).add(new Vector3(x, 0, z).scale(1.9f));
+
+                            level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                            .setMaxAge(10 + r.nextInt(15))
+                                            /*.setColor(150 + r.nextInt(75), 150 + r.nextInt(75), 150 + r.nextInt(75))*/,
+                                    pos.getX() + inner.x, pos.getY() + inner.y, pos.getZ() + inner.z,
+                                    pos.getX() + outer.x, pos.getY() + outer.y, pos.getZ() + outer.z);
+
+                            //Impact cloud
+                            level.addParticle(new MAParticleType(ParticleInit.FROST.get()).setAgePadding(5)
+                                            .setMaxAge(40 + r.nextInt(30)).setScale(0.15f + r.nextFloat() * 0.15f)
+                                            .setColor(10, 50, 120, 48),
+                                    pos.getX() + outer.x, pos.getY() + outer.y, pos.getZ() + outer.z,
+                                    0, 0, 0);
+                        }
+                    }
+
+                    //lower lightning
+                    if(level.getGameTime() % 14 == 7) {
+                        double bottom = catalystMidpoint - 0.171875;
+
+                        int total = 2;
+                        for(int i=0; i<total; i++) {
+                            double radianWiggle = ((Math.PI * 2) / (double) total) * (r.nextDouble() - 0.5);
+
+                            double x = Math.cos((Math.PI * 2) * i / (double) total + radianWiggle);
+                            double z = Math.sin((Math.PI * 2) * i / (double) total + radianWiggle);
+
+                            Vector3 inner = new Vector3(0.5, bottom, 0.5);
+                            Vector3 outer = new Vector3(0.5, 0.75, 0.5).add(new Vector3(x, 0, z).scale(1.9f));
+
+                            level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                            .setMaxAge(15 + r.nextInt(15)),
+                                    pos.getX() + inner.x, pos.getY() + inner.y, pos.getZ() + inner.z,
+                                    pos.getX() + outer.x, pos.getY() + outer.y, pos.getZ() + outer.z);
+
+                            //Impact cloud
+                            level.addParticle(new MAParticleType(ParticleInit.FROST.get()).setAgePadding(5)
+                                            .setMaxAge(40 + r.nextInt(30)).setScale(0.15f + r.nextFloat() * 0.15f)
+                                            .setColor(10, 50, 120, 48),
+                                    pos.getX() + outer.x, pos.getY() + outer.y, pos.getZ() + outer.z,
+                                    0, 0, 0);
+                        }
+                    }
+                }
+
+                if(has3) {
+                    Vector3 center = new Vector3(
+                            entity.getBlockPos().getX() + 0.5,
+                            entity.getBlockPos().getY() + 3.25 + CirclePowerBlockEntityRenderer.getReagent3BobHeight(level, 0.5f),
+                            entity.getBlockPos().getZ() + 0.5);
+
+                    int colorIndex = r.nextInt(6);
+
+                    for (int i = 0; i < 2; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.6f);
+                        level.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2], 255)
+                                        .setScale(0.18f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+
+                        level.addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                        .setScale(0.02f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+
+
+
+                }
+            }
+
             return;
         }
 
@@ -268,11 +412,11 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             if(!toCharge.isEmpty()) {
                 LazyOptional<IEnergyStorage> energyCapability = toCharge.getCapability(ForgeCapabilities.ENERGY);
 
-                energyCapability.ifPresent(itemCap -> {
-                    int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
-                    int energyExtracted = entity.ENERGY_STORAGE.extractEnergy(energyNeeded, false);
-                    itemCap.receiveEnergy(energyExtracted, false);
-                });
+//                energyCapability.ifPresent(itemCap -> {
+//                    int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
+//                    int energyExtracted = entity.ENERGY_STORAGE.extractEnergy(energyNeeded, false);
+//                    itemCap.receiveEnergy(energyExtracted, false);
+//                });
             }
         }
 
@@ -291,6 +435,45 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
                 entity.itemsForRemoteCharging.remove(i);
             }
         }
+    }
+
+    private void handleAnimationDrivers() {
+        boolean
+                has1 = hasReagent(1);
+
+        if(has1) {
+            circleFillPercent = Math.min(1, circleFillPercent + CIRCLE_FILL_RATE);
+        } else {
+            circleFillPercent = Math.max(0, circleFillPercent - CIRCLE_FILL_RATE);
+        }
+    }
+
+    public boolean hasReagent(int pReagentID) {
+        if(pReagentID == 1) {
+            if(!itemHandler.getStackInSlot(SLOT_REAGENT_1).isEmpty()) {
+                return true;
+            } else
+                return progressReagentTier1 > 0;
+        }
+        else if(pReagentID == 2) {
+            if(!itemHandler.getStackInSlot(SLOT_REAGENT_2).isEmpty()) {
+                return true;
+            } else
+                return progressReagentTier2 > 0;
+        }
+        else if(pReagentID == 3) {
+            if(!itemHandler.getStackInSlot(SLOT_REAGENT_3).isEmpty()) {
+                return true;
+            } else
+                return progressReagentTier3 > 0;
+        }
+        else if(pReagentID == 4) {
+            if(!itemHandler.getStackInSlot(SLOT_REAGENT_4).isEmpty()) {
+                return true;
+            } else
+                return progressReagentTier4 > 0;
+        }
+        return false;
     }
 
     private static void kickstart(CirclePowerBlockEntity entity) {
@@ -518,5 +701,10 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         else if(reagentCount == 3) genRate = Config.circlePowerGen3Reagent;
         else if(reagentCount == 4) genRate = Config.circlePowerGen4Reagent;
         return genRate;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,5,3));
     }
 }

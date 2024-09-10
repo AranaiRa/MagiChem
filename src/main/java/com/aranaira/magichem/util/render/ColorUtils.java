@@ -41,6 +41,14 @@ public class ColorUtils {
         FLOAT_GRAY       = {0.47f, 0.47f, 0.47f},
         FLOAT_LIGHT_GRAY = {0.67f, 0.67f, 0.67f},
         FLOAT_WHITE      = {0.99f, 0.99f, 0.99f};
+    public static final int[][] SIX_STEP_PARTICLE_COLORS = {
+            {64, 2, 2},
+            {32, 32, 2},
+            {2, 64, 2},
+            {2, 32, 32},
+            {2, 2, 64},
+            {32, 2, 32}
+    };
 
     public static int[] getRGBIntTint(DyeColor pColorCode) {
         return switch(pColorCode) {

@@ -32,5 +32,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.VARIEGATOR_BE.get(), VariegatorBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.EXPERIENCE_EXCHANGER_BE.get(), ExperienceExchangerBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.CRYSTAL_CANDLE_BE.get(), CrystalCandleBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.CIRCLE_POWER_BE.get(), CirclePowerBlockEntityRenderer::new);
     }
 }
