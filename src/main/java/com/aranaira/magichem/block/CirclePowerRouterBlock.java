@@ -35,13 +35,13 @@ public class CirclePowerRouterBlock extends BaseEntityBlock implements INoCreati
     }
 
     public static VoxelShape
-            VOXEL_SHAPE_LEFT_BASE_NORTH, VOXEL_SHAPE_LEFT_PLUG_NORTH,
-            VOXEL_SHAPE_RIGHT_BASE_NORTH, VOXEL_SHAPE_RIGHT_PLUG_NORTH,
-            VOXEL_SHAPE_COG_BASE_NORTH, VOXEL_SHAPE_COG_COG_NORTH,
-            VOXEL_SHAPE_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_COG_AGGREGATE_NORTH,
-            VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_COG_AGGREGATE_SOUTH,
-            VOXEL_SHAPE_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_COG_AGGREGATE_EAST,
-            VOXEL_SHAPE_LEFT_AGGREGATE_WEST, VOXEL_SHAPE_RIGHT_AGGREGATE_WEST, VOXEL_SHAPE_COG_AGGREGATE_WEST;
+            VOXEL_SHAPE_BASE_NORTH, VOXEL_SHAPE_BODY_NORTH,
+            VOXEL_SHAPE_AGGREGATE_NORTH, VOXEL_SHAPE_AGGREGATE_EAST, VOXEL_SHAPE_AGGREGATE_SOUTH, VOXEL_SHAPE_AGGREGATE_WEST,
+
+            VOXEL_SHAPE_BASE_LONG_NORTHEAST, VOXEL_SHAPE_BASE_SHORT_NORTHEAST,
+            VOXEL_SHAPE_BODY_LONG_NORTHEAST, VOXEL_SHAPE_BODY_SHORT_NORTHEAST,
+            VOXEL_SHAPE_BASE_PILLAR_NORTHEAST, VOXEL_SHAPE_BODY_PILLAR_NORTHEAST,
+            VOXEL_SHAPE_AGGREGATE_NORTHEAST, VOXEL_SHAPE_AGGREGATE_SOUTHEAST, VOXEL_SHAPE_AGGREGATE_SOUTHWEST, VOXEL_SHAPE_AGGREGATE_NORTHWEST;
     public static final int
             ROUTER_TYPE_NORTH = 0, ROUTER_TYPE_NORTHEAST = 1, ROUTER_TYPE_EAST = 2, ROUTER_TYPE_SOUTHEAST = 3,
             ROUTER_TYPE_SOUTH = 4, ROUTER_TYPE_SOUTHWEST = 5, ROUTER_TYPE_WEST = 6, ROUTER_TYPE_NORTHWEST = 7;
@@ -58,21 +58,21 @@ public class CirclePowerRouterBlock extends BaseEntityBlock implements INoCreati
 
         //Again, switch statements always default here and I have no idea why
         if(routerType == ROUTER_TYPE_NORTH) {
-
+            return VOXEL_SHAPE_AGGREGATE_NORTH;
         } else if(routerType == ROUTER_TYPE_NORTHEAST) {
-
+            return VOXEL_SHAPE_AGGREGATE_NORTHEAST;
         } else if(routerType == ROUTER_TYPE_EAST) {
-
+            return VOXEL_SHAPE_AGGREGATE_EAST;
         } else if(routerType == ROUTER_TYPE_SOUTHEAST) {
-
+            return VOXEL_SHAPE_AGGREGATE_SOUTHEAST;
         } else if(routerType == ROUTER_TYPE_SOUTH) {
-
+            return VOXEL_SHAPE_AGGREGATE_SOUTH;
         } else if(routerType == ROUTER_TYPE_SOUTHWEST) {
-
+            return VOXEL_SHAPE_AGGREGATE_SOUTHWEST;
         } else if(routerType == ROUTER_TYPE_WEST) {
-
+            return VOXEL_SHAPE_AGGREGATE_WEST;
         } else if(routerType == ROUTER_TYPE_NORTHWEST) {
-
+            return VOXEL_SHAPE_AGGREGATE_NORTHWEST;
         }
 
         return super.getShape(pState, pLevel, pPos, pContext);
@@ -110,43 +110,57 @@ public class CirclePowerRouterBlock extends BaseEntityBlock implements INoCreati
     }
 
     static {
-        VOXEL_SHAPE_LEFT_BASE_NORTH = Block.box(2.0D, 0.0D,  0.0D, 16.0D, 8.0D, 16.0D);
-        VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);
-        VOXEL_SHAPE_LEFT_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_LEFT_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_LEFT_PLUG_NORTH});
-        VOXEL_SHAPE_LEFT_AGGREGATE_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 1), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 1)});
-        VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 2), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 2)});
-        VOXEL_SHAPE_LEFT_AGGREGATE_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 3), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 3)});
+        VOXEL_SHAPE_BASE_NORTH = Block.box(0, 0,  1, 16, 3, 16);
+        VOXEL_SHAPE_BODY_NORTH = Block.box(0, 3, 2, 16, 8, 16);
+        VOXEL_SHAPE_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_BASE_NORTH, VOXEL_SHAPE_BODY_NORTH);
+        VOXEL_SHAPE_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTH, 1), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTH, 1)});
+        VOXEL_SHAPE_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTH, 2), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTH, 2)});
+        VOXEL_SHAPE_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTH, 3), new VoxelShape[]{
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTH, 3)});
 
-        VOXEL_SHAPE_RIGHT_BASE_NORTH = Block.box(0.0D, 0.0D,  2.0D, 16.0D, 8.0D, 16.0D);
-        VOXEL_SHAPE_RIGHT_PLUG_NORTH = Block.box(12.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-        VOXEL_SHAPE_RIGHT_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_RIGHT_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_RIGHT_PLUG_NORTH});
-        VOXEL_SHAPE_RIGHT_AGGREGATE_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_BASE_NORTH, 1), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_PLUG_NORTH, 1)});
-        VOXEL_SHAPE_RIGHT_AGGREGATE_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_BASE_NORTH, 2), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_PLUG_NORTH, 2)});
-        VOXEL_SHAPE_RIGHT_AGGREGATE_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_BASE_NORTH, 3), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_RIGHT_PLUG_NORTH, 3)});
 
-        VOXEL_SHAPE_COG_BASE_NORTH = Block.box(2.0D, 0.0D,  2.0D, 16.0D, 8.0D, 16.0D);
-        VOXEL_SHAPE_COG_COG_NORTH = Block.box(4.0D, 8.0D, 4.0D, 19.0D, 15.0D, 5.0D);
-        VOXEL_SHAPE_COG_AGGREGATE_NORTH = Shapes.or(VOXEL_SHAPE_COG_BASE_NORTH, new VoxelShape[]{VOXEL_SHAPE_COG_COG_NORTH});
-        VOXEL_SHAPE_COG_AGGREGATE_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_BASE_NORTH, 1), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_COG_NORTH, 1)});
-        VOXEL_SHAPE_COG_AGGREGATE_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_BASE_NORTH, 2), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_COG_NORTH, 2)});
-        VOXEL_SHAPE_COG_AGGREGATE_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_BASE_NORTH, 3), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_COG_COG_NORTH, 3)});
+        VOXEL_SHAPE_BASE_LONG_NORTHEAST =   Block.box(0, 0,  1, 5, 3, 16);
+        VOXEL_SHAPE_BODY_LONG_NORTHEAST =   Block.box(0, 3,  2, 4, 8, 16);
+        VOXEL_SHAPE_BASE_SHORT_NORTHEAST =  Block.box(4, 0,  11, 15, 3, 16);
+        VOXEL_SHAPE_BODY_SHORT_NORTHEAST =  Block.box(4, 3,  12, 14, 8, 16);
+        VOXEL_SHAPE_BASE_PILLAR_NORTHEAST = Block.box(4, 0,  5, 11, 3, 12);
+        VOXEL_SHAPE_BODY_PILLAR_NORTHEAST = Block.box(4, 3,  6, 10, 10, 12);
+        VOXEL_SHAPE_AGGREGATE_NORTHEAST = Shapes.or(
+                VOXEL_SHAPE_BASE_LONG_NORTHEAST,
+                VOXEL_SHAPE_BODY_LONG_NORTHEAST,
+                VOXEL_SHAPE_BASE_SHORT_NORTHEAST,
+                VOXEL_SHAPE_BODY_SHORT_NORTHEAST,
+                VOXEL_SHAPE_BASE_PILLAR_NORTHEAST,
+                VOXEL_SHAPE_BODY_PILLAR_NORTHEAST
+                );
+        VOXEL_SHAPE_AGGREGATE_SOUTHEAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_LONG_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_LONG_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SHORT_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_SHORT_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_PILLAR_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_PILLAR_NORTHEAST, 1)
+        );
+        VOXEL_SHAPE_AGGREGATE_SOUTHWEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_LONG_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_LONG_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SHORT_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_SHORT_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_PILLAR_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_PILLAR_NORTHEAST, 2)
+        );
+        VOXEL_SHAPE_AGGREGATE_NORTHWEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_LONG_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_LONG_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SHORT_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_SHORT_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_PILLAR_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_PILLAR_NORTHEAST, 3)
+        );
     }
 }

@@ -41,7 +41,7 @@ public class CirclePowerBlock extends BaseEntityBlock {
         super(properties);
     }
 
-    private static final VoxelShape VOXEL_SHAPE = Block.box(0,0,0,16,6,16);
+    private static final VoxelShape VOXEL_SHAPE = Block.box(0,0,0,16,8,16);
 
     @Override
     public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
