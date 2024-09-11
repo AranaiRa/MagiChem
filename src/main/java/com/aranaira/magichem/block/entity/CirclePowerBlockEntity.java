@@ -277,6 +277,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
                 boolean has1 = entity.hasReagent(1);
                 boolean has2 = entity.hasReagent(2);
                 boolean has3 = entity.hasReagent(3);
+                boolean has4 = entity.hasReagent(4);
 
                 if(has1) {
                     float rot1 = CirclePowerBlockEntityRenderer.getReagent1Rotation(level, 0.5f);
@@ -311,19 +312,23 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
 
                         int total = 3;
                         for(int i=0; i<total; i++) {
-                            double radianWiggle = ((Math.PI * 2) / (double) total) * (r.nextDouble() - 0.5);
+                            double theta = (Math.PI * 2) * i / (double) total;
 
-                            double x = Math.cos((Math.PI * 2) + radianWiggle);
-                            double z = Math.sin((Math.PI * 2) + radianWiggle);
+                            double radianWiggle = ((Math.PI * 2d / (double)total) * (r.nextDouble() - 0.5));
+
+                            double x = Math.cos(theta + radianWiggle);
+                            double z = Math.sin(theta + radianWiggle);
 
                             Vector3 inner = new Vector3(0.5, top, 0.5);
                             Vector3 outer = new Vector3(0.5, 0.75, 0.5).add(new Vector3(x, 0, z).scale(1.9f));
 
-                            level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
-                                            .setMaxAge(10 + r.nextInt(15))
-                                            /*.setColor(150 + r.nextInt(75), 150 + r.nextInt(75), 150 + r.nextInt(75))*/,
-                                    pos.getX() + inner.x, pos.getY() + inner.y, pos.getZ() + inner.z,
-                                    pos.getX() + outer.x, pos.getY() + outer.y, pos.getZ() + outer.z);
+                            for(int j=0; j<2; j++) {
+                                level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                                .setMaxAge(10 + r.nextInt(15))
+                                        /*.setColor(150 + r.nextInt(75), 150 + r.nextInt(75), 150 + r.nextInt(75))*/,
+                                        pos.getX() + inner.x, pos.getY() + inner.y, pos.getZ() + inner.z,
+                                        pos.getX() + outer.x, pos.getY() + outer.y, pos.getZ() + outer.z);
+                            }
 
                             //Impact cloud
                             level.addParticle(new MAParticleType(ParticleInit.FROST.get()).setAgePadding(5)
@@ -348,10 +353,12 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
                             Vector3 inner = new Vector3(0.5, bottom, 0.5);
                             Vector3 outer = new Vector3(0.5, 0.75, 0.5).add(new Vector3(x, 0, z).scale(1.9f));
 
-                            level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
-                                            .setMaxAge(15 + r.nextInt(15)),
-                                    pos.getX() + inner.x, pos.getY() + inner.y, pos.getZ() + inner.z,
-                                    pos.getX() + outer.x, pos.getY() + outer.y, pos.getZ() + outer.z);
+                            for(int j=0; j<2; j++) {
+                                level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                                .setMaxAge(15 + r.nextInt(15)),
+                                        pos.getX() + inner.x, pos.getY() + inner.y, pos.getZ() + inner.z,
+                                        pos.getX() + outer.x, pos.getY() + outer.y, pos.getZ() + outer.z);
+                            }
 
                             //Impact cloud
                             level.addParticle(new MAParticleType(ParticleInit.FROST.get()).setAgePadding(5)
@@ -386,9 +393,6 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
                                 center.x + offset.x, center.y + offset.y, center.z + offset.z,
                                 0, 0, 0);
                     }
-
-
-
                 }
             }
 
@@ -412,11 +416,12 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             if(!toCharge.isEmpty()) {
                 LazyOptional<IEnergyStorage> energyCapability = toCharge.getCapability(ForgeCapabilities.ENERGY);
 
-//                energyCapability.ifPresent(itemCap -> {
-//                    int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
-//                    int energyExtracted = entity.ENERGY_STORAGE.extractEnergy(energyNeeded, false);
-//                    itemCap.receiveEnergy(energyExtracted, false);
-//                });
+                //COMMENT THIS OUT DURING PARTICLE WORK
+                energyCapability.ifPresent(itemCap -> {
+                    int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
+                    int energyExtracted = entity.ENERGY_STORAGE.extractEnergy(energyNeeded, false);
+                    itemCap.receiveEnergy(energyExtracted, false);
+                });
             }
         }
 

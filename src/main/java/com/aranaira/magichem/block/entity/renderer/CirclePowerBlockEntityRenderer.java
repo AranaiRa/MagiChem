@@ -122,13 +122,29 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
             if(pBlockEntity.hasReagent(2)) {
                 pPoseStack.pushPose();
                 Vec3 start = Vec3.upFromBottomCenterOf(pBlockEntity.getBlockPos(), v);
-                Vec3 end = Vec3.atCenterOf(pBlockEntity.getBlockPos()).subtract(0, 0.25, 0);
+                Vec3 mid = Vec3.atCenterOf(pBlockEntity.getBlockPos()).add(0, 1.75 + getReagent2BobHeight(world, pPartialTick), 0);
 
                 pPoseStack.translate(0.5, v, 0.5);
 
                 WorldRenderUtils.renderBeam(pBlockEntity.getLevel(), pPartialTick, pPoseStack, pBuffer, pPackedLight,
-                        start, end, 1, new int[]{255, 255, 255}, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+                        start, mid, 1, new int[]{255, 255, 255}, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+
                 pPoseStack.popPose();
+
+                for(int i=0; i<3; i++) {
+                    double x = Math.cos(((Math.PI * 2) * i / 3) + getReagent1Rotation(world, pPartialTick)) * 1.4;
+                    double z = Math.sin(((Math.PI * 2) * i / 3) + getReagent1Rotation(world, pPartialTick)) * 1.4;
+
+                    Vec3 end = Vec3.atCenterOf(pBlockEntity.getBlockPos()).add(x, 0.75, z);
+
+                    pPoseStack.pushPose();
+
+                    pPoseStack.translate(0.5, 1.75 + getReagent2BobHeight(world, pPartialTick), 0.5);
+                    WorldRenderUtils.renderBeam(pBlockEntity.getLevel(), pPartialTick, pPoseStack, pBuffer, pPackedLight,
+                            mid, end, 1, new int[]{255, 255, 255}, 255, 0.03125f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+
+                    pPoseStack.popPose();
+                }
             }
 
             //radiance
