@@ -74,6 +74,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(CirclePowerBlockEntity::new, BlockRegistry.CIRCLE_POWER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<CirclePowerRouterBlockEntity>> CIRCLE_POWER_ROUTER_BE = BLOCK_ENTITIES.register("circle_power_router", () ->
+            BlockEntityType.Builder.of(CirclePowerRouterBlockEntity::new, BlockRegistry.CIRCLE_POWER_ROUTER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<PowerSpikeBlockEntity>> POWER_SPIKE_BE = BLOCK_ENTITIES.register("power_spike", () ->
             BlockEntityType.Builder.of(PowerSpikeBlockEntity::new, BlockRegistry.POWER_SPIKE.get()).build(null)
     );

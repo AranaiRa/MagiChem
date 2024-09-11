@@ -90,6 +90,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> CIRCLE_POWER_ROUTER = registerBlock("circle_power_router",
+            () -> new CirclePowerRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> CIRCLE_FABRICATION = registerBlock("circle_fabrication",
             () -> new CircleFabricationBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

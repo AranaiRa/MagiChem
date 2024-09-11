@@ -2,7 +2,7 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "minecraft:block/stone"
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
   },
   "children": {
     "part1": {
@@ -17,7 +17,7 @@
   "display": {
     "gui": {
       "rotation": [29, 45, 0],
-      "scale": [0.6, 0.6, 0.6],
+      "scale": [0.25, 0.25, 0.25],
       "translation": [0, 0, 0]
     }
   }
