@@ -26,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<CirclePowerBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_REAGENT_2 = new ResourceLocation(MagiChemMod.MODID, "obj/special/circle_power_reagent_2");
     public static final ResourceLocation RENDERER_MODEL_REAGENT_3 = new ResourceLocation(MagiChemMod.MODID, "obj/special/circle_power_reagent_3");
+    public static final ResourceLocation RENDERER_MODEL_REAGENT_4 = new ResourceLocation(MagiChemMod.MODID, "obj/special/circle_power_reagent_4");
     public static final ResourceLocation CIRCLE_TEXTURE = new ResourceLocation(MagiChemMod.MODID, "block/actuator_water");
 
     public static int
@@ -133,7 +134,7 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
             double v = 3.25 + getReagent3BobHeight(world, pPartialTick);
 
             //beam
-            if(pBlockEntity.hasReagent(2)) {
+            if(has2) {
                 pPoseStack.pushPose();
                 Vec3 start = Vec3.upFromBottomCenterOf(pBlockEntity.getBlockPos(), v);
                 Vec3 mid = Vec3.atCenterOf(pBlockEntity.getBlockPos()).add(0, 1.625 + getReagent2BobHeight(world, pPartialTick), 0);
@@ -145,19 +146,21 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
 
                 pPoseStack.popPose();
 
-                for(int i=0; i<3; i++) {
-                    double x = Math.cos(((Math.PI * 2) * i / 3) + getReagent1Rotation(world, pPartialTick)) * 1.4;
-                    double z = Math.sin(((Math.PI * 2) * i / 3) + getReagent1Rotation(world, pPartialTick)) * 1.4;
+                if(has1) {
+                    for (int i = 0; i < 3; i++) {
+                        double x = Math.cos(((Math.PI * 2) * i / 3) + getReagent1Rotation(world, pPartialTick)) * 1.4;
+                        double z = Math.sin(((Math.PI * 2) * i / 3) + getReagent1Rotation(world, pPartialTick)) * 1.4;
 
-                    Vec3 end = Vec3.atCenterOf(pBlockEntity.getBlockPos()).add(x, 0.75, z);
+                        Vec3 end = Vec3.atCenterOf(pBlockEntity.getBlockPos()).add(x, 0.75, z);
 
-                    pPoseStack.pushPose();
+                        pPoseStack.pushPose();
 
-                    pPoseStack.translate(0.5, 1.625 + getReagent2BobHeight(world, pPartialTick), 0.5);
-                    WorldRenderUtils.renderBeam(pBlockEntity.getLevel(), pPartialTick, pPoseStack, pBuffer, pPackedLight,
-                            mid, end, 1, new int[]{255, 255, 255}, 255, 0.03125f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+                        pPoseStack.translate(0.5, 1.625 + getReagent2BobHeight(world, pPartialTick), 0.5);
+                        WorldRenderUtils.renderBeam(pBlockEntity.getLevel(), pPartialTick, pPoseStack, pBuffer, pPackedLight,
+                                mid, end, 1, new int[]{255, 255, 255}, 255, 0.03125f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
 
-                    pPoseStack.popPose();
+                        pPoseStack.popPose();
+                    }
                 }
             }
 
@@ -188,17 +191,31 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
                 pPoseStack.translate(2.75, -0.5, 0);
                 pPoseStack.pushPose();
                 pPoseStack.mulPose(Axis.ZP.rotationDegrees(22.5f));
+
                 RenderUtils.generateMagicCircleRing(center,
                         9, 0.875f, 0.25f, -circleRot, texture,
                         new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
-                        fill, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryInnerCircleFillPercent, pPoseStack, pBuffer, pPackedLight
                 );
 
                 RenderUtils.generateMagicCircleRing(center,
                         3, 0.615f, 0.0625f, -0, texture,
                         new Vec2(0, 4.5f), new Vec2(12, 5f), 0.75f,
-                        fill, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryInnerCircleFillPercent, pPoseStack, pBuffer, pPackedLight
                 );
+
+                pPoseStack.pushPose();
+                pPoseStack.translate(0, 2, 0);
+
+                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_REAGENT_4, pPoseStack, pPackedLight, pPackedOverlay);
+                pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
+                WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f,0.0f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(60));
+                WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f,0.0f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(60));
+                WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f,0.0f);
+
+                pPoseStack.popPose();
                 pPoseStack.popPose();
                 pPoseStack.popPose();
             }
@@ -211,7 +228,7 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
                 RenderUtils.generateMagicCircleRing(center,
                         11, 4.1f, 0.375f, getReagent4OuterRotation(world, pPartialTick), texture,
                         new Vec2(0.5f, 0), new Vec2(11.5f, 3f), 0.75f,
-                        fill, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryOuterCircleFillPercent, pPoseStack, pBuffer, pPackedLight
                 );
 
                 pPoseStack.popPose();

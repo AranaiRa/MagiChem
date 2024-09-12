@@ -54,14 +54,9 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         SLOT_REAGENT_1 = 0, SLOT_REAGENT_2 = 1, SLOT_REAGENT_3 = 2, SLOT_REAGENT_4 = 3, SLOT_RECHARGE = 4,
         WASTE_REAGENT_1 = 5, WASTE_REAGENT_2 = 6, WASTE_REAGENT_3 = 7, WASTE_REAGENT_4 = 8;
     public float
-        circleFillPercent;
-    public static int
-            REAGENT_2_ROTATION_PERIOD = 480, REAGENT_2_BOB_PERIOD = 200,
-            REAGENT_3_ROTATION_PERIOD = 720, REAGENT_3_BOB_PERIOD = 300;
-    public static float
-        CIRCLE_FILL_RATE = 0.015f,
-        REAGENT_2_BOB_HEIGHT = 0.0625f,
-        REAGENT_3_BOB_HEIGHT = 0.0625f;
+        circleFillPercent, auxiliaryInnerCircleFillPercent, auxiliaryOuterCircleFillPercent;
+    public static final float
+        CIRCLE_FILL_RATE = 0.015f;
     private static final Random r = new Random();
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
@@ -444,12 +439,22 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
 
     private void handleAnimationDrivers() {
         boolean
-                has1 = hasReagent(1);
+                has1 = hasReagent(1),
+                has4 = hasReagent(4);
 
         if(has1) {
             circleFillPercent = Math.min(1, circleFillPercent + CIRCLE_FILL_RATE);
         } else {
             circleFillPercent = Math.max(0, circleFillPercent - CIRCLE_FILL_RATE);
+        }
+
+        if(has4 && auxiliaryInnerCircleFillPercent >= 1) {
+            auxiliaryOuterCircleFillPercent = Math.min(1, auxiliaryOuterCircleFillPercent + CIRCLE_FILL_RATE);
+        } else if(has4) {
+            auxiliaryInnerCircleFillPercent = Math.min(1, auxiliaryInnerCircleFillPercent + CIRCLE_FILL_RATE);
+        } else {
+            auxiliaryInnerCircleFillPercent = Math.max(0, auxiliaryInnerCircleFillPercent - CIRCLE_FILL_RATE);
+            auxiliaryOuterCircleFillPercent = Math.max(0, auxiliaryOuterCircleFillPercent - CIRCLE_FILL_RATE);
         }
     }
 

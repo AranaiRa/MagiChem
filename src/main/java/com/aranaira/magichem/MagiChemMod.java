@@ -184,6 +184,7 @@ public class MagiChemMod
 
             event.register(CirclePowerBlockEntityRenderer.RENDERER_MODEL_REAGENT_2);
             event.register(CirclePowerBlockEntityRenderer.RENDERER_MODEL_REAGENT_3);
+            event.register(CirclePowerBlockEntityRenderer.RENDERER_MODEL_REAGENT_4);
 
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_OPEN);
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_CLOSED);
