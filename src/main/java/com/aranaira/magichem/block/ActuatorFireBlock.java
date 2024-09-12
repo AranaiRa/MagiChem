@@ -22,6 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -195,7 +196,9 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
                             if(player.getItemInHand(hand).getItem() == Items.BUCKET) {
                                 if(afbe.getFluidInTank(0).getAmount() >= 1000) {
                                     afbe.drain(new FluidStack(FluidRegistry.SMOKE.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
-                                    player.setItemInHand(hand, new ItemStack(ItemRegistry.SMOKE_BUCKET.get()));
+                                    player.getItemInHand(hand).shrink(1);
+                                    ItemEntity ie = new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), new ItemStack(ItemRegistry.SMOKE_BUCKET.get()));
+                                    player.level().addFreshEntity(ie);
                                 }
                             } else {
                                 int capacity = cap.fill(new FluidStack(FluidRegistry.SMOKE.get(), Config.infernoEngineTankCapacity), IFluidHandler.FluidAction.SIMULATE);
