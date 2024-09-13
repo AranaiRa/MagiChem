@@ -85,6 +85,14 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<TooltipLoreItem> HARMONISCOPE = ITEMS.register("harmoniscope",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> NETHERITE_SHAPING_PLANE = ITEMS.register("netherite_shaping_plane",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<TooltipLoreItem> LABORATORY_CHARM = ITEMS.register("laboratory_charm",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -183,6 +191,50 @@ public class ItemRegistry {
 
     public static final RegistryObject<TooltipLoreItem> BRINDLE_GRIT_MAGENTA = ITEMS.register("brindle_grit_magenta",
             () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> AUXILIARY_CIRCLE_ARRAY = ITEMS.register("auxiliary_circle_array",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> RUINED_PROJECTION_APPARATUS = ITEMS.register("auxiliary_circle_array_single_damaged",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(24))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CIRCLE_PROJECTION_APPARATUS = ITEMS.register("auxiliary_circle_array_single",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LIGHTWRACKED_PROJECTION_GEM = ITEMS.register("auxiliary_circle_array_gem_damaged",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CORONAL_PROJECTION_GEM = ITEMS.register("auxiliary_circle_array_gem",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> DISSONANT_CRYSTAL_CORE = ITEMS.register("auxiliary_circle_array_core_damaged",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CONCORDANT_CRYSTAL_CORE = ITEMS.register("auxiliary_circle_array_core",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> BEFOULED_PROJECTION_CASING = ITEMS.register("auxiliary_circle_array_casing_damaged",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> PRISTINE_PROJECTION_CASING = ITEMS.register("auxiliary_circle_array_casing",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(4))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CONTORTED_PENNON = ITEMS.register("auxiliary_circle_array_pennon_damaged",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(8))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> GUIDANCE_PENNON = ITEMS.register("auxiliary_circle_array_pennon",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(8))
     );
 
     ///////////////

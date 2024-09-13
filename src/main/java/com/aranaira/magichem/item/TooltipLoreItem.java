@@ -295,6 +295,112 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.AUXILIARY_CIRCLE_ARRAY.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.powerreagent")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.RUINED_PROJECTION_APPARATUS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.single.damaged")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.CIRCLE_PROJECTION_APPARATUS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.single")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.LIGHTWRACKED_PROJECTION_GEM.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.gem.damaged")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.DISSONANT_CRYSTAL_CORE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.core.damaged")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.BEFOULED_PROJECTION_CASING.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.casing.damaged")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.CONTORTED_PENNON.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.pennon.damaged")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.CORONAL_PROJECTION_GEM.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.gem")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.part")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.CONCORDANT_CRYSTAL_CORE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.core")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.part")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.PRISTINE_PROJECTION_CASING.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.casing")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.part")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.GUIDANCE_PENNON.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.pennon")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.aca.part")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
