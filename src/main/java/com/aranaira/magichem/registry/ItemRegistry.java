@@ -81,6 +81,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> VINTEUM_CRYSTAL_SHARD = ITEMS.register("vinteum_crystal_shard",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> GLASS_CUTTING_TOOLS = ITEMS.register("glass_cutting_tools",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );

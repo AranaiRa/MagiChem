@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down":     "magichem:block/vinteum_crystal_block_budding",
+        "up":       "magichem:block/vinteum_crystal_block_budding",
+        "north":    "magichem:block/vinteum_crystal_block_budding",
+        "east":     "magichem:block/vinteum_crystal_block_budding",
+        "south":    "magichem:block/vinteum_crystal_block_budding",
+        "west":     "magichem:block/vinteum_crystal_block_budding",
+        "particle": "magichem:block/vinteum_crystal_block_budding"
+    }
+}

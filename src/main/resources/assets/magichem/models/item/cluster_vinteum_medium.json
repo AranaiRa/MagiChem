@@ -1,0 +1,11 @@
+{
+	"parent": "item/amethyst_bud",
+	"textures": {
+		"layer0": "magichem:block/cluster_vinteum_medium"
+	},
+	"display": {
+		"fixed": {
+			"translation": [ 0, 4, 0 ]
+		}
+	}
+}

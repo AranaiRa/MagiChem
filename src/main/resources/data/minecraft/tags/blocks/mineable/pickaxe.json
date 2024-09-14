@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:bleached_amethyst_block",
+    "magichem:cluster_vinteum",
+    "magichem:cluster_vinteum_large",
+    "magichem:cluster_vinteum_medium",
+    "magichem:cluster_vinteum_small",
+    "magichem:vinteum_crystal_block",
+    "magichem:vinteum_crystal_block_budding"
+  ]
+}

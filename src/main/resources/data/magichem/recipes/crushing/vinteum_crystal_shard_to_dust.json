@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "magichem:vinteum_crystal_shard",
+  "output": "mna:vinteum_dust",
+  "output_quantity": 1
+}

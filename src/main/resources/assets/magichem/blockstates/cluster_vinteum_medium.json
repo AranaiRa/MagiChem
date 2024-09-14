@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "magichem:block/cluster_vinteum_medium",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "magichem:block/cluster_vinteum_medium",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "magichem:block/cluster_vinteum_medium",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/cluster_vinteum_medium",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "magichem:block/cluster_vinteum_medium"
+    },
+    "facing=west": {
+      "model": "magichem:block/cluster_vinteum_medium",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

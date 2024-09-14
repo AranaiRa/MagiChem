@@ -9,7 +9,9 @@ import com.aranaira.magichem.item.TooltipLoreBlockItem;
 import com.mna.blocks.decoration.SimpleRotationalBlock;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -212,7 +214,37 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> BLEACHED_AMETHYST_BLOCK = registerBlock("bleached_amethyst_block",
             () -> new BleachedAmethystBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(1.5f).sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> VINTEUM_CRYSTAL_BLOCK = registerBlock("vinteum_crystal_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> BUDDING_VINTEUM_CRYSTAL_BLOCK = registerBlock("vinteum_crystal_block_budding",
+            () -> new BuddingVinteumCrystalBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> VINTEUM_CLUSTER = registerBlock("cluster_vinteum",
+            () -> new CrystalClusterBudBlock(7, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> LARGE_VINTEUM_CLUSTER = registerBlock("cluster_vinteum_large",
+            () -> new CrystalClusterBudBlock(5, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> MEDIUM_VINTEUM_CLUSTER = registerBlock("cluster_vinteum_medium",
+            () -> new CrystalClusterBudBlock(4, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> SMALL_VINTEUM_CLUSTER = registerBlock("cluster_vinteum_small",
+            () -> new CrystalClusterBudBlock(3, 4, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> CRYSTAL_CANDLE = registerBlock("crystal_candle",
