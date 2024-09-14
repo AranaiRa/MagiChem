@@ -1,7 +1,9 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.CirclePowerBlock;
+import com.aranaira.magichem.block.CirclePowerRouterBlock;
 import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.CirclePowerRouterBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
@@ -62,6 +64,16 @@ public class PowerSpikeItem extends BlockItem {
 
                     context.getItemInHand().setTag(tag);
                     return InteractionResult.SUCCESS;
+                } else if(context.getLevel().getBlockState(pos).getBlock() instanceof CirclePowerRouterBlock) {
+                    BlockEntity be = context.getLevel().getBlockEntity(pos);
+                    if(be instanceof CirclePowerRouterBlockEntity cprbe) {
+                        context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.bind"));
+                        CompoundTag tag = new CompoundTag();
+                        tag.putLong("magichem.powerspike.targetpos",cprbe.getMasterPos().asLong());
+
+                        context.getItemInHand().setTag(tag);
+                        return InteractionResult.SUCCESS;
+                    }
                 }
             }
         }

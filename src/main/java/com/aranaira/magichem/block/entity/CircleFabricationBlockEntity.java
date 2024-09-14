@@ -28,6 +28,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -231,9 +232,19 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, CircleFabricationBlockEntity entity) {
-        //Power check
         if(!level.isClientSide()) {
-            entity.isFESatisfied = entity.ENERGY_STORAGE.getEnergyStored() >= entity.getPowerDraw();
+            //Power check
+            if(entity.operationTicks > 0) {
+                int cost = entity.getPowerDraw();
+                if (entity.ENERGY_STORAGE.getEnergyStored() >= cost) {
+                    entity.ENERGY_STORAGE.extractEnergy(cost, false);
+                    entity.isFESatisfied = true;
+                } else {
+                    entity.isFESatisfied = false;
+                }
+            } else {
+                entity.isFESatisfied = true;
+            }
         }
 
         entity.operationTicks = entity.getOperationTicks();
