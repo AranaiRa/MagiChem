@@ -1,0 +1,22 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:auxiliary_circle_array_core",
+  "quantity": 1,
+  "tier": 5,
+  "items": [
+    "magichem:auxiliary_circle_array_core_damaged",
+    "magichem:harmoniscope"
+  ],
+  "patterns": [
+    "mna:infinity",
+    "mna:hourglass",
+    "mna:infinity"
+  ],
+  "byproducts": [
+    {
+      "item": "magichem:harmoniscope",
+      "chance": 1,
+      "count": 1
+    }
+  ]
+}

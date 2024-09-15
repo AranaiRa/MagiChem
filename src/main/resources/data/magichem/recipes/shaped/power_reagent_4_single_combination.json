@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " PC",
+    " OP",
+    "G  "
+  ],
+  "key": {
+    "G": {
+      "item": "magichem:auxiliary_circle_array_gem"
+    },
+    "O": {
+      "item": "magichem:auxiliary_circle_array_core"
+    },
+    "C": {
+      "item": "magichem:auxiliary_circle_array_casing"
+    },
+    "P": {
+      "item": "magichem:auxiliary_circle_array_pennon"
+    }
+  },
+  "result": {
+    "item": "magichem:auxiliary_circle_array_single"
+  }
+}

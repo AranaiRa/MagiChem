@@ -1,0 +1,24 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:vinteum_crystal_block_budding"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:vinteum_dust_block" },
+        { "item": "minecraft:budding_amethyst" },
+        { "item": "mna:vinteum_dust_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_crystal", "count": 72 },
+        { "item": "magichem:admixture_mana", "count": 43 },
+        { "item": "magichem:admixture_dust", "count": 37 },
+        { "item": "magichem:admixture_change", "count": 37 }
+      ]
+    }
+  ]
+}

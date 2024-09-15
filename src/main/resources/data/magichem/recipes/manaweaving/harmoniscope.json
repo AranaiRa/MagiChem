@@ -1,0 +1,18 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:harmoniscope",
+  "tier": 3,
+  "items": [
+    "minecraft:stick",
+    "magichem:vinteum_crystal_shard",
+    "mna:mundane_ring",
+    "minecraft:string",
+    "magichem:perfected_electrum",
+    "minecraft:jukebox"
+  ],
+  "patterns": [
+    "mna:slash",
+    "mna:slash",
+    "mna:bolt"
+  ]
+}

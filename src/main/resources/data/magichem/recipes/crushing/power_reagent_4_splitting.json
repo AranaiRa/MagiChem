@@ -1,0 +1,24 @@
+{
+  "type": "mna:crushing",
+  "tier": 5,
+  "input": "magichem:auxiliary_circle_array_single_damaged",
+  "output": "magichem:auxiliary_circle_array_gem_damaged",
+  "output_quantity": 1,
+  "byproducts": [
+    {
+      "item": "magichem:auxiliary_circle_array_core_damaged",
+      "chance": 1,
+      "rolls": 1
+    },
+    {
+      "item": "magichem:auxiliary_circle_array_casing_damaged",
+      "chance": 1,
+      "rolls": 1
+    },
+    {
+      "item": "magichem:auxiliary_circle_array_pennon_damaged",
+      "chance": 1,
+      "rolls": 2
+    }
+  ]
+}

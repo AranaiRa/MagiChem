@@ -1,0 +1,55 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 5,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:auxiliary_circle_array_single"
+  },
+  "stages": [
+    {
+      "experience": 80,
+      "components": [
+        { "item": "magichem:perfected_electrum" },
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "mna:animus_dust" },
+        { "item": "mna:rune_ritual_air" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_flight", "count": 55 },
+        { "item": "magichem:admixture_metal", "count": 49 },
+        { "item": "magichem:admixture_motion", "count": 44 },
+        { "item": "magichem:admixture_breath", "count": 33 }
+      ]
+    },
+    {
+      "experience": 160,
+      "components": [
+        { "item": "mna:decoration/arcane_sandstone" },
+        { "item": "mna:decoration/arcane_sandstone" },
+        { "item": "minecraft:stripped_dark_oak_wood" },
+        { "item": "magichem:vinteum_crystal_shard" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_energy", "count": 110 },
+        { "item": "magichem:admixture_stone", "count": 49 },
+        { "item": "magichem:admixture_mana", "count": 25 },
+        { "item": "magichem:admixture_instrument", "count": 17 }
+      ]
+    },
+    {
+      "experience": 240,
+      "components": [
+        { "item": "magichem:glass_cutting_tools" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:magic_circle" },
+        { "item": "mna:rune_projection" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_light", "count": 110 },
+        { "item": "magichem:admixture_crystal", "count": 49 },
+        { "item": "magichem:admixture_sorcery", "count": 21 },
+        { "item": "magichem:admixture_construct", "count": 16 }
+      ]
+    }
+  ]
+}

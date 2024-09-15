@@ -1,0 +1,8 @@
+{
+	"type": "mna:arcane-furnace",
+	"tier": 5,
+	"input": "magichem:auxiliary_circle_array_casing_damaged",
+	"output": "magichem:auxiliary_circle_array_casing",
+	"outputQuantity": 1,
+	"burnTime": 1440
+}

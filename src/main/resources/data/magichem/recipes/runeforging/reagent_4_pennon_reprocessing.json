@@ -1,0 +1,15 @@
+{
+	"type": "mna:runeforging",
+	"tier": 5,
+	"material": "magichem:auxiliary_circle_array_pennon_damaged",
+	"hits": 4,
+	"pattern": "magichem:netherite_shaping_plane",
+	"output": "magichem:auxiliary_circle_array_pennon",
+	"byproducts": [
+		{
+			"item": "magichem:netherite_shaping_plane",
+			"chance": 1,
+			"count": 1
+		}
+	]
+}

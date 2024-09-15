@@ -73,6 +73,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
                         stack.getItem() == ItemRegistry.AMPLIFYING_PRISM.get() ||
                         stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                 case SLOT_REAGENT_4 ->
+                        stack.getItem() == ItemRegistry.AUXILIARY_CIRCLE_ARRAY.get() ||
                         stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                 case SLOT_RECHARGE ->
                         stack.getCapability(ForgeCapabilities.ENERGY).isPresent();
@@ -138,7 +139,8 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             REAGENT_TIER3 =  ItemRegistry.AMPLIFYING_PRISM.get(),
             WASTE_TIER1 =  ItemRegistry.TARNISHED_SILVER_LUMP.get(),
             WASTE_TIER2 =  ItemRegistry.WARPED_FOCUSING_CATALYST.get(),
-            WASTE_TIER3 =  ItemRegistry.MALFORMED_BRINDLE_GLASS.get();
+            WASTE_TIER3 =  ItemRegistry.MALFORMED_BRINDLE_GLASS.get(),
+            WASTE_TIER4 =  ItemRegistry.RUINED_PROJECTION_APPARATUS.get();
     private NonNullList<ItemStack> itemsForRemoteCharging = NonNullList.create();
 
     @Override
@@ -245,6 +247,12 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
                 inventory.addItem(new ItemStack(ItemRegistry.DEBUG_ORB.get(), 1));
             else
                 inventory.addItem(new ItemStack(WASTE_TIER3, 1));
+        }
+        if(progressReagentTier4 > 0) {
+            if (itemHandler.getStackInSlot(SLOT_REAGENT_4).getItem() == ItemRegistry.DEBUG_ORB.get())
+                inventory.addItem(new ItemStack(ItemRegistry.DEBUG_ORB.get(), 1));
+            else
+                inventory.addItem(new ItemStack(WASTE_TIER4, 6));
         }
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
@@ -549,11 +557,11 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             wasteItem = WASTE_TIER3;
         } else if(tier == 4) {
             slot = WASTE_REAGENT_4;
-            wasteItem = Items.COD;
+            wasteItem = WASTE_TIER4;
         } else {
             return;
         }
-        wasteProduct = new ItemStack(wasteItem, 1);
+        wasteProduct = new ItemStack(wasteItem, tier == 4 ? 6 : 1);
         wasteInSlot = entity.itemHandler.getStackInSlot(slot);
         slotLimit = wasteProduct.getItem().getMaxStackSize(wasteProduct);
 
@@ -561,7 +569,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             entity.itemHandler.setStackInSlot(slot, wasteProduct);
             entity.syncAndSave();
         } else if (wasteInSlot.getCount() < slotLimit) {
-            wasteInSlot.grow(1);
+            wasteInSlot.grow(tier == 4 ? 6 : 1);
             entity.itemHandler.setStackInSlot(slot, wasteInSlot);
             entity.syncAndSave();
         } else {

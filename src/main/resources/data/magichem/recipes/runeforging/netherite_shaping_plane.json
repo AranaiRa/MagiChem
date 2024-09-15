@@ -1,0 +1,8 @@
+{
+	"type": "mna:runeforging",
+	"tier": 5,
+	"material": "minecraft:netherite_block",
+	"hits": 20,
+	"pattern": "minecraft:netherite_block",
+	"output": "magichem:netherite_shaping_plane"
+}

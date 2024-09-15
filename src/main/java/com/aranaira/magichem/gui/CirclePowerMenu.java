@@ -70,7 +70,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, SLOT_REAGENT_4, 134, 18) {
                 @Override
                 public boolean mayPlace(@NotNull ItemStack stack) {
-                    if(stack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                    if(stack.getItem() == ItemRegistry.AUXILIARY_CIRCLE_ARRAY.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get())
                         return true;
                     else
                         return false;
