@@ -72,10 +72,10 @@ public class ConjurerMenu extends AbstractContainerMenu {
     private static final Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i( //Input slots
                     SLOT_INVENTORY_COUNT + SLOT_INSERTION_CATALYST,
-                    SLOT_INVENTORY_COUNT + SLOT_INSERTION_CATALYST),
+                    SLOT_INVENTORY_COUNT + SLOT_INSERTION_CATALYST + 1),
             new Vector2i( //Input slots
                     SLOT_INVENTORY_COUNT + SLOT_INSERTION_MATERIA,
-                    SLOT_INVENTORY_COUNT + SLOT_INSERTION_MATERIA),
+                    SLOT_INVENTORY_COUNT + SLOT_INSERTION_MATERIA + 1),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
     private static final Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
