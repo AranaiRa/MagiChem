@@ -83,14 +83,18 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
         final boolean has3 = pBlockEntity.hasReagent(3);
         final boolean has4 = pBlockEntity.hasReagent(4);
 
+        float smoothingCircle1 = has1 ?
+                CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick :
+                -CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick;
+        float smoothingCircle4 = has4 ?
+                CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick :
+                -CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick;
+
         //Grains of Quicksilver
         if(pBlockEntity.circleFillPercent > 0) {
             Vector3 center = Vector3.zero();// = new Vector3(0.5, 0.75, 0.5);
             final TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
-            float smoothing = has1 ?
-                    CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick :
-                    -CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick;
-            float fill = Math.min(1,Math.max(0,pBlockEntity.circleFillPercent + smoothing));
+            float fill = Math.min(1,Math.max(0,pBlockEntity.circleFillPercent + smoothingCircle1));
 
             int period = 720;
             float circleRot = (float)((((world.getGameTime() + pPartialTick) % period) / (float)period) * Math.PI * 2);
@@ -194,20 +198,16 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
                 pPoseStack.pushPose();
                 pPoseStack.mulPose(Axis.ZP.rotationDegrees(22.5f));
 
-                float smoothing = has4 ?
-                        CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick :
-                        -CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick;
-
                 RenderUtils.generateMagicCircleRing(center,
                         9, 0.875f, 0.25f, -circleRot, texture,
                         new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
-                        pBlockEntity.auxiliaryInnerCircleFillPercent + smoothing, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryInnerCircleFillPercent + smoothingCircle4, pPoseStack, pBuffer, pPackedLight
                 );
 
                 RenderUtils.generateMagicCircleRing(center,
                         3, 0.615f, 0.0625f, -0, texture,
                         new Vec2(0, 4.5f), new Vec2(12, 5f), 0.75f,
-                        pBlockEntity.auxiliaryInnerCircleFillPercent + smoothing, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryInnerCircleFillPercent + smoothingCircle4, pPoseStack, pBuffer, pPackedLight
                 );
 
                 pPoseStack.pushPose();
@@ -232,15 +232,11 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
 
                 pPoseStack.pushPose();
 
-                float smoothing = has1 ?
-                        CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick :
-                        -CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick;
-
                 pPoseStack.translate(0.5, 1.4375, 0.5);
                 RenderUtils.generateMagicCircleRing(center,
                         11, 4.1f, 0.375f, getReagent4OuterRotation(world, pPartialTick), texture,
                         new Vec2(0.5f, 0), new Vec2(11.5f, 3f), 0.75f,
-                        pBlockEntity.auxiliaryOuterCircleFillPercent + smoothing, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryOuterCircleFillPercent + smoothingCircle1, pPoseStack, pBuffer, pPackedLight
                 );
 
                 pPoseStack.popPose();

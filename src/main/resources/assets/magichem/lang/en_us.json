@@ -614,6 +614,7 @@
   "overlay.magichem.actuator.port": "This port accepts:",
 
   "gui.magichem.typetofilter": "Filter...",
+  "gui.magichem.generating": "Generating ",
   "gui.magichem.insufficientpower": "Insufficient power!",
   "gui.magichem.insufficientwater": "Insufficient Water!",
   "gui.magichem.insufficientsand": "Insufficient Sand!",

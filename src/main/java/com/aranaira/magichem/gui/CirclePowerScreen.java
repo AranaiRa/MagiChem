@@ -1,12 +1,15 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -42,6 +45,9 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
         renderProgressBar(4, gui, x + 131, y + 42);
 
         gui.blit(TEXTURE, x + w + 4, y + 10, 176, 0, 32, 32);
+
+        //generation panel
+        gui.blit(TEXTURE, x + 2, y - 30, 0, 167, 172, 25);
     }
 
     private void renderProgressBar(int tier, GuiGraphics gui, int x, int y) {
@@ -60,6 +66,17 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
 
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
+        int reagentCount =
+                (menu.blockEntity.hasReagent(1) ? 1 : 0) +
+                (menu.blockEntity.hasReagent(2) ? 1 : 0) +
+                (menu.blockEntity.hasReagent(3) ? 1 : 0) +
+                (menu.blockEntity.hasReagent(4) ? 1 : 0);
 
+        final MutableComponent generation = Component.empty()
+                .append(Component.translatable("gui.magichem.generating")
+                .append(Component.literal(CirclePowerBlockEntity.getGenRate(reagentCount) + "").withStyle(ChatFormatting.DARK_PURPLE))
+                .append(Component.literal(" FE / tick"))
+                );
+        pGuiGraphics.drawString(font, generation, 25, -21, 0x00000000, false);
     }
 }

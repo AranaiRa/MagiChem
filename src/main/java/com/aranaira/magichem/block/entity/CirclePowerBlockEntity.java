@@ -669,7 +669,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         if (currentEnergy + genRate > cap) entity.ENERGY_STORAGE.setEnergy(cap);
     }
 
-    private static int getGenRate(int reagentCount) {
+    public static int getGenRate(int reagentCount) {
         int genRate = 0;
         if(reagentCount == 1) genRate = Config.circlePowerGen1Reagent;
         else if(reagentCount == 2) genRate = Config.circlePowerGen2Reagent;
