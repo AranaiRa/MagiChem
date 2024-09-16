@@ -127,6 +127,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                     //diagnostic message that there isn't a jar with the right materia in zone
 
                                     if (!foundTarget) {
+                                        this.pushDiagnosticMessage("I can't find any of the materia the device needs. I'll just wait for a bit!", false);
                                         this.waitTimer = 21;
                                         this.phase = ETaskPhase.WAIT_TO_FAIL;
                                     }
@@ -155,12 +156,12 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                         construct.asEntity().addAdditionalSaveData(nbt);
                                     }
 
-
                                     impr.setProvisioningInProgress(filter);
 
                                     this.waitTimer = 21;
                                     this.phase = ETaskPhase.WAIT_AT_VESSEL;
                                 } else {
+                                    this.pushDiagnosticMessage("I can't find any of the materia the device needs. I'll just wait for a bit!", false);
                                     this.waitTimer = 21;
                                     this.phase = ETaskPhase.WAIT_TO_FAIL;
                                 }
@@ -223,6 +224,10 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
 
                                 if(foundTarget) {
                                     this.phase = ETaskPhase.CREATE_SHLORP;
+                                } else {
+                                    this.pushDiagnosticMessage("I can't find any of the materia the device needs. I'll just wait for a bit!", false);
+                                    this.waitTimer = 41;
+                                    this.phase = ETaskPhase.WAIT_TO_FAIL;
                                 }
                             } else {
                                 this.pushDiagnosticMessage("The device I'm monitoring doesn't need any materia provided right now. I'll just wait for a bit!", false);
