@@ -84,10 +84,13 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
         final boolean has4 = pBlockEntity.hasReagent(4);
 
         //Grains of Quicksilver
-        if(has1) {
+        if(pBlockEntity.circleFillPercent > 0) {
             Vector3 center = Vector3.zero();// = new Vector3(0.5, 0.75, 0.5);
             final TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
-            float fill = Math.min(1,Math.max(0,pBlockEntity.circleFillPercent + CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick));
+            float smoothing = has1 ?
+                    CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick :
+                    -CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick;
+            float fill = Math.min(1,Math.max(0,pBlockEntity.circleFillPercent + smoothing));
 
             int period = 720;
             float circleRot = (float)((((world.getGameTime() + pPartialTick) % period) / (float)period) * Math.PI * 2);
@@ -172,10 +175,9 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
         }
 
         //Auxiliary Circle Array
-        if(has4) {
+        if(pBlockEntity.auxiliaryInnerCircleFillPercent > 0 || pBlockEntity.auxiliaryOuterCircleFillPercent > 0) {
             Vector3 center = Vector3.zero();// = new Vector3(0.5, 0.75, 0.5);
             final TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
-            float fill = Math.min(1,Math.max(0,pBlockEntity.circleFillPercent + CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick));
 
             int period = 240;
             float circleRot = (float)((((world.getGameTime() + pPartialTick) % period) / (float)period) * Math.PI * 2);
@@ -192,43 +194,53 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
                 pPoseStack.pushPose();
                 pPoseStack.mulPose(Axis.ZP.rotationDegrees(22.5f));
 
+                float smoothing = has4 ?
+                        CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick :
+                        -CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick;
+
                 RenderUtils.generateMagicCircleRing(center,
                         9, 0.875f, 0.25f, -circleRot, texture,
                         new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
-                        pBlockEntity.auxiliaryInnerCircleFillPercent, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryInnerCircleFillPercent + smoothing, pPoseStack, pBuffer, pPackedLight
                 );
 
                 RenderUtils.generateMagicCircleRing(center,
                         3, 0.615f, 0.0625f, -0, texture,
                         new Vec2(0, 4.5f), new Vec2(12, 5f), 0.75f,
-                        pBlockEntity.auxiliaryInnerCircleFillPercent, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryInnerCircleFillPercent + smoothing, pPoseStack, pBuffer, pPackedLight
                 );
 
                 pPoseStack.pushPose();
                 pPoseStack.translate(0, 2, 0);
 
-                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_REAGENT_4, pPoseStack, pPackedLight, pPackedOverlay);
-                pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
-                WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f,0.0f);
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(60));
-                WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f,0.0f);
-                pPoseStack.mulPose(Axis.YP.rotationDegrees(60));
-                WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f,0.0f);
+                if(has4) {
+                    ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_REAGENT_4, pPoseStack, pPackedLight, pPackedOverlay);
+                    pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
+                    WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f, 0.0f);
+                    pPoseStack.mulPose(Axis.YP.rotationDegrees(60));
+                    WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f, 0.0f);
+                    pPoseStack.mulPose(Axis.YP.rotationDegrees(60));
+                    WorldRenderUtils.renderLightBeam(1, pPoseStack, pBuffer, new int[]{196, 218, 255}, new int[]{30, 50, 230}, 40, 8, 0.0875f, 0.005f, 0.0f);
+                }
 
                 pPoseStack.popPose();
                 pPoseStack.popPose();
                 pPoseStack.popPose();
             }
 
-            if(has1) {
+            if(pBlockEntity.auxiliaryOuterCircleFillPercent > 0) {
 
                 pPoseStack.pushPose();
+
+                float smoothing = has1 ?
+                        CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick :
+                        -CirclePowerBlockEntity.CIRCLE_FILL_RATE * pPartialTick;
 
                 pPoseStack.translate(0.5, 1.4375, 0.5);
                 RenderUtils.generateMagicCircleRing(center,
                         11, 4.1f, 0.375f, getReagent4OuterRotation(world, pPartialTick), texture,
                         new Vec2(0.5f, 0), new Vec2(11.5f, 3f), 0.75f,
-                        pBlockEntity.auxiliaryOuterCircleFillPercent, pPoseStack, pBuffer, pPackedLight
+                        pBlockEntity.auxiliaryOuterCircleFillPercent + smoothing, pPoseStack, pBuffer, pPackedLight
                 );
 
                 pPoseStack.popPose();

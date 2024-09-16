@@ -131,12 +131,13 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             maxProgressReagentTier1 = 640,
             maxProgressReagentTier2 = 2160,
             maxProgressReagentTier3 = 3680,
-            maxProgressReagentTier4 = 1280;
+            maxProgressReagentTier4 = 5200;
 
     public static final Item
             REAGENT_TIER1 =  ItemRegistry.SILVER_DUST.get(),
             REAGENT_TIER2 =  ItemRegistry.FOCUSING_CATALYST.get(),
             REAGENT_TIER3 =  ItemRegistry.AMPLIFYING_PRISM.get(),
+            REAGENT_TIER4 =  ItemRegistry.AUXILIARY_CIRCLE_ARRAY.get(),
             WASTE_TIER1 =  ItemRegistry.TARNISHED_SILVER_LUMP.get(),
             WASTE_TIER2 =  ItemRegistry.WARPED_FOCUSING_CATALYST.get(),
             WASTE_TIER3 =  ItemRegistry.MALFORMED_BRINDLE_GLASS.get(),
@@ -456,12 +457,15 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
             circleFillPercent = Math.max(0, circleFillPercent - CIRCLE_FILL_RATE);
         }
 
-        if(has4 && auxiliaryInnerCircleFillPercent >= 1) {
-            auxiliaryOuterCircleFillPercent = Math.min(1, auxiliaryOuterCircleFillPercent + CIRCLE_FILL_RATE);
-        } else if(has4) {
+        if(has4) {
             auxiliaryInnerCircleFillPercent = Math.min(1, auxiliaryInnerCircleFillPercent + CIRCLE_FILL_RATE);
         } else {
             auxiliaryInnerCircleFillPercent = Math.max(0, auxiliaryInnerCircleFillPercent - CIRCLE_FILL_RATE);
+        }
+
+        if(has1 && auxiliaryInnerCircleFillPercent >= 1) {
+            auxiliaryOuterCircleFillPercent = Math.min(1, auxiliaryOuterCircleFillPercent + CIRCLE_FILL_RATE);
+        } else {
             auxiliaryOuterCircleFillPercent = Math.max(0, auxiliaryOuterCircleFillPercent - CIRCLE_FILL_RATE);
         }
     }
@@ -498,6 +502,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         if(getProgressByTier(entity, 1) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == REAGENT_TIER1) {
             entity.itemHandler.setStackInSlot(SLOT_REAGENT_1, ItemStack.EMPTY);
             entity.incrementProgress(1);
+            entity.syncAndSave();
         } else if(getProgressByTier(entity, 1) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == ItemRegistry.DEBUG_ORB.get()) {
             entity.incrementProgress(1);
         }
@@ -505,6 +510,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         if(getProgressByTier(entity, 2) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == REAGENT_TIER2) {
             entity.itemHandler.setStackInSlot(SLOT_REAGENT_2, ItemStack.EMPTY);
             entity.incrementProgress(2);
+            entity.syncAndSave();
         } else if(getProgressByTier(entity, 2) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == ItemRegistry.DEBUG_ORB.get()) {
             entity.incrementProgress(2);
         }
@@ -512,17 +518,22 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         if(getProgressByTier(entity, 3) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == REAGENT_TIER3) {
             entity.itemHandler.setStackInSlot(SLOT_REAGENT_3, ItemStack.EMPTY);
             entity.incrementProgress(3);
-        } else if(getProgressByTier(entity, 2) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+            entity.syncAndSave();
+        } else if(getProgressByTier(entity, 3) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get()) {
             entity.incrementProgress(3);
         }
 
-        if(getProgressByTier(entity, 4) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_4).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+        if(getProgressByTier(entity, 4) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_4).getItem() == REAGENT_TIER4) {
+            entity.itemHandler.setStackInSlot(SLOT_REAGENT_4, ItemStack.EMPTY);
+            entity.incrementProgress(4);
+            entity.syncAndSave();
+        } else if(getProgressByTier(entity, 4) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_4).getItem() == ItemRegistry.DEBUG_ORB.get()) {
             entity.incrementProgress(4);
         }
     }
 
     private static void processReagent(Level level, BlockPos pos, BlockState state, CirclePowerBlockEntity entity, int tier) {
-        if(hasReagent(tier, entity) || getProgressByTier(entity, tier) > 0) {
+        if(entity.hasReagent(tier) || getProgressByTier(entity, tier) > 0) {
             entity.incrementProgress(tier);
 
             if(getProgressByTier(entity, tier) >= getMaxProgressByTier(tier)) {
@@ -631,60 +642,6 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
         if(entity.progressReagentTier4 > 0) reagentCount++;
 
         return getGenRate(reagentCount) * Config.circlePowerBuffer;
-    }
-
-    private static boolean hasReagent(int reagentTier, CirclePowerBlockEntity entity) {
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i=0; i<entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        boolean query = false;
-
-        //Again, switch statement fucks up here and I don't know why
-        if(reagentTier == 1) {
-            //Just do the thing if there's a debug orb in the slot
-            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == ItemRegistry.DEBUG_ORB.get())
-                return true;
-
-            query = entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == REAGENT_TIER1;
-            //Otherwise, consume the reagent if we don't have an existing one "burning"
-            if(query && getProgressByTier(entity, 1) == 0) {
-                entity.itemHandler.setStackInSlot(SLOT_REAGENT_1, ItemStack.EMPTY);
-                entity.incrementProgress(1);
-            }
-        }
-        if(reagentTier == 2) {
-            //Just do the thing if there's a debug orb in the slot
-            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == ItemRegistry.DEBUG_ORB.get())
-                return true;
-
-            query = entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == REAGENT_TIER2;
-            //Otherwise, consume the reagent if we don't have an existing one "burning"
-            if(query && getProgressByTier(entity, 2) == 0) {
-                entity.itemHandler.setStackInSlot(SLOT_REAGENT_2, ItemStack.EMPTY);
-                entity.incrementProgress(2);
-            }
-        }
-        if(reagentTier == 3) {
-            //Just do the thing if there's a debug orb in the slot
-            if(entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == ItemRegistry.DEBUG_ORB.get())
-                return true;
-
-            query = entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == REAGENT_TIER2;
-            //Otherwise, consume the reagent if we don't have an existing one "burning"
-            if(query && getProgressByTier(entity, 3) == 0) {
-                entity.itemHandler.setStackInSlot(SLOT_REAGENT_3, ItemStack.EMPTY);
-                entity.incrementProgress(3);
-            }
-        }
-        if(reagentTier == 4) {
-            //Just do the thing if there's a debug orb in the slot
-            if (entity.itemHandler.getStackInSlot(SLOT_REAGENT_4).getItem() == ItemRegistry.DEBUG_ORB.get())
-                return true;
-        }
-
-        return query;
     }
 
     /* FE STUFF */
