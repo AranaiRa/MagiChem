@@ -142,18 +142,18 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
 
             //beam
             if(has2) {
-                pPoseStack.pushPose();
-                Vec3 start = Vec3.upFromBottomCenterOf(pBlockEntity.getBlockPos(), v);
-                Vec3 mid = Vec3.atCenterOf(pBlockEntity.getBlockPos()).add(0, 1.625 + getReagent2BobHeight(world, pPartialTick), 0);
-
-                pPoseStack.translate(0.5, v, 0.5);
-
-                WorldRenderUtils.renderBeam(pBlockEntity.getLevel(), pPartialTick, pPoseStack, pBuffer, pPackedLight,
-                        start, mid, 1, new int[]{255, 255, 255}, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
-
-                pPoseStack.popPose();
-
                 if(has1) {
+                    pPoseStack.pushPose();
+                    Vec3 start = Vec3.upFromBottomCenterOf(pBlockEntity.getBlockPos(), v);
+                    Vec3 mid = Vec3.atCenterOf(pBlockEntity.getBlockPos()).add(0, 1.625 + getReagent2BobHeight(world, pPartialTick), 0);
+
+                    pPoseStack.translate(0.5, v, 0.5);
+
+                    WorldRenderUtils.renderBeam(pBlockEntity.getLevel(), pPartialTick, pPoseStack, pBuffer, pPackedLight,
+                            start, mid, 1, new int[]{255, 255, 255}, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+
+                    pPoseStack.popPose();
+
                     for (int i = 0; i < 3; i++) {
                         double x = Math.cos(((Math.PI * 2) * i / 3) + getReagent1Rotation(world, pPartialTick)) * 1.4;
                         double z = Math.sin(((Math.PI * 2) * i / 3) + getReagent1Rotation(world, pPartialTick)) * 1.4;
@@ -168,6 +168,17 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
 
                         pPoseStack.popPose();
                     }
+                } else {
+                    pPoseStack.pushPose();
+                    Vec3 start = Vec3.upFromBottomCenterOf(pBlockEntity.getBlockPos(), v);
+                    Vec3 end = Vec3.atCenterOf(pBlockEntity.getBlockPos());
+
+                    pPoseStack.translate(0.5, v, 0.5);
+
+                    WorldRenderUtils.renderBeam(pBlockEntity.getLevel(), pPartialTick, pPoseStack, pBuffer, pPackedLight,
+                            start, end, 1, new int[]{255, 255, 255}, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+
+                    pPoseStack.popPose();
                 }
             }
 
