@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CirclePowerRouterBlockEntity;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -163,5 +164,11 @@ public class CirclePowerBlock extends BaseEntityBlock {
         offsets.add(new Pair<>(origin.west().north(), 7));
 
         return offsets;
+    }
+
+    public static void destroyRouters(LevelAccessor pLevel, BlockPos pPos) {
+        for (Pair<BlockPos, Integer> posAndType : getRouterOffsets()) {
+            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
+        }
     }
 }

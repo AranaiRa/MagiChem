@@ -2,7 +2,9 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.renderer.CirclePowerBlockEntityRenderer;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.gui.CirclePowerMenu;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -48,7 +50,7 @@ import java.util.Random;
 
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider {
+public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
     public static final int
         SLOT_COUNT = 9,
         SLOT_REAGENT_1 = 0, SLOT_REAGENT_2 = 1, SLOT_REAGENT_3 = 2, SLOT_REAGENT_4 = 3, SLOT_RECHARGE = 4,
@@ -681,5 +683,10 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider 
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,5,3));
+    }
+
+    @Override
+    public void destroyRouters() {
+        CirclePowerBlock.destroyRouters(getLevel(), getBlockPos());
     }
 }
