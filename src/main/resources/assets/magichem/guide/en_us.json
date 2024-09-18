@@ -638,7 +638,7 @@
         "value": "",
         "json": [
           {
-            "text": "A reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product that can be reprocessed back into the reagent with Constructs. One reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.\n\nBy default, each additional reagent supplied to the Circle of Power increases its power generation twelvefold. Power is generated based on the "
+            "text": "A reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product into a special slot that can be reprocessed back into the reagent with Constructs. If this slot is full, the waste product is ejected into the world instead.\n\nOne reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.\n\nBy default, each additional reagent supplied to the Circle of Power increases its power generation twelvefold. Power is generated based on the "
           },
           {
             "text": "number",
@@ -907,6 +907,143 @@
       {
         "type": "crafting",
         "location": "magichem:shaped/glass_cutting_tools"
+      }
+    ]
+  },
+  "Auxiliary Circle Array": {
+    "index": "1407",
+    "category": "magichem",
+    "tier": 5,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Auxiliary Circle Array"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An "
+          },
+          {
+            "text": "Auxiliary Circle Array",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is the final energy-generating reagent used in the Circle of Power. It can be made at Tier 5 by combining six "
+          },
+          {
+            "text": "Circle Projection Apparati",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in a Manaweaving Altar.\n\nCircle Projection Apparati can be made on the Alchemical Nexus.\n\nThe Array has a very long burn time and ejects six "
+          },
+          {
+            "text": "Ruined Projection Apparati",
+            "color": "dark_purple"
+          },
+          {
+            "text": " as a waste product.\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Reprocessing"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A Construct can grind a Ruined Projection Apparatus into five components: A "
+          },
+          {
+            "text": "Lightwracked Projection Gem",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a "
+          },
+          {
+            "text": "Dissonant Crystal Core",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a "
+          },
+          {
+            "text": "Befouled Projection Casing",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and two "
+          },
+          {
+            "text": "Contorted Pennons",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Each of these components must be repaired separately.\n\nThe Lightwracked Projection Gem can have its inner light quenched by processing it through Black on a Variegator.\n\nThe Dissonant Crystal Core can be re-harmonized by resonating it alongside a "
+          },
+          {
+            "text": "Harmoniscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on a Manaweaving Altar. The Harmoniscope is not consumed.\n\nThe Befouled Projection Casing can be purged of its impurities in a Runeforge.\n\nThe Contorted Pennons can be straightened out with several well placed hammer strikes against a "
+          },
+          {
+            "text": "Netherite Shaping Plane",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on a Runic Anvil. The Netherite Shaping Plane is not consumed.\n\nOnce all five components have been repaired, they can be crafted back into a "
+          },
+          {
+            "text": "Circle Projection Apparatus",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", six of which can be combined into a new Auxiliary Circle Array on a Manaweaving Altar."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/reagent_4_combination"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/auxiliary_circle_array_single"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/reagent_4_core_reprocessing"
+      },
+      {
+        "type": "arcane_furnace",
+        "location": "magichem:arcanefurnace/reagent_4_casing_reprocessing"
+      },
+      {
+        "type": "runesmithing",
+        "location": "magichem:runeforging/reagent_4_pennon_reprocessing"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/reagent_4_single_combination"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/harmoniscope"
+      },
+      {
+        "type": "runesmithing",
+        "location": "magichem:runeforging/netherite_shaping_plane"
       }
     ]
   },
@@ -3600,6 +3737,75 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/conjurer"
+      }
+    ]
+  },
+  "Budding Vinteum Crystal": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Budding Vinteum Crystal"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Amethyst crystals can be eternally harvested from Budding Amethyst, a strange mineral formation. Through some alchemical modification, the formation can be made to generate "
+          },
+          {
+            "text": "Vinteum in a crystalline state",
+            "color": "dark_purple"
+          },
+          {
+            "text": " instead.\n\nLike Budding Amethyst, crystal clusters will grow on exposed surfaces of the Budding Vinteum Crystal that can be harvested.\n\n"
+          },
+          {
+            "text": "Vinteum Crystal Shards",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be used for some magical purposes, made into decorative blocks, or "
+          },
+          {
+            "text": "crushed into Vinteum Dust",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Budding Amethyst can either be "
+          },
+          {
+            "text": "Alchemically Fabricated",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or collected by bringing the Budding Amethyst to life with "
+          },
+          {
+            "text": "Animus Dust",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", riding it on top of a torch, and then dismounting after a few seconds."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/vinteum_crystal_block_budding"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/vinteum_crystal_block"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/vinteum_crystal_shard_to_dust"
       }
     ]
   },
