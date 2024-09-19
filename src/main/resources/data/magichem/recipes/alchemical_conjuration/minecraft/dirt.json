@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "minecraft:dirt",
+  "materia": "magichem:essentia_earth",
+  "passive": {
+    "item": "minecraft:dirt",
+    "count": 1,
+    "period": 160
+  },
+  "supplied": {
+    "item": "minecraft:dirt",
+    "count": 16,
+    "period": 20,
+    "charge_usage": 1
+  }
+}
