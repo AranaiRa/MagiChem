@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "magichem:vinteum_crystal_block"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:vinteum_crystal_block"
+        }
+      ]
+    }
+  ]
+}
