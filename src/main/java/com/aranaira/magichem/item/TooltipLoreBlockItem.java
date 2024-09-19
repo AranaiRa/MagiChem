@@ -159,91 +159,88 @@ public class TooltipLoreBlockItem extends BlockItem {
     public InteractionResult place(BlockPlaceContext pContext) {
         ItemStack stack = pContext.getItemInHand();
 
-        CompoundTag nbt = stack.getOrCreateTag();
-        Item cachedItem = stack.getItem();
-        InteractionResult result = super.place(pContext);
+        if(stack.hasTag()) {
+            CompoundTag nbt = stack.getOrCreateTag();
+            Item cachedItem = stack.getItem();
+            InteractionResult result = super.place(pContext);
 
-        if(result != InteractionResult.FAIL) {
-            if (cachedItem == BlockRegistry.ALEMBIC.get().asItem()) {
-                AlembicBlockEntity abe = (AlembicBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(abe != null) {
-                    if (nbt.contains("inventory")) {
-                        abe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+            if (result != InteractionResult.FAIL) {
+                if (cachedItem == BlockRegistry.ALEMBIC.get().asItem()) {
+                    AlembicBlockEntity abe = (AlembicBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (abe != null) {
+                        if (nbt.contains("inventory")) {
+                            abe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("grime")) {
+                            GrimeProvider.getCapability(abe).setGrime(nbt.getInt("grime"));
+                        }
                     }
-                    if (nbt.contains("grime")) {
-                        GrimeProvider.getCapability(abe).setGrime(nbt.getInt("grime"));
+                } else if (cachedItem == BlockRegistry.CENTRIFUGE.get().asItem()) {
+                    CentrifugeBlockEntity cbe = (CentrifugeBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (cbe != null) {
+                        if (nbt.contains("inventory")) {
+                            cbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("grime")) {
+                            GrimeProvider.getCapability(cbe).setGrime(nbt.getInt("grime"));
+                        }
+                    }
+                } else if (cachedItem == BlockRegistry.DISTILLERY.get().asItem()) {
+                    DistilleryBlockEntity dbe = (DistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (dbe != null) {
+                        if (nbt.contains("inventory")) {
+                            dbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("grime")) {
+                            GrimeProvider.getCapability(dbe).setGrime(nbt.getInt("grime"));
+                        }
+                    }
+                } else if (cachedItem == BlockRegistry.FUSERY.get().asItem()) {
+                    FuseryBlockEntity abe = (FuseryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (abe != null) {
+                        if (nbt.contains("inventory")) {
+                            abe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("grime")) {
+                            GrimeProvider.getCapability(abe).setGrime(nbt.getInt("grime"));
+                        }
+                    }
+                } else if (cachedItem == BlockRegistry.ALCHEMICAL_NEXUS.get().asItem()) {
+                    AlchemicalNexusBlockEntity anbe = (AlchemicalNexusBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (anbe != null) {
+                        if (nbt.contains("inventory")) {
+                            anbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                    }
+                } else if (cachedItem == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
+                    GrandDistilleryBlockEntity gdbe = (GrandDistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (gdbe != null) {
+                        if (nbt.contains("inventory")) {
+                            gdbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("grime")) {
+                            GrimeProvider.getCapability(gdbe).setGrime(nbt.getInt("grime"));
+                        }
+                    }
+                } else if (cachedItem == BlockRegistry.VARIEGATOR.get().asItem()) {
+                    VariegatorBlockEntity vbe = (VariegatorBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (vbe != null) {
+                        if (nbt.contains("inventory")) {
+                            vbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("colors")) {
+                            vbe.unpackColorsFromCompoundTag(nbt.getCompound("colors"));
+                        }
+                    }
+                } else if (cachedItem == BlockRegistry.CONJURER.get().asItem()) {
+                    ConjurerBlockEntity cbe = (ConjurerBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (cbe != null) {
+                        cbe.unpackInventoryFromNBT(nbt);
                     }
                 }
             }
-            else if (cachedItem == BlockRegistry.CENTRIFUGE.get().asItem()) {
-                CentrifugeBlockEntity cbe = (CentrifugeBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(cbe != null) {
-                    if (nbt.contains("inventory")) {
-                        cbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
-                    }
-                    if (nbt.contains("grime")) {
-                        GrimeProvider.getCapability(cbe).setGrime(nbt.getInt("grime"));
-                    }
-                }
-            }
-            else if (cachedItem == BlockRegistry.DISTILLERY.get().asItem()) {
-                DistilleryBlockEntity dbe = (DistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(dbe != null) {
-                    if (nbt.contains("inventory")) {
-                        dbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
-                    }
-                    if (nbt.contains("grime")) {
-                        GrimeProvider.getCapability(dbe).setGrime(nbt.getInt("grime"));
-                    }
-                }
-            }
-            else if (cachedItem == BlockRegistry.FUSERY.get().asItem()) {
-                FuseryBlockEntity abe = (FuseryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(abe != null) {
-                    if (nbt.contains("inventory")) {
-                        abe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
-                    }
-                    if (nbt.contains("grime")) {
-                        GrimeProvider.getCapability(abe).setGrime(nbt.getInt("grime"));
-                    }
-                }
-            }
-            else if (cachedItem == BlockRegistry.ALCHEMICAL_NEXUS.get().asItem()) {
-                AlchemicalNexusBlockEntity anbe = (AlchemicalNexusBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(anbe != null) {
-                    if (nbt.contains("inventory")) {
-                        anbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
-                    }
-                }
-            }
-            else if (cachedItem == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
-                GrandDistilleryBlockEntity gdbe = (GrandDistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(gdbe != null) {
-                    if (nbt.contains("inventory")) {
-                        gdbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
-                    }
-                    if (nbt.contains("grime")) {
-                        GrimeProvider.getCapability(gdbe).setGrime(nbt.getInt("grime"));
-                    }
-                }
-            }
-            else if (cachedItem == BlockRegistry.VARIEGATOR.get().asItem()) {
-                VariegatorBlockEntity vbe = (VariegatorBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(vbe != null) {
-                    if (nbt.contains("inventory")) {
-                        vbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
-                    } if (nbt.contains("colors")) {
-                        vbe.unpackColorsFromCompoundTag(nbt.getCompound("colors"));
-                    }
-                }
-            }
-            else if (cachedItem == BlockRegistry.CONJURER.get().asItem()) {
-                ConjurerBlockEntity cbe = (ConjurerBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
-                if(cbe != null) {
-                    cbe.unpackInventoryFromNBT(nbt);
-                }
-            }
+            return result;
         }
-        return result;
+        return super.place(pContext);
     }
 }

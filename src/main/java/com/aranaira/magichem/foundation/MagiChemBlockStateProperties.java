@@ -16,6 +16,7 @@ public class MagiChemBlockStateProperties {
     public static final BooleanProperty STACKED = BooleanProperty.create("stacked");
 
     public static final IntegerProperty ACTUATOR_ELEMENT = IntegerProperty.create("element", 0, 6);
+    public static final IntegerProperty CANDLE_COUNT = IntegerProperty.create("candle_count", 1, 6);
     public static final IntegerProperty ROUTER_TYPE_ALCHEMICAL_NEXUS = IntegerProperty.create("alchemical_nexus_router_type", 0, 9);
     public static final IntegerProperty ROUTER_TYPE_CENTRIFUGE = IntegerProperty.create("centrifuge_router_type", 0, 3);
     public static final IntegerProperty ROUTER_TYPE_CONJURER = IntegerProperty.create("conjurer_router_type", 0, 2);

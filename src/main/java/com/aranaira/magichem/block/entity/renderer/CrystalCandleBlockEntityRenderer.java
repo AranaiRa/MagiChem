@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity.renderer;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ColoringCauldronBlockEntity;
 import com.aranaira.magichem.block.entity.CrystalCandleBlockEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.tools.math.MathUtils;
@@ -39,14 +40,32 @@ public class CrystalCandleBlockEntityRenderer implements BlockEntityRenderer<Cry
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
+        int count = state.getValue(MagiChemBlockStateProperties.CANDLE_COUNT);
 
         float rot = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 484) / 484f) * 360f;
         double bob = Math.sin(Math.toRadians(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 227) / 227d) * 360) * 0.03125;
 
-        pPoseStack.pushPose();
-        pPoseStack.translate(0.5, 0.25 + bob, 0.5);
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(rot));
-        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_CRYSTAL_CANDLE, pPoseStack, pPackedLight, pPackedOverlay);
-        pPoseStack.popPose();
+        if(count == 1) {
+            pPoseStack.pushPose();
+            pPoseStack.translate(0.5, 0.25 + bob, 0.5);
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(rot));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_CRYSTAL_CANDLE, pPoseStack, pPackedLight, pPackedOverlay);
+            pPoseStack.popPose();
+        } else {
+            float theta = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 1766) / 1766f) * 360f;
+
+            for(int i=0; i<count; i++) {
+                float thetaShift = (360f / count) * i;
+                int bobFlip = (i % 2) == 0 ? 1 : -1;
+
+                pPoseStack.pushPose();
+                pPoseStack.translate(0.5, 0.25 + bob * bobFlip, 0.5);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(theta + thetaShift));
+                pPoseStack.translate(0.25, 0, 0);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(rot));
+                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_CRYSTAL_CANDLE, pPoseStack, pPackedLight, pPackedOverlay);
+                pPoseStack.popPose();
+            }
+        }
     }
 }
