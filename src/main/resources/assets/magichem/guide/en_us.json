@@ -617,28 +617,42 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nOn the far right side of the GUI, items that "
+            "text": ":\n\n• "
+          },
+          {
+            "text": "Grains of Quicksilver",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at Tier 2\n\n• A "
+          },
+          {
+            "text": "Focusing Catalyst",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at Tier 3\n\n• An "
+          },
+          {
+            "text": "Amplifying Prism",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at Tier 4\n\n• An "
+          },
+          {
+            "text": "Auxiliary Circle Array",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at Tier 5.\n\nOn the far right side of the GUI, items that "
           },
           {
             "text": "hold an FE charge",
             "color": "dark_purple"
           },
           {
-            "text": " can be recharged."
-          }
-        ]
-      },
-      {
-        "type": "recipe",
-        "location": "magichem:shaped/circle_power",
-        "recipeType": "crafting"
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
-          {
-            "text": "A reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product into a special slot that can be reprocessed back into the reagent with Constructs. If this slot is full, the waste product is ejected into the world instead.\n\nOne reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.\n\nBy default, each additional reagent supplied to the Circle of Power increases its power generation twelvefold. Power is generated based on the "
+            "text": " can be recharged.\n\nA reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product into a special slot that can be reprocessed back into the reagent with Constructs. If this slot is full, the waste product is ejected into the world instead.\n\nOne reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.\n\nBy default, each additional reagent supplied to the Circle of Power increases its power generation twelvefold. Power is generated based on the "
           },
           {
             "text": "number",
@@ -652,7 +666,14 @@
             "italic": true
           },
           {
-            "text": " reagent present. For example, supplying the first two reagents will generate more power than supplying only the fourth reagent.\n\nThe Circle of Power only generates up to three ticks’ worth of FE."
+            "text": " reagent present. For example, supplying the first two reagents will generate more power than supplying only the fourth reagent.\n\nThe Circle of Power only generates up to three ticks’ worth of FE.\n\nAll waste products can be "
+          },
+          {
+            "text": "reprocessed",
+            "color": "dark_purple"
+          },
+          {
+            "text": " back into a usable reagent with some Construct labor; with well-constructed Construct logic no Circle of Power should require more than two of any individual reagent.\n\nOne Construct can handle the needs of the first two reagents, but the third and fourth require a dedicated Construct each."
           }
         ]
       }
@@ -3540,7 +3561,7 @@
         "value": "",
         "json": [
           {
-            "text": "In addition to its gravity-defying and color-transmitting properties, bleached amethyst is an ideal medium for alchemically-distilled light.\n\nThese hovering, glowing crystals can be used to light up a workshop with some magical flair."
+            "text": "In addition to its gravity-defying and color-transmitting properties, bleached amethyst is an ideal medium for alchemically-distilled light.\n\nThese hovering, glowing crystals can be used to light up a workshop with some magical flair.\n\nUp to six crystal candles can occupy the same block."
           }
         ]
       }
