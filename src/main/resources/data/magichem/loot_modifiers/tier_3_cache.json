@@ -1,0 +1,13 @@
+{
+  "type": "magichem:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "mna:structure/tier_3_cache"
+    }
+  ],
+  "item": "magichem:essentia_albedo",
+  "chance": 0.3,
+  "min": 2,
+  "max": 5
+}
