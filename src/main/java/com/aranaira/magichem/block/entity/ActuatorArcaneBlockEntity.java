@@ -187,6 +187,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -214,6 +215,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         else
             this.containedSlurry.setAmount(nbt.getInt("containedSlurry"));
         this.flags = nbt.getInt("flags");
+        this.isPaused = nbt.getBoolean("isPaused");
 
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
@@ -237,6 +239,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;

@@ -45,7 +45,11 @@ public class ActuatorEarthBlockEntityRenderer implements BlockEntityRenderer<Act
         pPoseStack.pushPose();
         PoseStack.Pose last = pPoseStack.last();
 
-        double depth = -0.625 * (pBlockEntity.stamperDepth + (pBlockEntity.stamperDepthNextTick - pBlockEntity.stamperDepth) * pPartialTick);
+        double depth;
+        if(pBlockEntity.getPaused())
+            depth = -0.625 * (pBlockEntity.stamperDepth);
+        else
+            depth = -0.625 * (pBlockEntity.stamperDepth + (pBlockEntity.stamperDepthNextTick - pBlockEntity.stamperDepth) * pPartialTick);
 
         switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case NORTH -> {

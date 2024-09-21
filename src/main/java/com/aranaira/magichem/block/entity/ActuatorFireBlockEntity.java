@@ -244,6 +244,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         nbt.putInt("remainingFuelTime", remainingFuelTime);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("flags", flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -269,6 +270,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         this.fuelDuration = nbt.getInt("fuelDuration");
         this.remainingFuelTime = nbt.getInt("remainingFuelTime");
         this.flags = nbt.getInt("flags");
+        this.isPaused = nbt.getBoolean("isPaused");
 
         int nbtSmoke = nbt.getInt("tankSmoke");
         if(nbtSmoke > 0)
@@ -299,6 +301,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         nbt.putInt("remainingFuelTime", remainingFuelTime);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("flags", flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;

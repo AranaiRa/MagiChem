@@ -103,7 +103,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
-                if (fire.getIsSatisfied() && pEntity.remainingTorque <= 20) {
+                if (fire.getIsSatisfied() && !fire.getPaused() && pEntity.remainingTorque <= 20) {
                     pEntity.remainingTorque = 100;
                     pEntity.operationTimeMod = fire.getReductionRate();
                     pEntity.syncAndSave();
@@ -119,7 +119,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
                 int pre = pEntity.batchSize;
 
-                if(air.getIsSatisfied()) {
+                if(air.getIsSatisfied() && !air.getPaused()) {
                     pEntity.batchSize = air.getBatchSize();
                 } else
                     pEntity.batchSize = 1;
@@ -516,7 +516,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     protected static void updateActuatorValues(AbstractFixationBlockEntity entity) {
         for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
-                entity.efficiencyMod = water.getIsSatisfied() ? water.getEfficiencyIncrease() : 0;
+                entity.efficiencyMod = (water.getIsSatisfied() && !water.getPaused()) ? water.getEfficiencyIncrease() : 0;
             }
         }
     }

@@ -194,6 +194,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putInt("tankWater", this.containedWater.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -217,6 +218,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
         this.flags = nbt.getInt("flags");
+        this.isPaused = nbt.getBoolean("isPaused");
 
         int nbtWater = nbt.getInt("tankWater");
         if(nbtWater > 0)
@@ -252,6 +254,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putInt("tankWater", this.containedWater.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;

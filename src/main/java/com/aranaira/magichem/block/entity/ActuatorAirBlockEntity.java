@@ -237,6 +237,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -261,6 +262,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
         this.isGasSatisfied = nbt.getBoolean("isGasSatisfied");
         this.flags = nbt.getInt("flags");
+        this.isPaused = nbt.getBoolean("isPaused");
 
         int nbtSmoke = nbt.getInt("tankSmoke");
         if(nbtSmoke > 0)
@@ -299,6 +301,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;

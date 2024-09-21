@@ -169,6 +169,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
         nbt.putInt("flags", flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         super.saveAdditional(nbt);
@@ -195,6 +196,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         this.currentGrime = nbt.getInt("currentGrime");
         this.currentRarefiedGrime = nbt.getInt("currentRarefiedGrime");
         this.flags = nbt.getInt("flags");
+        this.isPaused = nbt.getBoolean("isPaused");
 
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
@@ -219,6 +221,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
         nbt.putInt("flags", flags);
+        nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
         return nbt;
@@ -318,6 +321,9 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public void handleAnimationDrivers() {
+        if(isPaused)
+            return;
+
         boolean doDriverUpdate = true;
 
         if((!getIsSatisfied() || (remainingSand < getSandPerOperation()))) {
