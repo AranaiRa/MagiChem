@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "entries": [
+    "magichem:ma_structure_loot",
+    "magichem:tier_1_cache",
+    "magichem:tier_2_cache",
+    "magichem:tier_3_cache",
+    "magichem:tier_4_cache",
+    "magichem:tier_5_cache"
+  ]
+}
