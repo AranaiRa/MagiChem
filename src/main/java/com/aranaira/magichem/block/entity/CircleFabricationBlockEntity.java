@@ -194,7 +194,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
 
-        getCurrentRecipe();
+        if(getLevel() != null)
+            getCurrentRecipe();
     }
 
     public static int getScaledProgress(CircleFabricationBlockEntity entity) {
