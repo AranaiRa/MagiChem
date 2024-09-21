@@ -16,6 +16,9 @@ public class CommonEventHelper {
             if(player != null) {
                 if (!player.isCreative()) {
                     stackToDamage.setDamageValue(stackToDamage.getDamageValue() + 1);
+                    if(stackToDamage.getDamageValue() >= stackToDamage.getMaxDamage()) {
+                        stackToDamage.shrink(1);
+                    }
                 }
             }
         }
