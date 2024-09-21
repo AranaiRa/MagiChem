@@ -78,6 +78,27 @@ public class ColoringCauldronBlock extends BaseEntityBlock {
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof ColoringCauldronBlockEntity ccbe) {
+            final boolean hasColors = ccbe.getBitpackedColors() > 0;
+            final boolean hasItem = ccbe.hasItem();
+            final boolean readyToCollect = ccbe.isReadyToCollect();
+
+            if(hasColors && !hasItem && !readyToCollect) return 1;
+            else if(readyToCollect) return 15;
+            else if(!hasColors && hasItem) return 4;
+            else if(hasItem && hasColors && !readyToCollect) return 8;
+        }
+        return 0;
+    }
+
     static {
         VOXEL_SHAPE_FOOT_NS = Block.box(6, 0, 0, 10, 2, 16);
         VOXEL_SHAPE_FOOT_EW = Block.box(0, 0, 6, 16, 2, 10);
