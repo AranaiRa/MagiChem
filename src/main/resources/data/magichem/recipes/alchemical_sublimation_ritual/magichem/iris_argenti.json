@@ -2,7 +2,7 @@
   "type": "magichem:sublimation_ritual",
   "object": {
     "item": "magichem:iris_argenti",
-    "count": 9
+    "count": 10
   },
   "materia_type_one": { "item": "magichem:admixture_change", "count": 18 },
   "materia_type_two": { "item": "magichem:admixture_mana", "count": 18 },
