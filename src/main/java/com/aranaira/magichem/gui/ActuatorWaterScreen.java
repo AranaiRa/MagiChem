@@ -238,9 +238,9 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.fire").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.water").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line1.fire")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line1.water")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
                     .append(Component.translatable("tooltip.magichem.gui.actuator.cycleconsumption.line2a"))
