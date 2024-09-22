@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.foundation.IScannableByMateriaManifest;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.MateriaManifestMenu;
+import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.ItemInit;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -66,6 +66,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
     };
 
     private List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity>> materiaStorageInZone = new ArrayList<>();
+    public AbstractMateriaStorageBlockEntity tetherTarget = null;
 
     public MateriaManifestBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.MATERIA_MANIFEST_BE.get(), pos, state);
@@ -112,9 +113,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
                 }
             }
 
-            Collections.sort(materiaStorageInZone, Comparator.comparing(o -> o.getFirst().getMateriaName()));
-
-            int a = 0;
+            Collections.sort(materiaStorageInZone, Comparator.comparing(o -> (o.getFirst() instanceof EssentiaItem ? "a_" : "z_") + o.getFirst().getMateriaName()));
         }
     }
 

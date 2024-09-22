@@ -8,6 +8,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
@@ -36,6 +37,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 materiaMap.put(key, new ItemStack(baseMateriaMap.get(key)));
             }
         }
+        menu.blockEntity.tetherTarget = null;
     }
 
     private void updateStorageScan() {
@@ -49,6 +51,33 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     @Override
     protected void init() {
         super.init();
+        initializeButtons();
+    }
+
+    private void initializeButtons() {
+        for(int i=0; i<32; i++) {
+            int buttonX = this.leftPos - 16 + ((i / 8) * 54);
+            int buttonY = this.topPos - 6 + ((i % 8) * 23);
+
+            int finalI = i;
+            this.addRenderableWidget(new ImageButton(buttonX, buttonY, 18, 18, 24, 218, TEXTURE, button -> {
+                setTetherTarget(finalI);
+            }));
+        }
+
+        //next page button
+        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos + 177, 12, 7, 12, 242, TEXTURE, button -> {
+            pageIndex = Math.min(pageIndex + 1, pageCount - 1);
+        }));
+
+        //previous page button
+        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos - 17, 12, 7, 0, 242, TEXTURE, button -> {
+            pageIndex = Math.max(pageIndex - 1, 0);
+        }));
+    }
+
+    private void setTetherTarget(int pButtonID) {
+        menu.blockEntity.tetherTarget = materiaStorageInZone.get(pButtonID + (32 * pageIndex)).getThird();
     }
 
     @Override
@@ -65,11 +94,14 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
 
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, w, h);
 
-        for(int i=0; i<materiaStorageInZone.size(); i++) {
-            int itemX = x +  8 + ((i / 8) * 54);
-            int itemY = y + 18 + ((i % 8) * 23);
-            int barX = x + 29 + ((i / 8) * 54);
-            int barY = y + 31 + ((i % 8) * 23);
+        int startIndex = pageIndex * 32;
+        int endIndex = (materiaStorageInZone.size() - startIndex) > 32 ? startIndex + 32 : materiaStorageInZone.size();
+
+        for(int i=startIndex; i<endIndex; i++) {
+            int itemX = x +  8 + (((i - startIndex) / 8) * 54);
+            int itemY = y + 18 + (((i - startIndex) % 8) * 23);
+            int barX = x + 29 + (((i - startIndex) / 8) * 54);
+            int barY = y + 31 + (((i - startIndex) % 8) * 23);
 
             final Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity> entry = materiaStorageInZone.get(i);
             MateriaItem mi = entry.getFirst();
@@ -82,7 +114,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 int colorInt = mi.getMateriaColor();
                 int intR = (colorInt & 0x00ff0000) >> 16;
                 int intG = (colorInt & 0x0000ff00) >> 8;
-                int intB = (colorInt & 0x000000ff) >> 0;
+                int intB = (colorInt & 0x000000ff);
 
                 float r = (float)intR / 255f;
                 float g = (float)intG / 255f;
@@ -106,9 +138,12 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
 
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-        for(int i=0; i<materiaStorageInZone.size(); i++) {
-            int counterX =  6 + ((i / 8) * 54);
-            int counterY = -4 + ((i % 8) * 23);
+        int startIndex = pageIndex * 32;
+        int endIndex = (materiaStorageInZone.size() - startIndex) > 32 ? startIndex + 32 : materiaStorageInZone.size();
+
+        for(int i=startIndex; i<endIndex; i++) {
+            int counterX =  6 + (((i - startIndex) / 8) * 54);
+            int counterY = -4 + (((i - startIndex) % 8) * 23);
 
             int mLimit = materiaStorageInZone.get(i).getThird().getCurrentStock();
 

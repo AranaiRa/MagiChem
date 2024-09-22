@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "QQQ",
+    " L ",
+    " T "
+  ],
+  "key": {
+    "Q": {
+      "item": "mna:transmuted_silver"
+    },
+    "L": {
+      "item": "mna:filter_item"
+    },
+    "T": {
+      "item": "mna:basic_table"
+    }
+  },
+  "result": {
+    "item": "magichem:materia_manifest"
+  }
+}
