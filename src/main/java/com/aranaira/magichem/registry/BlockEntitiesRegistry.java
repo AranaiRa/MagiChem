@@ -66,6 +66,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(ConjurerRouterBlockEntity::new, BlockRegistry.CONJURER_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<MateriaManifestBlockEntity>> MATERIA_MANIFEST_BE = BLOCK_ENTITIES.register("materia_manifest", () ->
+            BlockEntityType.Builder.of(MateriaManifestBlockEntity::new, BlockRegistry.MATERIA_MANIFEST.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<CircleFabricationBlockEntity>> CIRCLE_FABRICATION_BE = BLOCK_ENTITIES.register("circle_fabrication", () ->
             BlockEntityType.Builder.of(CircleFabricationBlockEntity::new, BlockRegistry.CIRCLE_FABRICATION.get()).build(null)
     );

@@ -1,0 +1,24 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "textures": {
+    "particle": "mna:block/artifice/wizard_lab/laboratory_thesisdesk"
+  },
+  "children": {
+    "part1": {
+      "loader": "forge:obj",
+      "automatic_culling": false,
+      "shade_quads": true,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "magichem:models/obj/materia_manifest.obj"
+    }
+  },
+  "display": {
+    "gui": {
+      "rotation": [29, 45, 0],
+      "scale": [0.5, 0.5, 0.5],
+      "translation": [0, -2, 0]
+    }
+  }
+}

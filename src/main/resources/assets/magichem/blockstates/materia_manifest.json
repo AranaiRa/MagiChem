@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/materia_manifest"
+    },
+    "facing=east": {
+      "model": "magichem:block/materia_manifest",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/materia_manifest",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/materia_manifest",
+      "y": 270
+    }
+  }
+}

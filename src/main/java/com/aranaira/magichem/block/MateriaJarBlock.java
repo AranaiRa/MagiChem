@@ -3,6 +3,7 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.MateriaJarBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.foundation.IScannableByMateriaManifest;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
@@ -35,7 +36,7 @@ import java.util.List;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.STACKED;
 
-public class MateriaJarBlock extends BaseEntityBlock {
+public class MateriaJarBlock extends BaseEntityBlock implements IScannableByMateriaManifest {
     public MateriaJarBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(STACKED, false));

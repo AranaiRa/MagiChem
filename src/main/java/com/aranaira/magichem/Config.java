@@ -320,6 +320,20 @@ public class Config
             .comment("The number of points that a single dram of materia adds to the materia gauge.")
             .defineInRange("conjurerPointsPerDram", 4, 1, Integer.MAX_VALUE);
 
+    //----------------MATERIA MANIFEST
+
+    private static final ForgeConfigSpec.IntValue MATERIA_MANIFEST_SIZE_CONSTRAINT = BUILDER
+            .comment("The maximum length in any one axis that the Materia Manifest will allow from a Rune of Marking Pair.")
+            .defineInRange("materiaManifestSizeConstraint", 40, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue MATERIA_MANIFEST_DISTANCE_LIMIT = BUILDER
+            .comment("The maximum distance from the center of the Rune of Marking Pair that a Materia Manifest can be. Set to 0 for no limit.")
+            .defineInRange("materiaManifestDistanceLimit", 50, 0, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue MATERIA_MANIFEST_DEFAULT_RANGE = BUILDER
+            .comment("The default cuboid range that a Materia Manifest searches for containers in. The center block is not counted as part of this squadius.")
+            .defineInRange("materiaManifestDefaultRange", 8, 1, Integer.MAX_VALUE);
+
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -388,7 +402,10 @@ public class Config
         variegatorMaxAdmixture,
         variegatorAdmixturePerItem,
         conjurerMateriaCapacity,
-        conjurerPointsPerDram;
+        conjurerPointsPerDram,
+        materiaManifestSizeConstraint,
+        materiaManifestDistanceLimit,
+        materiaManifestDefaultRange;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -464,5 +481,8 @@ public class Config
         variegatorAdmixturePerItem = VARIEGATOR_ADMIXTURE_PER_ITEM.get();
         conjurerMateriaCapacity = CONJURER_MATERIA_CAPACITY.get();
         conjurerPointsPerDram = CONJURER_POINTS_PER_DRAM.get();
+        materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
+        materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
+        materiaManifestDefaultRange = MATERIA_MANIFEST_DEFAULT_RANGE.get();
     }
 }

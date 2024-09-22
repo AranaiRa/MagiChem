@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl DECO.001
+map_Kd mna:block/artifice/wizard_lab/inscription_table_deco
+
+newmtl MAIN
+map_Kd mna:block/material/occulus
+
+newmtl THESIS_DESK
+map_Kd mna:block/artifice/wizard_lab/laboratory_thesisdesk
