@@ -405,6 +405,24 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             }
         }
 
+        //Item ghosts
+        if(menu.blockEntity.getCurrentRecipe() != null) {
+            if (mouseX >= x + 24 && mouseX <= x + 60 &&
+                    mouseY >= y + 22 && mouseY <= y + 111) {
+                int recipeIndex = (mouseY - (y + 22)) / 18;
+                int left = mouseX <= x + 42 ? 0 : 1;
+                int slotIndex = recipeIndex * 2 + left;
+
+                ItemStack stackInSlot = menu.inputSlots[slotIndex].getItem();
+
+                if(stackInSlot.isEmpty() && recipeIndex < menu.blockEntity.getCurrentRecipe().getComponentMateria().size()) {
+                    String name = menu.blockEntity.getCurrentRecipe().getComponentMateria().get(recipeIndex).getDisplayName().getString();
+                    tooltipContents.add(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY));
+                }
+
+            }
+        }
+
         //Efficiency
         if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
                 mouseY >= y+TOOLTIP_EFFICIENCY_Y && mouseY <= y+TOOLTIP_EFFICIENCY_Y+TOOLTIP_EFFICIENCY_H) {

@@ -300,6 +300,23 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     // DATA SLOT HANDLING
     ////////////////////
 
+    @Nullable
+    public FixationSeparationRecipe getCurrentRecipe() {
+        if(currentRecipe == null) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            }
+        } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            }
+        }
+
+        return currentRecipe;
+    }
+
     @Override
     public int getGrimeFromData() {
         return data.get(DATA_GRIME);
