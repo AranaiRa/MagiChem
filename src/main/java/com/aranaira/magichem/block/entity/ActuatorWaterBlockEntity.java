@@ -390,6 +390,9 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorWaterBlockEntity entity) {
+        if(entity.getWaterInTank() == 0)
+            return;
+
         boolean changed = AbstractDirectionalPluginBlockEntity.delegatedTick(level, pos, state, entity,
                 ActuatorWaterBlockEntity::getValue,
                 ActuatorWaterBlockEntity::getAffinity,
