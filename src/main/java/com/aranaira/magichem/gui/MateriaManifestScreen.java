@@ -7,6 +7,8 @@ import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -17,8 +19,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManifestMenu> {
     private static final ResourceLocation TEXTURE =
@@ -154,5 +158,32 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     @Override
     protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
         super.renderTooltip(pGuiGraphics, pX, pY);
+        Font font = Minecraft.getInstance().font;
+        List<Component> tooltipContents = new ArrayList<>();
+
+        int x = (width - 222) / 2;
+        int y = (height - 213) / 2;
+
+        int leftStart = x + 7;
+        int topStart = y + 17;
+        int buttonSize = 18;
+        int paddingX = 36;
+        int paddingY = 5;
+
+        int columnID = (pX - leftStart) / (buttonSize + paddingX);
+        int columnMod = (pX - leftStart) % (buttonSize + paddingX);
+        int rowID = (pY - topStart) / (buttonSize + paddingY);
+        int rowMod = (pY - topStart) % (buttonSize + paddingY);
+
+        if(pX >= leftStart && pY >= topStart && columnMod <= buttonSize && rowMod <= buttonSize) {
+            int index = columnID * 8 + rowID + pageIndex * 32;
+
+            if(index < materiaStorageInZone.size())
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("item.magichem."+materiaStorageInZone.get(index).getFirst().toString()))
+            );
+        }
+
+        pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
     }
 }
