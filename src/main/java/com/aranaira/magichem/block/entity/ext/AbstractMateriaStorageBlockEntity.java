@@ -65,6 +65,7 @@ public abstract class AbstractMateriaStorageBlockEntity extends BlockEntity impl
 
     public int drain(int amount) {
         syncAndSave();
+
         int test = currentStock - amount;
         int actual = amount;
         if(test <= 0) {
@@ -169,11 +170,13 @@ public abstract class AbstractMateriaStorageBlockEntity extends BlockEntity impl
         return insertMateria(new ItemStack(currentMateriaType, amount));
     }
 
-    public ItemStack extractMateria(int amount) {
+    public ItemStack extractMateria(int amount, boolean leaveOne) {
         if(currentMateriaType == null)
             return ItemStack.EMPTY;
 
         int extractedAmount = Math.min(currentStock, amount);
+        if(leaveOne && (extractedAmount == currentStock))
+            extractedAmount -= 1;
         ItemStack extractedMateria = new ItemStack(currentMateriaType, extractedAmount);
 
         if(currentStock - extractedAmount <= 0) {

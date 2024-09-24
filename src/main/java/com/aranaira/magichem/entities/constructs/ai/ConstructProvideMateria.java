@@ -46,7 +46,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
     private MateriaItem filter;
     private ETaskPhase phase = ETaskPhase.SETUP;
     private int waitTimer, craftCount;
-    private boolean isAdvancedMode = false, deliverPartialLoad = false;
+    private boolean isAdvancedMode = false, leaveOneInContainer = false;
     private static final Random r = new Random();
 
     public ConstructProvideMateria(IConstruct<?> construct, ResourceLocation guiIcon) {
@@ -149,7 +149,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
 
                                     int collectionLimit = Math.min(required * craftCount, getCollectionLimit());
                                     if(jarTargetEntity.getMateriaType() == filter) {
-                                        final ItemStack extracted = jarTargetEntity.extractMateria(collectionLimit);
+                                        final ItemStack extracted = jarTargetEntity.extractMateria(collectionLimit, leaveOneInContainer);
                                         CompoundTag nbt = construct.asEntity().getPersistentData();
                                         nbt.put("transitMateria", extracted.serializeNBT());
 
@@ -247,7 +247,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
 
                                 int collectionLimit = Math.min(required * (impr.allowIncreasedDeliverySize() ? craftCount : 1), getCollectionLimit());
                                 if (jarTargetEntity.getMateriaType() == filter) {
-                                    ItemStack extracted = jarTargetEntity.extractMateria(collectionLimit);
+                                    ItemStack extracted = jarTargetEntity.extractMateria(collectionLimit, leaveOneInContainer);
                                     this.waitTimer = Math.round(extracted.getCount() * 1.5f) + 22;
 
                                     if(extracted.getCount() > 0) {
@@ -364,7 +364,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
             this.area = task.area;
             this.deviceTargetPos = task.deviceTargetPos;
             this.craftCount = task.craftCount;
-            this.deliverPartialLoad = task.deliverPartialLoad;
+            this.leaveOneInContainer = task.leaveOneInContainer;
         }
 
         return this;
@@ -385,7 +385,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
         parameters.add(new ConstructTaskPointParameter("provide_materia.point"));
         parameters.add(new ConstructTaskAreaParameter("provide_materia.area"));
         parameters.add(new ConstructTaskIntegerParameter("provide_materia.int", 1, 10, 1, 1));
-        parameters.add(new ConstructTaskBooleanParameter("provide_materia.boolean", false));
+        parameters.add(new ConstructTaskBooleanParameter("provide_materia.boolean", true));
         return parameters;
     }
 
@@ -416,7 +416,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
 
         this.getParameter("provide_materia.boolean").ifPresent((param) -> {
             if(param instanceof ConstructTaskBooleanParameter booleanParam) {
-                this.deliverPartialLoad = booleanParam.getValue();
+                this.leaveOneInContainer = booleanParam.getValue();
             }
         });
     }

@@ -70,7 +70,7 @@ public class CommonEventHandler {
         if(target instanceof AbstractMateriaStorageBlockEntity amsbe) {
             if(stack.getItem() == Items.GLASS_BOTTLE) {
                 if(amsbe.getMateriaType() != null) {
-                    ItemStack extracted = amsbe.extractMateria(stack.getCount());
+                    ItemStack extracted = amsbe.extractMateria(stack.getCount(), false);
                     stack.shrink(extracted.getCount());
 
                     ItemEntity ie = new ItemEntity(event.getLevel(),

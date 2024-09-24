@@ -404,14 +404,14 @@ public class RitualEffectAlchemicalSublimation extends RitualEffect {
 
         //Deduct materia from vessels
         if(recipe.getComponentMateria().getFirst().getItem() == lv.vesselBlockEntity.getMateriaType())
-            lv.vesselBlockEntity.extractMateria(recipe.getComponentMateria().getFirst().getCount());
+            lv.vesselBlockEntity.extractMateria(recipe.getComponentMateria().getFirst().getCount(), false);
         else if(recipe.getComponentMateria().getFirst().getItem() == rv.vesselBlockEntity.getMateriaType())
-            rv.vesselBlockEntity.extractMateria(recipe.getComponentMateria().getFirst().getCount());
+            rv.vesselBlockEntity.extractMateria(recipe.getComponentMateria().getFirst().getCount(), false);
 
         if(recipe.getComponentMateria().getSecond().getItem() == lv.vesselBlockEntity.getMateriaType())
-            lv.vesselBlockEntity.extractMateria(recipe.getComponentMateria().getSecond().getCount());
+            lv.vesselBlockEntity.extractMateria(recipe.getComponentMateria().getSecond().getCount(), false);
         else if(recipe.getComponentMateria().getSecond().getItem() == rv.vesselBlockEntity.getMateriaType())
-            rv.vesselBlockEntity.extractMateria(recipe.getComponentMateria().getSecond().getCount());
+            rv.vesselBlockEntity.extractMateria(recipe.getComponentMateria().getSecond().getCount(), false);
 
         //Queue up the shlorps
         DelayedEventQueue.pushEvent(context.getLevel(),
