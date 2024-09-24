@@ -1907,7 +1907,7 @@
     ]
   },
   "Grime": {
-    "index": "1212",
+    "index": "1213",
     "category": "magichem",
     "sections": [
       {
@@ -2551,7 +2551,7 @@
     ]
   },
   "Alchemical Waste": {
-    "index": "1213",
+    "index": "1214",
     "category": "magichem",
     "sections": [
       {
@@ -2588,7 +2588,7 @@
     ]
   },
   "Rarefied Waste": {
-    "index": "1214",
+    "index": "1215",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -2629,6 +2629,53 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/temp_actuator_earth"
+      }
+    ]
+  },
+  "Materia Manifest": {
+    "index": "1212",
+    "category": "magichem",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Materia Manifest"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Critical to any well-organized laboratory, a "
+          },
+          {
+            "text": "Materia Manifest",
+            "color": "dark_purple"
+          },
+          {
+            "text": " lists every type of materia stored in nearby Materia Jars or Materia Vessels. Essentia is listed first, and then Admixtures, both in alphabetical order.\n\nClicking on any of the listed types of materia will cause the Materia Manifest to "
+          },
+          {
+            "text": "emit a beam",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from itself to the Jar or Vessel that contains that Materia. This beam persists until you open the Materia Manifest again or until the chunk the Materia Manifest is in unloads.\n\nBy default, a Materia Manifest will scan all Jars and Vessels within 8 blocks of itself. If you activate the Maniest while holding a "
+          },
+          {
+            "text": "Rune of Marking Pair",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", the Manifest will begin monitoring Jars and Vessels in that area instead.\n\nThe materia totals listed in the Materia Manifest are only accurate at the time you open the Manifest; it will not actively update if the contents of Jars or Vessels change while you're looking at its GUI."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/materia_manifest"
       }
     ]
   },
