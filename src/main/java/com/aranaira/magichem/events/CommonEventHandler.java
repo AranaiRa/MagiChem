@@ -1,5 +1,6 @@
 package com.aranaira.magichem.events;
 
+import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.*;
@@ -45,9 +46,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
@@ -175,6 +178,27 @@ public class CommonEventHandler {
                 } else {
                     eebe.ejectStack(event.getEntity().getOnPos().above());
                 }
+            }
+        } else if(target instanceof MateriaManifestBlockEntity || target instanceof MateriaManifestRouterBlockEntity) {
+            if(!event.getLevel().isClientSide() && stack.getItem() == ItemInit.RUNE_MARKING_PAIR.get()) {
+                int exitCode = -1;
+                if(target instanceof MateriaManifestBlockEntity mmbe) {
+                    exitCode = mmbe.setMarkingPair(stack);
+                } else {
+                    exitCode = ((MateriaManifestRouterBlockEntity)target).getMaster().setMarkingPair(stack);
+                }
+                if(exitCode == 0) {
+                    event.getEntity().sendSystemMessage(Component.translatable("feedback.block.materiamanifest.accepted"));
+                } else if(exitCode == 1) {
+                    event.getEntity().sendSystemMessage(Component.translatable("feedback.block.materiamanifest.toofar"));
+                } else if(exitCode == 2) {
+                    event.getEntity().sendSystemMessage(Component.empty()
+                            .append(Component.translatable("feedback.block.materiamanifest.toobig.part1"))
+                            .append("" + Config.materiaManifestSizeConstraint)
+                            .append(Component.translatable("feedback.block.materiamanifest.toobig.part2"))
+                    );
+                }
+                event.setCanceled(true);
             }
         }
     }

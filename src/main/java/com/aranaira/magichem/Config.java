@@ -328,7 +328,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue MATERIA_MANIFEST_DISTANCE_LIMIT = BUILDER
             .comment("The maximum distance from the center of the Rune of Marking Pair that a Materia Manifest can be. Set to 0 for no limit.")
-            .defineInRange("materiaManifestDistanceLimit", 50, 0, Integer.MAX_VALUE);
+            .defineInRange("materiaManifestDistanceLimit", 150, 0, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue MATERIA_MANIFEST_DEFAULT_RANGE = BUILDER
             .comment("The default cuboid range that a Materia Manifest searches for containers in. The center block is not counted as part of this squadius.")

@@ -70,6 +70,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(MateriaManifestBlockEntity::new, BlockRegistry.MATERIA_MANIFEST.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<MateriaManifestRouterBlockEntity>> MATERIA_MANIFEST_ROUTER_BE = BLOCK_ENTITIES.register("materia_manifest_router", () ->
+            BlockEntityType.Builder.of(MateriaManifestRouterBlockEntity::new, BlockRegistry.MATERIA_MANIFEST_ROUTER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<CircleFabricationBlockEntity>> CIRCLE_FABRICATION_BE = BLOCK_ENTITIES.register("circle_fabrication", () ->
             BlockEntityType.Builder.of(CircleFabricationBlockEntity::new, BlockRegistry.CIRCLE_FABRICATION.get()).build(null)
     );

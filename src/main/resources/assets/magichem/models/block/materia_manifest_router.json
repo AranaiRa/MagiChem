@@ -1,0 +1,6 @@
+{
+  "parent": "magichem:block/materia_manifest",
+  "textures": {
+    "particle": "mna:block/artifice/wizard_lab/laboratory_thesisdesk"
+  }
+}

@@ -113,6 +113,7 @@
   "block.magichem.grand_fusery_router": "Grand Fusery",
   "block.magichem.materia_jar": "Materia Jar",
   "block.magichem.materia_manifest": "Materia Manifest",
+  "block.magichem.materia_manifest_router": "Materia Manifest",
   "block.magichem.materia_vessel": "Materia Vessel",
   "block.magichem.occulted_cinder": "Occulted Cinder",
   "block.magichem.power_spike": "Power Spike",
@@ -333,6 +334,10 @@
   "feedback.ritual.sublimation.insufficient.and": " and ",
   "feedback.ritual.sublimation.insufficient.more": " more ",
   "feedback.ritual.sublimation.materia_in_ingredient": "One of the supplied ingredients is a Materia Jar or Materia Vessel that contains materia. Please empty the container out before using it as an ingredient.",
+  "feedback.block.materiamanifest.accepted": "The Materia Manifest will now monitor Jars and Vessels in the Rune of Marking Pair's designated area.",
+  "feedback.block.materiamanifest.toofar": "The designated area is too far from the Materia Manifest.",
+  "feedback.block.materiamanifest.toobig.part1": "The designated area is too large. The maximum allowable size on each axis is ",
+  "feedback.block.materiamanifest.toobig.part2": " blocks.",
 
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",
@@ -647,7 +652,7 @@
   "gui.mna.parameter.provide_materia.point": "What alchemical device should the construct provide materia to?",
   "gui.mna.parameter.provide_materia.area": "What area should the construct look for Materia Vessels inside of?",
   "gui.mna.parameter.provide_materia.int": "How many crafts worth of materia should the construct try to transport at once?",
-  "gui.mna.parameter.provide_materia.boolean": "If the construct can't find all of the materia necessary, should it deliver what it can find anyway?",
+  "gui.mna.parameter.provide_materia.boolean": "Should the construct always make sure to leave at least 1 Materia in the Jar or Vessel?",
 
   "gui.mna.parameter.query_check_vessel.point": "What Materia Vessel should the construct look at?",
   "gui.mna.parameter.query_check_vessel.int": "What percentage full must the Materia Vessel be?",
