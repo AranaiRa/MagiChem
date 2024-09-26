@@ -639,6 +639,7 @@
   "construct.magichem:query_has_grime_level": "Condition: Has Grime Level",
   "construct.magichem:collect_experience": "Collect Experience",
   "construct.magichem:study": "Study",
+  "construct.magichem:harvest_crystals": "Harvest Crystals",
 
   "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
   "gui.mna.codex_search.recipe.sublimation_ritual": "Ritual Sublimation > ",
@@ -663,6 +664,8 @@
   "gui.mna.parameter.collect_experience.area": "What area should the construct look for experience orbs within?",
 
   "gui.mna.parameter.study.point": "Where is the Study Desk that the construct should study at?",
+
+  "gui.mna.parameter.harvest_crystals.area": "In what area should the construct look for fully-grown crystal buds to break?",
 
   "hud.magichem.coloring_cauldron.current_item.processing": "Coloring ",
   "hud.magichem.coloring_cauldron.current_item.waiting": " Complete",

@@ -2295,6 +2295,40 @@
     ],
     "related_recipes": []
   },
+  "Command: Harvest Crystals": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Command: Harvest Crystals"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This command will cause the construct to seek out and break "
+          },
+          {
+            "text": "fully grown crystal clusters",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in a defined area.\n\nIt requires a "
+          },
+          {
+            "text": "mana cannon arm",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Firing magical sound waves through the mana cannon allows the construct to shatter the crystal clusters at a distance, perfect for reaching those pesky clusters on the ceilings of a geode."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Condition: Check Vessel Fill": {
     "index": "4",
     "category": "constructs",
@@ -2667,7 +2701,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ", the Manifest will begin monitoring Jars and Vessels in that area instead.\n\nThe materia totals listed in the Materia Manifest are only accurate at the time you open the Manifest; it will not actively update if the contents of Jars or Vessels change while you're looking at its GUI."
+            "text": ", the Manifest will begin monitoring Jars and Vessels in that area instead."
           }
         ]
       }
