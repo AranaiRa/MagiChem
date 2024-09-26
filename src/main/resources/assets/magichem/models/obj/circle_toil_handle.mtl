@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl CHIMERITE
+map_Kd mna:block/oreblockchimerite
+
+newmtl CIRCLE_TOIL
+map_Kd magichem:block/circle_toil
+
+newmtl LODESTAR
+map_Kd mna:block/material/lodestar

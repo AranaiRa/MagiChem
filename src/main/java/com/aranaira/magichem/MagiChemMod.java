@@ -184,6 +184,8 @@ public class MagiChemMod
 
             event.register(CrystalCandleBlockEntityRenderer.RENDERER_CRYSTAL_CANDLE);
 
+            event.register(CircleToilBlockEntityRenderer.RENDERER_MODEL_HANDLE);
+
             event.register(CirclePowerBlockEntityRenderer.RENDERER_MODEL_REAGENT_2);
             event.register(CirclePowerBlockEntityRenderer.RENDERER_MODEL_REAGENT_3);
             event.register(CirclePowerBlockEntityRenderer.RENDERER_MODEL_REAGENT_4);

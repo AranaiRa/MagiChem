@@ -2,7 +2,7 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "magichem:block/breakparticle_darkwood"
+    "particle": "magichem:block/breakparticle_deepslate"
   },
   "children": {
     "part1": {
@@ -11,14 +11,14 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/materia_manifest.obj"
+      "model": "magichem:models/obj/circle_toil_body.obj"
     }
   },
   "display": {
     "gui": {
       "rotation": [29, 45, 0],
-      "scale": [0.5, 0.5, 0.5],
-      "translation": [0, -3, 0]
+      "scale": [1, 1, 1],
+      "translation": [0, 0, 0]
     }
   }
 }

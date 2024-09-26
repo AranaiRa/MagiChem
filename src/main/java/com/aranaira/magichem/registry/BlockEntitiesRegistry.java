@@ -78,6 +78,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(CircleFabricationBlockEntity::new, BlockRegistry.CIRCLE_FABRICATION.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<CircleToilBlockEntity>> CIRCLE_TOIL_BE = BLOCK_ENTITIES.register("circle_toil", () ->
+            BlockEntityType.Builder.of(CircleToilBlockEntity::new, BlockRegistry.CIRCLE_TOIL.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<CirclePowerBlockEntity>> CIRCLE_POWER_BE = BLOCK_ENTITIES.register("circle_power", () ->
             BlockEntityType.Builder.of(CirclePowerBlockEntity::new, BlockRegistry.CIRCLE_POWER.get()).build(null)
     );

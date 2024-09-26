@@ -1,0 +1,21 @@
+{
+	"parent": "forge:item/default",
+	"loader": "forge:composite",
+	"children": {
+		"crystal": {
+			"loader": "forge:obj",
+			"automatic_culling": true,
+			"shade_quads": true,
+			"flip_v": true,
+			"emissive_ambient": false,
+			"model": "magichem:models/obj/circle_toil_inventory.obj"
+		}
+	},
+	"display": {
+		"gui": {
+			"rotation": [29, 45, 0],
+			"scale": [0.6, 0.6, 0.6],
+			"translation": [0, 0, 0]
+		}
+	}
+}
