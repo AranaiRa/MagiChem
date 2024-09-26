@@ -1,0 +1,21 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "mna:constructs/construct_smart_head_bone"
+  },
+  "stages": [
+    {
+      "experience": 8,
+      "components": [
+        { "item": "mna:constructs/construct_basic_head_bone" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_arcane", "count": 40 },
+        { "item": "magichem:admixture_thought", "count": 35 },
+        { "item": "magichem:admixture_construct", "count": 3 }
+      ]
+    }
+  ]
+}

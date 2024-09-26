@@ -5,13 +5,11 @@ import com.aranaira.magichem.block.entity.CircleToilBlockEntity;
 import com.mna.tools.render.ModelUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -19,6 +17,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
     public static final ResourceLocation RENDERER_MODEL_HANDLE = new ResourceLocation(MagiChemMod.MODID, "obj/special/circle_toil_handle");
 
     public CircleToilBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+
     }
 
     @Override
