@@ -387,6 +387,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             boolean canCraft = true;
             for (ItemStack item : componentMateria) {
                 if (outputSlots.canAddItem(item)) {
+                    CompoundTag nbt = item.getOrCreateTag();
+                    nbt.putInt("CustomModelData", 1);
+                    item.setTag(nbt);
                     outputSlots.addItem(item);
                 } else {
                     canCraft = false;
