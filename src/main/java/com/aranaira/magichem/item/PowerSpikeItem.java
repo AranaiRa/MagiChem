@@ -2,6 +2,7 @@ package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.CirclePowerRouterBlock;
+import com.aranaira.magichem.block.CircleToilBlock;
 import com.aranaira.magichem.block.entity.PowerSpikeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CirclePowerRouterBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -57,23 +58,32 @@ public class PowerSpikeItem extends BlockItem {
         if(!context.getLevel().isClientSide) {
             if(context.getPlayer() != null) {
                 BlockPos pos = context.getClickedPos();
-                if(context.getLevel().getBlockState(pos).getBlock() instanceof CirclePowerBlock) {
-                    context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.bind"));
+                final Block block = context.getLevel().getBlockState(pos).getBlock();
+
+                if(block instanceof CirclePowerBlock) {
+                    context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.bindpower"));
                     CompoundTag tag = new CompoundTag();
                     tag.putLong("magichem.powerspike.targetpos",pos.asLong());
 
                     context.getItemInHand().setTag(tag);
                     return InteractionResult.SUCCESS;
-                } else if(context.getLevel().getBlockState(pos).getBlock() instanceof CirclePowerRouterBlock) {
+                } else if(block instanceof CirclePowerRouterBlock) {
                     BlockEntity be = context.getLevel().getBlockEntity(pos);
                     if(be instanceof CirclePowerRouterBlockEntity cprbe) {
-                        context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.bind"));
+                        context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.bindpower"));
                         CompoundTag tag = new CompoundTag();
                         tag.putLong("magichem.powerspike.targetpos",cprbe.getMasterPos().asLong());
 
                         context.getItemInHand().setTag(tag);
                         return InteractionResult.SUCCESS;
                     }
+                } else if(block instanceof CircleToilBlock) {
+                    context.getPlayer().sendSystemMessage(Component.translatable("log.magichem.powerspike.bindtoil"));
+                    CompoundTag tag = new CompoundTag();
+                    tag.putLong("magichem.powerspike.targetpos",pos.asLong());
+
+                    context.getItemInHand().setTag(tag);
+                    return InteractionResult.SUCCESS;
                 }
             }
         }

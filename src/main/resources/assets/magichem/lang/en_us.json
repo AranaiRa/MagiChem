@@ -365,7 +365,7 @@
   "tooltip.magichem.materiajar": "Stores a small amount of Materia.",
   "tooltip.magichem.materiamanifest": "Displays a list of all Materia contained in Jars or Vessels in a given area.",
   "tooltip.magichem.materiavessel": "Stores a very large amount of Materia. A Vessel bearing Essentia will automatically display a label.",
-  "tooltip.magichem.powerspike": "Transfers energy from a Circle of Power.",
+  "tooltip.magichem.powerspike": "Transfers energy from a Circle of Toil or Circle of Power.",
   "tooltip.magichem.powerspike.target": "Drawing FE from",
   "tooltip.magichem.variegator": "Changes the color of items.",
 
@@ -617,7 +617,8 @@
   "tooltip.magichem.jei.coloration.variegator.part2": " be crafted in a Variegator",
 
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
-  "log.magichem.powerspike.bind": "Power Spike bound to this Circle of Power.",
+  "log.magichem.powerspike.bindpower": "Power Spike bound to this Circle of Power.",
+  "log.magichem.powerspike.bindtoil": "Power Spike bound to this Circle of Toil.",
 
   "overlay.magichem.actuator.port": "This port accepts:",
 

@@ -161,6 +161,7 @@ public class CircleToilBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("construct", storedConstruct);
+        nbt.putFloat("rotSpeed", this.rotSpeed);
         nbt.putInt("storedEnergy", this.ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
     }
@@ -173,6 +174,7 @@ public class CircleToilBlockEntity extends BlockEntity {
         if(!storedConstruct.equals(pre))
             constructDataChanged = true;
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedEnergy"));
+        this.rotSpeed = nbt.getFloat("rotSpeed");
         calculateAcceleration();
     }
 
@@ -185,6 +187,7 @@ public class CircleToilBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("construct", this.storedConstruct);
+        nbt.putFloat("rotSpeed", this.rotSpeed);
         nbt.putInt("storedEnergy", this.ENERGY_STORAGE.getEnergyStored());
         return nbt;
     }
