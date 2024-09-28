@@ -582,8 +582,68 @@
       }
     ]
   },
-  "Circle of Power": {
+  "Circle of Toil": {
     "index": "1402",
+    "category": "magichem",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Circle of Toil"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Certain devices (such as the Circle of Fabrication) require "
+          },
+          {
+            "text": "power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in the form of "
+          },
+          {
+            "text": "FE (Forge Energy)",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". While there are certainly more "
+          },
+          {
+            "text": "magical",
+            "italic": true
+          },
+          {
+            "text": " solutions to this problem, one shouldn't discount the power inherent in manual labor.\n\nA "
+          },
+          {
+            "text": "Circle of Toil",
+            "color": "dark_purple"
+          },
+          {
+            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A construct can be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. Only one construct can be bound to a single Circle of Toil at a time.\n\nThe rate at which Circle of Toil generates FE is dependent on "
+          },
+          {
+            "text": "how quickly the cogwheel is turned",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". It will only generate and store up to three ticks' worth of FE at once.\n\nOnce bound, a construct needs some time to get up to speed; higher tier materials reach full speed faster than lower tier materials (though parts higher than Tier 3 have no additional affect). Once the construct is pushing at top speed, the Circle of Toil will emit small, harmless lightning bolts.\n\nConstructs with Ender Legs cannot be bound to a Circle of Toil.\n\nA construct can be relieved from its cog-cranking duties by activating the center block with a Bell of Bidding set to Interact."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/circle_toil"
+      }]
+  },
+  "Circle of Power": {
+    "index": "1403",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -689,7 +749,7 @@
       }]
   },
   "Grains of Quicksilver": {
-    "index": "1404",
+    "index": "1405",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -747,7 +807,7 @@
     ]
   },
   "Focusing Catalyst": {
-    "index": "1405",
+    "index": "1406",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -836,7 +896,7 @@
     ]
   },
   "Amplifying Prism": {
-    "index": "1406",
+    "index": "1407",
     "category": "magichem",
     "tier": 4,
     "sections": [
@@ -932,7 +992,7 @@
     ]
   },
   "Auxiliary Circle Array": {
-    "index": "1407",
+    "index": "1408",
     "category": "magichem",
     "tier": 5,
     "sections": [
@@ -1069,7 +1129,7 @@
     ]
   },
   "Power Spikes": {
-    "index": "1403",
+    "index": "1404",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -1092,18 +1152,25 @@
             "text": " can be used to transfer Forge Energy (FE) from a "
           },
           {
+            "text": "Circle of Toil",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or "
+          },
+          {
             "text": "Circle of Power",
             "color": "dark_purple"
           },
           {
-            "text": " into other devices. You can bind the Power Spike to the Circle by using the Power Spike on the Circle of Power while sneaking.\n\nPower Spikes can insert power into any device with no range limit as long as the Circle of Power it is bound to is in a loaded chunk. Power Spikes can "
+            "text": " into other devices. You can bind the Power Spike to the Circle by using the Power Spike on the Circle of Toil or Power. Sneaking is not necessary.\n\nPower Spikes can insert power into any device with no range limit as long as the Circle of Toil or Power it is bound to is in a loaded chunk. Power Spikes can "
           },
           {
             "text": "only",
             "italic": true
           },
           {
-            "text": " draw energy from a Circle of Power."
+            "text": " draw energy from a Circle of Toil or Circle of Power."
           }
         ]
       }
@@ -1112,6 +1179,10 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/power_spike"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/circle_toil"
       },
       {
         "type": "crafting",

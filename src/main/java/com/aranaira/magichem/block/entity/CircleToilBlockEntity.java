@@ -94,6 +94,8 @@ public class CircleToilBlockEntity extends BlockEntity {
 
         final String[] legs = composition.getString("LEGS").split("_");
         acceleration += getSpeedFromMaterialName(legs[legs.length-1]);
+
+        acceleration *= 0.2;
     }
 
     private float getSpeedFromMaterialName(String pQuery) {
