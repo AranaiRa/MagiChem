@@ -30,20 +30,22 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
     @Override
     public void render(MateriaManifestBlockEntity mmbe, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if(mmbe.tetherTarget != null) {
-            final Direction facing = mmbe.getBlockState().getValue(FACING);
-            double x = 0, z = 0;
-            if(facing == Direction.NORTH) z = -0.3125;
-            else if(facing == Direction.SOUTH) z = 0.3125;
+            if(mmbe.tetherTarget.getMateriaType() != null) {
+                final Direction facing = mmbe.getBlockState().getValue(FACING);
+                double x = 0, z = 0;
+                if (facing == Direction.NORTH) z = -0.3125;
+                else if (facing == Direction.SOUTH) z = 0.3125;
 
-            Vector3 startPos = new Vector3(0.5 + x, 1.78125, 0.5 + z);
-            Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX()+0.5, mmbe.tetherTarget.getBlockPos().getY()+0.5, mmbe.tetherTarget.getBlockPos().getZ()+0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
+                Vector3 startPos = new Vector3(0.5 + x, 1.78125, 0.5 + z);
+                Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, mmbe.tetherTarget.getBlockPos().getY() + 0.5, mmbe.tetherTarget.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
 
-            int colorInt = mmbe.tetherTarget.getMateriaType().getMateriaColor();
-            int intR = (colorInt & 0x00ff0000) >> 16;
-            int intG = (colorInt & 0x0000ff00) >> 8;
-            int intB = (colorInt & 0x000000ff) >> 0;
+                int colorInt = mmbe.tetherTarget.getMateriaType().getMateriaColor();
+                int intR = (colorInt & 0x00ff0000) >> 16;
+                int intG = (colorInt & 0x0000ff00) >> 8;
+                int intB = (colorInt & 0x000000ff) >> 0;
 
-            RenderUtils.generateLinearVolumetricBeam(startPos, endPos, 0.03125f, bodyTexture, new int[]{intR, intG, intB, 255}, 1, poseStack, bufferSource, packedLight, BEAM_TEX_U1, BEAM_TEX_V1, BEAM_TEX_U2, BEAM_TEX_V2);
+                RenderUtils.generateLinearVolumetricBeam(startPos, endPos, 0.03125f, bodyTexture, new int[]{intR, intG, intB, 255}, 1, poseStack, bufferSource, packedLight, BEAM_TEX_U1, BEAM_TEX_V1, BEAM_TEX_U2, BEAM_TEX_V2);
+            }
         }
     }
 }
