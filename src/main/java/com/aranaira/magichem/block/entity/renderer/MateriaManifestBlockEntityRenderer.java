@@ -35,6 +35,8 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
                 double x = 0, z = 0;
                 if (facing == Direction.NORTH) z = -0.3125;
                 else if (facing == Direction.SOUTH) z = 0.3125;
+                else if (facing == Direction.EAST) x = 0.3125;
+                else if (facing == Direction.WEST) x = -0.3125;
 
                 Vector3 startPos = new Vector3(0.5 + x, 1.78125, 0.5 + z);
                 Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, mmbe.tetherTarget.getBlockPos().getY() + 0.5, mmbe.tetherTarget.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
