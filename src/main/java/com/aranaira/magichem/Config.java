@@ -198,6 +198,16 @@ public class Config
 
     //----------------CIRCLE OF FABRICATION
 
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_TOIL_GEN = BUILDER
+            .comment("How much FE/tick the Circle of Toil generates at max speed")
+            .defineInRange("circleToilGen", 20, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_TOIL_BUFFER = BUILDER
+            .comment("How many ticks of activity the Circle of Toil stores at once")
+            .defineInRange("circleToilBuffer", 3, 1, 72000);
+
+    //----------------CIRCLE OF FABRICATION
+
     //----------------MATERIA JAR
 
     private static final ForgeConfigSpec.IntValue MATERIA_JAR_ESSENTIA_CAPACITY = BUILDER
@@ -378,6 +388,8 @@ public class Config
         circlePowerGen3Reagent,
         circlePowerGen4Reagent,
         circlePowerBuffer,
+        circleToilGen,
+        circleToilBuffer,
         materiaJarEssentiaCapacity,
         materiaJarAdmixtureCapacity,
         materiaVesselEssentiaCapacity,
@@ -456,6 +468,8 @@ public class Config
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();
         circlePowerGen4Reagent = CIRCLE_OF_POWER_GEN_4_REAGENT.get();
         circlePowerBuffer = CIRCLE_OF_POWER_BUFFER.get();
+        circleToilGen = CIRCLE_OF_TOIL_GEN.get();
+        circleToilBuffer = CIRCLE_OF_TOIL_BUFFER.get();
         materiaJarEssentiaCapacity = MATERIA_JAR_ESSENTIA_CAPACITY.get();
         materiaJarAdmixtureCapacity = MATERIA_JAR_ADMIXTURE_CAPACITY.get();
         materiaVesselEssentiaCapacity = MATERIA_VESSEL_ESSENTIA_CAPACITY.get();

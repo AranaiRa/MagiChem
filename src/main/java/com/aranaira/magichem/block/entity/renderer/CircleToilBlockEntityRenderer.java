@@ -56,13 +56,12 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        int period = 400;
-        float temp = -((((world.getGameTime()) + pPartialTick) % period) / (float)period) * 360;
+        float theta = -(pBlockEntity.theta + (pPartialTick * pBlockEntity.rotSpeed));
 
         pPoseStack.pushPose();
         {
             pPoseStack.translate(0.5, 0, 0.5);
-            pPoseStack.mulPose(Axis.YP.rotationDegrees(temp));
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(theta));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_HANDLE, pPoseStack, pPackedLight, pPackedOverlay);
 
             if(renderData.size() > 0) {
