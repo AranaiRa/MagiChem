@@ -23,9 +23,12 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -87,7 +90,8 @@ public class CommonEventHandler {
                         new ItemStack(Items.GLASS_BOTTLE, inserted));
                 event.getLevel().addFreshEntity(ie);
             }
-        } else if(target instanceof AbstractBlockEntityWithEfficiency bewe) {
+        }
+        else if(target instanceof AbstractBlockEntityWithEfficiency bewe) {
             if(stack.getItem() == ItemInit.ANIMUS_DUST.get()) {
                 if(bewe instanceof CentrifugeBlockEntity cbe) {
                     event.getEntity().swing(event.getHand());
@@ -148,7 +152,8 @@ public class CommonEventHandler {
                     }
                 }
             }
-        } else if(target instanceof AlchemicalNexusBlockEntity || target instanceof AlchemicalNexusRouterBlockEntity) {
+        }
+        else if(target instanceof AlchemicalNexusBlockEntity || target instanceof AlchemicalNexusRouterBlockEntity) {
             IFluidHandler targetEntity = null;
             if(target instanceof AlchemicalNexusBlockEntity anbe)
                 targetEntity = anbe;
@@ -169,7 +174,8 @@ public class CommonEventHandler {
                     }
                 }
             }
-        } else if(target instanceof ExperienceExchangerBlockEntity eebe) {
+        }
+        else if(target instanceof ExperienceExchangerBlockEntity eebe) {
             if(!event.getLevel().isClientSide() && event.getHand() == InteractionHand.MAIN_HAND) {
                 if (stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
                     eebe.ejectStack(event.getEntity().getOnPos().above());
@@ -179,7 +185,8 @@ public class CommonEventHandler {
                     eebe.ejectStack(event.getEntity().getOnPos().above());
                 }
             }
-        } else if(target instanceof MateriaManifestBlockEntity || target instanceof MateriaManifestRouterBlockEntity) {
+        }
+        else if(target instanceof MateriaManifestBlockEntity || target instanceof MateriaManifestRouterBlockEntity) {
             if(!event.getLevel().isClientSide() && stack.getItem() == ItemInit.RUNE_MARKING_PAIR.get()) {
                 int exitCode = -1;
                 if(target instanceof MateriaManifestBlockEntity mmbe) {
@@ -199,6 +206,27 @@ public class CommonEventHandler {
                     );
                 }
                 event.setCanceled(true);
+            }
+        }
+        else if(target instanceof CircleToilBlockEntity ctbe) {
+            if(!event.getLevel().isClientSide()) {
+                if (stack.getItem() == ItemInit.BELL_OF_BIDDING.get()) {
+                    if (stack.hasTag()) {
+                        if (stack.getTag().getInt("index") == 2) {
+                            boolean ding = false;
+                            if(ctbe.hasConstruct()) {
+                                ctbe.ejectConstruct();
+                                ding = true;
+                            } else {
+                                ding = ctbe.tryAbsorbConstruct(event.getEntity());
+                            }
+
+                            if(ding) {
+                                event.getEntity().level().playSound((Player)null, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

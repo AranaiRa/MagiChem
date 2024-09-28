@@ -37,11 +37,21 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
             DEFAULT_CONSTRUCT.putString("LEGS", "mna:constructs/construct_basic_legs_wood");
         }
 
-        renderData = ConstructRenderHelper.getRenderDataFromTag(DEFAULT_CONSTRUCT);
+//        renderData = ConstructRenderHelper.getRenderDataFromTag(DEFAULT_CONSTRUCT);
     }
 
     @Override
     public void render(CircleToilBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        if(pBlockEntity.constructDataChanged || renderData.size() == 0) {
+            if(pBlockEntity.hasConstruct()) {
+                renderData = ConstructRenderHelper.getRenderDataFromTag(pBlockEntity.getStoredConstructComposition());
+                pBlockEntity.constructDataChanged = false;
+            } else {
+                renderData.clear();
+                pBlockEntity.constructDataChanged = false;
+            }
+        }
+
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
@@ -55,90 +65,94 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
             pPoseStack.mulPose(Axis.YP.rotationDegrees(temp));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_HANDLE, pPoseStack, pPackedLight, pPackedOverlay);
 
-            Pair<ResourceLocation, Vector3> currentPiece;
+            if(renderData.size() > 0) {
+                Pair<ResourceLocation, Vector3> currentPiece;
 
-            double zGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, -0.05, -0.13);
-            double yGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 0, 0.04);
+                double zGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, -0.05, -0.13);
+                double yGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 0, 0.04);
 
-            pPoseStack.translate(-1.30529, yGripCorrection, 0.8375 + zGripCorrection);
+                pPoseStack.translate(-1.30529, yGripCorrection, 0.8375 + zGripCorrection);
 
-            currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.TORSO);
-            double torsoRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 342.5, 347.5);
-
-            pPoseStack.pushPose();
-            {
-                pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
-                pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)torsoRot), 0, -currentPiece.getSecond().y*2 - 0.25f, 0);
-                pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
-                ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
-
-                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.HEAD);
-                double headRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 13, 350, 360);
+                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.TORSO);
+                double torsoRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 342.5, 347.5);
 
                 pPoseStack.pushPose();
                 {
                     pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
-                    pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)headRot), 0, -currentPiece.getSecond().y*2 - 0.25f, 0);
-
+                    pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) torsoRot), 0, -currentPiece.getSecond().y * 2 - 0.25f, 0);
                     pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
                     ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
-                    ModelUtils.renderModel(pBuffer, world, pos, state, renderData.get(ConstructRenderHelper.ConstructPartType.EYES).getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+
+                    currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.HEAD);
+                    double headRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 13, 350, 360);
+
+                    pPoseStack.pushPose();
+                    {
+                        pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                        pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) headRot), 0, -currentPiece.getSecond().y * 2 - 0.25f, 0);
+
+                        pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                        ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                        ModelUtils.renderModel(pBuffer, world, pos, state, renderData.get(ConstructRenderHelper.ConstructPartType.EYES).getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                        pPoseStack.popPose();
+                    }
+
+                    currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.ARM_LEFT);
+                    double armRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 80, 70);
+                    ;
+
+                    pPoseStack.pushPose();
+                    {
+                        pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                        pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) armRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+
+                        pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                        ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                        pPoseStack.popPose();
+                    }
+
+                    currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.ARM_RIGHT);
+                    ;
+
+                    pPoseStack.pushPose();
+                    {
+                        pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                        pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) armRot), -currentPiece.getSecond().x * 2, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+
+                        pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                        ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                        pPoseStack.popPose();
+                    }
+
                     pPoseStack.popPose();
                 }
 
-                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.ARM_LEFT);
-                double armRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 80, 70);;
+                double legPeriod = 52;
+                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.LEG_LEFT);
+                double legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 370, 330);
 
                 pPoseStack.pushPose();
                 {
                     pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
-                    pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)armRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y*2, -currentPiece.getSecond().z*2);
+                    pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
 
                     pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
                     ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
                     pPoseStack.popPose();
                 }
 
-                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.ARM_RIGHT);;
+                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.LEG_RIGHT);
+                legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 390, 350);
 
                 pPoseStack.pushPose();
                 {
                     pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
-                    pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)armRot), -currentPiece.getSecond().x*2, -currentPiece.getSecond().y*2, -currentPiece.getSecond().z*2);
+                    pPoseStack.rotateAround(Axis.XN.rotationDegrees((float) legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
 
                     pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
                     ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
                     pPoseStack.popPose();
                 }
-
-                pPoseStack.popPose();
-            }
-
-            double legPeriod = 52;
-            currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.LEG_LEFT);
-            double legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod*0.5, 370, 330);
-
-            pPoseStack.pushPose();
-            {
-                pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
-                pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y*2, -currentPiece.getSecond().z*2);
-
-                pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
-                ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
-                pPoseStack.popPose();
-            }
-
-            currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.LEG_RIGHT);
-            legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod*0.5, 390, 350);
-
-            pPoseStack.pushPose();
-            {
-                pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
-                pPoseStack.rotateAround(Axis.XN.rotationDegrees((float)legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y*2, -currentPiece.getSecond().z*2);
-
-                pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
-                ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
-                pPoseStack.popPose();
             }
 
             pPoseStack.popPose();
