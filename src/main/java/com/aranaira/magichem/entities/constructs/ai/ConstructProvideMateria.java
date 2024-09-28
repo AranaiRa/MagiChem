@@ -213,7 +213,10 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                 boolean foundTarget = false;
                                 for (MateriaItem mi : impr.getProvisioningNeeds().keySet()) {
                                     for (AbstractMateriaStorageBlockEntity amsbe : allVessels.keySet()) {
-                                        if (amsbe.getMateriaType() == mi) {
+                                        boolean leaveOneMode = leaveOneInContainer && amsbe.getMateriaType() == mi && amsbe.getCurrentStock() > 1;
+                                        boolean leaveNoneMode = !leaveOneInContainer && amsbe.getMateriaType() == mi;
+
+                                        if (leaveNoneMode || leaveOneMode) {
                                             this.filter = mi;
                                             this.jarTargetEntity = amsbe;
                                             foundTarget = true;
@@ -228,6 +231,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                     this.pushDiagnosticMessage("I can't find any of the materia the device needs. I'll just wait for a bit!", false);
                                     this.waitTimer = 41;
                                     this.phase = ETaskPhase.WAIT_TO_FAIL;
+                                    construct.clearForcedAnimation();
                                 }
                             } else {
                                 this.pushDiagnosticMessage("The device I'm monitoring doesn't need any materia provided right now. I'll just wait for a bit!", false);
