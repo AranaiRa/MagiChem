@@ -1,7 +1,7 @@
 {
   "type": "mna:manaweaving-recipe",
   "output": "magichem:power_spike",
-  "tier": 2,
+  "tier": 1,
   "items": [
     "mna:transmuted_silver",
     "mna:chimerite_gem",
