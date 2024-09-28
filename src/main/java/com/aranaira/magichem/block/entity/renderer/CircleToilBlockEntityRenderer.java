@@ -46,7 +46,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        int period = 750;
+        int period = 400;
         float temp = -((((world.getGameTime()) + pPartialTick) % period) / (float)period) * 360;
 
         pPoseStack.pushPose();
@@ -57,13 +57,13 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
 
             Pair<ResourceLocation, Vector3> currentPiece;
 
-            double zGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 50, 0, -0.05, -0.13);
-            double yGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 50, 0, 0, 0.04);
+            double zGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, -0.05, -0.13);
+            double yGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 0, 0.04);
 
             pPoseStack.translate(-1.30529, yGripCorrection, 0.8375 + zGripCorrection);
 
             currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.TORSO);
-            double torsoRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 50, 0, 342.5, 347.5);
+            double torsoRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 342.5, 347.5);
 
             pPoseStack.pushPose();
             {
@@ -73,7 +73,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                 ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
 
                 currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.HEAD);
-                double headRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 50, 25, 350, 360);
+                double headRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 13, 350, 360);
 
                 pPoseStack.pushPose();
                 {
@@ -87,7 +87,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                 }
 
                 currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.ARM_LEFT);
-                double armRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 50, 0, 80, 70);;
+                double armRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 80, 70);;
 
                 pPoseStack.pushPose();
                 {
@@ -114,8 +114,9 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                 pPoseStack.popPose();
             }
 
+            double legPeriod = 52;
             currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.LEG_LEFT);
-            double legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 100, 50, 380, 320);
+            double legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod*0.5, 370, 330);
 
             pPoseStack.pushPose();
             {
@@ -128,7 +129,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
             }
 
             currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.LEG_RIGHT);
-            legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 100, 50, 400, 340);
+            legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod*0.5, 390, 350);
 
             pPoseStack.pushPose();
             {
