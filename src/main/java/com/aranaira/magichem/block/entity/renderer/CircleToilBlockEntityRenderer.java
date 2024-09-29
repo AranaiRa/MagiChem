@@ -26,7 +26,6 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
     public static final ResourceLocation RENDERER_MODEL_HANDLE = new ResourceLocation(MagiChemMod.MODID, "obj/special/circle_toil_handle");
 
     private static final CompoundTag DEFAULT_CONSTRUCT = new CompoundTag();
-    private Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
 
     public CircleToilBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         if(DEFAULT_CONSTRUCT.size() == 0) {
@@ -42,12 +41,12 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
 
     @Override
     public void render(CircleToilBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        if(pBlockEntity.constructDataChanged || renderData.size() == 0) {
+        if(pBlockEntity.constructDataChanged || pBlockEntity.renderData.size() == 0) {
             if(pBlockEntity.hasConstruct()) {
-                renderData = ConstructRenderHelper.getRenderDataFromTag(pBlockEntity.getStoredConstructComposition());
+                pBlockEntity.renderData = ConstructRenderHelper.getRenderDataFromTag(pBlockEntity.getStoredConstructComposition());
                 pBlockEntity.constructDataChanged = false;
             } else {
-                renderData.clear();
+                pBlockEntity.renderData.clear();
                 pBlockEntity.constructDataChanged = false;
             }
         }
@@ -64,7 +63,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
             pPoseStack.mulPose(Axis.YP.rotationDegrees(theta));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_HANDLE, pPoseStack, pPackedLight, pPackedOverlay);
 
-            if(renderData.size() > 0) {
+            if(pBlockEntity.renderData.size() > 0) {
                 Pair<ResourceLocation, Vector3> currentPiece;
 
                 double zGripCorrection = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, -0.05, -0.13);
@@ -72,7 +71,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
 
                 pPoseStack.translate(-1.30529, yGripCorrection, 0.8375 + zGripCorrection);
 
-                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.TORSO);
+                currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.TORSO);
                 double torsoRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 342.5, 347.5);
 
                 pPoseStack.pushPose();
@@ -82,7 +81,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                     pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
                     ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
 
-                    currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.HEAD);
+                    currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.HEAD);
                     double headRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 13, 350, 360);
 
                     pPoseStack.pushPose();
@@ -92,13 +91,12 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
 
                         pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
                         ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
-                        ModelUtils.renderModel(pBuffer, world, pos, state, renderData.get(ConstructRenderHelper.ConstructPartType.EYES).getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                        ModelUtils.renderModel(pBuffer, world, pos, state, pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.EYES).getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
                         pPoseStack.popPose();
                     }
 
-                    currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.ARM_LEFT);
+                    currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.ARM_LEFT);
                     double armRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 26, 0, 80, 70);
-                    ;
 
                     pPoseStack.pushPose();
                     {
@@ -110,8 +108,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                         pPoseStack.popPose();
                     }
 
-                    currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.ARM_RIGHT);
-                    ;
+                    currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.ARM_RIGHT);
 
                     pPoseStack.pushPose();
                     {
@@ -127,7 +124,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                 }
 
                 double legPeriod = 52;
-                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.LEG_LEFT);
+                currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.LEG_LEFT);
                 double legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 370, 330);
 
                 pPoseStack.pushPose();
@@ -140,7 +137,7 @@ public class CircleToilBlockEntityRenderer implements BlockEntityRenderer<Circle
                     pPoseStack.popPose();
                 }
 
-                currentPiece = renderData.get(ConstructRenderHelper.ConstructPartType.LEG_RIGHT);
+                currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.LEG_RIGHT);
                 legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 390, 350);
 
                 pPoseStack.pushPose();

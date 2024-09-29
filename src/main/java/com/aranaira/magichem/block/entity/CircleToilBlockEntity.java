@@ -3,18 +3,21 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.aranaira.magichem.util.render.ConstructRenderHelper;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.entities.EntityInit;
 import com.mna.entities.constructs.animated.Construct;
 import com.mna.tools.math.Vector3;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -28,11 +31,15 @@ import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class CircleToilBlockEntity extends BlockEntity {
 
     private CompoundTag storedConstruct = new CompoundTag();
+    public Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
+    
     public static float
             MAXIMUM_ROTATION_SPEED = 0.9f,
             THETA_ACCELERATION_RATE_WICKERWOOD   = 0.00015f, //5 minutes
