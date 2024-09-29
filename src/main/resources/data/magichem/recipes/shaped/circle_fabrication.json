@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "ACA",
-    " N ",
-    "TTT"
+    "PSP",
+    "SCS",
+    "SBS"
   ],
   "key": {
+    "P": {
+      "item": "mna:purified_vinteum_dust"
+    },
+    "S": {
+      "item": "minecraft:polished_deepslate"
+    },
     "C": {
-      "item": "magichem:magic_circle"
+      "item": "mna:wizard_chalk"
     },
-    "A": {
-      "item": "magichem:admixture_instrument"
-    },
-    "N": {
-      "item": "magichem:essentia_nigredo"
-    },
-    "T": {
-      "item": "minecraft:tuff"
+    "B": {
+      "item": "mna:bone_ash"
     }
   },
   "result": {

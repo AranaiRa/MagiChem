@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
@@ -16,6 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -39,7 +41,28 @@ public class CircleFabricationBlockEntityRenderer implements BlockEntityRenderer
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_CIRCLE, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
+        //circle
+        {
+            pPoseStack.pushPose();
+
+            Direction facing = state.getValue(MagiChemBlockStateProperties.FACING);
+            if(facing == Direction.EAST) {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
+                pPoseStack.translate(0, 0, -1);
+            }
+            else if(facing == Direction.SOUTH) {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(180));
+                pPoseStack.translate(-1, 0, -1);
+            }
+            else if(facing == Direction.WEST) {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(270));
+                pPoseStack.translate(-1, 0, 0);
+            }
+
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_CIRCLE, pPoseStack, pPackedLight, pPackedOverlay, RenderType.translucent());
+
+            pPoseStack.popPose();
+        }
 
         //bowls with materia
         {

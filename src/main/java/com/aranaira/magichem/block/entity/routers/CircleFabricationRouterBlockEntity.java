@@ -1,19 +1,12 @@
 package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.CirclePowerBlock;
-import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
+import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
-import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
-import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,29 +16,26 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_FABRICATION;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_POWER;
 
-public class CirclePowerRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction {
+public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
-    private CirclePowerBlockEntity master;
+    private CircleFabricationBlockEntity master;
 
-    public CirclePowerRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntitiesRegistry.CIRCLE_POWER_ROUTER_BE.get(), pPos, pBlockState);
+    public CircleFabricationRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(BlockEntitiesRegistry.CIRCLE_FABRICATION_ROUTER_BE.get(), pPos, pBlockState);
     }
 
     public void configure(BlockPos pMasterPos) {
@@ -53,10 +43,10 @@ public class CirclePowerRouterBlockEntity extends BlockEntity implements MenuPro
         getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
     }
 
-    public CirclePowerBlockEntity getMaster(){
+    public CircleFabricationBlockEntity getMaster(){
         if(master == null) {
             if(masterPos != null)
-                master = (CirclePowerBlockEntity) getLevel().getBlockEntity(masterPos);
+                master = (CircleFabricationBlockEntity) getLevel().getBlockEntity(masterPos);
 
             //if master is still null we've got a problem and the router needs to be deleted
             if(master == null) {
@@ -72,7 +62,7 @@ public class CirclePowerRouterBlockEntity extends BlockEntity implements MenuPro
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.magichem.circle_power");
+        return Component.translatable("block.magichem.circle_fabrication");
     }
 
     @Override

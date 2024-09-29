@@ -34,4 +34,37 @@ public class MathHelper {
 
         return output;
     }
+
+    public static VoxelShape flipVoxelShapeX(VoxelShape pShape) {
+        AABB bounds = pShape.bounds();
+
+        VoxelShape output = Block.box(
+                16 - (bounds.maxX * 16), bounds.minY * 16, bounds.minZ * 16,
+                16 - (bounds.minX * 16), bounds.maxY * 16, bounds.maxZ * 16
+        );
+
+        return output;
+    }
+
+    public static VoxelShape flipVoxelShapeY(VoxelShape pShape) {
+        AABB bounds = pShape.bounds();
+
+        VoxelShape output = Block.box(
+                bounds.minX * 16, 16 - (bounds.maxY * 16), bounds.minZ * 16,
+                bounds.maxX * 16, 16 - (bounds.minY * 16), bounds.maxZ * 16
+        );
+
+        return output;
+    }
+
+    public static VoxelShape flipVoxelShapeZ(VoxelShape pShape) {
+        AABB bounds = pShape.bounds();
+
+        VoxelShape output = Block.box(
+                bounds.minX * 16, bounds.minY * 16, 16 - (bounds.maxZ * 16),
+                bounds.maxX * 16, bounds.maxY * 16, 16 - (bounds.minZ * 16)
+        );
+
+        return output;
+    }
 }

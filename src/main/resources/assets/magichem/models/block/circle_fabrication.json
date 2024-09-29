@@ -2,7 +2,7 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "magichem:block/breakparticle_arcane_deepslate"
+    "particle": "magichem:block/breakparticle_deepslate"
   },
   "children": {
     "part1": {

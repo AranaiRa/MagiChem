@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
+import com.aranaira.magichem.gui.GrandCircleFabricationMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -67,7 +68,7 @@ public class GrandCircleFabricationBlock extends BaseEntityBlock {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof GrandCircleFabricationBlockEntity cfbe) {
                 NetworkHooks.openScreen((ServerPlayer)player, new SimpleMenuProvider((id, playerInventory, user) -> {
-                    return new CircleFabricationMenu(id, playerInventory, cfbe);
+                    return new GrandCircleFabricationMenu(id, playerInventory, cfbe);
                 }, Component.empty()), cfbe);
             } else {
                 throw new IllegalStateException("CircleFabricationBlockEntity container provider is missing!");
