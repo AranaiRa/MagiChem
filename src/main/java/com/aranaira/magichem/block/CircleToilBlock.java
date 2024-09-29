@@ -66,7 +66,7 @@ public class CircleToilBlock extends BaseEntityBlock {
         VOXEL_SHAPE_BASE = Block.box(1, 0, 1, 15, 4, 15);
         VOXEL_SHAPE_BODY = Block.box(3, 4, 3, 13, 11, 13);
         VOXEL_SHAPE_SHAFT = Block.box(7, 8, 7, 9, 19, 9);
-        VOXEL_SHAPE_COG = Block.box(1, 13.5, 1, 15, 14.5, 15);
+        VOXEL_SHAPE_COG = Block.box(1, 12.5, 1, 15, 13.5, 15);
 
         VOXEL_SHAPE_AGGREGATE = Shapes.or(
                 VOXEL_SHAPE_BASE, VOXEL_SHAPE_BODY, VOXEL_SHAPE_SHAFT, VOXEL_SHAPE_COG

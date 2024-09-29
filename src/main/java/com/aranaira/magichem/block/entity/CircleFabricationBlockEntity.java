@@ -4,10 +4,12 @@ import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.mna.tools.math.MathUtils;
 import net.minecraft.core.BlockPos;
@@ -27,6 +29,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -39,7 +42,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 
 public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester {
     public static final int
@@ -50,6 +56,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private BlockPos linkedCircleToil = null;
 
     public CircleFabricationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.CIRCLE_FABRICATION_BE.get(), pos, state);
@@ -226,6 +233,63 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 }
             } else {
                 entity.isFESatisfied = true;
+            }
+
+            //If we don't have enough power, try to draw from the linked circle of toil
+            if(!entity.isFESatisfied) {
+                //Try to find a circle of toil
+                if(entity.linkedCircleToil == null) {
+                    //Only search once every 5 seconds to cut down on server load
+                    if(level.getGameTime() % 100 == 0) {
+                        final Direction facing = state.getValue(FACING);
+                        if(facing == Direction.NORTH) {
+                            for(int z=-2; z>=-8; z--) {
+                                BlockPos queryPos = pos.offset(0, 0, z);
+                                if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                    entity.linkedCircleToil = queryPos;
+                                    break;
+                                }
+                            }
+                        } else if(facing == Direction.EAST) {
+                            for(int x=2; x<=8; x++) {
+                                BlockPos queryPos = pos.offset(x, 0, 0);
+                                if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                    entity.linkedCircleToil = queryPos;
+                                    break;
+                                }
+                            }
+                        } else if(facing == Direction.SOUTH) {
+                            for(int z=2; z<=8; z++) {
+                                BlockPos queryPos = pos.offset(0, 0, z);
+                                if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                    entity.linkedCircleToil = queryPos;
+                                    break;
+                                }
+                            }
+                        } else if(facing == Direction.WEST) {
+                            for(int x=-2; x>=-8; x--) {
+                                BlockPos queryPos = pos.offset(x, 0, 0);
+                                if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                    entity.linkedCircleToil = queryPos;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    BlockEntity be = level.getBlockEntity(entity.linkedCircleToil);
+                    if(be instanceof CircleToilBlockEntity ctbe) {
+                        LazyOptional<IEnergyStorage> query = ctbe.getCapability(ForgeCapabilities.ENERGY);
+                        if(query.isPresent()) {
+                            IEnergyStorage cap = query.resolve().get();
+                            int tryExtract = cap.extractEnergy(entity.ENERGY_STORAGE.getMaxEnergyStored(), true);
+                            int insert = entity.ENERGY_STORAGE.receiveEnergy(tryExtract, false);
+                            cap.extractEnergy(insert, false);
+                        }
+                    } else {
+                        entity.linkedCircleToil = null;
+                    }
+                }
             }
         }
 

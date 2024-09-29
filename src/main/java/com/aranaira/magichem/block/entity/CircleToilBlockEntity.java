@@ -39,7 +39,7 @@ public class CircleToilBlockEntity extends BlockEntity {
 
     private CompoundTag storedConstruct = new CompoundTag();
     public Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
-    
+
     public static float
             MAXIMUM_ROTATION_SPEED = 0.9f,
             THETA_ACCELERATION_RATE_WICKERWOOD   = 0.00015f, //5 minutes
