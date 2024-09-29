@@ -1,11 +1,9 @@
 package com.aranaira.magichem.networking;
 
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
-import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;

@@ -1,7 +1,7 @@
 package com.aranaira.magichem.networking;
 
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
-import net.minecraft.client.Minecraft;
+import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -45,8 +45,11 @@ public class FabricationSyncDataC2SPacket {
         BlockEntity entity = player.level().getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
-            if(entity instanceof CircleFabricationBlockEntity cfbe) {
-                cfbe.setPowerUsageSetting(powerUsageSetting);
+            if(entity instanceof GrandCircleFabricationBlockEntity gcfbe) {
+                gcfbe.setPowerUsageSetting(powerUsageSetting);
+                gcfbe.setCurrentRecipe(new ItemStack(recipeItem));
+            }
+            else if(entity instanceof CircleFabricationBlockEntity cfbe) {
                 cfbe.setCurrentRecipe(new ItemStack(recipeItem));
             }
         });

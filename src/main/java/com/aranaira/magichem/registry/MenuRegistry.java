@@ -18,6 +18,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<CircleFabricationMenu>> CIRCLE_FABRICATION_MENU =
             registerMenuType(CircleFabricationMenu::new, "circle_fabrication");
 
+    public static final RegistryObject<MenuType<GrandCircleFabricationMenu>> GRAND_CIRCLE_FABRICATION_MENU =
+            registerMenuType(GrandCircleFabricationMenu::new, "grand_circle_fabrication");
+
     public static final RegistryObject<MenuType<CirclePowerMenu>> CIRCLE_POWER_MENU =
             registerMenuType(CirclePowerMenu::new, "circle_power");
 

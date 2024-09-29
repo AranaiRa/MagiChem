@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
@@ -25,9 +25,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class CircleFabricationBlock extends BaseEntityBlock {
+public class GrandCircleFabricationBlock extends BaseEntityBlock {
 
-    public CircleFabricationBlock(Properties properties) {
+    public GrandCircleFabricationBlock(Properties properties) {
         super(properties);
     }
 
@@ -54,8 +54,8 @@ public class CircleFabricationBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof CircleFabricationBlockEntity) {
-                ((CircleFabricationBlockEntity) blockEntity).dropInventoryToWorld();
+            if(blockEntity instanceof GrandCircleFabricationBlockEntity) {
+                ((GrandCircleFabricationBlockEntity) blockEntity).dropInventoryToWorld();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
@@ -65,7 +65,7 @@ public class CircleFabricationBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof CircleFabricationBlockEntity cfbe) {
+            if(entity instanceof GrandCircleFabricationBlockEntity cfbe) {
                 NetworkHooks.openScreen((ServerPlayer)player, new SimpleMenuProvider((id, playerInventory, user) -> {
                     return new CircleFabricationMenu(id, playerInventory, cfbe);
                 }, Component.empty()), cfbe);
@@ -80,13 +80,13 @@ public class CircleFabricationBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new CircleFabricationBlockEntity(pos, state);
+        return new GrandCircleFabricationBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntitiesRegistry.CIRCLE_FABRICATION_BE.get(),
-                CircleFabricationBlockEntity::tick);
+        return createTickerHelper(type, BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_BE.get(),
+                GrandCircleFabricationBlockEntity::tick);
     }
 }

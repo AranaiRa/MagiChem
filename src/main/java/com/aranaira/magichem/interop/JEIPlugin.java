@@ -105,7 +105,7 @@ public class JEIPlugin implements IModPlugin {
         
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.FUSERY.get(), 1), FIXATION_TYPE);
 
-        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(ItemInit.RUNE_RITUAL_METAL.get(), 1).setHoverName(Component.translatable("magichem:rituals/balanced_scales")), SUBLIMATION_RITUAL_TYPE);
 

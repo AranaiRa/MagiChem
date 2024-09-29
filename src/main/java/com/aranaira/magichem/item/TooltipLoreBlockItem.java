@@ -38,7 +38,7 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == BlockRegistry.CIRCLE_FABRICATION.get().asItem()) {
+        else if(pStack.getItem() == BlockRegistry.GRAND_CIRCLE_FABRICATION.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.grandcirclefabrication")
                     .withStyle(ChatFormatting.DARK_GRAY)

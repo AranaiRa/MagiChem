@@ -1,5 +1,6 @@
 package com.aranaira.magichem.util.render;
 
+import com.aranaira.magichem.item.MateriaItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
@@ -138,6 +139,15 @@ public class ColorUtils {
     public static float[] getARGBFloatTint(DyeColor pColorCode, float pAlpha) {
         float[] out = getRGBFloatTint(pColorCode);
         return new float[]{pAlpha, out[0], out[1], out[2]};
+    }
+
+    public static float[] getRGBAFloatTintFromPackedInt(int pQuery) {
+        int a = (pQuery & 0xff000000) >> 24;
+        int r = (pQuery & 0x00ff0000) >> 16;
+        int g = (pQuery & 0x0000ff00) >> 8;
+        int b = (pQuery & 0x000000ff);
+
+        return new float[]{r / 255f, g / 255f, b / 255f, a / 255f};
     }
 
     public Item getDyeItemFromID(int pID) {

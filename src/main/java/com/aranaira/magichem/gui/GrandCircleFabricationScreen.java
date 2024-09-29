@@ -1,7 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
@@ -30,26 +30,29 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabricationMenu> {
+public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandCircleFabricationMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication.png");
     private static final ResourceLocation TEXTURE_EXT =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
-    private final ButtonData[] recipeSelectButtons = new ButtonData[15];
+    private ImageButton
+            b_powerLevelUp, b_powerLevelDown;
+    private ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
     private static final int
             PANEL_MAIN_W = 181, PANEL_MAIN_H = 192,
             PANEL_RECIPE_U = 160, PANEL_RECIPE_V = 96, PANEL_RECIPE_W = 81, PANEL_RECIPE_H = 126,
-            PANEL_POWER_U = 190, PANEL_POWER_V = 0, PANEL_POWER_W = 66, PANEL_POWER_H = 66;
+            PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
     private DistillationFabricationRecipe lastClickedRecipe = null;
 
-    public CircleFabricationScreen(CircleFabricationMenu menu, Inventory inventory, Component component) {
+    public GrandCircleFabricationScreen(GrandCircleFabricationMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
     }
 
     @Override
     protected void init() {
         super.init();
+        initializePowerLevelButtons();
         initializeRecipeSelectorButtons();
         updateDisplayedRecipes("");
         initializeRecipeFilterBox();
@@ -80,6 +83,33 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         renderFilterBox();
     }
 
+    private void initializePowerLevelButtons(){
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 167, this.topPos + 126, 12, 7, 232, 242, TEXTURE, button -> {
+            menu.blockEntity.incrementPowerUsageSetting();
+            Item recipeTarget = null;
+            if(menu.blockEntity.getCurrentRecipe() != null) {
+                recipeTarget = menu.blockEntity.getCurrentRecipe().getAlchemyObject().getItem();
+            }
+            PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    recipeTarget,
+                    menu.blockEntity.getPowerUsageSetting()
+            ));
+        }));
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 167, this.topPos + 126, 12, 7, 244, 242, TEXTURE, button -> {
+            menu.blockEntity.decrementPowerUsageSetting();
+            Item recipeTarget = null;
+            if(menu.blockEntity.getCurrentRecipe() != null) {
+                recipeTarget = menu.blockEntity.getCurrentRecipe().getAlchemyObject().getItem();
+            }
+            PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    recipeTarget,
+                    menu.blockEntity.getPowerUsageSetting()
+            ));
+        }));
+    }
+
     private void initializeRecipeSelectorButtons(){
         int c = 0;
         for(int y=0; y<5; y++) {
@@ -87,7 +117,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                 recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new FabricationButtonRecipeSelector(
                         this, c, this.leftPos, this.topPos, 18, 18, 54, 220, TEXTURE, button -> {
 
-                            CircleFabricationScreen query = (CircleFabricationScreen) ((FabricationButtonRecipeSelector) button).getScreen();
+                            GrandCircleFabricationScreen query = (GrandCircleFabricationScreen) ((FabricationButtonRecipeSelector) button).getScreen();
                             query.setActiveRecipe(((FabricationButtonRecipeSelector) button).getArrayIndex());
                 })), x*18 - 78, y*18 + 39);
                 c++;
@@ -103,7 +133,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     filteredRecipes.get(trueIndex).getAlchemyObject().getItem(),
-                    0
+                    menu.blockEntity.getPowerUsageSetting()
             ));
             lastClickedRecipe = filteredRecipes.get(trueIndex);
         }
@@ -140,11 +170,13 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         gui.blit(TEXTURE_EXT, x - 85, y + 10, PANEL_RECIPE_U, PANEL_RECIPE_V, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
         //Power Settings Panel
-        gui.blit(TEXTURE, x + 163, y + 19, PANEL_POWER_U, PANEL_POWER_V, PANEL_POWER_W, PANEL_POWER_H);
+        gui.blit(TEXTURE_EXT, x + 163, y + 19, PANEL_POWER_U, PANEL_POWER_V, PANEL_POWER_W, PANEL_POWER_H);
 
         renderProgressBar(gui, x + 79, y + 39);
 
         renderSelectedRecipe(gui, x + 84, y + 79);
+
+        renderPowerLevelBar(gui, x + 169, y + 37);
 
         renderSlotGhosts(gui);
 
@@ -169,11 +201,25 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
+        b_powerLevelUp.setPosition(x+167, y+26);
+        b_powerLevelUp.active = true;
+        b_powerLevelUp.visible = true;
+
+        b_powerLevelDown.setPosition(x+167, y+71);
+        b_powerLevelDown.active = true;
+        b_powerLevelDown.visible = true;
+
         for(ButtonData bd : recipeSelectButtons) {
             bd.getButton().setPosition(x+bd.getXOffset(), y+bd.getYOffset());
             bd.getButton().active = true;
             bd.getButton().visible = true;
         }
+    }
+
+    private void renderPowerLevelBar(GuiGraphics gui, int x, int y) {
+        int powerLevel = menu.blockEntity.getPowerUsageSetting();
+
+        gui.blit(TEXTURE, x, y + (30 - powerLevel), 46, 256 - powerLevel, 8, powerLevel);
     }
 
     private void renderSelectedRecipe(GuiGraphics gui, int x, int y) {
@@ -186,7 +232,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     }
 
     private void renderProgressBar(GuiGraphics gui, int x, int y) {
-        int sp = CircleFabricationBlockEntity.getScaledProgress(menu.blockEntity);
+        int sp = GrandCircleFabricationBlockEntity.getScaledProgress(menu.blockEntity);
         if(sp > 0)
             gui.blit(TEXTURE, x, y , 0, 230, sp, 26);
     }
@@ -336,8 +382,8 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         int secPartial = (menu.blockEntity.getOperationTicks() % 20) * 5;
 
         Font font = Minecraft.getInstance().font;
-        gui.drawString(font ,powerDraw+"/t", 180, 26, 0xff000000, false);
-        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 180, 45, 0xff000000, false);
+        gui.drawString(font ,powerDraw+"/t", 193, 26, 0xff000000, false);
+        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 193, 45, 0xff000000, false);
 
         DistillationFabricationRecipe recipe = menu.blockEntity.getCurrentRecipe();
         if(recipe != null) {

@@ -107,6 +107,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> GRAND_CIRCLE_FABRICATION = registerBlock("grand_circle_fabrication",
+            () -> new GrandCircleFabricationBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> POWER_SPIKE = registerBlock("power_spike",
             () -> new PowerSpikeBlock(BlockBehaviour.Properties.of()
                     .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

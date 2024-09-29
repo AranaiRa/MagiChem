@@ -1,0 +1,6 @@
+{
+  "parent": "magichem:block/circle_fabrication",
+  "textures": {
+    "particle": "magichem:block/breakparticle_deesplate"
+  }
+}

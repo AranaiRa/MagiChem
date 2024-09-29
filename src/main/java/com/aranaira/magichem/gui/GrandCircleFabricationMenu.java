@@ -1,6 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -9,7 +9,9 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,22 +20,23 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
-import static com.aranaira.magichem.block.entity.CircleFabricationBlockEntity.*;
+import static com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity.SLOT_INPUT_COUNT;
+import static com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity.SLOT_INPUT_START;
 
-public class CircleFabricationMenu extends AbstractContainerMenu {
+public class GrandCircleFabricationMenu extends AbstractContainerMenu {
 
-    public final CircleFabricationBlockEntity blockEntity;
+    public final GrandCircleFabricationBlockEntity blockEntity;
     private final Level level;
     public SlotItemHandler[] inputSlots = new SlotItemHandler[SLOT_INPUT_COUNT];
 
-    public CircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
-        this(id, inv, ((CircleFabricationBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos())).readFrom(extraData));
+    public GrandCircleFabricationMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
+        this(id, inv, ((GrandCircleFabricationBlockEntity) inv.player.level().getBlockEntity(extraData.readBlockPos())).readFrom(extraData));
     }
 
-    public CircleFabricationMenu(int id, Inventory inv, BlockEntity entity) {
+    public GrandCircleFabricationMenu(int id, Inventory inv, BlockEntity entity) {
         super(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), id);
-        checkContainerSize(inv, CircleFabricationBlockEntity.SLOT_COUNT);
-        blockEntity = (CircleFabricationBlockEntity) entity;
+        checkContainerSize(inv, GrandCircleFabricationBlockEntity.SLOT_COUNT);
+        blockEntity = (GrandCircleFabricationBlockEntity) entity;
 
         this.level = inv.player.level();
 
@@ -41,7 +44,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new BottleStockSlot(handler, CircleFabricationBlockEntity.SLOT_BOTTLES, 82, -5, true));
+            this.addSlot(new BottleStockSlot(handler, GrandCircleFabricationBlockEntity.SLOT_BOTTLES, 82, -5, true));
 
             for(int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
                 int shiftedSlot = i - SLOT_INPUT_START;
@@ -50,9 +53,9 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
                 this.addSlot(slot);
             }
 
-            for(int i = CircleFabricationBlockEntity.SLOT_OUTPUT_START;
-                i < CircleFabricationBlockEntity.SLOT_OUTPUT_START + CircleFabricationBlockEntity.SLOT_OUTPUT_COUNT; i++) {
-                int shiftedSlot = i - CircleFabricationBlockEntity.SLOT_OUTPUT_START;
+            for(int i = GrandCircleFabricationBlockEntity.SLOT_OUTPUT_START;
+                i < GrandCircleFabricationBlockEntity.SLOT_OUTPUT_START + GrandCircleFabricationBlockEntity.SLOT_OUTPUT_COUNT; i++) {
+                int shiftedSlot = i - GrandCircleFabricationBlockEntity.SLOT_OUTPUT_START;
                 this.addSlot(new SlotItemHandler(handler, i, 118 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
             }
         });
@@ -60,7 +63,7 @@ public class CircleFabricationMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.CIRCLE_FABRICATION.get());
+        return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.GRAND_CIRCLE_FABRICATION.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

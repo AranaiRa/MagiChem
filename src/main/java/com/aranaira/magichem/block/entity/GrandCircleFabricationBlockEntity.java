@@ -41,18 +41,33 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester {
+public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10;
 
+    private static final int[] POWER_DRAW = { //TODO: Convert this to config
+            10, 30, 50, 80, 120, 170, 230, 300, 390, 500,
+            640, 820, 1040, 1320, 1670, 2100, 2640, 3320, 4170, 5230,
+            6550, 8200, 10270, 12850, 16080, 20120, 25170, 31480, 39370, 49230
+    };
+
+    private static final int[] OPERATION_TICKS = { //TODO: Convert this to config
+            1735, 1388, 1110, 888, 710, 568, 454, 363, 290, 232,
+            185, 148, 118, 94, 75, 60, 48, 38, 30, 24,
+            19, 15, 12, 9, 7, 5, 4, 3, 2, 1
+    };
+
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
 
-    public CircleFabricationBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesRegistry.CIRCLE_FABRICATION_BE.get(), pos, state);
+    private int
+            powerUsageSetting = 1;
+
+    public GrandCircleFabricationBlockEntity(BlockPos pos, BlockState state) {
+        super(BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_BE.get(), pos, state);
 
         itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
@@ -156,6 +171,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
     }
@@ -173,13 +189,14 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         }
         progress = nbt.getInt("craftingProgress");
+        powerUsageSetting = nbt.getInt("powerUsageSetting");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
 
         if(getLevel() != null)
             getCurrentRecipe();
     }
 
-    public static int getScaledProgress(CircleFabricationBlockEntity entity) {
+    public static int getScaledProgress(GrandCircleFabricationBlockEntity entity) {
         return entity.getCraftingProgress() * 28 / entity.getOperationTicks();
     }
 
@@ -213,7 +230,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, CircleFabricationBlockEntity entity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, GrandCircleFabricationBlockEntity entity) {
         if(!level.isClientSide()) {
             //Power check
             if(entity.operationTicks > 0) {
@@ -231,27 +248,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
         entity.operationTicks = entity.getOperationTicks();
 
-        boolean changed = AbstractFabricationBlockEntity.tick(level, pos, state, entity, CircleFabricationBlockEntity::getVar);
+        boolean changed = AbstractFabricationBlockEntity.tick(level, pos, state, entity, GrandCircleFabricationBlockEntity::getVar);
 
         if(changed)
             entity.syncAndSave();
-    }
-
-    public ItemStack[] getContentsOfInputSlots() {
-        ItemStack[] out = new ItemStack[10];
-        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
-            out[i-SLOT_INPUT_START] = itemHandler.getStackInSlot(i);
-        }
-        return out;
-    }
-
-    public ItemStack getOutputInLastSlot() {
-        ItemStack out = null;
-        for(int i=SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT-1; i>=SLOT_OUTPUT_START; i--) {
-            if(!itemHandler.getStackInSlot(i).isEmpty())
-                out = itemHandler.getStackInSlot(i);
-        }
-        return out;
     }
 
     @Nullable
@@ -270,6 +270,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", this.itemHandler.serializeNBT());
         nbt.putInt("progress", this.progress);
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         return nbt;
     }
@@ -282,7 +283,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     }
 
     @NotNull
-    private static SimpleContainer getOutputAsContainer(CircleFabricationBlockEntity entity) {
+    private static SimpleContainer getOutputAsContainer(GrandCircleFabricationBlockEntity entity) {
         SimpleContainer insert = new SimpleContainer(SLOT_OUTPUT_COUNT);
         int slotID = 0;
         //Add output item
@@ -292,12 +293,44 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         return insert;
     }
 
+    public int getPowerUsageSetting() {
+        return powerUsageSetting;
+    }
+
     public int getPowerDraw() {
-        return 10;
+        return POWER_DRAW[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
     }
 
     public int getOperationTicks() {
-        return 1800;
+        return OPERATION_TICKS[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
+    }
+
+    public int setPowerUsageSetting(int pPowerUsageSetting) {
+        this.powerUsageSetting = pPowerUsageSetting;
+        this.resetProgress();
+        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
+            ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+        return this.powerUsageSetting;
+    }
+
+    public int incrementPowerUsageSetting() {
+        if(powerUsageSetting + 1 < 31) {
+            this.powerUsageSetting++;
+            this.resetProgress();
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+        }
+        return this.powerUsageSetting;
+    }
+
+    public int decrementPowerUsageSetting() {
+        if(powerUsageSetting - 1 > 0) {
+            this.powerUsageSetting--;
+            this.resetProgress();
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+        }
+        return this.powerUsageSetting;
     }
 
     public void setCurrentRecipe(ItemStack pQuery) {
@@ -306,7 +339,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         syncAndSave();
     }
 
-    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(60, 60) {
+    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
         @Override
         public void onEnergyChanged() {
             setChanged();
@@ -333,7 +366,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     }
 
     //client side, needs to be the same order as above
-    public CircleFabricationBlockEntity readFrom(FriendlyByteBuf friendlyByteBuf){
+    public GrandCircleFabricationBlockEntity readFrom(FriendlyByteBuf friendlyByteBuf){
         this.isFESatisfied = friendlyByteBuf.readBoolean();
         return this;
     }
