@@ -141,6 +141,15 @@ public class ColorUtils {
         return new float[]{pAlpha, out[0], out[1], out[2]};
     }
 
+    public static int[] getRGBAIntTintFromPackedInt(int pQuery) {
+        int a = (pQuery & 0xff000000) >> 24;
+        int r = (pQuery & 0x00ff0000) >> 16;
+        int g = (pQuery & 0x0000ff00) >> 8;
+        int b = (pQuery & 0x000000ff);
+
+        return new int[]{r, g, b, a};
+    }
+
     public static float[] getRGBAFloatTintFromPackedInt(int pQuery) {
         int a = (pQuery & 0xff000000) >> 24;
         int r = (pQuery & 0x00ff0000) >> 16;

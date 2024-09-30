@@ -11,7 +11,13 @@ import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.aranaira.magichem.util.render.ColorUtils;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.particles.types.movers.ParticleVelocityMover;
 import com.mna.tools.math.MathUtils;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -43,6 +49,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
@@ -57,6 +64,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private BlockPos linkedCircleToil = null;
+    private static final Random r = new Random();
 
     public CircleFabricationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.CIRCLE_FABRICATION_BE.get(), pos, state);
@@ -65,6 +73,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(recipe == null) {
+                        getCurrentRecipe();
+                    }
+
                     if(recipe != null) {
                         if(((slot - SLOT_INPUT_START) / 2) >= recipe.getComponentMateria().size())
                             return false;
@@ -235,59 +247,177 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 entity.isFESatisfied = true;
             }
 
-            //If we don't have enough power, try to draw from the linked circle of toil
-            if(!entity.isFESatisfied) {
-                //Try to find a circle of toil
-                if(entity.linkedCircleToil == null) {
-                    //Only search once every 5 seconds to cut down on server load
-                    if(level.getGameTime() % 100 == 0) {
-                        final Direction facing = state.getValue(FACING);
-                        if(facing == Direction.NORTH) {
-                            for(int z=-2; z>=-8; z--) {
-                                BlockPos queryPos = pos.offset(0, 0, z);
-                                if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
-                                    entity.linkedCircleToil = queryPos;
-                                    break;
-                                }
+            //Try to find a circle of toil
+            if(entity.linkedCircleToil == null) {
+                //Only search once every 5 seconds to cut down on server load
+                if(level.getGameTime() % 100 == 0) {
+                    final Direction facing = state.getValue(FACING);
+                    if(facing == Direction.NORTH) {
+                        for(int z=-2; z>=-8; z--) {
+                            BlockPos queryPos = pos.offset(0, 0, z);
+                            if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                entity.linkedCircleToil = queryPos;
+                                break;
                             }
-                        } else if(facing == Direction.EAST) {
-                            for(int x=2; x<=8; x++) {
-                                BlockPos queryPos = pos.offset(x, 0, 0);
-                                if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
-                                    entity.linkedCircleToil = queryPos;
-                                    break;
-                                }
+                        }
+                    } else if(facing == Direction.EAST) {
+                        for(int x=2; x<=8; x++) {
+                            BlockPos queryPos = pos.offset(x, 0, 0);
+                            if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                entity.linkedCircleToil = queryPos;
+                                break;
                             }
-                        } else if(facing == Direction.SOUTH) {
-                            for(int z=2; z<=8; z++) {
-                                BlockPos queryPos = pos.offset(0, 0, z);
-                                if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
-                                    entity.linkedCircleToil = queryPos;
-                                    break;
-                                }
+                        }
+                    } else if(facing == Direction.SOUTH) {
+                        for(int z=2; z<=8; z++) {
+                            BlockPos queryPos = pos.offset(0, 0, z);
+                            if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                entity.linkedCircleToil = queryPos;
+                                break;
                             }
-                        } else if(facing == Direction.WEST) {
-                            for(int x=-2; x>=-8; x--) {
-                                BlockPos queryPos = pos.offset(x, 0, 0);
-                                if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
-                                    entity.linkedCircleToil = queryPos;
-                                    break;
-                                }
+                        }
+                    } else if(facing == Direction.WEST) {
+                        for(int x=-2; x>=-8; x--) {
+                            BlockPos queryPos = pos.offset(x, 0, 0);
+                            if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                entity.linkedCircleToil = queryPos;
+                                break;
                             }
                         }
                     }
+                }
+            } else {
+                BlockEntity be = level.getBlockEntity(entity.linkedCircleToil);
+                if(be instanceof CircleToilBlockEntity ctbe) {
+                    LazyOptional<IEnergyStorage> query = ctbe.getCapability(ForgeCapabilities.ENERGY);
+                    if(query.isPresent()) {
+                        IEnergyStorage cap = query.resolve().get();
+                        int tryExtract = cap.extractEnergy(entity.ENERGY_STORAGE.getMaxEnergyStored(), true);
+                        int insert = entity.ENERGY_STORAGE.receiveEnergy(tryExtract, false);
+                        cap.extractEnergy(insert, false);
+                    }
                 } else {
-                    BlockEntity be = level.getBlockEntity(entity.linkedCircleToil);
-                    if(be instanceof CircleToilBlockEntity ctbe) {
-                        LazyOptional<IEnergyStorage> query = ctbe.getCapability(ForgeCapabilities.ENERGY);
-                        if(query.isPresent()) {
-                            IEnergyStorage cap = query.resolve().get();
-                            int tryExtract = cap.extractEnergy(entity.ENERGY_STORAGE.getMaxEnergyStored(), true);
-                            int insert = entity.ENERGY_STORAGE.receiveEnergy(tryExtract, false);
-                            cap.extractEnergy(insert, false);
-                        }
-                    } else {
-                        entity.linkedCircleToil = null;
+                    entity.linkedCircleToil = null;
+                }
+            }
+        }
+        //particle work
+        else if(entity.progress > 0 && level.getGameTime() % 8 == 0) {
+            Direction facing = state.getValue(FACING);
+
+            Vector3[] bowlPositions = {};
+            if(facing == Direction.NORTH) {
+                bowlPositions = new Vector3[]{
+                        new Vector3(0.5, 0.1875, -0.6875),
+                        new Vector3(1.6294, 0.1875, 0.1875),
+                        new Vector3(1.198, 0.1875, 1.4607),
+                        new Vector3(-0.198, 0.1875, 1.4607),
+                        new Vector3(-0.6294, 0.1875, 0.1875),
+                };
+            } else if(facing == Direction.EAST) {
+                bowlPositions = new Vector3[]{
+                        new Vector3(1.6875, 0.1875, 0.5),
+                        new Vector3(0.867, 0.1875, 1.6294),
+                        new Vector3(-0.461, 0.1875, 1.198),
+                        new Vector3(-0.461, 0.1875, -0.198),
+                        new Vector3(0.867, 0.1875, -0.6294),
+                };
+            } else if(facing == Direction.SOUTH) {
+                bowlPositions = new Vector3[]{
+                        new Vector3(0.5, 0.1875, 1.6875),
+                        new Vector3(-0.6294, 0.1875, 0.867),
+                        new Vector3(-0.198, 0.1875, -0.4607),
+                        new Vector3(1.198, 0.1875, -0.4607),
+                        new Vector3(1.6294, 0.1875, 0.867),
+                };
+            } else if(facing == Direction.WEST) {
+                bowlPositions = new Vector3[]{
+                        new Vector3(-0.6875, 0.1875, 0.5),
+                        new Vector3(0.133, 0.1875, -0.6294),
+                        new Vector3(1.461, 0.1875, -0.198),
+                        new Vector3(1.461, 0.1875, 1.198),
+                        new Vector3(0.133, 0.1875, 1.6294),
+                };
+            }
+
+            if(bowlPositions.length > 0) {
+                final ItemStack[] contentsOfInputSlots = entity.getContentsOfInputSlots();
+                boolean has1 = !contentsOfInputSlots[0].isEmpty() || !contentsOfInputSlots[1].isEmpty();
+                boolean has2 = !contentsOfInputSlots[2].isEmpty() || !contentsOfInputSlots[3].isEmpty();
+                boolean has3 = !contentsOfInputSlots[4].isEmpty() || !contentsOfInputSlots[5].isEmpty();
+                boolean has4 = !contentsOfInputSlots[6].isEmpty() || !contentsOfInputSlots[7].isEmpty();
+                boolean has5 = !contentsOfInputSlots[8].isEmpty() || !contentsOfInputSlots[9].isEmpty();
+
+                if (has1) {
+                    int[] color = ColorUtils.getRGBAIntTintFromPackedInt((
+                            contentsOfInputSlots[0].isEmpty() ?
+                                    (MateriaItem) contentsOfInputSlots[1].getItem() :
+                                    (MateriaItem) contentsOfInputSlots[0].getItem()
+                    ).getMateriaColor());
+
+                    entity.generateMateriaCloud(bowlPositions[0], color);
+                }
+
+                if (has2) {
+                    int[] color = ColorUtils.getRGBAIntTintFromPackedInt((
+                            contentsOfInputSlots[2].isEmpty() ?
+                                    (MateriaItem) contentsOfInputSlots[3].getItem() :
+                                    (MateriaItem) contentsOfInputSlots[2].getItem()
+                    ).getMateriaColor());
+
+                    entity.generateMateriaCloud(bowlPositions[1], color);
+                }
+
+                if (has3) {
+                    int[] color = ColorUtils.getRGBAIntTintFromPackedInt((
+                            contentsOfInputSlots[4].isEmpty() ?
+                                    (MateriaItem) contentsOfInputSlots[5].getItem() :
+                                    (MateriaItem) contentsOfInputSlots[4].getItem()
+                    ).getMateriaColor());
+
+                    entity.generateMateriaCloud(bowlPositions[2], color);
+                }
+
+                if (has4) {
+                    int[] color = ColorUtils.getRGBAIntTintFromPackedInt((
+                            contentsOfInputSlots[6].isEmpty() ?
+                                    (MateriaItem) contentsOfInputSlots[7].getItem() :
+                                    (MateriaItem) contentsOfInputSlots[6].getItem()
+                    ).getMateriaColor());
+
+                    entity.generateMateriaCloud(bowlPositions[3], color);
+                }
+
+                if (has5) {
+                    int[] color = ColorUtils.getRGBAIntTintFromPackedInt((
+                            contentsOfInputSlots[8].isEmpty() ?
+                                    (MateriaItem) contentsOfInputSlots[9].getItem() :
+                                    (MateriaItem) contentsOfInputSlots[8].getItem()
+                    ).getMateriaColor());
+
+                    entity.generateMateriaCloud(bowlPositions[4], color);
+                }
+
+                if(has1 || has2 || has3 || has4 || has5) {
+                    int total = 10;
+                    for(int i=0; i<total; i++) {
+                        double radianWiggle = ((Math.PI * 2) / (double)total) * (r.nextDouble() - 0.5);
+
+                        double x = Math.cos((Math.PI * 2) * i / (double)total + radianWiggle);
+                        double z = Math.sin((Math.PI * 2) * i / (double)total + radianWiggle);
+
+                        double rx = r.nextDouble() - 0.5;
+                        double ry = r.nextDouble();
+                        double rz = r.nextDouble() - 0.5;
+
+                        Vector3 mid = new Vector3(0.5, 0.015625, 0.5).add(new Vector3(x, 0, z).scale(0.9f));
+
+                        level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                        .setMaxAge(20 + r.nextInt(30)).setScale(0.03f + r.nextFloat() * 0.03f)
+                                        .setColor(150+r.nextInt(75), 150+r.nextInt(75), 150+r.nextInt(75))
+                                        .setMover(new ParticleVelocityMover(rx * 0.03, 0.01 + ry * 0.02, rz * 0.03, true)),
+                                pos.getX() + mid.x, pos.getY() + mid.y, pos.getZ() + mid.z,
+                                0, 0, 0);
                     }
                 }
             }
@@ -299,6 +429,24 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
         if(changed)
             entity.syncAndSave();
+    }
+
+    public void generateMateriaCloud(Vector3 pPosition, int[] pColor) {
+        Vector3 origin = new Vector3(getBlockPos()).add(pPosition);
+
+        double spreadRadius = 0.015625d;
+
+        double x = r.nextDouble() * spreadRadius * 2 - spreadRadius;
+        double z = r.nextDouble() * spreadRadius * 2 - spreadRadius;
+
+        Vector3 pos = origin.add(new Vector3(x, 0, z));
+
+        getLevel().addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                        .setScale(0.05f).setMaxAge(64)
+                        .setMover(new ParticleLerpMover(pos.x, pos.y, pos.z, pos.x, pos.y + 0.5, pos.z))
+                        .setColor(pColor[0], pColor[1], pColor[2], 64),
+                pos.x, pos.y, pos.z,
+                0, 0, 0);
     }
 
     public ItemStack[] getContentsOfInputSlots() {

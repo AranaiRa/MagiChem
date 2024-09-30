@@ -28,6 +28,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+
 public class CircleFabricationBlockEntityRenderer implements BlockEntityRenderer<CircleFabricationBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_CIRCLE = new ResourceLocation(MagiChemMod.MODID, "obj/special/circle_fabrication_circle");
     public static final ResourceLocation RENDERER_MODEL_BOWLFILL = new ResourceLocation(MagiChemMod.MODID, "obj/special/circle_fabrication_bowlfill");
@@ -40,12 +42,12 @@ public class CircleFabricationBlockEntityRenderer implements BlockEntityRenderer
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
+        Direction facing = state.getValue(FACING);
 
         //circle
         {
             pPoseStack.pushPose();
 
-            Direction facing = state.getValue(MagiChemBlockStateProperties.FACING);
             if(facing == Direction.EAST) {
                 pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
                 pPoseStack.translate(0, 0, -1);
@@ -74,7 +76,19 @@ public class CircleFabricationBlockEntityRenderer implements BlockEntityRenderer
             boolean has5 = !contentsOfInputSlots[8].isEmpty() || !contentsOfInputSlots[9].isEmpty();
 
             pPoseStack.pushPose();
-            pPoseStack.translate(0.5, 0, 0.5);
+
+            if(facing == Direction.NORTH) {
+                pPoseStack.translate(0.5, 0, 0.5);
+            } else if(facing == Direction.EAST) {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
+                pPoseStack.translate(0.5, 0, -0.5);
+            } else if(facing == Direction.SOUTH) {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(180));
+                pPoseStack.translate(-0.5, 0, -0.5);
+            } else if(facing == Direction.WEST) {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(270));
+                pPoseStack.translate(-0.5, 0, 0.5);
+            }
 
             if (has1) {
                 float[] color = ColorUtils.getRGBAFloatTintFromPackedInt((
@@ -155,7 +169,15 @@ public class CircleFabricationBlockEntityRenderer implements BlockEntityRenderer
                 pPoseStack.pushPose();
 
                 //TODO: take facing into account
-                pPoseStack.translate(0.5, 0.25, 0.5 + 0.122994);
+                if(facing == Direction.NORTH) {
+                    pPoseStack.translate(0.5, 0.25, 0.5 + 0.122994);
+                } else if(facing == Direction.EAST) {
+                    pPoseStack.translate(0.5 - 0.122994, 0.25, 0.5);
+                } else if(facing == Direction.SOUTH) {
+                    pPoseStack.translate(0.5, 0.25, 0.5 - 0.122994);
+                } else if(facing == Direction.WEST) {
+                    pPoseStack.translate(0.5 + 0.122994, 0.25, 0.5);
+                }
                 pPoseStack.scale(0.4f, 0.4f, 0.4f);
                 pPoseStack.mulPose(Axis.YP.rotationDegrees((((world.getGameTime() + pPartialTick) % 500) / 500f) * 360));
                 Minecraft.getInstance().getItemRenderer().renderStatic(outputItem, ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, world, 0);
