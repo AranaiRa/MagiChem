@@ -168,7 +168,6 @@ public class CircleFabricationBlockEntityRenderer implements BlockEntityRenderer
             if(outputItem != null) {
                 pPoseStack.pushPose();
 
-                //TODO: take facing into account
                 if(facing == Direction.NORTH) {
                     pPoseStack.translate(0.5, 0.25, 0.5 + 0.122994);
                 } else if(facing == Direction.EAST) {

@@ -193,9 +193,33 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         }
         progress = nbt.getInt("craftingProgress");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
+    }
 
-        if(getLevel() != null)
-            getCurrentRecipe();
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        super.handleUpdateTag(tag);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", this.itemHandler.serializeNBT());
+        nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
+        return nbt;
+    }
+
+    public final void syncAndSave() {
+        if (!this.getLevel().isClientSide()) {
+            this.setChanged();
+            this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
     }
 
     public static int getScaledProgress(CircleFabricationBlockEntity entity) {
@@ -399,6 +423,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 }
 
                 if(has1 || has2 || has3 || has4 || has5) {
+                    //ring sparkles
                     int total = 10;
                     for(int i=0; i<total; i++) {
                         double radianWiggle = ((Math.PI * 2) / (double)total) * (r.nextDouble() - 0.5);
@@ -417,6 +442,32 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                                         .setColor(150+r.nextInt(75), 150+r.nextInt(75), 150+r.nextInt(75))
                                         .setMover(new ParticleVelocityMover(rx * 0.03, 0.01 + ry * 0.02, rz * 0.03, true)),
                                 pos.getX() + mid.x, pos.getY() + mid.y, pos.getZ() + mid.z,
+                                0, 0, 0);
+                    }
+
+                    Vector3 outputCenter;
+                    if(facing == Direction.NORTH) {
+                        outputCenter = new Vector3(0.5, 0.25, 0.5 + 0.122994);
+                    } else if(facing == Direction.EAST) {
+                        outputCenter = new Vector3(0.5 - 0.122994, 0.25, 0.5);
+                    } else if(facing == Direction.SOUTH) {
+                        outputCenter = new Vector3(0.5, 0.25, 0.5 - 0.122994);
+                    } else {
+                        outputCenter = new Vector3(0.5 + 0.122994, 0.25, 0.5);
+                    }
+
+                    //item chunks
+                    total = 8;
+                    for(int i=0; i<total; i++) {
+                        Vector3 end = new Vector3(pos.getX() + outputCenter.x, pos.getY() + outputCenter.y, pos.getZ() + outputCenter.z);
+                        Vector3 start = end.add(new Vector3(r.nextDouble() * 2 - 1, r.nextDouble(), r.nextDouble() * 2 - 1).scale(0.5f));
+
+                        level.addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                                        .setScale(0.05f).setMaxAge(10+r.nextInt(10)).setStack(entity.recipe.getAlchemyObject())
+                                        .setMover(new ParticleLerpMover(
+                                                start.x, start.y, start.z,
+                                                end.x, end.y, end.z)),
+                                start.x, start.y, start.z,
                                 0, 0, 0);
                     }
                 }
@@ -464,33 +515,6 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 out = itemHandler.getStackInSlot(i);
         }
         return out;
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.handleUpdateTag(tag);
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag nbt = new CompoundTag();
-        nbt.put("inventory", this.itemHandler.serializeNBT());
-        nbt.putInt("progress", this.progress);
-        nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
-        return nbt;
-    }
-
-    public final void syncAndSave() {
-        if (!this.getLevel().isClientSide()) {
-            this.setChanged();
-            this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-        }
     }
 
     @NotNull

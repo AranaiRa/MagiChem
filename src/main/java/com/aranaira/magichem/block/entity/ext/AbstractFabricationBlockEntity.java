@@ -111,6 +111,8 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
                 } else {
                     pEntity.resetProgress();
                 }
+            } else if(!pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE)).isEmpty()) {
+                pEntity.recipe = DistillationFabricationRecipe.getFabricatingRecipe(pLevel, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE)));
             } else {
                 pEntity.resetProgress();
             }
