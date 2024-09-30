@@ -14,7 +14,7 @@
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:circle_toil",
+  "parent": "magichem:circle_power",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",

@@ -14,7 +14,7 @@
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:alembic",
+  "parent": "magichem:circle_fabrication",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",

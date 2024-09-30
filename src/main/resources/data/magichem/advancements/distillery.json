@@ -14,7 +14,7 @@
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:magichemical_mechanism",
+  "parent": "magichem:alchemical_nexus",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
