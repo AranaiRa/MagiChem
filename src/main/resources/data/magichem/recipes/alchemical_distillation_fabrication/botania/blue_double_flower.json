@@ -17,6 +17,10 @@
         },
         "components": [
           {
+            "item": "magichem:admixture_color",
+            "count": 1
+          },
+          {
             "item": "magichem:admixture_plant",
             "count": 1
           },
