@@ -1,0 +1,8 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 2
+
+newmtl CHIMERITE
+map_Kd mna:block/oreblockchimerite
+
+newmtl GRAND_CIRCLE_FABRICATION
+map_Kd magichem:block/grand_circle_fabrication

@@ -1,10 +1,13 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.GrandCircleFabricationBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
+import com.aranaira.magichem.gui.GrandCircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -28,6 +31,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -41,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester {
+public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
@@ -138,7 +142,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new CircleFabricationMenu(id, inventory, this);
+        return new GrandCircleFabricationMenu(id, inventory, this);
     }
 
     @Override
@@ -506,5 +510,10 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         provide(pStack);
 
         return 0;
+    }
+
+    @Override
+    public void destroyRouters() {
+        GrandCircleFabricationBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 }

@@ -25,5 +25,6 @@ public class MagiChemBlockStateProperties {
     public static final IntegerProperty ROUTER_TYPE_GRAND_DISTILLERY = IntegerProperty.create("grand_distillery_router_type", 0, 18);
     public static final IntegerProperty ROUTER_TYPE_CIRCLE_POWER = IntegerProperty.create("circle_power_router_type", 0, 8);
     public static final IntegerProperty ROUTER_TYPE_CIRCLE_FABRICATION = IntegerProperty.create("circle_power_router_type", 0, 8);
+    public static final IntegerProperty ROUTER_TYPE_GRAND_CIRCLE_FABRICATION = IntegerProperty.create("grand_circle_fabrication_router_type", 0, 8);
     public static final IntegerProperty USER_TIER_TYPE = IntegerProperty.create("user_tier_type", 0, 5);
 }

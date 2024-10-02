@@ -1,0 +1,14 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 4
+
+newmtl CENTRIFUGE
+map_Kd magichem:block/centrifuge
+
+newmtl CHIMERITE
+map_Kd mna:block/oreblockchimerite
+
+newmtl GRAND_CIRCLE_FABRICATION
+map_Kd magichem:block/grand_circle_fabrication
+
+newmtl GRAND_DISTILLERY
+map_Kd magichem:block/grand_distillery

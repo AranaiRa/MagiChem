@@ -1,8 +1,10 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
+import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
@@ -37,6 +39,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -54,7 +57,7 @@ import java.util.function.Consumer;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 
-public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester {
+public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
@@ -457,18 +460,20 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                     }
 
                     //item chunks
-                    total = 8;
-                    for(int i=0; i<total; i++) {
-                        Vector3 end = new Vector3(pos.getX() + outputCenter.x, pos.getY() + outputCenter.y, pos.getZ() + outputCenter.z);
-                        Vector3 start = end.add(new Vector3(r.nextDouble() * 2 - 1, r.nextDouble(), r.nextDouble() * 2 - 1).scale(0.5f));
+                    if(entity.recipe != null) {
+                        total = 8;
+                        for (int i = 0; i < total; i++) {
+                            Vector3 end = new Vector3(pos.getX() + outputCenter.x, pos.getY() + outputCenter.y, pos.getZ() + outputCenter.z);
+                            Vector3 start = end.add(new Vector3(r.nextDouble() * 2 - 1, r.nextDouble(), r.nextDouble() * 2 - 1).scale(0.5f));
 
-                        level.addParticle(new MAParticleType(ParticleInit.ITEM.get())
-                                        .setScale(0.05f).setMaxAge(10+r.nextInt(10)).setStack(entity.recipe.getAlchemyObject())
-                                        .setMover(new ParticleLerpMover(
-                                                start.x, start.y, start.z,
-                                                end.x, end.y, end.z)),
-                                start.x, start.y, start.z,
-                                0, 0, 0);
+                            level.addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                                            .setScale(0.05f).setMaxAge(10 + r.nextInt(10)).setStack(entity.recipe.getAlchemyObject())
+                                            .setMover(new ParticleLerpMover(
+                                                    start.x, start.y, start.z,
+                                                    end.x, end.y, end.z)),
+                                    start.x, start.y, start.z,
+                                    0, 0, 0);
+                        }
                     }
                 }
             }
@@ -709,5 +714,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         provide(pStack);
 
         return 0;
+    }
+
+    @Override
+    public void destroyRouters() {
+        CircleFabricationBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 }

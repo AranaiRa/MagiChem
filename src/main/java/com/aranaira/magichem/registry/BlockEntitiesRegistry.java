@@ -86,6 +86,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(GrandCircleFabricationBlockEntity::new, BlockRegistry.GRAND_CIRCLE_FABRICATION.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<GrandCircleFabricationRouterBlockEntity>> GRAND_CIRCLE_FABRICATION_ROUTER_BE = BLOCK_ENTITIES.register("grand_circle_fabrication_router", () ->
+            BlockEntityType.Builder.of(GrandCircleFabricationRouterBlockEntity::new, BlockRegistry.GRAND_CIRCLE_FABRICATION_ROUTER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<CircleToilBlockEntity>> CIRCLE_TOIL_BE = BLOCK_ENTITIES.register("circle_toil", () ->
             BlockEntityType.Builder.of(CircleToilBlockEntity::new, BlockRegistry.CIRCLE_TOIL.get()).build(null)
     );
