@@ -32,6 +32,16 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     int pageIndex = 0;
     int pageCount = 1;
 
+    @Override
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+        if(pDelta < 0)
+            pageIndex = Math.min(pageIndex + 1, pageCount - 1);
+        else if(pDelta > 0)
+            pageIndex = Math.max(pageIndex - 1, 0);
+
+        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+    }
+
     public MateriaManifestScreen(MateriaManifestMenu menu, Inventory inv, Component component) {
         super(menu, inv, component);
         updateStorageScan();
