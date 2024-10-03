@@ -20,10 +20,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec2;
 
 public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRenderer<GrandCircleFabricationBlockEntity> {
@@ -36,8 +38,26 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
 
     @Override
     public void render(GrandCircleFabricationBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        Direction facing = pBlockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        pPoseStack.pushPose();
+        if(facing == Direction.EAST) {
+            pPoseStack.translate(1, 0, 0);
+            pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
+        }
+        else if(facing == Direction.SOUTH) {
+            pPoseStack.translate(1, 0, 1);
+            pPoseStack.mulPose(Axis.YN.rotationDegrees(180));
+        }
+        else if(facing == Direction.WEST) {
+            pPoseStack.translate(0, 0, 1);
+            pPoseStack.mulPose(Axis.YN.rotationDegrees(270));
+        }
+
+
         renderMagicCircle(pBlockEntity, pPartialTick, pPoseStack, pPackedLight, pBuffer, pPackedLight, pPackedOverlay);
         renderFloatingVessels(pBlockEntity, pPartialTick, pPoseStack, pPackedLight, pBuffer, pPackedLight, pPackedOverlay);
+        pPoseStack.popPose();
     }
 
     private void renderMagicCircle(GrandCircleFabricationBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, int pPackedLight, MultiBufferSource pBuffer, int pPackedLight1, int pPackedOverlay) {
