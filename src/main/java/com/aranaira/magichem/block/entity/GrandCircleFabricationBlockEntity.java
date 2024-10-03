@@ -53,9 +53,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10;
 
     private static final int[] POWER_DRAW = { //TODO: Convert this to config
-            60, 75, 95, 120, 155, 195, 250, 320, 410, 525,
-            670, 860, 1100, 1410, 1805, 2315, 2970, 3805, 4875, 6250,
-            8015, 10275, 13175, 16890, 21655, 27760, 35590, 45630, 58500, 75000
+            70, 85, 105, 130, 160, 200, 250, 310, 390, 490,
+            610, 760, 950, 1185, 1480, 1850, 2310, 2890, 3610, 4510,
+            5640, 7050, 8810, 11010, 13765, 17205, 21505, 26880, 33600, 42000
     };
 
     private static final int[] OPERATION_TICKS = { //TODO: Convert this to config
