@@ -12,7 +12,11 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.MathUtils;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -43,7 +47,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
+
+import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
 public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction {
     public static final int
@@ -51,6 +58,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10;
+    public static final float
+            CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f, PROJECTOR_PERCENT_RATE = 0.05f;
 
     private static final int[] POWER_DRAW = { //TODO: Convert this to config
             70, 85, 105, 130, 160, 200, 250, 310, 390, 490,
@@ -66,11 +75,15 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private static final Random r = new Random();
 
     private int
             powerUsageSetting = 1;
     private boolean
             redstonePaused = false;
+
+    public float
+            particlePercent = 0, daisCirclePercent = 0, projectorPercent = 0, mainCirclePercent = 0;
 
     public GrandCircleFabricationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_BE.get(), pos, state);
@@ -238,30 +251,102 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, GrandCircleFabricationBlockEntity entity) {
-        if(!level.isClientSide() && !entity.redstonePaused) {
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandCircleFabricationBlockEntity pEntity) {
+        if(!pLevel.isClientSide() && !pEntity.redstonePaused) {
             //Power check
-            if(entity.operationTicks > 0) {
-                int cost = entity.getPowerDraw();
-                if (entity.ENERGY_STORAGE.getEnergyStored() >= cost) {
-                    entity.ENERGY_STORAGE.extractEnergy(cost, false);
-                    entity.isFESatisfied = true;
+            if(pEntity.operationTicks > 0) {
+                int cost = pEntity.getPowerDraw();
+                if (pEntity.ENERGY_STORAGE.getEnergyStored() >= cost) {
+                    pEntity.ENERGY_STORAGE.extractEnergy(cost, false);
+                    pEntity.isFESatisfied = true;
                 } else {
-                    entity.isFESatisfied = false;
+                    pEntity.isFESatisfied = false;
                 }
             } else {
-                entity.isFESatisfied = true;
+                pEntity.isFESatisfied = true;
+            }
+        }
+        pEntity.handleAnimationDrivers();
+
+        //particle stuff
+        if(pEntity.getLevel().isClientSide() && pEntity.particlePercent > 0) {
+            Vector3 center = Vector3.zero();
+            Direction facing = pEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+            if (facing == Direction.NORTH)
+                center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.375, pPos.getZ() + 1.5);
+            else if (facing == Direction.EAST)
+                center = new Vector3(pPos.getX() - 0.5, pPos.getY() + 1.375, pPos.getZ() + 0.5);
+            else if (facing == Direction.SOUTH)
+                center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.375, pPos.getZ() - 0.5);
+            else if (facing == Direction.WEST)
+                center = new Vector3(pPos.getX() + 1.5, pPos.getY() + 1.375, pPos.getZ() + 0.5);
+
+            int colorIndex = r.nextInt(6);
+            if (pEntity.getLevel().getGameTime() % 8 == 0) {
+                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2])
+                                .setScale(0.4f * pEntity.particlePercent).setMaxAge(80),
+                        center.x, center.y, center.z,
+                        0, 0, 0);
+            }
+            pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                            .setColor(255, 255, 255).setScale(0.2f * pEntity.particlePercent),
+                    center.x, center.y, center.z,
+                    0, 0, 0);
+
+            if(pEntity.particlePercent == 1) {
+                for (int i = 0; i < 2; i++) {
+                    Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                    pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                    .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2], 128)
+                                    .setScale(0.09f).setMaxAge(16)
+                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                            0, 0, 0);
+
+                    pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                    .setScale(0.015f).setMaxAge(16)
+                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                            0, 0, 0);
+                }
             }
         }
 
-        entity.operationTicks = entity.getOperationTicks();
+        pEntity.operationTicks = pEntity.getOperationTicks();
 
         boolean changed = false;
-        if(!entity.redstonePaused)
-            changed = AbstractFabricationBlockEntity.tick(level, pos, state, entity, GrandCircleFabricationBlockEntity::getVar);
+        if(!pEntity.redstonePaused)
+            changed = AbstractFabricationBlockEntity.tick(pLevel, pPos, pState, pEntity, GrandCircleFabricationBlockEntity::getVar);
 
         if(changed)
-            entity.syncAndSave();
+            pEntity.syncAndSave();
+    }
+
+    private void handleAnimationDrivers() {
+        if(particlePercent == 1) {
+            daisCirclePercent = Math.min(1, daisCirclePercent + CIRCLE_FILL_RATE);
+        } else if(particlePercent == 0) {
+            daisCirclePercent = Math.max(0, daisCirclePercent - CIRCLE_FILL_RATE);
+        }
+
+        if(hasSufficientPower() && !redstonePaused) {
+            particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
+        } else {
+            particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
+        }
+
+        if(daisCirclePercent == 1) {
+            projectorPercent = Math.min(1, projectorPercent + PROJECTOR_PERCENT_RATE);
+        } else if(daisCirclePercent == 0) {
+            projectorPercent = Math.max(0, projectorPercent - PROJECTOR_PERCENT_RATE);
+        }
+
+        if(projectorPercent > 0.5f) {
+            mainCirclePercent = Math.min(1, mainCirclePercent + CIRCLE_FILL_RATE);
+        } else if(projectorPercent == 0) {
+            mainCirclePercent = Math.max(0, mainCirclePercent - CIRCLE_FILL_RATE);
+        }
     }
 
     @Nullable

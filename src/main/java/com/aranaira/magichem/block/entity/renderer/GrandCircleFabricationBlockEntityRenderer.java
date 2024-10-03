@@ -6,12 +6,10 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
 import com.aranaira.magichem.util.render.RenderUtils;
-import com.mna.api.affinity.Affinity;
 import com.mna.tools.math.Vector3;
 import com.mna.tools.render.ModelUtils;
 import com.mna.tools.render.WorldRenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,11 +17,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec2;
@@ -67,6 +63,20 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         int period;
         float loopingTime;
 
+        float daisCircleRotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 400) / 400) * (float)Math.PI * 2;
+
+        pPoseStack.pushPose();
+
+        pPoseStack.translate(0.5, 1.25, 1.5);
+        pPoseStack.mulPose(Axis.XP.rotation(0.261799f));
+        pPoseStack.scale(0.5f, 0.5f, 0.5f);
+        RenderUtils.generateMagicCircleRing(center,
+                7, 0.75f, 0.375f, -daisCircleRotation, texture,
+                new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
+                pBlockEntity.daisCirclePercent, pPoseStack, pBuffer, pPackedLight);
+
+        pPoseStack.popPose();
+
         period = 750;
         loopingTime = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
         float rayRot = loopingTime;
@@ -76,7 +86,7 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         pPoseStack.mulPose(Axis.XP.rotationDegrees(45));
         pPoseStack.mulPose(Axis.YN.rotation(rayRot));
         for(int i=0; i<9; i++) {
-            WorldRenderUtils.renderLightBeam((pBlockEntity.getLevel().getGameTime() + pPartialTick), pPoseStack, pBuffer, ColorUtils.getRGBIntTint(ColorUtils.getDyeColorFromID(i)), ColorUtils.getRGBIntTint(ColorUtils.getDyeColorFromID(i)), 24, 5, .2f, 0, 0);
+            WorldRenderUtils.renderLightBeam((pBlockEntity.getLevel().getGameTime() + pPartialTick), pPoseStack, pBuffer, ColorUtils.getRGBIntTint(ColorUtils.getDyeColorFromID(i)), ColorUtils.getRGBIntTint(ColorUtils.getDyeColorFromID(i)), 24, 5, .2f * (pBlockEntity.projectorPercent * pBlockEntity.projectorPercent), 0, 0);
             pPoseStack.mulPose(Axis.YP.rotationDegrees(360f / 9f));
         }
         pPoseStack.popPose();
@@ -105,7 +115,7 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         RenderUtils.generateMagicCircleRing(center,
                 9, 1.125f, 0.125f, 0, texture,
                 new Vec2(0, 6.5f), new Vec2(12, 4.5f), 0.75f,
-                1, pPoseStack, pBuffer, pPackedLight
+                pBlockEntity.mainCirclePercent, pPoseStack, pBuffer, pPackedLight
         );
 
         pPoseStack.pushPose();
@@ -113,7 +123,7 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         RenderUtils.generateMagicCircleRing(center,
                 3, 1.0f, 0.125f, 0, texture,
                 new Vec2(0, 4.5f), new Vec2(12, 6.5f), 0.75f,
-                1, pPoseStack, pBuffer, pPackedLight
+                pBlockEntity.mainCirclePercent, pPoseStack, pBuffer, pPackedLight
         );
         pPoseStack.popPose();
 
@@ -123,13 +133,13 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.001, 0)),
                 4, 0.5375f, 0.09375f, 0, texture,
                 new Vec2(0, 4.5f), new Vec2(12, 6.0f), 0.75f,
-                1, pPoseStack, pBuffer, pPackedLight
+                pBlockEntity.mainCirclePercent, pPoseStack, pBuffer, pPackedLight
         );
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.002, 0)),
                 8, 0.325f, 0.09375f, 0, texture,
                 new Vec2(0, 4.5f), new Vec2(12, 6.0f), 0.75f,
-                1, pPoseStack, pBuffer, pPackedLight
+                pBlockEntity.mainCirclePercent, pPoseStack, pBuffer, pPackedLight
         );
 
         pPoseStack.popPose();
