@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +50,8 @@ public class GrandCircleFabricationBlock extends BaseEntityBlock {
         registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
-    private static final VoxelShape VOXEL_SHAPE = Block.box(0,0,0,16,6,16);
+    private static final VoxelShape
+            VOXEL_SHAPE_BASE, VOXEL_SHAPE_HOLE, VOXEL_SHAPE_AGGREGATE;
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
@@ -58,7 +60,7 @@ public class GrandCircleFabricationBlock extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context) {
-        return VOXEL_SHAPE;
+        return VOXEL_SHAPE_AGGREGATE;
     }
 
     @Override
@@ -197,5 +199,15 @@ public class GrandCircleFabricationBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_BE.get(),
                 GrandCircleFabricationBlockEntity::tick);
+    }
+
+    static {
+        VOXEL_SHAPE_BASE = Block.box(0, 0, 0, 16, 15, 16);
+        VOXEL_SHAPE_HOLE = Block.box(4, 15, 4, 12, 16, 12);
+
+        VOXEL_SHAPE_AGGREGATE = Shapes.or(
+                VOXEL_SHAPE_BASE,
+                VOXEL_SHAPE_HOLE
+        );
     }
 }

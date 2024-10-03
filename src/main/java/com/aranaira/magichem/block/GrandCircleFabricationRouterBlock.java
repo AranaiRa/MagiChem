@@ -1,7 +1,6 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
-import com.aranaira.magichem.block.entity.routers.CircleFabricationRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandCircleFabricationRouterBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -35,11 +34,10 @@ public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implement
     }
 
     public static VoxelShape
-            VOXEL_SHAPE_CIRCLE_NORTH, VOXEL_SHAPE_STONE_NORTH,
-            VOXEL_SHAPE_CIRCLE_NORTHEAST, VOXEL_SHAPE_STONE_NORTHEAST,
-            VOXEL_SHAPE_CIRCLE_EAST, VOXEL_SHAPE_STONE_EAST,
-            VOXEL_SHAPE_CIRCLE_SOUTHEAST, VOXEL_SHAPE_STONE_SOUTHEAST,
-            VOXEL_SHAPE_CIRCLE_SOUTH,
+            VOXEL_SHAPE_OUTER_BASE_NORTH, VOXEL_SHAPE_INNER_BASE_NORTH, VOXEL_SHAPE_OUTER_BODY_NORTH, VOXEL_SHAPE_INNER_BODY_NORTH, VOXEL_SHAPE_PLATFORM_NORTH, VOXEL_SHAPE_MOUNT_NORTH,
+            VOXEL_SHAPE_BASE_NORTHEAST, VOXEL_SHAPE_BODY_NORTHEAST,
+            VOXEL_SHAPE_PLUG_NORTH,
+            VOXEL_SHAPE_BASE_SOUTH, VOXEL_SHAPE_DAIS_SOUTH,
 
             VOXEL_SHAPE_AGGREGATE_0_NORTH, VOXEL_SHAPE_AGGREGATE_0_EAST, VOXEL_SHAPE_AGGREGATE_0_SOUTH, VOXEL_SHAPE_AGGREGATE_0_WEST,
             VOXEL_SHAPE_AGGREGATE_1_NORTH, VOXEL_SHAPE_AGGREGATE_1_EAST, VOXEL_SHAPE_AGGREGATE_1_SOUTH, VOXEL_SHAPE_AGGREGATE_1_WEST,
@@ -175,112 +173,196 @@ public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implement
     }
 
     static {
-        VOXEL_SHAPE_CIRCLE_NORTH = Block.box(0, 0,  8, 16, 2, 16);
-        VOXEL_SHAPE_STONE_NORTH = Block.box(5, 0, 0, 11, 13, 7);
+        VOXEL_SHAPE_OUTER_BASE_NORTH = Block.box(1, 0, 1, 15, 4, 16);
+        VOXEL_SHAPE_INNER_BASE_NORTH = Block.box(0, 0, 8, 16, 4, 16);
+        VOXEL_SHAPE_OUTER_BODY_NORTH = Block.box(2, 4, 2, 14, 9, 16);
+        VOXEL_SHAPE_INNER_BODY_NORTH = Block.box(0, 4, 9, 16, 9, 16);
+        VOXEL_SHAPE_PLATFORM_NORTH = Block.box(2, 9, 2, 14, 12, 10);
+
         VOXEL_SHAPE_AGGREGATE_0_NORTH = Shapes.or(
-                VOXEL_SHAPE_CIRCLE_NORTH,
-                VOXEL_SHAPE_STONE_NORTH);
+                VOXEL_SHAPE_OUTER_BASE_NORTH,
+                VOXEL_SHAPE_INNER_BASE_NORTH,
+                VOXEL_SHAPE_OUTER_BODY_NORTH,
+                VOXEL_SHAPE_INNER_BODY_NORTH,
+                VOXEL_SHAPE_PLATFORM_NORTH
+        );
         VOXEL_SHAPE_AGGREGATE_0_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_NORTH, 1), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_NORTH, 1)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BASE_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BASE_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BODY_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BODY_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLATFORM_NORTH, 1)
+        );
         VOXEL_SHAPE_AGGREGATE_0_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_NORTH, 2), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_NORTH, 2)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BASE_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BASE_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BODY_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BODY_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLATFORM_NORTH, 2)
+        );
         VOXEL_SHAPE_AGGREGATE_0_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_NORTH, 3), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_NORTH, 3)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BASE_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BASE_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BODY_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BODY_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLATFORM_NORTH, 3)
+        );
 
-        VOXEL_SHAPE_CIRCLE_NORTHEAST = Block.box(0, 0,  8, 8, 2, 16);
-        VOXEL_SHAPE_STONE_NORTHEAST = Block.box(7.550, 0, 14.039, 15.443, 13, 16);
+        VOXEL_SHAPE_BASE_NORTHEAST = Block.box(0, 0,  9, 7, 4, 16);
+        VOXEL_SHAPE_BODY_NORTHEAST = Block.box(0, 4, 10, 6, 9, 16);
         VOXEL_SHAPE_AGGREGATE_1_NORTH = Shapes.or(
-                VOXEL_SHAPE_CIRCLE_NORTHEAST,
-                VOXEL_SHAPE_STONE_NORTHEAST);
+                VOXEL_SHAPE_BASE_NORTHEAST,
+                VOXEL_SHAPE_BODY_NORTHEAST
+        );
         VOXEL_SHAPE_AGGREGATE_1_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_NORTHEAST, 1), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_NORTHEAST, 1)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 1)
+        );
         VOXEL_SHAPE_AGGREGATE_1_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_NORTHEAST, 2), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_NORTHEAST, 2)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 2)
+        );
         VOXEL_SHAPE_AGGREGATE_1_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_NORTHEAST, 3), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_NORTHEAST, 3)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 3)
+        );
 
-        VOXEL_SHAPE_AGGREGATE_7_NORTH = Shapes.or(
-                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_NORTHEAST),
-                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_NORTHEAST));
-        VOXEL_SHAPE_AGGREGATE_7_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_NORTHEAST), 1), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_NORTHEAST), 1)});
-        VOXEL_SHAPE_AGGREGATE_7_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_NORTHEAST), 2), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_NORTHEAST), 2)});
-        VOXEL_SHAPE_AGGREGATE_7_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_NORTHEAST), 3), new VoxelShape[]{
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_NORTHEAST), 3)});
-
-        VOXEL_SHAPE_CIRCLE_EAST = Block.box(0, 0,  0, 8, 2, 16);
-        VOXEL_SHAPE_STONE_EAST = Block.box(7.550, 0, 0, 15.443, 13, 5.291);
-        VOXEL_SHAPE_AGGREGATE_2_NORTH = Shapes.or(
-                VOXEL_SHAPE_CIRCLE_EAST,
-                VOXEL_SHAPE_STONE_EAST);
-        VOXEL_SHAPE_AGGREGATE_2_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_EAST, 1), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_EAST, 1)});
-        VOXEL_SHAPE_AGGREGATE_2_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_EAST, 2), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_EAST, 2)});
-        VOXEL_SHAPE_AGGREGATE_2_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_EAST, 3), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_EAST, 3)});
-
-        VOXEL_SHAPE_AGGREGATE_6_NORTH = Shapes.or(
-                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_EAST),
-                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_EAST));
-        VOXEL_SHAPE_AGGREGATE_6_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_EAST), 1), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_EAST), 1)});
-        VOXEL_SHAPE_AGGREGATE_6_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_EAST), 2), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_EAST), 2)});
-        VOXEL_SHAPE_AGGREGATE_6_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_EAST), 3), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_EAST), 3)});
-
-        VOXEL_SHAPE_CIRCLE_SOUTHEAST = Block.box(0, 0,  0, 8, 2, 8);
-        VOXEL_SHAPE_STONE_SOUTHEAST = Block.box(0.153, 0, 4.578, 7.946, 13, 12.592);
         VOXEL_SHAPE_AGGREGATE_3_NORTH = Shapes.or(
-                VOXEL_SHAPE_CIRCLE_SOUTHEAST,
-                VOXEL_SHAPE_STONE_SOUTHEAST);
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 1)
+        );
         VOXEL_SHAPE_AGGREGATE_3_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_SOUTHEAST, 1), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_SOUTHEAST, 1)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 2)
+        );
         VOXEL_SHAPE_AGGREGATE_3_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_SOUTHEAST, 2), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_SOUTHEAST, 2)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 3)
+        );
         VOXEL_SHAPE_AGGREGATE_3_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_SOUTHEAST, 3), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(VOXEL_SHAPE_STONE_SOUTHEAST, 3)});
+                VOXEL_SHAPE_BASE_NORTHEAST,
+                VOXEL_SHAPE_BODY_NORTHEAST
+        );
 
         VOXEL_SHAPE_AGGREGATE_5_NORTH = Shapes.or(
-                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_SOUTHEAST),
-                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_SOUTHEAST));
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 2)
+        );
         VOXEL_SHAPE_AGGREGATE_5_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_SOUTHEAST), 1), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_SOUTHEAST), 1)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 3)
+        );
         VOXEL_SHAPE_AGGREGATE_5_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_SOUTHEAST), 2), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_SOUTHEAST), 2)});
+                VOXEL_SHAPE_BASE_NORTHEAST,
+                VOXEL_SHAPE_BODY_NORTHEAST
+        );
         VOXEL_SHAPE_AGGREGATE_5_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_CIRCLE_SOUTHEAST), 3), new VoxelShape[]{
-                        MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_STONE_SOUTHEAST), 3)});
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 1)
+        );
 
-        VOXEL_SHAPE_CIRCLE_SOUTH = Block.box(0, 0, 0, 16, 2, 8);
-        VOXEL_SHAPE_AGGREGATE_4_NORTH = VOXEL_SHAPE_CIRCLE_SOUTH;
-        VOXEL_SHAPE_AGGREGATE_4_EAST =
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_SOUTH, 1);
-        VOXEL_SHAPE_AGGREGATE_4_SOUTH =
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_SOUTH, 2);
-        VOXEL_SHAPE_AGGREGATE_4_WEST =
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CIRCLE_SOUTH, 3);
+        VOXEL_SHAPE_AGGREGATE_7_NORTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 3)
+        );
+        VOXEL_SHAPE_AGGREGATE_7_EAST = Shapes.or(
+                VOXEL_SHAPE_BASE_NORTHEAST,
+                VOXEL_SHAPE_BODY_NORTHEAST
+        );
+        VOXEL_SHAPE_AGGREGATE_7_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 1)
+        );
+        VOXEL_SHAPE_AGGREGATE_7_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTHEAST, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTHEAST, 2)
+        );
+
+        VOXEL_SHAPE_PLUG_NORTH = Block.box(0, 0, 0, 16, 16, 4);
+
+        VOXEL_SHAPE_AGGREGATE_2_NORTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BASE_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BASE_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BODY_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BODY_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLATFORM_NORTH, 1)
+        );
+        VOXEL_SHAPE_AGGREGATE_2_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BASE_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BASE_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BODY_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BODY_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLATFORM_NORTH, 2)
+        );
+        VOXEL_SHAPE_AGGREGATE_2_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BASE_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BASE_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTER_BODY_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_INNER_BODY_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLATFORM_NORTH, 3)
+        );
+        VOXEL_SHAPE_AGGREGATE_2_WEST = Shapes.or(
+                VOXEL_SHAPE_PLUG_NORTH,
+                VOXEL_SHAPE_OUTER_BASE_NORTH,
+                VOXEL_SHAPE_INNER_BASE_NORTH,
+                VOXEL_SHAPE_OUTER_BODY_NORTH,
+                VOXEL_SHAPE_INNER_BODY_NORTH,
+                VOXEL_SHAPE_PLATFORM_NORTH
+        );
+
+        VOXEL_SHAPE_AGGREGATE_6_NORTH = Shapes.or(
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_NORTH), 3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_OUTER_BASE_NORTH), 3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_INNER_BASE_NORTH), 3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_OUTER_BODY_NORTH), 3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_INNER_BODY_NORTH), 3),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLATFORM_NORTH), 3)
+        );
+        VOXEL_SHAPE_AGGREGATE_6_EAST = Shapes.or(
+                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_NORTH),
+                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_OUTER_BASE_NORTH),
+                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_INNER_BASE_NORTH),
+                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_OUTER_BODY_NORTH),
+                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_INNER_BODY_NORTH),
+                MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLATFORM_NORTH)
+        );
+        VOXEL_SHAPE_AGGREGATE_6_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_NORTH), 1),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_OUTER_BASE_NORTH), 1),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_INNER_BASE_NORTH), 1),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_OUTER_BODY_NORTH), 1),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_INNER_BODY_NORTH), 1),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLATFORM_NORTH), 1)
+        );
+        VOXEL_SHAPE_AGGREGATE_6_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_NORTH), 2),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_OUTER_BASE_NORTH), 2),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_INNER_BASE_NORTH), 2),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_OUTER_BODY_NORTH), 2),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_INNER_BODY_NORTH), 2),
+                MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLATFORM_NORTH), 2)
+        );
+
+        VOXEL_SHAPE_BASE_SOUTH = Block.box(1, 0, 0, 15, 15, 8);
+        VOXEL_SHAPE_DAIS_SOUTH = Block.box(-0.4496, 0, -0.4496, 16.4496, 16, 16.4496);
+        VOXEL_SHAPE_AGGREGATE_4_NORTH = Shapes.or(
+                VOXEL_SHAPE_BASE_SOUTH,
+                VOXEL_SHAPE_DAIS_SOUTH
+        );
+        VOXEL_SHAPE_AGGREGATE_4_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 1)
+        );
+        VOXEL_SHAPE_AGGREGATE_4_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 2)
+        );
+        VOXEL_SHAPE_AGGREGATE_4_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 3)
+        );
     }
 }
