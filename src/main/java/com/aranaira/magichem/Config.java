@@ -26,19 +26,19 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue FLUID_PER_XP_POINT = BUILDER
             .comment("How many mB of Academic Slurry constitutes one experience point.")
-            .defineInRange("fluidPerXPPoint", 40, 1, 1000);
+            .defineInRange("fluidPerXPPoint", 100, 1, 1000);
 
     private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_SIMPLE = BUILDER
             .comment("How many experience points a Studying construct generates from simple study materials.")
-            .defineInRange("constructStudyExperienceSimple", 2, 1, Integer.MAX_VALUE);
+            .defineInRange("constructStudyExperienceSimple", 5, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_ADVANCED = BUILDER
             .comment("How many experience points a Studying construct generates from advanced study materials.")
-            .defineInRange("constructStudyExperienceAdvanced", 6, 2, Integer.MAX_VALUE);
+            .defineInRange("constructStudyExperienceAdvanced", 15, 2, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_MASTER = BUILDER
             .comment("How many experience points a Studying construct generates from master study materials.")
-            .defineInRange("constructStudyExperienceMaster", 18, 4, Integer.MAX_VALUE);
+            .defineInRange("constructStudyExperienceMaster", 45, 4, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue HOUSE_OF_ALCHEMY_DISTILLATION_EFFICIENCY_BONUS = BUILDER
             .comment("The Efficiency that Nigredo, Albedo, Citrinitas, and Rubedo receive during distillation. A percentage of the distance between the actual device Efficiency and 100% Efficiency.")

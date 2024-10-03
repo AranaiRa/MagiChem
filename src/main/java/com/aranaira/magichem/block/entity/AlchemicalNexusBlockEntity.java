@@ -785,7 +785,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return input;
     }
 
-    private static final int[] SPEC_EXPERIENCE_COST = {-1, 360, 540, 810, 1215, 1825};
+    private static final int[] SPEC_EXPERIENCE_COST = {-1, 720, 1080, 1620, 2430, 3650};
     public static int getBaseExperienceCostPerStage(int pPowerLevel) {
         return SPEC_EXPERIENCE_COST[pPowerLevel];
     }
