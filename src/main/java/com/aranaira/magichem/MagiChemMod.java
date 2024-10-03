@@ -194,6 +194,8 @@ public class MagiChemMod
             event.register(CircleFabricationBlockEntityRenderer.RENDERER_MODEL_CIRCLE);
             event.register(CircleFabricationBlockEntityRenderer.RENDERER_MODEL_BOWLFILL);
 
+            event.register(GrandCircleFabricationBlockEntityRenderer.RENDERER_MODEL_FLOATING_VESSEL);
+
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_OPEN);
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_CLOSED);
         }

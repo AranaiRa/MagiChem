@@ -19,6 +19,7 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ALEMBIC_BE.get(), AlembicBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.CENTRIFUGE_BE.get(), CentrifugeBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.CIRCLE_FABRICATION_BE.get(), CircleFabricationBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_BE.get(), GrandCircleFabricationBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.DISTILLERY_BE.get(), DistilleryBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.FUSERY_BE.get(), FuseryBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.GRAND_DISTILLERY_BE.get(), GrandDistilleryBlockEntityRenderer::new);
