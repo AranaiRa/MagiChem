@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -31,6 +32,9 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implements INoCreativeTab {
     public GrandCircleFabricationRouterBlock(Properties pProperties) {
         super(pProperties);
+        registerDefaultState(this.defaultBlockState()
+                .setValue(IS_EMITTING_LIGHT, false)
+        );
     }
 
     public static VoxelShape
@@ -152,6 +156,29 @@ public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implement
     }
 
     @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        BlockState state = pLevel.getBlockState(pNeighborPos);
+
+        if(state.hasProperty(BlockStateProperties.POWERED)) {
+            boolean powered = state.getValue(BlockStateProperties.POWERED);
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if(be instanceof GrandCircleFabricationRouterBlockEntity gcfrbe) {
+                if(gcfrbe.getMaster() != null)
+                    gcfrbe.getMaster().setRedstonePaused(powered);
+            }
+        } else if(state.hasProperty(BlockStateProperties.POWER)) {
+            int power = state.getValue(BlockStateProperties.POWER);
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if(be instanceof GrandCircleFabricationRouterBlockEntity gcfrbe) {
+                if(gcfrbe.getMaster() != null)
+                    gcfrbe.getMaster().setRedstonePaused(power > 0);
+            }
+        }
+
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+    }
+
+    @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
     }
@@ -160,6 +187,7 @@ public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implement
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION);
         pBuilder.add(FACING);
+        pBuilder.add(IS_EMITTING_LIGHT);
     }
 
     @Override
@@ -169,7 +197,7 @@ public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implement
 
     @Override
     public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
-        return new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get());
+        return new ItemStack(BlockRegistry.GRAND_CIRCLE_FABRICATION.get());
     }
 
     static {

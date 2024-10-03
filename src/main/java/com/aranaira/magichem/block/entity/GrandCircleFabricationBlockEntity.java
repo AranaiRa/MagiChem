@@ -53,14 +53,14 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10;
 
     private static final int[] POWER_DRAW = { //TODO: Convert this to config
-            10, 30, 50, 80, 120, 170, 230, 300, 390, 500,
-            640, 820, 1040, 1320, 1670, 2100, 2640, 3320, 4170, 5230,
-            6550, 8200, 10270, 12850, 16080, 20120, 25170, 31480, 39370, 49230
+            60, 75, 95, 120, 150, 190, 240, 305, 385, 490,
+            620, 790, 1005, 1275, 1620, 2060, 2620, 3335, 4245, 5400,
+            6870, 8740, 11120, 14150, 18005, 22905, 29140, 37070, 47160, 60000
     };
 
     private static final int[] OPERATION_TICKS = { //TODO: Convert this to config
-            1735, 1388, 1110, 888, 710, 568, 454, 363, 290, 232,
-            185, 148, 118, 94, 75, 60, 48, 38, 30, 24,
+            1232, 1005, 820, 669, 546, 445, 363, 296, 241, 196,
+            160, 130, 106, 86, 70, 57, 46, 37, 30, 24,
             19, 15, 12, 9, 7, 5, 4, 3, 2, 1
     };
 
@@ -69,6 +69,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     private int
             powerUsageSetting = 1;
+    private boolean
+            redstonePaused = false;
 
     public GrandCircleFabricationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_BE.get(), pos, state);
@@ -177,6 +179,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.putBoolean("redstonePaused", this.redstonePaused);
         super.saveAdditional(nbt);
     }
 
@@ -195,6 +198,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         progress = nbt.getInt("craftingProgress");
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
+        redstonePaused = nbt.getBoolean("redstonePaused");
 
         if(getLevel() != null)
             getCurrentRecipe();
@@ -235,7 +239,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, GrandCircleFabricationBlockEntity entity) {
-        if(!level.isClientSide()) {
+        if(!level.isClientSide() && !entity.redstonePaused) {
             //Power check
             if(entity.operationTicks > 0) {
                 int cost = entity.getPowerDraw();
@@ -252,7 +256,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
         entity.operationTicks = entity.getOperationTicks();
 
-        boolean changed = AbstractFabricationBlockEntity.tick(level, pos, state, entity, GrandCircleFabricationBlockEntity::getVar);
+        boolean changed = false;
+        if(!entity.redstonePaused)
+            changed = AbstractFabricationBlockEntity.tick(level, pos, state, entity, GrandCircleFabricationBlockEntity::getVar);
 
         if(changed)
             entity.syncAndSave();
@@ -276,6 +282,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.putInt("progress", this.progress);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.putBoolean("redstonePaused", this.redstonePaused);
         return nbt;
     }
 
@@ -295,6 +302,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             insert.setItem(slotID++, entity.itemHandler.getStackInSlot(i));
         }
         return insert;
+    }
+
+    public void setRedstonePaused(boolean pPaused) {
+        redstonePaused = pPaused;
+        syncAndSave();
     }
 
     public int getPowerUsageSetting() {

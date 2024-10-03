@@ -114,9 +114,6 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
     }
 
     private void renderFloatingVessels(GrandCircleFabricationBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, int pPackedLight, MultiBufferSource pBuffer, int pPackedLight1, int pPackedOverlay) {
-        VertexConsumer buffer = pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
-        PoseStack.Pose last = pPoseStack.last();
-//        MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(last.pose(), last.normal(), buffer, 1, 0xffff0000, pPackedLight);
 
         int period;
         float loopingTime;

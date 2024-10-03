@@ -34,7 +34,7 @@ public class GrandCircleFabricationMenu extends AbstractContainerMenu {
     }
 
     public GrandCircleFabricationMenu(int id, Inventory inv, BlockEntity entity) {
-        super(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), id);
+        super(MenuRegistry.GRAND_CIRCLE_FABRICATION_MENU.get(), id);
         checkContainerSize(inv, GrandCircleFabricationBlockEntity.SLOT_COUNT);
         blockEntity = (GrandCircleFabricationBlockEntity) entity;
 
