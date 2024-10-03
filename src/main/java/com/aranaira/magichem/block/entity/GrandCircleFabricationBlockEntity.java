@@ -355,6 +355,14 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         syncAndSave();
     }
 
+    public ItemStack[] getContentsOfInputSlots() {
+        ItemStack[] out = new ItemStack[10];
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            out[i-SLOT_INPUT_START] = itemHandler.getStackInSlot(i);
+        }
+        return out;
+    }
+
     private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
         @Override
         public void onEnergyChanged() {

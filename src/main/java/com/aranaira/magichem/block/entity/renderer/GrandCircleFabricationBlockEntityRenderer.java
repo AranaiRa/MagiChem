@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
 import com.aranaira.magichem.util.render.RenderUtils;
@@ -22,6 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
 
 public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRenderer<GrandCircleFabricationBlockEntity> {
@@ -126,41 +128,97 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         loopingTime = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
         double vesselBob = Math.sin(loopingTime) * 0.03125;
 
+        int color1 = 0, color2 = 0, color3 = 0, color4 = 0, color5 = 0;
+        float fill1 = 0, fill2 = 0, fill3 = 0, fill4 = 0, fill5 = 0;
+        boolean has1 = false, has2 = false, has3 = false, has4 = false, has5 = false;
+
+        final ItemStack[] contentsOfInputSlots = pBlockEntity.getContentsOfInputSlots();
+        if(!contentsOfInputSlots[0].isEmpty() || !contentsOfInputSlots[1].isEmpty()) {
+            ItemStack stack = contentsOfInputSlots[0].isEmpty() ?
+                    contentsOfInputSlots[1] :
+                    contentsOfInputSlots[0];
+
+            color1 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            fill1 = Math.min(1, stack.getCount() / 16f);
+            has1 = true;
+        }
+        if(!contentsOfInputSlots[2].isEmpty() || !contentsOfInputSlots[3].isEmpty()) {
+            ItemStack stack = contentsOfInputSlots[2].isEmpty() ?
+                    contentsOfInputSlots[3] :
+                    contentsOfInputSlots[2];
+
+            color2 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            fill2 = Math.min(1, stack.getCount() / 16f);
+            has2 = true;
+        }
+        if(!contentsOfInputSlots[4].isEmpty() || !contentsOfInputSlots[5].isEmpty()) {
+            ItemStack stack = contentsOfInputSlots[4].isEmpty() ?
+                    contentsOfInputSlots[5] :
+                    contentsOfInputSlots[4];
+
+            color3 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            fill3 = Math.min(1, stack.getCount() / 16f);
+            has3 = true;
+        }
+        if(!contentsOfInputSlots[6].isEmpty() || !contentsOfInputSlots[7].isEmpty()) {
+            ItemStack stack = contentsOfInputSlots[6].isEmpty() ?
+                    contentsOfInputSlots[7] :
+                    contentsOfInputSlots[6];
+
+            color4 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            fill4 = Math.min(1, stack.getCount() / 16f);
+            has4 = true;
+        }
+        if(!contentsOfInputSlots[8].isEmpty() || !contentsOfInputSlots[9].isEmpty()) {
+            ItemStack stack = contentsOfInputSlots[8].isEmpty() ?
+                    contentsOfInputSlots[9] :
+                    contentsOfInputSlots[8];
+
+            color5 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            fill5 = Math.min(1, stack.getCount() / 16f);
+            has5 = true;
+        }
+
         pPoseStack.pushPose();
 
         pPoseStack.pushPose();
         pPoseStack.translate(-0.625, 1.75 + vesselBob, 0.5);
         pPoseStack.mulPose(Axis.YP.rotationDegrees(vesselRot));
         ModelUtils.renderModel(pBuffer, pBlockEntity.getLevel(), pBlockEntity.getBlockPos(), pBlockEntity.getBlockState(), RENDERER_MODEL_FLOATING_VESSEL, pPoseStack, pPackedLight, pPackedOverlay);
-        MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), 1, 0xffff0000, pPackedLight);
+        if(has4)
+            MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), fill4, color4, pPackedLight);
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
         pPoseStack.translate(-0.295495, 2.375 - vesselBob, -0.295495);
         pPoseStack.mulPose(Axis.YN.rotationDegrees(vesselRot));
         ModelUtils.renderModel(pBuffer, pBlockEntity.getLevel(), pBlockEntity.getBlockPos(), pBlockEntity.getBlockState(), RENDERER_MODEL_FLOATING_VESSEL, pPoseStack, pPackedLight, pPackedOverlay);
-        MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), 1, 0xffffff00, pPackedLight);
+        if(has2)
+            MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), fill2, color2, pPackedLight);
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
         pPoseStack.translate(0.5, 2.625 + vesselBob, -0.625);
         pPoseStack.mulPose(Axis.YP.rotationDegrees(vesselRot));
         ModelUtils.renderModel(pBuffer, pBlockEntity.getLevel(), pBlockEntity.getBlockPos(), pBlockEntity.getBlockState(), RENDERER_MODEL_FLOATING_VESSEL, pPoseStack, pPackedLight, pPackedOverlay);
-        MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), 1, 0xff00ff55, pPackedLight);
+        if(has1)
+            MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), fill1, color1, pPackedLight);
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
         pPoseStack.translate(1.295495, 2.375 - vesselBob, -0.295495);
         pPoseStack.mulPose(Axis.YN.rotationDegrees(vesselRot));
         ModelUtils.renderModel(pBuffer, pBlockEntity.getLevel(), pBlockEntity.getBlockPos(), pBlockEntity.getBlockState(), RENDERER_MODEL_FLOATING_VESSEL, pPoseStack, pPackedLight, pPackedOverlay);
-        MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), 1, 0xff0055ff, pPackedLight);
+        if(has3)
+            MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), fill3, color3, pPackedLight);
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
         pPoseStack.translate(1.625, 1.75 + vesselBob, 0.5);
         pPoseStack.mulPose(Axis.YP.rotationDegrees(vesselRot));
         ModelUtils.renderModel(pBuffer, pBlockEntity.getLevel(), pBlockEntity.getBlockPos(), pBlockEntity.getBlockState(), RENDERER_MODEL_FLOATING_VESSEL, pPoseStack, pPackedLight, pPackedOverlay);
-        MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), 1, 0xff5500ff, pPackedLight);
+        if(has5)
+            MateriaVesselContentsRenderUtil.renderGrandCircleFabricationFluidContents(pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS)), fill5, color5, pPackedLight);
         pPoseStack.popPose();
 
         pPoseStack.popPose();
