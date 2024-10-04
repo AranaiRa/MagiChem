@@ -24,11 +24,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandCircleFabricationMenu> {
     private static final ResourceLocation TEXTURE =
@@ -44,6 +42,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             PANEL_RECIPE_U = 160, PANEL_RECIPE_V = 96, PANEL_RECIPE_W = 81, PANEL_RECIPE_H = 126,
             PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
     private DistillationFabricationRecipe lastClickedRecipe = null;
+    private boolean recipesChanged = true;
 
     public GrandCircleFabricationScreen(GrandCircleFabricationMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -74,7 +73,21 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 67, 18, Component.empty());
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 67, 18, Component.empty()) {
+            @Override
+            public boolean charTyped(char pCodePoint, int pModifiers) {
+                recipesChanged = true;
+                recipeFilterRow = 0;
+                return super.charTyped(pCodePoint, pModifiers);
+            }
+
+            @Override
+            public void deleteChars(int pNum) {
+                recipesChanged = true;
+                recipeFilterRow = 0;
+                super.deleteChars(pNum);
+            }
+        };
         this.recipeFilterBox.setMaxLength(60);
         this.recipeFilterBox.setFocused(false);
         this.recipeFilterBox.setCanLoseFocus(false);
@@ -139,10 +152,10 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         }
     }
 
-    private static List<DistillationFabricationRecipe> filteredRecipes = new ArrayList<>();
+    private List<DistillationFabricationRecipe> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
-        List<DistillationFabricationRecipe> fabricationRecipeOutputs = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(DistillationFabricationRecipe.Type.INSTANCE);
+        List<DistillationFabricationRecipe> fabricationRecipeOutputs = getAllRecipes();
         filteredRecipes.clear();
 
         for(DistillationFabricationRecipe acr : fabricationRecipeOutputs) {
@@ -152,7 +165,24 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             }
         }
 
-        recipeFilterRowTotal = filteredRecipes.size() / 3;
+        recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
+
+        recipesChanged = false;
+    }
+
+    private List<DistillationFabricationRecipe> allRecipes = new ArrayList<>();
+    @NotNull
+    private List<DistillationFabricationRecipe> getAllRecipes() {
+        if(allRecipes.size() == 0) {
+            List<DistillationFabricationRecipe> raw = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(DistillationFabricationRecipe.Type.INSTANCE);
+            Object[] sortable = raw.toArray();
+            Arrays.sort(sortable, Comparator.comparing(o -> ((DistillationFabricationRecipe)o).getAlchemyObject().getDisplayName().getString()));
+            for (Object o : sortable) {
+                allRecipes.add((DistillationFabricationRecipe) o);
+            }
+        }
+
+        return allRecipes;
     }
 
     @Override
@@ -184,6 +214,13 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             RenderSystem.setShaderTexture(0, TEXTURE_EXT);
             renderPowerWarning(gui, x, y);
         }
+
+        //Scroll Nubbin
+        if(recipeFilterRowTotal > 5) {
+            float percent = (float)recipeFilterRow / (float)(recipeFilterRowTotal - 5);
+            int nubbinShift = (int)Math.floor(percent * 80);
+            gui.blit(TEXTURE, x - 20, y + 40 + nubbinShift, 28, 230, 8, 8);
+        }
     }
 
     @Override
@@ -191,7 +228,8 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        updateDisplayedRecipes(recipeFilterBox.getValue());
+        if(recipesChanged)
+            updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(gui);
         updateFilterBoxContents();
     }
@@ -333,9 +371,9 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             int my = pY - (y+42);
             int id = ((my / 18) * 3) + ((mx / 18) % 3);
 
-            if(id < filteredRecipes.size()) {
-                if (id >= 0 && id < 16) {
-                    ItemStack stackUnderMouse = filteredRecipes.get(id).getAlchemyObject();
+            if (id >= 0 && id < 16) {
+                if(id + recipeFilterRow * 3 < filteredRecipes.size()) {
+                    ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3).getAlchemyObject();
                     tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                 }
             }
@@ -373,6 +411,59 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             gui.blit(TEXTURE_EXT, x + 17, y - 23, 156, 244, 12, 12);
             gui.blit(TEXTURE_EXT, x + 147, y - 23, 156, 244, 12, 12);
         }
+    }
+
+    @Override
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        if(pMouseX >= x - 78 && pMouseX <= x - 12 &&
+                pMouseY >= y + 42 && pMouseY <= y + 132) {
+            if (recipeFilterRowTotal > 5) {
+                if (pDelta < 0)
+                    recipeFilterRow = Math.min(recipeFilterRowTotal - 5, recipeFilterRow + 1);
+                else
+                    recipeFilterRow = Math.max(0, recipeFilterRow - 1);
+            }
+        }
+
+        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+    }
+
+    @Override
+    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
+        if(recipeFilterRowTotal > 5 && pButton == 0) {
+            int x = (width - PANEL_MAIN_W) / 2;
+            int y = (height - PANEL_MAIN_H) / 2;
+
+            if (pMouseX >= x - 21 && pMouseX <= x - 12 &&
+                    pMouseY >= y + 39 && pMouseY <= y + 129) {
+                double point = pMouseY - (y + 42);
+                double percent = point / 80d;
+
+                recipeFilterRow = Math.max(0, Math.min(recipeFilterRowTotal - 5, (int) Math.round(percent * recipeFilterRowTotal)));
+            }
+        }
+
+        return super.mouseReleased(pMouseX, pMouseY, pButton);
+    }
+
+    @Override
+    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
+        if(recipeFilterRowTotal > 5 && pButton == 0) {
+            int x = (width - PANEL_MAIN_W) / 2;
+            int y = (height - PANEL_MAIN_H) / 2;
+
+            if (pMouseX >= x - 21 && pMouseX <= x - 12 &&
+                    pMouseY >= y + 39 && pMouseY <= y + 129) {
+                double point = pMouseY - (y + 42);
+                double percent = point / 80d;
+
+                recipeFilterRow = Math.max(0, Math.min(recipeFilterRowTotal - 5, (int) Math.round(percent * recipeFilterRowTotal)));
+            }
+        }
+        return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
 
     @Override

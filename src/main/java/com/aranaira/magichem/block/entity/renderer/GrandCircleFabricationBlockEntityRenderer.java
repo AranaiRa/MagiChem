@@ -61,12 +61,15 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
 
         double posBob = Math.sin((((pBlockEntity.getLevel().getGameTime()) % 450d) / 450d) * (Math.PI * 2) * Math.PI * 2) * 0.03125 * 0.707 + 0.1875;
         Vector3 inner = new Vector3(0.5, 1.697 + posBob, 0.5 + posBob);
+        Vector3 bowl = new Vector3(0.5, 1.25, 0.5);
+
+        Vector3 pos = Vector3.lerp(bowl, inner, 1 - ((1 - pBlockEntity.itemLerp) * (1 - pBlockEntity.itemLerp)));
 
         final ItemStack outputItem = pBlockEntity.getOutputInLastSlot();
 
         if(outputItem != null) {
             pPoseStack.pushPose();
-            pPoseStack.translate(inner.x, inner.y, inner.z);
+            pPoseStack.translate(pos.x, pos.y, pos.z);
             pPoseStack.scale(0.4f, 0.4f, 0.4f);
             pPoseStack.mulPose(Axis.YP.rotationDegrees((((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 500) / 500f) * 360));
             Minecraft.getInstance().getItemRenderer().renderStatic(outputItem, ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, pBlockEntity.getLevel(), 0);

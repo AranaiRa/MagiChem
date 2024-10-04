@@ -88,7 +88,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             redstonePaused = false;
 
     public float
-            particlePercent = 0, daisCirclePercent = 0, projectorPercent = 0, mainCirclePercent = 0;
+            particlePercent = 0, daisCirclePercent = 0, projectorPercent = 0, mainCirclePercent = 0, itemLerp = 0;
 
     public GrandCircleFabricationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_BE.get(), pos, state);
@@ -552,6 +552,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             mainCirclePercent = Math.min(1, mainCirclePercent + CIRCLE_FILL_RATE);
         } else if(projectorPercent == 0) {
             mainCirclePercent = Math.max(0, mainCirclePercent - CIRCLE_FILL_RATE);
+        }
+
+        if(daisCirclePercent > 0.9f) {
+            itemLerp = Math.min(1, itemLerp + PARTICLE_PERCENT_RATE);
+        } else {
+            itemLerp = Math.max(0, itemLerp - PARTICLE_PERCENT_RATE);
         }
     }
 
