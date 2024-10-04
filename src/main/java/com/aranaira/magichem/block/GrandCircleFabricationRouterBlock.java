@@ -145,6 +145,11 @@ public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implement
     }
 
     @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.getValue(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION) == 4 ? 15 : 0;
+    }
+
+    @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be instanceof GrandCircleFabricationRouterBlockEntity gcfrbe) {

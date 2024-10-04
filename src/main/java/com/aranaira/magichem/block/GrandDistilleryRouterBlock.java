@@ -275,11 +275,11 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         //can only emit light if this router is a dais
-        if(state.getValue(ROUTER_TYPE_GRAND_DISTILLERY) == 1 && state.getValue(IS_EMITTING_LIGHT)) {
-            return 15;
-        }
+//        if(state.getValue(ROUTER_TYPE_GRAND_DISTILLERY) == 1 && state.getValue(IS_EMITTING_LIGHT)) {
+//            return 15;
+//        }
 
-        return 0;
+        return state.getValue(ROUTER_TYPE_GRAND_DISTILLERY) == 1 ? 15 : 0;
     }
 
     public static int mapRouterTypeToInt(GrandDistilleryRouterType pRouterType) {
