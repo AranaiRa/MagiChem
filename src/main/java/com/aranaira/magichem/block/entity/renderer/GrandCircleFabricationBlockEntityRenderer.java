@@ -133,11 +133,13 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
 
         pPoseStack.scale(scale, scale, scale);
 
+        pPoseStack.mulPose(Axis.YN.rotationDegrees(120));
         RenderUtils.generateMagicCircleRing(center,
                 9, 1.125f, 0.125f, 0, texture,
                 new Vec2(0, 6.5f), new Vec2(12, 4.5f), 0.75f,
                 pBlockEntity.mainCirclePercent, pPoseStack, pBuffer, pPackedLight
         );
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(120));
 
         pPoseStack.pushPose();
 
@@ -149,7 +151,7 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         pPoseStack.popPose();
 
         pPoseStack.translate(-0.0875, 0, 0);
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(45));
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(225));
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.001, 0)),
                 4, 0.5375f, 0.09375f, 0, texture,
@@ -157,6 +159,7 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                 pBlockEntity.mainCirclePercent, pPoseStack, pBuffer, pPackedLight
         );
 
+        pPoseStack.mulPose(Axis.YN.rotation(180));
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.002, 0)),
                 8, 0.325f, 0.09375f, 0, texture,
                 new Vec2(0, 4.5f), new Vec2(12, 6.0f), 0.75f,
