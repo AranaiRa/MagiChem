@@ -243,6 +243,16 @@ public class TooltipLoreBlockItem extends BlockItem {
                     if (cbe != null) {
                         cbe.unpackInventoryFromNBT(nbt);
                     }
+                } else if (cachedItem == BlockRegistry.GRAND_CIRCLE_FABRICATION.get().asItem()) {
+                    GrandCircleFabricationBlockEntity gcfbe = (GrandCircleFabricationBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (gcfbe != null) {
+                        if (nbt.contains("inventory")) {
+                            gcfbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("powerUsageSetting")) {
+                            gcfbe.setPowerUsageSetting(nbt.getInt("powerUsageSetting"));
+                        }
+                    }
                 }
             }
             return result;

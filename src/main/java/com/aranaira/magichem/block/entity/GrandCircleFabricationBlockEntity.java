@@ -3,6 +3,8 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.GrandCircleFabricationBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
@@ -11,6 +13,7 @@ import com.aranaira.magichem.gui.GrandCircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
@@ -798,5 +801,21 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,4,3));
+    }
+
+    public void packInventoryToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.GRAND_CIRCLE_FABRICATION.get());
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("powerUsageSetting", powerUsageSetting);
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
+        itemHandler.deserializeNBT(pInventoryTag);
     }
 }
