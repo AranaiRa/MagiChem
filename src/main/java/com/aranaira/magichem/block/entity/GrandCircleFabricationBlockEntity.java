@@ -2,12 +2,19 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.Config;
 import com.aranaira.magichem.block.GrandCircleFabricationBlock;
+import com.aranaira.magichem.block.GrandDistilleryBlock;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
+import com.aranaira.magichem.block.entity.routers.GrandCircleFabricationRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.GrandDistilleryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.gui.GrandCircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
@@ -40,6 +47,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -604,6 +612,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     public void setRedstonePaused(boolean pPaused) {
         redstonePaused = pPaused;
+        for (AbstractDirectionalPluginBlockEntity pluginDevice : pluginDevices) {
+            pluginDevice.setPaused(pPaused);
+        }
         syncAndSave();
     }
 
@@ -863,5 +874,24 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
         itemHandler.deserializeNBT(pInventoryTag);
+    }
+
+    @Override
+    public void linkPlugins() {
+        pluginDevices.clear();
+
+        List<BlockEntity> query = new ArrayList<>();
+        for (Triplet<BlockPos, Integer, DevicePlugDirection> posAndType : GrandCircleFabricationBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            BlockEntity be = level.getBlockEntity(getBlockPos().offset(posAndType.getFirst()));
+            if(be != null)
+                query.add(be);
+        }
+
+        for(BlockEntity be : query) {
+            if (be instanceof GrandCircleFabricationRouterBlockEntity gcfrbe) {
+                BlockEntity pe = gcfrbe.getPlugEntity();
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            }
+        }
     }
 }

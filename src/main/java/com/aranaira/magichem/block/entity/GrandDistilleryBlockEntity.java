@@ -293,6 +293,10 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
     public void setRedstonePaused(boolean pPaused) {
         redstonePaused = pPaused;
+        for (AbstractDirectionalPluginBlockEntity pluginDevice : pluginDevices) {
+            pluginDevice.setPaused(pPaused);
+        }
+
         syncAndSave();
     }
 

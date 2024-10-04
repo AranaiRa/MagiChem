@@ -2,6 +2,8 @@ package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
+import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -25,7 +27,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GrandCircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction {
+public class GrandCircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IDestroysMasterOnDestruction {
     private BlockPos masterPos;
     private GrandCircleFabricationBlockEntity master;
     private DevicePlugDirection plugDirection;
@@ -116,5 +118,35 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
     public void destroyMaster() {
         getLevel().destroyBlock(getMasterPos(), true);
         CirclePowerBlock.destroyRouters(getLevel(), getMasterPos(), null);
+    }
+
+    @Override
+    public void linkPluginsDeferred() {
+        getMaster().linkPluginsDeferred();
+    }
+
+    @Override
+    public void linkPlugins() {
+        getMaster().linkPlugins();
+    }
+
+    @Override
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
+        getMaster().removePlugin(pPlugin);
+    }
+
+    public DevicePlugDirection getPlugDirection() {
+        return this.plugDirection;
+    }
+
+    public BlockEntity getPlugEntity() {
+        BlockPos target = getBlockPos();
+
+        if(getPlugDirection() == DevicePlugDirection.NORTH) target = target.north();
+        else if(getPlugDirection() == DevicePlugDirection.EAST) target = target.east();
+        else if(getPlugDirection() == DevicePlugDirection.SOUTH) target = target.south();
+        else if(getPlugDirection() == DevicePlugDirection.WEST) target = target.west();
+
+        return getLevel().getBlockEntity(target);
     }
 }
