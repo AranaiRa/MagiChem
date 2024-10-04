@@ -60,15 +60,7 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
     private void renderItem(GrandCircleFabricationBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, int pPackedLight, MultiBufferSource pBuffer, int pPackedLight1, int pPackedOverlay) {
 
         double posBob = Math.sin((((pBlockEntity.getLevel().getGameTime()) % 450d) / 450d) * (Math.PI * 2) * Math.PI * 2) * 0.03125 * 0.707 + 0.1875;
-        Direction facing = pBlockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
-
-        Vector3 inner;
-
-        if(facing == Direction.NORTH || facing == Direction.SOUTH) {
-            inner = facing == Direction.NORTH ? new Vector3(0.5, 1.697 + posBob, 0.5 + posBob) : new Vector3(0.5, 1.697 + posBob, 0.5 - posBob);
-        } else {
-            inner = facing == Direction.EAST ? new Vector3(0.5 + posBob, 1.697 + posBob, 0.5) : new Vector3(0.5 + posBob, 1.697 - posBob, 0.5);
-        }
+        Vector3 inner = new Vector3(0.5, 1.697 + posBob, 0.5 + posBob);
 
         final ItemStack outputItem = pBlockEntity.getOutputInLastSlot();
 

@@ -337,7 +337,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                 } else {
                     left = new Vector3(0.5, 0.9766, -0.2734);
                     right = new Vector3(0.5, 0.9766, 1.2734);
-                    inner = facing == Direction.EAST ? new Vector3(0.5 + itemBob, 1.697 + itemBob, 0.5) : new Vector3(0.5 + itemBob, 1.697 - itemBob, 0.5);
+                    inner = facing == Direction.EAST ? new Vector3(0.5 - itemBob, 1.697 + itemBob, 0.5) : new Vector3(0.5 + itemBob, 1.697 + itemBob, 0.5);
                 }
 
                 //Lightning
@@ -387,6 +387,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
                         if(facing == Direction.NORTH)
                             cloudData.add(new Pair<>(new Vector3(0.5, 2.625, -0.625), color));
+                        else if(facing == Direction.EAST)
+                            cloudData.add(new Pair<>(new Vector3(1.625, 2.625, 0.5), color));
+                        else if(facing == Direction.SOUTH)
+                            cloudData.add(new Pair<>(new Vector3(0.5, 2.625, 1.625), color));
+                        else if(facing == Direction.WEST)
+                            cloudData.add(new Pair<>(new Vector3(-0.625, 2.625, 0.5), color));
                     }
 
                     if (has2) {
@@ -396,6 +402,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
                         if(facing == Direction.NORTH)
                             cloudData.add(new Pair<>(new Vector3(-0.295495, 2.375, -0.295495), color));
+                        else if(facing == Direction.EAST)
+                            cloudData.add(new Pair<>(new Vector3(1.2955, 2.375, 1.2955), color));
+                        else if(facing == Direction.SOUTH)
+                            cloudData.add(new Pair<>(new Vector3(1.295495, 2.375, 1.2955), color));
+                        else if(facing == Direction.WEST)
+                            cloudData.add(new Pair<>(new Vector3(-0.2955, 2.375, 1.2955), color));
                     }
 
                     if (has3) {
@@ -405,6 +417,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
                         if(facing == Direction.NORTH)
                             cloudData.add(new Pair<>(new Vector3(1.295495, 2.375, -0.295495), color));
+                        else if(facing == Direction.EAST)
+                            cloudData.add(new Pair<>(new Vector3(1.2955, 2.375, -0.2955), color));
+                        else if(facing == Direction.SOUTH)
+                            cloudData.add(new Pair<>(new Vector3(-0.295495, 2.375, 1.295495), color));
+                        else if(facing == Direction.WEST)
+                            cloudData.add(new Pair<>(new Vector3(-0.2955, 2.375, -0.2955), color));
                     }
 
                     if (has4) {
@@ -414,6 +432,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
                         if(facing == Direction.NORTH)
                             cloudData.add(new Pair<>(new Vector3(-0.625, 1.75, 0.5), color));
+                        else if(facing == Direction.EAST)
+                            cloudData.add(new Pair<>(new Vector3(0.5, 1.75, -0.625), color));
+                        else if(facing == Direction.SOUTH)
+                            cloudData.add(new Pair<>(new Vector3(1.625, 1.75, 0.5), color));
+                        else if(facing == Direction.WEST)
+                            cloudData.add(new Pair<>(new Vector3(0.5, 1.75, 1.625), color));
                     }
 
                     if (has5) {
@@ -423,6 +447,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
                         if(facing == Direction.NORTH)
                             cloudData.add(new Pair<>(new Vector3(1.625, 1.75, 0.5), color));
+                        else if(facing == Direction.EAST)
+                            cloudData.add(new Pair<>(new Vector3(0.5, 1.75, 1.625), color));
+                        else if(facing == Direction.SOUTH)
+                            cloudData.add(new Pair<>(new Vector3(-0.625, 1.75, 0.5), color));
+                        else if(facing == Direction.WEST)
+                            cloudData.add(new Pair<>(new Vector3(0.5, 1.75, -0.625), color));
                     }
 
                     for (Pair<Vector3, Integer> cloudDatum : cloudData) {
@@ -460,13 +490,23 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
                         double yTilt = 0;
 
-                        Vector3 mid;
+                        Vector3 mid = Vector3.zero();
                         if(facing == Direction.NORTH) {
                             yTilt = -z * 0.5;
                             mid = new Vector3(0.5, 1.697 + yTilt + mainCircleBob, 0.5 + mainCircleBob).add(new Vector3(x, 0, z * 0.675).scale(0.667f));
                         }
-                        else
-                            mid = Vector3.zero();
+                        else if(facing == Direction.EAST) {
+                            yTilt = x * 0.5;
+                            mid = new Vector3(0.5 + mainCircleBob, 1.697 + yTilt + mainCircleBob, 0.5).add(new Vector3(x * 0.675, 0, z).scale(0.667f));
+                        }
+                        else if(facing == Direction.SOUTH) {
+                            yTilt = z * 0.5;
+                            mid = new Vector3(0.5, 1.697 + yTilt - mainCircleBob, 0.5 - mainCircleBob).add(new Vector3(x, 0, z * 0.675).scale(0.667f));
+                        }
+                        else if(facing == Direction.WEST) {
+                            yTilt = -x * 0.5;
+                            mid = new Vector3(0.5 - mainCircleBob, 1.697 + yTilt + mainCircleBob, 0.5).add(new Vector3(x * 0.675, 0, z).scale(0.667f));
+                        }
 
                         pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
                                         .setMaxAge(20 + r.nextInt(30)).setScale(0.03f + r.nextFloat() * 0.03f)
