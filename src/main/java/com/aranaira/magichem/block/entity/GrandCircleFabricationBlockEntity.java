@@ -12,11 +12,14 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.particles.types.movers.ParticleVelocityMover;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -36,6 +39,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -45,9 +49,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
@@ -193,6 +195,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         super.saveAdditional(nbt);
     }
 
@@ -212,6 +215,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
         redstonePaused = nbt.getBoolean("redstonePaused");
+        isFESatisfied = nbt.getBoolean("isFESatisfied");
 
         if(getLevel() != null)
             getCurrentRecipe();
@@ -269,46 +273,205 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         pEntity.handleAnimationDrivers();
 
         //particle stuff
-        if(pEntity.getLevel().isClientSide() && pEntity.particlePercent > 0) {
-            Vector3 center = Vector3.zero();
-            Direction facing = pEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
-            if (facing == Direction.NORTH)
-                center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.375, pPos.getZ() + 1.5);
-            else if (facing == Direction.EAST)
-                center = new Vector3(pPos.getX() - 0.5, pPos.getY() + 1.375, pPos.getZ() + 0.5);
-            else if (facing == Direction.SOUTH)
-                center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.375, pPos.getZ() - 0.5);
-            else if (facing == Direction.WEST)
-                center = new Vector3(pPos.getX() + 1.5, pPos.getY() + 1.375, pPos.getZ() + 0.5);
+        if(pLevel.isClientSide()) {
+            //Control Dais Orb
+            if(pEntity.particlePercent > 0) {
+                Vector3 center = Vector3.zero();
+                Direction facing = pEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+                if (facing == Direction.NORTH)
+                    center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.375, pPos.getZ() + 1.5);
+                else if (facing == Direction.EAST)
+                    center = new Vector3(pPos.getX() - 0.5, pPos.getY() + 1.375, pPos.getZ() + 0.5);
+                else if (facing == Direction.SOUTH)
+                    center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.375, pPos.getZ() - 0.5);
+                else if (facing == Direction.WEST)
+                    center = new Vector3(pPos.getX() + 1.5, pPos.getY() + 1.375, pPos.getZ() + 0.5);
 
-            int colorIndex = r.nextInt(6);
-            if (pEntity.getLevel().getGameTime() % 8 == 0) {
-                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2])
-                                .setScale(0.4f * pEntity.particlePercent).setMaxAge(80),
+                int colorIndex = r.nextInt(6);
+                if (pLevel.getGameTime() % 8 == 0) {
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2])
+                                    .setScale(0.4f * pEntity.particlePercent).setMaxAge(80),
+                            center.x, center.y, center.z,
+                            0, 0, 0);
+                }
+                pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setColor(255, 255, 255).setScale(0.2f * pEntity.particlePercent),
                         center.x, center.y, center.z,
                         0, 0, 0);
+
+                if (pEntity.particlePercent == 1) {
+                    for (int i = 0; i < 2; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2], 128)
+                                        .setScale(0.09f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                        .setScale(0.015f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+                }
             }
-            pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                            .setColor(255, 255, 255).setScale(0.2f * pEntity.particlePercent),
-                    center.x, center.y, center.z,
-                    0, 0, 0);
 
-            if(pEntity.particlePercent == 1) {
-                for (int i = 0; i < 2; i++) {
-                    Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
-                    pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
-                                    .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2], 128)
-                                    .setScale(0.09f).setMaxAge(16)
-                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
-                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
-                            0, 0, 0);
+            //Crafting
+            if(pEntity.progress > 0 && pEntity.recipe != null && pEntity.mainCirclePercent > 0.9) {
+                Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                double mainCircleBob = Math.sin((((pLevel.getGameTime()) % 450d) / 450d) * (Math.PI * 2) * Math.PI * 2) * 0.03125 * 0.707;
+                double itemBob = mainCircleBob + 0.1875;
 
-                    pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
-                                    .setScale(0.015f).setMaxAge(16)
-                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
-                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
-                            0, 0, 0);
+                Vector3 left, right, inner;
+
+                if(facing == Direction.NORTH || facing == Direction.SOUTH) {
+                    left = new Vector3(-0.2734, 0.9766, 0.5);
+                    right = new Vector3(1.2734, 0.9766, 0.5);
+                    inner = facing == Direction.NORTH ? new Vector3(0.5, 1.697 + itemBob, 0.5 + itemBob) : new Vector3(0.5, 1.697 + itemBob, 0.5 - itemBob);
+                } else {
+                    left = new Vector3(0.5, 0.9766, -0.2734);
+                    right = new Vector3(0.5, 0.9766, 1.2734);
+                    inner = facing == Direction.EAST ? new Vector3(0.5 + itemBob, 1.697 + itemBob, 0.5) : new Vector3(0.5 + itemBob, 1.697 - itemBob, 0.5);
+                }
+
+                //Lightning
+                if(pLevel.getGameTime() % 2 == 0 && pEntity.mainCirclePercent > 0.95){
+                    pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                    .setMaxAge(8 + r.nextInt(6)).setScale(20),
+                            pPos.getX() + inner.x, pPos.getY() + inner.y, pPos.getZ() + inner.z,
+                            pPos.getX() + left.x, pPos.getY() + left.y, pPos.getZ() + left.z);
+
+                    pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                    .setMaxAge(8 + r.nextInt(6)),
+                            pPos.getX() + inner.x, pPos.getY() + inner.y, pPos.getZ() + inner.z,
+                            pPos.getX() + right.x, pPos.getY() + right.y, pPos.getZ() + right.z);
+                }
+
+                //Item Chunkies
+                {
+                    int total = 3;
+                    for (int i = 0; i < total; i++) {
+                        Vector3 end = new Vector3(pPos.getX() + inner.x, pPos.getY() + inner.y, pPos.getZ() + inner.z);
+                        Vector3 start = end.add(new Vector3(r.nextDouble() * 2 - 1, r.nextDouble() * 2 - 1, r.nextDouble() * 2 - 1).scale(0.5f));
+
+                        pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                                        .setScale(0.05f).setMaxAge(10 + r.nextInt(10)).setStack(pEntity.recipe.getAlchemyObject())
+                                        .setMover(new ParticleLerpMover(
+                                                start.x, start.y, start.z,
+                                                end.x, end.y, end.z)),
+                                start.x, start.y, start.z,
+                                0, 0, 0);
+                    }
+                }
+
+                //Materia Gas
+                if(pLevel.getGameTime() % 8 == 0){
+                    final ItemStack[] contentsOfInputSlots = pEntity.getContentsOfInputSlots();
+                    boolean has1 = !contentsOfInputSlots[0].isEmpty() || !contentsOfInputSlots[1].isEmpty();
+                    boolean has2 = !contentsOfInputSlots[2].isEmpty() || !contentsOfInputSlots[3].isEmpty();
+                    boolean has3 = !contentsOfInputSlots[4].isEmpty() || !contentsOfInputSlots[5].isEmpty();
+                    boolean has4 = !contentsOfInputSlots[6].isEmpty() || !contentsOfInputSlots[7].isEmpty();
+                    boolean has5 = !contentsOfInputSlots[8].isEmpty() || !contentsOfInputSlots[9].isEmpty();
+                    List<Pair<Vector3, Integer>> cloudData = new ArrayList<>();
+
+                    if (has1) {
+                        int color = contentsOfInputSlots[0].isEmpty() ?
+                                ((MateriaItem)contentsOfInputSlots[1].getItem()).getMateriaColor() :
+                                ((MateriaItem)contentsOfInputSlots[0].getItem()).getMateriaColor();
+
+                        if(facing == Direction.NORTH)
+                            cloudData.add(new Pair<>(new Vector3(0.5, 2.625, -0.625), color));
+                    }
+
+                    if (has2) {
+                        int color = contentsOfInputSlots[2].isEmpty() ?
+                                ((MateriaItem)contentsOfInputSlots[3].getItem()).getMateriaColor() :
+                                ((MateriaItem)contentsOfInputSlots[2].getItem()).getMateriaColor();
+
+                        if(facing == Direction.NORTH)
+                            cloudData.add(new Pair<>(new Vector3(-0.295495, 2.375, -0.295495), color));
+                    }
+
+                    if (has3) {
+                        int color = contentsOfInputSlots[4].isEmpty() ?
+                                ((MateriaItem)contentsOfInputSlots[5].getItem()).getMateriaColor() :
+                                ((MateriaItem)contentsOfInputSlots[4].getItem()).getMateriaColor();
+
+                        if(facing == Direction.NORTH)
+                            cloudData.add(new Pair<>(new Vector3(1.295495, 2.375, -0.295495), color));
+                    }
+
+                    if (has4) {
+                        int color = contentsOfInputSlots[6].isEmpty() ?
+                                ((MateriaItem)contentsOfInputSlots[7].getItem()).getMateriaColor() :
+                                ((MateriaItem)contentsOfInputSlots[6].getItem()).getMateriaColor();
+
+                        if(facing == Direction.NORTH)
+                            cloudData.add(new Pair<>(new Vector3(-0.625, 1.75, 0.5), color));
+                    }
+
+                    if (has5) {
+                        int color = contentsOfInputSlots[8].isEmpty() ?
+                                ((MateriaItem)contentsOfInputSlots[9].getItem()).getMateriaColor() :
+                                ((MateriaItem)contentsOfInputSlots[8].getItem()).getMateriaColor();
+
+                        if(facing == Direction.NORTH)
+                            cloudData.add(new Pair<>(new Vector3(1.625, 1.75, 0.5), color));
+                    }
+
+                    for (Pair<Vector3, Integer> cloudDatum : cloudData) {
+                        int[] color = ColorUtils.getRGBAIntTintFromPackedInt(cloudDatum.getSecond());
+                        Vector3 origin = new Vector3(pPos.getX(), pPos.getY(), pPos.getZ()).add(cloudDatum.getFirst());
+
+                        double spreadRadius = 0.015625d;
+
+                        double x = r.nextDouble() * spreadRadius * 2 - spreadRadius;
+                        double z = r.nextDouble() * spreadRadius * 2 - spreadRadius;
+
+                        Vector3 pos = origin.add(new Vector3(x, 0.325, z));
+
+                        pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                                        .setScale(0.05f).setMaxAge(64)
+                                        .setMover(new ParticleLerpMover(pos.x, pos.y, pos.z, pos.x, pos.y + 0.5, pos.z))
+                                        .setColor(color[0], color[1], color[2], 128),
+                                pos.x, pos.y, pos.z,
+                                0, 0, 0);
+                    }
+                }
+
+                //Circle Sparkles
+                {
+                    int total = 5;
+                    for(int i=0; i<total; i++) {
+                        double radianWiggle = ((Math.PI * 2) / (double)total) * (r.nextDouble() - 0.5);
+
+                        double x = Math.cos((Math.PI * 2) * i / (double)total + radianWiggle);
+                        double z = Math.sin((Math.PI * 2) * i / (double)total + radianWiggle);
+
+                        double rx = r.nextDouble() - 0.5;
+                        double ry = r.nextDouble();
+                        double rz = r.nextDouble() - 0.5;
+
+                        double yTilt = 0;
+
+                        Vector3 mid;
+                        if(facing == Direction.NORTH) {
+                            yTilt = -z * 0.5;
+                            mid = new Vector3(0.5, 1.697 + yTilt + mainCircleBob, 0.5 + mainCircleBob).add(new Vector3(x, 0, z * 0.675).scale(0.667f));
+                        }
+                        else
+                            mid = Vector3.zero();
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                        .setMaxAge(20 + r.nextInt(30)).setScale(0.03f + r.nextFloat() * 0.03f)
+                                        .setColor(150+r.nextInt(75), 150+r.nextInt(75), 150+r.nextInt(75))
+                                        .setMover(new ParticleVelocityMover(rx * 0.03, 0.01 + ry * 0.02, rz * 0.03, true)),
+                                pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
+                                0, 0, 0);
+                    }
                 }
             }
         }
@@ -364,10 +527,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", this.itemHandler.serializeNBT());
-        nbt.putInt("progress", this.progress);
+        nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         return nbt;
     }
 
@@ -444,6 +608,15 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         ItemStack[] out = new ItemStack[10];
         for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
             out[i-SLOT_INPUT_START] = itemHandler.getStackInSlot(i);
+        }
+        return out;
+    }
+
+    public ItemStack getOutputInLastSlot() {
+        ItemStack out = null;
+        for(int i=SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT-1; i>=SLOT_OUTPUT_START; i--) {
+            if(!itemHandler.getStackInSlot(i).isEmpty())
+                out = itemHandler.getStackInSlot(i);
         }
         return out;
     }
@@ -620,5 +793,10 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     @Override
     public void destroyRouters() {
         GrandCircleFabricationBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,4,3));
     }
 }

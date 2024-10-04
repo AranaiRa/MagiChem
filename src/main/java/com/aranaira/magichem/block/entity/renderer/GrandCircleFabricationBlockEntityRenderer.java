@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec2;
@@ -50,10 +51,35 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
             pPoseStack.mulPose(Axis.YN.rotationDegrees(270));
         }
 
-
+        renderItem(pBlockEntity, pPartialTick, pPoseStack, pPackedLight, pBuffer, pPackedLight, pPackedOverlay);
         renderMagicCircle(pBlockEntity, pPartialTick, pPoseStack, pPackedLight, pBuffer, pPackedLight, pPackedOverlay);
         renderFloatingVessels(pBlockEntity, pPartialTick, pPoseStack, pPackedLight, pBuffer, pPackedLight, pPackedOverlay);
         pPoseStack.popPose();
+    }
+
+    private void renderItem(GrandCircleFabricationBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, int pPackedLight, MultiBufferSource pBuffer, int pPackedLight1, int pPackedOverlay) {
+
+        double posBob = Math.sin((((pBlockEntity.getLevel().getGameTime()) % 450d) / 450d) * (Math.PI * 2) * Math.PI * 2) * 0.03125 * 0.707 + 0.1875;
+        Direction facing = pBlockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        Vector3 inner;
+
+        if(facing == Direction.NORTH || facing == Direction.SOUTH) {
+            inner = facing == Direction.NORTH ? new Vector3(0.5, 1.697 + posBob, 0.5 + posBob) : new Vector3(0.5, 1.697 + posBob, 0.5 - posBob);
+        } else {
+            inner = facing == Direction.EAST ? new Vector3(0.5 + posBob, 1.697 + posBob, 0.5) : new Vector3(0.5 + posBob, 1.697 - posBob, 0.5);
+        }
+
+        final ItemStack outputItem = pBlockEntity.getOutputInLastSlot();
+
+        if(outputItem != null) {
+            pPoseStack.pushPose();
+            pPoseStack.translate(inner.x, inner.y, inner.z);
+            pPoseStack.scale(0.4f, 0.4f, 0.4f);
+            pPoseStack.mulPose(Axis.YP.rotationDegrees((((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 500) / 500f) * 360));
+            Minecraft.getInstance().getItemRenderer().renderStatic(outputItem, ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, pBlockEntity.getLevel(), 0);
+            pPoseStack.popPose();
+        }
     }
 
     private void renderMagicCircle(GrandCircleFabricationBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, int pPackedLight, MultiBufferSource pBuffer, int pPackedLight1, int pPackedOverlay) {
@@ -169,7 +195,10 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[0];
 
             color1 = ((MateriaItem)stack.getItem()).getMateriaColor();
-            fill1 = Math.min(1, stack.getCount() / 16f);
+            fill1 = Math.min(1, (
+                    (contentsOfInputSlots[0].isEmpty() ? 0 : contentsOfInputSlots[0].getCount()) +
+                    (contentsOfInputSlots[1].isEmpty() ? 0 : contentsOfInputSlots[1].getCount())
+                    ) / 16f);
             has1 = true;
         }
         if(!contentsOfInputSlots[2].isEmpty() || !contentsOfInputSlots[3].isEmpty()) {
@@ -178,7 +207,10 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[2];
 
             color2 = ((MateriaItem)stack.getItem()).getMateriaColor();
-            fill2 = Math.min(1, stack.getCount() / 16f);
+            fill2 = Math.min(1, (
+                    (contentsOfInputSlots[2].isEmpty() ? 0 : contentsOfInputSlots[2].getCount()) +
+                    (contentsOfInputSlots[3].isEmpty() ? 0 : contentsOfInputSlots[3].getCount())
+                    ) / 16f);
             has2 = true;
         }
         if(!contentsOfInputSlots[4].isEmpty() || !contentsOfInputSlots[5].isEmpty()) {
@@ -187,7 +219,10 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[4];
 
             color3 = ((MateriaItem)stack.getItem()).getMateriaColor();
-            fill3 = Math.min(1, stack.getCount() / 16f);
+            fill3 = Math.min(1, (
+                    (contentsOfInputSlots[4].isEmpty() ? 0 : contentsOfInputSlots[4].getCount()) +
+                    (contentsOfInputSlots[5].isEmpty() ? 0 : contentsOfInputSlots[5].getCount())
+                    ) / 16f);
             has3 = true;
         }
         if(!contentsOfInputSlots[6].isEmpty() || !contentsOfInputSlots[7].isEmpty()) {
@@ -196,7 +231,10 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[6];
 
             color4 = ((MateriaItem)stack.getItem()).getMateriaColor();
-            fill4 = Math.min(1, stack.getCount() / 16f);
+            fill4 = Math.min(1, (
+                    (contentsOfInputSlots[6].isEmpty() ? 0 : contentsOfInputSlots[6].getCount()) +
+                    (contentsOfInputSlots[7].isEmpty() ? 0 : contentsOfInputSlots[7].getCount())
+                    ) / 16f);
             has4 = true;
         }
         if(!contentsOfInputSlots[8].isEmpty() || !contentsOfInputSlots[9].isEmpty()) {
@@ -205,7 +243,10 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[8];
 
             color5 = ((MateriaItem)stack.getItem()).getMateriaColor();
-            fill5 = Math.min(1, stack.getCount() / 16f);
+            fill5 = Math.min(1, (
+                    (contentsOfInputSlots[8].isEmpty() ? 0 : contentsOfInputSlots[8].getCount()) +
+                    (contentsOfInputSlots[9].isEmpty() ? 0 : contentsOfInputSlots[9].getCount())
+                    ) / 16f);
             has5 = true;
         }
 

@@ -179,6 +179,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         super.saveAdditional(nbt);
     }
 
@@ -196,6 +197,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         }
         progress = nbt.getInt("craftingProgress");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
+        isFESatisfied = nbt.getBoolean("isFESatisfied");
     }
 
     @Nullable
@@ -215,6 +217,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.put("inventory", this.itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         return nbt;
     }
 
