@@ -1,0 +1,55 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:grand_circle_fabrication"
+  },
+  "stages": [
+    {
+      "experience": 20,
+      "components": [
+        { "item": "magichem:materia_vessel" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:materia_vessel" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:magichemical_mechanism" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_industry", "count": 24 },
+        { "item": "magichem:admixture_storm", "count": 18 },
+        { "item": "magichem:essentia_nigredo", "count": 10 }
+      ]
+    },
+    {
+      "experience": 35,
+      "components": [
+        { "item": "magichem:materia_vessel" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:magic_circle" },
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "minecraft:polished_deepslate" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_memory", "count": 22 },
+        { "item": "magichem:admixture_stone", "count": 16 },
+        { "item": "magichem:essentia_nigredo", "count": 10 }
+      ]
+    },
+    {
+      "experience": 65,
+      "components": [
+        { "item": "magichem:materia_vessel" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:materia_vessel" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:magichemical_mechanism" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_light", "count": 20 },
+        { "item": "magichem:admixture_sound", "count": 14 },
+        { "item": "magichem:essentia_nigredo", "count": 10 }
+      ]
+    }
+  ]
+}
