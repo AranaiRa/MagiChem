@@ -1,5 +1,5 @@
 {
-  "parent": "magichem:block/grand_distillery",
+  "parent": "magichem:block/grand_circle_fabrication",
   "textures": {
     "particle": "magichem:block/breakparticle_arcane_sandstone"
   }

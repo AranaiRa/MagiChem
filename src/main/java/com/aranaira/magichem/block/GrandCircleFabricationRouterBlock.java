@@ -379,23 +379,29 @@ public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implement
                 MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLATFORM_NORTH), 2)
         );
 
-        VOXEL_SHAPE_BASE_SOUTH = Block.box(1, 0, 0, 15, 15, 8);
+//        VOXEL_SHAPE_BASE_SOUTH = Block.box(1, 0, 0, 15, 15, 8);
+//        VOXEL_SHAPE_DAIS_SOUTH = Block.box(-0.4496, 0, -0.4496, 16.4496, 16, 16.4496);
+//        VOXEL_SHAPE_AGGREGATE_4_NORTH = Shapes.or(
+//                VOXEL_SHAPE_BASE_SOUTH,
+//                VOXEL_SHAPE_DAIS_SOUTH
+//        );
+//        VOXEL_SHAPE_AGGREGATE_4_EAST = Shapes.or(
+//                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 1),
+//                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 1)
+//        );
+//        VOXEL_SHAPE_AGGREGATE_4_SOUTH = Shapes.or(
+//                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 2),
+//                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 2)
+//        );
+//        VOXEL_SHAPE_AGGREGATE_4_WEST = Shapes.or(
+//                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 3),
+//                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 3)
+//        );
+
         VOXEL_SHAPE_DAIS_SOUTH = Block.box(-0.4496, 0, -0.4496, 16.4496, 16, 16.4496);
-        VOXEL_SHAPE_AGGREGATE_4_NORTH = Shapes.or(
-                VOXEL_SHAPE_BASE_SOUTH,
-                VOXEL_SHAPE_DAIS_SOUTH
-        );
-        VOXEL_SHAPE_AGGREGATE_4_EAST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 1),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 1)
-        );
-        VOXEL_SHAPE_AGGREGATE_4_SOUTH = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 2),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 2)
-        );
-        VOXEL_SHAPE_AGGREGATE_4_WEST = Shapes.or(
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_SOUTH, 3),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_SOUTH, 3)
-        );
+        VOXEL_SHAPE_AGGREGATE_4_NORTH = VOXEL_SHAPE_DAIS_SOUTH;
+        VOXEL_SHAPE_AGGREGATE_4_EAST = VOXEL_SHAPE_DAIS_SOUTH;
+        VOXEL_SHAPE_AGGREGATE_4_SOUTH = VOXEL_SHAPE_DAIS_SOUTH;
+        VOXEL_SHAPE_AGGREGATE_4_WEST = VOXEL_SHAPE_DAIS_SOUTH;
     }
 }

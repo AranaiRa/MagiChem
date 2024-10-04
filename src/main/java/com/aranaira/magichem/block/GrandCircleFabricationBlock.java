@@ -88,6 +88,10 @@ public class GrandCircleFabricationBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
+            boolean holdingPowerSpike = player.getInventory().getSelected().getItem() == BlockRegistry.POWER_SPIKE.get().asItem();
+            if(holdingPowerSpike)
+                return InteractionResult.PASS;
+
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof GrandCircleFabricationBlockEntity cfbe) {
                 NetworkHooks.openScreen((ServerPlayer)player, new SimpleMenuProvider((id, playerInventory, user) -> {
