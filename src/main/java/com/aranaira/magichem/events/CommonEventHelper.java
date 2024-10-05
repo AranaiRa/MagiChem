@@ -1,12 +1,16 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
+import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.ItemRegistry;
+import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class CommonEventHelper {
@@ -34,5 +38,31 @@ public class CommonEventHelper {
         }
 
         Containers.dropContents(level, bewe.getBlockPos(), wasteItems);
+    }
+
+    public static boolean checkDirectionAndPos(DevicePlugDirection pPlugDir, BlockHitResult pBHR) {
+        Direction dir = pBHR.getDirection();
+        boolean plugCheck = false, extentsCheck = false;
+
+        final Vec3 location = pBHR.getLocation().subtract(pBHR.getBlockPos().getX(), pBHR.getBlockPos().getY(), pBHR.getBlockPos().getZ());
+
+        if(dir == Direction.NORTH) {
+            plugCheck = pPlugDir == DevicePlugDirection.NORTH;
+            extentsCheck = location.z == 0;
+        }
+        else if(dir == Direction.EAST) {
+            plugCheck = pPlugDir == DevicePlugDirection.EAST;
+            extentsCheck = location.x == 1;
+        }
+        else if(dir == Direction.SOUTH) {
+            plugCheck = pPlugDir == DevicePlugDirection.SOUTH;
+            extentsCheck = location.z == 1;
+        }
+        else if(dir == Direction.WEST) {
+            plugCheck = pPlugDir == DevicePlugDirection.WEST;
+            extentsCheck = location.x == 0;
+        }
+
+        return plugCheck && extentsCheck;
     }
 }

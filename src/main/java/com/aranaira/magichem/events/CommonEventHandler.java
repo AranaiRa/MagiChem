@@ -12,6 +12,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -21,6 +22,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
@@ -304,24 +306,39 @@ public class CommonEventHandler {
                     //mode 2: just arcane and ender
 
                     if (blockEntity instanceof DistilleryBlockEntity dbe) {
-                        mode = 1;
+                        if(CommonEventHelper.checkDirectionAndPos(dbe.getPlugDirection(), bhr)) {
+                            mode = 1;
+                        }
                     } else if (blockEntity instanceof DistilleryRouterBlockEntity drbe) {
                         if (drbe.getRouterType() == DistilleryRouterType.PLUG_LEFT) {
-                            mode = 1;
+                            if(CommonEventHelper.checkDirectionAndPos(drbe.getPlugDirection(), bhr)) {
+                                mode = 1;
+                            }
                         }
                     } else if (blockEntity instanceof CentrifugeRouterBlockEntity crbe) {
                         if (crbe.getRouterType() == CentrifugeRouterType.PLUG_LEFT || crbe.getRouterType() == CentrifugeRouterType.PLUG_RIGHT) {
-                            mode = 1;
+                            if(CommonEventHelper.checkDirectionAndPos(crbe.getPlugDirection(), bhr)) {
+                                mode = 1;
+                            }
                         }
                     } else if (blockEntity instanceof FuseryRouterBlockEntity frbe) {
                         if (frbe.getRouterType() == FuseryRouterType.PLUG_LEFT || frbe.getRouterType() == FuseryRouterType.PLUG_RIGHT) {
-                            mode = 1;
+                            if(CommonEventHelper.checkDirectionAndPos(frbe.getPlugDirection(), bhr)) {
+                                mode = 1;
+                            }
                         }
                     } else if (blockEntity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
                         if (anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_LEFT || anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_RIGHT) {
+                            if(CommonEventHelper.checkDirectionAndPos(anrbe.getPlugDirection(), bhr)) {
+                                mode = 2;
+                            }
+                        }
+                    } else if (blockEntity instanceof GrandCircleFabricationRouterBlockEntity gcfrbe) {
+                        int routerType = gcfrbe.getBlockState().getValue(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION);
+                        if ((routerType == 2 || routerType == 6) && CommonEventHelper.checkDirectionAndPos(gcfrbe.getPlugDirection(), bhr)) {
                             mode = 2;
                         }
-                    } else if (blockEntity instanceof GrandDistilleryRouterBlockEntity anrbe) {
+                    } else if (blockEntity instanceof GrandDistilleryRouterBlockEntity gdrbe) {
                         boolean hasLaboratoryUpgrade = state.getValue(HAS_LABORATORY_UPGRADE);
                         GrandDistilleryRouterType routerType = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_GRAND_DISTILLERY));
 
@@ -329,9 +346,15 @@ public class CommonEventHandler {
                            routerType == GrandDistilleryRouterType.PLUG_BACK_RIGHT ||
                            routerType == GrandDistilleryRouterType.PLUG_FRONT_LEFT ||
                            routerType == GrandDistilleryRouterType.PLUG_FRONT_RIGHT) {
-                            mode = 1;
+
+                            if(CommonEventHelper.checkDirectionAndPos(gdrbe.getPlugDirection(), bhr)) {
+                                mode = 1;
+                            }
                         } else if(hasLaboratoryUpgrade && (routerType == GrandDistilleryRouterType.PLUG_MID_LEFT || routerType == GrandDistilleryRouterType.PLUG_MID_RIGHT)) {
-                            mode = 1;
+
+                            if(CommonEventHelper.checkDirectionAndPos(gdrbe.getPlugDirection(), bhr)) {
+                                mode = 1;
+                            }
                         }
                     }
 
