@@ -326,6 +326,49 @@
       }
     ]
   },
+  "Process: Fabrication": {
+    "index": "1112",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Fabrication"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Fabricate",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is to create an object out of nothing but component materia. Basic Fabrication is performed at a "
+          },
+          {
+            "text": "Circle of Fabrication",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/circle_fabrication"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/grand_circle_fabrication"
+      }
+    ]
+  },
   "Process: Conjuration": {
     "index": "1104",
     "category": "magichem",
@@ -523,7 +566,7 @@
   "Circle of Fabrication": {
     "index": "1401",
     "category": "magichem",
-    "tier": 2,
+    "tier": 1,
     "sections": [
       {
         "type": "title",
@@ -541,21 +584,37 @@
             "color": "dark_purple"
           },
           {
-            "text": " uses Materia to create blocks and items. A Circle of Fabrication requires "
+            "text": " uses Materia to create blocks and items.\n\nA Circle of Fabrication requires "
           },
           {
             "text": "FE (Forge Energy)",
             "color": "dark_purple"
           },
           {
-            "text": " to function."
+            "text": " to function, which can be provided with a "
+          },
+          {
+            "text": "Power Spike",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or by placing a "
+          },
+          {
+            "text": "Circle of Toil",
+            "color": "dark_purple"
+          },
+          {
+            "text": " within "
+          },
+          {
+            "text": "eight blocks",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in a straight line in the direction the alchemical circle is pointing (through the standing stone with a hole in it).\n\n\n\n\n\n"
           }
         ]
-      },
-      {
-        "type": "recipe",
-        "location": "magichem:shaped/circle_fabrication",
-        "recipeType": "crafting"
       },
       {
         "type": "title",
@@ -566,7 +625,7 @@
         "value": "",
         "json": [
           {
-            "text": "On the far left side is a panel with fifteen slots used to select what you want the Circle of Fabrication to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical triangle in the center and a second panel appears in the lower right to indicate what Materia are required for each craft.\n\nThe alchemical triangle in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical triangle are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nIn the upper right, you can set the desired FE usage of the Circle of Fabrication; as the power usage goes up, the amount of time the Circle of Fabrication requires to perform each crafting operation goes down. Changing the desired power usage will reset the progress on any current crafting operation.\n\nWhenever the Circle of Fabrication creates a block or item, all of the Materia used is consumed and the bottles are returned into the bottle output slot. If there’s not enough space in the bottle output slot, the Circle of Fabrication won’t begin crafting until there’s enough space."
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Circle of Fabrication to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fabrication symbol in the center.\n\nThe alchemical Fabrication symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fabrication symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nIn the upper right, you can see the device's FE usage and operation time.\n\nWhenever the Circle of Fabrication creates a block or item, all of the Materia used is consumed and the bottles are returned into the bottle output slot. If there’s not enough space in the bottle output slot, excess bottles will be ejected into the world."
           }
         ]
       }
@@ -574,16 +633,91 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:shaped/magic_circle"
+        "location": "magichem:shaped/circle_fabrication"
       },
       {
         "type": "crafting",
-        "location": "magichem:shaped/circle_fabrication"
+        "location": "magichem:shaped/circle_toil"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/power_spike"
+      }
+    ]
+  },
+  "Grand Circle of Fabrication": {
+    "index": "1402",
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Grand Circle of Fabrication"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Grand Circle of Fabrication",
+            "color": "dark_purple"
+          },
+          {
+            "text": " eclipses its predecessor in all respects: the device performs fabrications faster, has ports for "
+          },
+          {
+            "text": "Elemental Actuators",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at Tier 4 and higher, and is much less fragile than a crude ring of chalk on the ground surrounded by standing stones.\n\nLike the regular Circle of Fabrication, the Grand Distillery requires "
+          },
+          {
+            "text": "FE (Forge Energy)",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to function, which must be provided with a "
+          },
+          {
+            "text": "Power Spike",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". The amount of FE required can be controlled; higher FE usage results in faster fabrications.\n\n\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Grand Circle of Fabrication to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fabrication symbol in the center.\n\nThe alchemical Fabrication symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fabrication symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nIn the upper right, you can see the device's current FE usage and operation time. Modifying the FE usage with the buttons on the top and bottom of this panel will change the device's required time per operation.\n\nWhenever the Circle of Fabrication creates a block or item, all of the Materia used is consumed and the bottles are returned into the bottle output slot. If there’s not enough space in the bottle output slot, excess bottles will be ejected into the world."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/grand_circle_fabrication"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/power_spike"
       }
     ]
   },
   "Circle of Toil": {
-    "index": "1402",
+    "index": "1403",
     "category": "magichem",
     "tier": 1,
     "sections": [
@@ -640,10 +774,15 @@
       {
         "type": "crafting",
         "location": "magichem:shaped/circle_toil"
-      }]
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/power_spike"
+      }
+    ]
   },
   "Circle of Power": {
-    "index": "1403",
+    "index": "1404",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -749,7 +888,7 @@
       }]
   },
   "Grains of Quicksilver": {
-    "index": "1405",
+    "index": "1406",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -807,7 +946,7 @@
     ]
   },
   "Focusing Catalyst": {
-    "index": "1406",
+    "index": "1407",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -896,7 +1035,7 @@
     ]
   },
   "Amplifying Prism": {
-    "index": "1407",
+    "index": "1408",
     "category": "magichem",
     "tier": 4,
     "sections": [
@@ -992,7 +1131,7 @@
     ]
   },
   "Auxiliary Circle Array": {
-    "index": "1408",
+    "index": "1409",
     "category": "magichem",
     "tier": 5,
     "sections": [
@@ -1129,7 +1268,7 @@
     ]
   },
   "Power Spikes": {
-    "index": "1404",
+    "index": "1405",
     "category": "magichem",
     "tier": 2,
     "sections": [
