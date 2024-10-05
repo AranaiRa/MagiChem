@@ -22,6 +22,7 @@ import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
@@ -91,7 +92,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     private static final Random r = new Random();
 
     private int
-            powerUsageSetting = 1;
+            powerUsageSetting = 1, materiaToVent = 0;
     private boolean
             redstonePaused = false;
 
@@ -201,6 +202,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
+        nbt.putInt("materiaToVent", this.materiaToVent);
+        this.materiaToVent = 0;
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
@@ -213,6 +216,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
+        if(nbt.contains("materiaToVent"))
+            ventMateria(nbt.getInt("materiaToVent"));
         if(nbt.getCompound("inventory").getInt("Size") != itemHandler.getSlots()) {
             ItemStackHandler temp = new ItemStackHandler(nbt.getCompound("inventory").size());
             temp.deserializeNBT(nbt.getCompound("inventory"));
@@ -583,6 +588,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
+        nbt.putInt("materiaToVent", this.materiaToVent);
+        this.materiaToVent = 0;
         nbt.put("inventory", this.itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
@@ -658,8 +665,53 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return this.powerUsageSetting;
     }
 
+    private static final AABB validVentingParticleZone = new AABB(0.375, 0.9375, 0.375, 0.625, 0.9375, 0.625);
+    private void ventMateria(int pPackedSlots) {
+        for (int i = 0; i < SLOT_INPUT_COUNT; i++) {
+            if((pPackedSlots & (1 << i)) >> i == 1) {
+                ItemStack stackToCheck = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+
+                if (stackToCheck.getItem() instanceof MateriaItem mi) {
+                    InventoryHelper.generateMateriaVentingCloud(level, mi, validVentingParticleZone.move(getBlockPos()), 0.0625);
+                }
+            }
+        }
+
+        materiaToVent = 0;
+    }
+
     public void setCurrentRecipe(ItemStack pQuery) {
         itemHandler.setStackInSlot(SLOT_RECIPE, pQuery);
+
+        if(!level.isClientSide()) {
+            getCurrentRecipe();
+
+            if (recipe != null) {
+                ItemStack[] componentMateria = new ItemStack[5];
+                recipe.getComponentMateria().toArray(componentMateria);
+
+                for(int i=0; i<SLOT_INPUT_COUNT; i++) {
+                    if(componentMateria[i/2] != null) {
+                        if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
+                            ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                                materiaToVent = materiaToVent | (1 << i);
+                                itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                continue;
+                            }
+                        }
+                    } else {
+                        ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            materiaToVent = materiaToVent | (1 << i);
+                            itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                            continue;
+                        }
+                    }
+                    materiaToVent = materiaToVent & ~(1 << i);
+                }
+            }
+        }
 
         syncAndSave();
     }

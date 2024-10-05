@@ -1,14 +1,26 @@
 package com.aranaira.magichem.util;
 
+import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.util.render.ColorUtils;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.joml.Vector2i;
 
+import java.util.Random;
+
 public class InventoryHelper {
+    private static final Random r = new Random();
 
     /**
      * Generic handler for the goddamned quickMoveStack method. The Y values passed in for any ranges should be exclusive.
@@ -227,5 +239,28 @@ public class InventoryHelper {
             }
         }
         return false;
+    }
+
+    public static void generateMateriaVentingCloud(Level pLevel, MateriaItem pItem, AABB pValidZone, double pSpread) {
+
+        int[] color = ColorUtils.getRGBAIntTintFromPackedInt(pItem.getMateriaColor());
+
+        Vector3 pos = new Vector3(
+                r.nextDouble() * (pValidZone.maxX-pValidZone.minX) + pValidZone.minX,
+                r.nextDouble() * (pValidZone.maxY-pValidZone.minY) + pValidZone.minY,
+                r.nextDouble() * (pValidZone.maxZ-pValidZone.minZ) + pValidZone.minZ
+        );
+
+        for(int i=0; i<8; i++) {
+            double x = (r.nextDouble() * 2 - 1) * pSpread;
+            double z = (r.nextDouble() * 2 - 1) * pSpread;
+
+            pLevel.addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                            .setScale(0.075f).setMaxAge(48 + r.nextInt(48))
+                            .setMover(new ParticleLerpMover(pos.x + x, pos.y, pos.z + z, pos.x + x, pos.y + 0.75, pos.z + z))
+                            .setColor(color[0], color[1], color[2], 255),
+                    pos.x + x, pos.y, pos.z + z,
+                    0, 0, 0);
+        }
     }
 }
