@@ -2,7 +2,7 @@
   "parent": "forge:item/default",
   "loader": "forge:composite",
   "textures": {
-    "particle": "minecraft:block/copper_block"
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
   },
   "children": {
     "part1": {
@@ -12,13 +12,6 @@
       "flip_v": true,
       "emissive_ambient": false,
       "model": "magichem:models/obj/levers/lever_5state_0.obj"
-    }
-  },
-  "display": {
-    "gui": {
-      "rotation": [29, 45, 0],
-      "scale": [0.6, 0.6, 0.6],
-      "translation": [0, 0, 0]
     }
   }
 }
