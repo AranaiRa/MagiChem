@@ -78,6 +78,11 @@ public class InventoryHelper {
                 ItemStack containerStack = pSlots.get(pContainerSpec.getFirst()).getItem();
                 ItemStack limitedStack = modStack.copy();
                 limitedStack.setCount(Math.min(containerStack.getCount(), limitedStack.getCount()));
+
+                if(InventoryHelper.isMateriaUnbottled(limitedStack)) {
+                    limitedStack.removeTagKey("CustomModelData");
+                }
+
                 int pre = limitedStack.getCount();
 
                 for(Vector2i spec : pInventoryIncomingSpec) {

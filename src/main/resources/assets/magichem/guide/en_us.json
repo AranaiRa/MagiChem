@@ -372,6 +372,7 @@
   "Process: Conjuration": {
     "index": "1104",
     "category": "magichem",
+    "tier": 3,
     "sections": [
       {
         "type": "title",

@@ -208,10 +208,10 @@ public class FuseryBlock extends BaseEntityBlock {
             if(!holdingCleaningBrush) {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof FuseryBlockEntity) {
-                    if (!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
+                        if (!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
                         NetworkHooks.openScreen((ServerPlayer) player, (FuseryBlockEntity) entity, pos);
                 } else {
-                    throw new IllegalStateException("AdmixerBlockEntity container provider is missing!");
+                    throw new IllegalStateException("FuseryBlockEntity container provider is missing!");
                 }
             }
         }

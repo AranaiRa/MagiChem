@@ -3,6 +3,7 @@
   "values": [
     "minecraft:campfire",
     "minecraft:magma_block",
-    "minecraft:lava"
+    "minecraft:lava",
+    "mna:brazier"
   ]
 }
