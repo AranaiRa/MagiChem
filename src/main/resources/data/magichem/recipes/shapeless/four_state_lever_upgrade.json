@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:three_state_lever" },
+    { "item": "magichem:two_state_lever" }
+  ],
+  "result": {
+    "item": "magichem:four_state_lever"
+  }
+}

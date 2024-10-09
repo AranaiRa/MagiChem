@@ -1,0 +1,10 @@
+{
+	"parent": "magichem:block/lever_5_state_0",
+	"display": {
+		"gui": {
+			"rotation": [29, 45, 0],
+			"scale": [1.5, 1.5, 1.5],
+			"translation": [0, 6.5, 0]
+		}
+	}
+}

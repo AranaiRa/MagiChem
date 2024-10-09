@@ -1,0 +1,24 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "textures": {
+    "particle": "minecraft:block/copper_block"
+  },
+  "children": {
+    "part1": {
+      "loader": "forge:obj",
+      "automatic_culling": false,
+      "shade_quads": true,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "magichem:models/obj/levers/lever_6state_1.obj"
+    }
+  },
+  "display": {
+    "gui": {
+      "rotation": [29, 45, 0],
+      "scale": [0.6, 0.6, 0.6],
+      "translation": [0, 0, 0]
+    }
+  }
+}

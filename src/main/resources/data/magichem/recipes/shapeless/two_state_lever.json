@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "tag": "minecraft:logs" },
+    { "item": "mna:decoration/arcane_sandstone" },
+    { "item": "magichem:cog_components" },
+    { "item": "magichem:perfected_electrum" }
+  ],
+  "result": {
+    "item": "magichem:two_state_lever",
+    "count": 64
+  }
+}

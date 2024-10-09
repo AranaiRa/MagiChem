@@ -1,0 +1,265 @@
+{
+  "variants": {
+    "face=ceiling,facing=east,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "x": 180,
+      "y": 270
+    },
+    "face=ceiling,facing=east,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "x": 180,
+      "y": 270
+    },
+    "face=ceiling,facing=east,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=east,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=east,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=east,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=ceiling,facing=north,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "x": 180,
+      "y": 180
+    },
+    "face=ceiling,facing=north,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "x": 180,
+      "y": 180
+    },
+    "face=ceiling,facing=north,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=north,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=north,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=north,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=ceiling,facing=south,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "x": 180
+    },
+    "face=ceiling,facing=south,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "x": 180
+    },
+    "face=ceiling,facing=south,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=south,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=south,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=south,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=ceiling,facing=west,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "x": 180,
+      "y": 90
+    },
+    "face=ceiling,facing=west,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "x": 180,
+      "y": 90
+    },
+    "face=ceiling,facing=west,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=west,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=west,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=ceiling,facing=west,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=floor,facing=east,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "y": 90
+    },
+    "face=floor,facing=east,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "y": 90
+    },
+    "face=floor,facing=east,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=east,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=east,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=east,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=floor,facing=north,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=north,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1"
+    },
+    "face=floor,facing=north,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=north,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=north,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=north,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=floor,facing=south,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "y": 180
+    },
+    "face=floor,facing=south,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "y": 180
+    },
+    "face=floor,facing=south,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=south,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=south,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=south,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=floor,facing=west,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "y": 270
+    },
+    "face=floor,facing=west,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "y": 270
+    },
+    "face=floor,facing=west,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=west,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=west,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=floor,facing=west,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=wall,facing=east,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "x": -90,
+      "y": 270
+    },
+    "face=wall,facing=east,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "x": -90,
+      "y": 270
+    },
+    "face=wall,facing=east,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=east,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=east,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=east,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=wall,facing=north,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "x": -90,
+      "y": 180
+    },
+    "face=wall,facing=north,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "x": -90,
+      "y": 180
+    },
+    "face=wall,facing=north,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=north,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=north,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=north,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=wall,facing=south,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "x": -90
+    },
+    "face=wall,facing=south,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "x": -90
+    },
+    "face=wall,facing=south,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=south,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=south,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=south,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+
+    "face=wall,facing=west,lever_signal=0": {
+      "model": "magichem:block/lever_2_state_0",
+      "x": -90,
+      "y": 90
+    },
+    "face=wall,facing=west,lever_signal=1": {
+      "model": "magichem:block/lever_2_state_1",
+      "x": -90,
+      "y": 90
+    },
+    "face=wall,facing=west,lever_signal=2": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=west,lever_signal=3": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=west,lever_signal=4": {
+      "model": "magichem:block/lever_2_state_0"
+    },
+    "face=wall,facing=west,lever_signal=5": {
+      "model": "magichem:block/lever_2_state_0"
+    }
+  }
+}
