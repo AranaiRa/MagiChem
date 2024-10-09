@@ -244,27 +244,27 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> TWO_STATE_LEVER = registerBlock("two_state_lever",
             () -> new MultiStateLeverBlock(1, BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
     public static final RegistryObject<Block> THREE_STATE_LEVER = registerBlock("three_state_lever",
             () -> new MultiStateLeverBlock(2, BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
     public static final RegistryObject<Block> FOUR_STATE_LEVER = registerBlock("four_state_lever",
             () -> new MultiStateLeverBlock(3, BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
     public static final RegistryObject<Block> FIVE_STATE_LEVER = registerBlock("five_state_lever",
             () -> new MultiStateLeverBlock(4, BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
     public static final RegistryObject<Block> SIX_STATE_LEVER = registerBlock("six_state_lever",
             () -> new MultiStateLeverBlock(5, BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
     public static final RegistryObject<Block> BLEACHED_AMETHYST_BLOCK = registerBlock("bleached_amethyst_block",
