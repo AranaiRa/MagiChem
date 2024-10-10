@@ -43,7 +43,7 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
     }
 
     public static VoxelShape
-        VOXEL_SHAPE_DAIS_BASE, VOXEL_SHAPE_DAIS_DAIS,
+        VOXEL_SHAPE_DAIS_DAIS,
         VOXEL_SHAPE_DAIS_AGGREGATE_NORTH, VOXEL_SHAPE_DAIS_AGGREGATE_EAST, VOXEL_SHAPE_DAIS_AGGREGATE_SOUTH, VOXEL_SHAPE_DAIS_AGGREGATE_WEST,
 
         VOXEL_SHAPE_PLUG_FRONT_LEFT_BASE, VOXEL_SHAPE_PLUG_FRONT_LEFT_PLUG, VOXEL_SHAPE_PLUG_FRONT_LEFT_BRACE,
@@ -336,28 +336,12 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
     static {
         //DAIS
         {
-            VOXEL_SHAPE_DAIS_BASE = Block.box(0, 0, 0, 16, 8, 14);
-            VOXEL_SHAPE_DAIS_DAIS = Block.box(-0.4496, 0, -0.4496, 16.4496, 16, 16.4496);
+            VOXEL_SHAPE_DAIS_DAIS = Block.box(0, 0, 0, 16, 16, 16);
 
-            VOXEL_SHAPE_DAIS_AGGREGATE_NORTH = Shapes.or(
-                    VOXEL_SHAPE_DAIS_BASE,
-                    VOXEL_SHAPE_DAIS_DAIS
-            );
-
-            VOXEL_SHAPE_DAIS_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_BASE, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_DAIS, 1)
-            );
-
-            VOXEL_SHAPE_DAIS_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_BASE, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_DAIS, 2)
-            );
-
-            VOXEL_SHAPE_DAIS_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_BASE, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_DAIS, 3)
-            );
+            VOXEL_SHAPE_DAIS_AGGREGATE_NORTH = VOXEL_SHAPE_DAIS_DAIS;
+            VOXEL_SHAPE_DAIS_AGGREGATE_EAST = VOXEL_SHAPE_DAIS_DAIS;
+            VOXEL_SHAPE_DAIS_AGGREGATE_SOUTH = VOXEL_SHAPE_DAIS_DAIS;
+            VOXEL_SHAPE_DAIS_AGGREGATE_WEST = VOXEL_SHAPE_DAIS_DAIS;
         }
 
         //BACK
