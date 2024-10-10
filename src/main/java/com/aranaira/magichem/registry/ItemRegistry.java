@@ -89,6 +89,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<TooltipLoreItem> GLASS_ORB = ITEMS.register("glass_orb",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> HARMONISCOPE = ITEMS.register("harmoniscope",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );

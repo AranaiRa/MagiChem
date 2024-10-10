@@ -1,0 +1,15 @@
+{
+	"type": "mna:runeforging",
+	"tier": 1,
+	"material": "magichem:glass_cutting_tools",
+	"hits": 12,
+	"pattern": "minecraft:glass",
+	"output": "magichem:glass_orb",
+	"byproducts": [
+		{
+			"item": "magichem:glass_cutting_tools",
+			"chance": 1,
+			"count": 1
+		}
+	]
+}

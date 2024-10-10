@@ -1,0 +1,25 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "mna:bed_charm",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 8,
+      "components": [
+        { "item": "mna:bed_charm" },
+        { "item": "magichem:glass_orb" },
+        { "item": "minecraft:feather" },
+        { "item": "mna:purified_vinteum_dust" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_nourishing", "count": 36 },
+        { "item": "magichem:admixture_travel", "count": 20 },
+        { "item": "magichem:admixture_instrument", "count": 2 }
+      ]
+    }
+  ]
+}
