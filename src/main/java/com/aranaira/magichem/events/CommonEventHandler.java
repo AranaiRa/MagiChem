@@ -23,8 +23,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -33,17 +37,21 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -387,6 +395,53 @@ public class CommonEventHandler {
     public static void onAttachCapability(AttachCapabilitiesEvent<?> event) {
         if(event.getObject() instanceof AbstractBlockEntityWithEfficiency) {
             event.addCapability(IGrimeCapability.GRIME, new GrimeProvider());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onUsePortal(PlayerEvent.PlayerChangedDimensionEvent event) {
+        final ResourceKey<Level> to = event.getTo();
+
+        if(to.location() != null) {
+            if(to.location().equals(new ResourceLocation("minecraft:the_nether"))) {
+                Level level = event.getEntity().level();
+                BlockPos pos = event.getEntity().blockPosition();
+                Block blockAtEntry = level.getBlockState(pos).getBlock();
+
+                //If we entered through a portal, we want to shift the block by one so that the player doesn't warp back INTO the portal
+                //We check two blocks ahead and two blocks back, if none of those are a solid spot to stand on we just put it in the portal anyway
+                if(blockAtEntry == Blocks.NETHER_PORTAL) {
+                    Vec3 fwdRaw = event.getEntity().getForward();
+                    Vec3i fwd = new Vec3i((int)Math.round(fwdRaw.x), (int)Math.round(fwdRaw.y), (int)Math.round(fwdRaw.z));
+                    BlockPos safePos = null;
+                    BlockPos[] coordsToCheck = new BlockPos[] {
+                            pos.offset(fwd.multiply(3)),
+                            pos.offset(fwd.multiply(2)),
+                            pos.offset(fwd),
+                            pos.offset(fwd.multiply(-3)),
+                            pos.offset(fwd.multiply(-2)),
+                            pos.offset(fwd.multiply(-1))
+                    };
+
+                    for(BlockPos coordQuery : coordsToCheck) {
+                        for(int i=-3; i<=3; i++){
+                            if (!level.getBlockState(coordQuery.below(i)).isAir()) {
+                                //make sure the player won't get suffocated or warp in partially inside a block
+                                if(level.getBlockState(coordQuery.below(i - 1)).isAir() && level.getBlockState(coordQuery.below(i - 2)).isAir()) {
+                                    safePos = coordQuery.below(i - 1);
+                                    break;
+                                }
+                            }
+                        }
+                        if(safePos != null)
+                            break;
+                    }
+
+                    if(safePos != null) {
+                        event.getEntity().getPersistentData().putLong("lastNetherPortal", safePos.asLong());
+                    }
+                }
+            }
         }
     }
 }

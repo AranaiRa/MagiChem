@@ -4261,5 +4261,61 @@
       }
     ]
   },
+  "Hellfeather Charm": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Hellfeather Charm"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An Enderfeather charm befouled with Netherine resonance.\n\nThe "
+          },
+          {
+            "text": "Hellfeather Charm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will break when used, teleporting you back to a spot close to the portal you used to enter the Nether.\n\nThe Hellfeather Charm will "
+          },
+          {
+            "text": "only",
+            "italic": true
+          },
+          {
+            "text": " attune to entry by a ",
+            "italic": false
+          },
+          {
+            "text": "vanilla nether portal",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; if you enter the nether through any other method, the charm will still target the last portal you traveled through.\n\nIf you've never used a vanilla portal to enter the Nether the item will have no effect (but also won't be consumed)."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "mna:manaweaving/artifice/enderfeather_charm"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/mna/enderfeather_charm_duplication"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/hellfeather_charm"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

@@ -101,6 +101,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<HellfeatherCharmItem> HELLFEATHER_CHARM = ITEMS.register("hellfeather_charm",
+            () -> new HellfeatherCharmItem(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<TooltipLoreItem> LABORATORY_CHARM = ITEMS.register("laboratory_charm",
             () -> new TooltipLoreItem(new Item.Properties())
     );
