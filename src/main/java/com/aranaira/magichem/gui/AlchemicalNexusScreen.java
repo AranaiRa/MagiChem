@@ -298,6 +298,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 recipesChanged = true;
                 recipeFilterRow = 0;
                 updateDisplayedRecipes(recipeFilterBox.getValue());
+                super.deleteChars(pNum);
             }
 
             @Override
@@ -305,6 +306,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 recipesChanged = true;
                 recipeFilterRow = 0;
                 updateDisplayedRecipes(recipeFilterBox.getValue());
+                super.deleteChars(pNum);
             }
         };
         this.recipeFilterBox.setMaxLength(60);
