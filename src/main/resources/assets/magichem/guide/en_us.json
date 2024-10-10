@@ -1605,8 +1605,73 @@
             "italic": true
           },
           {
-            "text": " the dye supplied.\n\nYou can supply multiple pieces of dye to remove other colors from the pool of potential colors. Each additional dye allows you to color an additional item with the same pool of potential colors. Only one piece of each color of dye can be added to the Coloring Cauldron until all the dye inside has been used up.\n\nItems are inserted into the Coloring Cauldron by throwing them. The coloring process takes about a minute if only a single piece of dye is supplied, but this time is significantly reduced by adding more pieces of dye.",
+            "text": " the dye supplied.\n\nYou can supply multiple pieces of dye to remove other colors from the pool of potential colors. Each additional dye allows you to color an additional item with the same pool of potential colors. Only one piece of each color of dye can be added to the Coloring Cauldron until all the dye inside has been used up.\n\nItems are inserted into the Coloring Cauldron by throwing them. The coloring process takes about a minute if only a single piece of dye is supplied, but this time is significantly reduced by adding more pieces of dye.\n\n\n\n\n",
             "italic": false
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support"
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Coloring Cauldron supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs the following signal values.\n\n\n"
+          },
+          {
+            "text": "0",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": The cauldron is empty.\n"
+          },
+          {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": The cauldron has dye, but no item.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": The cauldron has an item, but no dyes are present.\n"
+          },
+          {
+            "text": "8",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": An item is currently being colored.\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": An item is ready for extraction."
           }
         ]
       }
@@ -4119,6 +4184,80 @@
       {
         "type": "crushing",
         "location": "magichem:crushing/vinteum_crystal_shard_to_dust"
+      }
+    ]
+  },
+  "Multi-State Levers": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Multi-State Levers"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A mechanism more complex than a conventional lever can be created using Cog Components and Perfected Electrum. The simplest form is the "
+          },
+          {
+            "text": "Two-State Lever",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", which acts almost the same as a conventional lever (except that its maximum signal strength is 1 instead of 15). Multi-State Levers are especially useful when creating complex "
+          },
+          {
+            "text": "Lodestar programs",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that use "
+          },
+          {
+            "text": "Condition: Is Redstone Powered",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nTwo-State Levers can be combined in a crafting grid to create a lever with more states (up to a maximum of a Six-State Lever). Each successive lever has one additional maximum state (and therefore one additional maximum signal level). For example, a "
+          },
+          {
+            "text": "Four-State Lever",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can output a signal level of 0, 1, 2, or 3 depending on what position the lever is set to.\n\nActivating the lever sets it to its next state; activating the lever while sneaking sets it to its previous state.\n\nAny Multi-State Lever more complex than a Two-State Lever can be put into a crafting grid and be split back into its component Two-State Levers."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/cog_components"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/two_state_lever"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/three_state_lever_fresh"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/four_state_lever_fresh"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/five_state_lever_fresh"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/six_state_lever_fresh"
       }
     ]
   },
