@@ -10,6 +10,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -58,6 +59,11 @@ public class InventoryHelper {
             }
 
             for(Vector2i spec : pInventoryOutgoingSpec) {
+                SimpleContainer validator = createValidatorFromSlotRange(pSlots, spec.x, spec.y, pTargetSlot);
+
+                if(!validator.canAddItem(modStack))
+                    continue;
+
                 if(isInRange(spec.x, spec.y, pTargetSlot)) {
                     Pair<Vector2i, Vector2i> safeRange = getSafeRange(spec.x, spec.y, pTargetSlot);
                     if(safeRange.getFirst() != null)
@@ -107,6 +113,11 @@ public class InventoryHelper {
                 return modStack;
             } else {
                 for (Vector2i spec : pInventoryIncomingSpec) {
+                    SimpleContainer validator = createValidatorFromSlotRange(pSlots, spec.x, spec.y, pTargetSlot);
+
+                    if(!validator.canAddItem(modStack))
+                        continue;
+
                     if (isInRange(spec.x, spec.y, pTargetSlot)) {
                         Pair<Vector2i, Vector2i> safeRange = getSafeRange(spec.x, spec.y, pTargetSlot);
                         if (safeRange.getFirst() != null)
@@ -122,7 +133,30 @@ public class InventoryHelper {
                 }
             }
         }
-        return ItemStack.EMPTY;
+        return modStack;
+    }
+
+    private static SimpleContainer createValidatorFromSlotRange(NonNullList<Slot> pSlots, int pMinIndex, int pMaxIndex, int pSlotIndexToSkip) {
+        int range = pMaxIndex - pMinIndex;
+        if(pSlotIndexToSkip >= pMinIndex && pSlotIndexToSkip < pMaxIndex)
+            range--;
+
+        SimpleContainer validator = new SimpleContainer(range);
+
+        int i = 0;
+        for(Slot slot : pSlots) {
+            int index = slot.index;
+            ItemStack item = slot.getItem();
+
+            if((index == pMinIndex + i) && (index != pSlotIndexToSkip)) {
+                validator.setItem(i, slot.getItem());
+                i++;
+            }
+
+            if(i >= range) break;
+        }
+
+        return validator;
     }
 
     /**
