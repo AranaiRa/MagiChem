@@ -79,7 +79,7 @@ public class InventoryHelper {
                 ItemStack limitedStack = modStack.copy();
                 limitedStack.setCount(Math.min(containerStack.getCount(), limitedStack.getCount()));
 
-                if(InventoryHelper.isMateriaUnbottled(limitedStack)) {
+                if(limitedStack.getItem() instanceof MateriaItem && InventoryHelper.isMateriaUnbottled(limitedStack)) {
                     limitedStack.removeTagKey("CustomModelData");
                 }
 

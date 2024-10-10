@@ -270,6 +270,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
         if(entity.recipe == null) {
             if(!catalystStack.isEmpty()) {
                 ConjurationRecipe newRecipe = ConjurationRecipe.getConjurationRecipe(level, catalystStack);
+                entity.progress = 0;
 
                 if (newRecipe != null) {
                     if (entity.materiaType != newRecipe.getMateria()) {
