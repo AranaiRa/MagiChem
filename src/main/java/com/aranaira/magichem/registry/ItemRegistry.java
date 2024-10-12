@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.item.compat.occultism.*;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
+import com.mna.items.artifice.ItemThaumaturgicCompass;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -101,16 +102,20 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<HellfeatherCharmItem> HELLFEATHER_CHARM = ITEMS.register("hellfeather_charm",
-            () -> new HellfeatherCharmItem(new Item.Properties().stacksTo(1))
-    );
-
     public static final RegistryObject<TooltipLoreItem> LABORATORY_CHARM = ITEMS.register("laboratory_charm",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TravellersCompassItem> TRAVELLERS_COMPASS = ITEMS.register("travellers_compass",
+            () -> new TravellersCompassItem()
+    );
+
     public static final RegistryObject<TooltipLoreItem> CATALYTIC_CARBON = ITEMS.register("catalytic_carbon",
             () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<HellfeatherCharmItem> HELLFEATHER_CHARM = ITEMS.register("hellfeather_charm",
+            () -> new HellfeatherCharmItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<ThunderstoneItem> THUNDERSTONE = ITEMS.register("thunderstone",

@@ -1,20 +1,13 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.gui.radial.SublimationPrimerRadialSelect;
-import com.aranaira.magichem.item.AdmixtureItem;
-import com.aranaira.magichem.item.EssentiaItem;
-import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.item.SublimationPrimerItem;
-import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.gui.radial.*;
+import com.aranaira.magichem.item.*;
 import com.mna.KeybindInit;
-import com.mna.gui.radial.SpellRadialSelect;
-import com.mna.items.sorcery.ItemSpellBook;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -45,12 +38,17 @@ public class ClientEventForgeBusHandler {
                 if (inHand.getItem() instanceof SublimationPrimerItem) {
                     mc.setScreen(new SublimationPrimerRadialSelect(false));
                     checkOffhand = false;
+                } else if (inHand.getItem() instanceof TravellersCompassItem) {
+                    mc.setScreen(new TravellersCompassRadialSelect(false));
+                    checkOffhand = false;
                 }
 
                 if (checkOffhand) {
                     inHand = mc.player.getOffhandItem();
                     if (inHand.getItem() instanceof SublimationPrimerItem) {
                         mc.setScreen(new SublimationPrimerRadialSelect(true));
+                    } else if (inHand.getItem() instanceof TravellersCompassItem) {
+                        mc.setScreen(new TravellersCompassRadialSelect(true));
                     }
                 }
             }

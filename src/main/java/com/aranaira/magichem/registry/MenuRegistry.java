@@ -66,6 +66,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<ChargingTalismanMenu>> CHARGING_TALISMAN_MENU =
             registerMenuType(ChargingTalismanMenu::new, "charging_talisman");
 
+    public static final RegistryObject<MenuType<TravellersCompassMenu>> TRAVELLERS_COMPASS_MENU =
+            registerMenuType(TravellersCompassMenu::new, "travellers_compass");
+
     public static final RegistryObject<MenuType<MateriaManifestMenu>> MATERIA_MANIFEST_MENU =
             registerMenuType(MateriaManifestMenu::new, "materia_manifest");
 

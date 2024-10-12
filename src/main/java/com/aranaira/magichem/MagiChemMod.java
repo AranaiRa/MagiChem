@@ -140,6 +140,7 @@ public class MagiChemMod
             MenuScreens.register(MenuRegistry.ACTUATOR_ARCANE_MENU.get(), ActuatorArcaneScreen::new);
             MenuScreens.register(MenuRegistry.VARIEGATOR_MENU.get(), VariegatorScreen::new);
             MenuScreens.register(MenuRegistry.CHARGING_TALISMAN_MENU.get(), ChargingTalismanScreen::new);
+            MenuScreens.register(MenuRegistry.TRAVELLERS_COMPASS_MENU.get(), TravellersCompassScreen::new);
             MenuScreens.register(MenuRegistry.CONJURER_MENU.get(), ConjurerScreen::new);
             MenuScreens.register(MenuRegistry.MATERIA_MANIFEST_MENU.get(), MateriaManifestScreen::new);
         }
