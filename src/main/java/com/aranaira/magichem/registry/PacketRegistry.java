@@ -69,6 +69,12 @@ public class PacketRegistry {
                 .encoder(VariegatorSyncDataC2SPacket::toBytes)
                 .consumerMainThread(VariegatorSyncDataC2SPacket::handle)
                 .add();
+
+        net.messageBuilder(TravellersCompassSyncC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(TravellersCompassSyncC2SPacket::new)
+                .encoder(TravellersCompassSyncC2SPacket::toBytes)
+                .consumerMainThread(TravellersCompassSyncC2SPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {
