@@ -6,6 +6,7 @@ import com.mna.items.ItemInit;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -72,6 +73,23 @@ public class TravellersCompassMenu extends AbstractContainerMenu {
             itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         }
 
+        for(int i=SLOT_RADIAL_START; i<SLOT_RADIAL_START + SLOT_RADIAL_COUNT; i++) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+            if (stackInSlot.hasCustomHoverName()) {
+                CompoundTag nbtThisSlot = stackInSlot.getTag();
+
+                if(nbtThisSlot.contains("tracking_key")) {
+                    String trackingKey = nbtThisSlot.getString("tracking_key");
+                    String savedName = nbtThisSlot.getCompound("display").getString("Name");
+                    savedName = savedName.substring(9, savedName.length()-2);
+
+                    if(trackingKey.equals(savedName))
+                        stackInSlot.resetHoverName();
+                }
+
+            }
+        }
+
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
@@ -96,6 +114,18 @@ public class TravellersCompassMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player pPlayer) {
         if(!pPlayer.level().isClientSide) {
+            //Update compasses in slots with custom names
+            for(int i=SLOT_RADIAL_START; i<SLOT_RADIAL_START + SLOT_RADIAL_COUNT; i++) {
+                ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+                if(!stackInSlot.hasCustomHoverName()) {
+                    if(stackInSlot.hasTag()) {
+                        CompoundTag nbtThisSlot = stackInSlot.getTag();
+                        if(nbtThisSlot.contains("tracking_key"))
+                            stackInSlot.setHoverName(Component.literal(nbtThisSlot.getString("tracking_key")));
+                    }
+                }
+            }
+
             CompoundTag nbt = playerInventory.getItem(compassHoldingSlot).getOrCreateTag();
             nbt.put("inventory", itemHandler.serializeNBT());
         }

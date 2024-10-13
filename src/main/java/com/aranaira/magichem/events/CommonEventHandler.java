@@ -262,9 +262,9 @@ public class CommonEventHandler {
     public static void onDrawScreenPost(RenderGuiOverlayEvent.Post event) {
         HitResult hitResult = Minecraft.getInstance().hitResult;
         Font font = Minecraft.getInstance().font;
+        Player player = Minecraft.getInstance().player;
 
-        if(hitResult == null) return;
-        else if(hitResult instanceof BlockHitResult bhr) {
+        if(hitResult instanceof BlockHitResult bhr) {
 
             if (hitResult.getType() == HitResult.Type.BLOCK) {
                 int x = event.getWindow().getGuiScaledWidth() / 2;
@@ -283,6 +283,7 @@ public class CommonEventHandler {
                         event.getGuiGraphics().drawString(font, textRow1, x + 4, y + 4, 0xffffff, true);
                         event.getGuiGraphics().drawString(font, textRow2, x + 4, y + 14, 0xffffff, true);
                         event.getGuiGraphics().drawString(font, textRow3, x + 4, y + 24, 0xffffff, true);
+                        return;
                     }
                 } else if (blockEntity instanceof ColoringCauldronBlockEntity ccbe) {
                     if(ccbe.hasItem()) {
@@ -301,8 +302,10 @@ public class CommonEventHandler {
                                 for(int i=1; i<infoReadout.size(); i++) {
                                     event.getGuiGraphics().drawString(font, infoReadout.get(i), x + 10, y + 36 + (i * 12), 0xffffff, true);
                                 }
+                                return;
                             } else {
                                 event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list.waiting"), x + 4, y + 20, 0xffffff, true);
+                                return;
                             }
                         }
                     }
@@ -386,6 +389,30 @@ public class CommonEventHandler {
                         event.getGuiGraphics().drawString(font, c, x + 4, y + 4 + i * 10, 0xffffff, true);
 
                     }
+                }
+            }
+        }
+        if(player != null) {
+            int x = event.getWindow().getGuiScaledWidth() / 2;
+            int y = event.getWindow().getGuiScaledHeight() / 2;
+
+            ItemStack
+                    mainHandItem = player.getItemInHand(InteractionHand.MAIN_HAND),
+                    offHandItem = player.getItemInHand(InteractionHand.OFF_HAND),
+                    targetStack = null;
+
+            if (mainHandItem.getItem() == ItemRegistry.TRAVELLERS_COMPASS.get()) targetStack = mainHandItem;
+            else if(offHandItem.getItem() == ItemRegistry.TRAVELLERS_COMPASS.get()) targetStack = offHandItem;
+
+            if(targetStack != null) {
+                if (targetStack.hasTag()) {
+                    CompoundTag posTag = targetStack.getTag().getCompound("LodestonePos");
+                    BlockPos target = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
+
+                    int distance = (int)Math.round(Math.sqrt(player.getOnPos().distSqr(target)));
+
+                    MutableComponent text = Component.translatable(distance+"m");
+                    event.getGuiGraphics().drawString(font, text, x + 4, y + 4, 0xffffff, true);
                 }
             }
         }

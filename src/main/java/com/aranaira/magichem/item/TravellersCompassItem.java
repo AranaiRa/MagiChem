@@ -112,6 +112,7 @@ public class TravellersCompassItem extends ItemThaumaturgicCompass implements IR
                 nbt.putByte("tracking_mode", nbtCompass.getByte("tracking_mode"));
                 nbt.putByte("LodestoneTracked", nbtCompass.getByte("LodestoneTracked"));
                 nbt.putString("tracking_key", nbtCompass.getString("tracking_key"));
+                nbt.putInt("CustomModelData", 1);
                 pStack.setTag(nbt);
             } else {
                 CompoundTag nbtCompass = compassToCopyFrom.getTag();
@@ -121,6 +122,7 @@ public class TravellersCompassItem extends ItemThaumaturgicCompass implements IR
                 nbt.remove("tracking_mode");
                 nbt.remove("LodestoneTracked");
                 nbt.remove("tracking_key");
+                nbt.remove("CustomModelData");
                 pStack.setTag(nbt);
             }
         }

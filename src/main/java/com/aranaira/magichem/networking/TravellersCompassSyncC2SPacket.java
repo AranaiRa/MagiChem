@@ -40,8 +40,6 @@ public class TravellersCompassSyncC2SPacket {
 
         TravellersCompassItem.updateTagFromSelectedRadialItem(itemToModify);
 
-        player.sendSystemMessage(Component.literal("received index = "+index));
-
         return true;
     }
 }
