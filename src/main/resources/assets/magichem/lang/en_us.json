@@ -651,6 +651,15 @@
   "gui.magichem.waitingforslurry": "Waiting for Slurry...",
   "gui.magichem.waitingformateria": "Waiting for Materia...",
 
+  "gui.magichem.time.dawn": "Dawn",
+  "gui.magichem.time.morning": "Morning",
+  "gui.magichem.time.noon": "Noon",
+  "gui.magichem.time.day": "Day",
+  "gui.magichem.time.dusk": "Dusk",
+  "gui.magichem.time.evening": "Evening",
+  "gui.magichem.time.midnight": "Midnight",
+  "gui.magichem.time.night": "Night",
+
   "construct.magichem:sort_materia": "Sort Materia from Device",
   "construct.magichem:sort_materia_from_container": "Sort Materia from Container",
   "construct.magichem:provide_materia": "Provide Materia",

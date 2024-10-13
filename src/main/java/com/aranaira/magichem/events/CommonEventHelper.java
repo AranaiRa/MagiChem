@@ -4,6 +4,8 @@ import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
@@ -64,5 +66,18 @@ public class CommonEventHelper {
         }
 
         return plugCheck && extentsCheck;
+    }
+
+    public static MutableComponent getTimeOfDayComponent(float pTime) {
+        if(pTime >= 0.95 || pTime <= 0.05) return Component.translatable("gui.magichem.time.noon");
+        else if(pTime < 0.20) return Component.translatable("gui.magichem.time.day");
+        else if(pTime <= 0.30) return Component.translatable("gui.magichem.time.dusk");
+        else if(pTime < 0.45) return Component.translatable("gui.magichem.time.evening");
+        else if(pTime <= 0.55) return Component.translatable("gui.magichem.time.midnight");
+        else if(pTime < 0.70) return Component.translatable("gui.magichem.time.night");
+        else if(pTime <= 0.80) return Component.translatable("gui.magichem.time.dawn");
+        else if(pTime < 0.95) return Component.translatable("gui.magichem.time.morning");
+        else
+            return Component.empty();
     }
 }

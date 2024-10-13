@@ -265,13 +265,11 @@ public class CommonEventHandler {
         Player player = Minecraft.getInstance().player;
 
         if(hitResult instanceof BlockHitResult bhr) {
-
             if (hitResult.getType() == HitResult.Type.BLOCK) {
                 int x = event.getWindow().getGuiScaledWidth() / 2;
                 int y = event.getWindow().getGuiScaledHeight() / 2;
 
                 BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(bhr.getBlockPos());
-                if (blockEntity == null) return;
                 if (blockEntity instanceof AbstractMateriaStorageBlockEntity amsbe) {
                     MateriaItem type = amsbe.getMateriaType();
                     if (type != null && amsbe.getCurrentStock() > 0) {
@@ -285,7 +283,8 @@ public class CommonEventHandler {
                         event.getGuiGraphics().drawString(font, textRow3, x + 4, y + 24, 0xffffff, true);
                         return;
                     }
-                } else if (blockEntity instanceof ColoringCauldronBlockEntity ccbe) {
+                }
+                else if (blockEntity instanceof ColoringCauldronBlockEntity ccbe) {
                     if(ccbe.hasItem()) {
                         final List<String> infoReadout = ccbe.getInfoReadout();
                         event.getGuiGraphics().drawString(font, infoReadout.get(0), x + 4, y + 4, 0xffffff, true);
@@ -309,7 +308,8 @@ public class CommonEventHandler {
                             }
                         }
                     }
-                } else if (Minecraft.getInstance().player.isCrouching()) {
+                }
+                else if (Minecraft.getInstance().player.isCrouching()) {
                     List<MutableComponent> components = new ArrayList<>();
                     BlockState state = blockEntity.getBlockState();
                     int mode = 0;
@@ -387,8 +387,9 @@ public class CommonEventHandler {
                         MutableComponent c = components.get(i);
 
                         event.getGuiGraphics().drawString(font, c, x + 4, y + 4 + i * 10, 0xffffff, true);
-
                     }
+
+                    if(mode != 0) return;
                 }
             }
         }
@@ -410,9 +411,11 @@ public class CommonEventHandler {
                     BlockPos target = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
 
                     int distance = (int)Math.round(Math.sqrt(player.getOnPos().distSqr(target)));
+                    float time = player.level().getTimeOfDay(0);
 
-                    MutableComponent text = Component.translatable(distance+"m");
-                    event.getGuiGraphics().drawString(font, text, x + 4, y + 4, 0xffffff, true);
+                    MutableComponent dist = Component.literal(distance+"m");
+                    event.getGuiGraphics().drawString(font, dist, x + 4, y + 4, 0xffffff, true);
+                    event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 14, 0x888888, true);
                 }
             }
         }
