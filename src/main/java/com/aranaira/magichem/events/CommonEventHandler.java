@@ -411,11 +411,16 @@ public class CommonEventHandler {
                     BlockPos target = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
 
                     int distance = (int)Math.round(Math.sqrt(player.getOnPos().distSqr(target)));
-                    float time = player.level().getTimeOfDay(0);
 
                     MutableComponent dist = Component.literal(distance+"m");
                     event.getGuiGraphics().drawString(font, dist, x + 4, y + 4, 0xffffff, true);
+
+                    float time = player.level().getTimeOfDay(0);
                     event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 14, 0x888888, true);
+
+                } else {
+                    float time = player.level().getTimeOfDay(0);
+                    event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 4, 0x888888, true);
                 }
             }
         }

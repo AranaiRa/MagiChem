@@ -11,6 +11,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Map;
 
@@ -40,18 +41,18 @@ public class SixfoldPathEffect extends MobEffect {
                 }
 
                 if(highestKey == Affinity.ARCANE) {
-                    player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 60, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 25, 0, false, false));
                 } else if(highestKey == Affinity.EARTH) {
                     final FoodData foodData = player.getFoodData();
                     foodData.setExhaustion(foodData.getExhaustionLevel() / 2);
                 } else if(highestKey == Affinity.ENDER) {
                     player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 60, 0, false, false));
                 } else if(highestKey == Affinity.FIRE) {
-                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 60, 1, false, false));
                 } else if(highestKey == Affinity.WATER) {
                     player.addEffect(new MobEffectInstance(EffectInit.WATER_WALKING.get(), 60, 0, false, false));
                 } else if(highestKey == Affinity.WIND) {
-                    player.addEffect(new MobEffectInstance(MobEffects.JUMP, 60, 0, false, false));
+                    player.addEffect(new MobEffectInstance(MobEffects.JUMP, 60, 3, false, false));
                 }
             });
         }

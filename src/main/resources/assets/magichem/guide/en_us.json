@@ -4317,5 +4317,136 @@
       }
     ]
   },
+  "Traveller's Compass": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Traveller's Compass"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Traveller's Compass",
+            "color": "dark_purple"
+          },
+          {
+            "text": " expands on the abilities of the basic "
+          },
+          {
+            "text": "Thaumaturgic Compass",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that can be created with the "
+          },
+          {
+            "text": "Ritual of Locating",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nOther Thaumaturgic Compasses can be placed inside of its internal inventory. It has twelve inner slots for storage and twelve outer slots; A Thaumaturgic Compass can be placed in an outer slot can be selected with the radial menu.\n\nThe Traveller's Compass will point towards whatever Thaumaturgic Compass has been selected with the radial menu, and will additionally list the distance to the compass's target and the general time of day near your cursor.\n\nThe Traveller's Compass retains the Thaumaturgic Compass's ability to re-scan for the same structure and to change its scanning mode.\n\nThe Traveller's Compass will also "
+          },
+          {
+            "text": "enhance your travelling capabilities while held",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". The benefit you gain depends on what your highest magical affinity is.\n\n"
+          },
+          {
+            "text": "Ender",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": You gain constant "
+          },
+          {
+            "text": "Night Vision",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n"
+          },
+          {
+            "text": "Water",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": You gain constant "
+          },
+          {
+            "text": "Water Walking",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n"
+          },
+          {
+            "text": "Earth",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": You consume far less food while sprinting.\n\n"
+          },
+          {
+            "text": "Air",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": You gain constant "
+          },
+          {
+            "text": "Jump Boost IV",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n"
+          },
+          {
+            "text": "Fire",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": You gain constant "
+          },
+          {
+            "text": "Speed II",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n"
+          },
+          {
+            "text": "Arcane",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": You gain constant "
+          },
+          {
+            "text": "Invisibility",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/travellers_compass"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

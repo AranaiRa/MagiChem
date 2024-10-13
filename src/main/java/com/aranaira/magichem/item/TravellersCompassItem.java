@@ -9,13 +9,13 @@ import com.aranaira.magichem.util.ClientUtil;
 import com.mna.KeybindInit;
 import com.mna.items.artifice.ItemThaumaturgicCompass;
 import com.mna.items.base.IRadialInventorySelect;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,6 +24,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.items.ItemStackHandler;
@@ -31,6 +33,8 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class TravellersCompassItem extends ItemThaumaturgicCompass implements IRadialInventorySelect {
     @NotNull
@@ -60,6 +64,15 @@ public class TravellersCompassItem extends ItemThaumaturgicCompass implements IR
 
         }
         return super.use(pLevel, pPlayer, pHand);
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        final InteractionResult result = super.useOn(context);
+        if(result == InteractionResult.SUCCESS)
+            use(context.getLevel(), context.getPlayer(), context.getHand());
+
+        return result;
     }
 
     @Override
@@ -138,5 +151,21 @@ public class TravellersCompassItem extends ItemThaumaturgicCompass implements IR
         }
 
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> pTooltipComponents, TooltipFlag flagIn) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.travellerscompass")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
+
+        String textGui = I18n.get(((KeyMapping)KeybindInit.InventoryItemOpen.get()).getKey().getName(), new Object[0]);
+        pTooltipComponents.add(Component.translatable("item.mna.item-with-gui.open-with", new Object[]{textGui}).withStyle(ChatFormatting.AQUA));
+
+        String textRadial = I18n.get(((KeyMapping)KeybindInit.RadialMenuOpen.get()).getKey().getDisplayName().getString(), new Object[0]);
+        pTooltipComponents.add(Component.translatable("item.mna.item-with-gui.radial-open", new Object[]{textRadial}).withStyle(ChatFormatting.AQUA));
+
+        super.appendHoverText(stack, worldIn, pTooltipComponents, flagIn);
     }
 }
