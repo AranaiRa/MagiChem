@@ -1,11 +1,12 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "item/compass_16",
+    "layer0": "magichem:item/compass_empty",
     "layer1": "magichem:item/travellers_compass"
   },
   "overrides": [
-    { "predicate": { "angle": 0.000000 }, "model": "magichem:item/travellers_compass" },
+    { "predicate": { "angle": -1 }, "model": "magichem:item/travellers_compass" },
+    { "predicate": { "angle": 0.000000 }, "model": "magichem:item/sub_models/travellers_compass_16" },
     { "predicate": { "angle": 0.015625 }, "model": "magichem:item/sub_models/travellers_compass_17" },
     { "predicate": { "angle": 0.046875 }, "model": "magichem:item/sub_models/travellers_compass_18" },
     { "predicate": { "angle": 0.078125 }, "model": "magichem:item/sub_models/travellers_compass_19" },
@@ -37,6 +38,6 @@
     { "predicate": { "angle": 0.890625 }, "model": "magichem:item/sub_models/travellers_compass_13" },
     { "predicate": { "angle": 0.921875 }, "model": "magichem:item/sub_models/travellers_compass_14" },
     { "predicate": { "angle": 0.953125 }, "model": "magichem:item/sub_models/travellers_compass_15" },
-    { "predicate": { "angle": 0.984375 }, "model": "magichem:item/travellers_compass"}
+    { "predicate": { "angle": 0.984375 }, "model": "magichem:item/sub_models/travellers_compass_16"}
   ]
 }

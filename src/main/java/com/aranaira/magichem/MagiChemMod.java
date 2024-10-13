@@ -60,6 +60,7 @@ public class MagiChemMod
         RecipeRegistry.register(eventBus);
         EntitiesRegistry.register(eventBus);
         LootModifierRegistry.register(eventBus);
+        MobEffectsRegistry.register(eventBus);
 
         if(FMLEnvironment.dist.isClient()) {
             eventBus.register(BlockEntitiesClientRegistry.class);

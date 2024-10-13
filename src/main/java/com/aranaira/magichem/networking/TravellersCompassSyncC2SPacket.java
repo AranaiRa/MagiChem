@@ -1,5 +1,6 @@
 package com.aranaira.magichem.networking;
 
+import com.aranaira.magichem.item.TravellersCompassItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -34,7 +35,10 @@ public class TravellersCompassSyncC2SPacket {
         if(itemToModify.getItem() == ItemRegistry.TRAVELLERS_COMPASS.get()) {
             CompoundTag nbt = itemToModify.getOrCreateTag();
             nbt.putInt("index", index);
+            itemToModify.setTag(nbt);
         }
+
+        TravellersCompassItem.updateTagFromSelectedRadialItem(itemToModify);
 
         player.sendSystemMessage(Component.literal("received index = "+index));
 

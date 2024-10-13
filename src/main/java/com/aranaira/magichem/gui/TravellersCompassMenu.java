@@ -36,6 +36,11 @@ public class TravellersCompassMenu extends AbstractContainerMenu {
     public Inventory playerInventory;
     public ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
+        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            return super.insertItem(slot, stack, simulate);
+        }
+
+        @Override
         protected void onContentsChanged(int slot) {
             if(!playerInventory.player.level().isClientSide()) {
                 ItemStack itemCompass = playerInventory.getItem(compassHoldingSlot);
