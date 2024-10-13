@@ -1,0 +1,26 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:travellers_compass"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:decoration/arcane_sandstone" },
+        { "item": "minecraft:compass" },
+        { "item": "minecraft:chest" },
+        { "item": "minecraft:clock" },
+        { "item": "mna:decoration/arcane_sandstone" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_travel", "count": 13 },
+        { "item": "magichem:admixture_motion", "count": 9 },
+        { "item": "magichem:admixture_wizard", "count": 5 },
+        { "item": "magichem:admixture_vessel", "count": 2 }
+      ]
+    }
+  ]
+}

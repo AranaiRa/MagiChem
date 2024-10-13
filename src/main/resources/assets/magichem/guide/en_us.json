@@ -884,8 +884,8 @@
         "location": "magichem:shaped/magic_circle"
       },
       {
-        "type": "crafting",
-        "location": "magichem:shaped/circle_power"
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/circle_power"
       }]
   },
   "Grains of Quicksilver": {

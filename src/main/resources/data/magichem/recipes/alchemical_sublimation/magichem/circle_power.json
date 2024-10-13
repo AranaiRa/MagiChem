@@ -1,0 +1,40 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:circle_power"
+  },
+  "stages": [
+    {
+      "experience": 15,
+      "components": [
+        { "item": "mna:decoration/arcane_sandstone" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "mna:decoration/arcane_sandstone" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "mna:decoration/arcane_sandstone" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_storm", "count": 31 },
+        { "item": "magichem:admixture_stone", "count": 21 },
+        { "item": "magichem:admixture_light", "count": 11 }
+      ]
+    },
+    {
+      "experience": 15,
+      "components": [
+        { "item": "magichem:perfected_electrum" },
+        { "item": "mna:chimerite_block" },
+        { "item": "magichem:magic_circle" },
+        { "item": "minecraft:copper_block" },
+        { "item": "magichem:perfected_electrum" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_energy", "count": 101 },
+        { "item": "magichem:admixture_mana", "count": 25 },
+        { "item": "magichem:admixture_wizard", "count": 17 }
+      ]
+    }
+  ]
+}
