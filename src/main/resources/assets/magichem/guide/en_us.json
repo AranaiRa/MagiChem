@@ -759,7 +759,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A construct can be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. Only one construct can be bound to a single Circle of Toil at a time.\n\nThe rate at which Circle of Toil generates FE is dependent on "
+            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A constructcan be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. The construct must be in follow mode, and only one construct can be bound to a single Circle of Toil at a time.\n\nThe rate at which Circle of Toil generates FE is dependent on "
           },
           {
             "text": "how quickly the cogwheel is turned",
@@ -1605,7 +1605,7 @@
             "italic": true
           },
           {
-            "text": " the dye supplied.\n\nYou can supply multiple pieces of dye to remove other colors from the pool of potential colors. Each additional dye allows you to color an additional item with the same pool of potential colors. Only one piece of each color of dye can be added to the Coloring Cauldron until all the dye inside has been used up.\n\nItems are inserted into the Coloring Cauldron by throwing them. The coloring process takes about a minute if only a single piece of dye is supplied, but this time is significantly reduced by adding more pieces of dye.\n\n\n\n\n",
+            "text": " the dye supplied.\n\nYou can supply multiple pieces of dye to remove other colors from the pool of potential colors. Each additional dye allows you to color an additional item with the same pool of potential colors after the initial item's coloring is complete. Only one piece of each color of dye can be added to the Coloring Cauldron until all the dye inside has been used up.\n\nItems are inserted into the Coloring Cauldron by throwing them. The coloring process takes about a minute if only a single piece of dye is supplied, but this time is significantly reduced by adding more pieces of dye.\n\n\n\n\n",
             "italic": false
           }
         ]
