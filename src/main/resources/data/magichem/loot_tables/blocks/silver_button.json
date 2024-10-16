@@ -6,12 +6,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "magichem:vinteum_crystal_block"
+          "name": "magichem:silver_button"
         }
       ],
       "conditions": [
         {
-          "condition": "magichem:vinteum_crystal_block"
+          "condition": "magichem:silver_button"
         }
       ]
     }

@@ -6,12 +6,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "magichem:vinteum_crystal_block"
+          "name": "magichem:construct_pressure_plate"
         }
       ],
       "conditions": [
         {
-          "condition": "magichem:vinteum_crystal_block"
+          "condition": "magichem:construct_pressure_plate"
         }
       ]
     }
