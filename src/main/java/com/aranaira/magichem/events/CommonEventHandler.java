@@ -309,7 +309,7 @@ public class CommonEventHandler {
                         }
                     }
                 }
-                else if (Minecraft.getInstance().player.isCrouching()) {
+                else if (Minecraft.getInstance().player.isCrouching() && blockEntity != null) {
                     List<MutableComponent> components = new ArrayList<>();
                     BlockState state = blockEntity.getBlockState();
                     int mode = 0;
