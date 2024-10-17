@@ -9,6 +9,6 @@
   ],
   "patterns": [
     "mna:circle",
-    "mna:diamond"
+    "mna:backslash"
   ]
 }
