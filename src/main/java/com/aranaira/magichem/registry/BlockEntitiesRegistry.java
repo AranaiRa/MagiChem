@@ -58,6 +58,14 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(GrandDistilleryRouterBlockEntity::new, BlockRegistry.GRAND_DISTILLERY_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<GrandCentrifugeBlockEntity>> GRAND_CENTRIFUGE_BE = BLOCK_ENTITIES.register("grand_centrifuge", () ->
+            BlockEntityType.Builder.of(GrandCentrifugeBlockEntity::new, BlockRegistry.GRAND_CENTRIFUGE.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<GrandCentrifugeRouterBlockEntity>> GRAND_CENTRIFUGE_ROUTER_BE = BLOCK_ENTITIES.register("grand_centrifuge_router", () ->
+            BlockEntityType.Builder.of(GrandCentrifugeRouterBlockEntity::new, BlockRegistry.GRAND_CENTRIFUGE_ROUTER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<ConjurerBlockEntity>> CONJURER_BE = BLOCK_ENTITIES.register("conjurer", () ->
             BlockEntityType.Builder.of(ConjurerBlockEntity::new, BlockRegistry.CONJURER.get()).build(null)
     );

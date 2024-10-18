@@ -157,6 +157,8 @@ public class MagiChemMod
             event.register(GrandDistilleryBlockEntityRenderer.RENDERER_MODEL_PLUG_BASE);
             event.register(GrandDistilleryBlockEntityRenderer.RENDERER_MODEL_PLUG_UPGRADED);
 
+            event.register(GrandCentrifugeBlockEntityRenderer.RENDERER_MODEL_WHEEL);
+
             event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_LEFT);
             event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_RIGHT);
             event.register(ActuatorFireBlockEntityRenderer.RENDERER_MODEL_PIPE_CENTER);

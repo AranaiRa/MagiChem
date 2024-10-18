@@ -300,7 +300,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         if(pLevel.isClientSide()) {
             pEntity.handleAnimationDrivers();
         }
-        AbstractSeparationBlockEntity.tick(pLevel, pPos, pState, pEntity, CentrifugeBlockEntity::getVar);
+        AbstractSeparationBlockEntity.tick(pLevel, pPos, pState, pEntity, CentrifugeBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
 
     public static int getVar(IDs pID) {

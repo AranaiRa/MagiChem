@@ -138,6 +138,18 @@ public class CommonEventHandler {
                         stack.shrink(1);
                         event.setCanceled(true);
                     }
+                } else if(target instanceof GrandCentrifugeBlockEntity gcbe) {
+                    if(!gcbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+                        gcbe.applyLaboratoryCharm();
+                        stack.shrink(1);
+                        event.setCanceled(true);
+                    }
+                } else if(target instanceof GrandCentrifugeRouterBlockEntity gcrbe) {
+                    if(!gcrbe.getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+                        gcrbe.getMaster().applyLaboratoryCharm();
+                        stack.shrink(1);
+                        event.setCanceled(true);
+                    }
                 }
             }
             else if(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {

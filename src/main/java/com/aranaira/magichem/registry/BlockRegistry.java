@@ -82,6 +82,16 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> GRAND_CENTRIFUGE = registerBlock("grand_centrifuge",
+            () -> new GrandCentrifugeBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> GRAND_CENTRIFUGE_ROUTER = registerBlock("grand_centrifuge_router",
+            () -> new GrandCentrifugeRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> CONJURER_ROUTER = registerBlock("conjurer_router",
             () -> new ConjurerRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

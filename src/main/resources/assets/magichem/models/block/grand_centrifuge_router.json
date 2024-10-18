@@ -1,0 +1,6 @@
+{
+  "parent": "magichem:block/grand_centrifuge",
+  "textures": {
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
+  }
+}

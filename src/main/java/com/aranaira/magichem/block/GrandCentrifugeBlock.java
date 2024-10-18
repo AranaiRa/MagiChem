@@ -1,10 +1,10 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
-import com.aranaira.magichem.block.entity.routers.GrandDistilleryRouterBlockEntity;
+import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.GrandCentrifugeRouterBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
-import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
+import com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -38,13 +38,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
-import static com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType.*;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_CENTRIFUGE;
+import static com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType.*;
 
-public class GrandDistilleryBlock extends BaseEntityBlock {
+public class GrandCentrifugeBlock extends BaseEntityBlock {
 
-    public GrandDistilleryBlock(Properties pProperties) {
+    public GrandCentrifugeBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(
                 this.stateDefinition.any()
@@ -66,7 +66,7 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockPos pos = pContext.getClickedPos();
 
-        for(Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pContext.getHorizontalDirection())) {
+        for(Triplet<BlockPos, GrandCentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pContext.getHorizontalDirection())) {
             if(!pContext.getLevel().isEmptyBlock(pos.offset(posAndType.getFirst()))) {
                 return null;
             }
@@ -77,23 +77,23 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
 
     @Override
     public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
-        BlockState state = BlockRegistry.GRAND_DISTILLERY_ROUTER.get().defaultBlockState();
+        BlockState state = BlockRegistry.GRAND_CENTRIFUGE_ROUTER.get().defaultBlockState();
         Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
 
-        for (Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
+        for (Triplet<BlockPos, GrandCentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             BlockPos targetPos = pPos.offset(posAndType.getFirst());
             if(pLevel.getBlockState(targetPos).isAir()) {
-                int routerType = GrandDistilleryRouterBlock.mapRouterTypeToInt(posAndType.getSecond());
+                int routerType = GrandCentrifugeRouterBlock.mapRouterTypeToInt(posAndType.getSecond());
 
                 pLevel.setBlock(
                         targetPos,
                         state
                                 .setValue(FACING, facing)
-                                .setValue(ROUTER_TYPE_GRAND_DISTILLERY, routerType),
+                                .setValue(ROUTER_TYPE_GRAND_CENTRIFUGE, routerType),
                         3);
-                ((GrandDistilleryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
+                ((GrandCentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
         }
     }
@@ -102,7 +102,7 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         Direction facing = pState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
-        for(Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
+        for(Triplet<BlockPos, GrandCentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(facing)) {
             pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
         }
 
@@ -119,13 +119,13 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
     }
 
     public static void destroyRouters(LevelAccessor pLevel, BlockPos pPos, Direction pFacing) {
-        for(Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pFacing)) {
+        for(Triplet<BlockPos, GrandCentrifugeRouterType, DevicePlugDirection> posAndType : getRouterOffsets(pFacing)) {
             pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
         }
     }
 
-    public static List<Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection>> getRouterOffsets(Direction pFacing) {
-        List<Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection>> offsets = new ArrayList<>();
+    public static List<Triplet<BlockPos, GrandCentrifugeRouterType, DevicePlugDirection>> getRouterOffsets(Direction pFacing) {
+        List<Triplet<BlockPos, GrandCentrifugeRouterType, DevicePlugDirection>> offsets = new ArrayList<>();
         BlockPos origin = new BlockPos(0,0,0);
         if(pFacing == Direction.NORTH) {
             offsets.add(new Triplet<>(origin.south(), DAIS, DevicePlugDirection.NONE));
@@ -136,16 +136,15 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
             offsets.add(new Triplet<>(origin.east(), PLUG_MID_RIGHT, DevicePlugDirection.EAST));
             offsets.add(new Triplet<>(origin.north().west(), PLUG_BACK_LEFT, DevicePlugDirection.WEST));
             offsets.add(new Triplet<>(origin.north().east(), PLUG_BACK_RIGHT, DevicePlugDirection.EAST));
-            offsets.add(new Triplet<>(origin.above(), TANK_MID_FRONT_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().west(), TANK_MID_FRONT_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().east(), TANK_MID_FRONT_RIGHT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().north(), TANK_MID_REAR_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().north().west(), TANK_MID_REAR_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().north().east(), TANK_MID_REAR_RIGHT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above(), TANK_TOP_FRONT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().north(), TANK_TOP_REAR_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().north().west(), TANK_TOP_REAR_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().north().east(), TANK_TOP_REAR_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above(), ASSEMBLY_MID_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().west(), ASSEMBLY_MID_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().east(), ASSEMBLY_MID_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().north(), ASSEMBLY_MID_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().north().west(), ASSEMBLY_MID_BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().north().east(), ASSEMBLY_MID_BACK_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().north(), ASSEMBLY_UPPER_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().north().west(), ASSEMBLY_UPPER_BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().north().east(), ASSEMBLY_UPPER_BACK_RIGHT, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.SOUTH) {
             offsets.add(new Triplet<>(origin.north(), DAIS, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.south(), BACK, DevicePlugDirection.NONE));
@@ -155,16 +154,15 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
             offsets.add(new Triplet<>(origin.west(), PLUG_MID_RIGHT, DevicePlugDirection.WEST));
             offsets.add(new Triplet<>(origin.south().east(), PLUG_BACK_LEFT, DevicePlugDirection.EAST));
             offsets.add(new Triplet<>(origin.south().west(), PLUG_BACK_RIGHT, DevicePlugDirection.WEST));
-            offsets.add(new Triplet<>(origin.above(), TANK_MID_FRONT_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().east(), TANK_MID_FRONT_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().west(), TANK_MID_FRONT_RIGHT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().south(), TANK_MID_REAR_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().south().east(), TANK_MID_REAR_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().south().west(), TANK_MID_REAR_RIGHT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above(), TANK_TOP_FRONT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().south(), TANK_TOP_REAR_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().south().east(), TANK_TOP_REAR_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().south().west(), TANK_TOP_REAR_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above(), ASSEMBLY_MID_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().east(), ASSEMBLY_MID_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().west(), ASSEMBLY_MID_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().south(), ASSEMBLY_MID_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().south().east(), ASSEMBLY_MID_BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().south().west(), ASSEMBLY_MID_BACK_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().south(), ASSEMBLY_UPPER_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().south().east(), ASSEMBLY_UPPER_BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().south().west(), ASSEMBLY_UPPER_BACK_RIGHT, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.EAST) {
             offsets.add(new Triplet<>(origin.west(), DAIS, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.east(), BACK, DevicePlugDirection.NONE));
@@ -174,16 +172,15 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
             offsets.add(new Triplet<>(origin.south(), PLUG_MID_RIGHT, DevicePlugDirection.SOUTH));
             offsets.add(new Triplet<>(origin.east().north(), PLUG_BACK_LEFT, DevicePlugDirection.NORTH));
             offsets.add(new Triplet<>(origin.east().south(), PLUG_BACK_RIGHT, DevicePlugDirection.SOUTH));
-            offsets.add(new Triplet<>(origin.above(), TANK_MID_FRONT_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().north(), TANK_MID_FRONT_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().south(), TANK_MID_FRONT_RIGHT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().east(), TANK_MID_REAR_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().east().north(), TANK_MID_REAR_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().east().south(), TANK_MID_REAR_RIGHT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above(), TANK_TOP_FRONT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().east(), TANK_TOP_REAR_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().east().north(), TANK_TOP_REAR_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().east().south(), TANK_TOP_REAR_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above(), ASSEMBLY_MID_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().north(), ASSEMBLY_MID_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().south(), ASSEMBLY_MID_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().east(), ASSEMBLY_MID_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().east().north(), ASSEMBLY_MID_BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().east().south(), ASSEMBLY_MID_BACK_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().east(), ASSEMBLY_UPPER_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().east().north(), ASSEMBLY_UPPER_BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().east().south(), ASSEMBLY_UPPER_BACK_RIGHT, DevicePlugDirection.NONE));
         } else if(pFacing == Direction.WEST) {
             offsets.add(new Triplet<>(origin.east(), DAIS, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.west(), BACK, DevicePlugDirection.NONE));
@@ -193,16 +190,15 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
             offsets.add(new Triplet<>(origin.north(), PLUG_MID_RIGHT, DevicePlugDirection.NORTH));
             offsets.add(new Triplet<>(origin.west().south(), PLUG_BACK_LEFT, DevicePlugDirection.SOUTH));
             offsets.add(new Triplet<>(origin.west().north(), PLUG_BACK_RIGHT, DevicePlugDirection.NORTH));
-            offsets.add(new Triplet<>(origin.above(), TANK_MID_FRONT_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().south(), TANK_MID_FRONT_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().north(), TANK_MID_FRONT_RIGHT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().west(), TANK_MID_REAR_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().west().south(), TANK_MID_REAR_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().west().north(), TANK_MID_REAR_RIGHT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above(), TANK_TOP_FRONT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().west(), TANK_TOP_REAR_CENTER, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().west().south(), TANK_TOP_REAR_LEFT, DevicePlugDirection.NONE));
-            offsets.add(new Triplet<>(origin.above().above().west().north(), TANK_TOP_REAR_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above(), ASSEMBLY_MID_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().south(), ASSEMBLY_MID_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().north(), ASSEMBLY_MID_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().west(), ASSEMBLY_MID_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().west().south(), ASSEMBLY_MID_BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().west().north(), ASSEMBLY_MID_BACK_RIGHT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().west(), ASSEMBLY_UPPER_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().west().south(), ASSEMBLY_UPPER_BACK_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().west().north(), ASSEMBLY_UPPER_BACK_RIGHT, DevicePlugDirection.NONE));
         }
         return offsets;
     }
@@ -231,8 +227,8 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof GrandDistilleryBlockEntity) {
-                ((GrandDistilleryBlockEntity) blockEntity).packInventoryToBlockItem();
+            if(blockEntity instanceof GrandCentrifugeBlockEntity) {
+                ((GrandCentrifugeBlockEntity) blockEntity).packInventoryToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
@@ -264,10 +260,10 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
                 if (holdingPowerSpike) {
                     return InteractionResult.PASS;
                 } else {
-                    if (entity instanceof GrandDistilleryBlockEntity) {
-                        NetworkHooks.openScreen((ServerPlayer) player, (GrandDistilleryBlockEntity) entity, pos);
+                    if (entity instanceof GrandCentrifugeBlockEntity) {
+                        NetworkHooks.openScreen((ServerPlayer) player, (GrandCentrifugeBlockEntity) entity, pos);
                     } else {
-                        throw new IllegalStateException("GrandDistilleryBlockEntity container provider is missing!");
+                        throw new IllegalStateException("GrandCentrifugeBlockEntity container provider is missing!");
                     }
                 }
             }
@@ -279,14 +275,14 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new GrandDistilleryBlockEntity(pPos, pState);
+        return new GrandCentrifugeBlockEntity(pPos, pState);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntitiesRegistry.GRAND_DISTILLERY_BE.get(),
-                GrandDistilleryBlockEntity::tick);
+        return createTickerHelper(type, BlockEntitiesRegistry.GRAND_CENTRIFUGE_BE.get(),
+                GrandCentrifugeBlockEntity::tick);
     }
 
     @Override
