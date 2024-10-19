@@ -120,7 +120,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                 int pre = pEntity.batchSize;
 
                 if(air.getIsSatisfied() && !air.getPaused()) {
-                    pEntity.batchSize = air.getBatchSize();
+                    pEntity.batchSize = 4 * air.getBatchSize();
                 } else
                     pEntity.batchSize = 1;
 
@@ -539,7 +539,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             efficiencyMod = 0;
         }
         if(pPlugin instanceof ActuatorAirBlockEntity) {
-            batchSize = 1;
+            batchSize = 4;
         }
         if(pPlugin instanceof ActuatorFireBlockEntity) {
             operationTimeMod = 0;

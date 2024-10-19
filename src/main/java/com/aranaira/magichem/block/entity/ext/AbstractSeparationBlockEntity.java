@@ -107,9 +107,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                 int pre = pEntity.batchSize;
 
                 if(air.getIsSatisfied() && !air.getPaused()) {
-                    pEntity.batchSize = air.getBatchSize();
+                    pEntity.batchSize = 4 * air.getBatchSize();
                 } else
-                    pEntity.batchSize = 1;
+                    pEntity.batchSize = 4;
 
                 if(pre != pEntity.batchSize)
                     pEntity.syncAndSave();
@@ -440,7 +440,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             efficiencyMod = 0;
         }
         if(pPlugin instanceof ActuatorAirBlockEntity) {
-            batchSize = 1;
+            batchSize = 4;
         }
         if(pPlugin instanceof ActuatorFireBlockEntity) {
             operationTimeMod = 0;
