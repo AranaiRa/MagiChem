@@ -39,7 +39,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
     protected int
-            progress = 0, batchSize = 1, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
+            progress = 0, batchSize = 4, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -373,7 +373,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         else
             otmScalar = 1;
 
-        float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize);
+        float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize / 4);
 
         if(poweredOpTime == -1) {
             return Math.round(pVarFunc.apply(AbstractSeparationBlockEntity.IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
