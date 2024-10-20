@@ -1,7 +1,6 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
