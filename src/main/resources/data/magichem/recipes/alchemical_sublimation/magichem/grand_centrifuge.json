@@ -1,0 +1,61 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:grand_centrifuge"
+  },
+  "stages": [
+    {
+      "experience": 75,
+      "components": [
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "magichem:centrifuge" },
+        { "item": "magichem:centrifuge" },
+        { "item": "magichem:centrifuge" },
+        { "item": "magichem:magichemical_mechanism" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_industry", "count": 51 },
+        { "item": "magichem:admixture_vessel", "count": 34 },
+        { "item": "magichem:admixture_dust", "count": 23 },
+        { "item": "magichem:admixture_filth", "count": 23 },
+        { "item": "magichem:essentia_nigredo", "count": 48 }
+      ]
+    },
+    {
+      "experience": 125,
+      "components": [
+        { "item": "mna:decoration/arcane_sandstone" },
+        { "item": "magichem:tube_components" },
+        { "item": "magichem:magic_circle" },
+        { "item": "magichem:tube_components" },
+        { "item": "mna:decoration/arcane_sandstone" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_permanence", "count": 51 },
+        { "item": "magichem:admixture_luck", "count": 34 },
+        { "item": "magichem:admixture_construct", "count": 23 },
+        { "item": "magichem:admixture_mana", "count": 23 },
+        { "item": "magichem:essentia_albedo", "count": 24 }
+      ]
+    },
+    {
+      "experience": 150,
+      "components": [
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "magichem:tube_components" },
+        { "item": "minecraft:polished_deepslate" },
+        { "item": "magichem:tube_components" },
+        { "item": "magichem:magichemical_mechanism" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_light", "count": 51 },
+        { "item": "magichem:admixture_storm", "count": 34 },
+        { "item": "magichem:admixture_sorcery", "count": 23 },
+        { "item": "magichem:admixture_thought", "count": 23 },
+        { "item": "magichem:essentia_citrinitas", "count": 12 }
+      ]
+    }
+  ]
+}
