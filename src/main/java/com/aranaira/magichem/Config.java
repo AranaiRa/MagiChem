@@ -106,7 +106,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue CENTRIFUGE_EFFICIENCY = BUILDER
             .comment("The baseline efficiency of a Centrifuge.")
-            .defineInRange("centrifugeEfficiency", 35, 1, 100);
+            .defineInRange("centrifugeEfficiency", 45, 1, 100);
 
     private static final ForgeConfigSpec.IntValue CENTRIFUGE_OPERATION_TIME = BUILDER
             .comment("The time, in ticks, that it takes for a Centrifuge to separate one admixture into component materia.")
@@ -128,7 +128,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue FUSERY_EFFICIENCY = BUILDER
             .comment("The baseline efficiency of a Fusery.")
-            .defineInRange("fuseryEfficiency", 35, 1, 100);
+            .defineInRange("fuseryEfficiency", 45, 1, 100);
 
     private static final ForgeConfigSpec.IntValue FUSERY_OPERATION_TIME = BUILDER
             .comment("The time, in ticks, that it takes for an Admixer to make one admixture from its component materia.")
