@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -51,6 +52,7 @@ public class MultiStateLeverBlock extends FaceAttachedHorizontalDirectionalBlock
         pBuilder.add(BlockStateProperties.ATTACH_FACE);
         pBuilder.add(FACING);
         pBuilder.add(LEVER_SIGNAL);
+        pBuilder.add(BlockStateProperties.POWERED);
     }
 
     @Override
@@ -65,11 +67,12 @@ public class MultiStateLeverBlock extends FaceAttachedHorizontalDirectionalBlock
         } else {
             float f = value * 0.1f + 0.5f;
             pLevel.playSound((Player)null, pPos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, f);
-            BlockState newState = pState.setValue(LEVER_SIGNAL, value);
+            BlockState newState = pState.setValue(LEVER_SIGNAL, value).setValue(BlockStateProperties.POWERED, value > 0);
             pLevel.setBlock(pPos, newState, 3);
-            pLevel.sendBlockUpdated(pPos, pState, newState, 3);
             pLevel.updateNeighborsAt(pPos, this);
             pLevel.updateNeighborsAt(pPos.relative(getConnectedDirection(pState).getOpposite()), this);
+            pLevel.sendBlockUpdated(pPos, pState, newState, 3);
+            pLevel.gameEvent(pPlayer, value > 0 ? GameEvent.BLOCK_ACTIVATE : GameEvent.BLOCK_DEACTIVATE, pPos);
             return InteractionResult.CONSUME;
         }
     }
