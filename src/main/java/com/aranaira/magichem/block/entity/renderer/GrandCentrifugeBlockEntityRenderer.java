@@ -87,11 +87,11 @@ public class GrandCentrifugeBlockEntityRenderer implements BlockEntityRenderer<G
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
         }
 
-        //replace with animation driver
-        double temp = (((world.getGameTime() + pPartialTick) % 20d) / 20d) * Math.PI * 2d;
+        float rot = pBlockEntity.wheelAngle + (pPartialTick * pBlockEntity.wheelSpeed);
+
         pPoseStack.translate(0.5, 1.5, 0.09138);
         pPoseStack.mulPose(Axis.XP.rotationDegrees(30));
-        pPoseStack.mulPose(Axis.YP.rotation((float)temp));
+        pPoseStack.mulPose(Axis.YP.rotation(rot));
 
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_WHEEL, pPoseStack, pPackedLight, pPackedOverlay);
 

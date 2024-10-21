@@ -68,7 +68,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 67, GUI_HEAT_GAUGE_HEIGHT = 16,
         DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_POWER_SUFFICIENCY = 2, DATA_EFFICIENCY_MOD = 3, DATA_OPERATION_TIME_MOD = 4, DATA_BATCH_SIZE = 5;
     public static final float
-            CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f;
+            CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f,
+            WHEEL_TOP_SPEED = 0.375f, WHEEL_ACCELERATION_RATE = .003125f;
     private int powerUsageSetting = 1;
     private boolean
             hasSufficientPower = false, redstonePaused = false;
@@ -85,8 +86,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             19, 15, 12, 9, 7, 5, 4, 3, 2, 1
     };
 
-    public float circlePercent = 0f;
-    public float particlePercent = 0f;
+    public float
+            circlePercent = 0f, particlePercent = 0f, wheelAngle = 0f, wheelSpeed = 0f;
 
     ////////////////////
     // CONSTRUCTOR
@@ -394,6 +395,15 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         } else {
             particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
         }
+
+        if(remainingTorque > 0) {
+//            if(wheelSpeed == 0) wheelSpeed += WHEEL_ACCELERATION_RATE * 4;
+            wheelSpeed = Math.min(wheelSpeed + WHEEL_ACCELERATION_RATE, WHEEL_TOP_SPEED);
+        } else {
+            wheelSpeed = Math.max(wheelSpeed - WHEEL_ACCELERATION_RATE * 0.5f, 0f);
+        }
+
+        wheelAngle = (wheelAngle + wheelSpeed) % 360f;
     }
 
     ////////////////////
@@ -479,7 +489,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                 pEntity.syncAndSave();
             }
             if(sufficientThisTick) {
-                pEntity.remainingTorque = 2;
+                pEntity.remainingTorque = 36;
             } else {
                 pEntity.progress = Math.max(0, pEntity.progress - 2);
             }
@@ -502,6 +512,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                 pLevel.setBlock(daisPos, newDaisState, 3);
                 pLevel.sendBlockUpdated(daisPos, daisState, newDaisState, 3);
             }
+        } else if(pEntity.redstonePaused) {
+            pEntity.remainingTorque = 0;
         }
         pEntity.handleAnimationDrivers();
 
