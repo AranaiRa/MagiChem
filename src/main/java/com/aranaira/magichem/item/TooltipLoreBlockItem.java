@@ -80,6 +80,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.GRAND_CENTRIFUGE.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.grandcentrifuge")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.ACTUATOR_WATER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.actuator.water")
@@ -220,6 +226,16 @@ public class TooltipLoreBlockItem extends BlockItem {
                     }
                 } else if (cachedItem == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
                     GrandDistilleryBlockEntity gdbe = (GrandDistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (gdbe != null) {
+                        if (nbt.contains("inventory")) {
+                            gdbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("grime")) {
+                            GrimeProvider.getCapability(gdbe).setGrime(nbt.getInt("grime"));
+                        }
+                    }
+                } else if (cachedItem == BlockRegistry.GRAND_CENTRIFUGE.get().asItem()) {
+                    GrandCentrifugeBlockEntity gdbe = (GrandCentrifugeBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
                     if (gdbe != null) {
                         if (nbt.contains("inventory")) {
                             gdbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));

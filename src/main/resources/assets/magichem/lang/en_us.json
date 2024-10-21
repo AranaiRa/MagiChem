@@ -374,6 +374,7 @@
   "tooltip.magichem.distillery": "Breaks down blocks and items into their component Materia.",
   "tooltip.magichem.experienceexchanger": "Place on top of a Brimming Urn. Transfers Academic Slurry to and from a Crystal of Memories.",
   "tooltip.magichem.fusery": "Combines component Materia into Admixtures.",
+  "tooltip.magichem.grandcentrifuge": "Breaks down Admixtures into their component Materia. Requires FE, but has unparalleled speed and efficiency potential.",
   "tooltip.magichem.granddistillery": "Breaks down blocks and items into their component Materia. Requires FE, but has unparalleled speed and efficiency potential.",
   "tooltip.magichem.grandcirclefabrication": "Uses Materia and FE to create a wide variety of items and blocks. FE consumption can be boosted to increase speed.",
   "tooltip.magichem.magichemicalmechanism": "Alchemically treated cogs, tubes, buffers, and regulators packed into an Arcane Sandstone shell.",

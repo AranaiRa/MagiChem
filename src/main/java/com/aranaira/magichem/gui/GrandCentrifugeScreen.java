@@ -24,7 +24,9 @@ import java.util.Optional;
 
 public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifugeMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_grand_Centrifuge.png");
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_grand_centrifuge.png");
+    private static final ResourceLocation TEXTURE_GDIST =
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_grand_distillery.png");
     private static final ResourceLocation TEXTURE_EXT =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private static final int
@@ -48,14 +50,14 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
     }
 
     private void initializePowerLevelButtons(){
-        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 2, 12, 7, 232, 242, TEXTURE, button -> {
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 2, 12, 7, 232, 242, TEXTURE_GDIST, button -> {
             menu.blockEntity.incrementPowerUsageSetting();
             PacketRegistry.sendToServer(new GrandDeviceSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     menu.blockEntity.getPowerUsageSetting()
             ));
         }));
-        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 47, 12, 7, 244, 242, TEXTURE, button -> {
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 47, 12, 7, 244, 242, TEXTURE_GDIST, button -> {
             menu.blockEntity.decrementPowerUsageSetting();
             PacketRegistry.sendToServer(new GrandDeviceSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
@@ -82,11 +84,11 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
             gui.blit(TEXTURE, x+76, y+47, 0, 228, sProg, 28);
 
         int powerLevel = menu.blockEntity.getPowerUsageSetting();
-        gui.blit(TEXTURE, x+182, y + (62 - powerLevel), 24, 248 - powerLevel, 8, powerLevel);
+        gui.blit(TEXTURE_GDIST, x+182, y + (62 - powerLevel), 24, 248 - powerLevel, 8, powerLevel);
 
         int sGrime = GrandCentrifugeBlockEntity.getScaledGrime(menu.getGrime());
         if(sGrime > 0)
-            gui.blit(TEXTURE, x+181, y+78, 24, 248, sGrime, 8);
+            gui.blit(TEXTURE_GDIST, x+181, y+78, 24, 248, sGrime, 8);
 
         if(!menu.blockEntity.getPowerSufficiency()) {
             renderPowerWarning(gui, x, y);
@@ -94,7 +96,7 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
     }
 
     private void renderGrimePanel(GuiGraphics gui, int x, int y) {
-        gui.blit(TEXTURE, x, y, PANEL_GRIME_U, PANEL_GRIME_V, PANEL_GRIME_W, PANEL_GRIME_H);
+        gui.blit(TEXTURE_GDIST, x, y, PANEL_GRIME_U, PANEL_GRIME_V, PANEL_GRIME_W, PANEL_GRIME_H);
     }
 
     protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
@@ -125,7 +127,7 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
 
         //Efficiency
         if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
-            mouseY >= y+TOOLTIP_EFFICIENCY_Y && mouseY <= y+TOOLTIP_EFFICIENCY_Y+TOOLTIP_EFFICIENCY_H) {
+                mouseY >= y+TOOLTIP_EFFICIENCY_Y && mouseY <= y+TOOLTIP_EFFICIENCY_Y+TOOLTIP_EFFICIENCY_H) {
 
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.efficiency").withStyle(ChatFormatting.GOLD))
@@ -138,7 +140,7 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
 
         //Efficiency
         if(mouseX >= x+TOOLTIP_POWERUSAGE_X && mouseX <= x+TOOLTIP_POWERUSAGE_X+TOOLTIP_POWERUSAGE_W &&
-            mouseY >= y+TOOLTIP_POWERUSAGE_Y && mouseY <= y+TOOLTIP_POWERUSAGE_Y+TOOLTIP_POWERUSAGE_H) {
+                mouseY >= y+TOOLTIP_POWERUSAGE_Y && mouseY <= y+TOOLTIP_POWERUSAGE_Y+TOOLTIP_POWERUSAGE_H) {
 
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.powerusage").withStyle(ChatFormatting.GOLD))
@@ -151,7 +153,7 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
 
         //Operation Time
         if(mouseX >= x+TOOLTIP_OPERATIONTIME_X && mouseX <= x+TOOLTIP_OPERATIONTIME_X+TOOLTIP_OPERATIONTIME_W &&
-            mouseY >= y+TOOLTIP_OPERATIONTIME_Y && mouseY <= y+TOOLTIP_OPERATIONTIME_Y+TOOLTIP_OPERATIONTIME_H) {
+                mouseY >= y+TOOLTIP_OPERATIONTIME_Y && mouseY <= y+TOOLTIP_OPERATIONTIME_Y+TOOLTIP_OPERATIONTIME_H) {
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
@@ -163,7 +165,7 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
 
         //Grime Bar
         if(mouseX >= x+TOOLTIP_GRIME_X && mouseX <= x+TOOLTIP_GRIME_X+TOOLTIP_GRIME_W &&
-            mouseY >= y+TOOLTIP_GRIME_Y && mouseY <= y+TOOLTIP_GRIME_Y+TOOLTIP_GRIME_H) {
+                mouseY >= y+TOOLTIP_GRIME_Y && mouseY <= y+TOOLTIP_GRIME_Y+TOOLTIP_GRIME_H) {
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()

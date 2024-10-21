@@ -77,7 +77,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    protected void syncAndSave() {
+    public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
@@ -251,7 +251,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected static void craftItem(AbstractSeparationBlockEntity pEntity, FixationSeparationRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
         int bottlesToInsert = 0;
 
-        SimpleContainer outputSlots = new SimpleContainer(9);
+        SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
             outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
         }

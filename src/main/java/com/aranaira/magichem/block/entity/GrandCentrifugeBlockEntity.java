@@ -19,6 +19,7 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
@@ -60,10 +61,10 @@ import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COL
 
 public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction {
     public static final int
-        SLOT_COUNT = 25,
-        SLOT_BOTTLES = 0,
-        SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 6,
-        SLOT_OUTPUT_START = 7, SLOT_OUTPUT_COUNT  = 18,
+        SLOT_COUNT = 26,
+        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1,
+        SLOT_INPUT_START = 2, SLOT_INPUT_COUNT = 6,
+        SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 67, GUI_HEAT_GAUGE_HEIGHT = 16,
         DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_POWER_SUFFICIENCY = 2, DATA_EFFICIENCY_MOD = 3, DATA_OPERATION_TIME_MOD = 4, DATA_BATCH_SIZE = 5;
     public static final float
@@ -97,6 +98,10 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(slot)))
+                        return ItemStack.EMPTY;
+                }
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
                     ItemStack item = super.extractItem(slot, amount, simulate);
                     item.removeTagKey("CustomModelData");
@@ -118,8 +123,10 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if (slot == SLOT_BOTTLES)
                     return stack.getItem() == Items.GLASS_BOTTLE || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                if (slot == SLOT_BOTTLES_OUTPUT)
+                    return stack.getItem() == Items.GLASS_BOTTLE;
                 if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
-                    return !(stack.getItem() instanceof MateriaItem);
+                    return stack.getItem() instanceof MateriaItem;
                 if (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
                     return false;
 
@@ -578,6 +585,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     public static int getVar(IDs pID) {
         return switch(pID) {
             case SLOT_BOTTLES -> SLOT_BOTTLES;
+            case SLOT_BOTTLES_OUTPUT -> SLOT_BOTTLES_OUTPUT;
             case SLOT_INPUT_START -> SLOT_INPUT_START;
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;

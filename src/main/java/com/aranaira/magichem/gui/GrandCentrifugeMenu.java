@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
+import com.aranaira.magichem.block.entity.container.OnlyAdmixtureInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -44,11 +45,14 @@ public class GrandCentrifugeMenu extends AbstractContainerMenu {
 
             //Bottle slot
             this.addSlot(new BottleStockSlot(handler, GrandCentrifugeBlockEntity.SLOT_BOTTLES, 80, -11, false));
+            this.addSlot(new BottleStockSlot(handler, GrandCentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, 26, -11, true));
 
             //Input item slots
             for(int i = GrandCentrifugeBlockEntity.SLOT_INPUT_START; i< GrandCentrifugeBlockEntity.SLOT_INPUT_START + GrandCentrifugeBlockEntity.SLOT_INPUT_COUNT; i++)
             {
-                this.addSlot(new NoMateriaInputSlot(handler, i, 44, -11 + (i - GrandCentrifugeBlockEntity.SLOT_INPUT_START) * 18));
+                int x = (i - GrandCentrifugeBlockEntity.SLOT_INPUT_START) % 3;
+                int y = (i - GrandCentrifugeBlockEntity.SLOT_INPUT_START) / 3;
+                this.addSlot(new OnlyAdmixtureInputSlot(handler, i, 8 + x * 18, 25 + y * 18));
             }
 
             //Output item slots
