@@ -11,7 +11,7 @@
       ],
       "conditions": [
         {
-          "condition": "magichem:vinteum_crystal_block"
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

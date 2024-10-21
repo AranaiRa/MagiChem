@@ -11,7 +11,7 @@
       ],
       "conditions": [
         {
-          "condition": "magichem:construct_pressure_plate"
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }
