@@ -124,27 +124,29 @@ public class MagiChemMod
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            // Some client setup code
-            MenuScreens.register(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), CircleFabricationScreen::new);
-            MenuScreens.register(MenuRegistry.GRAND_CIRCLE_FABRICATION_MENU.get(), GrandCircleFabricationScreen::new);
-            MenuScreens.register(MenuRegistry.CIRCLE_POWER_MENU.get(), CirclePowerScreen::new);
-            MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
-            MenuScreens.register(MenuRegistry.DISTILLERY_MENU.get(), DistilleryScreen::new);
-            MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
-            MenuScreens.register(MenuRegistry.FUSERY_MENU.get(), FuseryScreen::new);
-            MenuScreens.register(MenuRegistry.GRAND_DISTILLERY_MENU.get(), GrandDistilleryScreen::new);
-            MenuScreens.register(MenuRegistry.GRAND_CENTRIFUGE_MENU.get(), GrandCentrifugeScreen::new);
-            MenuScreens.register(MenuRegistry.ALCHEMICAL_NEXUS_MENU.get(), AlchemicalNexusScreen::new);
-            MenuScreens.register(MenuRegistry.ACTUATOR_WATER_MENU.get(), ActuatorWaterScreen::new);
-            MenuScreens.register(MenuRegistry.ACTUATOR_FIRE_MENU.get(), ActuatorFireScreen::new);
-            MenuScreens.register(MenuRegistry.ACTUATOR_EARTH_MENU.get(), ActuatorEarthScreen::new);
-            MenuScreens.register(MenuRegistry.ACTUATOR_AIR_MENU.get(), ActuatorAirScreen::new);
-            MenuScreens.register(MenuRegistry.ACTUATOR_ARCANE_MENU.get(), ActuatorArcaneScreen::new);
-            MenuScreens.register(MenuRegistry.VARIEGATOR_MENU.get(), VariegatorScreen::new);
-            MenuScreens.register(MenuRegistry.CHARGING_TALISMAN_MENU.get(), ChargingTalismanScreen::new);
-            MenuScreens.register(MenuRegistry.TRAVELLERS_COMPASS_MENU.get(), TravellersCompassScreen::new);
-            MenuScreens.register(MenuRegistry.CONJURER_MENU.get(), ConjurerScreen::new);
-            MenuScreens.register(MenuRegistry.MATERIA_MANIFEST_MENU.get(), MateriaManifestScreen::new);
+            event.enqueueWork(() -> {
+                // Some client setup code
+                MenuScreens.register(MenuRegistry.CIRCLE_FABRICATION_MENU.get(), CircleFabricationScreen::new);
+                MenuScreens.register(MenuRegistry.GRAND_CIRCLE_FABRICATION_MENU.get(), GrandCircleFabricationScreen::new);
+                MenuScreens.register(MenuRegistry.CIRCLE_POWER_MENU.get(), CirclePowerScreen::new);
+                MenuScreens.register(MenuRegistry.ALEMBIC_MENU.get(), AlembicScreen::new);
+                MenuScreens.register(MenuRegistry.DISTILLERY_MENU.get(), DistilleryScreen::new);
+                MenuScreens.register(MenuRegistry.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
+                MenuScreens.register(MenuRegistry.FUSERY_MENU.get(), FuseryScreen::new);
+                MenuScreens.register(MenuRegistry.GRAND_DISTILLERY_MENU.get(), GrandDistilleryScreen::new);
+                MenuScreens.register(MenuRegistry.GRAND_CENTRIFUGE_MENU.get(), GrandCentrifugeScreen::new);
+                MenuScreens.register(MenuRegistry.ALCHEMICAL_NEXUS_MENU.get(), AlchemicalNexusScreen::new);
+                MenuScreens.register(MenuRegistry.ACTUATOR_WATER_MENU.get(), ActuatorWaterScreen::new);
+                MenuScreens.register(MenuRegistry.ACTUATOR_FIRE_MENU.get(), ActuatorFireScreen::new);
+                MenuScreens.register(MenuRegistry.ACTUATOR_EARTH_MENU.get(), ActuatorEarthScreen::new);
+                MenuScreens.register(MenuRegistry.ACTUATOR_AIR_MENU.get(), ActuatorAirScreen::new);
+                MenuScreens.register(MenuRegistry.ACTUATOR_ARCANE_MENU.get(), ActuatorArcaneScreen::new);
+                MenuScreens.register(MenuRegistry.VARIEGATOR_MENU.get(), VariegatorScreen::new);
+                MenuScreens.register(MenuRegistry.CHARGING_TALISMAN_MENU.get(), ChargingTalismanScreen::new);
+                MenuScreens.register(MenuRegistry.TRAVELLERS_COMPASS_MENU.get(), TravellersCompassScreen::new);
+                MenuScreens.register(MenuRegistry.CONJURER_MENU.get(), ConjurerScreen::new);
+                MenuScreens.register(MenuRegistry.MATERIA_MANIFEST_MENU.get(), MateriaManifestScreen::new);
+            });
         }
 
         @SubscribeEvent
