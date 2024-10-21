@@ -253,6 +253,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("grime", grimeCap.getGrime());
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.put("inventory", itemHandler.serializeNBT());
 
         stack.setTag(nbt);

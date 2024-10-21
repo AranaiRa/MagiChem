@@ -233,6 +233,9 @@ public class TooltipLoreBlockItem extends BlockItem {
                         if (nbt.contains("grime")) {
                             GrimeProvider.getCapability(gdbe).setGrime(nbt.getInt("grime"));
                         }
+                        if (nbt.contains("powerUsageSetting")) {
+                            gdbe.setPowerUsageSetting(nbt.getInt("powerUsageSetting"));
+                        }
                     }
                 } else if (cachedItem == BlockRegistry.GRAND_CENTRIFUGE.get().asItem()) {
                     GrandCentrifugeBlockEntity gdbe = (GrandCentrifugeBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
@@ -242,6 +245,9 @@ public class TooltipLoreBlockItem extends BlockItem {
                         }
                         if (nbt.contains("grime")) {
                             GrimeProvider.getCapability(gdbe).setGrime(nbt.getInt("grime"));
+                        }
+                        if (nbt.contains("powerUsageSetting")) {
+                            gdbe.setPowerUsageSetting(nbt.getInt("powerUsageSetting"));
                         }
                     }
                 } else if (cachedItem == BlockRegistry.VARIEGATOR.get().asItem()) {
