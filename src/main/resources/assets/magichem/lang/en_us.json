@@ -64,6 +64,7 @@
   "item.magichem.smoke_bucket": "Smoke Bucket",
   "item.magichem.steam_bucket": "Steam Bucket",
 
+  "item.magichem.dummy.dummy_anointing": "Materia Anointing",
   "item.magichem.dummy.process_coloration": "Alchemical Coloration",
   "item.magichem.dummy.process_conjuration": "Alchemical Conjuration",
   "item.magichem.dummy.process_fixation": "Alchemical Fixation",
@@ -792,6 +793,7 @@
   "mechanic.mna:magichem": "Alchemical Theory",
   "mechanic.mna:magichem_wonders": "Alchemical Wonders",
 
+  "jei.magichem.anointing": "Materia Anointing",
   "jei.magichem.coloration": "Alchemical Coloration",
   "jei.magichem.conjuration": "Alchemical Conjuration",
   "jei.magichem.distillation": "Alchemical Distillation",

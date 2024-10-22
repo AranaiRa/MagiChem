@@ -39,6 +39,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(ColorationRecipeCategory.UID, ColorationRecipe.class);
     public static RecipeType<ConjurationRecipe> CONJURATION_TYPE =
             new RecipeType<>(ConjurationRecipeCategory.UID, ConjurationRecipe.class);
+    public static RecipeType<AnointingRecipe> ANOINTING_TYPE =
+            new RecipeType<>(AnointingRecipeCategory.UID, AnointingRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -63,6 +65,8 @@ public class JEIPlugin implements IModPlugin {
                 ColorationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 ConjurationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                AnointingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -93,6 +97,9 @@ public class JEIPlugin implements IModPlugin {
 
         List<ConjurationRecipe> recipesConjuration = rm.getAllRecipesFor(ConjurationRecipe.Type.INSTANCE);
         registration.addRecipes(CONJURATION_TYPE, recipesConjuration);
+
+        List<AnointingRecipe> recipesAnointing = rm.getAllRecipesFor(AnointingRecipe.Type.INSTANCE);
+        registration.addRecipes(ANOINTING_TYPE, recipesAnointing);
     }
 
     @Override
@@ -102,7 +109,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_DISTILLERY.get(), 1), DISTILLATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CENTRIFUGE.get(), 1), SEPARATION_TYPE);
-        
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_CENTRIFUGE.get(), 1), SEPARATION_TYPE);
+
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.FUSERY.get(), 1), FIXATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE);

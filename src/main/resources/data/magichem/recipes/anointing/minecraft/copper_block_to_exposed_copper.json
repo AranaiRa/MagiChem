@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:copper_block",
+  "materia": "magichem:admixture_erosion",
+  "chance": 65.0,
+  "result": "minecraft:exposed_copper"
+}

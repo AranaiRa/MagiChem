@@ -310,6 +310,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties())
     );
 
+    public static final RegistryObject<Item> DUMMY_ANOINTING = ITEMS.register("dummy/dummy_anointing",
+            () -> new Item(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> SUBLIMATION_IN_PROGRESS = ITEMS.register("sublimation_in_progress",
             () -> new SublimationInProgressItem(new Item.Properties().stacksTo(1))
     );

@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "magichem:silver_pressure_plate",
+  "materia": "magichem:admixture_construct",
+  "chance": 100.0,
+  "result": "magichem:construct_pressure_plate"
+}

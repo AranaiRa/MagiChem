@@ -30,6 +30,9 @@ public class RecipeRegistry {
     public static final RegistryObject<RecipeSerializer<ConjurationRecipe>> CONJURATION_SERIALIZER =
             SERIALIZERS.register("conjuration", () -> ConjurationRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<AnointingRecipe>> ANOINTING_SERIALIZER =
+            SERIALIZERS.register("anointing", () -> AnointingRecipe.Serializer.INSTANCE);
+
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
     }

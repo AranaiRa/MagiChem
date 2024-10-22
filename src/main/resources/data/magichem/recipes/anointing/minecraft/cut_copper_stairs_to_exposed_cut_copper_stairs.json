@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:cut_copper_stairs",
+  "materia": "magichem:admixture_erosion",
+  "chance": 65.0,
+  "result": "minecraft:exposed_cut_copper_stairs"
+}

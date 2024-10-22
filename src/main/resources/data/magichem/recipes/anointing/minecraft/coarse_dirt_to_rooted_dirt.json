@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:coarse_dirt",
+  "materia": "magichem:admixture_plant",
+  "chance": 50.0,
+  "result": "minecraft:rooted_dirt"
+}

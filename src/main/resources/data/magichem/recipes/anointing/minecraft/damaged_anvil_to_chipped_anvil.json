@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:damaged_anvil",
+  "materia": "magichem:admixture_metal",
+  "chance": 12.5,
+  "result": "minecraft:chipped_anvil"
+}
