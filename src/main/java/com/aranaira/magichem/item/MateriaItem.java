@@ -14,13 +14,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -103,6 +106,12 @@ public class MateriaItem extends Item {
 
                         }
                         itemInHand.shrink(1);
+                        if(!pContext.getPlayer().isCreative()) {
+                            ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE);
+                            Vec3 pos = pContext.getPlayer().getPosition(0);
+                            ItemEntity ie = new ItemEntity(pContext.getLevel(), pos.x, pos.y, pos.z, bottle);
+                            pContext.getLevel().addFreshEntity(ie);
+                        }
                         pContext.getPlayer().setItemInHand(pContext.getHand(), itemInHand);
                         return InteractionResult.CONSUME;
                     }

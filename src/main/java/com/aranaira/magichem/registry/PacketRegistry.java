@@ -83,12 +83,6 @@ public class PacketRegistry {
                 ParticleSpawnAnointingS2CPacket::toBytes,
                 ParticleSpawnAnointingS2CPacket::new,
                 ParticleSpawnAnointingS2CPacket::handle);
-
-//        net.messageBuilder(ParticleSpawnAnointingS2CPacket.class, ID(), NetworkDirection.PLAY_TO_CLIENT)
-//                .decoder(ParticleSpawnAnointingS2CPacket::new)
-//                .encoder(ParticleSpawnAnointingS2CPacket::toBytes)
-//                .consumerNetworkThread(ParticleSpawnAnointingS2CPacket::handle)
-//                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {
