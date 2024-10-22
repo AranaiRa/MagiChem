@@ -4,7 +4,6 @@
     "minecraft:campfire",
     "minecraft:magma_block",
     "minecraft:lava",
-    "mna:brazier",
-    "farmersdelight:stove"
+    "mna:brazier"
   ]
 }
