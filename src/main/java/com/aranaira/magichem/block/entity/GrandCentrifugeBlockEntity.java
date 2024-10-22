@@ -392,14 +392,10 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
         if(hasSufficientPower && !redstonePaused) {
             particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
+            if(circlePercent >= 1)
+                wheelSpeed = Math.min(wheelSpeed + WHEEL_ACCELERATION_RATE, WHEEL_TOP_SPEED);
         } else {
             particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
-        }
-
-        if(remainingTorque > 0) {
-//            if(wheelSpeed == 0) wheelSpeed += WHEEL_ACCELERATION_RATE * 4;
-            wheelSpeed = Math.min(wheelSpeed + WHEEL_ACCELERATION_RATE, WHEEL_TOP_SPEED);
-        } else {
             wheelSpeed = Math.max(wheelSpeed - WHEEL_ACCELERATION_RATE * 0.5f, 0f);
         }
 
@@ -480,6 +476,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandCentrifugeBlockEntity pEntity) {
+        pEntity.handleAnimationDrivers();
+
         if(!pEntity.getLevel().isClientSide() && !pEntity.redstonePaused) {
             int powerDraw = pEntity.getPowerDraw();
             boolean sufficientThisTick = pEntity.ENERGY_STORAGE.getEnergyStored() >= powerDraw;
@@ -515,7 +513,6 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         } else if(pEntity.redstonePaused) {
             pEntity.remainingTorque = 0;
         }
-        pEntity.handleAnimationDrivers();
 
         //particle stuff
         if(pEntity.getLevel().isClientSide() && pEntity.particlePercent > 0) {

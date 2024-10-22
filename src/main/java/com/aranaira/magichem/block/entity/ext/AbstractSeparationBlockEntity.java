@@ -91,7 +91,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
                 if (fire.getIsSatisfied() && !fire.getPaused() && pEntity.remainingTorque <= 20) {
-                    pEntity.remainingTorque = 100;
+                    if(!(pEntity instanceof GrandCentrifugeBlockEntity)) {
+                        pEntity.remainingTorque = 100;
+                    }
                     pEntity.operationTimeMod = fire.getReductionRate();
                     pEntity.syncAndSave();
                 }
