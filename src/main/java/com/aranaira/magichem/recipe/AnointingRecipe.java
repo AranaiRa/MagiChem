@@ -106,6 +106,10 @@ public class AnointingRecipe implements Recipe<SimpleContainer> {
         return recipeResult;
     }
 
+    public static List<AnointingRecipe> getAllAnointingRecipes(Level level) {
+        return level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+    }
+
     public static class Type implements RecipeType<AnointingRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();

@@ -28,6 +28,7 @@ public class PacketRegistry {
 
         INSTANCE = net;
 
+        //Client to Server
         net.messageBuilder(FabricationSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(FabricationSyncDataC2SPacket::new)
                 .encoder(FabricationSyncDataC2SPacket::toBytes)
@@ -75,6 +76,19 @@ public class PacketRegistry {
                 .encoder(TravellersCompassSyncC2SPacket::toBytes)
                 .consumerMainThread(TravellersCompassSyncC2SPacket::handle)
                 .add();
+
+        //Server to Clients
+
+        MagiChemMod.CHANNEL.registerMessage(ID(), ParticleSpawnAnointingS2CPacket.class,
+                ParticleSpawnAnointingS2CPacket::toBytes,
+                ParticleSpawnAnointingS2CPacket::new,
+                ParticleSpawnAnointingS2CPacket::handle);
+
+//        net.messageBuilder(ParticleSpawnAnointingS2CPacket.class, ID(), NetworkDirection.PLAY_TO_CLIENT)
+//                .decoder(ParticleSpawnAnointingS2CPacket::new)
+//                .encoder(ParticleSpawnAnointingS2CPacket::toBytes)
+//                .consumerNetworkThread(ParticleSpawnAnointingS2CPacket::handle)
+//                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {
