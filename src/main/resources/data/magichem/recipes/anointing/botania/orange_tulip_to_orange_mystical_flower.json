@@ -1,0 +1,20 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:anointing",
+        "targetBlock": "minecraft:orange_tulip",
+        "materia": "magichem:admixture_mana",
+        "chance": 72.0,
+        "result": "botania:orange_mystical_flower"
+      }
+    }
+  ]
+}

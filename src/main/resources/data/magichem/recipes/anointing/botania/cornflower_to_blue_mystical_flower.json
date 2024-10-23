@@ -1,0 +1,20 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:anointing",
+        "targetBlock": "minecraft:cornflower",
+        "materia": "magichem:admixture_mana",
+        "chance": 72.0,
+        "result": "botania:blue_mystical_flower"
+      }
+    }
+  ]
+}

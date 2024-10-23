@@ -1,0 +1,20 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:anointing",
+        "targetBlock": "minecraft:lily_of_the_valley",
+        "materia": "magichem:admixture_mana",
+        "chance": 72.0,
+        "result": "botania:white_mystical_flower"
+      }
+    }
+  ]
+}
