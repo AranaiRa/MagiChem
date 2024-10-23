@@ -369,6 +369,46 @@
       }
     ]
   },
+  "Process: Anointing": {
+    "index": "1113",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Anointing"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Certain blocks can be transformed by "
+          },
+          {
+            "text": "Anointing",
+            "color": "dark_purple"
+          },
+          {
+            "text": " them with a particular type of materia. No device is required, smearing the dram of materia on the target block is sufficient.\n\nIf the target block has normal right click behavior (like an anvil), sneaking is required."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/minecraft/copper_block_to_exposed_copper"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/minecraft/chipped_anvil_to_anvil"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/minecraft/dirt_to_mud"
+      }
+    ]
+  },
   "Process: Conjuration": {
     "index": "1104",
     "category": "magichem",
@@ -1383,16 +1423,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "."
-          }
-        ]
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
-          {
-            "text": "A quicksilver gear on one corner of the device can be cranked to operate the device—either manually, with a construct set to "
+            "text": ".A quicksilver gear on one corner of the device can be cranked to operate the device—either manually, with a construct set to "
           },
           {
             "text": "Activate",
@@ -1406,7 +1437,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " ports if you wish to enhance the device using Eldrin power.\n\n\n\n"
+            "text": " ports if you wish to enhance the device using Eldrin power.\n\nCentrifuges process "
+          },
+          {
+            "text": "four times",
+            "color": "dark_purple"
+          },
+          {
+            "text": "as many items per operation as other alchemical devices."
           }
         ]
       },
@@ -3622,8 +3660,8 @@
     ],
     "related_recipes": [
       {
-        "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/construct_pressure_plate"
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/silver_pressure_plate_to_construct_pressure_plate"
       },
       {
         "type": "crafting",
