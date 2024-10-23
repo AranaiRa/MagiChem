@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:dirt",
+  "materia": "magichem:admixture_plant",
+  "chance": 100.0,
+  "result": "minecraft:grass_block"
+}

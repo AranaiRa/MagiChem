@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:dirt",
+  "materia": "magichem:admixture_fungus",
+  "chance": 100.0,
+  "result": "minecraft:mycelium"
+}

@@ -405,6 +405,14 @@
       },
       {
         "type": "anointing",
+        "location": "magichem:anointing/minecraft/dirt_to_grass"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/minecraft/dirt_to_mycelium"
+      },
+      {
+        "type": "anointing",
         "location": "magichem:anointing/minecraft/dirt_to_mud"
       }
     ]
@@ -1423,7 +1431,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ".A quicksilver gear on one corner of the device can be cranked to operate the device—either manually, with a construct set to "
+            "text": ".\n\nA quicksilver gear on one corner of the device can be cranked to operate the device—either manually, with a construct set to "
           },
           {
             "text": "Activate",
@@ -1444,7 +1452,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "as many items per operation as other alchemical devices."
+            "text": " as many items per operation as other alchemical devices.\n\n\n\n\n\n\n\n\n\n"
           }
         ]
       },
@@ -2221,7 +2229,7 @@
     ]
   },
   "Grime": {
-    "index": "1213",
+    "index": "1215",
     "category": "magichem",
     "sections": [
       {
@@ -2726,7 +2734,7 @@
     "related_recipes": []
   },
   "Materia Jar": {
-    "index": "1210",
+    "index": "1212",
     "category": "magichem",
     "sections": [
       {
@@ -2765,7 +2773,7 @@
     ]
   },
   "Materia Vessel": {
-    "index": "1211",
+    "index": "1213",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -2899,7 +2907,7 @@
     ]
   },
   "Alchemical Waste": {
-    "index": "1214",
+    "index": "1216",
     "category": "magichem",
     "sections": [
       {
@@ -2936,7 +2944,7 @@
     ]
   },
   "Rarefied Waste": {
-    "index": "1215",
+    "index": "1217",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -2981,7 +2989,7 @@
     ]
   },
   "Materia Manifest": {
-    "index": "1212",
+    "index": "1214",
     "category": "magichem",
     "tier": 1,
     "sections": [
@@ -4045,7 +4053,7 @@
             "italic": true
           },
           {
-            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
+            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot. The alchemical Distillation symbol in the center acts as a progress bar and fills as the current items are Distilling. The three slots to the left of that are for input items, which can be anything but Materia.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
             "italic": false
           }
         ]
@@ -4055,6 +4063,92 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/grand_distillery"
+      },
+      {
+        "type": "eldrin_altar",
+        "location": "magichem:eldrin_altar/laboratory_charm"
+      }
+    ]
+  },
+  "Grand Centrifuge": {
+    "index": "1210",
+    "category": "magichem",
+    "tier": 4,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Grand Centrifuge"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Grand Distillery",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is the pinnacle of all devices capable of peforming "
+          },
+          {
+            "text": "Separation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", boasting greatly improved "
+          },
+          {
+            "text": "Efficiency",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and two additional Elemental Actuator ports over the Centrifuge. It retains the Centrifuge's increased batch size.\n\nUnlike the Centrifuge, the Grand Centrifuge requires FE from a "
+          },
+          {
+            "text": "Circle of Power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in order to run. The amount of FE required can be controlled; higher FE usage results in faster separations.\n\nAt Tier 5, the Grand Distillery can be upgraded to have 6 Elemental Actuator ports using a "
+          },
+          {
+            "text": "Laboratory Charm",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Grand Centrifuge requires a significant amount of FE even at its minimum settings; a Circle of Power with "
+          },
+          {
+            "text": "two reagents",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or more should be sufficient."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The six slots to the left for input admixtures. Items placed within these slots will process from the bottom-most slot to the top-most slot. The alchemical Separation symbol in the center acts as a progress bar and fills as the current items are Separating.\n\nThe eighteen slots to the right of the processing slot hold Separated materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
+            "italic": false
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/grand_centrifuge"
       },
       {
         "type": "eldrin_altar",
