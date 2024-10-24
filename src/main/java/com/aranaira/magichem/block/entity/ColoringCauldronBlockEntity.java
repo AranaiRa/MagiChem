@@ -63,7 +63,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
             if((bitpackedColors & bitpackID) == 0 && getTotalColors() < 15) {
                 bitpackedColors = bitpackedColors | bitpackID;
                 progress = getOperationTicks();
-                operationsRemaining++;
+                operationsRemaining += 2;
                 syncAndSave();
                 return true;
             }
