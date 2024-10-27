@@ -283,7 +283,7 @@ public class BlockRegistry {
     );
 
     public static final RegistryObject<Block> VINTEUM_CRYSTAL_BLOCK = registerBlock("vinteum_crystal_block",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new DecorativeVerticalCrystalBlock(BlockBehaviour.Properties.of()
                     .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
     );
 

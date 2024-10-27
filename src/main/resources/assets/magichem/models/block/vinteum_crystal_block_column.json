@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down": "magichem:block/vinteum_crystal_block_cap",
+        "up": "magichem:block/vinteum_crystal_block_cap",
+        "north": "magichem:block/vinteum_crystal_block_middle",
+        "east": "magichem:block/vinteum_crystal_block_middle",
+        "south": "magichem:block/vinteum_crystal_block_middle",
+        "west": "magichem:block/vinteum_crystal_block_middle",
+        "particle": "magichem:block/vinteum_crystal_block_cap"
+    }
+}

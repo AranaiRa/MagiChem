@@ -1,7 +1,85 @@
 {
   "variants": {
-    "": {
-      "model": "magichem:block/vinteum_crystal_block"
+    "facing=north,vertical_crystal_shape_type=0": {
+      "model": "magichem:block/vinteum_crystal_block_single"
+    },
+    "facing=north,vertical_crystal_shape_type=1": {
+      "model": "magichem:block/vinteum_crystal_block_column"
+    },
+    "facing=north,vertical_crystal_shape_type=2": {
+      "model": "magichem:block/vinteum_crystal_block_column_top"
+    },
+    "facing=north,vertical_crystal_shape_type=3": {
+      "model": "magichem:block/vinteum_crystal_block_top",
+      "y": 270
+    },
+    "facing=north,vertical_crystal_shape_type=4": {
+      "model": "magichem:block/vinteum_crystal_block_column_bottom"
+    },
+    "facing=north,vertical_crystal_shape_type=5": {
+      "model": "magichem:block/vinteum_crystal_block_bottom",
+      "y": 270
+    },
+
+    "facing=east,vertical_crystal_shape_type=0": {
+      "model": "magichem:block/vinteum_crystal_block_single"
+    },
+    "facing=east,vertical_crystal_shape_type=1": {
+      "model": "magichem:block/vinteum_crystal_block_column"
+    },
+    "facing=east,vertical_crystal_shape_type=2": {
+      "model": "magichem:block/vinteum_crystal_block_column_top"
+    },
+    "facing=east,vertical_crystal_shape_type=3": {
+      "model": "magichem:block/vinteum_crystal_block_top"
+    },
+    "facing=east,vertical_crystal_shape_type=4": {
+      "model": "magichem:block/vinteum_crystal_block_column_bottom"
+    },
+    "facing=east,vertical_crystal_shape_type=5": {
+      "model": "magichem:block/vinteum_crystal_block_bottom"
+    },
+
+    "facing=south,vertical_crystal_shape_type=0": {
+      "model": "magichem:block/vinteum_crystal_block_single"
+    },
+    "facing=south,vertical_crystal_shape_type=1": {
+      "model": "magichem:block/vinteum_crystal_block_column"
+    },
+    "facing=south,vertical_crystal_shape_type=2": {
+      "model": "magichem:block/vinteum_crystal_block_column_top"
+    },
+    "facing=south,vertical_crystal_shape_type=3": {
+      "model": "magichem:block/vinteum_crystal_block_top",
+      "y": 90
+    },
+    "facing=south,vertical_crystal_shape_type=4": {
+      "model": "magichem:block/vinteum_crystal_block_column_bottom"
+    },
+    "facing=south,vertical_crystal_shape_type=5": {
+      "model": "magichem:block/vinteum_crystal_block_bottom",
+      "y": 90
+    },
+
+    "facing=west,vertical_crystal_shape_type=0": {
+      "model": "magichem:block/vinteum_crystal_block_single"
+    },
+    "facing=west,vertical_crystal_shape_type=1": {
+      "model": "magichem:block/vinteum_crystal_block_column"
+    },
+    "facing=west,vertical_crystal_shape_type=2": {
+      "model": "magichem:block/vinteum_crystal_block_column_top"
+    },
+    "facing=west,vertical_crystal_shape_type=3": {
+      "model": "magichem:block/vinteum_crystal_block_top",
+      "y": 180
+    },
+    "facing=west,vertical_crystal_shape_type=4": {
+      "model": "magichem:block/vinteum_crystal_block_column_bottom"
+    },
+    "facing=west,vertical_crystal_shape_type=5": {
+      "model": "magichem:block/vinteum_crystal_block_bottom",
+      "y": 180
     }
   }
 }

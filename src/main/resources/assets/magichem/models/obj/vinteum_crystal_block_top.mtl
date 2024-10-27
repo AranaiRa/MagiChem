@@ -1,0 +1,8 @@
+# Blender MTL File: 'vinteum_crystal_block.blend'
+# Material Count: 2
+
+newmtl VINTEUM_CRYSTAL_BLOCK_CAP
+map_Kd magichem:block/vinteum_crystal_block_cap
+
+newmtl VINTEUM_CRYSTAL_BLOCK_TOP
+map_Kd magichem:block/vinteum_crystal_block_top

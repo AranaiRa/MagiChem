@@ -1,12 +1,12 @@
 {
     "parent": "block/cube",
     "textures": {
-        "down":     "magichem:block/vinteum_crystal_block_budding",
-        "up":       "magichem:block/vinteum_crystal_block_budding",
-        "north":    "magichem:block/vinteum_crystal_block_budding",
-        "east":     "magichem:block/vinteum_crystal_block_budding",
-        "south":    "magichem:block/vinteum_crystal_block_budding",
-        "west":     "magichem:block/vinteum_crystal_block_budding",
-        "particle": "magichem:block/vinteum_crystal_block_budding"
+        "down":     "magichem:block/budding_vinteum_cap",
+        "up":       "magichem:block/budding_vinteum_cap",
+        "north":    "magichem:block/budding_vinteum_side",
+        "east":     "magichem:block/budding_vinteum_side",
+        "south":    "magichem:block/budding_vinteum_side",
+        "west":     "magichem:block/budding_vinteum_side",
+        "particle": "magichem:block/vinteum_crystal_block_cap"
     }
 }
