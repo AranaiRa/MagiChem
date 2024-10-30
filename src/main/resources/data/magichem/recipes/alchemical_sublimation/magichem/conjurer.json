@@ -1,6 +1,6 @@
 {
   "type": "magichem:sublimation",
-  "tier": 3,
+  "tier": 2,
   "wisdom": 0,
   "object": {
     "item": "magichem:conjurer"

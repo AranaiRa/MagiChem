@@ -6,8 +6,8 @@
   "materia_type_one": { "item": "magichem:essentia_nigredo", "count": 4 },
   "materia_type_two": { "item": "magichem:admixture_metal", "count": 12 },
   "components": [
-    { "item": "minecraft:gold_ingot" },
     { "item": "magichem:alchemical_waste" },
+    { "item": "minecraft:gold_ingot" },
     { "item": "mna:transmuted_silver" }
   ]
 }

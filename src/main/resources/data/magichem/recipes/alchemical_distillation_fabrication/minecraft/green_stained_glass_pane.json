@@ -2,7 +2,7 @@
   "type": "magichem:distillation_fabrication",
   "distill_only": true,
   "output_rate": 0.375,
-  "object": { "item": "minecraft:green_stained_glass" },
+  "object": { "item": "minecraft:green_stained_glass_pane" },
   "components": [
     { "item": "magichem:admixture_crystal", "count": 2 },
     { "item": "magichem:admixture_change", "count": 2 }

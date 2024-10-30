@@ -420,7 +420,7 @@
   "Process: Conjuration": {
     "index": "1104",
     "category": "magichem",
-    "tier": 3,
+    "tier": 2,
     "sections": [
       {
         "type": "title",
@@ -4213,7 +4213,7 @@
   "Conjurer": {
     "index": "1207",
     "category": "magichem",
-    "tier": 3,
+    "tier": 2,
     "sections": [
       {
         "type": "title",
