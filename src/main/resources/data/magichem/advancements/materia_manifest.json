@@ -1,35 +1,32 @@
 {
   "display": {
     "icon": {
-      "item": "magichem:actuator_fire"
+      "item": "magichem:materia_manifest"
     },
     "title": {
-      "translate": "advancements.magichem.actuator.title"
+      "translate": "advancements.magichem.materia_manifest.title"
     },
     "description": {
-      "translate": "advancements.magichem.actuator.description"
+      "translate": "advancements.magichem.materia_manifest.description"
     },
-    "frame": "challenge",
+    "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:distillery",
+  "parent": "magichem:materia_jar",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "magichem_actuators"
+            "items": [
+              "magichem:materia_manifest"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }

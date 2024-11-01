@@ -14,7 +14,7 @@
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:distillery",
+  "parent": "magichem:fusery",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
