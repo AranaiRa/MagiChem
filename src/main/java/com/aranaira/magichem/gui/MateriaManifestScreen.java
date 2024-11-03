@@ -91,7 +91,9 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     }
 
     private void setTetherTarget(int pButtonID) {
-        menu.blockEntity.tetherTarget = materiaStorageInZone.get(pButtonID + (32 * pageIndex)).getThird();
+        int index = pButtonID + (32 * pageIndex);
+        if(index < materiaStorageInZone.size())
+            menu.blockEntity.tetherTarget = materiaStorageInZone.get(index).getThird();
     }
 
     @Override
