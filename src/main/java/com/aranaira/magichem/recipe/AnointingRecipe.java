@@ -143,7 +143,7 @@ public class AnointingRecipe implements Recipe<SimpleContainer> {
             Block targetAsBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(nbt.getString("targetBlock")));
             float chance = nbt.getFloat("chance");
             MateriaItem materiaItem = materiaMap.get(nbt.getString("materia"));
-            Block resultAsBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation("result"));
+            Block resultAsBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(nbt.getString("result")));
 
             return new AnointingRecipe(pRecipeId, materiaItem, chance, targetAsBlock, resultAsBlock);
         }
