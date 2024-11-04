@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "vertical_crystal_shape_type=0": {
+      "model": "magichem:block/signalite_block_single"
+    },
+    "vertical_crystal_shape_type=1": {
+      "model": "magichem:block/signalite_block_column"
+    },
+    "vertical_crystal_shape_type=2": {
+      "model": "magichem:block/signalite_block_column_top"
+    },
+    "vertical_crystal_shape_type=3": {
+      "model": "magichem:block/signalite_block_column_top"
+    },
+    "vertical_crystal_shape_type=4": {
+      "model": "magichem:block/signalite_block_column_bottom"
+    },
+    "vertical_crystal_shape_type=5": {
+      "model": "magichem:block/signalite_block_column_bottom"
+    }
+  }
+}

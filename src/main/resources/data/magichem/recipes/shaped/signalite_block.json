@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "magichem:signalite"
+    }
+  },
+  "result": {
+    "item": "magichem:signalite_block"
+  }
+}

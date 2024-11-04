@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down":     "magichem:block/budding_signalite",
+        "up":       "magichem:block/budding_signalite",
+        "north":    "magichem:block/budding_signalite",
+        "east":     "magichem:block/budding_signalite",
+        "south":    "magichem:block/budding_signalite",
+        "west":     "magichem:block/budding_signalite",
+        "particle": "magichem:block/signalite_block_cap"
+    }
+}

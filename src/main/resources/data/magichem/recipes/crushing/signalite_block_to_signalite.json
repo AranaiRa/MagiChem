@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 1,
+  "input": "magichem:signalite_block",
+  "output": "magichem:signalite",
+  "output_quantity": 9
+}

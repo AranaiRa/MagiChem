@@ -282,8 +282,38 @@ public class BlockRegistry {
                     .strength(1.5f).sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
     );
 
+    public static final RegistryObject<Block> SIGNALITE_BLOCK = registerBlock("signalite_block",
+            () -> new SignaliteBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> BUDDING_SIGNALITE_BLOCK = registerBlock("signalite_block_budding",
+            () -> new BuddingSignaliteBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> SIGNALITE_CLUSTER = registerBlock("cluster_signalite",
+            () -> new CrystalClusterBudBlock(7, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> LARGE_SIGNALITE_CLUSTER = registerBlock("cluster_signalite_large",
+            () -> new CrystalClusterBudBlock(5, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> MEDIUM_SIGNALITE_CLUSTER = registerBlock("cluster_signalite_medium",
+            () -> new CrystalClusterBudBlock(4, 3, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> SMALL_SIGNALITE_CLUSTER = registerBlock("cluster_signalite_small",
+            () -> new CrystalClusterBudBlock(3, 4, BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+    );
+
     public static final RegistryObject<Block> VINTEUM_CRYSTAL_BLOCK = registerBlock("vinteum_crystal_block",
-            () -> new DecorativeVerticalCrystalBlock(BlockBehaviour.Properties.of()
+            () -> new VinteumCrystalBlock(BlockBehaviour.Properties.of()
                     .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
     );
 

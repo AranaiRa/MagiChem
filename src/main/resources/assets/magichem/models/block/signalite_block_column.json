@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down":  "magichem:block/signalite_block_cap",
+        "up":    "magichem:block/signalite_block_cap",
+        "north": "magichem:block/signalite_block_side",
+        "east":  "magichem:block/signalite_block_side",
+        "south": "magichem:block/signalite_block_side",
+        "west":  "magichem:block/signalite_block_side",
+        "particle": "magichem:block/signalite_block_cap"
+    }
+}

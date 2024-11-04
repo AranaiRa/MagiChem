@@ -1,0 +1,25 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:signalite_block_budding"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:signalite_block" },
+        { "item": "minecraft:budding_amethyst" },
+        { "item": "magichem:signalite_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_crystal", "count": 72 },
+        { "item": "magichem:admixture_thought", "count": 43 },
+        { "item": "magichem:admixture_dust", "count": 37 },
+        { "item": "magichem:admixture_change", "count": 37 },
+        { "item": "magichem:admixture_light", "count": 9 }
+      ]
+    }
+  ]
+}
