@@ -82,10 +82,6 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> SIGNALITE = ITEMS.register("signalite",
-            () -> new TooltipLoreItem(new Item.Properties())
-    );
-
     public static final RegistryObject<TooltipLoreItem> VINTEUM_CRYSTAL_SHARD = ITEMS.register("vinteum_crystal_shard",
             () -> new TooltipLoreItem(new Item.Properties())
     );

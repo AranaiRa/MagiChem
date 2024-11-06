@@ -186,6 +186,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(CrystalCandleBlockEntity::new, BlockRegistry.CRYSTAL_CANDLE.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_BE = BLOCK_ENTITIES.register("signalite", () ->
+            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

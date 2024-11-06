@@ -282,8 +282,13 @@ public class BlockRegistry {
                     .strength(1.5f).sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
     );
 
-    public static final RegistryObject<Block> SIGNALITE_BLOCK = registerBlock("signalite_block",
+    public static final RegistryObject<Block> SIGNALITE = registerBlock("signalite",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission())
+    );
+
+    public static final RegistryObject<Block> SIGNALITE_BLOCK = registerBlock("signalite_block",
+            () -> new DecorativeSignaliteBlock(BlockBehaviour.Properties.of()
                     .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
     );
 

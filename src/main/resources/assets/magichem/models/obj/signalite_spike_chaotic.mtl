@@ -1,0 +1,5 @@
+# Blender MTL File: 'signalite.blend'
+# Material Count: 1
+
+newmtl SIGNALITE
+map_Kd magichem:block/signalite

@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:redstone",
+  "materia": "magichem:admixture_crystal",
+  "chance": 30.0,
+  "result": "magichem:signalite"
+}

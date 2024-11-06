@@ -38,5 +38,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.CIRCLE_POWER_BE.get(), CirclePowerBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.MATERIA_MANIFEST_BE.get(), MateriaManifestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.CIRCLE_TOIL_BE.get(), CircleToilBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.SIGNALITE_BE.get(), SignaliteBlockEntityRenderer::new);
     }
 }

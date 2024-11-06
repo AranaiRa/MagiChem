@@ -1,103 +1,62 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.block.entity.SignaliteBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.VERTICAL_CRYSTAL_SHAPE_TYPE;
-
-public class SignaliteBlock extends Block {
-    public static final int
-        CRYSTAL_TYPE_SINGLE = 0, CRYSTAL_TYPE_CENTER = 1,
-        CRYSTAL_TYPE_TOP_FLAT = 2, CRYSTAL_TYPE_TOP_DECO = 3,
-        CRYSTAL_TYPE_BOTTOM_FLAT = 4, CRYSTAL_TYPE_BOTTOM_DECO = 5;
+public class SignaliteBlock extends BaseEntityBlock {
+    public static final VoxelShape
+        VOXEL_SHAPE_CORE,
+        VOXEL_SHAPE_NORTH, VOXEL_SHAPE_EAST, VOXEL_SHAPE_SOUTH, VOXEL_SHAPE_WEST, VOXEL_SHAPE_UP, VOXEL_SHAPE_DOWN,
+        VOXEL_SHAPE_AGGREGATE;
 
     public SignaliteBlock(Properties pProperties) {
         super(pProperties);
     }
 
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, VERTICAL_CRYSTAL_SHAPE_TYPE);
-    }
-
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        Direction dir = pContext.getHorizontalDirection();
-
-        int type = getCrystalType(pContext.getLevel(), pContext.getClickedPos());
-
-        return this.defaultBlockState()
-                .setValue(FACING, dir)
-                .setValue(VERTICAL_CRYSTAL_SHAPE_TYPE, type);
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new SignaliteBlockEntity(pPos, pState);
     }
 
     @Override
-    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
-        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
-
-        BlockPos above = pPos.above();
-        if(pLevel.getBlockState(above).getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
-            pLevel.setBlock(above, pLevel.getBlockState(above).setValue(VERTICAL_CRYSTAL_SHAPE_TYPE, getCrystalType(pLevel, above)), 3);
-            pLevel.sendBlockUpdated(above, pLevel.getBlockState(above), pLevel.getBlockState(above).setValue(VERTICAL_CRYSTAL_SHAPE_TYPE, getCrystalType(pLevel, above)), 2);
-        }
-
-        BlockPos below = pPos.below();
-        if(pLevel.getBlockState(below).getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
-            pLevel.setBlock(below, pLevel.getBlockState(below).setValue(VERTICAL_CRYSTAL_SHAPE_TYPE, getCrystalType(pLevel, below)), 3);
-            pLevel.sendBlockUpdated(below, pLevel.getBlockState(below), pLevel.getBlockState(below).setValue(VERTICAL_CRYSTAL_SHAPE_TYPE, getCrystalType(pLevel, below)), 2);
-        }
-
-        pLevel.setBlock(pPos, pState.setValue(VERTICAL_CRYSTAL_SHAPE_TYPE, getCrystalType(pLevel, pPos)), 3);
-        pLevel.sendBlockUpdated(pPos, pState, pState.setValue(VERTICAL_CRYSTAL_SHAPE_TYPE, getCrystalType(pLevel, pPos)), 2);
-    }
-
-    private int getCrystalType(Level pLevel, BlockPos pPos) {
-        BlockState blockAbove = pLevel.getBlockState(pPos.above());
-        BlockState blockBelow = pLevel.getBlockState(pPos.below());
-
-        boolean belowIsCrystal = blockBelow.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get();
-        boolean belowIsSolid = blockBelow.isCollisionShapeFullBlock(pLevel, pPos.below());
-        boolean aboveIsCrystal = blockAbove.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get();
-        boolean aboveIsSolid = blockAbove.isCollisionShapeFullBlock(pLevel, pPos.below());
-
-        int type;
-        if(!aboveIsCrystal && belowIsCrystal) {
-            if(aboveIsSolid)
-                type = CRYSTAL_TYPE_TOP_FLAT;
-            else
-                type = CRYSTAL_TYPE_TOP_DECO;
-        }
-        else if(!belowIsCrystal && aboveIsCrystal) {
-            if(belowIsSolid)
-                type = CRYSTAL_TYPE_BOTTOM_FLAT;
-            else
-                type = CRYSTAL_TYPE_BOTTOM_DECO;
-        }
-        else if(aboveIsCrystal && belowIsCrystal)
-            type = CRYSTAL_TYPE_CENTER;
-        else
-            type = CRYSTAL_TYPE_SINGLE;
-
-        return type;
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.INVISIBLE;
     }
 
     @Override
-    public int getSignal(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pDirection) {
-        return 15;
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return VOXEL_SHAPE_AGGREGATE;
     }
 
-    @Override
-    public int getDirectSignal(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pDirection) {
-        return 15;
+    static {
+        VOXEL_SHAPE_CORE = Block.box(6, 6, 6, 10, 10, 10);
+
+        VOXEL_SHAPE_NORTH = Block.box(7, 7, 0, 9, 9, 8);
+        VOXEL_SHAPE_SOUTH = Block.box(7, 7, 8, 9, 9, 16);
+        VOXEL_SHAPE_EAST  = Block.box(0, 7, 7, 8, 9, 9);
+        VOXEL_SHAPE_WEST  = Block.box(8, 7, 7, 16, 9, 9);
+        VOXEL_SHAPE_UP    = Block.box(7, 0, 7, 9, 8, 9);
+        VOXEL_SHAPE_DOWN  = Block.box(7, 8, 7, 9, 16, 9);
+
+        VOXEL_SHAPE_AGGREGATE = Shapes.or(
+                VOXEL_SHAPE_CORE,
+                VOXEL_SHAPE_NORTH,
+                VOXEL_SHAPE_EAST,
+                VOXEL_SHAPE_SOUTH,
+                VOXEL_SHAPE_WEST,
+                VOXEL_SHAPE_UP,
+                VOXEL_SHAPE_DOWN
+        );
     }
 }
