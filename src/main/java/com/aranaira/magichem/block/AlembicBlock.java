@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.blocks.ISpellInteractibleBlock;
@@ -185,6 +186,12 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
                 BlockEntity be = level.getBlockEntity(blockPos);
                 if(be instanceof AlembicBlockEntity abe) {
                     abe.setHeat(Math.round(damage * duration * 20));
+                    return true;
+                }
+            } else if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof AlembicBlockEntity abe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, abe, null);
                     return true;
                 }
             }

@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandCentrifugeRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType;
@@ -9,6 +10,10 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,7 +47,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_CENTRIFUGE;
 import static com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType.*;
 
-public class GrandCentrifugeBlock extends BaseEntityBlock {
+public class GrandCentrifugeBlock extends BaseEntityBlock implements ISpellInteractibleBlock<GrandCentrifugeBlock> {
 
     public GrandCentrifugeBlock(Properties pProperties) {
         super(pProperties);
@@ -283,6 +288,20 @@ public class GrandCentrifugeBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BlockEntitiesRegistry.GRAND_CENTRIFUGE_BE.get(),
                 GrandCentrifugeBlockEntity::tick);
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof GrandCentrifugeBlockEntity gcbe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, gcbe, null);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

@@ -2255,7 +2255,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " or automatically cleaned with a Construct bound to a "
+            "text": ", a spell with a "
+          },
+          {
+            "text": "Splash",
+            "color": "dark_purple"
+          },
+          {
+            "text": " component, or by a Construct bound to a "
           },
           {
             "text": "Clean Alchemical Apparatus",
@@ -2831,6 +2838,10 @@
       {
         "type": "sublimation_ritual",
         "location": "magichem:alchemical_sublimation_ritual/magichem/materia_vessel"
+      },
+      {
+        "type": "sublimation_ritual",
+        "location": "magichem:alchemical_sublimation/magichem/materia_vessel"
       }
     ]
   },

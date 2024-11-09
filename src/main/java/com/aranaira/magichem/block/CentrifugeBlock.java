@@ -2,12 +2,17 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,7 +44,7 @@ import java.util.List;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
 
-public class CentrifugeBlock extends BaseEntityBlock {
+public class CentrifugeBlock extends BaseEntityBlock implements ISpellInteractibleBlock<CentrifugeBlock> {
     public CentrifugeBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -214,6 +219,20 @@ public class CentrifugeBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BlockEntitiesRegistry.CENTRIFUGE_BE.get(),
                 CentrifugeBlockEntity::tick);
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof CentrifugeBlockEntity cbe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, cbe, null);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

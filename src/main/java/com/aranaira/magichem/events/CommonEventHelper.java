@@ -16,11 +16,11 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class CommonEventHelper {
-    public static void generateWasteFromCleanedApparatus(Player player, Level level, AbstractBlockEntityWithEfficiency bewe, @Nullable ItemStack stackToDamage) {
+    public static void generateWasteFromCleanedApparatus(@Nullable Player player, Level level, AbstractBlockEntityWithEfficiency bewe, @Nullable ItemStack stackToDamage) {
         int wasteCount = bewe.clean();
-        if(wasteCount > 0 && stackToDamage != null) {
+        if(wasteCount > 0) {
             if(player != null) {
-                if (!player.isCreative()) {
+                if (!player.isCreative() && stackToDamage != null) {
                     stackToDamage.setDamageValue(stackToDamage.getDamageValue() + 1);
                     if(stackToDamage.getDamageValue() >= stackToDamage.getMaxDamage()) {
                         stackToDamage.shrink(1);

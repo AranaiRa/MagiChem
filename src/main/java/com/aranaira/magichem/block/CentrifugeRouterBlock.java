@@ -2,9 +2,14 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativeTab {
+public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativeTab, ISpellInteractibleBlock<CentrifugeRouterBlock> {
     public CentrifugeRouterBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -116,6 +121,20 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
     @Override
     public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
         return new ItemStack(BlockRegistry.CENTRIFUGE.get());
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof CentrifugeRouterBlockEntity crbe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, crbe.getMaster(), null);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     static {

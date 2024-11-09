@@ -2,9 +2,14 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandCentrifugeRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 import static com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType.*;
 
-public class GrandCentrifugeRouterBlock extends BaseEntityBlock implements INoCreativeTab {
+public class GrandCentrifugeRouterBlock extends BaseEntityBlock implements INoCreativeTab, ISpellInteractibleBlock<GrandCentrifugeRouterBlock> {
     public GrandCentrifugeRouterBlock(Properties pProperties) {
         super(pProperties);
         this.registerDefaultState(
@@ -323,6 +328,20 @@ public class GrandCentrifugeRouterBlock extends BaseEntityBlock implements INoCr
             case 17 -> ASSEMBLY_UPPER_BACK_RIGHT;
             default -> NONE;
         };
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof GrandCentrifugeRouterBlockEntity gcrbe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, gcrbe.getMaster(), null);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     static {

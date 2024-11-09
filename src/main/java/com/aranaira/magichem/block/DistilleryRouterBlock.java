@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -246,6 +247,12 @@ public class DistilleryRouterBlock extends BaseEntityBlock implements INoCreativ
                         dbe.setHeat(Math.round(damage * duration * 20));
                         return true;
                     }
+                }
+            } else if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof DistilleryRouterBlockEntity drbe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, drbe.getMaster(), null);
+                    return true;
                 }
             }
         }

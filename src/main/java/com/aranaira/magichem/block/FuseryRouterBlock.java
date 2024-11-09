@@ -2,9 +2,14 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab {
+public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab, ISpellInteractibleBlock<FuseryRouterBlock> {
     public FuseryRouterBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -132,6 +137,20 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
     @Override
     public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
         return new ItemStack(BlockRegistry.FUSERY.get());
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof FuseryRouterBlockEntity frbe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, frbe.getMaster(), null);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     static {

@@ -2,6 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandDistilleryRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
@@ -9,6 +10,10 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,7 +47,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUT
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 import static com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType.*;
 
-public class GrandDistilleryBlock extends BaseEntityBlock {
+public class GrandDistilleryBlock extends BaseEntityBlock implements ISpellInteractibleBlock<GrandDistilleryBlock> {
 
     public GrandDistilleryBlock(Properties pProperties) {
         super(pProperties);
@@ -287,6 +292,20 @@ public class GrandDistilleryBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BlockEntitiesRegistry.GRAND_DISTILLERY_BE.get(),
                 GrandDistilleryBlockEntity::tick);
+    }
+
+    @Override
+    public boolean onHitBySpell(Level level, BlockPos blockPos, ISpellDefinition iSpellDefinition) {
+        for(IModifiedSpellPart isp : iSpellDefinition.getComponents()){
+            if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof GrandDistilleryBlockEntity gdbe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, gdbe, null);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

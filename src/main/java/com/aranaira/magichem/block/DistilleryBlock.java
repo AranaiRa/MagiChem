@@ -3,6 +3,7 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
@@ -287,6 +288,12 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
                 BlockEntity be = level.getBlockEntity(blockPos);
                 if(be instanceof DistilleryBlockEntity dbe) {
                     dbe.setHeat(Math.round(damage * duration * 20));
+                    return true;
+                }
+            } else if(isp.getPart().equals(Components.SPLASH)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof DistilleryBlockEntity dbe) {
+                    CommonEventHelper.generateWasteFromCleanedApparatus(null, level, dbe, null);
                     return true;
                 }
             }
