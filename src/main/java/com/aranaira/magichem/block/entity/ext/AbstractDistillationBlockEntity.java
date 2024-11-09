@@ -43,7 +43,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
     protected int
-            progress = 0, batchSize = 1, remainingHeat = 0, heatDuration = 0, pluginLinkageCountdown = 3;
+            progress = 0, progressMultiplier = 1, batchSize = 1, remainingHeat = 0, heatDuration = 0, pluginLinkageCountdown = 3;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -166,6 +166,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
             DistillationFabricationRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
             if(recipe != null) {
+                if(recipe.getOutputRate() > 0 && recipe.getOutputRate() <= 1)
+                    pEntity.progressMultiplier = Math.round(1f / recipe.getOutputRate());
+
                 if (canCraftItem(pEntity, recipe, pVarFunc)) {
                     if (pEntity.progress > operationTicks) {
                         if (!pLevel.isClientSide()) {
@@ -264,7 +267,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     protected void incrementProgress() {
-        progress++;
+        progress += progressMultiplier;
     }
 
     ////////////////////

@@ -263,7 +263,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " rating that determines the chance that you will successfully distill each dram of Materia that the object or fluid contains. Efficiency is always noted as a percentage, and Efficiency greater than 100% has no additional effect."
+            "text": " rating that determines the chance that you will successfully distill each dram of Materia that the object or fluid contains. Efficiency is always noted as a percentage, and Efficiency greater than 100% has no additional effect.\n\nSome recipes have a "
+          },
+          {
+            "text": "reduced output rate",
+            "color": "dark_purple"
+          },
+          {
+            "text": " which decreases the chance that a dram of materia is successfully distilled independently of the device's Efficiency; for example, a device with 30% Efficiency processing an item with a 33% output rate will result in a dram of materia 10% of the time (30 x 0.33). Items with a reduced output rate will craft proportionately faster to compensate; for example, an item with a 33% output rate will process 3x faster."
           }
         ]
       }
