@@ -3,11 +3,17 @@ package com.aranaira.magichem.registry;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.routers.*;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 
 public class BlockEntitiesRegistry {
@@ -187,23 +193,13 @@ public class BlockEntitiesRegistry {
     );
 
     public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_BE = BLOCK_ENTITIES.register("signalite", () ->
-            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE.get()).build(null)
-    );
-
-    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_CHAOTIC_BE = BLOCK_ENTITIES.register("signalite_chaotic", () ->
-            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE_CHAOTIC.get()).build(null)
-    );
-
-    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_DEVOURING_BE = BLOCK_ENTITIES.register("signalite_devouring", () ->
-            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE_DEVOURING.get()).build(null)
-    );
-
-    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_GATEKEEPING_BE = BLOCK_ENTITIES.register("signalite_gatekeeping", () ->
-            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE_GATEKEEPING.get()).build(null)
-    );
-
-    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_NEGATING_BE = BLOCK_ENTITIES.register("signalite_negating", () ->
-            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE_NEGATING.get()).build(null)
+            BlockEntityType.Builder.of(SignaliteBlockEntity::new,
+                BlockRegistry.SIGNALITE.get(),
+                BlockRegistry.SIGNALITE_CHAOTIC.get(),
+                BlockRegistry.SIGNALITE_DEVOURING.get(),
+                BlockRegistry.SIGNALITE_GATEKEEPING.get(),
+                BlockRegistry.SIGNALITE_NEGATING.get()    
+            ).build(null)
     );
 
     public static void register(IEventBus eventBus) {

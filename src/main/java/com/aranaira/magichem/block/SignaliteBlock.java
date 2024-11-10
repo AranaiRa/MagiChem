@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.SignaliteBlockEntity;
+import com.aranaira.magichem.item.MateriaItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -54,6 +55,9 @@ public class SignaliteBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        if(pPlayer.getItemInHand(pHand).getItem() instanceof MateriaItem)
+            return InteractionResult.PASS;
+
         if(pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
             double rawX = Math.abs(pHit.getLocation().x % 1);
             double rawY = Math.abs(pHit.getLocation().y % 1);
