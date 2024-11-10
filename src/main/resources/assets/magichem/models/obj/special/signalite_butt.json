@@ -8,7 +8,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/signalite_core.obj"
+      "model": "magichem:models/obj/signalite_spike_butt.obj"
     }
   }
 }

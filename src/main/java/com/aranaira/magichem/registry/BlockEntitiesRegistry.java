@@ -190,6 +190,22 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_CHAOTIC_BE = BLOCK_ENTITIES.register("signalite_chaotic", () ->
+            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE_CHAOTIC.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_DEVOURING_BE = BLOCK_ENTITIES.register("signalite_devouring", () ->
+            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE_DEVOURING.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_GATEKEEPING_BE = BLOCK_ENTITIES.register("signalite_gatekeeping", () ->
+            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE_GATEKEEPING.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_NEGATING_BE = BLOCK_ENTITIES.register("signalite_negating", () ->
+            BlockEntityType.Builder.of(SignaliteBlockEntity::new, BlockRegistry.SIGNALITE_NEGATING.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

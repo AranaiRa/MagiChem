@@ -216,7 +216,7 @@ public class MagiChemMod
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_OPEN);
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_CLOSED);
 
-            event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_CORE);
+            event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_BUTT);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_CHAOTIC);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_DEVOURING);

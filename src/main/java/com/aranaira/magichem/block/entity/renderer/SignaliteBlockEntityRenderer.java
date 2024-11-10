@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<SignaliteBlockEntity> {
-    public static final ResourceLocation RENDERER_MODEL_CORE = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_core");
+    public static final ResourceLocation RENDERER_MODEL_BUTT = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_butt");
     public static final ResourceLocation RENDERER_MODEL_SPIKE = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike");
     public static final ResourceLocation RENDERER_MODEL_SPIKE_CHAOTIC = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_chaotic");
     public static final ResourceLocation RENDERER_MODEL_SPIKE_DEVOURING = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_devouring");
@@ -31,12 +31,86 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
+        float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
+        int bobPeriod = 182;
+        double bob = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 360f) % bobPeriod) / (float)bobPeriod) * Math.PI * 2);
+
+        int xPeriod = 216;
+        float xTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % xPeriod) / (float)xPeriod) * Math.PI * 2);
+
+        int yPeriod = 432;
+        float yTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % yPeriod) / (float)yPeriod) * Math.PI * 2);
+
+        int zPeriod = 288;
+        float zTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % zPeriod) / (float)zPeriod) * Math.PI * 2);
+
         pPoseStack.pushPose();
-        pPoseStack.translate(0.5, 0.5, 0.5);
-//        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_CORE, pPoseStack, pPackedLight, pPackedOverlay);
-        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE_GATEKEEPING, pPoseStack, pPackedLight, pPackedOverlay);
-        pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
-        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.translate(0.5, 0.5 + bob * 0.015625, 0.5);
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(2 * xTime));
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(2 * yTime));
+        pPoseStack.mulPose(Axis.ZP.rotationDegrees(2 * zTime));
+
+        pPoseStack.pushPose();
+        if(pBlockEntity.north) {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        } else {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+        }
+        pPoseStack.popPose();
+
+        pPoseStack.pushPose();
+        if(pBlockEntity.east) {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        } else {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+        }
+        pPoseStack.popPose();
+
+        pPoseStack.pushPose();
+        if(pBlockEntity.south) {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        } else {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+        }
+        pPoseStack.popPose();
+
+        pPoseStack.pushPose();
+        if(pBlockEntity.west) {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        } else {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+        }
+        pPoseStack.popPose();
+
+        pPoseStack.pushPose();
+        pPoseStack.mulPose(Axis.ZP.rotationDegrees(90));
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(45));
+        if(pBlockEntity.up) {
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        } else {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+        }
+        pPoseStack.popPose();
+
+        pPoseStack.pushPose();
+        pPoseStack.mulPose(Axis.ZP.rotationDegrees(270));
+        pPoseStack.mulPose(Axis.XN.rotationDegrees(45));
+        if(pBlockEntity.down) {
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        } else {
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+        }
+        pPoseStack.popPose();
 
         pPoseStack.popPose();
     }
