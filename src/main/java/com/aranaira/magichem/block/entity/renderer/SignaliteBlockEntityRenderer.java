@@ -31,6 +31,8 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
+        float color = (pBlockEntity.signalStrength / 15f) * 0.7f + 0.3f;
+
         float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
         int bobPeriod = 182;
         double bob = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 360f) % bobPeriod) / (float)bobPeriod) * Math.PI * 2);
@@ -51,64 +53,64 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(2 * zTime));
 
         pPoseStack.pushPose();
-        if(pBlockEntity.north) {
+        if(pBlockEntity.connectedNorth) {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         }
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
-        if(pBlockEntity.east) {
+        if(pBlockEntity.connectedEast) {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         }
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
-        if(pBlockEntity.south) {
+        if(pBlockEntity.connectedSouth) {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         }
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
-        if(pBlockEntity.west) {
+        if(pBlockEntity.connectedWest) {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         }
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(90));
         pPoseStack.mulPose(Axis.XP.rotationDegrees(45));
-        if(pBlockEntity.up) {
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        if(pBlockEntity.connectedUp) {
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         }
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(270));
         pPoseStack.mulPose(Axis.XN.rotationDegrees(45));
-        if(pBlockEntity.down) {
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay);
+        if(pBlockEntity.connectedDown) {
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay);
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         }
         pPoseStack.popPose();
 

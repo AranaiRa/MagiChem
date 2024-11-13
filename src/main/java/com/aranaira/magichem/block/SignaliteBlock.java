@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -58,7 +59,7 @@ public class SignaliteBlock extends BaseEntityBlock {
         if(pPlayer.getItemInHand(pHand).getItem() instanceof MateriaItem)
             return InteractionResult.PASS;
 
-        if(pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
+        if(!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
             double rawX = Math.abs(pHit.getLocation().x % 1);
             double rawY = Math.abs(pHit.getLocation().y % 1);
             double rawZ = Math.abs(pHit.getLocation().z % 1);
@@ -85,6 +86,116 @@ public class SignaliteBlock extends BaseEntityBlock {
         }
 
         return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public boolean isSignalSource(BlockState pState) {
+        return super.isSignalSource(pState);
+    }
+
+    @Override
+    public int getSignal(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pDirection) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        //Reminder, the direction in redstone signal requests are backwards
+        if(be instanceof SignaliteBlockEntity sbe) {
+
+            if(pDirection == Direction.NORTH && sbe.connectedSouth)
+                return sbe.signalStrength;
+            if(pDirection == Direction.SOUTH && sbe.connectedNorth)
+                return sbe.signalStrength;
+            if(pDirection == Direction.EAST && sbe.connectedWest)
+                return sbe.signalStrength;
+            if(pDirection == Direction.WEST && sbe.connectedEast)
+                return sbe.signalStrength;
+            if(pDirection == Direction.UP && sbe.connectedDown)
+                return sbe.signalStrength;
+            if(pDirection == Direction.DOWN && sbe.connectedUp)
+                return sbe.signalStrength;
+        }
+        return super.getSignal(pState, pLevel, pPos, pDirection);
+    }
+
+    @Override
+    public int getDirectSignal(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pDirection) {
+        return super.getDirectSignal(pState, pLevel, pPos, pDirection);
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+
+        if(pLevel.getBlockEntity(pPos) instanceof SignaliteBlockEntity sbe) {
+            sbe.signalStrength = 0;
+
+            for (Direction dir : sbe.getTransmittingDirections()) {
+                BlockPos posQuery = pPos.offset(dir.getNormal());
+                if(posQuery.equals(pNeighborPos)) {
+                    BlockState stateToCheck = pLevel.getBlockState(pNeighborPos);
+
+                    int signalQuery = 0;
+                    if (stateToCheck.hasProperty(BlockStateProperties.POWER))
+                        signalQuery = stateToCheck.getValue(BlockStateProperties.POWER);
+
+                    if (stateToCheck.hasProperty(BlockStateProperties.POWERED) && stateToCheck.getValue(BlockStateProperties.POWERED)) {
+                        sbe.signalStrength = 15;
+                        break;
+                    } else if (signalQuery > sbe.signalStrength) {
+                        sbe.signalStrength = signalQuery;
+                    }
+                }
+            }
+
+            sbe.syncAndSave();
+        }
+    }
+
+    public static void updateFirstSignaliteBlockAlongDirection(Level pLevel, BlockPos pPos, Direction pDir) {
+        if(pLevel != null) {
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if(be instanceof SignaliteBlockEntity sbe) {
+                updateFirstSignaliteBlockAlongDirection(sbe, pDir);
+            }
+        }
+    }
+
+    public static void updateFirstSignaliteBlockAlongDirection(SignaliteBlockEntity pEntity, Direction pDir) {
+        for(int i=1; i< pEntity.signalStrength-1; i++) {
+            BlockEntity be = pEntity.getLevel().getBlockEntity(pEntity.getBlockPos().offset(pDir.getNormal().multiply(i)));
+            if(be instanceof SignaliteBlockEntity sbe) {
+                if(sbe.acceptsSignalFromDirection(pDir)) {
+                    sbe.setIncomingSignalFromNeighbor(pEntity.signalStrength - i);
+                    sbe.syncAndSave();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        super.onPlace(pState, pLevel, pPos, pOldState, pMovedByPiston);
+
+        if(pLevel.getBlockEntity(pPos) instanceof SignaliteBlockEntity sbe) {
+            sbe.signalStrength = 0;
+
+            for (Direction dir : sbe.getTransmittingDirections()) {
+                BlockPos posQuery = pPos.offset(dir.getNormal());
+                BlockState stateToCheck = pLevel.getBlockState(posQuery);
+
+                int signalQuery = 0;
+                if (stateToCheck.hasProperty(BlockStateProperties.POWER))
+                    signalQuery = stateToCheck.getValue(BlockStateProperties.POWER);
+
+                if (stateToCheck.hasProperty(BlockStateProperties.POWERED) && stateToCheck.getValue(BlockStateProperties.POWERED)) {
+                    sbe.signalStrength = 15;
+                    break;
+                } else if (signalQuery > sbe.signalStrength) {
+                    sbe.signalStrength = signalQuery;
+                }
+            }
+
+            sbe.syncAndSave();
+        }
     }
 
     static {
