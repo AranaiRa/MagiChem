@@ -4598,5 +4598,53 @@
       }
     ]
   },
+  "Exaltations": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Exaltations"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An "
+          },
+          {
+            "text": "Exaltation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an ensorcelled strip of vellum that can be "
+          },
+          {
+            "text": "combined with a basic construct part",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to upgrade it to a more advanced part.\n\nAn Exaltation has no effect on a summoned construct, it can only be combined with a construct part while it is in item form."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/exaltation_intelligence"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/exaltation_resonance"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/construct/exaltation_head_stone_smart"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

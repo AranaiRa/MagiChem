@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:exaltation_resonance" },
+    { "item": "mna:constructs/construct_basic_head_gold" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_horn_head_gold",
+    "count": 1
+  }
+}

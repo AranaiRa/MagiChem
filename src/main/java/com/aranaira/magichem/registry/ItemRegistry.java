@@ -130,6 +130,14 @@ public class ItemRegistry {
             () -> new ChargingTalismanItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<TooltipLoreItem> EXALTATION_INTELLIGENCE = ITEMS.register("exaltation_intelligence",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> EXALTATION_RESONANCE = ITEMS.register("exaltation_resonance",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
             () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
     );

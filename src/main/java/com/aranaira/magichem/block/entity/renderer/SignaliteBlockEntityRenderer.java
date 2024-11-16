@@ -31,7 +31,7 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        float color = (pBlockEntity.signalStrength / 15f) * 0.7f + 0.3f;
+        float color = (pBlockEntity.signalStrength / 15f) * 0.4f + 0.3f + (pBlockEntity.signalStrength > 0 ? 0.3f : 0f);
 
         float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
         int bobPeriod = 182;

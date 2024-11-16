@@ -289,6 +289,18 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.EXALTATION_INTELLIGENCE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.exaltationintelligence")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.EXALTATION_RESONANCE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.exaltationresonance")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == ItemRegistry.BLEACHED_AMETHYST_SHARD.get()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.bleachedamethystshard")
