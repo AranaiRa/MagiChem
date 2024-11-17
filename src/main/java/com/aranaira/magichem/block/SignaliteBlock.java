@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.SignaliteBlockEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.core.BlockPos;
@@ -23,6 +24,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.LEVER_SIGNAL;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWER;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
 public class SignaliteBlock extends BaseEntityBlock {
     public static final VoxelShape
@@ -102,7 +107,7 @@ public class SignaliteBlock extends BaseEntityBlock {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         //Reminder, the direction in redstone signal requests are backwards
         if(be instanceof SignaliteBlockEntity sbe) {
-            int signalStrength = pState.getValue(BlockStateProperties.POWER);
+            int signalStrength = pState.getValue(POWER);
 
             if(pDirection == Direction.NORTH && sbe.connectedSouth)
                 return signalStrength;
@@ -136,27 +141,34 @@ public class SignaliteBlock extends BaseEntityBlock {
         if(pLevel.getBlockEntity(pPos) instanceof SignaliteBlockEntity sbe) {
             int signalStrength = 0;
             BlockState myState = pLevel.getBlockState(pPos);
-            int oldSignalStrength = myState.getValue(BlockStateProperties.POWER);
+            int oldSignalStrength = myState.getValue(POWER);
 
             for (Direction dir : sbe.getTransmittingDirections()) {
                 BlockPos posQuery = pPos.offset(dir.getNormal());
                 BlockState stateToCheck = pLevel.getBlockState(posQuery);
 
                 int signalQuery = 0;
-                if (stateToCheck.hasProperty(BlockStateProperties.POWER))
+                if (stateToCheck.hasProperty(POWER))
                     signalQuery = Math.max(0, stateToCheck.getSignal(pLevel, posQuery, dir) - 1);
 
-                if (stateToCheck.getBlock() == Blocks.REDSTONE_BLOCK || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get() || stateToCheck.hasProperty(BlockStateProperties.POWERED) && stateToCheck.getValue(BlockStateProperties.POWERED)) {
+                if (stateToCheck.getBlock() == Blocks.REDSTONE_BLOCK || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
                     signalStrength = 15;
                     break;
-                } else if (signalQuery > signalStrength) {
+                } else if (stateToCheck.hasProperty(LEVER_SIGNAL)) {
+                    signalQuery = stateToCheck.getValue(LEVER_SIGNAL);
+                } else if (stateToCheck.hasProperty(POWERED) && !stateToCheck.hasProperty(POWER) && stateToCheck.getValue(POWERED)) {
+                    signalStrength = 15;
+                    break;
+                }
+
+                if (signalQuery > signalStrength) {
                     signalStrength = signalQuery;
                 }
             }
 
             if(signalStrength != oldSignalStrength) {
-                pLevel.setBlock(pPos, myState.setValue(BlockStateProperties.POWER, signalStrength), 3);
-                pLevel.sendBlockUpdated(pPos, myState, myState.setValue(BlockStateProperties.POWER, signalStrength), 2);
+                pLevel.setBlock(pPos, myState.setValue(POWER, signalStrength), 3);
+                pLevel.sendBlockUpdated(pPos, myState, myState.setValue(POWER, signalStrength), 2);
             }
 
             sbe.syncAndSave();
@@ -172,7 +184,7 @@ public class SignaliteBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(BlockStateProperties.POWER);
+        pBuilder.add(POWER);
     }
 
     static {
