@@ -32,8 +32,6 @@ public class SignaliteBlockEntity extends BlockEntity {
         connectedNorth = true, connectedSouth = true,
         connectedEast = true, connectedWest = true,
         connectedUp = true, connectedDown = true;
-    public int
-        signalStrength = 0;
 
     public SignaliteBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.SIGNALITE_BE.get(), pPos, pBlockState);
@@ -55,19 +53,6 @@ public class SignaliteBlockEntity extends BlockEntity {
 
         if(level != null) {
             level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
-        }
-    }
-
-    public void setIncomingSignalFromNeighbor(int pNewSignalStrength) {
-        if(getBlockState().getBlock() instanceof SignaliteBlock sb) {
-            final SignaliteBlockType type = sb.getType();
-
-            if(type == STANDARD) {
-                signalStrength = Math.max(signalStrength, pNewSignalStrength);
-                for(Direction dir : getTransmittingDirections()) {
-                    SignaliteBlock.updateFirstSignaliteBlockAlongDirection(this, dir);
-                }
-            }
         }
     }
 
@@ -102,28 +87,19 @@ public class SignaliteBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putInt("connectionFlags", packConnectionsToInt());
-        nbt.putInt("signalStrength", signalStrength);
         super.saveAdditional(nbt);
     }
 
     @Override
     public void load(CompoundTag nbt) {
-        int signalPre = signalStrength;
-
         unpackConnectionFromInt(nbt.getInt("connectionFlags"));
-        signalStrength = nbt.getInt("signalStrength");
         super.load(nbt);
-
-        if(signalPre != signalStrength && level != null) {
-            level.updateNeighborsAt(getBlockPos(), getBlockState().getBlock());
-        }
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("connectionFlags", packConnectionsToInt());
-        nbt.putInt("signalStrength", signalStrength);
         return nbt;
     }
 

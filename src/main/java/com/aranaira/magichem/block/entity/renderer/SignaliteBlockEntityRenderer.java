@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<SignaliteBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_BUTT = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_butt");
@@ -30,8 +31,9 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
+        int signalStrength = state.getValue(BlockStateProperties.POWER);
 
-        float color = (pBlockEntity.signalStrength / 15f) * 0.4f + 0.3f + (pBlockEntity.signalStrength > 0 ? 0.3f : 0f);
+        float color = (signalStrength / 15f) * 0.4f + 0.3f + (signalStrength > 0 ? 0.3f : 0f);
 
         float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
         int bobPeriod = 182;
