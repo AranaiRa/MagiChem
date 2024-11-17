@@ -445,6 +445,9 @@ public class CommonEventHandler {
                     MutableComponent dist = Component.literal(distance+"m");
                     event.getGuiGraphics().drawString(font, dist, x + 4, y + 4, 0xffffff, true);
 
+                    float rot = (360 + (player.getYRot() % 360)) % 360;
+                    event.getGuiGraphics().drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, y + 24, 0x888888, true);
+
                     float time = player.level().getTimeOfDay(0);
                     event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 14, 0x888888, true);
 

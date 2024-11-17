@@ -80,4 +80,17 @@ public class CommonEventHelper {
         else
             return Component.empty();
     }
+
+    public static MutableComponent getFacingComponent(float pYRot) {
+        if(pYRot >= 337.5f || pYRot <= 22.5f) return Component.translatable("gui.magichem.direction.south");
+        else if(pYRot < 67.5f) return Component.translatable("gui.magichem.direction.southwest");
+        else if(pYRot <= 112.5f) return Component.translatable("gui.magichem.direction.west");
+        else if(pYRot < 157.5f) return Component.translatable("gui.magichem.direction.northwest");
+        else if(pYRot <= 202.5f) return Component.translatable("gui.magichem.direction.north");
+        else if(pYRot < 247.5f) return Component.translatable("gui.magichem.direction.northeast");
+        else if(pYRot <= 292.5f) return Component.translatable("gui.magichem.direction.east");
+        else if(pYRot < 337.5f) return Component.translatable("gui.magichem.direction.southeast");
+        else
+            return Component.empty();
+    }
 }
