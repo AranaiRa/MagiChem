@@ -2,6 +2,6 @@
   "type": "magichem:anointing",
   "targetBlock": "minecraft:redstone_wire",
   "materia": "magichem:admixture_crystal",
-  "chance": 30.0,
+  "chance": 60.0,
   "result": "magichem:signalite"
 }
