@@ -223,6 +223,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                         if (nbt.contains("inventory")) {
                             anbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
                         }
+                        if (nbt.contains("powerLevel")) {
+                            anbe.setPowerUsageSetting(nbt.getInt("powerLevel"));
+                        }
+                        if (nbt.contains("slurry")) {
+                            anbe.unpackSlurryFromNBT(nbt);
+                        }
                     }
                 } else if (cachedItem == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
                     GrandDistilleryBlockEntity gdbe = (GrandDistilleryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());

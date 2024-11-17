@@ -332,6 +332,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("powerLevel", powerLevel);
+        nbt.putInt("slurry", containedSlurry.getAmount());
 
         stack.setTag(nbt);
 
@@ -340,6 +342,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
         itemHandler.deserializeNBT(pInventoryTag);
+    }
+
+    public void unpackSlurryFromNBT(CompoundTag pSlurryTag) {
+        containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pSlurryTag.getInt("slurry"));
     }
 
     ////////////////////
