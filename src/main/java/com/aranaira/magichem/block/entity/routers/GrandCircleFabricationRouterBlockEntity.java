@@ -3,10 +3,9 @@ package com.aranaira.magichem.block.entity.routers;
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -20,6 +19,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,10 +28,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_CIRCLE_FABRICATION;
 
-public class GrandCircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IDestroysMasterOnDestruction {
+public class GrandCircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver {
     private BlockPos masterPos;
     private GrandCircleFabricationBlockEntity master;
     private DevicePlugDirection plugDirection;
@@ -170,5 +172,45 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
             else if(facing == Direction.SOUTH) plugDirection = DevicePlugDirection.WEST;
             else if(facing == Direction.WEST) plugDirection = DevicePlugDirection.NORTH;
         }
+    }
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return getMaster().allowIncreasedDeliverySize();
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        return getMaster().needsProvisioning();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        return getMaster().getProvisioningNeeds();
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        getMaster().setProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        getMaster().cancelProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        getMaster().provide(pStack);
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        return getMaster().canAcceptStackFromShlorp(pStack);
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        return getMaster().insertStackFromShlorp(pStack);
     }
 }
