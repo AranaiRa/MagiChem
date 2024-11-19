@@ -4641,6 +4641,22 @@
         "location": "magichem:alchemical_sublimation/magichem/exaltation_resonance"
       },
       {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/exaltation_emptiness"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/exaltation_resilience"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/exaltation_saturation"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/exaltation_sorcery"
+      },
+      {
         "type": "crafting",
         "location": "magichem:shapeless/construct/exaltation_head_stone_smart"
       }

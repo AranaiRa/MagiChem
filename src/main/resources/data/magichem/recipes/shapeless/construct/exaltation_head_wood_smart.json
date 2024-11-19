@@ -2,10 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     { "item": "magichem:exaltation_intelligence" },
-    { "item": "mna:constructs/construct_basic_wood_iron" }
+    { "item": "mna:constructs/construct_basic_head_wood" }
   ],
   "result": {
-    "item": "mna:constructs/construct_smart_wood_iron",
+    "item": "mna:constructs/construct_smart_head_wood",
     "count": 1
   }
 }

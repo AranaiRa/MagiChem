@@ -138,6 +138,22 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> EXALTATION_EMPTINESS = ITEMS.register("exaltation_emptiness",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> EXALTATION_RESILIENCE = ITEMS.register("exaltation_resilience",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> EXALTATION_SATURATION = ITEMS.register("exaltation_saturation",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> EXALTATION_SORCERY = ITEMS.register("exaltation_sorcery",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
             () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
     );

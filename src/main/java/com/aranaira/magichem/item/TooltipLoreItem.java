@@ -301,6 +301,30 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.EXALTATION_EMPTINESS.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.exaltationemptiness")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.EXALTATION_RESILIENCE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.exaltationresilience")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.EXALTATION_SATURATION.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.exaltationsaturation")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.EXALTATION_SORCERY.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.exaltationsorcery")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == ItemRegistry.BLEACHED_AMETHYST_SHARD.get()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.bleachedamethystshard")

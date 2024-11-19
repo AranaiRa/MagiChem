@@ -3,19 +3,20 @@
   "tier": 2,
   "wisdom": 0,
   "object": {
-    "item": "magichem:exaltation_intelligence",
+    "item": "magichem:exaltation_sorcery",
     "count": 2
   },
   "stages": [
     {
-      "experience": 8,
+      "experience": 0,
       "components": [
         { "item": "mna:vellum" },
-        { "item": "minecraft:book" }
+        { "item": "mna:mana_resevoir" },
+        { "item": "mna:mote_magic" }
       ],
       "materia": [
-        { "item": "magichem:essentia_arcane", "count": 40 },
-        { "item": "magichem:admixture_thought", "count": 35 },
+        { "item": "magichem:essentia_nourishing", "count": 20 },
+        { "item": "magichem:admixture_mana", "count": 15 },
         { "item": "magichem:admixture_construct", "count": 3 }
       ]
     }

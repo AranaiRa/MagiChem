@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:exaltation_sorcery" },
+    { "item": "mna:constructs/construct_basic_torso_bone" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_mana_torso_bone",
+    "count": 1
+  }
+}

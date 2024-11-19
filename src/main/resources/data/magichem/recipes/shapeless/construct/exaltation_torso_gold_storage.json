@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:exaltation_emptiness" },
+    { "item": "mna:constructs/construct_basic_torso_gold" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_storage_torso_gold",
+    "count": 1
+  }
+}
