@@ -700,6 +700,7 @@
   "construct.magichem:collect_experience": "Collect Experience",
   "construct.magichem:study": "Study",
   "construct.magichem:harvest_crystals": "Harvest Crystals",
+  "construct.magichem:query_device_needs_provisioning": "Condition: Device Needs Provisioning",
 
   "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
   "gui.mna.codex_search.recipe.sublimation_ritual": "Ritual Sublimation > ",
@@ -726,6 +727,8 @@
   "gui.mna.parameter.study.point": "Where is the Study Desk that the construct should study at?",
 
   "gui.mna.parameter.harvest_crystals.area": "In what area should the construct look for fully-grown crystal buds to break?",
+
+  "gui.mna.parameter.query_device_needs_provisioning.point": "What device's provisioning needs should the construct check?",
 
   "hud.magichem.coloring_cauldron.current_item.processing": "Coloring ",
   "hud.magichem.coloring_cauldron.current_item.waiting": " Complete",

@@ -2747,6 +2747,47 @@
     ],
     "related_recipes": []
   },
+  "Condition: Device Needs Provisioning": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Device Needs Provisioning"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will "
+          },
+          {
+            "text": "check whether an alchemical device can have materia delivered by a construct",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", returning "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if it can request more materia, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it cannot."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Materia Jar": {
     "index": "1212",
     "category": "magichem",
