@@ -2,10 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
-import com.aranaira.magichem.item.MateriaJarItem;
-import com.aranaira.magichem.item.MateriaVesselItem;
-import com.aranaira.magichem.item.PowerSpikeItem;
-import com.aranaira.magichem.item.TooltipLoreBlockItem;
+import com.aranaira.magichem.item.*;
 import com.mna.blocks.decoration.SimpleRotationalBlock;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -398,6 +395,7 @@ public class BlockRegistry {
             case "materia_jar" -> ItemRegistry.ITEMS.register(name, () -> new MateriaJarItem(block.get(), new Item.Properties()));
             case "materia_vessel" -> ItemRegistry.ITEMS.register(name, () -> new MateriaVesselItem(block.get(), new Item.Properties()));
             case "power_spike" -> ItemRegistry.ITEMS.register(name, () -> new PowerSpikeItem(block.get(), new Item.Properties()));
+            case "standing_retort" -> ItemRegistry.ITEMS.register(name, () -> new StandingRetortBlockItem(block.get(), new Item.Properties()));
             default -> ItemRegistry.ITEMS.register(name, () -> new TooltipLoreBlockItem(block.get(), new Item.Properties()));
         };
     }
