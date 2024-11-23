@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/standing_retort"
+    },
+    "facing=east": {
+      "model": "magichem:block/standing_retort",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/standing_retort",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/standing_retort",
+      "y": 270
+    }
+  }
+}

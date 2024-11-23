@@ -163,6 +163,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.STANDING_RETORT.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.standingretort")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

@@ -192,6 +192,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(CrystalCandleBlockEntity::new, BlockRegistry.CRYSTAL_CANDLE.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<StandingRetortBlockEntity>> STANDING_RETORT_BE = BLOCK_ENTITIES.register("standing_retort", () ->
+            BlockEntityType.Builder.of(StandingRetortBlockEntity::new, BlockRegistry.STANDING_RETORT.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_BE = BLOCK_ENTITIES.register("signalite", () ->
             BlockEntityType.Builder.of(SignaliteBlockEntity::new,
                 BlockRegistry.SIGNALITE.get(),

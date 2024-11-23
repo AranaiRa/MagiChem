@@ -1,0 +1,5 @@
+# Blender MTL File: 'wizard_lab_blocks.blend'
+# Material Count: 1
+
+newmtl MATERIA_JAR
+map_Kd magichem:block/materia_vessel

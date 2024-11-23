@@ -1,0 +1,11 @@
+# Blender MTL File: 'wizard_lab_blocks.blend'
+# Material Count: 3
+
+newmtl FUMEFILTER
+map_Kd mna:block/artifice/wizard_lab/laboratory_fumefilter
+
+newmtl MATERIA_JAR
+map_Kd magichem:block/materia_vessel
+
+newmtl SIGNALITE
+map_Kd magichem:block/signalite
