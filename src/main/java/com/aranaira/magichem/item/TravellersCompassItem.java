@@ -7,6 +7,7 @@ import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.ClientUtil;
 import com.mna.KeybindInit;
+import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
 import com.mna.items.artifice.ItemThaumaturgicCompass;
 import com.mna.items.base.IRadialInventorySelect;
 import net.minecraft.ChatFormatting;
@@ -40,29 +41,31 @@ public class TravellersCompassItem extends ItemThaumaturgicCompass implements IR
     @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-        if(!pLevel.isClientSide()) {
-            if(KeybindInit.InventoryItemOpen.get().isDown()) {
-                NetworkHooks.openScreen((ServerPlayer)pPlayer, new SimpleMenuProvider(new MenuProvider() {
-                    @Override
-                    public Component getDisplayName() {
-                        return Component.empty();
-                    }
+        pPlayer.getCapability(PlayerMagicProvider.MAGIC).ifPresent((m) -> {
+            if(!pLevel.isClientSide()) {
+                if(m.isModifierPressed()) {
+                    NetworkHooks.openScreen((ServerPlayer)pPlayer, new SimpleMenuProvider(new MenuProvider() {
+                        @Override
+                        public Component getDisplayName() {
+                            return Component.empty();
+                        }
 
-                    @Nullable
-                    @Override
-                    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pInternalPlayer) {
-                        ItemStack itemInHand = pInternalPlayer.getItemInHand(InteractionHand.MAIN_HAND);
-                        int slot = pPlayerInventory.findSlotMatchingItem(itemInHand);
+                        @Nullable
+                        @Override
+                        public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pInternalPlayer) {
+                            ItemStack itemInHand = pInternalPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+                            int slot = pPlayerInventory.findSlotMatchingItem(itemInHand);
 
-                        ContainerData data = new SimpleContainerData(1);
-                        data.set(0, slot);
+                            ContainerData data = new SimpleContainerData(1);
+                            data.set(0, slot);
 
-                        return new TravellersCompassMenu(pContainerId, pPlayerInventory, data);
-                    }
-                }, Component.empty()));
+                            return new TravellersCompassMenu(pContainerId, pPlayerInventory, data);
+                        }
+                    }, Component.empty()));
+                }
             }
+        });
 
-        }
         return super.use(pLevel, pPlayer, pHand);
     }
 
