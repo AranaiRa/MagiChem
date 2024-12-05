@@ -14,23 +14,27 @@ public class NexusSyncDataC2SPacket {
     private final BlockPos blockPos;
     private final byte powerUsageSetting;
     private final ItemStack recipeOutput;
+    private final boolean preventDrawingLastMateria;
 
-    public NexusSyncDataC2SPacket(BlockPos pBlockPos, int pPowerLevel, ItemStack pStack) {
+    public NexusSyncDataC2SPacket(BlockPos pBlockPos, int pPowerLevel, ItemStack pStack, boolean pPreventDrawingLastMateria) {
         this.blockPos = pBlockPos;
         this.powerUsageSetting = (byte)pPowerLevel;
         this.recipeOutput = pStack.copy();
+        this.preventDrawingLastMateria = pPreventDrawingLastMateria;
     }
 
     public NexusSyncDataC2SPacket(FriendlyByteBuf buf) {
         this.blockPos = buf.readBlockPos();
         this.powerUsageSetting = buf.readByte();
         this.recipeOutput = buf.readItem();
+        this.preventDrawingLastMateria = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeBlockPos(blockPos);
         buf.writeByte(powerUsageSetting);
         buf.writeItemStack(recipeOutput, true);
+        buf.writeBoolean(preventDrawingLastMateria);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
@@ -43,6 +47,7 @@ public class NexusSyncDataC2SPacket {
             if(entity instanceof AlchemicalNexusBlockEntity anbe) {
                 anbe.setPowerUsageSetting(powerUsageSetting);
                 anbe.setRecipeFromOutput(anbe.getLevel(), recipeOutput);
+                anbe.preventDrawingLastMateria = preventDrawingLastMateria;
                 anbe.syncAndSave();
             }
         });

@@ -46,7 +46,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     private static final ResourceLocation TEXTURE_EXT =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_fabrication_ext.png");
     private ImageButton
-            b_powerLevelUp, b_powerLevelDown;
+            b_powerLevelUp, b_powerLevelDown, b_materiaProtectionToggle;
 
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 192,
@@ -104,10 +104,10 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         recipesChanged = false;
     }
 
-    private List<SublimationRecipe> allRecipes = new ArrayList<>();
+    private final List<SublimationRecipe> allRecipes = new ArrayList<>();
     @NotNull
     private List<SublimationRecipe> getAllRecipes() {
-        if(allRecipes.size() == 0) {
+        if(allRecipes.isEmpty()) {
             List<SublimationRecipe> raw = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(SublimationRecipe.Type.INSTANCE);
             Object[] sortable = raw.toArray();
             Arrays.sort(sortable, Comparator.comparing(o -> ((SublimationRecipe)o).getAlchemyObject().getDisplayName().getString()));
@@ -138,7 +138,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                         menu.blockEntity.getBlockPos(),
                         menu.blockEntity.getPowerLevel(),
-                        output
+                        output,
+                        menu.blockEntity.preventDrawingLastMateria
                 ));
             }
         }));
@@ -149,7 +150,22 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                         menu.blockEntity.getBlockPos(),
                         menu.blockEntity.getPowerLevel(),
-                        output
+                        output,
+                        menu.blockEntity.preventDrawingLastMateria
+                ));
+            }
+        }));
+    }
+
+    private void initializeToggleButtons(){
+        b_materiaProtectionToggle = this.addRenderableWidget(new ImageButton(this.leftPos + 0, this.topPos + 0, 12, 7, 0, 0, TEXTURE, button -> {
+            if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
+                ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
+                PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
+                        menu.blockEntity.getBlockPos(),
+                        menu.blockEntity.getPowerLevel(),
+                        output,
+                        !menu.blockEntity.preventDrawingLastMateria
                 ));
             }
         }));
@@ -263,7 +279,8 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     menu.blockEntity.getPowerLevel(),
-                    filteredRecipes.get(trueIndex)
+                    filteredRecipes.get(trueIndex),
+                    menu.blockEntity.preventDrawingLastMateria
             ));
             menu.blockEntity.setRecipeFromOutput(menu.blockEntity.getLevel(), filteredRecipes.get(trueIndex));
         }

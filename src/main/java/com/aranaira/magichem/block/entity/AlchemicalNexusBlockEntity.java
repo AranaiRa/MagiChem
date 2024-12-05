@@ -100,6 +100,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             crystalAngle = 0f, crystalRotSpeed = CRYSTAL_SPEED_MIN,
             itemAngle = 0f, itemRotSpeed = ITEM_SPEED_MIN, itemScale = 7f,
             reductionRate = 0.0f;
+    public boolean
+            preventDrawingLastMateria = false;
 
     ////////////////////
     // CONSTRUCTOR
@@ -239,6 +241,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         nbt.putInt("powerLevel", this.powerLevel);
         nbt.putInt("fluidContents", this.containedSlurry.getAmount());
         nbt.putFloat("reductionRate", this.reductionRate);
+        nbt.putBoolean("preventDrawingLastMateria", this.preventDrawingLastMateria);
 
         nbt.putInt("numberOfDemands", satisfactionDemands.size());
         for(int i=0; i<satisfactionDemands.size(); i++) {
@@ -260,6 +263,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         remainingFluidForSatisfaction = nbt.getInt("remainingFluidForSatisfaction");
         powerLevel = nbt.getInt("powerLevel");
         reductionRate = nbt.getFloat("reductionRate");
+        if(nbt.contains("preventDrawingLastMateria"))
+            preventDrawingLastMateria = nbt.getBoolean("preventDrawingLastMateria");
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -290,6 +295,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         nbt.putInt("remainingFluidForSatisfaction", this.remainingFluidForSatisfaction);
         nbt.putInt("powerLevel", this.powerLevel);
         nbt.putFloat("reductionRate", this.reductionRate);
+        nbt.putBoolean("preventDrawingLastMateria", this.preventDrawingLastMateria);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -469,7 +475,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> marks = anbe.getMarkedEntitiesAndLocations();
                     NonNullList<MateriaItem> outstanding = anbe.getDemandedMateriaNotInTransit();
 
-                    if (marks.size() >= 1) {
+                    if (!marks.isEmpty()) {
                         Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair;
                         if (marks.size() == 1) pair = marks.get(0);
                         else {
