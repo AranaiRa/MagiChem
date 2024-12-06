@@ -2235,6 +2235,53 @@
       }
     ]
   },
+  "Standing Retort": {
+    "index": "1307",
+    "category": "magichem",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Standing Retort"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Standing Retort",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be placed on top of an "
+          },
+          {
+            "text": "Eldrin Fume Filter",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in order to fill it with elemental essentia.\n\nConstructs can keep a Standing Retort filled using the "
+          },
+          {
+            "text": "Provide Materia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " task, but the Retort's affinity must be set in its GUI first."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/standing_retort"
+      }
+    ]
+  },
   "Grime": {
     "index": "1215",
     "category": "magichem",
@@ -4633,6 +4680,10 @@
       }
     ],
     "related_recipes": [
+      {
+        "type": "sublimation_ritual",
+        "location": "magichem:alchemical_sublimation_ritual/magichem/travellers_compass"
+      },
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/travellers_compass"
