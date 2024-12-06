@@ -1,0 +1,13 @@
+{
+  "type": "magichem:sublimation_ritual",
+  "object": {
+    "item": "magichem:travellers_compass"
+  },
+  "materia_type_one": { "item": "magichem:admixture_travel", "count": 20 },
+  "materia_type_two": { "item": "magichem:admixture_wizard", "count": 5 },
+  "components": [
+    { "item": "mna:decoration/arcane_sandstone" },
+    { "item": "minecraft:clock" },
+    { "item": "minecraft:compass" }
+  ]
+}
