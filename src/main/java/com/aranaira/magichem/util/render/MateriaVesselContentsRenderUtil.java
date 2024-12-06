@@ -34,7 +34,11 @@ public class MateriaVesselContentsRenderUtil {
             FLOATING_VESSEL_FLUID_START_XZ = -0.0625F,
             FLOATING_VESSEL_FLUID_START_Y = 0.09375F,
             FLOATING_VESSEL_FLUID_WIDTH = 0.125F,
-            FLOATING_VESSEL_FLUID_HEIGHT_MAX = 0.1875F;
+            FLOATING_VESSEL_FLUID_HEIGHT_MAX = 0.1875F,
+            RETORT_FLUID_START_XZ = 0.40625F,
+            RETORT_FLUID_START_Y = 0.1875F,
+            RETORT_FLUID_WIDTH = 0.1875F,
+            RETORT_FLUID_HEIGHT_MAX = 0.375F;
 
     public static void renderGrandCircleFabricationFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {
         float height = FLOATING_VESSEL_FLUID_HEIGHT_MAX * fillAmount;
@@ -64,6 +68,29 @@ public class MateriaVesselContentsRenderUtil {
                 FLOATING_VESSEL_FLUID_START_XZ, FLOATING_VESSEL_FLUID_START_Y, 1 + FLOATING_VESSEL_FLUID_START_XZ, FLOATING_VESSEL_FLUID_WIDTH, height,
                 0, 0.125f, 0.0625f, 0.0625f + height,
                 color, packedLight);
+    }
+
+    public static void renderRetortFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {
+        float height = RETORT_FLUID_HEIGHT_MAX * fillAmount;
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FLUID_TEXTURE);
+
+        RenderUtils.renderFace(Direction.UP, pose, normal, consumer, texture,
+                RETORT_FLUID_START_XZ, RETORT_FLUID_START_XZ, RETORT_FLUID_START_Y +height, RETORT_FLUID_WIDTH, RETORT_FLUID_WIDTH, color, packedLight);
+
+        RenderUtils.renderFace(Direction.DOWN, pose, normal, consumer, texture,
+                RETORT_FLUID_START_XZ, RETORT_FLUID_START_XZ, 1.0f - RETORT_FLUID_START_Y, RETORT_FLUID_WIDTH, RETORT_FLUID_WIDTH, color, packedLight);
+
+        RenderUtils.renderFace(Direction.NORTH, pose, normal, consumer, texture,
+                RETORT_FLUID_START_XZ, RETORT_FLUID_START_Y, RETORT_FLUID_START_XZ, RETORT_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.EAST, pose, normal, consumer, texture,
+                RETORT_FLUID_START_XZ, RETORT_FLUID_START_Y, RETORT_FLUID_START_XZ, RETORT_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.SOUTH, pose, normal, consumer, texture,
+                RETORT_FLUID_START_XZ, RETORT_FLUID_START_Y, RETORT_FLUID_START_XZ, RETORT_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.WEST, pose, normal, consumer, texture,
+                RETORT_FLUID_START_XZ, RETORT_FLUID_START_Y, RETORT_FLUID_START_XZ, RETORT_FLUID_WIDTH, height, color, packedLight);
     }
 
     public static void renderJarFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {

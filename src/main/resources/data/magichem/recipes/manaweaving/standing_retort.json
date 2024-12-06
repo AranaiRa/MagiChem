@@ -1,0 +1,18 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:standing_retort",
+  "tier": 3,
+  "items": [
+    "magichem:admixture_thought",
+    "magichem:materia_jar",
+    "magichem:admixture_thought",
+    "minecraft:stick",
+    "minecraft:stick",
+    "minecraft:stick",
+    "mna:transmuted_silver"
+  ],
+  "patterns": [
+    "mna:bolt",
+    "mna:inverted_triangle"
+  ]
+}

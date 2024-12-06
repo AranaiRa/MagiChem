@@ -36,6 +36,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -242,6 +243,10 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
         return Component.empty();
     }
 
+    public ItemStack getMateria() {
+        return itemHandler.getStackInSlot(SLOT_ESSENTIA);
+    }
+
     public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, StandingRetortBlockEntity entity) {
         if(!level.isClientSide() && level.getGameTime() % 60 == 0) {
             ItemStack essentiaInSlot = entity.itemHandler.getStackInSlot(0);
@@ -250,19 +255,32 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
 
             BlockEntity be = level.getBlockEntity(pos.below().below());
             if(be instanceof EldrinFumeTile eft) {
-                final LazyOptional<IItemHandler> lazyCap = eft.getCapability(ForgeCapabilities.ITEM_HANDLER);
-                if(lazyCap.isPresent() && lazyCap.resolve().isPresent()) {
-                    final IItemHandler resolvedCap = lazyCap.resolve().get();
+                ItemStack insertionQuery = essentiaInSlot.copy();
+                insertionQuery.setCount(Math.min(4, essentiaInSlot.getCount()));
 
-                    ItemStack insertionQuery = essentiaInSlot.copy();
-                    insertionQuery.setCount(Math.min(4, essentiaInSlot.getCount()));
+                ItemStack fumeFilterQuery = eft.getItem(1);
+                if(fumeFilterQuery.getCount() == 64)
+                    return;
 
-                    ItemStack simulatedInsert = resolvedCap.insertItem(0, insertionQuery, true);
-                    if(simulatedInsert.getCount() < 4) {
-                        resolvedCap.insertItem(0, insertionQuery, false);
-                        essentiaInSlot.shrink(4 - simulatedInsert.getCount());
-                        entity.itemHandler.setStackInSlot(SLOT_ESSENTIA, essentiaInSlot);
+                boolean fumeFilterIsBottled = InventoryHelper.isMateriaUnbottled(fumeFilterQuery);
+                boolean retortIsBottled = InventoryHelper.isMateriaUnbottled(insertionQuery);
+                boolean matchesMateriaType = fumeFilterQuery.getItem() == insertionQuery.getItem();
+
+                boolean transferIsValid = (fumeFilterQuery.isEmpty()) || ((fumeFilterIsBottled == retortIsBottled) && matchesMateriaType);
+
+                if(transferIsValid) {
+                    if(fumeFilterQuery.getCount() + insertionQuery.getCount() <= 64) {
+                        essentiaInSlot.shrink(insertionQuery.getCount());
+                        fumeFilterQuery.grow(insertionQuery.getCount());
                     }
+                    else {
+                        int transferLimit = 64 - (fumeFilterQuery.getCount() + insertionQuery.getCount());
+
+                        essentiaInSlot.shrink(transferLimit);
+                        fumeFilterQuery.grow(transferLimit);
+                    }
+                    entity.itemHandler.setStackInSlot(SLOT_ESSENTIA, essentiaInSlot);
+                    eft.setItem(1, fumeFilterQuery);
                 }
             }
         }
