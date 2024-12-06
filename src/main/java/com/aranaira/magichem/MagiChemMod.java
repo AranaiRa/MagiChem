@@ -156,6 +156,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.TRAVELLERS_COMPASS_MENU.get(), TravellersCompassScreen::new);
                 MenuScreens.register(MenuRegistry.CONJURER_MENU.get(), ConjurerScreen::new);
                 MenuScreens.register(MenuRegistry.MATERIA_MANIFEST_MENU.get(), MateriaManifestScreen::new);
+                MenuScreens.register(MenuRegistry.STANDING_RETORT_MENU.get(), StandingRetortScreen::new);
             });
         }
 

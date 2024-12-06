@@ -75,6 +75,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<MateriaManifestMenu>> MATERIA_MANIFEST_MENU =
             registerMenuType(MateriaManifestMenu::new, "materia_manifest");
 
+    public static final RegistryObject<MenuType<StandingRetortMenu>> STANDING_RETORT_MENU =
+            registerMenuType(StandingRetortMenu::new, "standing_retort");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

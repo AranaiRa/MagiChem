@@ -77,6 +77,12 @@ public class PacketRegistry {
                 .consumerMainThread(TravellersCompassSyncC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(StandingRetortSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(StandingRetortSyncDataC2SPacket::new)
+                .encoder(StandingRetortSyncDataC2SPacket::toBytes)
+                .consumerMainThread(StandingRetortSyncDataC2SPacket::handle)
+                .add();
+
         //Server to Clients
 
         MagiChemMod.CHANNEL.registerMessage(ID(), ParticleSpawnAnointingS2CPacket.class,

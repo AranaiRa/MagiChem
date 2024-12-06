@@ -3,12 +3,15 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.gui.ConjurerMenu;
+import com.aranaira.magichem.gui.StandingRetortMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.api.affinity.Affinity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -16,6 +19,8 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,18 +37,41 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StandingRetortBlockEntity extends BlockEntity implements /*MenuProvider<StandingRetortMenu>,*/ IShlorpReceiver, IMateriaProvisionRequester {
-    private int element = 0;
+public class StandingRetortBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester {
+    private int element = -1;
     private boolean provisioningInProgress = false;
+    protected ContainerData data = new ContainerData() {
+        @Override
+        public int get(int pIndex) {
+            return 0;
+        }
+
+        @Override
+        public void set(int pIndex, int pValue) {
+
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    };
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     public static HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(false, true);
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+    public static final int
+        SLOT_COUNT = 2, SLOT_ESSENTIA = 0, SLOT_BOTTLES = 1;
+
+    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(stack.getItem() instanceof MateriaItem mi)
-                return mi.getMateriaName().equals(getMateriaType());
+            if(slot == SLOT_ESSENTIA) {
+                if (stack.getItem() instanceof MateriaItem mi) {
+                    String matName = mi.getMateriaName();
+                    return matName.equals(getMateriaType());
+                }
+            }
 
             return false;
         }
@@ -54,12 +82,12 @@ public class StandingRetortBlockEntity extends BlockEntity implements /*MenuProv
     }
 
     public String getMateriaType() {
-        if(element == 1) return "essentia_ender";
-        else if(element == 2) return "essentia_earth";
-        else if(element == 3) return "essentia_water";
-        else if(element == 4) return "essentia_air";
-        else if(element == 5) return "essentia_fire";
-        else if(element == 6) return "essentia_arcane";
+        if(element == 0) return "ender";
+        else if(element == 1) return "earth";
+        else if(element == 2) return "water";
+        else if(element == 3) return "air";
+        else if(element == 4) return "fire";
+        else if(element == 5) return "arcane";
 
         return "";
     }
@@ -85,11 +113,11 @@ public class StandingRetortBlockEntity extends BlockEntity implements /*MenuProv
         lazyItemHandler.invalidate();
     }
 
-//    @Nullable
-//    @Override
-//    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-//        return new ConjurerMenu(pContainerId, pPlayerInventory, this, this.data);
-//    }
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        return new StandingRetortMenu(pContainerId, pPlayerInventory, this, this.data);
+    }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
@@ -127,6 +155,24 @@ public class StandingRetortBlockEntity extends BlockEntity implements /*MenuProv
     public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public int getElementID() {
+        return element;
+    }
+
+    public void setElementID(int pElement) {
+        element = pElement;
+    }
+
+    private static final Affinity[] AFFINITY_MAP = {
+            Affinity.ENDER, Affinity.EARTH, Affinity.WATER, Affinity.WIND, Affinity.FIRE, Affinity.ARCANE
+    };
+    public Affinity getAffinityFromElement() {
+        if(element > 5 || element < 0) {
+            return Affinity.UNKNOWN;
+        }
+        else return AFFINITY_MAP[element];
     }
 
     @Override
@@ -178,6 +224,12 @@ public class StandingRetortBlockEntity extends BlockEntity implements /*MenuProv
 
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
+        ItemStack simulation = itemHandler.insertItem(SLOT_ESSENTIA, pStack, true);
         return 0;
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.empty();
     }
 }
