@@ -7,7 +7,9 @@ import com.aranaira.magichem.gui.StandingRetortMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
+import com.mna.blocks.tileentities.wizard_lab.EldrinFumeTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +24,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class StandingRetortBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester {
     private int element = -1;
@@ -58,7 +62,7 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
     };
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    public static HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(false, true);
+    public static HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(false, false);
 
     public static final int
         SLOT_COUNT = 2, SLOT_ESSENTIA = 0, SLOT_BOTTLES = 1;
@@ -190,8 +194,10 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
         HashMap<MateriaItem, Integer> needs = new HashMap<>();
 
         int currentCount = itemHandler.getStackInSlot(0).getCount();
-        if(currentCount < 16) {
-            needs.put(materiaMap.get(getMateriaType()), 64 - currentCount);
+        if(currentCount < 16 && !provisioningInProgress) {
+            if(itemHandler.getStackInSlot(0).isEmpty() || InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(0))) {
+                needs.put(materiaMap.get(getMateriaType()), 64 - currentCount);
+            }
         }
 
         return needs;
@@ -199,9 +205,7 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public void setProvisioningInProgress(MateriaItem pMateriaItem) {
-        if(pMateriaItem.getMateriaName().equals(getMateriaType())) {
-            provisioningInProgress = true;
-        }
+        provisioningInProgress = true;
     }
 
     @Override
@@ -211,7 +215,12 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public void provide(ItemStack pStack) {
-        provisioningInProgress = false;
+        if(pStack.getItem() == materiaMap.get(getMateriaType())) {
+            provisioningInProgress = false;
+            pStack.getOrCreateTag().putInt("CustomModelData", 1);
+            itemHandler.insertItem(SLOT_ESSENTIA, pStack, false);
+            syncAndSave();
+        }
     }
 
     @Override
@@ -224,12 +233,38 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
-        ItemStack simulation = itemHandler.insertItem(SLOT_ESSENTIA, pStack, true);
+        provide(pStack);
         return 0;
     }
 
     @Override
     public Component getDisplayName() {
         return Component.empty();
+    }
+
+    public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, StandingRetortBlockEntity entity) {
+        if(!level.isClientSide() && level.getGameTime() % 60 == 0) {
+            ItemStack essentiaInSlot = entity.itemHandler.getStackInSlot(0);
+            if(essentiaInSlot.isEmpty())
+                return;
+
+            BlockEntity be = level.getBlockEntity(pos.below().below());
+            if(be instanceof EldrinFumeTile eft) {
+                final LazyOptional<IItemHandler> lazyCap = eft.getCapability(ForgeCapabilities.ITEM_HANDLER);
+                if(lazyCap.isPresent() && lazyCap.resolve().isPresent()) {
+                    final IItemHandler resolvedCap = lazyCap.resolve().get();
+
+                    ItemStack insertionQuery = essentiaInSlot.copy();
+                    insertionQuery.setCount(Math.min(4, essentiaInSlot.getCount()));
+
+                    ItemStack simulatedInsert = resolvedCap.insertItem(0, insertionQuery, true);
+                    if(simulatedInsert.getCount() < 4) {
+                        resolvedCap.insertItem(0, insertionQuery, false);
+                        essentiaInSlot.shrink(4 - simulatedInsert.getCount());
+                        entity.itemHandler.setStackInSlot(SLOT_ESSENTIA, essentiaInSlot);
+                    }
+                }
+            }
+        }
     }
 }
