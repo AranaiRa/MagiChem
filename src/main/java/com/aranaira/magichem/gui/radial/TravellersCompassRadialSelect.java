@@ -47,10 +47,12 @@ public class TravellersCompassRadialSelect extends Screen {
         this.inventory = new ItemStackHandler(12);
 
         if(stackEquipped.hasTag()) {
-            deserializedInventory.deserializeNBT(stackEquipped.getTag().getCompound("inventory"));
+            if(stackEquipped.getTag().contains("inventory")) {
+                deserializedInventory.deserializeNBT(stackEquipped.getTag().getCompound("inventory"));
 
-            for (int i = SLOT_RADIAL_START; i<SLOT_RADIAL_START+SLOT_RADIAL_COUNT; i++) {
-                this.inventory.setStackInSlot(i-SLOT_RADIAL_START, deserializedInventory.getStackInSlot(i));
+                for (int i = SLOT_RADIAL_START; i < SLOT_RADIAL_START + SLOT_RADIAL_COUNT; i++) {
+                    this.inventory.setStackInSlot(i - SLOT_RADIAL_START, deserializedInventory.getStackInSlot(i));
+                }
             }
         }
 
