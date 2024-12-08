@@ -59,8 +59,9 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             TOOLTIP_SELECTED_RECIPE_X = 80, TOOLTIP_SELECTED_RECIPE_Y = 80, TOOLTIP_SELECTED_RECIPE_S = 16,
             TOOLTIP_MARK_X = 134, TOOLTIP_MARK_Y = 8, TOOLTIP_MARK_S = 16,
             TOOLTIP_STAGE_X = 115, TOOLTIP_STAGE_Y = 29, TOOLTIP_STAGE_W = 54, TOOLTIP_STAGE_H = 9,
-            TOOLTIP_EXPERIENCE_X = 193, TOOLTIP_EXPERIENCE_Y = 54, TOOLTIP_EXPERIENCE_W = 59, TOOLTIP_EXPERIENCE_H = 13,
-            TOOLTIP_OPTIME_X = 193, TOOLTIP_OPTIME_Y = 73, TOOLTIP_OPTIME_W = 59, TOOLTIP_OPTIME_H = 13,
+            TOOLTIP_EXPERIENCE_X = 193, TOOLTIP_EXPERIENCE_Y = 46, TOOLTIP_EXPERIENCE_W = 59, TOOLTIP_EXPERIENCE_H = 13,
+            TOOLTIP_OPTIME_X = 193, TOOLTIP_OPTIME_Y = 63, TOOLTIP_OPTIME_W = 59, TOOLTIP_OPTIME_H = 13,
+            TOOLTIP_SIPHON_X = 193, TOOLTIP_SIPHON_Y = 80, TOOLTIP_SIPHON_W = 59, TOOLTIP_SIPHON_H = 13,
             TOOLTIP_RECIPE_ZONE_X = -77, TOOLTIP_RECIPE_ZONE_Y = 22, TOOLTIP_RECIPE_ZONE_W = 54, TOOLTIP_RECIPE_ZONE_H = 90;
     private SublimationRecipe lastRecipe = null;
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
@@ -82,6 +83,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         super.init();
         initializeRecipeSelectorButtons();
         initializePowerLevelButtons();
+        initializeToggleButtons();
         initializeRecipeFilterBox();
     }
 
@@ -158,7 +160,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     }
 
     private void initializeToggleButtons(){
-        b_materiaProtectionToggle = this.addRenderableWidget(new ImageButton(this.leftPos + 0, this.topPos + 0, 12, 7, 0, 0, TEXTURE, button -> {
+        b_materiaProtectionToggle = this.addRenderableWidget(new ImageButton(this.leftPos + 196, this.topPos + 68, 11, 11, 0, 192, TEXTURE, button -> {
             if(menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == AlchemicalNexusBlockEntity.ANIM_STAGE_CRAFTING_IDLE) {
                 ItemStack output = menu.blockEntity.getCurrentRecipe() == null ? ItemStack.EMPTY : menu.blockEntity.getCurrentRecipe().getAlchemyObject();
                 PacketRegistry.sendToServer(new NexusSyncDataC2SPacket(
@@ -253,6 +255,10 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             int nubbinShift = (int)Math.floor(percent * 80);
             pGuiGraphics.blit(TEXTURE, x - 19, y + 23 + nubbinShift, 38, 230, 8, 8);
         }
+
+        //Protect/Drain Indicator
+        if(menu.blockEntity.preventDrawingLastMateria)
+            pGuiGraphics.blit(TEXTURE, x + 196, y + 81, 221, 245, 11, 11);
     }
 
     private void initializeRecipeSelectorButtons(){
@@ -494,6 +500,26 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     .append(Component.translatable("tooltip.magichem.gui.operationtime.nexus.line2")));
         }
 
+        //Siphon Mode
+        if(pX >= x+TOOLTIP_SIPHON_X && pX <= x+TOOLTIP_SIPHON_X+TOOLTIP_SIPHON_W &&
+                pY >= y+TOOLTIP_SIPHON_Y && pY <= y+TOOLTIP_SIPHON_Y+TOOLTIP_SIPHON_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.siphonmode").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.siphonmode.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.siphonmode.line2")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.siphonmode.line3")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.siphonmode.line4")));
+        }
+
         if(menu.getCurrentRecipe() != null) {
             //Ingredients
             if (pX >= x + 21 && pX <= x + 39 &&
@@ -713,8 +739,11 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         int secPartial = (ticksToCraft % 20) * 5;
 
         Font font = Minecraft.getInstance().font;
-        pGuiGraphics.drawString(font ,experienceDraw+" mB", 208, 44, 0xff000000, false);
-        pGuiGraphics.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 208, 63, 0xff000000, false);
+        pGuiGraphics.drawString(font ,experienceDraw+" mB", 210, 36, 0xff000000, false);
+        pGuiGraphics.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 210, 53, 0xff000000, false);
+        pGuiGraphics.drawString(font ,
+                menu.blockEntity.preventDrawingLastMateria ? Component.translatable("gui.magichem.mode.protect") : Component.translatable("gui.magichem.mode.drain"),
+                210, 70, 0xff000000, false);
 
         if(menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CIRCLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
             MutableComponent warningText = Component.translatable("gui.magichem.waitingforslurry");

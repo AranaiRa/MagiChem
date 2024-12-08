@@ -499,6 +499,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                         for (Triplet<MateriaItem, Integer, Boolean> demand : anbe.satisfactionDemands) {
                                             if (demand.getFirst() == mi) {
                                                 amount = Math.min(pair.getFirst().getCurrentStock(), demand.getSecond());
+                                                if(anbe.preventDrawingLastMateria)
+                                                    amount = Math.min(amount, pair.getFirst().getCurrentStock() - 1);
                                                 break;
                                             }
                                         }
