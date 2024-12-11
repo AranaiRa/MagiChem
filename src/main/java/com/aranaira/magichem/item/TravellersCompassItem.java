@@ -13,8 +13,10 @@ import com.mna.items.base.IRadialInventorySelect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -142,6 +144,26 @@ public class TravellersCompassItem extends ItemThaumaturgicCompass implements IR
                 pStack.setTag(nbt);
             }
         }
+    }
+
+    @Override
+    public void onInventoryTick(ItemStack stack, Level level, Player player, int slotIndex, int selectedIndex) {
+        if(level.isClientSide())
+            return;
+
+        if(level.getGameTime() % 200 == 0 && player instanceof ServerPlayer sp) {
+            final BlockPos respawnPosition = sp.getRespawnPosition();
+            String respawnDimensionKey = sp.getRespawnDimension().location().toString();
+
+            if(stack.hasTag()) {
+                CompoundTag nbtCompass = stack.getTag();
+                nbtCompass.putLong("respawnPosition", respawnPosition.asLong());
+                nbtCompass.putString("respawnDimension", respawnDimensionKey);
+                stack.setTag(nbtCompass);
+            }
+        }
+
+        super.onInventoryTick(stack, level, player, slotIndex, selectedIndex);
     }
 
     @Override

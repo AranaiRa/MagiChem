@@ -699,6 +699,10 @@
   "gui.magichem.direction.southwest": "Southwest",
   "gui.magichem.direction.west": "West",
   "gui.magichem.direction.northwest": "Northwest",
+  "gui.magichem.distance.worldspawn": "...from World Spawn",
+  "gui.magichem.distance.bedspawn": "...from Bed",
+  "gui.magichem.distance.nobed": "...No Bed Location",
+  "gui.magichem.distance.otherdimbed": "...Bed in Another Dimension",
 
   "construct.magichem:sort_materia": "Sort Materia from Device",
   "construct.magichem:sort_materia_from_container": "Sort Materia from Container",

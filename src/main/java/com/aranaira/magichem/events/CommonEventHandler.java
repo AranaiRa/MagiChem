@@ -437,20 +437,45 @@ public class CommonEventHandler {
 
             if(targetStack != null) {
                 if (targetStack.hasTag()) {
-                    CompoundTag posTag = targetStack.getTag().getCompound("LodestonePos");
-                    BlockPos target = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
+                    if(targetStack.getTag().contains("LodestonePos")) {
+                        CompoundTag posTag = targetStack.getTag().getCompound("LodestonePos");
+                        BlockPos target = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
 
-                    int distance = (int)Math.round(Math.sqrt(player.getOnPos().distSqr(target)));
+                        int distance = (int) Math.round(Math.sqrt(player.getOnPos().distSqr(target)));
 
-                    MutableComponent dist = Component.literal(distance+"m");
-                    event.getGuiGraphics().drawString(font, dist, x + 4, y + 4, 0xffffff, true);
+                        MutableComponent dist = Component.literal(distance + "m");
+                        event.getGuiGraphics().drawString(font, dist, x + 4, y + 4, 0xffffff, true);
 
-                    float rot = (360 + (player.getYRot() % 360)) % 360;
-                    event.getGuiGraphics().drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, y + 24, 0x888888, true);
+                        float time = player.level().getTimeOfDay(0);
+                        event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 14, 0x888888, true);
 
-                    float time = player.level().getTimeOfDay(0);
-                    event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 14, 0x888888, true);
+                        float rot = (360 + (player.getYRot() % 360)) % 360;
+                        event.getGuiGraphics().drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, y + 24, 0x888888, true);
+                    } else {
+                        if(targetStack.getTag().contains("respawnDimension")) {
+                            if(targetStack.getTag().getString("respawnDimension").equals(player.level().dimension().location().toString())) {
+                                int spawnBedDist = (int) Math.round(Math.sqrt(player.getOnPos().distSqr(BlockPos.of(targetStack.getTag().getLong("respawnPosition")))));
+                                event.getGuiGraphics().drawString(font, spawnBedDist + "m", x + 4, y + 4, 0xffffff, true);
+                                event.getGuiGraphics().drawString(font, Component.translatable("gui.magichem.distance.bedspawn"), x + 4, y + 14, 0x888888, true);
+                            } else {
+                                event.getGuiGraphics().drawString(font, "?m", x + 4, y + 4, 0xffffff, true);
+                                event.getGuiGraphics().drawString(font, Component.translatable("gui.magichem.distance.otherdimbed"), x + 4, y + 14, 0x888888, true);
+                            }
+                        } else {
+                            event.getGuiGraphics().drawString(font, "?m", x + 4, y + 4, 0xffffff, true);
+                            event.getGuiGraphics().drawString(font, Component.translatable("gui.magichem.distance.nobed"), x + 4, y + 14, 0x888888, true);
+                        }
 
+                        int spawnWorldDist = (int) Math.round(Math.sqrt(player.getOnPos().distSqr(player.level().getSharedSpawnPos())));
+                        event.getGuiGraphics().drawString(font, spawnWorldDist+"m", x + 4, y + 24, 0xffffff, true);
+                        event.getGuiGraphics().drawString(font, Component.translatable("gui.magichem.distance.worldspawn"), x + 4, y + 34, 0x888888, true);
+
+                        float time = player.level().getTimeOfDay(0);
+                        event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 44, 0x888888, true);
+
+                        float rot = (360 + (player.getYRot() % 360)) % 360;
+                        event.getGuiGraphics().drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, y + 54, 0x888888, true);
+                    }
                 } else {
                     float time = player.level().getTimeOfDay(0);
                     event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 4, 0x888888, true);
