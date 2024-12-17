@@ -1,0 +1,40 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 0,
+  "object": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  },
+  "stages": [
+    {
+      "experience": 400,
+      "components": [
+        { "item": "minecraft:netherrack" },
+        { "item": "minecraft:diamond" },
+        { "item": "minecraft:netherrack" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_protection", "count": 66 },
+        { "item": "magichem:admixture_change", "count": 47 },
+        { "item": "magichem:admixture_demon", "count": 23 },
+        { "item": "magichem:admixture_history", "count": 9 },
+        { "item": "magichem:essentia_nigredo", "count": 35 }
+      ]
+    },
+    {
+      "experience": 600,
+      "components": [
+        { "item": "minecraft:netherite_ingot" },
+        { "item": "magichem:vinteum_crystal_shard" },
+        { "item": "minecraft:netherite_ingot" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_metal", "count": 66 },
+        { "item": "magichem:admixture_permanence", "count": 47 },
+        { "item": "magichem:admixture_luck", "count": 23 },
+        { "item": "magichem:admixture_potential", "count": 9 },
+        { "item": "magichem:essentia_albedo", "count": 25 }
+      ]
+    }
+  ]
+}
