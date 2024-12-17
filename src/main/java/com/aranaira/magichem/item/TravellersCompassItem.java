@@ -153,12 +153,23 @@ public class TravellersCompassItem extends ItemThaumaturgicCompass implements IR
 
         if(level.getGameTime() % 200 == 0 && player instanceof ServerPlayer sp) {
             final BlockPos respawnPosition = sp.getRespawnPosition();
-            String respawnDimensionKey = sp.getRespawnDimension().location().toString();
+            if(respawnPosition != null) {
+                String respawnDimensionKey = sp.getRespawnDimension().location().toString();
 
-            if(stack.hasTag()) {
+                if (stack.hasTag()) {
+                    CompoundTag nbtCompass = stack.getTag();
+                    nbtCompass.putLong("respawnPosition", respawnPosition.asLong());
+                    nbtCompass.putString("respawnDimension", respawnDimensionKey);
+                    stack.setTag(nbtCompass);
+                }
+            } else {
                 CompoundTag nbtCompass = stack.getTag();
-                nbtCompass.putLong("respawnPosition", respawnPosition.asLong());
-                nbtCompass.putString("respawnDimension", respawnDimensionKey);
+                if(nbtCompass != null && nbtCompass.contains("respawnPosition")) {
+                    nbtCompass.remove("respawnPosition");
+                }
+                if(nbtCompass != null && nbtCompass.contains("respawnDimension")) {
+                    nbtCompass.remove("respawnDimension");
+                }
                 stack.setTag(nbtCompass);
             }
         }
