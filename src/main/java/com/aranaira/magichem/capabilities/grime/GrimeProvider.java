@@ -29,7 +29,8 @@ public class GrimeProvider implements ICapabilitySerializable<Tag> {
     public Tag serializeNBT() {
         IGrimeCapability instance = this.holder.orElse(new GrimeCapability());
         CompoundTag nbt = new CompoundTag();
-        nbt.putInt("grime", instance.getGrime());
+        nbt.putInt("grime", instance.getGrime() & 0xffff);
+        nbt.putInt("grime2", (instance.getGrime() >> 16) & 0xffff);
         return nbt;
     }
 
@@ -37,7 +38,12 @@ public class GrimeProvider implements ICapabilitySerializable<Tag> {
     public void deserializeNBT(Tag nbt) {
         IGrimeCapability instance = this.holder.orElse(new GrimeCapability());
         if(nbt instanceof CompoundTag ct) {
-            if(ct.contains("grime")) {
+            if(ct.contains("grime2")) {
+                int grime = ct.getInt("grime");
+                int grime2 = ct.getInt("grime2") << 16;
+                instance.setGrime(grime + grime2);
+            }
+            else if(ct.contains("grime")) {
                 int grime = ct.getInt("grime");
                 instance.setGrime(grime);
             }
