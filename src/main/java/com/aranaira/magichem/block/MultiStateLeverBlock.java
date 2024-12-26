@@ -84,6 +84,8 @@ public class MultiStateLeverBlock extends FaceAttachedHorizontalDirectionalBlock
 
     @Override
     public int getSignal(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pDirection) {
+        if(maxSignal == 1)
+            return pState.getValue(LEVER_SIGNAL) == 1 ? 15 : 0;
         return pState.getValue(LEVER_SIGNAL);
     }
 
