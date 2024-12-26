@@ -5,6 +5,7 @@
   "object": { "item": "minecraft:blue_stained_glass" },
   "components": [
     { "item": "magichem:admixture_crystal", "count": 2 },
-    { "item": "magichem:admixture_change", "count": 2 }
+    { "item": "magichem:admixture_change", "count": 1 },
+    { "item": "magichem:admixture_color", "count": 1 }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "distill_only": true,
+  "output_rate": 0.25,
+  "object": { "item": "minecraft:bamboo_button" },
+  "components": [
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
+  ]
+}

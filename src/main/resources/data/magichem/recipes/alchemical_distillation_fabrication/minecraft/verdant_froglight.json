@@ -2,7 +2,7 @@
   "type": "magichem:distillation_fabrication",
   "distill_only": false,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:ochre_froglight" },
+  "object": { "item": "minecraft:verdant_froglight" },
   "components": [
     { "item": "magichem:admixture_light", "count": 12 },
     { "item": "magichem:admixture_bargain", "count": 7 },

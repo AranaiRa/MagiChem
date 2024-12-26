@@ -2,7 +2,7 @@
   "type": "magichem:distillation_fabrication",
   "distill_only": true,
   "output_rate": 1.0,
-  "object": { "item": "minecraft:spruce_log" },
+  "object": { "item": "minecraft:spruce_wood" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 1 }
   ]

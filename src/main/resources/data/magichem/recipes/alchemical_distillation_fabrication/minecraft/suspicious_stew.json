@@ -1,0 +1,12 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:suspicious_stew" },
+  "components": [
+    { "item": "magichem:admixture_fungus", "count": 1 },
+    { "item": "magichem:admixture_odors", "count": 1 },
+    { "item": "magichem:admixture_whimsy", "count": 1 },
+    { "item": "magichem:essentia_nourishing", "count": 2 }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:cherry_hanging_sign" },
+  "components": [
+    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_instrument", "count": 1 }
+  ]
+}

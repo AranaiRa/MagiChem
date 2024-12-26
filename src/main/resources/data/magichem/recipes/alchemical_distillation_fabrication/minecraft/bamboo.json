@@ -1,7 +1,7 @@
 {
   "type": "magichem:distillation_fabrication",
   "distill_only": false,
-  "output_rate": 1.0,
+  "output_rate": 0.111,
   "object": { "item": "minecraft:bamboo" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 1 }

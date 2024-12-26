@@ -1,0 +1,10 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "minecraft:mushroom_stew" },
+  "components": [
+    { "item": "magichem:admixture_fungus", "count": 2 },
+    { "item": "magichem:essentia_nourishing", "count": 4 }
+  ]
+}

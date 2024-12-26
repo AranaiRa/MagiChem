@@ -4,7 +4,7 @@
   "output_rate": 1.0,
   "object": { "item": "minecraft:music_disc_13" },
   "components": [
-    { "item": "magichem:admixture_sound", "count": 3 },
+    { "item": "magichem:admixture_sound", "count": 23 },
     { "item": "magichem:admixture_instrument", "count": 1 },
     { "item": "magichem:essentia_precious", "count": 2 }
   ]
