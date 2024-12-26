@@ -4558,7 +4558,7 @@
   "Traveller's Compass": {
     "index": "0",
     "category": "magichem_wonders",
-    "tier": 2,
+    "tier": 1,
     "sections": [
       {
         "type": "title",
