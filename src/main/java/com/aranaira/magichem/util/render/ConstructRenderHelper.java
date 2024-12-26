@@ -49,8 +49,17 @@ public class ConstructRenderHelper {
         Vector3 outOffset = Vector3.zero();
 
         if(parsedString[2].equals("head")) {
-            outPath += parsedString[3]+"/head_"+parsedString[1];
-            outOffset = RENDER_OFFSET_HEAD;
+            if(parsedString[1].equals("horn")) {
+                outPath += parsedString[3] + "/head_doot";
+                outOffset = RENDER_OFFSET_HEAD;
+            } else {
+                outPath += parsedString[3] + "/head_" + parsedString[1];
+                outOffset = RENDER_OFFSET_HEAD;
+            }
+        } else if(parsedString[2].equals("rod")) {
+            boolean isLeftSide = parsedString[3].equals("left");
+            outPath += parsedString[4]+"/arm_fisher_"+(isLeftSide ? "l" : "r");
+            outOffset = isLeftSide ? RENDER_OFFSET_ARM_LEFT : RENDER_OFFSET_ARM_RIGHT;
         } else if(parsedString[2].equals("nozzle")) {
             boolean isLeftSide = parsedString[3].equals("left");
             outPath += parsedString[4]+"/arm_nozzle_"+(isLeftSide ? "l" : "r");
