@@ -81,9 +81,9 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             8015, 10275, 13175, 16890, 21655, 27760, 35590, 45630, 58500, 75000
     };
     private static final int[] OPERATION_TICKS = { //TODO: Convert this to config
-            1232, 1005, 820, 669, 546, 445, 363, 296, 241, 196,
-            160, 130, 106, 86, 70, 57, 46, 37, 30, 24,
-            19, 15, 12, 9, 7, 5, 4, 3, 2, 1
+            150, 134, 119, 106, 94, 84, 75, 67, 59, 52,
+            46, 41, 36, 32, 28, 25, 22, 19, 16, 14,
+            12, 10, 8, 7, 6, 5, 4, 3, 2, 1
     };
 
     public float
