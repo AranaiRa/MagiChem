@@ -25,6 +25,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.LEVER_SIGNAL;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWER;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
@@ -36,6 +38,8 @@ public class SignaliteBlock extends BaseEntityBlock {
         VOXEL_SHAPE_AGGREGATE;
 
     private final SignaliteBlockType type;
+    private static final Random r = new Random();
+    private int specialSignalStrength = 0;
 
     public SignaliteBlock(Properties pProperties, SignaliteBlockType pType) {
         super(pProperties);
@@ -121,6 +125,23 @@ public class SignaliteBlock extends BaseEntityBlock {
                 return signalStrength;
             if(pDirection == Direction.DOWN && sbe.connectedUp)
                 return signalStrength;
+
+            if(pState.getBlock() instanceof SignaliteBlock sb) {
+                if(sb.getType() != SignaliteBlockType.STANDARD) {
+                    if(pDirection == Direction.NORTH && sbe.specialSouth)
+                        return specialSignalStrength;
+                    if(pDirection == Direction.SOUTH && sbe.specialNorth)
+                        return specialSignalStrength;
+                    if(pDirection == Direction.EAST && sbe.specialWest)
+                        return specialSignalStrength;
+                    if(pDirection == Direction.WEST && sbe.specialEast)
+                        return specialSignalStrength;
+                    if(pDirection == Direction.UP && sbe.specialDown)
+                        return specialSignalStrength;
+                    if(pDirection == Direction.DOWN && sbe.specialUp)
+                        return specialSignalStrength;
+                }
+            }
         }
         return 0;
     }
@@ -141,9 +162,14 @@ public class SignaliteBlock extends BaseEntityBlock {
         if(pLevel.getBlockEntity(pPos) instanceof SignaliteBlockEntity sbe) {
             int signalStrength = 0;
             BlockState myState = pLevel.getBlockState(pPos);
+            SignaliteBlockType myType = ((SignaliteBlock) myState.getBlock()).getType();
             int oldSignalStrength = myState.getValue(POWER);
 
             for (Direction dir : sbe.getTransmittingDirections()) {
+                if(myType != SignaliteBlockType.STANDARD && sbe.isTransmittingDirectionOneWay(dir)) {
+                    continue;
+                }
+
                 BlockPos posQuery = pPos.offset(dir.getNormal());
                 BlockState stateToCheck = pLevel.getBlockState(posQuery);
 
@@ -163,6 +189,12 @@ public class SignaliteBlock extends BaseEntityBlock {
 
                 if (signalQuery > signalStrength) {
                     signalStrength = signalQuery;
+                }
+            }
+
+            if(myState.getBlock() instanceof SignaliteBlock sb) {
+                if(sb.getType() == SignaliteBlockType.CHAOTIC) {
+                    specialSignalStrength = signalStrength == 0 ? 0 : 1 + r.nextInt(15);
                 }
             }
 

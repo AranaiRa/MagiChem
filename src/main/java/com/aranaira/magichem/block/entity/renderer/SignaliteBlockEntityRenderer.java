@@ -1,6 +1,8 @@
 package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.SignaliteBlock;
+import com.aranaira.magichem.block.SignaliteBlock.SignaliteBlockType;
 import com.aranaira.magichem.block.entity.SignaliteBlockEntity;
 import com.mna.tools.render.ModelUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.NotNull;
 
 public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<SignaliteBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_BUTT = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_butt");
@@ -32,6 +35,10 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
         int signalStrength = state.getValue(BlockStateProperties.POWER);
+        SignaliteBlockType sbt = SignaliteBlockType.STANDARD;
+        if(state.getBlock() instanceof SignaliteBlock sb) {
+            sbt = sb.getType();
+        }
 
         float color = (signalStrength / 15f) * 0.4f + 0.3f + (signalStrength > 0 ? 0.3f : 0f);
 
@@ -55,9 +62,9 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(2 * zTime));
 
         pPoseStack.pushPose();
-        if(pBlockEntity.connectedNorth) {
+        if(pBlockEntity.connectedNorth || pBlockEntity.specialNorth) {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialNorth), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
@@ -65,9 +72,9 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
-        if(pBlockEntity.connectedEast) {
+        if(pBlockEntity.connectedEast || pBlockEntity.specialEast) {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialEast), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
@@ -75,9 +82,9 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
-        if(pBlockEntity.connectedSouth) {
+        if(pBlockEntity.connectedSouth || pBlockEntity.specialSouth) {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialSouth), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
@@ -85,9 +92,9 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         pPoseStack.popPose();
 
         pPoseStack.pushPose();
-        if(pBlockEntity.connectedWest) {
+        if(pBlockEntity.connectedWest || pBlockEntity.specialWest) {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialWest), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
@@ -97,8 +104,8 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(90));
         pPoseStack.mulPose(Axis.XP.rotationDegrees(45));
-        if(pBlockEntity.connectedUp) {
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+        if(pBlockEntity.connectedUp || pBlockEntity.specialUp) {
+            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialUp), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
@@ -108,8 +115,8 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(270));
         pPoseStack.mulPose(Axis.XN.rotationDegrees(45));
-        if(pBlockEntity.connectedDown) {
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SPIKE, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+        if(pBlockEntity.connectedDown || pBlockEntity.specialDown) {
+            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialDown), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
         } else {
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
@@ -117,5 +124,14 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         pPoseStack.popPose();
 
         pPoseStack.popPose();
+    }
+
+    @NotNull
+    private ResourceLocation getModelFromFlags(SignaliteBlockType pSBT, boolean pSpecial) {
+        if(pSBT == SignaliteBlockType.CHAOTIC && pSpecial) return RENDERER_MODEL_SPIKE_CHAOTIC;
+        else if(pSBT == SignaliteBlockType.DEVOURING && pSpecial) return RENDERER_MODEL_SPIKE_DEVOURING;
+        else if(pSBT == SignaliteBlockType.GATEKEEPING && pSpecial) return RENDERER_MODEL_SPIKE_GATEKEEPING;
+        else if(pSBT == SignaliteBlockType.NEGATING && pSpecial) return RENDERER_MODEL_SPIKE_NEGATING;
+        return RENDERER_MODEL_SPIKE;
     }
 }
