@@ -26,6 +26,7 @@ import java.util.List;
 
 import static com.aranaira.magichem.block.SignaliteBlock.SignaliteBlockType.STANDARD;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.VERTICAL_CRYSTAL_SHAPE_TYPE;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWER;
 
 public class SignaliteBlockEntity extends BlockEntity {
     private static final int
@@ -38,7 +39,10 @@ public class SignaliteBlockEntity extends BlockEntity {
         connectedUp = true, connectedDown = true,
         specialNorth = false, specialSouth = false,
         specialEast = false,  specialWest = false,
-        specialUp = false,    specialDown = false;
+        specialUp = false,    specialDown = false,
+        locked = false;
+    public int specialSignalStrength = 0;
+    public int specialSignalTarget = 0;
 
     public SignaliteBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.SIGNALITE_BE.get(), pPos, pBlockState);
@@ -160,12 +164,14 @@ public class SignaliteBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putInt("connectionFlags", packConnectionsToInt());
+        nbt.putByte("signalTarget", (byte)(specialSignalTarget & 0x11111111));
         super.saveAdditional(nbt);
     }
 
     @Override
     public void load(CompoundTag nbt) {
         unpackConnectionFromInt(nbt.getInt("connectionFlags"));
+        specialSignalTarget = nbt.getByte("signalTarget");
         super.load(nbt);
     }
 
@@ -173,6 +179,7 @@ public class SignaliteBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("connectionFlags", packConnectionsToInt());
+        nbt.putByte("signalTarget", (byte)(specialSignalTarget & 0x11111111));
         return nbt;
     }
 
@@ -184,7 +191,7 @@ public class SignaliteBlockEntity extends BlockEntity {
 
     public void syncAndSave() {
         this.setChanged();
-        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 2);
     }
 
     private int packConnectionsToInt() {
@@ -230,5 +237,15 @@ public class SignaliteBlockEntity extends BlockEntity {
         specialWest = (pPackedBooleans & FLAG_WEST_SPECIAL) == FLAG_WEST_SPECIAL;
         specialUp = (pPackedBooleans & FLAG_UP_SPECIAL) == FLAG_UP_SPECIAL;
         specialDown = (pPackedBooleans & FLAG_DOWN_SPECIAL) == FLAG_DOWN_SPECIAL;
+    }
+
+    public void incrementSpecialSignalSetting() {
+        specialSignalTarget = specialSignalTarget == 15 ? 0 : specialSignalTarget + 1;
+        syncAndSave();
+    }
+
+    public void decrementSpecialSignalSetting() {
+        specialSignalTarget = specialSignalTarget == 0 ? 15 : specialSignalTarget - 1;
+        syncAndSave();
     }
 }

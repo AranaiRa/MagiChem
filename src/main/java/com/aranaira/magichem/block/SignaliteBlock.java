@@ -4,8 +4,11 @@ import com.aranaira.magichem.block.entity.SignaliteBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -39,7 +42,6 @@ public class SignaliteBlock extends BaseEntityBlock {
 
     private final SignaliteBlockType type;
     private static final Random r = new Random();
-    private int specialSignalStrength = 0;
 
     public SignaliteBlock(Properties pProperties, SignaliteBlockType pType) {
         super(pProperties);
@@ -89,9 +91,24 @@ public class SignaliteBlock extends BaseEntityBlock {
                     y < 0 ? Direction.UP :
                     null;
 
-            if(dir != null) {
-                BlockEntity be = pLevel.getBlockEntity(pPos);
-                if(be instanceof SignaliteBlockEntity sbe) {
+            boolean isCenter = (x == 0) && (y == 0) && (z == 0);
+
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if(be instanceof SignaliteBlockEntity sbe) {
+                if (isCenter) {
+                    if (type == SignaliteBlockType.DEVOURING || type == SignaliteBlockType.GATEKEEPING) {
+                        if (pPlayer.isCrouching()) sbe.decrementSpecialSignalSetting();
+                        else sbe.incrementSpecialSignalSetting();
+
+                        if(!pPlayer.level().isClientSide()) {
+                            MutableComponent text = Component.empty()
+                                    .append(Component.translatable("feedback.block.signalite.target"))
+                                    .append(Component.literal("" + sbe.specialSignalTarget).withStyle(ChatFormatting.BOLD, ChatFormatting.RED))
+                                    .append(".");
+                            pPlayer.sendSystemMessage(text);
+                        }
+                    }
+                } else {
                     sbe.toggle(dir);
                     updateSignalStrength(pLevel, pPos);
                 }
@@ -129,17 +146,17 @@ public class SignaliteBlock extends BaseEntityBlock {
             if(pState.getBlock() instanceof SignaliteBlock sb) {
                 if(sb.getType() != SignaliteBlockType.STANDARD) {
                     if(pDirection == Direction.NORTH && sbe.specialSouth)
-                        return specialSignalStrength;
+                        return sbe.specialSignalStrength;
                     if(pDirection == Direction.SOUTH && sbe.specialNorth)
-                        return specialSignalStrength;
+                        return sbe.specialSignalStrength;
                     if(pDirection == Direction.EAST && sbe.specialWest)
-                        return specialSignalStrength;
+                        return sbe.specialSignalStrength;
                     if(pDirection == Direction.WEST && sbe.specialEast)
-                        return specialSignalStrength;
+                        return sbe.specialSignalStrength;
                     if(pDirection == Direction.UP && sbe.specialDown)
-                        return specialSignalStrength;
+                        return sbe.specialSignalStrength;
                     if(pDirection == Direction.DOWN && sbe.specialUp)
-                        return specialSignalStrength;
+                        return sbe.specialSignalStrength;
                 }
             }
         }
@@ -194,7 +211,16 @@ public class SignaliteBlock extends BaseEntityBlock {
 
             if(myState.getBlock() instanceof SignaliteBlock sb) {
                 if(sb.getType() == SignaliteBlockType.CHAOTIC) {
-                    specialSignalStrength = signalStrength == 0 ? 0 : 1 + r.nextInt(15);
+                    sbe.specialSignalStrength = signalStrength == 0 ? 0 : 1 + r.nextInt(15);
+                }
+                else if(sb.getType() == SignaliteBlockType.DEVOURING) {
+                    sbe.specialSignalStrength = Math.min(signalStrength, sbe.specialSignalTarget);
+                }
+                else if(sb.getType() == SignaliteBlockType.GATEKEEPING) {
+                    sbe.specialSignalStrength = signalStrength >= sbe.specialSignalTarget ? signalStrength : 0;
+                }
+                else if(sb.getType() == SignaliteBlockType.NEGATING) {
+                    sbe.specialSignalStrength = 15 - signalStrength;
                 }
             }
 
