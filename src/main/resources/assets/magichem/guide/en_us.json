@@ -4425,6 +4425,53 @@
       }
     ]
   },
+  "Budding Signalite Crystal": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Budding Signalite Crystal"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Amethyst crystals can be eternally harvested from Budding Amethyst, a strange mineral formation. Through some alchemical modification, the formation can be made to generate "
+          },
+          {
+            "text": "Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " instead.\n\nLike Budding Amethyst, crystal clusters will grow on exposed surfaces of the Budding Signalite Crystal that can be harvested.\n\nThe Budding Amethyst can either be "
+          },
+          {
+            "text": "Alchemically Fabricated",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or collected by bringing the Budding Amethyst to life with "
+          },
+          {
+            "text": "Animus Dust",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", riding it on top of a torch, and then dismounting after a few seconds."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/signalite_block_budding"
+      }
+    ]
+  },
   "Multi-State Levers": {
     "index": "0",
     "category": "magichem_wonders",
@@ -4446,7 +4493,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ", which acts almost the same as a conventional lever (except that its maximum signal strength is 1 instead of 15). Multi-State Levers are especially useful when creating complex "
+            "text": ", which acts the same as a conventional lever. Multi-State Levers are especially useful when creating complex "
           },
           {
             "text": "Lodestar programs",
@@ -4460,14 +4507,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nTwo-State Levers can be combined in a crafting grid to create a lever with more states (up to a maximum of a Six-State Lever). Each successive lever has one additional maximum state (and therefore one additional maximum signal level). For example, a "
+            "text": ".\n\nTwo-State Levers can be combined in a crafting grid to create a lever with more states (up to a maximum of a Six-State Lever). These levers output a redstone signal equal to how many clicks have been set, resetting to 0 after hitting its maximum (for example, a "
           },
           {
             "text": "Four-State Lever",
             "color": "dark_purple"
           },
           {
-            "text": " can output a signal level of 0, 1, 2, or 3 depending on what position the lever is set to.\n\nActivating the lever sets it to its next state; activating the lever while sneaking sets it to its previous state.\n\nAny Multi-State Lever more complex than a Two-State Lever can be put into a crafting grid and be split back into its component Two-State Levers."
+            "text": " can output a signal level of 0, 1, 2, or 3 depending on what position the lever is set to).\n\nActivating the lever sets it to its next state; activating the lever while sneaking sets it to its previous state.\n\nAny Multi-State Lever more complex than a Two-State Lever can be put into a crafting grid and be split back into its component Two-State Levers."
           }
         ]
       }
