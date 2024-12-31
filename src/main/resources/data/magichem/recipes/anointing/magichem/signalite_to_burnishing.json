@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "magichem:signalite",
+  "materia": "magichem:admixture_erosion",
+  "chance": 100.0,
+  "result": "magichem:signalite_burnishing"
+}

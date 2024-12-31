@@ -20,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<SignaliteBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_BUTT = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_butt");
     public static final ResourceLocation RENDERER_MODEL_SPIKE = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike");
+    public static final ResourceLocation RENDERER_MODEL_SPIKE_AGGREGATING = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_aggregating");
+    public static final ResourceLocation RENDERER_MODEL_SPIKE_BURNISHING = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_burnishing");
     public static final ResourceLocation RENDERER_MODEL_SPIKE_CHAOTIC = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_chaotic");
     public static final ResourceLocation RENDERER_MODEL_SPIKE_DEVOURING = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_devouring");
     public static final ResourceLocation RENDERER_MODEL_SPIKE_GATEKEEPING = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_gatekeeping");
@@ -128,7 +130,9 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
 
     @NotNull
     private ResourceLocation getModelFromFlags(SignaliteBlockType pSBT, boolean pSpecial) {
-        if(pSBT == SignaliteBlockType.CHAOTIC && pSpecial) return RENDERER_MODEL_SPIKE_CHAOTIC;
+        if(pSBT == SignaliteBlockType.AGGREGATING && pSpecial) return RENDERER_MODEL_SPIKE_AGGREGATING;
+        else if(pSBT == SignaliteBlockType.BURNISHING && pSpecial) return RENDERER_MODEL_SPIKE_BURNISHING;
+        else if(pSBT == SignaliteBlockType.CHAOTIC && pSpecial) return RENDERER_MODEL_SPIKE_CHAOTIC;
         else if(pSBT == SignaliteBlockType.DEVOURING && pSpecial) return RENDERER_MODEL_SPIKE_DEVOURING;
         else if(pSBT == SignaliteBlockType.GATEKEEPING && pSpecial) return RENDERER_MODEL_SPIKE_GATEKEEPING;
         else if(pSBT == SignaliteBlockType.NEGATING && pSpecial) return RENDERER_MODEL_SPIKE_NEGATING;

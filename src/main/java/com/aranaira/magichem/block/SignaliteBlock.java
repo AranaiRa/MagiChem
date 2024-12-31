@@ -128,7 +128,14 @@ public class SignaliteBlock extends BaseEntityBlock {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         //Reminder, the direction in redstone signal requests are backwards
         if(be instanceof SignaliteBlockEntity sbe) {
+            SignaliteBlockType type = SignaliteBlockType.STANDARD;
+            if(pState.getBlock() instanceof SignaliteBlock sb)
+                type = sb.getType();
+
             int signalStrength = pState.getValue(POWER);
+            //We don't want signals cross-polluting if we're doing math on inputs
+            if(type == SignaliteBlockType.AGGREGATING || type == SignaliteBlockType.BURNISHING)
+                signalStrength = 0;
 
             if(pDirection == Direction.NORTH && sbe.connectedSouth)
                 return signalStrength;
@@ -181,6 +188,7 @@ public class SignaliteBlock extends BaseEntityBlock {
             BlockState myState = pLevel.getBlockState(pPos);
             SignaliteBlockType myType = ((SignaliteBlock) myState.getBlock()).getType();
             int oldSignalStrength = myState.getValue(POWER);
+            sbe.clearLastInputSignals();
 
             for (Direction dir : sbe.getTransmittingDirections()) {
                 if(myType != SignaliteBlockType.STANDARD && sbe.isTransmittingDirectionOneWay(dir)) {
@@ -196,13 +204,16 @@ public class SignaliteBlock extends BaseEntityBlock {
 
                 if (stateToCheck.getBlock() == Blocks.REDSTONE_BLOCK || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
                     signalStrength = 15;
+                    sbe.setLastInputByDirection(dir, 15);
                     break;
                 } else if (stateToCheck.hasProperty(LEVER_SIGNAL)) {
                     signalQuery = stateToCheck.getValue(LEVER_SIGNAL);
                 } else if (stateToCheck.hasProperty(POWERED) && !stateToCheck.hasProperty(POWER) && stateToCheck.getValue(POWERED)) {
                     signalStrength = 15;
+                    sbe.setLastInputByDirection(dir, 15);
                     break;
                 }
+                sbe.setLastInputByDirection(dir, signalQuery);
 
                 if (signalQuery > signalStrength) {
                     signalStrength = signalQuery;
@@ -210,8 +221,14 @@ public class SignaliteBlock extends BaseEntityBlock {
             }
 
             if(myState.getBlock() instanceof SignaliteBlock sb) {
-                if(sb.getType() == SignaliteBlockType.CHAOTIC) {
-                    sbe.specialSignalStrength = signalStrength == 0 ? 0 : 1 + r.nextInt(15);
+                if(sb.getType() == SignaliteBlockType.AGGREGATING) {
+                    sbe.specialSignalStrength = sbe.getLastInputSum();
+                }
+                else if(sb.getType() == SignaliteBlockType.BURNISHING) {
+                    sbe.specialSignalStrength = sbe.getLastInputAverage();
+                }
+                else if(sb.getType() == SignaliteBlockType.CHAOTIC) {
+                    sbe.specialSignalStrength = signalStrength == 0 ? 0 : 1 + Math.round(r.nextFloat() * signalStrength);
                 }
                 else if(sb.getType() == SignaliteBlockType.DEVOURING) {
                     sbe.specialSignalStrength = Math.min(signalStrength, sbe.specialSignalTarget);
@@ -268,6 +285,8 @@ public class SignaliteBlock extends BaseEntityBlock {
 
     public enum SignaliteBlockType {
         STANDARD,
+        AGGREGATING,
+        BURNISHING,
         CHAOTIC,
         DEVOURING,
         GATEKEEPING,

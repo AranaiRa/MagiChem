@@ -290,6 +290,18 @@ public class BlockRegistry {
                     SignaliteBlock.SignaliteBlockType.STANDARD)
     );
 
+    public static final RegistryObject<Block> SIGNALITE_AGGREGATING = registerBlock("signalite_aggregating",
+            () -> new SignaliteBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    SignaliteBlock.SignaliteBlockType.AGGREGATING)
+    );
+
+    public static final RegistryObject<Block> SIGNALITE_BURNISHING = registerBlock("signalite_burnishing",
+            () -> new SignaliteBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    SignaliteBlock.SignaliteBlockType.BURNISHING)
+    );
+
     public static final RegistryObject<Block> SIGNALITE_CHAOTIC = registerBlock("signalite_chaotic",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
                     .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),

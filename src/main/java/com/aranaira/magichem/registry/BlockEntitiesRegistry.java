@@ -199,6 +199,8 @@ public class BlockEntitiesRegistry {
     public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_BE = BLOCK_ENTITIES.register("signalite", () ->
             BlockEntityType.Builder.of(SignaliteBlockEntity::new,
                 BlockRegistry.SIGNALITE.get(),
+                BlockRegistry.SIGNALITE_AGGREGATING.get(),
+                BlockRegistry.SIGNALITE_BURNISHING.get(),
                 BlockRegistry.SIGNALITE_CHAOTIC.get(),
                 BlockRegistry.SIGNALITE_DEVOURING.get(),
                 BlockRegistry.SIGNALITE_GATEKEEPING.get(),

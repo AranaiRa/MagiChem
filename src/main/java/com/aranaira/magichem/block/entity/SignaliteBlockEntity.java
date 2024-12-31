@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.aranaira.magichem.block.SignaliteBlock.SignaliteBlockType.STANDARD;
@@ -43,6 +44,7 @@ public class SignaliteBlockEntity extends BlockEntity {
         locked = false;
     public int specialSignalStrength = 0;
     public int specialSignalTarget = 0;
+    private final int[] lastInputSignals = new int[6];
 
     public SignaliteBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.SIGNALITE_BE.get(), pPos, pBlockState);
@@ -237,6 +239,47 @@ public class SignaliteBlockEntity extends BlockEntity {
         specialWest = (pPackedBooleans & FLAG_WEST_SPECIAL) == FLAG_WEST_SPECIAL;
         specialUp = (pPackedBooleans & FLAG_UP_SPECIAL) == FLAG_UP_SPECIAL;
         specialDown = (pPackedBooleans & FLAG_DOWN_SPECIAL) == FLAG_DOWN_SPECIAL;
+    }
+
+    public void clearLastInputSignals() {
+        Arrays.fill(lastInputSignals, 0);
+    }
+
+    public void setLastInputByDirection(Direction pDir, int pVal) {
+        if(pDir == Direction.NORTH) lastInputSignals[0] = pVal;
+        else if(pDir == Direction.SOUTH) lastInputSignals[1] = pVal;
+        else if(pDir == Direction.EAST) lastInputSignals[2] = pVal;
+        else if(pDir == Direction.WEST) lastInputSignals[3] = pVal;
+        else if(pDir == Direction.UP) lastInputSignals[4] = pVal;
+        else if(pDir == Direction.DOWN) lastInputSignals[5] = pVal;
+    }
+
+    public int getLastInputAverage() {
+        float out = 0;
+
+        for (int signal : lastInputSignals) {
+            out += signal;
+        }
+
+        float count = 0;
+        count += connectedNorth ? 1 : 0;
+        count += connectedSouth ? 1 : 0;
+        count += connectedEast ? 1 : 0;
+        count += connectedWest ? 1 : 0;
+        count += connectedUp ? 1 : 0;
+        count += connectedDown ? 1 : 0;
+
+        return count == 0 ? 0 : Math.round(out / count);
+    }
+
+    public int getLastInputSum() {
+        int out = 0;
+
+        for (int signal : lastInputSignals) {
+            out += signal;
+        }
+
+        return Math.min(out, 15);
     }
 
     public void incrementSpecialSignalSetting() {

@@ -219,6 +219,8 @@ public class MagiChemMod
 
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_BUTT);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE);
+            event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_AGGREGATING);
+            event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_BURNISHING);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_CHAOTIC);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_DEVOURING);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_GATEKEEPING);
