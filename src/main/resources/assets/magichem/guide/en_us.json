@@ -4801,5 +4801,56 @@
       }
     ]
   },
+  "Signalite": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Signalite"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "When alchemically stabilized, ordinary Redstone dust develops a crystalline structure known as "
+          },
+          {
+            "text": "Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nActivating any of the six crystalline spikes will cause them to switch between an extended state (which will transfer signals) and a retracted state (which will not transmit signals). Unlike redstone dust, Signalite can directly transmit up and down. A Signal will decay by one per block just like Redstone dust.\n\nSignalite is not destroyed by flowing water and can be waterlogged.\n\nSignalite can be "
+          },
+          {
+            "text": "modified through Anointing",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Many types of Admixtures will transform the Signalite into a "
+          },
+          {
+            "text": "variant that allows for advanced redstone logic",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (see the Signalite Variants entry), but there are two Anointings that are common to all types of Signalite:\n\n• Anointing with Admixture of Permanence will lock the Signalite into its current configuration; any further adjustments to the Signalite's settings until it's broken and replaced.\n\n• Anointing with Admixture of Lies will hide the Signalite from view until it's broken and replaced."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/redstone_to_signalite"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/signalite_block"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }
