@@ -1,9 +1,9 @@
 {
   "type": "mna:eldrin-fume",
-  "item": "magichem:essentia_water",
+  "item": "magichem:essentia_droplets_water",
   "power_provided":
   {
     "affinity": "WATER",
-    "amount": 400
+    "amount": 1350
   }
 }

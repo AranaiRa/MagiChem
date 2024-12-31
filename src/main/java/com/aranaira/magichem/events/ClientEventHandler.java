@@ -1,10 +1,7 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.item.AdmixtureItem;
-import com.aranaira.magichem.item.EssentiaItem;
-import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.item.TravellersCompassItem;
+import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
@@ -34,6 +31,13 @@ import org.jetbrains.annotations.Nullable;
 public class ClientEventHandler {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof EssentiaDropletsItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.ESSENTIA_DROPLETS_ENDER.get());
+        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof EssentiaDropletsItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.ESSENTIA_DROPLETS_EARTH.get());
+        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof EssentiaDropletsItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.ESSENTIA_DROPLETS_WATER.get());
+        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof EssentiaDropletsItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.ESSENTIA_DROPLETS_AIR.get());
+        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof EssentiaDropletsItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.ESSENTIA_DROPLETS_FIRE.get());
+        event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof EssentiaDropletsItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.ESSENTIA_DROPLETS_ARCANE.get());
+
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.getEssentia().toArray(new EssentiaItem[0]));
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.getAdmixtures().toArray(new AdmixtureItem[0]));
     }

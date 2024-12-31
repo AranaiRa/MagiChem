@@ -23,7 +23,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -79,6 +81,13 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
             }
 
             return false;
+        }
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if(InventoryHelper.isMateriaUnbottled(getStackInSlot(slot)))
+                return ItemStack.EMPTY;
+            return super.extractItem(slot, amount, simulate);
         }
     };
 
@@ -255,21 +264,44 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
 
             BlockEntity be = level.getBlockEntity(pos.below().below());
             if(be instanceof EldrinFumeTile eft) {
-                ItemStack insertionQuery = essentiaInSlot.copy();
-                insertionQuery.setCount(Math.min(4, essentiaInSlot.getCount()));
-
                 ItemStack fumeFilterQuery = eft.getItem(1);
                 if(fumeFilterQuery.getCount() == 64)
                     return;
 
+                boolean matchesMateriaType = false;
+                if(fumeFilterQuery.getItem() instanceof MateriaItem ffmi && essentiaInSlot.getItem() instanceof MateriaItem esmi) {
+                    matchesMateriaType = ffmi.getMateriaName().equals(esmi.getMateriaName());
+                }
+
+                ItemStack insertionQuery = convertEssentiaToDroplets(essentiaInSlot);
+                insertionQuery.setCount(Math.min(4, essentiaInSlot.getCount()));
+
                 boolean fumeFilterIsBottled = InventoryHelper.isMateriaUnbottled(fumeFilterQuery);
-                boolean retortIsBottled = InventoryHelper.isMateriaUnbottled(insertionQuery);
-                boolean matchesMateriaType = fumeFilterQuery.getItem() == insertionQuery.getItem();
+                boolean retortIsBottled = InventoryHelper.isMateriaUnbottled(entity.itemHandler.getStackInSlot(SLOT_BOTTLES));
 
                 boolean transferIsValid = (fumeFilterQuery.isEmpty()) || ((fumeFilterIsBottled == retortIsBottled) && matchesMateriaType);
 
                 if(transferIsValid) {
-                    if(fumeFilterQuery.getCount() + insertionQuery.getCount() <= 64) {
+                    if(!retortIsBottled) {
+                        int bottleCount = entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount();
+                        if(bottleCount == 0) {
+                            entity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, insertionQuery.getCount()));
+                        }
+                        else if(bottleCount <= 60) {
+                            entity.itemHandler.getStackInSlot(SLOT_BOTTLES).grow(insertionQuery.getCount());
+                        }
+                        else {
+                            int limit = 64 - bottleCount;
+                            entity.itemHandler.getStackInSlot(SLOT_BOTTLES).setCount(64);
+                            insertionQuery.setCount(Math.min(insertionQuery.getCount(), limit));
+                        }
+                    }
+
+                    if(fumeFilterQuery.isEmpty()) {
+                        essentiaInSlot.shrink(insertionQuery.getCount());
+                        fumeFilterQuery = insertionQuery.copy();
+                    }
+                    else if(fumeFilterQuery.getCount() + insertionQuery.getCount() <= 64) {
                         essentiaInSlot.shrink(insertionQuery.getCount());
                         fumeFilterQuery.grow(insertionQuery.getCount());
                     }
@@ -279,10 +311,24 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
                         essentiaInSlot.shrink(transferLimit);
                         fumeFilterQuery.grow(transferLimit);
                     }
+
                     entity.itemHandler.setStackInSlot(SLOT_ESSENTIA, essentiaInSlot);
                     eft.setItem(1, fumeFilterQuery);
                 }
             }
         }
+    }
+
+    public static ItemStack convertEssentiaToDroplets(ItemStack pQuery) {
+        Item dropletItem = Items.BEDROCK;
+        MateriaItem materia = (MateriaItem) pQuery.getItem();
+        if(materia.getMateriaName().equals("ender")) dropletItem = ItemRegistry.ESSENTIA_DROPLETS_ENDER.get();
+        if(materia.getMateriaName().equals("earth")) dropletItem = ItemRegistry.ESSENTIA_DROPLETS_EARTH.get();
+        if(materia.getMateriaName().equals("water")) dropletItem = ItemRegistry.ESSENTIA_DROPLETS_WATER.get();
+        if(materia.getMateriaName().equals("air")) dropletItem = ItemRegistry.ESSENTIA_DROPLETS_AIR.get();
+        if(materia.getMateriaName().equals("fire")) dropletItem = ItemRegistry.ESSENTIA_DROPLETS_FIRE.get();
+        if(materia.getMateriaName().equals("arcane")) dropletItem = ItemRegistry.ESSENTIA_DROPLETS_ARCANE.get();
+
+        return new ItemStack(dropletItem, pQuery.getCount());
     }
 }

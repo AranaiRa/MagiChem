@@ -1,0 +1,9 @@
+{
+  "type": "mna:eldrin-fume",
+  "item": "magichem:essentia_droplets_arcane",
+  "power_provided":
+  {
+    "affinity": "ARCANE",
+    "amount": 1350
+  }
+}

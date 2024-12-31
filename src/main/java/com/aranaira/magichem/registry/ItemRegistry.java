@@ -342,6 +342,30 @@ public class ItemRegistry {
             () -> new SublimationInProgressItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<Item> ESSENTIA_DROPLETS_ENDER = ITEMS.register("essentia_droplets_ender",
+            () -> new EssentiaDropletsItem("ender", "\u0547", "elements", 0, "2e1c45")
+    );
+
+    public static final RegistryObject<Item> ESSENTIA_DROPLETS_EARTH = ITEMS.register("essentia_droplets_earth",
+            () -> new EssentiaDropletsItem("earth", "\u053D", "elements", 1, "442f17")
+    );
+
+    public static final RegistryObject<Item> ESSENTIA_DROPLETS_WATER = ITEMS.register("essentia_droplets_water",
+            () -> new EssentiaDropletsItem("water", "\u0539", "elements", 2, "2c66bd")
+    );
+
+    public static final RegistryObject<Item> ESSENTIA_DROPLETS_AIR = ITEMS.register("essentia_droplets_air",
+            () -> new EssentiaDropletsItem("air", "\u0545", "elements", 3, "c9c3b1")
+    );
+
+    public static final RegistryObject<Item> ESSENTIA_DROPLETS_FIRE = ITEMS.register("essentia_droplets_fire",
+            () -> new EssentiaDropletsItem("fire", "\u0554", "elements", 4, "ee8015")
+    );
+
+    public static final RegistryObject<Item> ESSENTIA_DROPLETS_ARCANE = ITEMS.register("essentia_droplets_arcane",
+            () -> new EssentiaDropletsItem("arcane", "\u0556", "elements", 5, "b870ef")
+    );
+
     ///////////////
     // TECHNICAL HELPERS
     ///////////////

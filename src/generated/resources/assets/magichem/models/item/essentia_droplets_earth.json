@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "magichem:item/essentia_droplets",
+    "layer1": "magichem:item/overlays/essentiaoverlay_earth"
+  }
+}
