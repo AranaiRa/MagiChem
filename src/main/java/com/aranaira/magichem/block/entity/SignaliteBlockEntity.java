@@ -39,9 +39,9 @@ public class SignaliteBlockEntity extends BlockEntity {
         connectedEast = true, connectedWest = true,
         connectedUp = true, connectedDown = true,
         specialNorth = false, specialSouth = false,
-        specialEast = false,  specialWest = false,
-        specialUp = false,    specialDown = false,
-        locked = false;
+        specialEast = false, specialWest = false,
+        specialUp = false, specialDown = false,
+        locked = false, hidden = false;
     public int specialSignalStrength = 0;
     public int specialSignalTarget = 0;
     private final int[] lastInputSignals = new int[6];
@@ -167,6 +167,8 @@ public class SignaliteBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putInt("connectionFlags", packConnectionsToInt());
         nbt.putByte("signalTarget", (byte)(specialSignalTarget & 0x11111111));
+        nbt.putBoolean("locked", locked);
+        nbt.putBoolean("hidden", hidden);
         super.saveAdditional(nbt);
     }
 
@@ -174,6 +176,8 @@ public class SignaliteBlockEntity extends BlockEntity {
     public void load(CompoundTag nbt) {
         unpackConnectionFromInt(nbt.getInt("connectionFlags"));
         specialSignalTarget = nbt.getByte("signalTarget");
+        locked = nbt.getBoolean("locked");
+        hidden = nbt.getBoolean("hidden");
         super.load(nbt);
     }
 
@@ -182,6 +186,8 @@ public class SignaliteBlockEntity extends BlockEntity {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("connectionFlags", packConnectionsToInt());
         nbt.putByte("signalTarget", (byte)(specialSignalTarget & 0x11111111));
+        nbt.putBoolean("locked", locked);
+        nbt.putBoolean("hidden", hidden);
         return nbt;
     }
 

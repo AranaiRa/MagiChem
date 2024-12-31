@@ -33,6 +33,9 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
 
     @Override
     public void render(SignaliteBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        if(pBlockEntity.hidden)
+            return;
+
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();

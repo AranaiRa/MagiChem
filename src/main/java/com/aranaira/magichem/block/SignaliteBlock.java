@@ -70,31 +70,45 @@ public class SignaliteBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pPlayer.getItemInHand(pHand).getItem() instanceof MateriaItem)
-            return InteractionResult.PASS;
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof SignaliteBlockEntity sbe) {
+            if(sbe.locked)
+                return InteractionResult.PASS;
 
-        if(!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
-            double rawX = Math.abs(pHit.getLocation().x % 1);
-            double rawY = Math.abs(pHit.getLocation().y % 1);
-            double rawZ = Math.abs(pHit.getLocation().z % 1);
+            if(pPlayer.getItemInHand(pHand).getItem() instanceof MateriaItem mi) {
+                if(mi.getMateriaName().equals("permanence")) {
+                    sbe.locked = true;
+                    sbe.syncAndSave();
+                    MateriaItem.generateSuccessParticles(pPos.getX(), pPos.getY(), pPos.getZ(), mi.getMateriaColor());
+                }
+                else if(mi.getMateriaName().equals("lies")) {
+                    sbe.hidden = true;
+                    sbe.syncAndSave();
+                    MateriaItem.generateSuccessParticles(pPos.getX(), pPos.getY(), pPos.getZ(), mi.getMateriaColor());
+                }
 
-            int x = rawX > 0.625 ? 1 : rawX < 0.375 ? -1 : 0;
-            int y = rawY > 0.625 ? 1 : rawY < 0.375 ? -1 : 0;
-            int z = rawZ > 0.625 ? 1 : rawZ < 0.375 ? -1 : 0;
+                return InteractionResult.PASS;
+            }
 
-            Direction dir =
-                    z < 0 ? Direction.NORTH :
-                    z > 0 ? Direction.SOUTH :
-                    x < 0 ? Direction.EAST :
-                    x > 0 ? Direction.WEST :
-                    y > 0 ? Direction.DOWN :
-                    y < 0 ? Direction.UP :
-                    null;
+            if(!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
+                double rawX = Math.abs(pHit.getLocation().x % 1);
+                double rawY = Math.abs(pHit.getLocation().y % 1);
+                double rawZ = Math.abs(pHit.getLocation().z % 1);
 
-            boolean isCenter = (x == 0) && (y == 0) && (z == 0);
+                int x = rawX > 0.625 ? 1 : rawX < 0.375 ? -1 : 0;
+                int y = rawY > 0.625 ? 1 : rawY < 0.375 ? -1 : 0;
+                int z = rawZ > 0.625 ? 1 : rawZ < 0.375 ? -1 : 0;
 
-            BlockEntity be = pLevel.getBlockEntity(pPos);
-            if(be instanceof SignaliteBlockEntity sbe) {
+                Direction dir =
+                        z < 0 ? Direction.NORTH :
+                        z > 0 ? Direction.SOUTH :
+                        x < 0 ? Direction.EAST :
+                        x > 0 ? Direction.WEST :
+                        y > 0 ? Direction.DOWN :
+                        y < 0 ? Direction.UP :
+                        null;
+
+                boolean isCenter = (x == 0) && (y == 0) && (z == 0);
                 if (isCenter) {
                     if (type == SignaliteBlockType.DEVOURING || type == SignaliteBlockType.GATEKEEPING) {
                         if (pPlayer.isCrouching()) sbe.decrementSpecialSignalSetting();
