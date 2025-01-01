@@ -4859,5 +4859,229 @@
       }
     ]
   },
+  "Signalite Variants": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Signalite Variants"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "By anointing Signalite with particular admixtures you can create a "
+          },
+          {
+            "text": "variant that has special redstone logic",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nRight clicking one of the variant Signalite's crystal spike will switch it between "
+          },
+          {
+            "text": "normal transmitting",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (which looks the same as normal Signalite), "
+          },
+          {
+            "text": "special transmitting",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (which will have a unique appearance based on what Signalite variant the block is), and "
+          },
+          {
+            "text": "non-transmitting",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Aggregating Signalite"
+      },
+      {
+        "type": "item",
+        "location": "magichem:signalite_aggregating",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The special transmitting mode of Aggregating Signalite will output the "
+          },
+          {
+            "text": "sum of all signal inputs",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", to a maximum of 15.\n\n\n\nUnlike most Signalite, spikes in normal transmitting mode will not transmit signals, only read them.\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Burnishing Signalite"
+      },
+      {
+        "type": "item",
+        "location": "magichem:signalite_burnishing",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The special transmitting mode of Burnishing Signalite will output the "
+          },
+          {
+            "text": "average of all signal inputs",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nUnlike most Signalite, spikes in normal transmitting mode will not transmit signals, only read them.\n\n\n\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Chaotic Signalite"
+      },
+      {
+        "type": "item",
+        "location": "magichem:signalite_chaotic",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The special transmitting mode of Chaotic Signalite will output a "
+          },
+          {
+            "text": "random signal",
+            "color": "dark_purple"
+          },
+          {
+            "text": " between 1 and the highest input strength it's currently receiving. The signal is re-randomized every time the block updates.\n\n\n\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Devouring Signalite"
+      },
+      {
+        "type": "item",
+        "location": "magichem:signalite_devouring",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The special transmitting mode of Devouring Signalite will "
+          },
+          {
+            "text": "limit output signals",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to the target signal strength.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster.\n\n\n\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Gatekeeping Signalite"
+      },
+      {
+        "type": "item",
+        "location": "magichem:signalite_gatekeeping",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The special transmitting mode of Gatekeeping Signalite will "
+          },
+          {
+            "text": "only transmit signals",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that are greater than or equal to its signal target to transmit.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster.\n\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Negating Signalite"
+      },
+      {
+        "type": "item",
+        "location": "magichem:signalite_negating",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The special transmitting mode of Negating Signalite will output the "
+          },
+          {
+            "text": "inverse",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (15 - strength) of the input signal strength."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/signalite_to_aggregating"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/signalite_to_burnishing"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/signalite_to_chaotic"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/signalite_to_devouring"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/signalite_to_gatekeeping"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/signalite_to_negating"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }
