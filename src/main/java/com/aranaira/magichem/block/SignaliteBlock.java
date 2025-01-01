@@ -72,16 +72,14 @@ public class SignaliteBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be instanceof SignaliteBlockEntity sbe) {
-            if(sbe.locked)
-                return InteractionResult.PASS;
 
             if(pPlayer.getItemInHand(pHand).getItem() instanceof MateriaItem mi) {
-                if(mi.getMateriaName().equals("permanence")) {
+                if(mi.getMateriaName().equals("permanence") && !sbe.locked) {
                     sbe.locked = true;
                     sbe.syncAndSave();
                     MateriaItem.generateSuccessParticles(pPos.getX(), pPos.getY(), pPos.getZ(), mi.getMateriaColor());
                 }
-                else if(mi.getMateriaName().equals("lies")) {
+                else if(mi.getMateriaName().equals("lies") && !sbe.hidden) {
                     sbe.hidden = true;
                     sbe.syncAndSave();
                     MateriaItem.generateSuccessParticles(pPos.getX(), pPos.getY(), pPos.getZ(), mi.getMateriaColor());
@@ -89,6 +87,9 @@ public class SignaliteBlock extends BaseEntityBlock {
 
                 return InteractionResult.PASS;
             }
+
+            if(sbe.locked)
+                return InteractionResult.PASS;
 
             if(!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
                 double rawX = Math.abs(pHit.getLocation().x % 1);
