@@ -2263,7 +2263,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " in order to fill it with elemental essentia.\n\nConstructs can keep a Standing Retort filled using the "
+            "text": " in order to fill it with elemental essentia.\n\nA Standing Retort fills the Fume Filter with "
+          },
+          {
+            "text": "droplets of essentia",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; burning essentia in this form is 50% more effective than burning a conventional dram of materia, but the droplets will quickly evaporate if removed from the Fume Filter.\n\nConstructs can keep a Standing Retort filled using the "
           },
           {
             "text": "Provide Materia",
