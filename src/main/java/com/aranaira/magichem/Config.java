@@ -268,7 +268,7 @@ public class Config
 
     private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_TANK_CAPACITY = BUILDER
             .comment("The amount of Water and Steam, in mB, the Deluge Purifier's internal tanks can hold.")
-            .defineInRange("delugePurifierTankCapacity", 2000, 500, Integer.MAX_VALUE);
+            .defineInRange("delugePurifierTankCapacity", 5000, 500, Integer.MAX_VALUE);
 
     //----------------INFERNO ENGINE
 
