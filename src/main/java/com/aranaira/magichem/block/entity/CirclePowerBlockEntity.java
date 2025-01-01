@@ -130,10 +130,10 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
             progressReagentTier3 = 0,
             progressReagentTier4 = 0;
     private static final int
-            maxProgressReagentTier1 = 880,
+            maxProgressReagentTier1 = 900,
             maxProgressReagentTier2 = 2400,
-            maxProgressReagentTier3 = 3920,
-            maxProgressReagentTier4 = 5440;
+            maxProgressReagentTier3 = 6400,
+            maxProgressReagentTier4 = 16800;
 
     public static final Item
             REAGENT_TIER1 =  ItemRegistry.SILVER_DUST.get(),
