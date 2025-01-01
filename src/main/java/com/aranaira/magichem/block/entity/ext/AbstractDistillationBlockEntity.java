@@ -487,7 +487,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected static void updateActuatorValues(AbstractDistillationBlockEntity entity) {
         for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
-                entity.efficiencyMod = (water.getIsSatisfied() && !water.getPaused()) ? water.getEfficiencyIncrease() : 0;
+                entity.efficiencyMod = (water.getIsSatisfied() && water.isAuxiliaryRequirementSatisfied() && !water.getPaused()) ? water.getEfficiencyIncrease() : 0;
             }
         }
     }

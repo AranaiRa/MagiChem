@@ -419,7 +419,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected static void updateActuatorValues(AbstractSeparationBlockEntity entity) {
         for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
-                entity.efficiencyMod = (water.getIsSatisfied() && !water.getPaused()) ? water.getEfficiencyIncrease() : 0;
+                entity.efficiencyMod = (water.getIsSatisfied() && !water.getPaused() && water.isAuxiliaryRequirementSatisfied()) ? water.getEfficiencyIncrease() : 0;
             }
         }
     }

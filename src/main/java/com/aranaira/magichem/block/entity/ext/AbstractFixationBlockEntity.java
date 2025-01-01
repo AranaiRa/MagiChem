@@ -516,7 +516,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     protected static void updateActuatorValues(AbstractFixationBlockEntity entity) {
         for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
-                entity.efficiencyMod = (water.getIsSatisfied() && !water.getPaused()) ? water.getEfficiencyIncrease() : 0;
+                entity.efficiencyMod = (water.getIsSatisfied() && !water.getPaused() && water.isAuxiliaryRequirementSatisfied()) ? water.getEfficiencyIncrease() : 0;
             }
         }
     }
