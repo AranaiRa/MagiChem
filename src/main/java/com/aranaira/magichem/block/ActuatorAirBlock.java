@@ -168,6 +168,8 @@ public class ActuatorAirBlock extends BaseEntityBlock {
         if(ictp != null)
             ictp.removePlugin(aabe);
 
+        aabe.dropContents();
+
         super.onRemove(state, level, pos, newState, isMoving);
     }
 

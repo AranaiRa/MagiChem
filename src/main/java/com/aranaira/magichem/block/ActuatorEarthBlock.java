@@ -160,6 +160,8 @@ public class ActuatorEarthBlock extends BaseEntityBlock {
         if(ictp != null)
             ictp.removePlugin(aebe);
 
+        aebe.dropContents();
+
         super.onRemove(state, level, pos, newState, isMoving);
     }
 

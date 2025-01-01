@@ -169,6 +169,8 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
         if(ictp != null)
             ictp.removePlugin(awbe);
 
+        awbe.dropContents();
+
         super.onRemove(state, level, pos, newState, isMoving);
     }
 

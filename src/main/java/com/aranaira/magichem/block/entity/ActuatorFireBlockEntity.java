@@ -24,6 +24,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -603,6 +604,21 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
 
     public static Affinity getAffinity(Void v) {
         return Affinity.FIRE;
+    }
+
+    public void dropContents() {
+        if(!itemHandler.getStackInSlot(SLOT_FUEL).isEmpty() && getLevel() != null) {
+            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_FUEL));
+            getLevel().addFreshEntity(ie);
+        }
+        if(!itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).isEmpty() && !InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION)) && getLevel() != null) {
+            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION));
+            getLevel().addFreshEntity(ie);
+        }
+        if(!itemHandler.getStackInSlot(SLOT_BOTTLES).isEmpty() && getLevel() != null) {
+            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_BOTTLES));
+            getLevel().addFreshEntity(ie);
+        }
     }
 
     ////////////////////

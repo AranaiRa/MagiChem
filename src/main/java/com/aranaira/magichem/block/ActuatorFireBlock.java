@@ -176,6 +176,8 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
         if(ictp != null)
             ictp.removePlugin(afbe);
 
+        afbe.dropContents();
+
         super.onRemove(state, level, pos, newState, isMoving);
     }
 

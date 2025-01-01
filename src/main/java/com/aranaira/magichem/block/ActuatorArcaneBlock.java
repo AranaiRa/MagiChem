@@ -153,10 +153,12 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        ActuatorArcaneBlockEntity aebe = (ActuatorArcaneBlockEntity) level.getBlockEntity(pos);
-        ICanTakePlugins ictp = aebe.getTargetMachine();
+        ActuatorArcaneBlockEntity aabe = (ActuatorArcaneBlockEntity) level.getBlockEntity(pos);
+        ICanTakePlugins ictp = aabe.getTargetMachine();
         if(ictp != null)
-            ictp.removePlugin(aebe);
+            ictp.removePlugin(aabe);
+
+        aabe.dropContents();
 
         super.onRemove(state, level, pos, newState, isMoving);
     }
