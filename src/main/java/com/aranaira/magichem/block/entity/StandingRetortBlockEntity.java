@@ -276,13 +276,12 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
                 ItemStack insertionQuery = convertEssentiaToDroplets(essentiaInSlot);
                 insertionQuery.setCount(Math.min(4, essentiaInSlot.getCount()));
 
-                boolean fumeFilterIsBottled = InventoryHelper.isMateriaUnbottled(fumeFilterQuery);
-                boolean retortIsBottled = InventoryHelper.isMateriaUnbottled(entity.itemHandler.getStackInSlot(SLOT_BOTTLES));
+                boolean retortIsBottled = !InventoryHelper.isMateriaUnbottled(entity.itemHandler.getStackInSlot(SLOT_ESSENTIA));
 
-                boolean transferIsValid = (fumeFilterQuery.isEmpty()) || ((fumeFilterIsBottled == retortIsBottled) && matchesMateriaType);
+                boolean transferIsValid = fumeFilterQuery.isEmpty() || matchesMateriaType;
 
                 if(transferIsValid) {
-                    if(!retortIsBottled) {
+                    if(retortIsBottled) {
                         int bottleCount = entity.itemHandler.getStackInSlot(SLOT_BOTTLES).getCount();
                         if(bottleCount == 0) {
                             entity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, insertionQuery.getCount()));
