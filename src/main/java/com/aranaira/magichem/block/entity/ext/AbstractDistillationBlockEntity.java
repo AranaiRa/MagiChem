@@ -293,9 +293,13 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         }
 
         for(int i=0; i<pRecipe.getComponentMateria().size(); i++) {
-            if(!cont.canAddItem(pRecipe.getComponentMateria().get(i).copy()))
-                return false;
-            cont.addItem(pRecipe.getComponentMateria().get(i).copy());
+            final ItemStack query = pRecipe.getComponentMateria().get(i).copy();
+            while(query.getCount() > 0) {
+                if (!cont.canAddItem(query))
+                    return false;
+                cont.addItem(new ItemStack(query.getItem(), Math.min(64, query.getCount())));
+                query.shrink(Math.min(64, query.getCount()));
+            }
         }
 
         return true;
@@ -333,11 +337,17 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
             for (ItemStack item : componentMateria) {
                 if (outputSlots.canAddItem(item)) {
-                    CompoundTag nbt = item.getOrCreateTag();
-                    nbt.putInt("CustomModelData", 1);
-                    item.setTag(nbt);
+                    ItemStack query = item.copy();
+                    while(query.getCount() > 0) {
+                        ItemStack stackToAdd = new ItemStack(query.getItem(), Math.min(64, query.getCount()));
 
-                    outputSlots.addItem(item);
+                        CompoundTag nbt = item.getOrCreateTag();
+                        nbt.putInt("CustomModelData", 1);
+                        stackToAdd.setTag(nbt);
+
+                        outputSlots.addItem(stackToAdd);
+                        query.shrink(Math.min(64, query.getCount()));
+                    }
                 } else {
                     pEntity.isStalled = true;
                     break;
