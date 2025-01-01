@@ -92,9 +92,9 @@ public class SignaliteBlock extends BaseEntityBlock {
                 return InteractionResult.PASS;
 
             if(!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
-                double rawX = Math.abs(pHit.getLocation().x % 1);
-                double rawY = Math.abs(pHit.getLocation().y % 1);
-                double rawZ = Math.abs(pHit.getLocation().z % 1);
+                double rawX = ((pHit.getLocation().x % 1) + 2) % 1;
+                double rawY = ((pHit.getLocation().y % 1) + 2) % 1;
+                double rawZ = ((pHit.getLocation().z % 1) + 2) % 1;
 
                 int x = rawX > 0.625 ? 1 : rawX < 0.375 ? -1 : 0;
                 int y = rawY > 0.625 ? 1 : rawY < 0.375 ? -1 : 0;
@@ -103,8 +103,8 @@ public class SignaliteBlock extends BaseEntityBlock {
                 Direction dir =
                         z < 0 ? Direction.NORTH :
                         z > 0 ? Direction.SOUTH :
-                        x < 0 ? Direction.EAST :
-                        x > 0 ? Direction.WEST :
+                        x < 0 ? Direction.WEST :
+                        x > 0 ? Direction.EAST :
                         y > 0 ? Direction.DOWN :
                         y < 0 ? Direction.UP :
                         null;
