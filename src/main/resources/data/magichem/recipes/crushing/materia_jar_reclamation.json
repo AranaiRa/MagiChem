@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "magichem:materia_jar",
+  "output": "minecraft:glass_pane",
+  "output_quantity": 3
+}
