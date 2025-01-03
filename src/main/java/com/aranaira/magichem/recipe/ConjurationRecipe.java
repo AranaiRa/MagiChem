@@ -181,7 +181,7 @@ public class ConjurationRecipe implements Recipe<SimpleContainer> {
             int passiveCount = passiveData.getInt("count");
             int passivePeriod = passiveData.getInt("period");
 
-            CompoundTag suppliedData = nbt.getCompound("passive");
+            CompoundTag suppliedData = nbt.getCompound("supplied");
             String suppliedItemQuery = suppliedData.getString("item");
             int suppliedCount = suppliedData.getInt("count");
             int suppliedPeriod = suppliedData.getInt("period");
