@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IPluginDevice;
@@ -38,7 +38,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -380,16 +379,16 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             if(entity.itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).getItem() == ItemRegistry.DEBUG_ORB.get()) {
                 int preSteam = entity.getSteamInTank();
                 if (entity.containedSteam.isEmpty()) {
-                    entity.containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Config.galePressurizerTankCapacity);
+                    entity.containedSteam = new FluidStack(FluidRegistry.STEAM.get(), ServerConfig.galePressurizerTankCapacity);
                 } else {
-                    entity.containedSteam.setAmount(Config.galePressurizerTankCapacity);
+                    entity.containedSteam.setAmount(ServerConfig.galePressurizerTankCapacity);
                 }
 
                 int preSmoke = entity.getSmokeInTank();
                 if (entity.containedSmoke.isEmpty()) {
-                    entity.containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Config.galePressurizerTankCapacity);
+                    entity.containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), ServerConfig.galePressurizerTankCapacity);
                 } else {
-                    entity.containedSmoke.setAmount(Config.galePressurizerTankCapacity);
+                    entity.containedSmoke.setAmount(ServerConfig.galePressurizerTankCapacity);
                 }
 
                 if((preSteam != entity.getSteamInTank()) || (preSmoke != entity.getSmokeInTank()))
@@ -496,19 +495,19 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public static float getSmokePercent(int pSmokeAmount) {
-        return (float)pSmokeAmount * 100f / Config.galePressurizerTankCapacity;
+        return (float)pSmokeAmount * 100f / ServerConfig.galePressurizerTankCapacity;
     }
 
     public static int getScaledSmoke(int pSmokeAmount) {
-        return pSmokeAmount * ActuatorAirScreen.FLUID_GAUGE_H / Config.galePressurizerTankCapacity;
+        return pSmokeAmount * ActuatorAirScreen.FLUID_GAUGE_H / ServerConfig.galePressurizerTankCapacity;
     }
 
     public static float getSteamPercent(int pSteamAmount) {
-        return (float)pSteamAmount * 100f / Config.galePressurizerTankCapacity;
+        return (float)pSteamAmount * 100f / ServerConfig.galePressurizerTankCapacity;
     }
 
     public static int getScaledSteam(int pSteamAmount) {
-        return pSteamAmount * ActuatorAirScreen.FLUID_GAUGE_H / Config.galePressurizerTankCapacity;
+        return pSteamAmount * ActuatorAirScreen.FLUID_GAUGE_H / ServerConfig.galePressurizerTankCapacity;
     }
 
     @Override
@@ -525,7 +524,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
     @Override
     public int getTankCapacity(int i) {
-        return Config.galePressurizerTankCapacity;
+        return ServerConfig.galePressurizerTankCapacity;
     }
 
     @Override
@@ -542,10 +541,10 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
         if(fluid == FluidRegistry.SMOKE.get()) {
             int extantAmount = this.containedSmoke.getAmount();
-            int query = Config.galePressurizerTankCapacity - incomingAmount - extantAmount;
+            int query = ServerConfig.galePressurizerTankCapacity - incomingAmount - extantAmount;
 
             if (query < 0) {
-                int actualTransfer = Config.galePressurizerTankCapacity - extantAmount;
+                int actualTransfer = ServerConfig.galePressurizerTankCapacity - extantAmount;
                 if(fluidAction == FluidAction.EXECUTE) {
                     this.containedSmoke = new FluidStack(fluid, extantAmount + actualTransfer);
                     syncAndSave();
@@ -560,10 +559,10 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             }
         } else if(fluid == FluidRegistry.STEAM.get()) {
             int extantAmount = this.containedSteam.getAmount();
-            int query = Config.galePressurizerTankCapacity - incomingAmount - extantAmount;
+            int query = ServerConfig.galePressurizerTankCapacity - incomingAmount - extantAmount;
 
             if (query < 0) {
-                int actualTransfer = Config.galePressurizerTankCapacity - extantAmount;
+                int actualTransfer = ServerConfig.galePressurizerTankCapacity - extantAmount;
                 if(fluidAction == FluidAction.EXECUTE) {
                     this.containedSteam = new FluidStack(fluid, extantAmount + actualTransfer);
                     syncAndSave();

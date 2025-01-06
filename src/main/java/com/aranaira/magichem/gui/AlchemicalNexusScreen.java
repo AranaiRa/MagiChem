@@ -1,6 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.foundation.AlchemicalNexusAnimSpec;
@@ -408,7 +408,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 } else {
                     int totalCost = 0;
                     for (InfusionStage is : menu.getCurrentRecipe().getStages(false)) {
-                        totalCost += is.experience * Config.fluidPerXPPoint;
+                        totalCost += is.experience * ServerConfig.fluidPerXPPoint;
                         totalCost += AlchemicalNexusBlockEntity.getBaseExperienceCostPerStage(menu.blockEntity.getPowerLevel());
                     }
                     totalCost = Math.round((float)totalCost * (1f - menu.getReductionRate()));

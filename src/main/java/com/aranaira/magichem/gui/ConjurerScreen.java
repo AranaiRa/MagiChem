@@ -1,6 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
@@ -18,8 +18,6 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.aranaira.magichem.block.entity.ConjurerBlockEntity.*;
 
 public class ConjurerScreen extends AbstractContainerScreen<ConjurerMenu> {
     private static final ResourceLocation TEXTURE =
@@ -85,9 +83,9 @@ public class ConjurerScreen extends AbstractContainerScreen<ConjurerMenu> {
             tooltipContents.addAll(materiaStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal("" + Math.min(Config.conjurerMateriaCapacity, menu.blockEntity.getMateriaAmount())).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("" + Math.min(ServerConfig.conjurerMateriaCapacity, menu.blockEntity.getMateriaAmount())).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal("" + Config.conjurerMateriaCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("" + ServerConfig.conjurerMateriaCapacity).withStyle(ChatFormatting.DARK_AQUA))
             );
         }
 

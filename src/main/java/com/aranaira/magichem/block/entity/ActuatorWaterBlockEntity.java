@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.ActuatorWaterMenu;
@@ -30,7 +30,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -269,8 +268,8 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess() * pCyclesCompleted);
-        containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Math.min(newTotal, Config.delugePurifierTankCapacity));
+        int newTotal = Math.min(ServerConfig.delugePurifierTankCapacity, containedSteam.getAmount() + getSteamPerProcess() * pCyclesCompleted);
+        containedSteam = new FluidStack(FluidRegistry.STEAM.get(), Math.min(newTotal, ServerConfig.delugePurifierTankCapacity));
     }
 
     public int getStoredMateria() {
@@ -286,9 +285,9 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
             if(entity.itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION).getItem() == ItemRegistry.DEBUG_ORB.get()) {
                 int pre = entity.getWaterInTank();
                 if(entity.containedWater.isEmpty()) {
-                    entity.containedWater = new FluidStack(Fluids.WATER, Config.delugePurifierTankCapacity);
+                    entity.containedWater = new FluidStack(Fluids.WATER, ServerConfig.delugePurifierTankCapacity);
                 } else {
-                    entity.containedWater.setAmount(Config.delugePurifierTankCapacity);
+                    entity.containedWater.setAmount(ServerConfig.delugePurifierTankCapacity);
                 }
 
                 if(pre != entity.getWaterInTank())
@@ -365,8 +364,8 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
 
                     //Spawn steam jets
                     float steam = entity.containedSteam.getAmount();
-                    if ((int) steam > Config.delugePurifierTankCapacity / 2) {
-                        float mappedSteamPercent = Math.max(0, ((steam / Config.delugePurifierTankCapacity) - 0.5f) * 2) * 2;
+                    if ((int) steam > ServerConfig.delugePurifierTankCapacity / 2) {
+                        float mappedSteamPercent = Math.max(0, ((steam / ServerConfig.delugePurifierTankCapacity) - 0.5f) * 2) * 2;
                         int spawnModulus = (int) Math.ceil(mappedSteamPercent * 5);
 
                         long time = level.getGameTime();
@@ -434,27 +433,27 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public static float getWaterPercent(int pWaterAmount) {
-        return (float)pWaterAmount * 100f / Config.delugePurifierTankCapacity;
+        return (float)pWaterAmount * 100f / ServerConfig.delugePurifierTankCapacity;
     }
 
     public float getWaterPercent() {
-        return (float)containedWater.getAmount() / Config.delugePurifierTankCapacity;
+        return (float)containedWater.getAmount() / ServerConfig.delugePurifierTankCapacity;
     }
 
     public static int getScaledWater(int pWaterAmount) {
-        return pWaterAmount * ActuatorWaterScreen.FLUID_GAUGE_H / Config.delugePurifierTankCapacity;
+        return pWaterAmount * ActuatorWaterScreen.FLUID_GAUGE_H / ServerConfig.delugePurifierTankCapacity;
     }
 
     public static float getSteamPercent(int pSteamAmount) {
-        return (float)pSteamAmount * 100f / Config.delugePurifierTankCapacity;
+        return (float)pSteamAmount * 100f / ServerConfig.delugePurifierTankCapacity;
     }
 
     public static int getScaledSteam(int pSteamAmount) {
-        return pSteamAmount * ActuatorWaterScreen.FLUID_GAUGE_H / Config.delugePurifierTankCapacity;
+        return pSteamAmount * ActuatorWaterScreen.FLUID_GAUGE_H / ServerConfig.delugePurifierTankCapacity;
     }
 
     public int getScaledCycleTime() {
-        return remainingCycleTime * ActuatorWaterScreen.SYMBOL_H / ((drewEssentiaThisCycle && drewEldrinThisCycle) ? Config.actuatorDoubleSuppliedPeriod : Config.actuatorSingleSuppliedPeriod);
+        return remainingCycleTime * ActuatorWaterScreen.SYMBOL_H / ((drewEssentiaThisCycle && drewEldrinThisCycle) ? ServerConfig.actuatorDoubleSuppliedPeriod : ServerConfig.actuatorSingleSuppliedPeriod);
     }
 
     @Override
@@ -471,7 +470,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
 
     @Override
     public int getTankCapacity(int i) {
-        return Config.delugePurifierTankCapacity;
+        return ServerConfig.delugePurifierTankCapacity;
     }
 
     @Override
@@ -491,11 +490,11 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
         int incomingAmount = fluidStack.getAmount();
         if(fluid == Fluids.WATER) {
             int extantAmount = containedWater.getAmount();
-            int query = Config.delugePurifierTankCapacity - (incomingAmount + extantAmount);
+            int query = ServerConfig.delugePurifierTankCapacity - (incomingAmount + extantAmount);
 
             //Hit capacity
             if(query < 0) {
-                int actualTransfer = Config.delugePurifierTankCapacity - extantAmount;
+                int actualTransfer = ServerConfig.delugePurifierTankCapacity - extantAmount;
                 if(fluidAction == FluidAction.EXECUTE) {
                     this.containedWater = new FluidStack(Fluids.WATER, extantAmount + actualTransfer);
                     syncAndSave();

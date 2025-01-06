@@ -1,11 +1,9 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.AlembicBlock;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -14,9 +12,7 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
-import com.mna.particles.types.movers.ParticleVelocityMover;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -208,7 +204,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
 
     @Override
     public int getMaximumGrime() {
-        return Config.alembicMaximumGrime;
+        return ServerConfig.alembicMaximumGrime;
     }
 
     @Override
@@ -217,11 +213,11 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
         data.set(DATA_GRIME, 0);
-        return grimeDetected / Config.grimePerWaste;
+        return grimeDetected / ServerConfig.grimePerWaste;
     }
 
     public static int getScaledGrime(int grime) {
-        return (GUI_GRIME_BAR_WIDTH * grime) / Config.alembicMaximumGrime;
+        return (GUI_GRIME_BAR_WIDTH * grime) / ServerConfig.alembicMaximumGrime;
     }
 
     @Override
@@ -302,11 +298,11 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             case GUI_PROGRESS_BAR_WIDTH -> GUI_PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;
 
-            case CONFIG_BASE_EFFICIENCY -> Config.alembicEfficiency;
-            case CONFIG_MAX_GRIME -> Config.alembicMaximumGrime;
-            case CONFIG_OPERATION_TIME -> Config.alembicOperationTime;
-            case CONFIG_GRIME_ON_SUCCESS -> Config.alembicGrimeOnSuccess;
-            case CONFIG_GRIME_ON_FAILURE -> Config.alembicGrimeOnFailure;
+            case CONFIG_BASE_EFFICIENCY -> ServerConfig.alembicEfficiency;
+            case CONFIG_MAX_GRIME -> ServerConfig.alembicMaximumGrime;
+            case CONFIG_OPERATION_TIME -> ServerConfig.alembicOperationTime;
+            case CONFIG_GRIME_ON_SUCCESS -> ServerConfig.alembicGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> ServerConfig.alembicGrimeOnFailure;
 
             default -> -1;
         };

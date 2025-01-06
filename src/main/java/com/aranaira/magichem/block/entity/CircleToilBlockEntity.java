@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
@@ -252,9 +252,9 @@ public class CircleToilBlockEntity extends BlockEntity {
         int cap;
         int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
 
-        int genRate = Math.round(Config.circleToilGen * (entity.rotSpeed / MAXIMUM_ROTATION_SPEED));
+        int genRate = Math.round(ServerConfig.circleToilGen * (entity.rotSpeed / MAXIMUM_ROTATION_SPEED));
 
-        cap = genRate * Config.circleToilBuffer;
+        cap = genRate * ServerConfig.circleToilBuffer;
         entity.ENERGY_STORAGE.receiveEnergy(genRate, false);
         if (currentEnergy + genRate > cap) entity.ENERGY_STORAGE.setEnergy(cap);
     }

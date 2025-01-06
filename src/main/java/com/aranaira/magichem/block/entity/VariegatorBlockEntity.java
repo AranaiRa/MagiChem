@@ -1,10 +1,9 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.gui.VariegatorMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ColorationRecipe;
@@ -287,8 +286,8 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
                     if (bottles.getCount() < pEntity.itemHandler.getSlotLimit(SLOT_DYE_BOTTLES)) {
 
                         //Allow overfill by one item for GUI aesthetic reasons
-                        if (pEntity.dyeAdmixture < Config.variegatorMaxAdmixture) {
-                            pEntity.dyeAdmixture += Config.variegatorAdmixturePerItem;
+                        if (pEntity.dyeAdmixture < ServerConfig.variegatorMaxAdmixture) {
+                            pEntity.dyeAdmixture += ServerConfig.variegatorAdmixturePerItem;
 
                             insert.shrink(1);
                             if (bottles.isEmpty()) {
@@ -309,8 +308,8 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
                     if (color != null) {
                         int fill = pEntity.getDyeFillByColor(color);
                         //Allow overfill by one item for GUI aesthetic reasons
-                        if (fill < Config.variegatorMaxDye) {
-                            pEntity.setDyeFillByColor(color, fill + Config.variegatorDyePerItem);
+                        if (fill < ServerConfig.variegatorMaxDye) {
+                            pEntity.setDyeFillByColor(color, fill + ServerConfig.variegatorDyePerItem);
 
                             insert.shrink(1);
 
@@ -421,14 +420,14 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         boolean sufficientAdmixture = currentAdmixture >= pEntity.currentRecipe.getChargeUsage();
 
         if(sufficientAdmixture && sufficientDye) {
-            float fillPct = (float) currentDye / (float) Config.variegatorMaxDye;
-            float discount = 1.0f - (fillPct * ((Config.variegatorMatchedColorTimeDiscount) / 100f));
+            float fillPct = (float) currentDye / (float) ServerConfig.variegatorMaxDye;
+            float discount = 1.0f - (fillPct * ((ServerConfig.variegatorMatchedColorTimeDiscount) / 100f));
 
-            return Math.max(1, Math.round(discount * Config.variegatorOperationTimeFast));
+            return Math.max(1, Math.round(discount * ServerConfig.variegatorOperationTimeFast));
         } else if(sufficientAdmixture || sufficientDye) {
-            return Math.max(1, Config.variegatorOperationTimeFast);
+            return Math.max(1, ServerConfig.variegatorOperationTimeFast);
         } else {
-            return Math.max(1, Config.variegatorOperationTimeSlow);
+            return Math.max(1, ServerConfig.variegatorOperationTimeSlow);
         }
     }
 
@@ -637,7 +636,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         if(activeProvisionRequests.contains((MateriaItem)ADMIXTURE_COLOR_STACK.getItem()))
             return false;
 
-        return dyeAdmixture < Config.variegatorMaxAdmixture / 2;
+        return dyeAdmixture < ServerConfig.variegatorMaxAdmixture / 2;
     }
 
     @Override
@@ -648,10 +647,10 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         if(!activeProvisionRequests.contains((MateriaItem)ADMIXTURE_COLOR_STACK.getItem())) {
 
             //Otherwise, only report that Admixture of Color is necessary if we're below half capacity
-            if (dyeAdmixture < Config.variegatorMaxAdmixture) {
-                int needed = Math.max(0, Config.variegatorMaxAdmixture - dyeAdmixture);
+            if (dyeAdmixture < ServerConfig.variegatorMaxAdmixture) {
+                int needed = Math.max(0, ServerConfig.variegatorMaxAdmixture - dyeAdmixture);
                 if (needed > 0)
-                    result.put((MateriaItem) ADMIXTURE_COLOR_STACK.getItem(), (int)Math.ceil((float)needed / Config.variegatorAdmixturePerItem));
+                    result.put((MateriaItem) ADMIXTURE_COLOR_STACK.getItem(), (int)Math.ceil((float)needed / ServerConfig.variegatorAdmixturePerItem));
             }
         }
 
@@ -673,14 +672,14 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
     public void provide(ItemStack pStack) {
         if(pStack.getItem() == ADMIXTURE_COLOR_STACK.getItem()) {
             activeProvisionRequests.remove((MateriaItem)ADMIXTURE_COLOR_STACK.getItem());
-            dyeAdmixture += Config.variegatorAdmixturePerItem * pStack.getCount();
+            dyeAdmixture += ServerConfig.variegatorAdmixturePerItem * pStack.getCount();
             syncAndSave();
         }
     }
 
     @Override
     public int canAcceptStackFromShlorp(ItemStack pStack) {
-        int max = Config.variegatorMaxAdmixture / Config.variegatorAdmixturePerItem;
+        int max = ServerConfig.variegatorMaxAdmixture / ServerConfig.variegatorAdmixturePerItem;
         int capacity = max - pStack.getCount();
 
         return Math.max(0, capacity);

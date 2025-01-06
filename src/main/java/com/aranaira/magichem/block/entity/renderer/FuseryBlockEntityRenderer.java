@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity.renderer;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.util.render.RenderUtils;
@@ -32,7 +32,7 @@ public class FuseryBlockEntityRenderer implements BlockEntityRenderer<FuseryBloc
     public void render(FuseryBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         this.renderCog(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
 
-        float fluidPercent = (float)pBlockEntity.getFluidInTank(0).getAmount() / (float)Config.fuseryTankCapacity;
+        float fluidPercent = (float)pBlockEntity.getFluidInTank(0).getAmount() / (float) ServerConfig.fuseryTankCapacity;
 
         if(fluidPercent > 0) {
             this.renderTankFluid(fluidPercent, pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);

@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.DistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.DistilleryRouterBlockEntity;
@@ -278,7 +278,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
 
     @Override
     public int getMaximumGrime() {
-        return Config.distilleryMaximumGrime;
+        return ServerConfig.distilleryMaximumGrime;
     }
 
     public int getHeatFromData() {
@@ -291,11 +291,11 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
         data.set(DATA_GRIME, 0);
-        return grimeDetected / Config.grimePerWaste;
+        return grimeDetected / ServerConfig.grimePerWaste;
     }
 
     public static int getScaledGrime(int grime) {
-        return (GUI_GRIME_BAR_WIDTH * grime) / Config.distilleryMaximumGrime;
+        return (GUI_GRIME_BAR_WIDTH * grime) / ServerConfig.distilleryMaximumGrime;
     }
 
     @Override
@@ -440,11 +440,11 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;
             case GUI_HEAT_GAUGE_HEIGHT -> GUI_HEAT_GAUGE_HEIGHT;
 
-            case CONFIG_BASE_EFFICIENCY -> Config.distilleryEfficiency;
-            case CONFIG_MAX_GRIME -> Config.distilleryMaximumGrime;
-            case CONFIG_OPERATION_TIME -> Config.distilleryOperationTime;
-            case CONFIG_GRIME_ON_SUCCESS -> Config.distilleryGrimeOnSuccess;
-            case CONFIG_GRIME_ON_FAILURE -> Config.distilleryGrimeOnFailure;
+            case CONFIG_BASE_EFFICIENCY -> ServerConfig.distilleryEfficiency;
+            case CONFIG_MAX_GRIME -> ServerConfig.distilleryMaximumGrime;
+            case CONFIG_OPERATION_TIME -> ServerConfig.distilleryOperationTime;
+            case CONFIG_GRIME_ON_SUCCESS -> ServerConfig.distilleryGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> ServerConfig.distilleryGrimeOnFailure;
 
             default -> -1;
         };

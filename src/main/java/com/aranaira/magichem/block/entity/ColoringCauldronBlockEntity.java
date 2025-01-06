@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.recipe.ColorationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.render.ColorUtils;
@@ -9,7 +9,6 @@ import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -296,7 +295,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     }
 
     private int getOperationTicks() {
-        return Math.round(Config.coloringCauldronBaseOperationTime * (float)Math.pow(PROCESSING_TIME_COEFFICIENT, getTotalColors() - 1));
+        return Math.round(ServerConfig.coloringCauldronBaseOperationTime * (float)Math.pow(PROCESSING_TIME_COEFFICIENT, getTotalColors() - 1));
     }
 
     private DyeColor pickRandomColorFromInverseBitpack(Set<DyeColor> validColors) {

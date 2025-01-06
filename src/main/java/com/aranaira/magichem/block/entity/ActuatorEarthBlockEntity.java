@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IPluginDevice;
@@ -262,9 +262,9 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
             if (!entity.getPaused()) {
                 //Fill the internal sand buffer
                 if(entity.itemHandler.getStackInSlot(SLOT_SAND).getItem() == ItemRegistry.DEBUG_ORB.get()) {
-                    entity.remainingSand = Config.quakeRefinerySandCapacity;
+                    entity.remainingSand = ServerConfig.quakeRefinerySandCapacity;
                 }
-                else if (Config.quakeRefinerySandCapacity - entity.remainingSand >= 1000) {
+                else if (ServerConfig.quakeRefinerySandCapacity - entity.remainingSand >= 1000) {
                     ItemStack sandStack = entity.itemHandler.getStackInSlot(SLOT_SAND);
                     if (!sandStack.isEmpty()) {
                         sandStack.shrink(1);
@@ -275,9 +275,9 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                 }
 
                 //Dump grime to waste
-                if (entity.currentGrime > Config.grimePerWaste) {
+                if (entity.currentGrime > ServerConfig.grimePerWaste) {
                     ItemStack wasteStack = entity.itemHandler.getStackInSlot(SLOT_WASTE);
-                    int maxWasteToAdd = entity.currentGrime / Config.grimePerWaste;
+                    int maxWasteToAdd = entity.currentGrime / ServerConfig.grimePerWaste;
                     int actualWasteToAdd;
                     if (wasteStack == ItemStack.EMPTY) {
                         actualWasteToAdd = Math.min(maxWasteToAdd, 64);
@@ -287,14 +287,14 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                         wasteStack = new ItemStack(ItemRegistry.ALCHEMICAL_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
                     }
                     entity.itemHandler.setStackInSlot(SLOT_WASTE, wasteStack);
-                    entity.currentGrime -= actualWasteToAdd * Config.grimePerWaste;
+                    entity.currentGrime -= actualWasteToAdd * ServerConfig.grimePerWaste;
                     entity.syncAndSave();
                 }
 
                 //Dump rarefied
-                if (entity.currentRarefiedGrime > Config.grimePerWaste) {
+                if (entity.currentRarefiedGrime > ServerConfig.grimePerWaste) {
                     ItemStack wasteStack = entity.itemHandler.getStackInSlot(SLOT_RAREFIED_WASTE);
-                    int maxWasteToAdd = entity.currentRarefiedGrime / Config.grimePerWaste;
+                    int maxWasteToAdd = entity.currentRarefiedGrime / ServerConfig.grimePerWaste;
                     int actualWasteToAdd;
                     if (wasteStack == ItemStack.EMPTY) {
                         actualWasteToAdd = Math.min(maxWasteToAdd, 64);
@@ -304,7 +304,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                         wasteStack = new ItemStack(ItemRegistry.RAREFIED_WASTE.get(), wasteStack.getCount() + actualWasteToAdd);
                     }
                     entity.itemHandler.setStackInSlot(SLOT_RAREFIED_WASTE, wasteStack);
-                    entity.currentRarefiedGrime -= actualWasteToAdd * Config.grimePerWaste;
+                    entity.currentRarefiedGrime -= actualWasteToAdd * ServerConfig.grimePerWaste;
                     entity.syncAndSave();
                 }
             }
@@ -416,10 +416,10 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
                 //Reduce insertion and generate rarefied grime
                 reduction = Math.round((float) pGrimeToAdd * ((float) getGrimeReductionRate()) / 100.0f);
                 insertion = pGrimeToAdd - reduction;
-                rarefied = Math.round(((float) Config.quakeRefineryRarefiedRate / 100.0f) * (float) reduction);
-                if (currentGrime + insertion > Config.quakeRefineryGrimeCapacity) {
-                    overflow = insertion - (Config.quakeRefineryGrimeCapacity - currentGrime);
-                    insertion = Config.quakeRefineryGrimeCapacity - currentGrime;
+                rarefied = Math.round(((float) ServerConfig.quakeRefineryRarefiedRate / 100.0f) * (float) reduction);
+                if (currentGrime + insertion > ServerConfig.quakeRefineryGrimeCapacity) {
+                    overflow = insertion - (ServerConfig.quakeRefineryGrimeCapacity - currentGrime);
+                    insertion = ServerConfig.quakeRefineryGrimeCapacity - currentGrime;
                 } else {
                     overflow = 0;
                 }
@@ -428,7 +428,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
 
         //Final application
         currentGrime += insertion;
-        currentRarefiedGrime = Math.min(Config.quakeRefineryGrimeCapacity, currentRarefiedGrime + rarefied);
+        currentRarefiedGrime = Math.min(ServerConfig.quakeRefineryGrimeCapacity, currentRarefiedGrime + rarefied);
         syncAndSave();
         return overflow;
     }
@@ -438,15 +438,15 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public static float getSandPercent(int pSandAmount) {
-        return (float)pSandAmount * 100f / Config.quakeRefinerySandCapacity;
+        return (float)pSandAmount * 100f / ServerConfig.quakeRefinerySandCapacity;
     }
 
     public float getSandPercent() {
-        return (float)remainingSand * 100f / Config.quakeRefinerySandCapacity;
+        return (float)remainingSand * 100f / ServerConfig.quakeRefinerySandCapacity;
     }
 
     public static int getScaledSand(int pSandAmount) {
-        return pSandAmount * ActuatorEarthScreen.FLUID_GAUGE_H / Config.quakeRefinerySandCapacity;
+        return pSandAmount * ActuatorEarthScreen.FLUID_GAUGE_H / ServerConfig.quakeRefinerySandCapacity;
     }
 
     public int getGrimeInTank() {
@@ -458,19 +458,19 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public static float getGrimePercent(int pGrimeAmount) {
-        return (float)pGrimeAmount * 100f / Config.quakeRefineryGrimeCapacity;
+        return (float)pGrimeAmount * 100f / ServerConfig.quakeRefineryGrimeCapacity;
     }
 
     public static float getRarefiedGrimePercent(int pRarefiedGrimeAmount) {
-        return (float)pRarefiedGrimeAmount * 100f / Config.quakeRefineryGrimeCapacity;
+        return (float)pRarefiedGrimeAmount * 100f / ServerConfig.quakeRefineryGrimeCapacity;
     }
 
     public static int getScaledGrime(int pGrimeAmount) {
-        return pGrimeAmount * ActuatorEarthScreen.FLUID_GAUGE_H / Config.quakeRefineryGrimeCapacity;
+        return pGrimeAmount * ActuatorEarthScreen.FLUID_GAUGE_H / ServerConfig.quakeRefineryGrimeCapacity;
     }
 
     public static int getScaledRarefiedGrime(int pRarefiedGrimeAmount) {
-        return pRarefiedGrimeAmount * ActuatorEarthScreen.FLUID_GAUGE_H / Config.quakeRefineryGrimeCapacity;
+        return pRarefiedGrimeAmount * ActuatorEarthScreen.FLUID_GAUGE_H / ServerConfig.quakeRefineryGrimeCapacity;
     }
 
     @Override

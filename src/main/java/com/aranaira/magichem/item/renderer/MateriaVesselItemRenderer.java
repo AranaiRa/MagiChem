@@ -1,6 +1,6 @@
 package com.aranaira.magichem.item.renderer;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
@@ -70,7 +70,7 @@ public class MateriaVesselItemRenderer extends BlockEntityWithoutLevelRenderer {
             if(nbt.contains("type")) {
                 MateriaItem materia = ItemRegistry.getMateriaMap(false, false)
                         .get(nbt.getString("type"));
-                int cap = materia instanceof EssentiaItem ? Config.materiaVesselEssentiaCapacity : Config.materiaVesselAdmixtureCapacity;
+                int cap = materia instanceof EssentiaItem ? ServerConfig.materiaVesselEssentiaCapacity : ServerConfig.materiaVesselAdmixtureCapacity;
                 float fill = (float)nbt.getInt("amount") / (float)cap;
 
                 MateriaVesselContentsRenderUtil.renderVesselFluidContents(last.pose(), last.normal(), buffer, fill, materia.getMateriaColor(), pPackedLight);

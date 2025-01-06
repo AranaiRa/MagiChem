@@ -1,13 +1,10 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity;
 import com.aranaira.magichem.networking.StandingRetortSyncDataC2SPacket;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mna.gui.GuiTextures;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class StandingRetortScreen extends AbstractContainerScreen<StandingRetortMenu> {
     private static final ResourceLocation TEXTURE =

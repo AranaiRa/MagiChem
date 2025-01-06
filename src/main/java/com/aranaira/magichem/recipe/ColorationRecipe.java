@@ -1,8 +1,6 @@
 package com.aranaira.magichem.recipe;
 
-import com.aranaira.magichem.Config;
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;

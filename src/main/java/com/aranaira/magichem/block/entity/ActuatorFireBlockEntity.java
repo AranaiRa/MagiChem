@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.ActuatorFireMenu;
@@ -316,8 +316,8 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        int newTotal = Math.min(Config.delugePurifierTankCapacity, containedSmoke.getAmount() + getSmokePerProcess() * pCyclesCompleted);
-        containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Math.min(newTotal, Config.delugePurifierTankCapacity));
+        int newTotal = Math.min(ServerConfig.delugePurifierTankCapacity, containedSmoke.getAmount() + getSmokePerProcess() * pCyclesCompleted);
+        containedSmoke = new FluidStack(FluidRegistry.SMOKE.get(), Math.min(newTotal, ServerConfig.delugePurifierTankCapacity));
         syncAndSave();
     }
 
@@ -344,7 +344,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
             if(level.isClientSide()) {
                 float smoke = entity.containedSmoke.getAmount();
                 if (smoke > 0 && !entity.getPaused()) {
-                    float mappedSmokePercent = Math.max(0, ((smoke / Config.infernoEngineTankCapacity) - 0.5f) * 2);
+                    float mappedSmokePercent = Math.max(0, ((smoke / ServerConfig.infernoEngineTankCapacity) - 0.5f) * 2);
                     if (mappedSmokePercent > 0f) {
                         int spawnModulus = 5 - (int) Math.floor(mappedSmokePercent * 4);
                         Vector3f mid = new Vector3f(0f, 1.6875f, 0f);
@@ -508,11 +508,11 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     }
 
     public static float getSmokePercent(int pSmokeAmount) {
-        return (float)pSmokeAmount * 100f / Config.infernoEngineTankCapacity;
+        return (float)pSmokeAmount * 100f / ServerConfig.infernoEngineTankCapacity;
     }
 
     public static int getScaledSmoke(int pSmokeAmount) {
-        return pSmokeAmount * ActuatorFireScreen.FLUID_GAUGE_H / Config.infernoEngineTankCapacity;
+        return pSmokeAmount * ActuatorFireScreen.FLUID_GAUGE_H / ServerConfig.infernoEngineTankCapacity;
     }
 
     public int getRemainingFuelTime() {
@@ -547,7 +547,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
 
     @Override
     public int getTankCapacity(int i) {
-        return Config.infernoEngineTankCapacity;
+        return ServerConfig.infernoEngineTankCapacity;
     }
 
     @Override

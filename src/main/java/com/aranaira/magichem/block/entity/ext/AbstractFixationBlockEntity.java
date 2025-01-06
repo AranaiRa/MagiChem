@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity.ext;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
@@ -137,7 +137,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         pEntity.remainingAnimus = Math.max(-pVarFunc.apply(IDs.CONFIG_NO_TORQUE_GRACE_PERIOD), pEntity.remainingAnimus - 1);
 
         //skip all of this if grime is full
-        if(GrimeProvider.getCapability(pEntity).getGrime() >= Config.centrifugeMaximumGrime)
+        if(GrimeProvider.getCapability(pEntity).getGrime() >= ServerConfig.centrifugeMaximumGrime)
             return;
 
         updateActuatorValues(pEntity);
@@ -322,12 +322,12 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             //Add grime to this device if there's no Quake Refinery
             if (grimeToAdd > 0) {
                 IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
-                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), Config.centrifugeMaximumGrime));
+                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), ServerConfig.centrifugeMaximumGrime));
             }
 
             //Consume slurry
             int slurryCost = Math.round((float)pEntity.currentRecipe.getSlurryCost() * ((100f - pEntity.reductionRate) / 100f));
-            float reducedSlurryCost = (1.0f - (Config.fixationFailureRefund / 100.0f)) * slurryCost;
+            float reducedSlurryCost = (1.0f - (ServerConfig.fixationFailureRefund / 100.0f)) * slurryCost;
             pEntity.containedSlurry.shrink(postEfficiencyOutput.size() == 1 ? slurryCost : (int) reducedSlurryCost);
             pEntity.syncAndSave();
         }

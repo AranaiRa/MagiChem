@@ -1,8 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.events.CommonEventHelper;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.mna.api.ManaAndArtificeMod;
@@ -11,13 +9,9 @@ import com.mna.api.entities.construct.IConstruct;
 import com.mna.api.entities.construct.ai.ConstructAITask;
 import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskAreaParameter;
-import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -60,7 +54,7 @@ public class ConstructCollectExperience extends ConstructAITask<ConstructCollect
                     if(doMove(4f)) {
                         if(targetOrb != null) {
                             int points = targetOrb.value;
-                            FluidStack attempt = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), points * Config.fluidPerXPPoint);
+                            FluidStack attempt = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), points * ServerConfig.fluidPerXPPoint);
                             if (construct.isFluidValid(1, attempt)) {
                                 construct.fill(attempt, IFluidHandler.FluidAction.EXECUTE);
                                 targetOrb.kill();

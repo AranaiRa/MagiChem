@@ -1,6 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
@@ -124,7 +124,7 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
                     .append(Component.translatable("tooltip.magichem.gui.grime.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.translatable("tooltip.magichem.gui.grime.line2.1")
-                    .append(Component.literal(Config.grimePenaltyPoint+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ServerConfig.grimePenaltyPoint+"%").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.grime.line2.2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()

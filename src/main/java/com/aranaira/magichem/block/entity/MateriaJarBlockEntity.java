@@ -1,16 +1,13 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.MateriaVesselBlock;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class MateriaJarBlockEntity extends AbstractMateriaStorageBlockEntity  {
 
@@ -20,9 +17,9 @@ public class MateriaJarBlockEntity extends AbstractMateriaStorageBlockEntity  {
 
     public int getStorageLimit() {
         if(currentMateriaType instanceof EssentiaItem) {
-            return Config.materiaJarEssentiaCapacity;
+            return ServerConfig.materiaJarEssentiaCapacity;
         }
-        return Config.materiaJarAdmixtureCapacity;
+        return ServerConfig.materiaJarAdmixtureCapacity;
     }
 
     @Override

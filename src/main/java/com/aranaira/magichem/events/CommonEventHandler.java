@@ -1,6 +1,6 @@
 package com.aranaira.magichem.events;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.*;
@@ -12,7 +12,6 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -22,7 +21,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -59,11 +57,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
@@ -223,7 +219,7 @@ public class CommonEventHandler {
                 } else if(exitCode == 2) {
                     event.getEntity().sendSystemMessage(Component.empty()
                             .append(Component.translatable("feedback.block.materiamanifest.toobig.part1"))
-                            .append("" + Config.materiaManifestSizeConstraint)
+                            .append("" + ServerConfig.materiaManifestSizeConstraint)
                             .append(Component.translatable("feedback.block.materiamanifest.toobig.part2"))
                     );
                 }

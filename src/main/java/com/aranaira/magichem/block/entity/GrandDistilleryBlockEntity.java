@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -16,7 +16,6 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
-import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
@@ -285,7 +284,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
 
     @Override
     public int getMaximumGrime() {
-        return Config.grandDistilleryMaximumGrime;
+        return ServerConfig.grandDistilleryMaximumGrime;
     }
 
     public boolean getPowerSufficiency() {
@@ -307,11 +306,11 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
         data.set(DATA_GRIME, 0);
-        return grimeDetected / Config.grimePerWaste;
+        return grimeDetected / ServerConfig.grimePerWaste;
     }
 
     public static int getScaledGrime(int grime) {
-        return Math.min(Config.grandDistilleryMaximumGrime, (GUI_GRIME_BAR_WIDTH * grime) / Config.grandDistilleryMaximumGrime);
+        return Math.min(ServerConfig.grandDistilleryMaximumGrime, (GUI_GRIME_BAR_WIDTH * grime) / ServerConfig.grandDistilleryMaximumGrime);
     }
 
     @Override
@@ -409,8 +408,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     public int setPowerUsageSetting(int pPowerUsageSetting) {
         this.powerUsageSetting = pPowerUsageSetting;
         this.resetProgress();
-        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-            ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+            ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         return this.powerUsageSetting;
     }
 
@@ -418,8 +417,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         if(powerUsageSetting + 1 < 31) {
             this.powerUsageSetting++;
             this.resetProgress();
-            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-                ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         }
         return this.powerUsageSetting;
     }
@@ -428,8 +427,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         if(powerUsageSetting - 1 > 0) {
             this.powerUsageSetting--;
             this.resetProgress();
-            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-                ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         }
         return this.powerUsageSetting;
     }
@@ -443,7 +442,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
 
-            int powerToLimit = Math.max(0, (getPowerDraw() * Config.circlePowerBuffer) - getEnergyStored());
+            int powerToLimit = Math.max(0, (getPowerDraw() * ServerConfig.circlePowerBuffer) - getEnergyStored());
             int actualReceive = Math.min(maxReceive, powerToLimit);
 
             return super.receiveEnergy(actualReceive, simulate);
@@ -591,10 +590,10 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;
             case GUI_HEAT_GAUGE_HEIGHT -> GUI_HEAT_GAUGE_HEIGHT;
 
-            case CONFIG_BASE_EFFICIENCY -> Config.grandDistilleryEfficiency;
-            case CONFIG_MAX_GRIME -> Config.grandDistilleryMaximumGrime;
-            case CONFIG_GRIME_ON_SUCCESS -> Config.grandDistilleryGrimeOnSuccess;
-            case CONFIG_GRIME_ON_FAILURE -> Config.grandDistilleryGrimeOnFailure;
+            case CONFIG_BASE_EFFICIENCY -> ServerConfig.grandDistilleryEfficiency;
+            case CONFIG_MAX_GRIME -> ServerConfig.grandDistilleryMaximumGrime;
+            case CONFIG_GRIME_ON_SUCCESS -> ServerConfig.grandDistilleryGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> ServerConfig.grandDistilleryGrimeOnFailure;
 
             default -> -1;
         };

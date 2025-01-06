@@ -1,8 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.capabilities.grime.GrimeProvider;
-import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
@@ -261,7 +259,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
     }
 
     public int getScaledMateria() {
-        return (16 * Math.min(Config.conjurerMateriaCapacity, materiaAmount)) / Config.conjurerMateriaCapacity;
+        return (16 * Math.min(ServerConfig.conjurerMateriaCapacity, materiaAmount)) / ServerConfig.conjurerMateriaCapacity;
     }
 
     public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, ConjurerBlockEntity entity) {
@@ -299,8 +297,8 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
                     if(allowInsertion) {
                         if(bottles.getCount() < entity.itemExtractionHandler.getSlotLimit(SLOT_EXTRACTION_BOTTLES)) {
                             //Allow overfilling the gauge by one item for GUI aesthetic reasons
-                            if(entity.materiaAmount < Config.conjurerMateriaCapacity) {
-                                entity.materiaAmount += Config.conjurerPointsPerDram;
+                            if(entity.materiaAmount < ServerConfig.conjurerMateriaCapacity) {
+                                entity.materiaAmount += ServerConfig.conjurerPointsPerDram;
                                 entity.materiaType = (MateriaItem)insert.getItem();
 
                                 insert.shrink(1);
@@ -504,7 +502,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
         if(activeProvisionRequests.contains(recipe.getMateria()))
             return false;
 
-        return materiaAmount < Config.conjurerMateriaCapacity / 2;
+        return materiaAmount < ServerConfig.conjurerMateriaCapacity / 2;
     }
 
     @Override
@@ -516,10 +514,10 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
             //Don't report that we have a materia need if there's already a pile incoming
             if (!activeProvisionRequests.contains(recipe.getMateria())) {
                 //Otherwise, only report that Admixture of Color is necessary if we're below half capacity
-                if (materiaAmount < Config.variegatorMaxAdmixture) {
-                    int needed = Math.max(0, Config.conjurerMateriaCapacity - materiaAmount);
+                if (materiaAmount < ServerConfig.variegatorMaxAdmixture) {
+                    int needed = Math.max(0, ServerConfig.conjurerMateriaCapacity - materiaAmount);
                     if (needed > 0)
-                        result.put(recipe.getMateria(), (int) Math.ceil((float) needed / Config.conjurerPointsPerDram));
+                        result.put(recipe.getMateria(), (int) Math.ceil((float) needed / ServerConfig.conjurerPointsPerDram));
                 }
             }
         }
@@ -542,7 +540,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
     public void provide(ItemStack pStack) {
         if(pStack.getItem() == recipe.getMateria()) {
             activeProvisionRequests.remove(recipe.getMateria());
-            materiaAmount += Config.conjurerPointsPerDram * pStack.getCount();
+            materiaAmount += ServerConfig.conjurerPointsPerDram * pStack.getCount();
             materiaType = recipe.getMateria();
             syncAndSave();
         }
@@ -550,7 +548,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
 
     @Override
     public int canAcceptStackFromShlorp(ItemStack pStack) {
-        int max = (int)Math.ceil((float)Config.conjurerMateriaCapacity / (float)Config.conjurerPointsPerDram);
+        int max = (int)Math.ceil((float) ServerConfig.conjurerMateriaCapacity / (float) ServerConfig.conjurerPointsPerDram);
         int capacity = max - pStack.getCount();
 
         return Math.max(0, capacity);

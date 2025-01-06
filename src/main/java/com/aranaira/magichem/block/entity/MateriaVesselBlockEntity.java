@@ -1,28 +1,15 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.MateriaVesselBlock;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.item.EssentiaItem;
-import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.jetbrains.annotations.Nullable;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.STACKED;
 
@@ -34,9 +21,9 @@ public class MateriaVesselBlockEntity extends AbstractMateriaStorageBlockEntity 
 
     public int getStorageLimit() {
         if(currentMateriaType instanceof EssentiaItem) {
-            return Config.materiaVesselEssentiaCapacity;
+            return ServerConfig.materiaVesselEssentiaCapacity;
         }
-        return Config.materiaVesselAdmixtureCapacity;
+        return ServerConfig.materiaVesselAdmixtureCapacity;
     }
 
     @Override

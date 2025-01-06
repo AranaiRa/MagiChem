@@ -1,11 +1,10 @@
 package com.aranaira.magichem.block.entity.renderer;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.foundation.AlchemicalNexusAnimSpec;
 import com.aranaira.magichem.util.render.RenderUtils;
-import com.mna.api.ManaAndArtificeMod;
 import com.mna.items.ItemInit;
 import com.mna.tools.math.Vector3;
 import com.mna.tools.render.MARenderTypes;
@@ -32,7 +31,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Quaternionf;
 
 import java.util.List;
 
@@ -61,7 +59,7 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
         this.renderBeam(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         this.renderCircle(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
 
-        float fluidPercent = (float)pBlockEntity.getFluidInTank(0).getAmount() / (float) Config.fuseryTankCapacity;
+        float fluidPercent = (float)pBlockEntity.getFluidInTank(0).getAmount() / (float) ServerConfig.fuseryTankCapacity;
 
         if(fluidPercent > 0) {
             this.renderTankFluid(fluidPercent, pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);

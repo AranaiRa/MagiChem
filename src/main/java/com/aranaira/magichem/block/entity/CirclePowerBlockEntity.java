@@ -1,7 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.renderer.CirclePowerBlockEntityRenderer;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
@@ -9,7 +8,6 @@ import com.aranaira.magichem.gui.CirclePowerMenu;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
-import com.mna.api.capabilities.WellspringNode;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
@@ -32,7 +30,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -643,7 +640,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         if(entity.progressReagentTier3 > 0) reagentCount++;
         if(entity.progressReagentTier4 > 0) reagentCount++;
 
-        return getGenRate(reagentCount) * Config.circlePowerBuffer;
+        return getGenRate(reagentCount) * ServerConfig.circlePowerBuffer;
     }
 
     /* FE STUFF */
@@ -666,17 +663,17 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
 
         int genRate = getGenRate(reagentCount);
 
-        cap = genRate * Config.circlePowerBuffer;
+        cap = genRate * ServerConfig.circlePowerBuffer;
         entity.ENERGY_STORAGE.receiveEnergy(genRate, false);
         if (currentEnergy + genRate > cap) entity.ENERGY_STORAGE.setEnergy(cap);
     }
 
     public static int getGenRate(int reagentCount) {
         int genRate = 0;
-        if(reagentCount == 1) genRate = Config.circlePowerGen1Reagent;
-        else if(reagentCount == 2) genRate = Config.circlePowerGen2Reagent;
-        else if(reagentCount == 3) genRate = Config.circlePowerGen3Reagent;
-        else if(reagentCount == 4) genRate = Config.circlePowerGen4Reagent;
+        if(reagentCount == 1) genRate = ServerConfig.circlePowerGen1Reagent;
+        else if(reagentCount == 2) genRate = ServerConfig.circlePowerGen2Reagent;
+        else if(reagentCount == 3) genRate = ServerConfig.circlePowerGen3Reagent;
+        else if(reagentCount == 4) genRate = ServerConfig.circlePowerGen4Reagent;
         return genRate;
     }
 

@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.GrandCentrifugeBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
@@ -295,7 +295,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
     @Override
     public int getMaximumGrime() {
-        return Config.grandCentrifugeMaximumGrime;
+        return ServerConfig.grandCentrifugeMaximumGrime;
     }
 
     public boolean getPowerSufficiency() {
@@ -317,11 +317,11 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
         data.set(DATA_GRIME, 0);
-        return grimeDetected / Config.grimePerWaste;
+        return grimeDetected / ServerConfig.grimePerWaste;
     }
 
     public static int getScaledGrime(int grime) {
-        return Math.min(Config.grandCentrifugeMaximumGrime, (GUI_GRIME_BAR_WIDTH * grime) / Config.grandCentrifugeMaximumGrime);
+        return Math.min(ServerConfig.grandCentrifugeMaximumGrime, (GUI_GRIME_BAR_WIDTH * grime) / ServerConfig.grandCentrifugeMaximumGrime);
     }
 
     @Override
@@ -426,8 +426,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     public int setPowerUsageSetting(int pPowerUsageSetting) {
         this.powerUsageSetting = pPowerUsageSetting;
         this.resetProgress();
-        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-            ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+            ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         return this.powerUsageSetting;
     }
 
@@ -435,8 +435,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         if(powerUsageSetting + 1 < 31) {
             this.powerUsageSetting++;
             this.resetProgress();
-            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-                ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         }
         return this.powerUsageSetting;
     }
@@ -445,8 +445,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         if(powerUsageSetting - 1 > 0) {
             this.powerUsageSetting--;
             this.resetProgress();
-            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-                ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         }
         return this.powerUsageSetting;
     }
@@ -460,7 +460,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
 
-            int powerToLimit = Math.max(0, (getPowerDraw() * Config.circlePowerBuffer) - getEnergyStored());
+            int powerToLimit = Math.max(0, (getPowerDraw() * ServerConfig.circlePowerBuffer) - getEnergyStored());
             int actualReceive = Math.min(maxReceive, powerToLimit);
 
             return super.receiveEnergy(actualReceive, simulate);
@@ -611,10 +611,10 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             case GUI_PROGRESS_BAR_WIDTH -> GUI_PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;
 
-            case CONFIG_BASE_EFFICIENCY -> Config.grandCentrifugeEfficiency;
-            case CONFIG_MAX_GRIME -> Config.grandCentrifugeMaximumGrime;
-            case CONFIG_GRIME_ON_SUCCESS -> Config.grandCentrifugeGrimeOnSuccess;
-            case CONFIG_GRIME_ON_FAILURE -> Config.grandCentrifugeGrimeOnFailure;
+            case CONFIG_BASE_EFFICIENCY -> ServerConfig.grandCentrifugeEfficiency;
+            case CONFIG_MAX_GRIME -> ServerConfig.grandCentrifugeMaximumGrime;
+            case CONFIG_GRIME_ON_SUCCESS -> ServerConfig.grandCentrifugeGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> ServerConfig.grandCentrifugeGrimeOnFailure;
 
             default -> -1;
         };

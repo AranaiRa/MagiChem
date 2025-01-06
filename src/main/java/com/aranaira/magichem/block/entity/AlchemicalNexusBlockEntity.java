@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
@@ -396,7 +396,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     //Check if all the items are present
                     if (anbe.hasAllRecipeItemsForCurrentStage()) {
                         if (anbe.getContentsOfOutputSlots().canAddItem(anbe.currentRecipe.getAlchemyObject())) {
-                            int experienceCost = anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience * Config.fluidPerXPPoint;
+                            int experienceCost = anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience * ServerConfig.fluidPerXPPoint;
                             int fluidCost = experienceCost + getBaseExperienceCostPerStage(anbe.getPowerLevel());
 
                             anbe.animStage = ANIM_STAGE_RAMP_SPEEDUP;
@@ -555,7 +555,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         anbe.craftingStage++;
 //                        int experienceCost = getBaseExperienceCostPerStage(anbe.getPowerLevel()) + anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience;
 //                        int fluidCost = experienceCost * Config.fluidPerXPPoint;
-                        int experienceCost = anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience * Config.fluidPerXPPoint;
+                        int experienceCost = anbe.currentRecipe.getStages(false).get(anbe.craftingStage).experience * ServerConfig.fluidPerXPPoint;
                         int fluidCost = experienceCost + getBaseExperienceCostPerStage(anbe.getPowerLevel());
 
                         anbe.progress = anbe.cachedSpec.ticksInRampCancel;
@@ -933,7 +933,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
     @Override
     public int getTankCapacity(int tank) {
-        return Config.alchemicalNexusTankCapacity;
+        return ServerConfig.alchemicalNexusTankCapacity;
     }
 
     @Override
@@ -1014,7 +1014,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public static int getScaledSlurry(int pSlurry) {
-        return (FLUID_BAR_HEIGHT * pSlurry) / Config.alchemicalNexusTankCapacity;
+        return (FLUID_BAR_HEIGHT * pSlurry) / ServerConfig.alchemicalNexusTankCapacity;
     }
 
     public int getPowerLevel() {

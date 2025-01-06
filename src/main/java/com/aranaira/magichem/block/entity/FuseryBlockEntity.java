@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.FuseryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -342,7 +342,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
         data.set(DATA_GRIME, 0);
-        return grimeDetected / Config.grimePerWaste;
+        return grimeDetected / ServerConfig.grimePerWaste;
     }
 
     public static int getScaledGrime(int pGrime, Function<IDs, Integer> pVarFunc) {
@@ -400,15 +400,15 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             case GUI_PROGRESS_BAR_WIDTH -> PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GRIME_BAR_WIDTH;
 
-            case CONFIG_BASE_EFFICIENCY -> Config.fuseryEfficiency;
-            case CONFIG_MAX_GRIME -> Config.fuseryMaximumGrime;
-            case CONFIG_GRIME_ON_SUCCESS -> Config.fuseryGrimeOnSuccess;
-            case CONFIG_GRIME_ON_FAILURE -> Config.fuseryGrimeOnFailure;
-            case CONFIG_OPERATION_TIME -> Config.fuseryOperationTime;
+            case CONFIG_BASE_EFFICIENCY -> ServerConfig.fuseryEfficiency;
+            case CONFIG_MAX_GRIME -> ServerConfig.fuseryMaximumGrime;
+            case CONFIG_GRIME_ON_SUCCESS -> ServerConfig.fuseryGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> ServerConfig.fuseryGrimeOnFailure;
+            case CONFIG_OPERATION_TIME -> ServerConfig.fuseryOperationTime;
             case CONFIG_TORQUE_GAIN_ON_ACTIVATION -> TORQUE_GAIN_ON_COG_ACTIVATION;
             case CONFIG_ANIMUS_GAIN_ON_DUSTING -> ANIMUS_GAIN_ON_DUSTING;
             case CONFIG_NO_TORQUE_GRACE_PERIOD -> NO_TORQUE_GRACE_PERIOD;
-            case CONFIG_TANK_CAPACITY -> Config.fuseryTankCapacity;
+            case CONFIG_TANK_CAPACITY -> ServerConfig.fuseryTankCapacity;
 
             default -> -1;
         };
@@ -439,7 +439,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
 
     @Override
     public int getTankCapacity(int tank) {
-        return Config.fuseryTankCapacity;
+        return ServerConfig.fuseryTankCapacity;
     }
 
     ////////////////////

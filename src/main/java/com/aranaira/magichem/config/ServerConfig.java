@@ -1,5 +1,6 @@
-package com.aranaira.magichem;
+package com.aranaira.magichem.config;
 
+import com.aranaira.magichem.MagiChemMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -10,7 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 // An example config class. This is not required, but it's a good idea to have one to keep your config organized.
 // Demonstrates how to use Forge's config APIs
 @Mod.EventBusSubscriber(modid = MagiChemMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Config
+public class ServerConfig
 {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
@@ -362,7 +363,7 @@ public class Config
             .comment("The default cuboid range that a Materia Manifest searches for containers in. The center block is not counted as part of this squadius.")
             .defineInRange("materiaManifestDefaultRange", 8, 1, Integer.MAX_VALUE);
 
-    static final ForgeConfigSpec SPEC = BUILDER.build();
+    public static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
         grimePerWaste,

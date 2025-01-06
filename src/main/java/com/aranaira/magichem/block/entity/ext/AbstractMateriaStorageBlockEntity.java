@@ -1,11 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
-import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;

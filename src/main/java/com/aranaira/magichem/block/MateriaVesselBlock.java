@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.foundation.IScannableByMateriaManifest;
@@ -23,9 +23,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -76,7 +73,7 @@ public class MateriaVesselBlock extends BaseEntityBlock implements IScannableByM
                                 .withStyle(ChatFormatting.GRAY)
                 );
                 pTooltip.add(
-                        Component.literal(count + " / " + (materia instanceof EssentiaItem ? Config.materiaVesselEssentiaCapacity : Config.materiaVesselAdmixtureCapacity))
+                        Component.literal(count + " / " + (materia instanceof EssentiaItem ? ServerConfig.materiaVesselEssentiaCapacity : ServerConfig.materiaVesselAdmixtureCapacity))
                                 .withStyle(ChatFormatting.DARK_GRAY)
                 );
                 pTooltip.add(

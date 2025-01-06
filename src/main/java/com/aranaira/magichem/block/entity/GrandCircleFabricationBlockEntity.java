@@ -1,21 +1,15 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.GrandCircleFabricationBlock;
-import com.aranaira.magichem.block.GrandDistilleryBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandCircleFabricationRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.GrandDistilleryRouterBlockEntity;
-import com.aranaira.magichem.capabilities.grime.GrimeProvider;
-import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
-import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
-import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.gui.GrandCircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
@@ -640,8 +634,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     public int setPowerUsageSetting(int pPowerUsageSetting) {
         this.powerUsageSetting = pPowerUsageSetting;
         this.resetProgress();
-        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-            ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+            ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         return this.powerUsageSetting;
     }
 
@@ -649,8 +643,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         if(powerUsageSetting + 1 < 31) {
             this.powerUsageSetting++;
             this.resetProgress();
-            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-                ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         }
         return this.powerUsageSetting;
     }
@@ -659,8 +653,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         if(powerUsageSetting - 1 > 0) {
             this.powerUsageSetting--;
             this.resetProgress();
-            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * Config.circlePowerBuffer)
-                ENERGY_STORAGE.setEnergy(getPowerDraw() * Config.circlePowerBuffer);
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
         }
         return this.powerUsageSetting;
     }
@@ -742,7 +736,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         @Override
         public int receiveEnergy(int maxReceive, boolean simulate) {
 
-            int powerToLimit = Math.max(0, (getPowerDraw() * Config.circlePowerBuffer) - getEnergyStored());
+            int powerToLimit = Math.max(0, (getPowerDraw() * ServerConfig.circlePowerBuffer) - getEnergyStored());
             int actualReceive = Math.min(maxReceive, powerToLimit);
 
             return super.receiveEnergy(actualReceive, simulate);

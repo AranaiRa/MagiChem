@@ -1,6 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.Animations;
@@ -66,9 +66,9 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                                     forceFail();
                                 } else {
                                     learningItemExperience = 0;
-                                    if (learningItem.is(studyMaterialSimple)) learningItemExperience = Config.constructStudyExperienceSimple;
-                                    if (learningItem.is(studyMaterialAdvanced)) learningItemExperience = Config.constructStudyExperienceAdvanced;
-                                    if (learningItem.is(studyMaterialMaster)) learningItemExperience = Config.constructStudyExperienceMaster;
+                                    if (learningItem.is(studyMaterialSimple)) learningItemExperience = ServerConfig.constructStudyExperienceSimple;
+                                    if (learningItem.is(studyMaterialAdvanced)) learningItemExperience = ServerConfig.constructStudyExperienceAdvanced;
+                                    if (learningItem.is(studyMaterialMaster)) learningItemExperience = ServerConfig.constructStudyExperienceMaster;
 
                                     this.setMoveTarget(deskPos);
                                     this.phase = ETaskPhase.MOVE_TO_DESK;

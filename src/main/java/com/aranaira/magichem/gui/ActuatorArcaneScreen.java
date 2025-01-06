@@ -1,9 +1,8 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -13,7 +12,6 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -98,7 +96,7 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
 
         //Essentia insertion
         gui.blit(TEXTURE, x + 158, y + 3, 0, 172, 40, 58);
-        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / Config.actuatorMateriaBufferMaximum);
+        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / ServerConfig.actuatorMateriaBufferMaximum);
         gui.blit(TEXTURE, x + 166, y + 11 + (42 - sM), 200, 0, 2, sM);
     }
 
@@ -150,7 +148,7 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.arcane.tank.line2").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.blockEntity.getSlurryInTank() + " / " + Config.occultMatrixTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSlurryInTank() + " / " + ServerConfig.occultMatrixTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
                             .append(Component.literal(String.format("%.1f", ActuatorArcaneBlockEntity.getSlurryPercent(menu.blockEntity.getSlurryInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
@@ -180,8 +178,8 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float singleDrawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
-            float doubleDrawTime = Config.actuatorDoubleSuppliedPeriod / 20.0f;
+            float singleDrawTime = ServerConfig.actuatorSingleSuppliedPeriod / 20.0f;
+            float doubleDrawTime = ServerConfig.actuatorDoubleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
@@ -203,7 +201,7 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
                 mouseY >= y+10 && mouseY <= y+54) {
 
             int current = menu.blockEntity.getStoredMateria();
-            int max = Config.actuatorMateriaBufferMaximum;
+            int max = ServerConfig.actuatorMateriaBufferMaximum;
             float percent = (float)current / (float)max;
 
             tooltipContents.clear();
@@ -214,7 +212,7 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
                     .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2a"))
-                    .append(Component.literal(Config.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ServerConfig.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2b")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add(Component.empty()

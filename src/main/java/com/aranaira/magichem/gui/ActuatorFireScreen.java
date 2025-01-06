@@ -1,9 +1,8 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -104,7 +103,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
 
         //Essentia insertion
         gui.blit(TEXTURE, x + 153, y + 3, 0, 172, 40, 58);
-        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / Config.actuatorMateriaBufferMaximum);
+        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / ServerConfig.actuatorMateriaBufferMaximum);
         gui.blit(TEXTURE, x + 161, y + 11 + (42 - sM), 200, 0, 2, sM);
     }
 
@@ -163,7 +162,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.fire.tank.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.blockEntity.getSmokeInTank() + " / " + Config.infernoEngineTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSmokeInTank() + " / " + ServerConfig.infernoEngineTankCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
                             .append(Component.literal(String.format("%.1f", ActuatorFireBlockEntity.getSmokePercent(menu.blockEntity.getSmokeInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
@@ -211,8 +210,8 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float singleDrawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
-            float doubleDrawTime = Config.actuatorDoubleSuppliedPeriod / 20.0f;
+            float singleDrawTime = ServerConfig.actuatorSingleSuppliedPeriod / 20.0f;
+            float doubleDrawTime = ServerConfig.actuatorDoubleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
@@ -234,7 +233,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
                 mouseY >= y+10 && mouseY <= y+54) {
 
             int current = menu.blockEntity.getStoredMateria();
-            int max = Config.actuatorMateriaBufferMaximum;
+            int max = ServerConfig.actuatorMateriaBufferMaximum;
             float percent = (float)current / (float)max;
 
             tooltipContents.clear();
@@ -245,7 +244,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
                     .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2a"))
-                    .append(Component.literal(Config.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ServerConfig.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2b")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add(Component.empty()

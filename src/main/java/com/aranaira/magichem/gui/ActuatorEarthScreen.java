@@ -1,11 +1,9 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -112,7 +110,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
 
         //Essentia insertion
         gui.blit(TEXTURE, x + 167, y + 3, 0, 172, 40, 58);
-        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / Config.actuatorMateriaBufferMaximum);
+        int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / ServerConfig.actuatorMateriaBufferMaximum);
         gui.blit(TEXTURE, x + 175, y + 11 + (42 - sM), 200, 0, 2, sM);
     }
 
@@ -157,10 +155,10 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         if(mouseX >= x+ TOOLTIP_GRIME_X && mouseX <= x+ TOOLTIP_GRIME_X + TOOLTIP_GRIME_W &&
                 mouseY >= y+ TOOLTIP_GRIME_Y && mouseY <= y+ TOOLTIP_GRIME_Y + TOOLTIP_GRIME_H) {
 
-            float grimePercent = ((float)menu.blockEntity.getGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
-            int grimeWasteCount = menu.blockEntity.getGrimeInTank() / Config.grimePerWaste;
-            float rarefiedPercent = ((float)menu.blockEntity.getRarefiedGrimeInTank() / (float)Config.quakeRefineryGrimeCapacity) * 100.0f;
-            int rarefiedWasteCount = menu.blockEntity.getRarefiedGrimeInTank() / Config.grimePerWaste;
+            float grimePercent = ((float)menu.blockEntity.getGrimeInTank() / (float) ServerConfig.quakeRefineryGrimeCapacity) * 100.0f;
+            int grimeWasteCount = menu.blockEntity.getGrimeInTank() / ServerConfig.grimePerWaste;
+            float rarefiedPercent = ((float)menu.blockEntity.getRarefiedGrimeInTank() / (float) ServerConfig.quakeRefineryGrimeCapacity) * 100.0f;
+            int rarefiedWasteCount = menu.blockEntity.getRarefiedGrimeInTank() / ServerConfig.grimePerWaste;
 
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank1").withStyle(ChatFormatting.GOLD))
@@ -208,7 +206,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line3").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(menu.blockEntity.getSandInTank() + " / " + Config.quakeRefinerySandCapacity).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSandInTank() + " / " + ServerConfig.quakeRefinerySandCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
                             .append(Component.literal(String.format("%.1f", ActuatorEarthBlockEntity.getSandPercent(menu.blockEntity.getSandInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
@@ -226,7 +224,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
                     .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(Config.quakeRefineryRarefiedRate+"% ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ServerConfig.quakeRefineryRarefiedRate+"% ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction.line2")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -248,8 +246,8 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         if(mouseX >= x+TOOLTIP_ELDRIN_X && mouseX <= x+TOOLTIP_ELDRIN_X+TOOLTIP_ELDRIN_W &&
                 mouseY >= y+TOOLTIP_ELDRIN_Y && mouseY <= y+TOOLTIP_ELDRIN_Y+TOOLTIP_ELDRIN_H) {
 
-            float singleDrawTime = Config.actuatorSingleSuppliedPeriod / 20.0f;
-            float doubleDrawTime = Config.actuatorDoubleSuppliedPeriod / 20.0f;
+            float singleDrawTime = ServerConfig.actuatorSingleSuppliedPeriod / 20.0f;
+            float doubleDrawTime = ServerConfig.actuatorDoubleSuppliedPeriod / 20.0f;
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
@@ -271,7 +269,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
                 mouseY >= y+10 && mouseY <= y+54) {
 
             int current = menu.blockEntity.getStoredMateria();
-            int max = Config.actuatorMateriaBufferMaximum;
+            int max = ServerConfig.actuatorMateriaBufferMaximum;
             float percent = (float)current / (float)max;
 
             tooltipContents.clear();
@@ -282,7 +280,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
             tooltipContents.add((Component.empty()));
             tooltipContents.add((Component.empty())
                     .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2a"))
-                    .append(Component.literal(Config.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ServerConfig.actuatorMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.essentia.line2b")));
             tooltipContents.add((Component.empty()));
             tooltipContents.add(Component.empty()

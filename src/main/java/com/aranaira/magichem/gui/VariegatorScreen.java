@@ -1,9 +1,7 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
-import com.aranaira.magichem.networking.GrandDeviceSyncDataC2SPacket;
 import com.aranaira.magichem.networking.VariegatorSyncDataC2SPacket;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import static com.aranaira.magichem.block.entity.VariegatorBlockEntity.*;
 
@@ -94,11 +91,11 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
 
         pGuiGraphics.blit(TEXTURE, x - 8, y - 37, PANEL_COLORS_U, PANEL_COLORS_V, PANEL_COLORS_W, PANEL_COLORS_H);
         for(int i=0; i<COLOR_GUI_ORDER.length; i++) {
-            int scaled = Math.min(Config.variegatorMaxDye, (menu.blockEntity.getDyeFillByColor(COLOR_GUI_ORDER[i]) * 20) / Config.variegatorMaxDye);
+            int scaled = Math.min(ServerConfig.variegatorMaxDye, (menu.blockEntity.getDyeFillByColor(COLOR_GUI_ORDER[i]) * 20) / ServerConfig.variegatorMaxDye);
             pGuiGraphics.blit(TEXTURE, x - 4 + (i * 12), y - 28 + (20 - scaled), 28 + (i*3), 236, 3, scaled);
         }
 
-        int scaledAdmixture = Math.min(Config.variegatorMaxAdmixture, (menu.blockEntity.dyeAdmixture * 40) / Config.variegatorMaxAdmixture);
+        int scaledAdmixture = Math.min(ServerConfig.variegatorMaxAdmixture, (menu.blockEntity.dyeAdmixture * 40) / ServerConfig.variegatorMaxAdmixture);
         pGuiGraphics.blit(TEXTURE, x + 15, y + 6, PANEL_ADMIXTURE_U, PANEL_ADMIXTURE_V, PANEL_ADMIXTURE_W, PANEL_ADMIXTURE_H);
         pGuiGraphics.blit(TEXTURE, x + 22, y + 50 - scaledAdmixture, 252, 216, 4, scaledAdmixture);
 
@@ -165,8 +162,8 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
 
             if (pMouseX > x - 9 + (12 * i) && pMouseX <= x - 9 + (12 * (i + 1)) &&
                     pMouseY >= y - 37 && pMouseY <= y - 6) {
-                int fill = Math.min(menu.blockEntity.getDyeFillByColor(color), Config.variegatorMaxDye);
-                float fillPercent = ((float)fill / Config.variegatorMaxDye) * 100f;
+                int fill = Math.min(menu.blockEntity.getDyeFillByColor(color), ServerConfig.variegatorMaxDye);
+                float fillPercent = ((float)fill / ServerConfig.variegatorMaxDye) * 100f;
 
                 tooltipContents.add(Component.empty()
                         .append(Component.translatable("item.minecraft."+color.getName()+"_dye").withStyle(ChatFormatting.GOLD))
@@ -174,7 +171,7 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
                 tooltipContents.add(Component.empty()
                         .append(Component.literal(fill+"").withStyle(ChatFormatting.DARK_AQUA))
                         .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
-                        .append(Component.literal(Config.variegatorMaxDye+"").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(ServerConfig.variegatorMaxDye+"").withStyle(ChatFormatting.DARK_GRAY))
                         .append(Component.literal(" (").withStyle(ChatFormatting.DARK_GRAY))
                         .append(Component.literal(String.format("%.1f", fillPercent)+"%").withStyle(ChatFormatting.DARK_AQUA))
                         .append(Component.literal(")").withStyle(ChatFormatting.DARK_GRAY))
@@ -218,8 +215,8 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
 
         if (pMouseX >= x + 15 && pMouseX <= x + 15 + PANEL_ADMIXTURE_W &&
                 pMouseY >= y + 6 && pMouseY <= y + 6 + PANEL_ADMIXTURE_H) {
-            int fill = Math.min(menu.blockEntity.dyeAdmixture, Config.variegatorMaxAdmixture);
-            float fillPercent = ((float)fill / Config.variegatorMaxAdmixture) * 100f;
+            int fill = Math.min(menu.blockEntity.dyeAdmixture, ServerConfig.variegatorMaxAdmixture);
+            float fillPercent = ((float)fill / ServerConfig.variegatorMaxAdmixture) * 100f;
 
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("item.magichem.admixture_color").withStyle(ChatFormatting.GOLD))
@@ -227,7 +224,7 @@ public class VariegatorScreen extends AbstractContainerScreen<VariegatorMenu> {
             tooltipContents.add(Component.empty()
                     .append(Component.literal(fill+"").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.literal(Config.variegatorMaxAdmixture+"").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(ServerConfig.variegatorMaxAdmixture+"").withStyle(ChatFormatting.DARK_GRAY))
                     .append(Component.literal(" (").withStyle(ChatFormatting.DARK_GRAY))
                     .append(Component.literal(String.format("%.1f", fillPercent)+"%").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(")").withStyle(ChatFormatting.DARK_GRAY))

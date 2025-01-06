@@ -1,10 +1,9 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -186,7 +185,7 @@ public class ActuatorAirBlock extends BaseEntityBlock {
                         FluidStack fluid = cap.getFluidInTank(0);
 
                         if(fluid.getFluid() == FluidRegistry.SMOKE.get()) {
-                            int capacity = aabe.fill(new FluidStack(FluidRegistry.SMOKE.get(), Config.galePressurizerTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                            int capacity = aabe.fill(new FluidStack(FluidRegistry.SMOKE.get(), ServerConfig.galePressurizerTankCapacity), IFluidHandler.FluidAction.SIMULATE);
                             FluidStack drainedFS;
                             if(player.isCreative())
                                 drainedFS = new FluidStack(FluidRegistry.SMOKE.get(), fluid.getAmount());
@@ -198,7 +197,7 @@ public class ActuatorAirBlock extends BaseEntityBlock {
                                 player.setItemInHand(hand, new ItemStack(Items.BUCKET));
                         }
                         else if(fluid.getFluid() == FluidRegistry.STEAM.get()) {
-                            int capacity = aabe.fill(new FluidStack(FluidRegistry.STEAM.get(), Config.galePressurizerTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                            int capacity = aabe.fill(new FluidStack(FluidRegistry.STEAM.get(), ServerConfig.galePressurizerTankCapacity), IFluidHandler.FluidAction.SIMULATE);
                             FluidStack drainedFS;
                             if(player.isCreative())
                                 drainedFS = new FluidStack(FluidRegistry.STEAM.get(), fluid.getAmount());

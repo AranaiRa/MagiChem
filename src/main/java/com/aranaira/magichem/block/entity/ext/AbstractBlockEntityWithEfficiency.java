@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity.ext;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -42,7 +42,7 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
                     boolean doShrink = false;
                     int adjustedEfficiency = efficiency;
                     if(stack.getItem() == NIGREGO || stack.getItem() == ALBEDO || stack.getItem() == CITRINITAS || stack.getItem() == RUBEDO)
-                        adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float)Config.houseOfAlchemyDistillationEfficiencyBonus / 100f));
+                        adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * (float) ServerConfig.houseOfAlchemyDistillationEfficiencyBonus / 100f));
 
                     if(adjustedEfficiency < 100 || outputRate < 1.0f) {
                         if (r.nextInt(100) > adjustedEfficiency)

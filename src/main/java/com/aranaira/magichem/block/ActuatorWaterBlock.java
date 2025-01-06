@@ -1,10 +1,9 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -188,7 +187,7 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
 
                         //If container has water
                         if(fluidInItem.getFluid() == Fluids.WATER || heldItem.getItem() == Items.WATER_BUCKET) {
-                            int capacity = awbe.fill(new FluidStack(Fluids.WATER, Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                            int capacity = awbe.fill(new FluidStack(Fluids.WATER, ServerConfig.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
                             FluidStack drainedFS;
                             if(player.isCreative())
                                 drainedFS = new FluidStack(Fluids.WATER, fluidInItem.getAmount());
@@ -209,7 +208,7 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
                                     player.level().addFreshEntity(ie);
                                 }
                             } else {
-                                int capacity = cap.fill(new FluidStack(FluidRegistry.STEAM.get(), Config.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                                int capacity = cap.fill(new FluidStack(FluidRegistry.STEAM.get(), ServerConfig.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
                                 FluidStack drainedFS = awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), Math.min(capacity, awbe.getFluidInTank(ActuatorWaterBlockEntity.TANK_ID_STEAM).getAmount())), IFluidHandler.FluidAction.EXECUTE);
                                 cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
                             }

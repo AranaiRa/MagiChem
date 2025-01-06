@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.MateriaJarBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.foundation.IScannableByMateriaManifest;
@@ -71,7 +71,7 @@ public class MateriaJarBlock extends BaseEntityBlock implements IScannableByMate
                                 .withStyle(ChatFormatting.GRAY)
                 );
                 pTooltip.add(
-                        Component.literal(count + " / " + (materia instanceof EssentiaItem ? Config.materiaJarEssentiaCapacity : Config.materiaJarAdmixtureCapacity))
+                        Component.literal(count + " / " + (materia instanceof EssentiaItem ? ServerConfig.materiaJarEssentiaCapacity : ServerConfig.materiaJarAdmixtureCapacity))
                                 .withStyle(ChatFormatting.DARK_GRAY)
                 );
                 pTooltip.add(

@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IScannableByMateriaManifest;
@@ -9,9 +9,7 @@ import com.aranaira.magichem.gui.MateriaManifestMenu;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
-import com.aranaira.magichem.registry.FluidRegistry;
 import com.mna.items.ItemInit;
-import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -27,11 +25,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -82,8 +78,8 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
     public MateriaManifestBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.MATERIA_MANIFEST_BE.get(), pos, state);
 
-        int distLimit = Config.materiaManifestDistanceLimit;
-        int sizeLimit = Config.materiaManifestSizeConstraint;
+        int distLimit = ServerConfig.materiaManifestDistanceLimit;
+        int sizeLimit = ServerConfig.materiaManifestSizeConstraint;
         BlockPos offset = new BlockPos(distLimit+sizeLimit, distLimit+sizeLimit, distLimit+sizeLimit);
         RENDER_BOUNDING_BOX = new AABB(getBlockPos().offset(offset), getBlockPos().offset(offset.multiply(-1)));
     }
@@ -143,7 +139,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
             Vec3 myPos = Vec3.atCenterOf(getBlockPos());
 
             double dist = myPos.distanceTo(center);
-            if(dist >= Config.materiaManifestDistanceLimit)
+            if(dist >= ServerConfig.materiaManifestDistanceLimit)
                 return 1;
 
             //TODO: size limit
@@ -187,12 +183,12 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
                 return query;
         }
 
-        int minX = getBlockPos().getX() - Config.materiaManifestDefaultRange;
-        int maxX = getBlockPos().getX() + Config.materiaManifestDefaultRange;
-        int minY = getBlockPos().getY() - Config.materiaManifestDefaultRange;
-        int maxY = getBlockPos().getY() + Config.materiaManifestDefaultRange;
-        int minZ = getBlockPos().getZ() - Config.materiaManifestDefaultRange;
-        int maxZ = getBlockPos().getZ() + Config.materiaManifestDefaultRange;
+        int minX = getBlockPos().getX() - ServerConfig.materiaManifestDefaultRange;
+        int maxX = getBlockPos().getX() + ServerConfig.materiaManifestDefaultRange;
+        int minY = getBlockPos().getY() - ServerConfig.materiaManifestDefaultRange;
+        int maxY = getBlockPos().getY() + ServerConfig.materiaManifestDefaultRange;
+        int minZ = getBlockPos().getZ() - ServerConfig.materiaManifestDefaultRange;
+        int maxZ = getBlockPos().getZ() + ServerConfig.materiaManifestDefaultRange;
 
         return new AABB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
     }

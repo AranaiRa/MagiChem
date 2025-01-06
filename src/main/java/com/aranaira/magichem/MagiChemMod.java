@@ -1,6 +1,7 @@
 package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.entity.renderer.*;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
@@ -82,7 +83,7 @@ public class MagiChemMod
         MinecraftForge.EVENT_BUS.register(this);
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
 
         //Conditional registration
         ModList modList = ModList.get();

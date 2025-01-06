@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
@@ -30,14 +30,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -159,15 +157,15 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     }
 
     public static float getSlurryPercent(int pSlurryAmount) {
-        return (float)pSlurryAmount * 100f / Config.occultMatrixTankCapacity;
+        return (float)pSlurryAmount * 100f / ServerConfig.occultMatrixTankCapacity;
     }
 
     public float getSlurryPercent() {
-        return (float)containedSlurry.getAmount() / Config.occultMatrixTankCapacity;
+        return (float)containedSlurry.getAmount() / ServerConfig.occultMatrixTankCapacity;
     }
 
     public static int getScaledSlurry(int pSlurryAmount) {
-        return pSlurryAmount * ActuatorArcaneScreen.FLUID_GAUGE_H / Config.occultMatrixTankCapacity;
+        return pSlurryAmount * ActuatorArcaneScreen.FLUID_GAUGE_H / ServerConfig.occultMatrixTankCapacity;
     }
 
     public int getSlurryInTank() {
@@ -288,8 +286,8 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
                                 int availableExperiencePoints = crystalNBT.getInt("stored_xp");
                                 int availableTankCapacity = entity.getTankCapacity(0) - entity.containedSlurry.getAmount();
 
-                                int pointsToConvert = Math.min(availableExperiencePoints, availableTankCapacity / Config.fluidPerXPPoint);
-                                entity.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pointsToConvert * Config.fluidPerXPPoint), FluidAction.EXECUTE);
+                                int pointsToConvert = Math.min(availableExperiencePoints, availableTankCapacity / ServerConfig.fluidPerXPPoint);
+                                entity.fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pointsToConvert * ServerConfig.fluidPerXPPoint), FluidAction.EXECUTE);
                                 crystalNBT.putInt("stored_xp", availableExperiencePoints - pointsToConvert);
                                 inputItem.setTag(crystalNBT);
                             }
@@ -326,13 +324,13 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
                                 availableCrystalCapacity = Math.max(0, 20000 - currentCrystalFill);
                             }
 
-                            int availableSlurryAsPoints = availableSlurry / Config.fluidPerXPPoint;
+                            int availableSlurryAsPoints = availableSlurry / ServerConfig.fluidPerXPPoint;
                             int pointsToConvert = Math.min(availableSlurryAsPoints, availableCrystalCapacity);
                             if (currentCrystalFill + pointsToConvert > availableCrystalCapacity) {
                                 pointsToConvert = currentCrystalFill + pointsToConvert - availableCrystalCapacity;
                             }
 
-                            entity.drain(pointsToConvert * Config.fluidPerXPPoint, FluidAction.EXECUTE);
+                            entity.drain(pointsToConvert * ServerConfig.fluidPerXPPoint, FluidAction.EXECUTE);
                             int newCrystalFill = Math.min(20000, Math.max(0, currentCrystalFill + pointsToConvert));
 
                             crystalNBT.putInt("stored_xp", newCrystalFill);
@@ -437,7 +435,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
 
     @Override
     public int getTankCapacity(int tank) {
-        return Config.occultMatrixTankCapacity;
+        return ServerConfig.occultMatrixTankCapacity;
     }
 
     @Override
@@ -456,11 +454,11 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         int incomingAmount = fluidStack.getAmount();
         if(fluid == FluidRegistry.ACADEMIC_SLURRY.get()) {
             int extantAmount = containedSlurry.getAmount();
-            int query = Config.occultMatrixTankCapacity - (incomingAmount + extantAmount);
+            int query = ServerConfig.occultMatrixTankCapacity - (incomingAmount + extantAmount);
 
             //Hit capacity
             if(query < 0) {
-                int actualTransfer = Config.occultMatrixTankCapacity - extantAmount;
+                int actualTransfer = ServerConfig.occultMatrixTankCapacity - extantAmount;
                 if(fluidAction == FluidAction.EXECUTE)
                     this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), extantAmount + actualTransfer);
                 return actualTransfer;

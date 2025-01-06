@@ -1,10 +1,9 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -203,7 +202,7 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
                                     player.level().addFreshEntity(ie);
                                 }
                             } else {
-                                int capacity = cap.fill(new FluidStack(FluidRegistry.SMOKE.get(), Config.infernoEngineTankCapacity), IFluidHandler.FluidAction.SIMULATE);
+                                int capacity = cap.fill(new FluidStack(FluidRegistry.SMOKE.get(), ServerConfig.infernoEngineTankCapacity), IFluidHandler.FluidAction.SIMULATE);
                                 FluidStack drainedFS = afbe.drain(new FluidStack(FluidRegistry.SMOKE.get(), Math.min(capacity, afbe.getFluidInTank(0).getAmount())), IFluidHandler.FluidAction.EXECUTE);
                                 cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
                             }

@@ -1,7 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.gui.CentrifugeMenu;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -9,18 +8,13 @@ import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
 import com.mna.tools.math.Vector3;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,7 +29,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
 public class ExperienceExchangerBlockEntity extends BlockEntity {
     private boolean isPushMode = false;
@@ -119,10 +112,10 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
                             if (eebe.getStoredXP() > 0) {
                                 FluidStack attempt = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), cap.getTankCapacity(0));
                                 int capacity = cap.fill(attempt, IFluidHandler.FluidAction.SIMULATE);
-                                int maxPoints = capacity / Config.fluidPerXPPoint;
+                                int maxPoints = capacity / ServerConfig.fluidPerXPPoint;
                                 if (maxPoints > 0) {
                                     int consumedPoints = Math.min(eebe.getStoredXP(), Math.min(maxPoints, 10));
-                                    attempt.setAmount(consumedPoints * Config.fluidPerXPPoint);
+                                    attempt.setAmount(consumedPoints * ServerConfig.fluidPerXPPoint);
                                     cap.fill(attempt, IFluidHandler.FluidAction.EXECUTE);
                                     eebe.updateStoredXP(eebe.getStoredXP() - consumedPoints);
                                 }
@@ -137,8 +130,8 @@ public class ExperienceExchangerBlockEntity extends BlockEntity {
                                 int contents = cap.drain(attempt, IFluidHandler.FluidAction.SIMULATE).getAmount();
                                 int maxInsert = comCapacity - eebe.getStoredXP();
                                 if (maxInsert > 0) {
-                                    int actualInsert = Math.min(maxInsert, Math.min(contents / Config.fluidPerXPPoint, 10));
-                                    attempt.setAmount(actualInsert * Config.fluidPerXPPoint);
+                                    int actualInsert = Math.min(maxInsert, Math.min(contents / ServerConfig.fluidPerXPPoint, 10));
+                                    attempt.setAmount(actualInsert * ServerConfig.fluidPerXPPoint);
                                     cap.drain(attempt, IFluidHandler.FluidAction.EXECUTE);
                                     eebe.updateStoredXP(eebe.getStoredXP() + actualInsert);
                                 }

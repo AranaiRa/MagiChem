@@ -1,7 +1,6 @@
 package com.aranaira.magichem.block.entity.ext;
 
-import com.aranaira.magichem.Config;
-import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
@@ -121,7 +120,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
     }
 
     public int getScaledCycleTime() {
-        return remainingCycleTime * 21 / ((drewEssentiaThisCycle && drewEldrinThisCycle) ? Config.actuatorDoubleSuppliedPeriod : Config.actuatorSingleSuppliedPeriod);
+        return remainingCycleTime * 21 / ((drewEssentiaThisCycle && drewEldrinThisCycle) ? ServerConfig.actuatorDoubleSuppliedPeriod : ServerConfig.actuatorSingleSuppliedPeriod);
     }
 
     public static <T extends BlockEntity> boolean tick(Level level, BlockPos pos, BlockState blockState, T t, Function<IDs, Integer> pVarFunc) {
@@ -130,14 +129,14 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
         if(t instanceof AbstractDirectionalPluginBlockEntity entity) {
             //Try inserting materia
             if(!level.isClientSide()) {
-                if (entity.storedMateria < Config.actuatorMateriaBufferMaximum) {
+                if (entity.storedMateria < ServerConfig.actuatorMateriaBufferMaximum) {
                     ItemStack insertionStack = entity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_ESSENTIA_INSERTION));
                     ItemStack bottleStack = entity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES));
 
                     if (!insertionStack.isEmpty()) {
                         if (insertionStack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
                             int pre = entity.storedMateria;
-                            entity.storedMateria = Config.actuatorMateriaBufferMaximum;
+                            entity.storedMateria = ServerConfig.actuatorMateriaBufferMaximum;
                             if(entity.storedMateria != pre)
                                 changed = true;
                         }
@@ -150,7 +149,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
                             }
 
                             insertionStack.shrink(1);
-                            entity.storedMateria += Config.actuatorMateriaUnitsPerDram;
+                            entity.storedMateria += ServerConfig.actuatorMateriaUnitsPerDram;
 
                             entity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_ESSENTIA_INSERTION), insertionStack);
                             entity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES), bottleStack);
@@ -212,10 +211,10 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
                 }
 
                 if (entity.drewEldrinThisCycle && entity.drewEssentiaThisCycle && entity.metAuxiliaryRequirementsThisCycle) {
-                    entity.remainingCycleTime = Config.actuatorDoubleSuppliedPeriod;
+                    entity.remainingCycleTime = ServerConfig.actuatorDoubleSuppliedPeriod;
                     entity.metAuxiliaryRequirementsThisCycle = false;
                 } else if ((entity.drewEldrinThisCycle || entity.drewEssentiaThisCycle) && entity.metAuxiliaryRequirementsThisCycle) {
-                    entity.remainingCycleTime = Config.actuatorSingleSuppliedPeriod;
+                    entity.remainingCycleTime = ServerConfig.actuatorSingleSuppliedPeriod;
                     entity.metAuxiliaryRequirementsThisCycle = false;
                 }
 

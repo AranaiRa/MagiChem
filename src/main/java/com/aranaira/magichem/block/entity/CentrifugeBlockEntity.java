@@ -1,6 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
@@ -272,11 +272,11 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
         data.set(DATA_GRIME, 0);
-        return grimeDetected / Config.grimePerWaste;
+        return grimeDetected / ServerConfig.grimePerWaste;
     }
 
     public static int getScaledGrime(int grime) {
-        return (GRIME_BAR_WIDTH * grime) / Config.centrifugeMaximumGrime;
+        return (GRIME_BAR_WIDTH * grime) / ServerConfig.centrifugeMaximumGrime;
     }
 
     @Override
@@ -322,11 +322,11 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             case GUI_PROGRESS_BAR_WIDTH -> PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GRIME_BAR_WIDTH;
 
-            case CONFIG_BASE_EFFICIENCY -> Config.centrifugeEfficiency;
-            case CONFIG_MAX_GRIME -> Config.centrifugeMaximumGrime;
-            case CONFIG_GRIME_ON_SUCCESS -> Config.centrifugeGrimeOnSuccess;
-            case CONFIG_GRIME_ON_FAILURE -> Config.centrifugeGrimeOnFailure;
-            case CONFIG_OPERATION_TIME -> Config.centrifugeOperationTime;
+            case CONFIG_BASE_EFFICIENCY -> ServerConfig.centrifugeEfficiency;
+            case CONFIG_MAX_GRIME -> ServerConfig.centrifugeMaximumGrime;
+            case CONFIG_GRIME_ON_SUCCESS -> ServerConfig.centrifugeGrimeOnSuccess;
+            case CONFIG_GRIME_ON_FAILURE -> ServerConfig.centrifugeGrimeOnFailure;
+            case CONFIG_OPERATION_TIME -> ServerConfig.centrifugeOperationTime;
             case CONFIG_TORQUE_GAIN_ON_ACTIVATION -> TORQUE_GAIN_ON_COG_ACTIVATION;
             case CONFIG_ANIMUS_GAIN_ON_DUSTING -> ANIMUS_GAIN_ON_DUSTING;
             case CONFIG_NO_TORQUE_GRACE_PERIOD -> NO_TORQUE_GRACE_PERIOD;

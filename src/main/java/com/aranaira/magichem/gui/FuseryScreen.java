@@ -1,13 +1,12 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.Config;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
 import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
-import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -540,7 +539,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                     .append(Component.translatable("tooltip.magichem.gui.grime.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.translatable("tooltip.magichem.gui.grime.line2.1")
-                    .append(Component.literal(Config.grimePenaltyPoint+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ServerConfig.grimePenaltyPoint+"%").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.grime.line2.2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
@@ -562,7 +561,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                     .append("."));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.translatable("tooltip.magichem.gui.slurry.tank.line2a")
-                    .append(Component.literal(Config.fixationFailureRefund+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(ServerConfig.fixationFailureRefund+"%").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line2b")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
