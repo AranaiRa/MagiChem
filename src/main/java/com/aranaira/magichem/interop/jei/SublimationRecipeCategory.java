@@ -1,6 +1,7 @@
 package com.aranaira.magichem.interop.jei;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.SublimationRecipe;
@@ -66,6 +67,11 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
         int verticalShift = (int)(21f * (5 - stages));
         int padding = new int[]{43, 22, 0, 0, 0}[stages - 1];
 
+        int totalXP = 0;
+        for(InfusionStage stage : recipe.getStages(false)) {
+            totalXP += stage.experience;
+        }
+
         //Slot backgrounds
         {
             guiGraphics.blit(TEXTURE, 11, 13 + verticalShift + padding, 112, 243, 8, 13);
@@ -96,6 +102,12 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
         {
             guiGraphics.blit(TEXTURE, 135, 87 - verticalShift + padding, 0, 234, 22, 22);
             guiGraphics.blit(TEXTURE, 112, 112 - verticalShift + padding, 189, 0, 67, 83);
+
+            if(totalXP > 0) {
+                guiGraphics.blit(TEXTURE, 114, 200 - verticalShift + padding, 112, 236, 7, 7);
+                guiGraphics.drawString(Minecraft.getInstance().font, Component.literal(totalXP + "xp"), 124, 196 - verticalShift + padding, 0x21761f, false);
+                guiGraphics.drawString(Minecraft.getInstance().font, Component.literal((totalXP * ServerConfig.fluidPerXPPoint) + "mB"), 124, 206 - verticalShift + padding, 0x21761f, false);
+            }
         }
 
         //Tier label; stolen from MnA code
