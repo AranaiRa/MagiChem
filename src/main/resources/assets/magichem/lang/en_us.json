@@ -847,7 +847,7 @@
   "magichem:_composite_t1_lab.description" : "[MagiChem] Create an Alembic, a Coloring Cauldron, and at least one Materia Jar",
   "magichem:_composite_t1_creation.description" : "[MagiChem] Create a Circle of Fabrication and a Wickerwood Construct to push the wheel on a Circle of Toil",
   "magichem:_composite_t2_lab.description" : "[MagiChem] Replace your Alembic with a Distillery and create a Centrifuge and a Conjurer",
-  "magichem:_composite_t2_creation.description" : "[MagiChem] Replace your Circle of Power with a Grand Circle of Power, your Circle of Toil with a Circle of Power, and your Materia Jars with Materia Vessels",
+  "magichem:_composite_t2_creation.description" : "[MagiChem] Replace your Circle of Fabrication with a Grand Circle of Fabrication, your Circle of Toil with a Circle of Power, and your Materia Jars with Materia Vessels",
   "magichem:_composite_t3_lab.description" : "[MagiChem] Create a Fusery and replace your Coloring Cauldron with a Variegator",
   "magichem:_composite_t4_lab.description" : "[MagiChem] Upgrade your Distillery to a Grand Distillery and your Centrifuge to a Grand Centrifuge",
   "magichem:actuator.description" : "[MagiChem] Craft a Deluge Purifier, Gale Pressurizer, Inferno Engine, or Quake Refinery to upgrade your alchemical devices",
