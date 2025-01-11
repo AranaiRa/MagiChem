@@ -6,8 +6,11 @@ import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.FuseryRouterType;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -21,6 +24,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,10 +33,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.aranaira.magichem.block.FuseryRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction {
+public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver {
     private BlockPos masterPos;
     private FuseryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -264,5 +271,58 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
     public void destroyMaster() {
         getLevel().destroyBlock(getMasterPos(), true);
         FuseryBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
+    }
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        if(getMaster() == null)
+            return false;
+        return getMaster().allowIncreasedDeliverySize();
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(getMaster() == null)
+            return false;
+        return getMaster().needsProvisioning();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        if(getMaster() == null)
+            return new HashMap<>();
+        return getMaster().getProvisioningNeeds();
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(getMaster() != null)
+            getMaster().setProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(getMaster() != null)
+            getMaster().cancelProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(getMaster() != null)
+            getMaster().provide(pStack);
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(getMaster() == null)
+            return 0;
+        return getMaster().canAcceptStackFromShlorp(pStack);
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        if(getMaster() == null)
+            return 0;
+        return getMaster().insertStackFromShlorp(pStack);
     }
 }
