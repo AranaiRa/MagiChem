@@ -197,7 +197,11 @@ public class StandingRetortBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public boolean needsProvisioning() {
-        return itemHandler.getStackInSlot(0).getCount() < 16;
+        boolean hasEnoughSpace = itemHandler.getStackInSlot(0).getCount() < 16;
+        boolean isMateriaUnbottled = InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(0));
+        boolean isElementSelected = element > -1;
+
+        return hasEnoughSpace && (isMateriaUnbottled || itemHandler.getStackInSlot(0).isEmpty()) && isElementSelected;
     }
 
     @Override
