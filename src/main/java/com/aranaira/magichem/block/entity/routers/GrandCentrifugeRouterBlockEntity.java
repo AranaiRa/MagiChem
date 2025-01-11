@@ -7,9 +7,11 @@ import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.base.INoCreativeTab;
@@ -35,10 +37,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_CENTRIFUGE;
 
-public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction {
+public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester {
     private BlockPos masterPos;
     private GrandCentrifugeBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -225,5 +230,44 @@ public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEff
 
         getLevel().destroyBlock(getMasterPos(), true);
         GrandCentrifugeBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
+    }
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        if(getMaster() == null)
+            return false;
+        return getMaster().allowIncreasedDeliverySize();
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(getMaster() == null)
+            return false;
+        return getMaster().needsProvisioning();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        if(getMaster() == null)
+            return new HashMap<>();
+        return getMaster().getProvisioningNeeds();
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(getMaster() != null)
+            getMaster().setProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(getMaster() != null)
+            getMaster().cancelProvisioningInProgress(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(getMaster() != null)
+            getMaster().provide(pStack);
     }
 }

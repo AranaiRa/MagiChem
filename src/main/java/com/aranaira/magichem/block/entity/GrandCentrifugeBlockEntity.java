@@ -7,13 +7,11 @@ import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandCentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
-import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
-import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType;
 import com.aranaira.magichem.gui.GrandCentrifugeMenu;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
@@ -27,6 +25,7 @@ import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
@@ -53,13 +52,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction {
+public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester {
     public static final int
         SLOT_COUNT = 26,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1,
@@ -629,5 +630,101 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         }
 
         GrandCentrifugeBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
+    ////////////////////
+    // PROVISIONING AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+    private static final List<AdmixtureItem> admixtureList = ItemRegistry.getAdmixtures();
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return true;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        //make sure there's space to PUT the provision
+        int openSlots = 0;
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            if(itemHandler.getStackInSlot(i).isEmpty()) {
+                openSlots++;
+            }
+        }
+
+        //make sure there aren't enough stacks on the way
+        return openSlots - activeProvisionRequests.size() > 0;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        for (AdmixtureItem ai : admixtureList) {
+            if(!activeProvisionRequests.contains(ai))
+                result.put(ai, 1);
+        }
+
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty())
+                result.remove((MateriaItem)itemHandler.getStackInSlot(i).getItem());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        CompoundTag nbt = new CompoundTag();
+        nbt.putInt("CustomModelData", 1);
+        pStack.setTag(nbt);
+
+        SimpleContainer inputSlots = new SimpleContainer(SLOT_INPUT_COUNT);
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            inputSlots.setItem(i-SLOT_INPUT_START, itemHandler.getStackInSlot(i));
+        }
+        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
+            if (itemHandler.getStackInSlot(i).isEmpty()) {
+                inputSlots.setItem(i-SLOT_INPUT_START, pStack);
+                break;
+            } else if(itemHandler.getStackInSlot(i).getItem() == pStack.getItem()) {
+                if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(i))) {
+                    inputSlots.getItem(i-SLOT_INPUT_START).grow(pStack.getCount());
+                    break;
+                }
+            }
+        }
+
+        for(int i=0; i<SLOT_INPUT_COUNT; i++) {
+            itemHandler.setStackInSlot(SLOT_INPUT_START+i, inputSlots.getItem(i));
+        }
+
+        cancelProvisioningInProgress((MateriaItem)pStack.getItem());
+
+        syncAndSave();
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        return needsProvisioning() ? 0 : pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+
+        return 0;
     }
 }
