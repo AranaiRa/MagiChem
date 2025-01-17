@@ -208,6 +208,10 @@ public class BlockEntitiesRegistry {
             ).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<SignaliteSeerBlockEntity>> SIGNALITE_SEER_BE = BLOCK_ENTITIES.register("signalite_seer", () ->
+            BlockEntityType.Builder.of(SignaliteSeerBlockEntity::new, BlockRegistry.SIGNALITE_SEER.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }
