@@ -4,12 +4,15 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.enums.EssentiaHouse;
 import com.aranaira.magichem.gui.VariegatorMenu;
+import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ColorationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
@@ -636,7 +639,12 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         if(activeProvisionRequests.contains((MateriaItem)ADMIXTURE_COLOR_STACK.getItem()))
             return false;
 
-        return dyeAdmixture < ServerConfig.variegatorMaxAdmixture / 2;
+        boolean isInputElementalEssentia = itemHandler.getStackInSlot(SLOT_DYE_INPUT).getItem() instanceof EssentiaItem ei && ei.getEssentiaHouse() == EssentiaHouse.ELEMENTS;
+        boolean isMateriaUnbottled = InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(SLOT_DYE_INPUT));
+        boolean needsMoreEssentia = itemHandler.getStackInSlot(SLOT_DYE_INPUT).getCount() < 16;
+        boolean gaugeIsHalfOrLess = dyeAdmixture <= ServerConfig.variegatorMaxAdmixture / 2;
+
+        return isInputElementalEssentia && (isMateriaUnbottled || itemHandler.getStackInSlot(SLOT_DYE_INPUT).isEmpty()) && needsMoreEssentia && gaugeIsHalfOrLess;
     }
 
     @Override

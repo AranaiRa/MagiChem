@@ -7,6 +7,7 @@
     { "item": "magichem:admixture_crystal", "count": 28 },
     { "item": "magichem:admixture_protection", "count": 9 },
     { "item": "magichem:admixture_domestication", "count": 3 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+    { "item": "magichem:essentia_precious", "count": 26 },
+    { "item": "magichem:essentia_nigredo", "count": 10 }
   ]
 }
