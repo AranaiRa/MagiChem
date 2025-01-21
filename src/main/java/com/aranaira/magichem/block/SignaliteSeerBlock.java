@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.SignaliteBlockEntity;
+import com.aranaira.magichem.block.entity.SignaliteSeerBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.ChatFormatting;
@@ -47,7 +48,7 @@ public class SignaliteSeerBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new SignaliteBlockEntity(pPos, pState);
+        return new SignaliteSeerBlockEntity(pPos, pState);
     }
 
     @Override

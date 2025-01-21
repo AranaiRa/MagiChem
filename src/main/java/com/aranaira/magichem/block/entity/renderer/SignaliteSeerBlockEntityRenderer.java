@@ -33,95 +33,70 @@ public class SignaliteSeerBlockEntityRenderer implements BlockEntityRenderer<Sig
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
-//        int signalStrength = state.getValue(BlockStateProperties.POWER);
-//        SignaliteBlockType sbt = SignaliteBlockType.STANDARD;
-//        if(state.getBlock() instanceof SignaliteBlock sb) {
-//            sbt = sb.getType();
-//        }
-//
-//        float color = (signalStrength / 15f) * 0.4f + 0.3f + (signalStrength > 0 ? 0.3f : 0f);
-//
-//        float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
-//        int bobPeriod = 182;
-//        double bob = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 360f) % bobPeriod) / (float)bobPeriod) * Math.PI * 2);
-//
-//        int xPeriod = 216;
-//        float xTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % xPeriod) / (float)xPeriod) * Math.PI * 2);
-//
-//        int yPeriod = 432;
-//        float yTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % yPeriod) / (float)yPeriod) * Math.PI * 2);
-//
-//        int zPeriod = 288;
-//        float zTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % zPeriod) / (float)zPeriod) * Math.PI * 2);
-//
-//        pPoseStack.pushPose();
-//        pPoseStack.translate(0.5, 0.5 + bob * 0.015625, 0.5);
-//        pPoseStack.mulPose(Axis.XP.rotationDegrees(2 * xTime));
-//        pPoseStack.mulPose(Axis.YP.rotationDegrees(2 * yTime));
-//        pPoseStack.mulPose(Axis.ZP.rotationDegrees(2 * zTime));
-//
-//        pPoseStack.pushPose();
-//        if(pBlockEntity.connectedNorth || pBlockEntity.specialNorth) {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialNorth), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        } else {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        }
-//        pPoseStack.popPose();
-//
-//        pPoseStack.pushPose();
-//        if(pBlockEntity.connectedEast || pBlockEntity.specialEast) {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialEast), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        } else {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        }
-//        pPoseStack.popPose();
-//
-//        pPoseStack.pushPose();
-//        if(pBlockEntity.connectedSouth || pBlockEntity.specialSouth) {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialSouth), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        } else {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        }
-//        pPoseStack.popPose();
-//
-//        pPoseStack.pushPose();
-//        if(pBlockEntity.connectedWest || pBlockEntity.specialWest) {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialWest), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        } else {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        }
-//        pPoseStack.popPose();
-//
-//        pPoseStack.pushPose();
-//        pPoseStack.mulPose(Axis.ZP.rotationDegrees(90));
-//        pPoseStack.mulPose(Axis.XP.rotationDegrees(45));
-//        if(pBlockEntity.connectedUp || pBlockEntity.specialUp) {
-//            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialUp), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        } else {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        }
-//        pPoseStack.popPose();
-//
-//        pPoseStack.pushPose();
-//        pPoseStack.mulPose(Axis.ZP.rotationDegrees(270));
-//        pPoseStack.mulPose(Axis.XN.rotationDegrees(45));
-//        if(pBlockEntity.connectedDown || pBlockEntity.specialDown) {
-//            ModelUtils.renderModel(pBuffer, world, pos, state, getModelFromFlags(sbt, pBlockEntity.specialDown), pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        } else {
-//            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-//            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_BUTT, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
-//        }
-//        pPoseStack.popPose();
-//
-//        pPoseStack.popPose();
+        int signalStrength = state.getValue(BlockStateProperties.POWER);
+
+        float color = (signalStrength / 15f) * 0.4f + 0.3f + (signalStrength > 0 ? 0.3f : 0f);
+
+        //if the seer is vertical also give it some slow Y rotation
+
+        float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
+        int bobPeriod = 182;
+        double bob = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 360f) % bobPeriod) / (float)bobPeriod) * Math.PI * 2);
+
+        int xPeriod = 216;
+        float xTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % xPeriod) / (float)xPeriod) * Math.PI * 2);
+
+        int yPeriod = 432;
+        float yTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % yPeriod) / (float)yPeriod) * Math.PI * 2);
+
+        int zPeriod = 288;
+        float zTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % zPeriod) / (float)zPeriod) * Math.PI * 2);
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 0.5 + bob * 0.015625, 0.5);
+        pPoseStack.mulPose(Axis.XP.rotationDegrees(2 * xTime));
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(2 * yTime));
+        pPoseStack.mulPose(Axis.ZP.rotationDegrees(2 * zTime));
+
+        if (pBlockEntity.connectedSouth) {
+            pPoseStack.pushPose();
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            pPoseStack.popPose();
+        }
+        else if (pBlockEntity.connectedNorth) {
+            pPoseStack.pushPose();
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            pPoseStack.popPose();
+        }
+        else if (pBlockEntity.connectedEast) {
+            pPoseStack.pushPose();
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            pPoseStack.popPose();
+        }
+        else if (pBlockEntity.connectedWest) {
+            pPoseStack.pushPose();
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            pPoseStack.popPose();
+        }
+        else if (pBlockEntity.connectedUp) {
+            pPoseStack.pushPose();
+            pPoseStack.mulPose(Axis.ZP.rotationDegrees(90));
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(45));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            pPoseStack.popPose();
+        }
+        else if (pBlockEntity.connectedDown) {
+            pPoseStack.pushPose();
+            pPoseStack.mulPose(Axis.ZP.rotationDegrees(270));
+            pPoseStack.mulPose(Axis.XN.rotationDegrees(45));
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            pPoseStack.popPose();
+        }
+
+        pPoseStack.popPose();
     }
 }

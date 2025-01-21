@@ -22,6 +22,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -33,6 +35,9 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+
+import static com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity.CRYSTAL_BOB_HEIGHT_MAX;
+import static com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity.CRYSTAL_BOB_PERIOD;
 
 public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<AlchemicalNexusBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_CRYSTAL = new ResourceLocation(MagiChemMod.MODID, "obj/special/alchemical_nexus_crystal");
@@ -148,10 +153,11 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
         pPoseStack.pushPose();
 
-        float loopingTime = ((world.getGameTime() + pPartialTick) % (AlchemicalNexusBlockEntity.CRYSTAL_BOB_PERIOD * 20)) / AlchemicalNexusBlockEntity.CRYSTAL_BOB_PERIOD;
-        float height = (float)((Math.sin(loopingTime * Math.PI) + 1.0) * 0.5);
-        float heightOffsetCrystal = AlchemicalNexusBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * height;
-        float heightOffsetMark    = AlchemicalNexusBlockEntity.CRYSTAL_BOB_HEIGHT_MAX * (1 - height);
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(CRYSTAL_BOB_PERIOD * 2));
+        float loopingTime = (((float)(gt + pPartialTick) % CRYSTAL_BOB_PERIOD)) / (CRYSTAL_BOB_PERIOD);
+        float height = (float)(Math.sin(loopingTime * Math.PI * 2) + 1.0) * 0.5f;
+        float heightOffsetCrystal = CRYSTAL_BOB_HEIGHT_MAX * height;
+        float heightOffsetMark    = CRYSTAL_BOB_HEIGHT_MAX * (1 - height);
 
         pPoseStack.translate(0.5f, 1.375f + heightOffsetCrystal, 0.5f);
         pPoseStack.mulPose(Axis.YP.rotationDegrees((pBlockEntity.crystalAngle + (pPartialTick * pBlockEntity.crystalRotSpeed))));
@@ -333,7 +339,9 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
     private void renderStage1Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
-        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_1_ROTATION_PERIOD) / CIRCLE_1_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (CIRCLE_1_ROTATION_PERIOD * 2));
+        float rotation = -(((gt + pPartialTick) % CIRCLE_1_ROTATION_PERIOD) / CIRCLE_1_ROTATION_PERIOD) * (float)Math.PI * 2;
 
         RenderUtils.generateMagicCircleRing(center,
                 3, 0.9375f, 0.125f, rotation + (float)Math.PI, pTexture,
@@ -348,7 +356,9 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
     private void renderStage2Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
-        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_2_ROTATION_PERIOD) / CIRCLE_2_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (CIRCLE_2_ROTATION_PERIOD * 2));
+        float rotation = -(((gt + pPartialTick) % CIRCLE_2_ROTATION_PERIOD) / CIRCLE_2_ROTATION_PERIOD) * (float)Math.PI * 2;
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.125, 0)),
                 12, 1.5f, 0.125f, -rotation + (float)Math.PI, pTexture,
@@ -363,7 +373,9 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
     private void renderStage3Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
-        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_3_ROTATION_PERIOD) / CIRCLE_3_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (CIRCLE_3_ROTATION_PERIOD * 2));
+        float rotation = -(((gt + pPartialTick) % CIRCLE_3_ROTATION_PERIOD) / CIRCLE_3_ROTATION_PERIOD) * (float)Math.PI * 2;
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.28125, 0)),
                 4, 2.625f, 0.375f, rotation, pTexture,
@@ -383,8 +395,11 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
     private void renderStage4Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
-        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_4_ROTATION_PERIOD) / CIRCLE_4_ROTATION_PERIOD) * (float)Math.PI * 2;
-        float rotation5 = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_5_ROTATION_PERIOD) / CIRCLE_5_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (CIRCLE_4_ROTATION_PERIOD * 2));
+        float rotation = -(((gt + pPartialTick) % CIRCLE_4_ROTATION_PERIOD) / CIRCLE_4_ROTATION_PERIOD) * (float)Math.PI * 2;
+        int gt5 = (int)(pBlockEntity.getLevel().getGameTime() % (CIRCLE_5_ROTATION_PERIOD * 2));
+        float rotation5 = -(((gt + pPartialTick) % CIRCLE_5_ROTATION_PERIOD) / CIRCLE_5_ROTATION_PERIOD) * (float)Math.PI * 2;
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, 0.375, 0)),
                 12, 2.825f, 0.125f, -rotation + (float)(Math.PI / 2), pTexture,
@@ -409,7 +424,9 @@ public class AlchemicalNexusBlockEntityRenderer implements BlockEntityRenderer<A
 
     private void renderStage5Circle(AlchemicalNexusBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, float pPercentFill, TextureAtlasSprite pTexture) {
         Vector3 center = new Vector3(0.5, 3.5, 0.5);
-        float rotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_5_ROTATION_PERIOD) / CIRCLE_5_ROTATION_PERIOD) * (float)Math.PI * 2;
+
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (CIRCLE_5_ROTATION_PERIOD * 2));
+        float rotation = -(((gt + pPartialTick) % CIRCLE_5_ROTATION_PERIOD) / CIRCLE_5_ROTATION_PERIOD) * (float)Math.PI * 2;
 
         RenderUtils.generateMagicCircleRing(center.add(new Vector3(0, -1.140625, 0)),
                 4, 1.75f, 0.125f, rotation + (float)(Math.PI / 3), pTexture,

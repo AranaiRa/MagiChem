@@ -17,6 +17,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.DyeColor;
@@ -42,8 +44,11 @@ public class CrystalCandleBlockEntityRenderer implements BlockEntityRenderer<Cry
         BlockState state = pBlockEntity.getBlockState();
         int count = state.getValue(MagiChemBlockStateProperties.CANDLE_COUNT);
 
-        float rot = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 484) / 484f) * 360f;
-        double bob = Math.sin(Math.toRadians(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 227) / 227d) * 360) * 0.03125;
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(484 * 2));
+        float rot = (((float)(gt + pPartialTick) % 484f) / 484f) * 360f;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(227 * 2));
+        double bob = Math.sin(Math.toRadians(((double)(gt + pPartialTick) % 227d) / 227d) * 360d) * 0.03125d;
 
         if(count == 1) {
             pPoseStack.pushPose();
@@ -52,7 +57,8 @@ public class CrystalCandleBlockEntityRenderer implements BlockEntityRenderer<Cry
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_CRYSTAL_CANDLE, pPoseStack, pPackedLight, pPackedOverlay);
             pPoseStack.popPose();
         } else {
-            float theta = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 1766) / 1766f) * 360f;
+            gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(1766 * 2));
+            float theta = (((gt + pPartialTick) % 1766f) / 1766f) * 360f;
 
             for(int i=0; i<count; i++) {
                 float thetaShift = (360f / count) * i;

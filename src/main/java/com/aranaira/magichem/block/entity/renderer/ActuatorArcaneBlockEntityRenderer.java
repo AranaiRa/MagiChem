@@ -55,10 +55,16 @@ public class ActuatorArcaneBlockEntityRenderer implements BlockEntityRenderer<Ac
         float CUBE_BUILDER_ROT_STEP = (float)Math.PI / 2f;
         float CUBE_BUILDER_ROT_XAXIS = (float)Math.PI / 4f; // 45 degrees
         float CUBE_BUILDER_ROT_ZAXIS = (float)Math.PI * (7f / 36f); //35 degrees
-        float rotYAxis = (float)(Math.PI * 2f) * (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % (float)SPIN_PERIOD) / (float)SPIN_PERIOD);
-        double slideMagnitude = ((double)(pBlockEntity.getLevel().getGameTime() + pPartialTick) % (double)SLIDE_PERIOD) / (double)SLIDE_PERIOD;
+
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (SPIN_PERIOD * 2));
+        float rotYAxis = ((((float)gt + pPartialTick) % (float)SPIN_PERIOD) / (float)SPIN_PERIOD) * (float)Math.PI * 2;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (SLIDE_PERIOD * 2));
+        double slideMagnitude = ((double)(gt + pPartialTick) % (double)SLIDE_PERIOD) / (double)SLIDE_PERIOD;
         double slideDist = Math.sin(slideMagnitude * Math.PI * 2) * SLIDE_INTENSITY;
-        double bobMagnitude = ((double)(pBlockEntity.getLevel().getGameTime() + pPartialTick) % (double)BOB_PERIOD) / (double)BOB_PERIOD;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (BOB_PERIOD * 2));
+        double bobMagnitude = ((double)(gt + pPartialTick) % (double)BOB_PERIOD) / (double)BOB_PERIOD;
         double bobDist = Math.sin(bobMagnitude * Math.PI * 2) * BOB_INTENSITY;
 
         pPoseStack.pushPose();
@@ -134,9 +140,13 @@ public class ActuatorArcaneBlockEntityRenderer implements BlockEntityRenderer<Ac
         Vector3 center = Vector3.zero();
         int CIRCLE_SPIN_PERIOD = 400;
         int GLYPH_SPIN_PERIOD = 900;
-        float circleRotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CIRCLE_SPIN_PERIOD) / CIRCLE_SPIN_PERIOD) * (float)Math.PI * 2;
+
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (CIRCLE_SPIN_PERIOD * 2));
+        float circleRotation = -(((gt + pPartialTick) % CIRCLE_SPIN_PERIOD) / CIRCLE_SPIN_PERIOD) * (float)Math.PI * 2;
         float CIRCLE_BUILDER_ROT_ZAXIS = (float)Math.PI * (1f / 12f);
-        float rotYAxis = (float)(Math.PI * 2f) * (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % (float)GLYPH_SPIN_PERIOD) / (float)GLYPH_SPIN_PERIOD);
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (GLYPH_SPIN_PERIOD * 2));
+        float rotYAxis = (float)(Math.PI * 2f) * (((gt + pPartialTick) % (float)GLYPH_SPIN_PERIOD) / (float)GLYPH_SPIN_PERIOD);
 
         pPoseStack.pushPose();
         {

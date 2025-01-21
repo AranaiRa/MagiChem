@@ -43,33 +43,40 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
     }
 
     public static float getReagent1Rotation(Level pWorld, float pPartialTick) {
-        return (float) ((((pWorld.getGameTime() + pPartialTick) % REAGENT_1_ROTATION_PERIOD) / (float) REAGENT_1_ROTATION_PERIOD) * Math.PI * 2);
+        int gt = (int)(pWorld.getGameTime() % (REAGENT_1_ROTATION_PERIOD * 2));
+        return (float) (((float)((gt + pPartialTick) % REAGENT_1_ROTATION_PERIOD) / (float) REAGENT_1_ROTATION_PERIOD) * Math.PI * 2);
     }
 
     public static float getReagent2Rotation(Level pWorld, float pPartialTick) {
-        return (float) ((((pWorld.getGameTime() + pPartialTick) % REAGENT_2_ROTATION_PERIOD) / (float) REAGENT_2_ROTATION_PERIOD) * Math.PI * 2);
+        int gt = (int)(pWorld.getGameTime() % (REAGENT_2_ROTATION_PERIOD * 2));
+        return (float) (((float)((gt + pPartialTick) % REAGENT_2_ROTATION_PERIOD) / (float) REAGENT_2_ROTATION_PERIOD) * Math.PI * 2);
     }
 
     public static float getReagent3Rotation(Level pWorld, float pPartialTick) {
-        return (float) ((((pWorld.getGameTime() + pPartialTick) % REAGENT_3_ROTATION_PERIOD) / (float) REAGENT_3_ROTATION_PERIOD) * Math.PI * 2);
+        int gt = (int)(pWorld.getGameTime() % (REAGENT_3_ROTATION_PERIOD * 2));
+        return (float) (((float)((gt + pPartialTick) % REAGENT_3_ROTATION_PERIOD) / (float) REAGENT_3_ROTATION_PERIOD) * Math.PI * 2);
     }
 
     public static double getReagent2BobHeight(Level pWorld, float pPartialTick) {
-        double radians = (((pWorld.getGameTime() + pPartialTick) % REAGENT_2_BOB_PERIOD) / (double)REAGENT_2_BOB_PERIOD) * Math.PI * 2;
+        int gt = (int)(pWorld.getGameTime() % (REAGENT_2_BOB_PERIOD * 2));
+        double radians = ((float)((gt + pPartialTick) % REAGENT_2_BOB_PERIOD) / (double)REAGENT_2_BOB_PERIOD) * Math.PI * 2;
         return Math.sin(radians) * REAGENT_2_BOB_HEIGHT;
     }
 
     public static double getReagent3BobHeight(Level pWorld, float pPartialTick) {
-        double radians = (((pWorld.getGameTime() + pPartialTick) % REAGENT_3_BOB_PERIOD) / (double)REAGENT_3_BOB_PERIOD) * Math.PI * 2;
+        int gt = (int)(pWorld.getGameTime() % (REAGENT_3_BOB_PERIOD * 2));
+        double radians = ((float)((gt + pPartialTick) % REAGENT_3_BOB_PERIOD) / (double)REAGENT_3_BOB_PERIOD) * Math.PI * 2;
         return Math.sin(radians) * REAGENT_3_BOB_HEIGHT;
     }
 
     public static float getReagent4Rotation(Level pWorld, float pPartialTick) {
-        return (float) ((((pWorld.getGameTime() + pPartialTick) % REAGENT_4_ROTATION_PERIOD) / (float) REAGENT_4_ROTATION_PERIOD) * Math.PI * 2);
+        int gt = (int)(pWorld.getGameTime() % (REAGENT_4_ROTATION_PERIOD * 2));
+        return (float) (((float)((gt + pPartialTick) % REAGENT_4_ROTATION_PERIOD) / (float) REAGENT_4_ROTATION_PERIOD) * Math.PI * 2);
     }
 
     public static float getReagent4OuterRotation(Level pWorld, float pPartialTick) {
-        return (float) ((((pWorld.getGameTime() + pPartialTick) % REAGENT_4_OUTER_ROTATION_PERIOD) / (float) REAGENT_4_OUTER_ROTATION_PERIOD) * Math.PI * 2);
+        int gt = (int)(pWorld.getGameTime() % (REAGENT_4_OUTER_ROTATION_PERIOD * 2));
+        return (float) (((float)((gt + pPartialTick) % REAGENT_4_OUTER_ROTATION_PERIOD) / (float) REAGENT_4_OUTER_ROTATION_PERIOD) * Math.PI * 2);
     }
 
     @Override
@@ -97,7 +104,8 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
             float fill = Math.min(1,Math.max(0,pBlockEntity.circleFillPercent + smoothingCircle1));
 
             int period = 720;
-            float circleRot = (float)((((world.getGameTime() + pPartialTick) % period) / (float)period) * Math.PI * 2);
+            int gt = (int)(world.getGameTime() % (period * 2));
+            float circleRot = (float)(((float)((gt + pPartialTick) % period) / (float)period) * Math.PI * 2);
 
             pPoseStack.pushPose();
 
@@ -185,7 +193,9 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
             //radiance
             pPoseStack.pushPose();
             pPoseStack.translate(0.5, v, 0.5);
-            WorldRenderUtils.renderRadiant((world.getGameTime() + pPartialTick), pPoseStack, pBuffer, Affinity.ARCANE.getSecondaryColor(), Affinity.ARCANE.getColor(), 128, 3, false);
+            int period = 200;
+            int gt = (int)(world.getGameTime() % (period * 2));
+            WorldRenderUtils.renderRadiant((float)(gt + pPartialTick), pPoseStack, pBuffer, Affinity.ARCANE.getSecondaryColor(), Affinity.ARCANE.getColor(), 128, 3, false);
             pPoseStack.popPose();
         }
 
@@ -195,7 +205,8 @@ public class CirclePowerBlockEntityRenderer implements BlockEntityRenderer<Circl
             final TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
 
             int period = 240;
-            float circleRot = (float)((((world.getGameTime() + pPartialTick) % period) / (float)period) * Math.PI * 2);
+            int gt = (int)(world.getGameTime() % (period * 2));
+            float circleRot = (float)(((float)((gt + pPartialTick) % period) / (float)period) * Math.PI * 2);
             float circleRimRot = getReagent4Rotation(world, pPartialTick);
 
             for(int i=0; i<6; i++) {

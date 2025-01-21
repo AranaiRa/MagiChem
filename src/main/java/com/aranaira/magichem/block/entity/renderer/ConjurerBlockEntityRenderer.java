@@ -56,7 +56,8 @@ public class ConjurerBlockEntityRenderer implements BlockEntityRenderer<Conjurer
         ItemStack stack = new ItemStack(pBlockEntity.getRecipe().getCatalyst());
 
         if(stack.getItem() instanceof BlockItem) {
-            float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % ITEM_ROTATE_PERIOD) / ITEM_ROTATE_PERIOD) * 360f;
+            int gt = (int)(pBlockEntity.getLevel().getGameTime() % (ITEM_ROTATE_PERIOD * 2));
+            float rotY = ((float)((gt + pPartialTick) % ITEM_ROTATE_PERIOD) / (float)ITEM_ROTATE_PERIOD) * 360f;
 
             pPoseStack.pushPose();
 
@@ -69,7 +70,8 @@ public class ConjurerBlockEntityRenderer implements BlockEntityRenderer<Conjurer
 
             pPoseStack.popPose();
         } else if(stack != ItemStack.EMPTY) {
-            float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % ITEM_ROTATE_PERIOD) / ITEM_ROTATE_PERIOD) * 360f;
+            int gt = (int)(pBlockEntity.getLevel().getGameTime() % (ITEM_ROTATE_PERIOD * 2));
+            float rotY = ((float)((gt + pPartialTick) % ITEM_ROTATE_PERIOD) / (float)ITEM_ROTATE_PERIOD) * 360f;
 
             pPoseStack.pushPose();
 
@@ -93,11 +95,20 @@ public class ConjurerBlockEntityRenderer implements BlockEntityRenderer<Conjurer
         int b = (packedColor & 0x000000ff);
         float[] color = new float[]{r / 255f, g / 255f, b / 255f, 1.0f};
 
-        float rotX = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_ROT_X_PERIOD) / SHARD_ROT_X_PERIOD) * 360f;
-        float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_ORBIT_PERIOD) / SHARD_ORBIT_PERIOD) * 360f;
-        float rotZ = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_ROT_Z_PERIOD) / SHARD_ROT_Z_PERIOD) * 360f;
-        float drift = (float)Math.sin(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_DRIFT_PERIOD) / (float)SHARD_DRIFT_PERIOD * Math.PI * 2) * SHARD_DRIFT_DISTANCE;
-        float bob = (float)Math.sin(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_BOB_PERIOD) / (float)SHARD_BOB_PERIOD * Math.PI * 2) * SHARD_BOB_HEIGHT;
+        int gt = (int)(world.getGameTime() % (SHARD_ROT_X_PERIOD * 2));
+        float rotX = ((float)((gt + pPartialTick) % SHARD_ROT_X_PERIOD) / (float)SHARD_ROT_X_PERIOD) * 360f;
+
+        gt = (int)(world.getGameTime() % (SHARD_ORBIT_PERIOD * 2));
+        float rotY = ((float)((gt + pPartialTick) % SHARD_ORBIT_PERIOD) / (float)SHARD_ORBIT_PERIOD) * 360f;
+
+        gt = (int)(world.getGameTime() % (SHARD_ROT_Z_PERIOD * 2));
+        float rotZ = ((float)((gt + pPartialTick) % SHARD_ROT_Z_PERIOD) / (float)SHARD_ROT_Z_PERIOD) * 360f;
+
+        gt = (int)(world.getGameTime() % (SHARD_DRIFT_PERIOD * 2));
+        float drift = (float)Math.sin((float)((gt + pPartialTick) % SHARD_DRIFT_PERIOD) / (float)SHARD_DRIFT_PERIOD * Math.PI * 2) * SHARD_DRIFT_DISTANCE;
+
+        gt = (int)(world.getGameTime() % (SHARD_BOB_PERIOD * 2));
+        float bob = (float)Math.sin((float)((gt + pPartialTick) % SHARD_BOB_PERIOD) / (float)SHARD_BOB_PERIOD * Math.PI * 2) * SHARD_BOB_HEIGHT;
 
         pPoseStack.pushPose();
         pPoseStack.translate(0.5, 0, 0.5);

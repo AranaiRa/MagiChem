@@ -94,7 +94,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
     public static final float
             CRYSTAL_SPEED_MIN = 0.75f, CRYSTAL_SPEED_MAX = 20.0f,
-            CRYSTAL_BOB_HEIGHT_MAX = 0.125f, CRYSTAL_BOB_PERIOD = 90f,
+            CRYSTAL_BOB_HEIGHT_MAX = 0.125f, CRYSTAL_BOB_PERIOD = 200f,
             ITEM_SPEED_MIN = 0.0375f, ITEM_SPEED_MAX = 1.5f, ITEM_SCALE_START = 6f, ITEM_SCALE_END = 0f;
     public float
             crystalAngle = 0f, crystalRotSpeed = CRYSTAL_SPEED_MIN,

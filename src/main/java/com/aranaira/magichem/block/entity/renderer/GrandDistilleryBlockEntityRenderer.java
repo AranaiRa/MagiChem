@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
@@ -71,7 +73,10 @@ public class GrandDistilleryBlockEntityRenderer implements BlockEntityRenderer<G
 
     private void renderMagicCircle(GrandDistilleryBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, float pPartialTick, int pPackedLight) {
         Vector3 center = new Vector3(0, 0, 0);
-        float circleRotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 400) / 400) * (float)Math.PI * 2;
+
+        int period = 400;
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        float circleRotation = -((float)((gt + pPartialTick) % period) / (float)period) * (float)Math.PI * 2;
         Direction facing = pBlockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         Vector3 translation = Vector3.zero();

@@ -730,6 +730,7 @@
   "construct.magichem:harvest_crystals": "Harvest Crystals",
   "construct.magichem:query_device_needs_provisioning": "Condition: Device Needs Provisioning",
 
+  "gui.mna.codex_search.recipe.anointing": "Alchemical Anointing > ",
   "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
   "gui.mna.codex_search.recipe.sublimation_ritual": "Ritual Sublimation > ",
 

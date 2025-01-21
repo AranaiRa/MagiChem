@@ -20,6 +20,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -64,8 +66,11 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
 
     @Override
     public void render(VariegatorBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        float rotL = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 180) / 180f) * 360f;
-        float rotS = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 360) / 360f) * -360f;
+        int gt = (int)(pBlockEntity.getLevel().getGameTime()) % (int)(180 * 2);
+        float rotL = (((gt + pPartialTick) % 180f) / 180f) * 360f;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime()) % (int)(360 * 2);
+        float rotS = (((gt + pPartialTick) % 360f) / 360f) * -360f;
         int colorID = pBlockEntity.selectedColor;
         DyeColor color;
         if(colorID != -1)
@@ -105,7 +110,8 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
         }
 
         if(stack.getItem() instanceof BlockItem) {
-            float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % ITEM_ROTATE_PERIOD) / ITEM_ROTATE_PERIOD) * 360f;
+            int gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(ITEM_ROTATE_PERIOD * 2));
+            float rotY = (((float)(gt + pPartialTick) % ITEM_ROTATE_PERIOD) / (float)ITEM_ROTATE_PERIOD) * 360f;
 
             pPoseStack.pushPose();
 
@@ -118,7 +124,8 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
 
             pPoseStack.popPose();
         } else if(stack != ItemStack.EMPTY) {
-            float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % ITEM_ROTATE_PERIOD) / ITEM_ROTATE_PERIOD) * 360f;
+            int gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(ITEM_ROTATE_PERIOD * 2));
+            float rotY = (((float)(gt + pPartialTick) % ITEM_ROTATE_PERIOD) / (float)ITEM_ROTATE_PERIOD) * 360f;
 
             pPoseStack.pushPose();
 
@@ -136,8 +143,11 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CENTER_CRYSTAL_ROT_PERIOD) / CENTER_CRYSTAL_ROT_PERIOD) * -360f;
-        float bob = (float)Math.sin(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % CENTER_CRYSTAL_BOB_PERIOD) / (float)CENTER_CRYSTAL_BOB_PERIOD * Math.PI * 2) * CENTER_CRYSTAL_BOB_HEIGHT;
+        int gt = (int)(pBlockEntity.getLevel().getGameTime()) % (int)(CENTER_CRYSTAL_ROT_PERIOD * 2);
+        float rotY = (((float)(gt + pPartialTick) % (float)CENTER_CRYSTAL_ROT_PERIOD) / (float)CENTER_CRYSTAL_ROT_PERIOD) * -360f;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime()) % (int)(CENTER_CRYSTAL_BOB_PERIOD * 2);
+        float bob = (float)Math.sin(((float)(gt + pPartialTick) % (float)CENTER_CRYSTAL_BOB_PERIOD) / (float)CENTER_CRYSTAL_BOB_PERIOD * Math.PI * 2) * CENTER_CRYSTAL_BOB_HEIGHT;
 
         pPoseStack.pushPose();
 
@@ -230,11 +240,20 @@ public class VariegatorBlockEntityRenderer implements BlockEntityRenderer<Varieg
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
 
-        float rotX = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_ROT_X_PERIOD) / SHARD_ROT_X_PERIOD) * 360f;
-        float rotY = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_ORBIT_PERIOD) / SHARD_ORBIT_PERIOD) * 360f;
-        float rotZ = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_ROT_Z_PERIOD) / SHARD_ROT_Z_PERIOD) * 360f;
-        float drift = (float)Math.sin(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_DRIFT_PERIOD) / (float)SHARD_DRIFT_PERIOD * Math.PI * 2) * SHARD_DRIFT_DISTANCE;
-        float bob = (float)Math.sin(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % SHARD_BOB_PERIOD) / (float)SHARD_BOB_PERIOD * Math.PI * 2) * SHARD_BOB_HEIGHT;
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(SHARD_ROT_X_PERIOD * 2));
+        float rotX = (((float)(gt + pPartialTick) % (float)SHARD_ROT_X_PERIOD) / (float)SHARD_ROT_X_PERIOD) * 360f;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(SHARD_ORBIT_PERIOD * 2));
+        float rotY = (((float)(gt + pPartialTick) % (float)SHARD_ORBIT_PERIOD) / (float)SHARD_ORBIT_PERIOD) * 360f;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(SHARD_ROT_Z_PERIOD * 2));
+        float rotZ = (((float)(gt + pPartialTick) % (float)SHARD_ROT_Z_PERIOD) / (float)SHARD_ROT_Z_PERIOD) * 360f;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(SHARD_DRIFT_PERIOD * 2));
+        float drift = (float)Math.sin(((float)(gt + pPartialTick) % SHARD_DRIFT_PERIOD) / (float)SHARD_DRIFT_PERIOD * Math.PI * 2) * (float)SHARD_DRIFT_DISTANCE;
+
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(SHARD_BOB_PERIOD * 2));
+        float bob = (float)Math.sin(((float)(gt + pPartialTick) % SHARD_BOB_PERIOD) / (float)SHARD_BOB_PERIOD * Math.PI * 2) * (float)SHARD_BOB_HEIGHT;
 
         pPoseStack.pushPose();
         pPoseStack.translate(0.5, 0, 0.5);

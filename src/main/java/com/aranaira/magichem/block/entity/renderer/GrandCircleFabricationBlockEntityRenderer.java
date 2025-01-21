@@ -18,6 +18,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -81,10 +83,11 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         Vector3 center = new Vector3(0, 0, 0);
         final TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
 
-        int period;
         float loopingTime;
 
-        float daisCircleRotation = -(((pBlockEntity.getLevel().getGameTime() + pPartialTick) % 400) / 400) * (float)Math.PI * 2;
+        int period = 400;
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        float daisCircleRotation = -((((float)gt + pPartialTick) % (float)period) / (float)period) * (float)Math.PI * 2;
 
         pPoseStack.pushPose();
 
@@ -99,7 +102,9 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         pPoseStack.popPose();
 
         period = 750;
-        loopingTime = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        loopingTime = -((((float)gt + pPartialTick) % (float)period) / (float)period) * (float)Math.PI * 2;
+
         float rayRot = loopingTime;
 
         pPoseStack.pushPose();
@@ -113,15 +118,18 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         pPoseStack.popPose();
 
         period = 600;
-        loopingTime = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        loopingTime = (((float)(gt + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
         float scale = (float)Math.sin(loopingTime * Math.PI * 2) * 0.0125f + 0.667f;
 
         period = 1000;
-        loopingTime = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        loopingTime = (((float)(gt + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
         float rotWobble = (float)Math.sin(loopingTime * Math.PI * 2) * 4.25f;
 
         period = 450;
-        loopingTime = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        loopingTime = (((float)(gt + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
         float pushWobble = (float)Math.sin(loopingTime * Math.PI * 2) * 0.03125f;
 
         pPoseStack.pushPose();
@@ -173,13 +181,16 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
 
         int period;
         float loopingTime;
+        float gt;
 
         period = 670;
-        loopingTime = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % period) / (float) period) * 360;
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        loopingTime = (((float)(gt + pPartialTick) % period) / (float) period) * 360f;
         float vesselRot = loopingTime;
 
         period = 445;
-        loopingTime = (((pBlockEntity.getLevel().getGameTime() + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+        loopingTime = (((float)(gt + pPartialTick) % period) / (float) period) * (float)(Math.PI * 2);
         double vesselBob = Math.sin(loopingTime) * 0.03125;
 
         int color1 = 0, color2 = 0, color3 = 0, color4 = 0, color5 = 0;
