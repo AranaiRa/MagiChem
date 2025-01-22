@@ -42,20 +42,27 @@ public class SignaliteSeerBlockEntityRenderer implements BlockEntityRenderer<Sig
 
         float color = (signalStrength / 15f) * 0.4f + 0.3f + (signalStrength > 0 ? 0.3f : 0f);
 
-        //if the seer is vertical also give it some slow Y rotation
-
         float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
         int bobPeriod = 182;
-        double bob = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 360f) % bobPeriod) / (float)bobPeriod) * Math.PI * 2);
+        int gt = (int)(world.getGameTime() % (bobPeriod * 2));
+        double bob = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 360f) % bobPeriod) / (float)bobPeriod) * Math.PI * 2);
 
         int xPeriod = 216;
-        float xTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % xPeriod) / (float)xPeriod) * Math.PI * 2);
+        gt = (int)(world.getGameTime() % (xPeriod * 2));
+        float xTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % xPeriod) / (float)xPeriod) * Math.PI * 2);
 
         int yPeriod = 432;
-        float yTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % yPeriod) / (float)yPeriod) * Math.PI * 2);
+        gt = (int)(world.getGameTime() % (yPeriod * 2));
+        float yTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % yPeriod) / (float)yPeriod) * Math.PI * 2);
 
         int zPeriod = 288;
-        float zTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % zPeriod) / (float)zPeriod) * Math.PI * 2);
+        gt = (int)(world.getGameTime() % (zPeriod * 2));
+        float zTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % zPeriod) / (float)zPeriod) * Math.PI * 2);
+
+        //if the seer is vertical also give it some slow Y rotation
+        int verticalSpinPeriod = 984;
+        gt = (int)(world.getGameTime() % (verticalSpinPeriod * 2));
+        float yVerticalRotDegrees = ((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % verticalSpinPeriod) / (float)verticalSpinPeriod) * 360f;
 
         pPoseStack.pushPose();
         pPoseStack.translate(0.5, 0.5 + bob * 0.015625, 0.5);
@@ -107,7 +114,7 @@ public class SignaliteSeerBlockEntityRenderer implements BlockEntityRenderer<Sig
         else if (dir == Direction.UP) {
             pPoseStack.pushPose();
             pPoseStack.mulPose(Axis.ZP.rotationDegrees(90));
-            pPoseStack.mulPose(Axis.XP.rotationDegrees(45));
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(yVerticalRotDegrees));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_BODY, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
             if(signalStrength > 0) {
                 ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH_SHELL, pPoseStack, pPackedLight, pPackedOverlay, new float[]{1f, color, color, 1f});
@@ -118,7 +125,7 @@ public class SignaliteSeerBlockEntityRenderer implements BlockEntityRenderer<Sig
         else if (dir == Direction.DOWN) {
             pPoseStack.pushPose();
             pPoseStack.mulPose(Axis.ZP.rotationDegrees(270));
-            pPoseStack.mulPose(Axis.XN.rotationDegrees(45));
+            pPoseStack.mulPose(Axis.XP.rotationDegrees(yVerticalRotDegrees));
             ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_BODY, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
             if(signalStrength > 0) {
                 ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH_SHELL, pPoseStack, pPackedLight, pPackedOverlay, new float[]{1f, color, color, 1f});

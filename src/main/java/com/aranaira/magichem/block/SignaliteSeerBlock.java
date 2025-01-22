@@ -110,6 +110,30 @@ public class SignaliteSeerBlock extends BaseEntityBlock {
                 }
                 return InteractionResult.CONSUME;
             }
+
+            if(!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
+                double rawX = ((pHit.getLocation().x % 1) + 2) % 1;
+                double rawY = ((pHit.getLocation().y % 1) + 2) % 1;
+                double rawZ = ((pHit.getLocation().z % 1) + 2) % 1;
+
+                int x = rawX > 0.625 ? 1 : rawX < 0.375 ? -1 : 0;
+                int y = rawY > 0.625 ? 1 : rawY < 0.375 ? -1 : 0;
+                int z = rawZ > 0.625 ? 1 : rawZ < 0.375 ? -1 : 0;
+
+                Direction dir =
+                        z < 0 ? Direction.NORTH :
+                        z > 0 ? Direction.SOUTH :
+                        x < 0 ? Direction.WEST :
+                        x > 0 ? Direction.EAST :
+                        y < 0 ? Direction.DOWN :
+                        y > 0 ? Direction.UP :
+                        null;
+
+                boolean isCenter = (x == 0) && (y == 0) && (z == 0);
+                if (!isCenter) {
+                    pLevel.setBlock(pPos, pState.setValue(FACING_OMNI, dir), 3);
+                }
+            }
         }
 
 
