@@ -498,6 +498,9 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
 
     @Override
     public boolean needsProvisioning() {
+        if(itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST).isEmpty())
+            return false;
+
         //We don't need provisioning if something is en route
         if(activeProvisionRequests.contains(recipe.getMateria()))
             return false;
@@ -510,7 +513,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
         Map<MateriaItem, Integer> result = new HashMap<>();
 
         //We obviously don't need materia provided if we don't have a recipe
-        if(recipe != null) {
+        if(itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST).isEmpty() && recipe != null) {
             //Don't report that we have a materia need if there's already a pile incoming
             if (!activeProvisionRequests.contains(recipe.getMateria())) {
                 //Otherwise, only report that Admixture of Color is necessary if we're below half capacity
