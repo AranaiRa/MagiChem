@@ -169,6 +169,86 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE_AGGREGATING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.aggregating")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE_BURNISHING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.burnishing")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE_CHAOTIC.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.chaotic")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE_DEVOURING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.devouring")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE_GATEKEEPING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.gatekeeping")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE_NEGATING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.negating")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE_SEER.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.device")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.seer.line1")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.seer.line2")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

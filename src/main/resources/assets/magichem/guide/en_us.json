@@ -5083,5 +5083,59 @@
       }
     ]
   },
+  "Signalite Seer": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Signalite Seer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A redstone comparator that uses the magical properties of "
+          },
+          {
+            "text": "Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nOnce activated while holding a bound "
+          },
+          {
+            "text": "Rune of Marking",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", the Signalite Seer will output a signal strength equal to what a redstone comparator attached to the marked block would output.\n\nLike other Signalite variations, anointing a Signalite Seer with "
+          },
+          {
+            "text": "Admixture of Permanence",
+            "color": "dark_purple"
+          },
+          {
+            "text": "will lock it from being edited until broken, and anointing with "
+          },
+          {
+            "text": "Admixture of Lies",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will hide it from view.\nA Signalite Seer can only transmit a signal in one direction."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/signalite_seer"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

@@ -417,6 +417,19 @@
   "tooltip.magichem.standingretort": "Can be placed on top of an Eldrin Fume Filter and provided with elemental Essentia by a Construct.",
   "tooltip.magichem.variegator": "Changes the color of items.",
 
+  "tooltip.magichem.signalite": "Transmits redstone signals in any direction. Can be locked, hidden, and waterlogged.",
+  "tooltip.magichem.signalite.variant": "A variant of Signalite with an additional property.",
+  "tooltip.magichem.signalite.aggregating": "Outputs a redstone signal equal to the sum of all input signals.",
+  "tooltip.magichem.signalite.burnishing": "Outputs a redstone signal equal to the average of all input signals.",
+  "tooltip.magichem.signalite.chaotic": "Outputs a random redstone signal between 1 and the largest input signal.",
+  "tooltip.magichem.signalite.devouring": "Limits output redstone signal strength to a chosen value.",
+  "tooltip.magichem.signalite.gatekeeping": "Only outputs a redstone signal if input signals meet or exceed a chosen value.",
+  "tooltip.magichem.signalite.negating": "Outputs a redstone signal equal to 15 minus the strongest input signal.",
+
+  "tooltip.magichem.signalite.device": "A Signalite-powered device with an additional property.",
+  "tooltip.magichem.signalite.seer.line1": "Outputs a redstone signal equal to another block's redstone comparator output.",
+  "tooltip.magichem.signalite.seer.line2": "Requires activation with an active Rune of Marking. Can only transmit in one direction.",
+
   "tooltip.magichem.alchemicalwaste": "A mistake, or perhaps a failure. It smells unbelievably foul.",
   "tooltip.magichem.alchemicalwaste.ext": "Created when cleaning the Grime out of alchemical devices.",
   "tooltip.magichem.bleachedamethystshard": "An Amethyst Shard drained of all of its color.",
