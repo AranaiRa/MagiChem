@@ -212,6 +212,13 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(SignaliteSeerBlockEntity::new, BlockRegistry.SIGNALITE_SEER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<SignalitePairBlockEntity>> SIGNALITE_PAIR_BE = BLOCK_ENTITIES.register("signalite_pair", () ->
+            BlockEntityType.Builder.of(SignalitePairBlockEntity::new,
+                BlockRegistry.SIGNALITE_SINGING.get(),
+                BlockRegistry.SIGNALITE_LISTENING.get()
+            ).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

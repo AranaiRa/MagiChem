@@ -230,6 +230,8 @@ public class MagiChemMod
             event.register(SignaliteSeerBlockEntityRenderer.RENDERER_MODEL_SEER_BODY);
             event.register(SignaliteSeerBlockEntityRenderer.RENDERER_MODEL_SEER_TORCH);
             event.register(SignaliteSeerBlockEntityRenderer.RENDERER_MODEL_SEER_TORCH_SHELL);
+            event.register(SignalitePairBlockEntityRenderer.RENDERER_MODEL_SINGING);
+            event.register(SignalitePairBlockEntityRenderer.RENDERER_MODEL_LISTENING);
         }
     }
 }

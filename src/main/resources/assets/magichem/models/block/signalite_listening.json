@@ -11,7 +11,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/signalite_seer_inventory.obj"
+      "model": "magichem:models/obj/signalite_listening_inventory.obj"
     }
   },
   "display": {
@@ -36,7 +36,7 @@
     },
     "gui": {
       "rotation": [30, 0, -45],
-      "scale": [1.25, 1.25, 1.25],
+      "scale": [1, 1, 1],
       "translation": [0, 0, 0]
     }
   }
