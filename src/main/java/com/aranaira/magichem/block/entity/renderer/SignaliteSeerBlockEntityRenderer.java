@@ -9,9 +9,11 @@ import com.mna.tools.render.ModelUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +21,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.NotNull;
 
 public class SignaliteSeerBlockEntityRenderer implements BlockEntityRenderer<SignaliteSeerBlockEntity> {
-    public static final ResourceLocation RENDERER_MODEL_SEER = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_seer");
+    public static final ResourceLocation RENDERER_MODEL_SEER_BODY = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_seer_body");
+    public static final ResourceLocation RENDERER_MODEL_SEER_TORCH = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_seer_torch");
+    public static final ResourceLocation RENDERER_MODEL_SEER_TORCH_SHELL = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_seer_torch_shell");
 
     public SignaliteSeerBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 
@@ -34,6 +38,7 @@ public class SignaliteSeerBlockEntityRenderer implements BlockEntityRenderer<Sig
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
         int signalStrength = state.getValue(BlockStateProperties.POWER);
+        Direction dir = state.getValue(BlockStateProperties.FACING);
 
         float color = (signalStrength / 15f) * 0.4f + 0.3f + (signalStrength > 0 ? 0.3f : 0f);
 
@@ -58,42 +63,67 @@ public class SignaliteSeerBlockEntityRenderer implements BlockEntityRenderer<Sig
         pPoseStack.mulPose(Axis.YP.rotationDegrees(2 * yTime));
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(2 * zTime));
 
-        if (pBlockEntity.connectedSouth) {
+        if (dir == Direction.SOUTH) {
             pPoseStack.pushPose();
             pPoseStack.mulPose(Axis.YP.rotationDegrees(270));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_BODY, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            if(signalStrength > 0) {
+                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH_SHELL, pPoseStack, pPackedLight, pPackedOverlay, new float[]{1f, color, color, 1f});
+            }
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
+
             pPoseStack.popPose();
         }
-        else if (pBlockEntity.connectedNorth) {
+        else if (dir == Direction.NORTH) {
             pPoseStack.pushPose();
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_BODY, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            if(signalStrength > 0) {
+                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH_SHELL, pPoseStack, pPackedLight, pPackedOverlay, new float[]{1f, color, color, 1f});
+            }
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
             pPoseStack.popPose();
         }
-        else if (pBlockEntity.connectedEast) {
+        else if (dir == Direction.EAST) {
             pPoseStack.pushPose();
             pPoseStack.mulPose(Axis.YP.rotationDegrees(0));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_BODY, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            if(signalStrength > 0) {
+                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH_SHELL, pPoseStack, pPackedLight, pPackedOverlay, new float[]{1f, color, color, 1f});
+            }
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
             pPoseStack.popPose();
         }
-        else if (pBlockEntity.connectedWest) {
+        else if (dir == Direction.WEST) {
             pPoseStack.pushPose();
             pPoseStack.mulPose(Axis.YP.rotationDegrees(180));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_BODY, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            if(signalStrength > 0) {
+                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH_SHELL, pPoseStack, pPackedLight, pPackedOverlay, new float[]{1f, color, color, 1f});
+            }
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
             pPoseStack.popPose();
         }
-        else if (pBlockEntity.connectedUp) {
+        else if (dir == Direction.UP) {
             pPoseStack.pushPose();
             pPoseStack.mulPose(Axis.ZP.rotationDegrees(90));
             pPoseStack.mulPose(Axis.XP.rotationDegrees(45));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_BODY, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            if(signalStrength > 0) {
+                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH_SHELL, pPoseStack, pPackedLight, pPackedOverlay, new float[]{1f, color, color, 1f});
+            }
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
             pPoseStack.popPose();
         }
-        else if (pBlockEntity.connectedDown) {
+        else if (dir == Direction.DOWN) {
             pPoseStack.pushPose();
             pPoseStack.mulPose(Axis.ZP.rotationDegrees(270));
             pPoseStack.mulPose(Axis.XN.rotationDegrees(45));
-            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_BODY, pPoseStack, pPackedLight, pPackedOverlay, new float[]{color, color, color, 1f});
+            if(signalStrength > 0) {
+                ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH_SHELL, pPoseStack, pPackedLight, pPackedOverlay, new float[]{1f, color, color, 1f});
+            }
+            ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_SEER_TORCH, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
             pPoseStack.popPose();
         }
 

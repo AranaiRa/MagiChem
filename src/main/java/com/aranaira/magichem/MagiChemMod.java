@@ -227,7 +227,9 @@ public class MagiChemMod
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_GATEKEEPING);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE_NEGATING);
 
-            event.register(SignaliteSeerBlockEntityRenderer.RENDERER_MODEL_SEER);
+            event.register(SignaliteSeerBlockEntityRenderer.RENDERER_MODEL_SEER_BODY);
+            event.register(SignaliteSeerBlockEntityRenderer.RENDERER_MODEL_SEER_TORCH);
+            event.register(SignaliteSeerBlockEntityRenderer.RENDERER_MODEL_SEER_TORCH_SHELL);
         }
     }
 }

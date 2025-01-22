@@ -8,7 +8,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/signalite_seer.obj"
+      "model": "magichem:models/obj/signalite_seer_torch_shell.obj"
     }
   }
 }

@@ -381,6 +381,7 @@
   "feedback.block.materiamanifest.toobig.part1": "The designated area is too large. The maximum allowable size on each axis is ",
   "feedback.block.materiamanifest.toobig.part2": " blocks.",
   "feedback.block.signalite.target": "Signal target is now ",
+  "feedback.block.signalitseer.target": "Seer is now reading comparator output from ",
   "feedback.item.hellfeathercharm.wrongdim": "You can only use this item in the Nether.",
   "feedback.item.hellfeathercharm.noportalpos": "You have never entered the Nether through a portal.",
 
