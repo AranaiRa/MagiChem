@@ -104,7 +104,7 @@ public class SignaliteSeerBlock extends BaseEntityBlock {
                         int z = mark.getInt("z");
 
                         ssbe.setMonitoringTarget(new BlockPos(x, y, z));
-                        MutableComponent out = Component.translatable("feedback.block.signalitseer.target").append("(" + x + ", " + y + ", " + z + ")");
+                        MutableComponent out = Component.translatable("feedback.block.signaliteseer.target").append("(" + x + ", " + y + ", " + z + ")");
                         pPlayer.displayClientMessage(out, false);
                     }
                 }

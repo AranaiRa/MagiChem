@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "N",
+    "S",
+    "T"
+  ],
+  "key": {
+    "T": {
+      "item": "magichem:admixture_travel"
+    },
+    "S": {
+      "item": "magichem:signalite_seer"
+    },
+    "N": {
+      "item": "minecraft:note_block"
+    }
+  },
+  "result": {
+    "item": "magichem:signalite_listening"
+  }
+}

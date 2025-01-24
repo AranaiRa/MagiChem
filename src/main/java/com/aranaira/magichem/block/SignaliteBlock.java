@@ -214,10 +214,9 @@ public class SignaliteBlock extends BaseEntityBlock {
                 BlockState stateToCheck = pLevel.getBlockState(posQuery);
 
                 int signalQuery = 0;
-                if (stateToCheck.hasProperty(POWER))
+                if (stateToCheck.hasProperty(POWER)) {
                     signalQuery = Math.max(0, stateToCheck.getSignal(pLevel, posQuery, dir) - 1);
-
-                if (stateToCheck.getBlock() == Blocks.REDSTONE_BLOCK || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
+                } else if (stateToCheck.getBlock() == Blocks.REDSTONE_BLOCK || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
                     signalStrength = 15;
                     sbe.setLastInputByDirection(dir, 15);
                     break;

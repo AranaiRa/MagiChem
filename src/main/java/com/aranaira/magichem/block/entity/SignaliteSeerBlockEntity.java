@@ -19,10 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SignaliteSeerBlockEntity extends BlockEntity {
-    private static final int
-        FLAG_NORTH = 1, FLAG_SOUTH = 2, FLAG_EAST = 4, FLAG_WEST = 8, FLAG_UP = 16, FLAG_DOWN = 32,
-        FLAG_NORTH_SPECIAL = 64, FLAG_SOUTH_SPECIAL = 128, FLAG_EAST_SPECIAL = 256,
-        FLAG_WEST_SPECIAL = 512, FLAG_UP_SPECIAL = 1024, FLAG_DOWN_SPECIAL = 2048;
     public boolean
         locked = false, hidden = false;
     public BlockPos remoteMonitoringPos = null;
@@ -110,7 +106,9 @@ public class SignaliteSeerBlockEntity extends BlockEntity {
 
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, SignaliteSeerBlockEntity pEntity) {
         if(pEntity.remoteMonitoringPos != null) {
-            pEntity.updateSignalStrength();
+            if(pLevel.isLoaded(pEntity.remoteMonitoringPos)) {
+                pEntity.updateSignalStrength();
+            }
         }
     }
 }
