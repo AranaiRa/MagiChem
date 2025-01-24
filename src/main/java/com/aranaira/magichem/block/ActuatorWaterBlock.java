@@ -195,7 +195,7 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
                                 drainedFS = cap.drain(new FluidStack(Fluids.WATER, capacity), IFluidHandler.FluidAction.EXECUTE);
                             awbe.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
 
-                            if(player.getItemInHand(hand).getItem() == Items.WATER_BUCKET)
+                            if(player.getItemInHand(hand).getItem() == Items.WATER_BUCKET && !player.isCreative())
                                 player.setItemInHand(hand, new ItemStack(Items.BUCKET));
                         }
                         //If container is empty or has steam
