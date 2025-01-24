@@ -1831,7 +1831,35 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\n\n\n\n\n\n\n"
+            "text": ".\n\nSublimation recipes require "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; all recipes will consume some Slurry based on the speed setting of the device, but some recipes also require additional Slurry.\n\nThe device also requires either a "
+          },
+          {
+            "text": "Rune of Marking",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or a "
+          },
+          {
+            "text": "Book of Marks",
+            "color": "dark_purple"
+          },
+          {
+            "text": "that points to locations to draw materia from. The Nexus does not allow Rune of Marking Pairs to designate zones in which to search for materia (A construct and the "
+          },
+          {
+            "text": "Provide Materia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " task on a Lodestar is necessary to search for materia in a zone).\n\n\n\n\n\n"
           }
         ]
       },
