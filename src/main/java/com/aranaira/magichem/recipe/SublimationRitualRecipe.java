@@ -102,7 +102,7 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static SublimationRitualRecipe getInfusionRitualRecipe(Level level, ItemStack query) {
+    public static SublimationRitualRecipe getSublimationRitualRecipe(Level level, ItemStack query) {
         SublimationRitualRecipe result = null;
         List<SublimationRitualRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 

@@ -65,7 +65,7 @@ public class SublimationRitualVFXEntity extends Entity implements IEntityAdditio
     protected void readAdditionalSaveData(CompoundTag nbt) {
         String key = nbt.getString("recipe");
         Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
-        this.recipe = SublimationRitualRecipe.getInfusionRitualRecipe(this.level(), new ItemStack(query));
+        this.recipe = SublimationRitualRecipe.getSublimationRitualRecipe(this.level(), new ItemStack(query));
 
         this.ritualCenter = BlockPos.of(nbt.getLong("ritualCenter"));
 
@@ -109,7 +109,7 @@ public class SublimationRitualVFXEntity extends Entity implements IEntityAdditio
     @Override
     public void readSpawnData(FriendlyByteBuf additionalData) {
         ItemStack query = additionalData.readItem();
-        this.recipe = SublimationRitualRecipe.getInfusionRitualRecipe(this.level(), query);
+        this.recipe = SublimationRitualRecipe.getSublimationRitualRecipe(this.level(), query);
 
         this.ritualCenter = BlockPos.of(additionalData.readLong());
 

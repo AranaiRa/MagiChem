@@ -92,6 +92,22 @@ public class RitualEffectAlchemicalSublimation extends RitualEffect {
 
     @Override
     protected boolean matchReagents(IRitualContext context) {
+        if(recipe == null) {
+            ItemStack dataStack = context.getCollectedReagents().get(0);
+            CompoundTag nbt = dataStack.getOrCreateTag();
+            if(!nbt.contains("recipe"))
+                return false;
+
+            String key = nbt.getString("recipe");
+            Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
+            if(query == null)
+                return false;
+
+            recipe = SublimationRitualRecipe.getSublimationRitualRecipe(context.getLevel(), new ItemStack(query));
+            if(recipe == null)
+                return false;
+        }
+
         Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter(), recipe);
         VesselData lv = vesselData.getFirst();
         VesselData rv = vesselData.getSecond();
@@ -123,10 +139,10 @@ public class RitualEffectAlchemicalSublimation extends RitualEffect {
             return false;
         }
 
-        SublimationRitualVFXEntity irve = new SublimationRitualVFXEntity(EntitiesRegistry.INFUSION_RITUAL_VFX_ENTITY.get(), context.getLevel());
-        irve.configure(context.getCenter(), recipe);
-        irve.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY(), context.getCenter().getZ() + 0.5);
-        context.getLevel().addFreshEntity(irve);
+        SublimationRitualVFXEntity srve = new SublimationRitualVFXEntity(EntitiesRegistry.SUBLIMATION_RITUAL_VFX_ENTITY.get(), context.getLevel());
+        srve.configure(context.getCenter(), recipe);
+        srve.setPos(context.getCenter().getX() + 0.5, context.getCenter().getY(), context.getCenter().getZ() + 0.5);
+        context.getLevel().addFreshEntity(srve);
 
         //Materia vessels missing at one or both spots, we should inform the player
         if (lv.vesselBlockEntity == null || rv.vesselBlockEntity == null) {
@@ -496,7 +512,7 @@ public class RitualEffectAlchemicalSublimation extends RitualEffect {
         if(query == null)
             return false;
 
-        recipe = SublimationRitualRecipe.getInfusionRitualRecipe(context.getLevel(), new ItemStack(query));
+        recipe = SublimationRitualRecipe.getSublimationRitualRecipe(context.getLevel(), new ItemStack(query));
         if(recipe == null)
             return false;
 
