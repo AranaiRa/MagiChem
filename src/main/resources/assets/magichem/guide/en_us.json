@@ -1599,7 +1599,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\n\n\n\n\n\n\n"
+            "text": ".\n\nThe Fusery requires "
+          },
+          {
+            "text": "Academic Slurry",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in its tank for each operation. More complex admixtures require larger amounts of slurry than simpler Admixtures.\n"
           }
         ]
       },
@@ -4542,14 +4549,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nTwo-State Levers can be combined in a crafting grid to create a lever with more states (up to a maximum of a Six-State Lever). These levers output a redstone signal equal to how many clicks have been set, resetting to 0 after hitting its maximum (for example, a "
+            "text": ".\n\nA Two-State lever will output a signal strength of 15 when active like a conventional lever, but all other levers will increment their signal strength one higher every time the lever is activated (for example, a Four-State Lever will output a signal strength of 0, 1, 2, or 3).\n\nTwo-State Levers can be combined in a crafting grid to create a lever with more states (up to a maximum of a Six-State Lever). These levers output a redstone signal equal to how many clicks have been set, resetting to 0 after hitting its maximum (for example, a "
           },
           {
             "text": "Four-State Lever",
             "color": "dark_purple"
           },
           {
-            "text": " can output a signal level of 0, 1, 2, or 3 depending on what position the lever is set to).\n\nActivating the lever sets it to its next state; activating the lever while sneaking sets it to its previous state.\n\nAny Multi-State Lever more complex than a Two-State Lever can be put into a crafting grid and be split back into its component Two-State Levers."
+            "text": " can output a signal level of 0, 1, 2, or 3 depending on what position the lever is set to).\n\nActivating the lever sets it to its next state; activating the lever while sneaking sets it to its previous state.\n\n\nAny Multi-State Lever more complex than a Two-State Lever can be put into a crafting grid and be split back into its component Two-State Levers."
           }
         ]
       }
