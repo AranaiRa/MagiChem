@@ -64,6 +64,8 @@ public class RitualEffectAlchemicalSublimation extends RitualEffect {
     public Component canRitualStart(IRitualContext context) {
         if (recipe == null)
             return null;
+        else if(context.getRecipe().getResultItem().getItem() == ItemInit.RUNE_PATTERN_RITUAL_METAL.get())
+            return null;
 
         Pair<VesselData, VesselData> vesselData = getVesselPositions(context.getLevel(), context.getCenter(), recipe);
         VesselData lv = vesselData.getFirst();
@@ -94,7 +96,10 @@ public class RitualEffectAlchemicalSublimation extends RitualEffect {
     protected boolean matchReagents(IRitualContext context) {
         if(recipe == null) {
             ItemStack dataStack = context.getCollectedReagents().get(0);
-            CompoundTag nbt = dataStack.getOrCreateTag();
+            if(!dataStack.hasTag())
+                return false;
+
+            CompoundTag nbt = dataStack.getTag();
             if(!nbt.contains("recipe"))
                 return false;
 
@@ -503,7 +508,10 @@ public class RitualEffectAlchemicalSublimation extends RitualEffect {
 
     @Override
     protected boolean modifyRitualReagentsAndPatterns(ItemStack dataStack, IRitualContext context) {
-        CompoundTag nbt = dataStack.getOrCreateTag();
+        if(!dataStack.hasTag())
+            return false;
+
+        CompoundTag nbt = dataStack.getTag();
         if(!nbt.contains("recipe"))
             return false;
 
