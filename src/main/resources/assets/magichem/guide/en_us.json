@@ -4891,6 +4891,10 @@
       {
         "type": "crafting",
         "location": "magichem:shaped/signalite_block"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/signalite_to_redstone"
       }
     ]
   },

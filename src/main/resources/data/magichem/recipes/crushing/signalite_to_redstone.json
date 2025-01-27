@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 1,
+  "input": "magichem:signalite",
+  "output": "minecraft:redstone",
+  "output_quantity": 1
+}
