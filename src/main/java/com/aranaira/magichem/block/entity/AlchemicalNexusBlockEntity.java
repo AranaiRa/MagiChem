@@ -348,6 +348,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
         itemHandler.deserializeNBT(pInventoryTag);
+        if(level != null)
+            currentRecipe = SublimationRecipe.getInfusionRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
+        else
+            doDeferredRecipeLinkages = true;
     }
 
     public void unpackSlurryFromNBT(CompoundTag pSlurryTag) {
