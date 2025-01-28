@@ -11,6 +11,8 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import org.joml.Matrix3f;
@@ -251,7 +253,8 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
                 if(curveDist > 0 && curveDist < 0.05)
                     curveDist += 0;
 
-                float periodicTick = ((pTick + pPartialTick) % TICKS_FOR_FULL_MARCH) / (TICKS_FOR_FULL_MARCH + 1);
+                int gt = (int)(pTick % (long)(TICKS_FOR_FULL_MARCH * 2));
+                float periodicTick = (float)((gt + pPartialTick) % (float)TICKS_FOR_FULL_MARCH) / (float)(TICKS_FOR_FULL_MARCH + 1);
                 float periodicDist = ((curveDist + periodicTick) % FLUID_DISTORTION_PERIOD) / FLUID_DISTORTION_PERIOD * (float)Math.PI;
 
                 BezierVectors bv = getAxisVectors(pEntity, curveDist);
