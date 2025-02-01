@@ -1,0 +1,76 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "valid_on_cauldron": true,
+  "valid_on_variegator": true,
+  "colorless_default": {
+    "item": "mna:decoration/runic_glass"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "mna:decoration/runic_glass_red"
+    },
+    {
+      "color": "orange",
+      "item": "mna:decoration/runic_glass_orange"
+    },
+    {
+      "color": "yellow",
+      "item": "mna:decoration/runic_glass_yellow"
+    },
+    {
+      "color": "lime",
+      "item": "mna:decoration/runic_glass_lime"
+    },
+    {
+      "color": "green",
+      "item": "mna:decoration/runic_glass_green"
+    },
+    {
+      "color": "cyan",
+      "item": "mna:decoration/runic_glass_cyan"
+    },
+    {
+      "color": "light_blue",
+      "item": "mna:decoration/runic_glass_light_blue"
+    },
+    {
+      "color": "blue",
+      "item": "mna:decoration/runic_glass_blue"
+    },
+    {
+      "color": "purple",
+      "item": "mna:decoration/runic_glass_purple"
+    },
+    {
+      "color": "magenta",
+      "item": "mna:decoration/runic_glass_magenta"
+    },
+    {
+      "color": "pink",
+      "item": "mna:decoration/runic_glass_pink"
+    },
+    {
+      "color": "brown",
+      "item": "mna:decoration/runic_glass_brown"
+    },
+    {
+      "color": "black",
+      "item": "mna:decoration/runic_glass_black"
+    },
+    {
+      "color": "gray",
+      "item": "mna:decoration/runic_glass_gray"
+    },
+    {
+      "color": "light_gray",
+      "item": "mna:decoration/runic_glass_light_gray"
+    },
+    {
+      "color": "white",
+      "item": "mna:decoration/runic_glass_white"
+    }
+  ]
+}
