@@ -352,6 +352,19 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             transferredAmount = count;
         }
 
+        if(jarTargetEntity == null) {
+            //Nothing we can do if the filter is also fucked
+            if(filter == null)
+                return 0;
+
+            //This is a problem; see if we can reset the target
+            setTargetVessel(filter);
+
+            //If we're still null, gotta abort process
+            if(jarTargetEntity == null)
+                return 0;
+        }
+
         //force the type on the destination container to prevent voiding a ton of materia types
         if(jarTargetEntity.getMateriaType() == null)
             jarTargetEntity.setContents((MateriaItem)transitMateria.getItem(),0);
