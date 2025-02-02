@@ -2877,6 +2877,47 @@
     ],
     "related_recipes": []
   },
+  "Condition: Device Needs Sorting": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Device Needs Sorting"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will "
+          },
+          {
+            "text": "check whether an alchemical device can have materia sorted by a construct",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", returning "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if the device has materia in its output slots, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if there is nothing in the device's output slots."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Materia Jar": {
     "index": "1212",
     "category": "magichem",

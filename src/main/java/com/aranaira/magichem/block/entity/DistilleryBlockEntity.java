@@ -8,6 +8,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IMateriaSortingRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
@@ -55,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IRequiresRouterCleanupOnDestruction {
+public class DistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IRequiresRouterCleanupOnDestruction, IMateriaSortingRequester {
     public static final int
         SLOT_COUNT = 26,
         SLOT_BOTTLES = 0, SLOT_FUEL = 1,
@@ -416,6 +417,18 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         }
 
         AbstractDistillationBlockEntity.tick(pLevel, pPos, pState, pEntity, DistilleryBlockEntity::getVar, pEntity::getPoweredOperationTime);
+    }
+
+    @Override
+    public boolean needsSorting() {
+        boolean materiaInOutput = false;
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty()) {
+                materiaInOutput = true;
+                break;
+            }
+        }
+        return materiaInOutput;
     }
 
     public static int getVar(IDs pID) {

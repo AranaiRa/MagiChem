@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester {
+public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 21,
@@ -378,6 +378,18 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         generateCauldronSmokeParticles(pLevel, pPos, pEntity);
 
         AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, FuseryBlockEntity::getVar);
+    }
+
+    @Override
+    public boolean needsSorting() {
+        boolean materiaInOutput = false;
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty()) {
+                materiaInOutput = true;
+                break;
+            }
+        }
+        return materiaInOutput;
     }
 
     public static int getVar(IDs pID) {

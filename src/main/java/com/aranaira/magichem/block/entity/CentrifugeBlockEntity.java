@@ -7,10 +7,7 @@ import com.aranaira.magichem.block.entity.routers.CentrifugeRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.gui.CentrifugeMenu;
@@ -48,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester {
+public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
     public static final int
         SLOT_COUNT = 14,
         SLOT_BOTTLES = 13, SLOT_BOTTLES_OUTPUT = 0,
@@ -301,6 +298,18 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             pEntity.handleAnimationDrivers();
         }
         AbstractSeparationBlockEntity.tick(pLevel, pPos, pState, pEntity, CentrifugeBlockEntity::getVar, pEntity::getPoweredOperationTime);
+    }
+
+    @Override
+    public boolean needsSorting() {
+        boolean materiaInOutput = false;
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty()) {
+                materiaInOutput = true;
+                break;
+            }
+        }
+        return materiaInOutput;
     }
 
     public static int getVar(IDs pID) {

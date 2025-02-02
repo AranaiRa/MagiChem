@@ -4,6 +4,7 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.IMateriaSortingRequester;
 import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -39,7 +40,7 @@ import java.util.Random;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_PASSIVE_HEAT;
 
-public class AlembicBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider {
+public class AlembicBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, IMateriaSortingRequester {
     public static final int
         SLOT_COUNT = 13,
         SLOT_BOTTLES = 0,
@@ -279,6 +280,18 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
                 }
             }
         }
+    }
+
+    @Override
+    public boolean needsSorting() {
+        boolean materiaInOutput = false;
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty()) {
+                materiaInOutput = true;
+                break;
+            }
+        }
+        return materiaInOutput;
     }
 
     public static int getVar(IDs pID) {

@@ -55,7 +55,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction {
+public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IMateriaSortingRequester {
     public static final int
         SLOT_COUNT = 25,
         SLOT_BOTTLES = 0,
@@ -569,6 +569,18 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                 }
             }
         }
+    }
+
+    @Override
+    public boolean needsSorting() {
+        boolean materiaInOutput = false;
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty()) {
+                materiaInOutput = true;
+                break;
+            }
+        }
+        return materiaInOutput;
     }
 
     public static int getVar(IDs pID) {

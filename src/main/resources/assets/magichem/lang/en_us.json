@@ -750,6 +750,7 @@
   "construct.magichem:study": "Study",
   "construct.magichem:harvest_crystals": "Harvest Crystals",
   "construct.magichem:query_device_needs_provisioning": "Condition: Device Needs Provisioning",
+  "construct.magichem:query_device_needs_sorting": "Condition: Device Needs Sorting",
 
   "gui.mna.codex_search.recipe.anointing": "Alchemical Anointing > ",
   "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
@@ -779,6 +780,7 @@
   "gui.mna.parameter.harvest_crystals.area": "In what area should the construct look for fully-grown crystal buds to break?",
 
   "gui.mna.parameter.query_device_needs_provisioning.point": "What device's provisioning needs should the construct check?",
+  "gui.mna.parameter.query_device_needs_sorting.point": "What device's sorting needs should the construct check?",
 
   "hud.magichem.coloring_cauldron.current_item.processing": "Coloring ",
   "hud.magichem.coloring_cauldron.current_item.waiting": " Complete",

@@ -7,6 +7,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IMateriaSortingRequester;
 import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 
-public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction {
+public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaSortingRequester {
     private BlockPos masterPos;
     private GrandDistilleryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -225,5 +226,12 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
 
         getLevel().destroyBlock(getMasterPos(), true);
         GrandDistilleryBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
+    }
+
+    @Override
+    public boolean needsSorting() {
+        if(master == null) return false;
+
+        return master.needsSorting();
     }
 }

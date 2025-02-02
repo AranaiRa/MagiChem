@@ -7,6 +7,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IMateriaSortingRequester;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.DistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -32,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction {
+public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaSortingRequester {
     private BlockPos masterPos;
     private DistilleryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -257,5 +258,12 @@ public class DistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficien
     public void destroyMaster() {
         getLevel().destroyBlock(getMasterPos(), true);
         DistilleryBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
+    }
+
+    @Override
+    public boolean needsSorting() {
+        if(master == null) return false;
+
+        return master.needsSorting();
     }
 }
