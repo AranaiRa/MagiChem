@@ -293,7 +293,7 @@ public class CommonEventHandler {
                     }
                 }
                 else if (blockEntity instanceof ColoringCauldronBlockEntity ccbe) {
-                    if(ccbe.hasItem()) {
+//                    if(ccbe.hasItem()) {
                         final List<String> infoReadout = ccbe.getInfoReadout();
                         event.getGuiGraphics().drawString(font, infoReadout.get(0), x + 4, y + 4, 0xffffff, true);
 
@@ -315,7 +315,7 @@ public class CommonEventHandler {
                                 return;
                             }
                         }
-                    }
+//                    }
                 }
                 else if (Minecraft.getInstance().player.isCrouching() && blockEntity != null) {
                     List<MutableComponent> components = new ArrayList<>();

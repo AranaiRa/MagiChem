@@ -365,6 +365,8 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
 
         if(readyToCollect)
             output.add(itemName + Component.translatable("hud.magichem.coloring_cauldron.current_item.waiting").getString());
+        else if(containedItem.isEmpty())
+            output.add(" ");
         else
             output.add(Component.translatable("hud.magichem.coloring_cauldron.current_item.processing").getString() + itemName);
 
