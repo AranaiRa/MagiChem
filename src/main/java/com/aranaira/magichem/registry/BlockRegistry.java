@@ -89,6 +89,16 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> GRAND_FUSERY = registerBlock("grand_fusery",
+            () -> new GrandFuseryBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> GRAND_FUSERY_ROUTER = registerBlock("grand_fusery_router",
+            () -> new GrandFuseryRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> CONJURER_ROUTER = registerBlock("conjurer_router",
             () -> new ConjurerRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

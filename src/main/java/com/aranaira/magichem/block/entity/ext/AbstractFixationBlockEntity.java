@@ -98,7 +98,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     // CRAFTING HANDLERS
     ////////////////////
 
-    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractFixationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractFixationBlockEntity pEntity, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
         pEntity.reductionRate = 0;
         for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
@@ -148,7 +148,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             //figure out what slot and stack to target
             if (canCraftItem(pEntity, pVarFunc)) {
 
-                if (pEntity.progress > getOperationTicks(pEntity.getGrimeFromData(), pEntity.batchSize, pEntity.operationTimeMod*100, pVarFunc)) {
+                if (pEntity.progress > getOperationTicks(pEntity.getGrimeFromData(), pEntity.batchSize, pEntity.operationTimeMod*100, pVarFunc, pPoweredTimeFunc)) {
                     if (!pLevel.isClientSide()) {
                         craftItem(pEntity, pVarFunc);
                     }
@@ -471,10 +471,23 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         return 1f + grimeScalar * 3f;
     }
 
-    public static int getOperationTicks(int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
-        float otmScalar = (10000f - pOperationTimeMod) / 10000f;
-        float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize);
-        return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
+    public static int getOperationTicks(int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
+        int poweredOpTime = pPoweredTimeFunc.apply(null);
+        float otmScalar;
+
+        //RF-using devices reduce energy usage, not operation time
+        if (pVarFunc.apply(IDs.MODE_USES_RF) == 0)
+            otmScalar = (10000f - pOperationTimeMod) / 10000f;
+        else
+            otmScalar = 1;
+
+        float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize / 4);
+
+        if(poweredOpTime == -1) {
+            return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
+        } else {
+            return Math.round(poweredOpTime * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
+        }
     }
 
     public static int getActualEfficiency(int pMod, int pGrime, Function<IDs, Integer> pVarFunc) {
@@ -486,8 +499,8 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         return (float)pGrime / (float)pVarFunc.apply(IDs.CONFIG_MAX_GRIME);
     }
 
-    public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc) {
-        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc);
+    public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
+        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc);
     }
 
     @Override
@@ -560,9 +573,14 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         return -2;
     }
 
+    public Integer getPoweredOperationTime(Void unused) {
+        return -1;
+    }
+
     public enum IDs {
         SLOT_BOTTLES, SLOT_BOTTLES_OUTPUT, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT, SLOT_RECIPE,
         CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_GRIME_ON_SUCCESS, CONFIG_GRIME_ON_FAILURE,
+        MODE_USES_RF,
         CONFIG_NO_TORQUE_GRACE_PERIOD, CONFIG_TORQUE_GAIN_ON_ACTIVATION, CONFIG_ANIMUS_GAIN_ON_DUSTING, CONFIG_TANK_CAPACITY,
         DATA_PROGRESS, DATA_GRIME, DATA_TORQUE, DATA_ANIMUS, DATA_EFFICIENCY_MOD, DATA_OPERATION_TIME_MOD,
         GUI_PROGRESS_BAR_WIDTH, GUI_GRIME_BAR_WIDTH

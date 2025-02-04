@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl CENTRIFUGE
+map_Kd magichem:block/centrifuge
+
+newmtl GRAND_DISTILLERY
+map_Kd magichem:block/grand_distillery
+
+newmtl GRAND_FUSERY
+map_Kd magichem:block/grand_fusery

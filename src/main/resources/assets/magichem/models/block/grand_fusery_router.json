@@ -1,0 +1,6 @@
+{
+  "parent": "magichem:block/grand_fusery",
+  "textures": {
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
+  }
+}

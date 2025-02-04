@@ -48,6 +48,14 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(FuseryRouterBlockEntity::new, BlockRegistry.FUSERY_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<GrandFuseryBlockEntity>> GRAND_FUSERY_BE = BLOCK_ENTITIES.register("grand_fusery", () ->
+            BlockEntityType.Builder.of(GrandFuseryBlockEntity::new, BlockRegistry.GRAND_FUSERY.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<GrandFuseryRouterBlockEntity>> GRAND_FUSERY_ROUTER_BE = BLOCK_ENTITIES.register("grand_fusery_router", () ->
+            BlockEntityType.Builder.of(GrandFuseryRouterBlockEntity::new, BlockRegistry.GRAND_FUSERY_ROUTER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<AlchemicalNexusBlockEntity>> ALCHEMICAL_NEXUS_BE = BLOCK_ENTITIES.register("alchemical_nexus", () ->
             BlockEntityType.Builder.of(AlchemicalNexusBlockEntity::new, BlockRegistry.ALCHEMICAL_NEXUS.get()).build(null)
     );

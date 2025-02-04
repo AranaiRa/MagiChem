@@ -377,7 +377,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         //Particles
         generateCauldronSmokeParticles(pLevel, pPos, pEntity);
 
-        AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, FuseryBlockEntity::getVar);
+        AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, FuseryBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
 
     @Override
