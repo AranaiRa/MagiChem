@@ -7,6 +7,7 @@ import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -92,8 +93,15 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
 
     private void setTetherTarget(int pButtonID) {
         int index = pButtonID + (32 * pageIndex);
-        if(index < materiaStorageInZone.size())
+        if(index < materiaStorageInZone.size()) {
             menu.blockEntity.tetherTarget = materiaStorageInZone.get(index).getThird();
+            MateriaItem mi = materiaStorageInZone.get(index).getFirst();
+
+            Minecraft.getInstance().player.displayClientMessage(Component.empty()
+                            .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.translatable("item."+mi.getCreatorModId(new ItemStack(mi))+"."+mi.toString())),
+                    true);
+        }
     }
 
     @Override

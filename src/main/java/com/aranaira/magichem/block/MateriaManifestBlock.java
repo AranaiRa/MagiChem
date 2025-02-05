@@ -2,13 +2,18 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaManifestBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.block.entity.routers.MateriaManifestRouterBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.ItemInit;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,6 +34,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 
@@ -95,11 +102,38 @@ public class MateriaManifestBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(!level.isClientSide()) {
             boolean holdingMarkPair = player.getInventory().getSelected().getItem() == ItemInit.RUNE_MARKING_PAIR.get();
+            boolean holdingMateria = player.getInventory().getSelected().getItem() instanceof MateriaItem;
 
-            if(!holdingMarkPair) {
+            if(!holdingMarkPair && !holdingMateria) {
                 BlockEntity entity = level.getBlockEntity(pos);
-                if (entity instanceof MateriaManifestBlockEntity) {
+                if (entity instanceof MateriaManifestBlockEntity mmbe) {
                     NetworkHooks.openScreen((ServerPlayer) player, (MateriaManifestBlockEntity) entity, pos);
+                } else {
+                    throw new IllegalStateException("MateriaManifestBlockEntity container provider is missing!");
+                }
+            }
+        } else {
+            boolean holdingMarkPair = player.getInventory().getSelected().getItem() == ItemInit.RUNE_MARKING_PAIR.get();
+            boolean holdingMateria = player.getInventory().getSelected().getItem() instanceof MateriaItem;
+
+            if(!holdingMarkPair && holdingMateria) {
+                BlockEntity entity = level.getBlockEntity(pos);
+                if (entity instanceof MateriaManifestBlockEntity mmbe) {
+                    if(mmbe.tetherTarget == null) {
+                        final List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
+                        if (player.getInventory().getSelected().getItem() instanceof MateriaItem mi) {
+                            for (Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity> entry : materiaStorageInZone) {
+                                MateriaItem type = entry.getFirst();
+                                if (type != null && type == mi) {
+                                    mmbe.tetherTarget = entry.getThird();
+                                    player.displayClientMessage(Component.empty()
+                                            .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
+                                            .append(Component.translatable("item."+mi.getCreatorModId(player.getInventory().getSelected())+"."+mi.toString())),
+                                            true);
+                                }
+                            }
+                        }
+                    }
                 } else {
                     throw new IllegalStateException("MateriaManifestBlockEntity container provider is missing!");
                 }

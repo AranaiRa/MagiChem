@@ -3205,7 +3205,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " from itself to the Jar or Vessel that contains that Materia. This beam persists until you open the Materia Manifest again or until the chunk the Materia Manifest is in unloads.\n\nBy default, a Materia Manifest will scan all Jars and Vessels within 8 blocks of itself. If you activate the Maniest while holding a "
+            "text": " from itself to the Jar or Vessel that contains that Materia. This beam persists until you open the Materia Manifest again or until the chunk the Materia Manifest is in unloads.\n\nYou can also activate a Materia Manifest while holding a dram of bottled materia to scan the area for that type of materia directly.\n\nBy default, a Materia Manifest will scan all Jars and Vessels within 8 blocks of itself. If you activate the Manifest while holding a "
           },
           {
             "text": "Rune of Marking Pair",

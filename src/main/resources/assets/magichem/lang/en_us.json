@@ -382,6 +382,7 @@
   "feedback.block.materiamanifest.toofar": "The designated area is too far from the Materia Manifest.",
   "feedback.block.materiamanifest.toobig.part1": "The designated area is too large. The maximum allowable size on each axis is ",
   "feedback.block.materiamanifest.toobig.part2": " blocks.",
+  "feedback.block.materiamanifest.trackfrombottle": "Locating ",
   "feedback.block.signalite.target": "Signal target is now ",
   "feedback.block.signaliteseer.target": "Seer is now reading comparator output from ",
   "feedback.block.signalitepair.target": "Listening to the signal-song from ",
