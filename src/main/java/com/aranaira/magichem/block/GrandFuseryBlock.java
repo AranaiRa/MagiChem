@@ -61,7 +61,7 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
     private static final VoxelShape
         VOXEL_SHAPE_ERROR,
 
-        VOXEL_SHAPE_CORE_BASE, VOXEL_SHAPE_CORE_BRIDGE, VOXEL_SHAPE_CORE_BACKBOARD,
+        VOXEL_SHAPE_CORE_BASE, VOXEL_SHAPE_CORE_CENTER,
 
         VOXEL_SHAPE_AGGREGATE_NORTH, VOXEL_SHAPE_AGGREGATE_EAST, VOXEL_SHAPE_AGGREGATE_SOUTH, VOXEL_SHAPE_AGGREGATE_WEST;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -145,6 +145,8 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
             offsets.add(new Triplet<>(origin.above().west(), ASSEMBLY_MID_LEFT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().east(), ASSEMBLY_MID_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().north(), ASSEMBLY_MID_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().west(), ASSEMBLY_UPPER_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().east(), ASSEMBLY_UPPER_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().north().west(), ASSEMBLY_MID_BACK_LEFT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().north().east(), ASSEMBLY_MID_BACK_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().above().north(), ASSEMBLY_UPPER_BACK_MID, DevicePlugDirection.NONE));
@@ -163,6 +165,8 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
             offsets.add(new Triplet<>(origin.above().east(), ASSEMBLY_MID_LEFT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().west(), ASSEMBLY_MID_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().south(), ASSEMBLY_MID_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().east(), ASSEMBLY_UPPER_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().west(), ASSEMBLY_UPPER_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().south().east(), ASSEMBLY_MID_BACK_LEFT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().south().west(), ASSEMBLY_MID_BACK_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().above().south(), ASSEMBLY_UPPER_BACK_MID, DevicePlugDirection.NONE));
@@ -181,6 +185,8 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
             offsets.add(new Triplet<>(origin.above().north(), ASSEMBLY_MID_LEFT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().south(), ASSEMBLY_MID_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().east(), ASSEMBLY_MID_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().north(), ASSEMBLY_UPPER_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().south(), ASSEMBLY_UPPER_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().east().north(), ASSEMBLY_MID_BACK_LEFT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().east().south(), ASSEMBLY_MID_BACK_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().above().east(), ASSEMBLY_UPPER_BACK_MID, DevicePlugDirection.NONE));
@@ -199,6 +205,8 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
             offsets.add(new Triplet<>(origin.above().south(), ASSEMBLY_MID_LEFT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().north(), ASSEMBLY_MID_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().west(), ASSEMBLY_MID_BACK_MID, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().south(), ASSEMBLY_UPPER_LEFT, DevicePlugDirection.NONE));
+            offsets.add(new Triplet<>(origin.above().above().north(), ASSEMBLY_UPPER_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().west().south(), ASSEMBLY_MID_BACK_LEFT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().west().north(), ASSEMBLY_MID_BACK_RIGHT, DevicePlugDirection.NONE));
             offsets.add(new Triplet<>(origin.above().above().west(), ASSEMBLY_UPPER_BACK_MID, DevicePlugDirection.NONE));
@@ -313,31 +321,26 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
         VOXEL_SHAPE_ERROR = Block.box(4, 4, 4, 12, 12, 12);
 
         VOXEL_SHAPE_CORE_BASE = Block.box(0, 0, 0, 16, 8, 16);
-        VOXEL_SHAPE_CORE_BRIDGE = Block.box(5, 0, 0, 11, 13, 16);
-        VOXEL_SHAPE_CORE_BACKBOARD = Block.box(0, 0, 0, 16, 16, 3);
+        VOXEL_SHAPE_CORE_CENTER = Block.box(2, 8, 2, 14, 16, 14);
 
         VOXEL_SHAPE_AGGREGATE_NORTH = Shapes.or(
                 VOXEL_SHAPE_CORE_BASE,
-                VOXEL_SHAPE_CORE_BRIDGE,
-                VOXEL_SHAPE_CORE_BACKBOARD
+                VOXEL_SHAPE_CORE_CENTER
         );
 
         VOXEL_SHAPE_AGGREGATE_EAST = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BASE, 1),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BRIDGE, 1),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BACKBOARD, 1)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_CENTER, 1)
         );
 
         VOXEL_SHAPE_AGGREGATE_SOUTH = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BASE, 2),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BRIDGE, 2),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BACKBOARD, 2)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_CENTER, 2)
         );
 
         VOXEL_SHAPE_AGGREGATE_WEST = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BASE, 3),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BRIDGE, 3),
-                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_BACKBOARD, 3)
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_CORE_CENTER, 3)
         );
     }
 }

@@ -56,37 +56,41 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
         VOXEL_SHAPE_PLUG_FRONT_RIGHT_BASE, VOXEL_SHAPE_PLUG_FRONT_RIGHT_PLUG, VOXEL_SHAPE_PLUG_FRONT_RIGHT_BRACE,
         VOXEL_SHAPE_PLUG_FRONT_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_PLUG_FRONT_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_PLUG_FRONT_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_PLUG_FRONT_RIGHT_AGGREGATE_WEST,
 
-        VOXEL_SHAPE_PLUG_MID_LEFT_BASE, VOXEL_SHAPE_PLUG_MID_LEFT_PLUG, VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT, VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID, VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT, VOXEL_SHAPE_PLUG_MID_LEFT_BODY,
+        VOXEL_SHAPE_PLUG_MID_LEFT_BASE, VOXEL_SHAPE_PLUG_MID_LEFT_PLUG, VOXEL_SHAPE_PLUG_MID_LEFT_BODY, VOXEL_SHAPE_PLUG_MID_LEFT_TANK,
         VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_WEST,
         VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_NORTH_UPGRADED, VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_EAST_UPGRADED, VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_SOUTH_UPGRADED, VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_WEST_UPGRADED,
         VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_WEST,
         VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_NORTH_UPGRADED, VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_EAST_UPGRADED, VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_SOUTH_UPGRADED, VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_WEST_UPGRADED,
 
-        VOXEL_SHAPE_PLUG_BACK_LEFT_BASE, VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG, VOXEL_SHAPE_PLUG_BACK_LEFT_BODY,
+        VOXEL_SHAPE_PLUG_BACK_LEFT_BASE, VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG, VOXEL_SHAPE_PLUG_BACK_LEFT_BODY, VOXEL_SHAPE_PLUG_BACK_LEFT_TANK,
         VOXEL_SHAPE_PLUG_BACK_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_PLUG_BACK_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_PLUG_BACK_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_PLUG_BACK_LEFT_AGGREGATE_WEST,
         VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_WEST,
 
-        VOXEL_SHAPE_BACK_BASE, VOXEL_SHAPE_BACK_BODY,
+        VOXEL_SHAPE_BACK_BASE, VOXEL_SHAPE_BACK_STAND, VOXEL_SHAPE_BACK_TANK,
         VOXEL_SHAPE_BACK_AGGREGATE_NORTH, VOXEL_SHAPE_BACK_AGGREGATE_EAST, VOXEL_SHAPE_BACK_AGGREGATE_SOUTH, VOXEL_SHAPE_BACK_AGGREGATE_WEST,
 
-        VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH, VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW,
-        VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_WEST,
+        VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_LOW, VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_MID, VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_HIGH, VOXEL_SHAPE_ASSEMBLY_MID_MID_NUB,
+        VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE,
 
-        VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH, VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW, VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT, VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID, VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT,
+        VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND, VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK,
         VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_WEST,
         VOXEL_SHAPE_ASSEMBLY_MID_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_MID_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_MID_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_MID_RIGHT_AGGREGATE_WEST,
 
-        VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_HIGH, VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_LOW,
+        VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_STAND, VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_TANK,
         VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_AGGREGATE_WEST,
 
-        VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH, VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW, VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT, VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT,
+        VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY, VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK,
         VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_AGGREGATE_WEST,
         VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_WEST,
 
-        VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_SLICE,
+        VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK, VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM, VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP,
+        VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_WEST,
+        VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_WEST,
+
+        VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_TANK, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_BRIM, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_CAP,
         VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_WEST,
 
-        VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT,
+        VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP,
         VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_AGGREGATE_WEST,
         VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_RIGHT_AGGREGATE_NORTH, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_RIGHT_AGGREGATE_EAST, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_RIGHT_AGGREGATE_SOUTH, VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_RIGHT_AGGREGATE_WEST;
 
@@ -174,10 +178,7 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
                 else if (facing == Direction.WEST) return VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_WEST;
             }
             else if (routerType == ASSEMBLY_MID_MID) {
-                if (facing == Direction.NORTH) return VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_NORTH;
-                else if (facing == Direction.EAST) return VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_EAST;
-                else if (facing == Direction.SOUTH) return VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_SOUTH;
-                else if (facing == Direction.WEST) return VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_WEST;
+                return VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE;
             }
             else if (routerType == ASSEMBLY_MID_LEFT) {
                 if (facing == Direction.NORTH) return VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_NORTH;
@@ -208,6 +209,18 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
                 else if (facing == Direction.EAST) return VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_EAST;
                 else if (facing == Direction.SOUTH) return VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_SOUTH;
                 else if (facing == Direction.WEST) return VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_WEST;
+            }
+            else if (routerType == ASSEMBLY_UPPER_LEFT) {
+                if (facing == Direction.NORTH) return VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_NORTH;
+                else if (facing == Direction.EAST) return VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_EAST;
+                else if (facing == Direction.SOUTH) return VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_SOUTH;
+                else if (facing == Direction.WEST) return VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_WEST;
+            }
+            else if (routerType == ASSEMBLY_UPPER_RIGHT) {
+                if (facing == Direction.NORTH) return VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_NORTH;
+                else if (facing == Direction.EAST) return VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_EAST;
+                else if (facing == Direction.SOUTH) return VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_SOUTH;
+                else if (facing == Direction.WEST) return VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_WEST;
             }
             else if (routerType == ASSEMBLY_UPPER_BACK_MID) {
                 if (facing == Direction.NORTH) return VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_NORTH;
@@ -300,9 +313,11 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
             case ASSEMBLY_MID_BACK_MID -> 12;
             case ASSEMBLY_MID_BACK_LEFT -> 13;
             case ASSEMBLY_MID_BACK_RIGHT -> 14;
-            case ASSEMBLY_UPPER_BACK_MID -> 15;
-            case ASSEMBLY_UPPER_BACK_LEFT -> 16;
-            case ASSEMBLY_UPPER_BACK_RIGHT -> 17;
+            case ASSEMBLY_UPPER_LEFT -> 15;
+            case ASSEMBLY_UPPER_RIGHT -> 16;
+            case ASSEMBLY_UPPER_BACK_MID -> 17;
+            case ASSEMBLY_UPPER_BACK_LEFT -> 18;
+            case ASSEMBLY_UPPER_BACK_RIGHT -> 19;
             default -> 0;
         };
     }
@@ -323,9 +338,11 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
             case 12 -> ASSEMBLY_MID_BACK_MID;
             case 13 -> ASSEMBLY_MID_BACK_LEFT;
             case 14 -> ASSEMBLY_MID_BACK_RIGHT;
-            case 15 -> ASSEMBLY_UPPER_BACK_MID;
-            case 16 -> ASSEMBLY_UPPER_BACK_LEFT;
-            case 17 -> ASSEMBLY_UPPER_BACK_RIGHT;
+            case 15 -> ASSEMBLY_UPPER_LEFT;
+            case 16 -> ASSEMBLY_UPPER_RIGHT;
+            case 17 -> ASSEMBLY_UPPER_BACK_MID;
+            case 18 -> ASSEMBLY_UPPER_BACK_LEFT;
+            case 19 -> ASSEMBLY_UPPER_BACK_RIGHT;
             default -> NONE;
         };
     }
@@ -358,26 +375,31 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
         //BACK
         {
             VOXEL_SHAPE_BACK_BASE = Block.box(0, 0, 2, 16, 8, 16);
-            VOXEL_SHAPE_BACK_BODY = Block.box(0, 8, 3, 16, 16, 16);
+            VOXEL_SHAPE_BACK_STAND = Block.box(0, 8, 4, 16, 14, 16);
+            VOXEL_SHAPE_BACK_TANK = Block.box(4, 14, 6, 12, 16, 14);
 
             VOXEL_SHAPE_BACK_AGGREGATE_NORTH = Shapes.or(
                     VOXEL_SHAPE_BACK_BASE,
-                    VOXEL_SHAPE_BACK_BODY
+                    VOXEL_SHAPE_BACK_STAND,
+                    VOXEL_SHAPE_BACK_TANK
             );
 
             VOXEL_SHAPE_BACK_AGGREGATE_EAST = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_BASE, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_BODY, 1)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_STAND, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_TANK, 1)
             );
 
             VOXEL_SHAPE_BACK_AGGREGATE_SOUTH = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_BASE, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_BODY, 2)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_STAND, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_TANK, 2)
             );
 
             VOXEL_SHAPE_BACK_AGGREGATE_WEST = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_BASE, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_BODY, 3)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_STAND, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_BACK_TANK, 3)
             );
         }
 
@@ -447,77 +469,59 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
         {
             VOXEL_SHAPE_PLUG_MID_LEFT_BASE = Block.box(2, 0, 0, 16, 8, 16);
             VOXEL_SHAPE_PLUG_MID_LEFT_PLUG = Block.box(0, 0, 1, 4, 16, 15);
-            VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT = Block.box(6.138, 0, 7.764, 9.563, 16, 12.379);
-            VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID = Block.box(9.147, 0, 12.170, 11.962, 16, 14.985);
-            VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT = Block.box(12.157, 0, 14.777, 14.972, 16, 17.592);
-            VOXEL_SHAPE_PLUG_MID_LEFT_BODY = Block.box(7.301, 8, 0, 16, 16, 16);
+            VOXEL_SHAPE_PLUG_MID_LEFT_BODY = Block.box(4, 8, 0, 16, 14, 16);
+            VOXEL_SHAPE_PLUG_MID_LEFT_TANK = Block.box(6, 14, 4, 14, 16, 12);
 
             VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_NORTH = Shapes.or(
                     VOXEL_SHAPE_PLUG_MID_LEFT_BASE,
-                    VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT,
-                    VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID,
-                    VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT,
-                    VOXEL_SHAPE_PLUG_MID_LEFT_BODY
+                    VOXEL_SHAPE_PLUG_MID_LEFT_BODY,
+                    VOXEL_SHAPE_PLUG_MID_LEFT_TANK
             );
 
             VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_EAST = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BASE, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 1)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK, 1)
             );
 
             VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_SOUTH = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BASE, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 2)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK, 2)
             );
 
             VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_WEST = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BASE, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 3)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK, 3)
             );
 
             VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_NORTH_UPGRADED = Shapes.or(
                     VOXEL_SHAPE_PLUG_MID_LEFT_BASE,
                     VOXEL_SHAPE_PLUG_MID_LEFT_PLUG,
-                    VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT,
-                    VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID,
-                    VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT,
-                    VOXEL_SHAPE_PLUG_MID_LEFT_BODY
+                    VOXEL_SHAPE_PLUG_MID_LEFT_BODY,
+                    VOXEL_SHAPE_PLUG_MID_LEFT_TANK
             );
 
             VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_EAST_UPGRADED = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BASE, 1),
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_PLUG, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 1)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK, 1)
             );
 
             VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_SOUTH_UPGRADED = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BASE, 2),
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_PLUG, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 2)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK, 2)
             );
 
             VOXEL_SHAPE_PLUG_MID_LEFT_AGGREGATE_WEST_UPGRADED = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BASE, 3),
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_PLUG, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 3)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_BODY, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_MID_LEFT_TANK, 3)
             );
         }
 
@@ -525,70 +529,54 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
         {
             VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_NORTH = Shapes.or(
                     MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BASE),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY)
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK)
             );
 
             VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_EAST = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BASE), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 1)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK), 1)
             );
 
             VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_SOUTH = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BASE), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 2)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK), 2)
             );
 
             VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_WEST = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BASE), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 3)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK), 3)
             );
 
             VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_NORTH_UPGRADED = Shapes.or(
                     MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BASE),
                     MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_PLUG),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY)
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK)
             );
 
             VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_EAST_UPGRADED = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BASE), 1),
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_PLUG), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 1)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK), 1)
             );
 
             VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_SOUTH_UPGRADED = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BASE), 2),
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_PLUG), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 2)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK), 2)
             );
 
             VOXEL_SHAPE_PLUG_MID_RIGHT_AGGREGATE_WEST_UPGRADED = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BASE), 3),
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_PLUG), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_LEFT), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_MID), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK_RIGHT), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 3)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_BODY), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_MID_LEFT_TANK), 3)
             );
         }
 
@@ -596,30 +584,35 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
         {
             VOXEL_SHAPE_PLUG_BACK_LEFT_BASE = Block.box(2, 0, 2, 16, 8, 16);
             VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG = Block.box(0, 0, 0, 4, 16, 16);
-            VOXEL_SHAPE_PLUG_BACK_LEFT_BODY = Block.box(7.300, 8, 3, 16, 16, 16);
+            VOXEL_SHAPE_PLUG_BACK_LEFT_BODY = Block.box(4, 8, 4, 16, 14, 16);
+            VOXEL_SHAPE_PLUG_BACK_LEFT_TANK = Block.box(10, 14, 10, 18, 16, 18);
 
             VOXEL_SHAPE_PLUG_BACK_LEFT_AGGREGATE_NORTH = Shapes.or(
                     VOXEL_SHAPE_PLUG_BACK_LEFT_BASE,
                     VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG,
-                    VOXEL_SHAPE_PLUG_BACK_LEFT_BODY
+                    VOXEL_SHAPE_PLUG_BACK_LEFT_BODY,
+                    VOXEL_SHAPE_PLUG_BACK_LEFT_TANK
             );
 
             VOXEL_SHAPE_PLUG_BACK_LEFT_AGGREGATE_EAST = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BASE, 1),
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY, 1)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_TANK, 1)
             );
 
             VOXEL_SHAPE_PLUG_BACK_LEFT_AGGREGATE_SOUTH = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BASE, 2),
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY, 2)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_TANK, 2)
             );
 
             VOXEL_SHAPE_PLUG_BACK_LEFT_AGGREGATE_WEST = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BASE, 3),
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY, 3)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLUG_BACK_LEFT_TANK, 3)
             );
         }
 
@@ -628,316 +621,315 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
             VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_NORTH = Shapes.or(
                     MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BASE),
                     MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY)
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_TANK)
             );
 
             VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_EAST = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BASE), 1),
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY), 1)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_TANK), 1)
             );
 
             VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_SOUTH = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BASE), 2),
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY), 2)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_TANK), 2)
             );
 
             VOXEL_SHAPE_PLUG_BACK_RIGHT_AGGREGATE_WEST = Shapes.or(
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BASE), 3),
                     MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_PLUG), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY), 3)
-            );
-        }
-
-        //ASSEMBLY_MID_MID
-        {
-            VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH = Block.box(0, 0, 0, 16, 10, 7.621);
-            VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW = Block.box(0, 0, 7.621, 16, 5.598, 16);
-
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_NORTH = Shapes.or(
-                    VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH,
-                    VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW
-            );
-
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW, 1)
-            );
-
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW, 2)
-            );
-
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW, 3)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_BODY), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_PLUG_BACK_LEFT_TANK), 3)
             );
         }
 
         //ASSEMBLY_MID_LEFT
         {
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH = Block.box(7.300, 0, 0, 16, 10, 7.621);
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW = Block.box(7.300, 0, 7.621, 16, 5.598, 16);
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT = Block.box(6.138, 0, 7.764, 9.563, 8.026, 12.379);
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID = Block.box(9.147, 0, 12.170, 11.962, 7.026, 14.985);
-            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT = Block.box(12.157, 0, 14.777, 14.972, 6.026, 17.592);
+            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND = Block.box(6, 0, 4, 14, 5, 12);
+            VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK = Block.box(8, 5, 6, 12, 16, 10);
 
             VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_NORTH = Shapes.or(
-                    VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH,
-                    VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW,
-                    VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT,
-                    VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID,
-                    VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT
+                    VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND,
+                    VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT, 1)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK, 1)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT, 2)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK, 2)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_LEFT_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT, 3)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK, 3)
             );
         }
 
         //ASSEMBLY_MID_RIGHT
         {
             VOXEL_SHAPE_ASSEMBLY_MID_RIGHT_AGGREGATE_NORTH = Shapes.or(
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT)
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_RIGHT_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT), 1)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK), 1)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_RIGHT_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT), 2)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK), 2)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_RIGHT_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_HIGH), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_BODY_LOW), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_LEFT), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_MID), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK_RIGHT), 3)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_STAND), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_LEFT_TANK), 3)
             );
         }
 
         //ASSEMBLY_MID_MID
         {
-            VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH = Block.box(0, 0, 0, 16, 10, 7.621);
-            VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW = Block.box(0, 0, 7.621, 16, 5.598, 16);
+            VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_LOW = Block.box(2, 0, 2, 14, 3, 14);
+            VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_MID = Block.box(4, 3, 4, 12, 9, 12);
+            VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_HIGH = Block.box(2, 9, 2, 14, 13, 14);
+            VOXEL_SHAPE_ASSEMBLY_MID_MID_NUB = Block.box(6, 13, 6, 10, 14, 10);
 
-            VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_NORTH = Shapes.or(
-                    VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH,
-                    VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW
-            );
-
-            VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW, 1)
-            );
-
-            VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW, 2)
-            );
-
-            VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_HIGH, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_MID_BODY_LOW, 3)
+            VOXEL_SHAPE_ASSEMBLY_MID_MID_AGGREGATE = Shapes.or(
+                    VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_LOW,
+                    VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_MID,
+                    VOXEL_SHAPE_ASSEMBLY_MID_MID_TANK_HIGH,
+                    VOXEL_SHAPE_ASSEMBLY_MID_MID_NUB
             );
         }
 
         //ASSEMBLY_MID_BACK_LEFT
         {
-            VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH = Block.box(7.300, 0, 3, 16, 16, 12.303);
-            VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW = Block.box(7.300, 0, 12.303, 16, 12.133, 16);
-            VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT = Block.box(5.434, 0, 5.189, 11.063, 16, 10.820);
-            VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT = Block.box(10.701, 4, 0.627, 16.330, 16, 6.258);
+            VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY = Block.box(10, 0, 10, 18, 7, 18);
+            VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK = Block.box(12, 7, 12, 16, 16, 16);
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_AGGREGATE_NORTH = Shapes.or(
-                    VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH,
-                    VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW,
-                    VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT,
-                    VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT
+                    VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY,
+                    VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT, 1)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK, 1)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT, 2)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK, 2)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT, 3)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK, 3)
             );
         }
 
         //ASSEMBLY_MID_BACK_RIGHT
         {
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_NORTH = Shapes.or(
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT)
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT), 1)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK), 1)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT), 2)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK), 2)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_RIGHT_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_HIGH), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY_LOW), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_LEFT), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_PIPE_RIGHT), 3)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_BODY), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_LEFT_TANK), 3)
             );
         }
 
         //ASSEMBLY_MID_BACK_MID
         {
-            VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_HIGH = Block.box(0, 0, 3, 16, 16, 12.303);
-            VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_LOW = Block.box(0, 0, 12.303, 16, 12.133, 16);
+            VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_STAND = Block.box(4, 0, 6, 12, 9, 14);
+            VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_TANK = Block.box(6, 9, 8, 10, 16, 12);
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_AGGREGATE_NORTH = Shapes.or(
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_HIGH),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_LOW)
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_STAND),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_TANK)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_HIGH), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_LOW), 1)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_STAND), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_TANK), 1)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_HIGH), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_LOW), 2)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_STAND), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_TANK), 2)
             );
 
             VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_HIGH), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_BODY_LOW), 3)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_STAND), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_MID_BACK_MID_TANK), 3)
+            );
+        }
+
+        //ASSEMBLY_UPPER_LEFT
+        {
+            VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK = Block.box(8, 0, 6, 12, 1, 10);
+            VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM = Block.box(7, 1, 5, 13, 2, 11);
+            VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP = Block.box(8, 2, 6, 12, 4, 10);
+
+            VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_NORTH = Shapes.or(
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK,
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM,
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP
+            );
+
+            VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_EAST = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP, 1)
+            );
+
+            VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_SOUTH = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP, 2)
+            );
+
+            VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_AGGREGATE_WEST = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP, 3)
+            );
+        }
+
+        //ASSEMBLY_UPPER_RIGHT
+        {
+            VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_NORTH = Shapes.or(
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP)
+            );
+
+            VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_EAST = Shapes.or(
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP), 1)
+            );
+
+            VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_SOUTH = Shapes.or(
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP), 2)
+            );
+
+            VOXEL_SHAPE_ASSEMBLY_UPPER_RIGHT_AGGREGATE_WEST = Shapes.or(
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_TANK), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_BRIM), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_LEFT_CAP), 3)
             );
         }
 
         //ASSEMBLY_UPPER_BACK_MID
         {
-            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_SLICE = Block.box(0, 0, 3, 16, 0.75376, 6.701424);
+            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_TANK = Block.box(6, 0, 8, 10, 5, 12);
+            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_BRIM = Block.box(5, 5, 7, 11, 6, 13);
+            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_CAP = Block.box(6, 6, 8, 10, 8, 12);
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_NORTH = Shapes.or(
-                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_SLICE
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_TANK,
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_BRIM,
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_CAP
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_SLICE, 1)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_TANK, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_BRIM, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_CAP, 1)
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_SLICE, 2)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_TANK, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_BRIM, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_CAP, 2)
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_SLICE, 3)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_TANK, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_BRIM, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_MID_CAP, 3)
             );
         }
 
         //ASSEMBLY_UPPER_BACK_LEFT
         {
-            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT = Block.box(5.434, 0, 5.189, 11.063, 8, 10.820);
-            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT = Block.box(10.701, 0, 0.627, 16.330, 12, 6.258);
+            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK = Block.box(12, 0, 12, 16, 3, 16);
+            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM = Block.box(11, 3, 11, 17, 4, 17);
+            VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP = Block.box(12, 4, 12, 16, 6, 16);
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_AGGREGATE_NORTH = Shapes.or(
-                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT,
-                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK,
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM,
+                    VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT, 1),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT, 1)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP, 1)
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT, 2),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT, 2)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP, 2)
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT, 3)
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP, 3)
             );
         }
 
         //ASSEMBLY_MID_BACK_RIGHT
         {
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_RIGHT_AGGREGATE_NORTH = Shapes.or(
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT),
-                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT)
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM),
+                    MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP)
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_RIGHT_AGGREGATE_EAST = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT), 1),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT), 1)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM), 1),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP), 1)
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_RIGHT_AGGREGATE_SOUTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT), 2),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT), 2)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM), 2),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP), 2)
             );
 
             VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_RIGHT_AGGREGATE_WEST = Shapes.or(
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_LEFT), 3),
-                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_PIPE_RIGHT), 3)
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_TANK), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_BRIM), 3),
+                    MathHelper.rotateVoxelShape(MathHelper.flipVoxelShapeX(VOXEL_SHAPE_ASSEMBLY_UPPER_BACK_LEFT_CAP), 3)
             );
         }
     }
