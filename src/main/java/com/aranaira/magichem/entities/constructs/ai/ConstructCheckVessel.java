@@ -1,6 +1,7 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.IConstruct;
@@ -15,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import java.util.List;
 
 public class ConstructCheckVessel extends ConstructConditional<ConstructCheckVessel> {
-    private MateriaVesselBlockEntity targetVessel = null;
+    private BlockPos targetVesselPos = null;
     private float targetPercentage = 1;
 
     public ConstructCheckVessel(IConstruct<?> construct, ResourceLocation guiIcon) {
@@ -24,11 +25,17 @@ public class ConstructCheckVessel extends ConstructConditional<ConstructCheckVes
 
     @Override
     protected boolean evaluate() {
-        if(targetVessel == null)
+        if(targetVesselPos == null)
             return false;
-        float stock = (float)targetVessel.getCurrentStock();
-        float limit = (float)targetVessel.getStorageLimit();
-        return (stock / limit) >= targetPercentage;
+
+        BlockEntity be = construct.asEntity().level().getBlockEntity(targetVesselPos);
+        if(be instanceof AbstractMateriaStorageBlockEntity targetVessel) {
+            float stock = (float) targetVessel.getCurrentStock();
+            float limit = (float) targetVessel.getStorageLimit();
+            return (stock / limit) >= targetPercentage;
+        }
+
+        return false;
     }
 
     @Override
@@ -48,15 +55,7 @@ public class ConstructCheckVessel extends ConstructConditional<ConstructCheckVes
     public void inflateParameters() {
         this.getParameter("query_check_vessel.point").ifPresent((param) -> {
             if (param instanceof ConstructTaskPointParameter pointParam) {
-                BlockPos targetVesselPos = pointParam.getPosition();
-                if(targetVesselPos != null) {
-                    BlockEntity be = Minecraft.getInstance().level.getBlockEntity(targetVesselPos);
-                    if (be != null) {
-                        if (be instanceof MateriaVesselBlockEntity mvbe) {
-                            targetVessel = mvbe;
-                        }
-                    }
-                }
+                targetVesselPos = pointParam.getPosition();
             }
         });
 
@@ -69,13 +68,13 @@ public class ConstructCheckVessel extends ConstructConditional<ConstructCheckVes
 
     @Override
     public boolean isFullyConfigured() {
-        return targetVessel != null;
+        return targetVesselPos != null;
     }
 
     @Override
     public ConstructCheckVessel copyFrom(ConstructAITask<?> other) {
         if(other instanceof ConstructCheckVessel task) {
-            this.targetVessel = task.targetVessel;
+            this.targetVesselPos = task.targetVesselPos;
             this.targetPercentage = task.targetPercentage;
         }
 
