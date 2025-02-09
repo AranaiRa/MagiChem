@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:stone",
+  "materia": "magichem:admixture_darkness",
+  "chance": 60.0,
+  "result": "minecraft:deepslate"
+}
