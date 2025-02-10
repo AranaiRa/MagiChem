@@ -297,7 +297,7 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue INFERNO_ENGINE_TANK_CAPACITY = BUILDER
             .comment("The amount of Smoke, in mB, the Inferno Engine's internal tank can hold.")
-            .defineInRange("infernoEngineTankCapacity", 2000, 500, Integer.MAX_VALUE);
+            .defineInRange("infernoEngineTankCapacity", 5000, 500, Integer.MAX_VALUE);
 
     //----------------QUAKE REFINERY
 
@@ -317,7 +317,7 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue GALE_PRESSURIZER_TANK_CAPACITY = BUILDER
             .comment("The amount of Smoke and Steam, in mB, the Gale Pressurizer's internal tanks can hold.")
-            .defineInRange("galePressurizerTankCapacity", 2000, 500, Integer.MAX_VALUE);
+            .defineInRange("galePressurizerTankCapacity", 5000, 500, Integer.MAX_VALUE);
 
     //----------------OCCULT MATRIX
 
