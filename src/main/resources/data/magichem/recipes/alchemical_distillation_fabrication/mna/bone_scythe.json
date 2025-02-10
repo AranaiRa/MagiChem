@@ -1,0 +1,13 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:bone_scythe" },
+  "components": [
+    { "item": "magichem:admixture_bone", "count": 4 },
+    { "item": "magichem:admixture_sorcery", "count": 2 },
+    { "item": "magichem:admixture_violence", "count": 2 },
+    { "item": "magichem:admixture_exanimate", "count": 1 },
+    { "item": "magichem:essentia_nigredo", "count": 2 }
+  ]
+}
