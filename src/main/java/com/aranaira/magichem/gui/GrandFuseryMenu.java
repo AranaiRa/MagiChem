@@ -1,9 +1,13 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
 import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
 import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.block.entity.container.OnlyAdmixtureInputSlot;
+import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
+import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -25,6 +29,7 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
     public final GrandFuseryBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
+    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[FuseryBlockEntity.SLOT_INPUT_COUNT];
 
     public GrandFuseryMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(GrandFuseryBlockEntity.DATA_COUNT));
@@ -43,25 +48,28 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slot
-            this.addSlot(new BottleStockSlot(handler, GrandFuseryBlockEntity.SLOT_BOTTLES, 80, -11, false));
-            this.addSlot(new BottleStockSlot(handler, GrandFuseryBlockEntity.SLOT_BOTTLES_OUTPUT, 26, -11, true));
+            this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES, 134, -12, false));
+            this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES_OUTPUT, 80, 3, true));
 
             //Input item slots
-            for(int i = GrandFuseryBlockEntity.SLOT_INPUT_START; i< GrandFuseryBlockEntity.SLOT_INPUT_START + GrandFuseryBlockEntity.SLOT_INPUT_COUNT; i++)
+            for(int i = FuseryBlockEntity.SLOT_INPUT_START; i< FuseryBlockEntity.SLOT_INPUT_START + FuseryBlockEntity.SLOT_INPUT_COUNT; i++)
             {
-                int x = (i - GrandFuseryBlockEntity.SLOT_INPUT_START) % 3;
-                int y = (i - GrandFuseryBlockEntity.SLOT_INPUT_START) / 3;
-                this.addSlot(new OnlyAdmixtureInputSlot(handler, i, 8 + x * 18, 25 + y * 18));
+                int j = i - FuseryBlockEntity.SLOT_INPUT_START;
+                OnlyMateriaInputSlot slot = new OnlyMateriaInputSlot(handler, i, 26 + 18 * (j % 2), 3 + 18 * (j / 2));
+                this.addSlot(slot);
+                inputSlots[j] = slot;
             }
 
             //Output item slots
-            for(int i = GrandFuseryBlockEntity.SLOT_OUTPUT_START; i< GrandFuseryBlockEntity.SLOT_OUTPUT_START + GrandFuseryBlockEntity.SLOT_OUTPUT_COUNT; i++)
+            for(int i = FuseryBlockEntity.SLOT_OUTPUT_START; i< FuseryBlockEntity.SLOT_OUTPUT_START + FuseryBlockEntity.SLOT_OUTPUT_COUNT; i++)
             {
-                int x = (i - GrandFuseryBlockEntity.SLOT_OUTPUT_START) % 3;
-                int y = (i - GrandFuseryBlockEntity.SLOT_OUTPUT_START) / 3;
+                int x = (i - FuseryBlockEntity.SLOT_OUTPUT_START) % 3;
+                int y = (i - FuseryBlockEntity.SLOT_OUTPUT_START) / 3;
 
-                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, -11 + (y) * 18, GrandFuseryBlockEntity.SLOT_BOTTLES));
+                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 21 + (y) * 18, FuseryBlockEntity.SLOT_BOTTLES));
             }
+
+            setInputSlotFilters(blockEntity.getRecipeItem(FuseryBlockEntity::getVar));
         });
 
         addDataSlots(data);
@@ -72,17 +80,37 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.GRAND_FUSERY.get());
     }
 
+    public void setInputSlotFilters(ItemStack pQueryStack) {
+        FixationSeparationRecipe newRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, pQueryStack);
+        if(newRecipe != null) {
+            int slotSet = 0;
+            for (ItemStack stack : newRecipe.getComponentMateria()) {
+                inputSlots[(slotSet * 2)].setSlotFilter((MateriaItem) stack.getItem());
+                inputSlots[(slotSet * 2) + 1].setSlotFilter((MateriaItem) stack.getItem());
+                slotSet++;
+            }
+        }
+    }
+
+    public ItemStack getRecipeItem() {
+        return blockEntity.getRecipeItem(FuseryBlockEntity::getVar);
+    }
+
+    public FixationSeparationRecipe getCurrentRecipe() {
+        return FixationSeparationRecipe.getSeparatingRecipe(level, getRecipeItem());
+    }
+
     private void addPlayerInventory(Inventory playerInventory) {
         for(int i=0; i<3; i++) {
             for(int l=0; l<9; l++) {
-                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 103 + i*18)));
+                this.addSlot((new Slot(playerInventory, l + i*9 + 9, 8 + l*18, 105 + i*18)));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for(int i=0; i<9; i++) {
-            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 161)));
+            this.addSlot((new Slot(playerInventory, i, 8 + i*18, 163)));
         }
     }
 
@@ -90,20 +118,20 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
     private static final int SLOT_INVENTORY_COUNT = 36;
 
     Pair<Item, Integer>[] DIRSPEC = new Pair[]{
-            new Pair(Items.GLASS_BOTTLE, SLOT_INVENTORY_COUNT + GrandFuseryBlockEntity.SLOT_BOTTLES)
+            new Pair(Items.GLASS_BOTTLE, SLOT_INVENTORY_COUNT + FuseryBlockEntity.SLOT_BOTTLES)
     };
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i( //Input slots
-                    SLOT_INVENTORY_COUNT + GrandFuseryBlockEntity.SLOT_INPUT_START,
-                    SLOT_INVENTORY_COUNT + GrandFuseryBlockEntity.SLOT_INPUT_START + GrandFuseryBlockEntity.SLOT_INPUT_COUNT),
+                    SLOT_INVENTORY_COUNT + FuseryBlockEntity.SLOT_INPUT_START,
+                    SLOT_INVENTORY_COUNT + FuseryBlockEntity.SLOT_INPUT_START + FuseryBlockEntity.SLOT_INPUT_COUNT),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
     Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
-    Pair<Integer, Vector2i> SPEC_CONTAINER = new Pair<>(SLOT_INVENTORY_COUNT + GrandFuseryBlockEntity.SLOT_BOTTLES, new Vector2i(
-            SLOT_INVENTORY_COUNT + GrandFuseryBlockEntity.SLOT_OUTPUT_START,
-            SLOT_INVENTORY_COUNT + GrandFuseryBlockEntity.SLOT_OUTPUT_START + GrandFuseryBlockEntity.SLOT_OUTPUT_COUNT
+    Pair<Integer, Vector2i> SPEC_CONTAINER = new Pair<>(SLOT_INVENTORY_COUNT + FuseryBlockEntity.SLOT_BOTTLES_OUTPUT, new Vector2i(
+            SLOT_INVENTORY_COUNT + FuseryBlockEntity.SLOT_OUTPUT_START,
+            SLOT_INVENTORY_COUNT + FuseryBlockEntity.SLOT_OUTPUT_START + FuseryBlockEntity.SLOT_OUTPUT_COUNT
     ));
 
     @Override
@@ -129,6 +157,10 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
 
     public int getOperationTimeMod() {
         return data.get(GrandFuseryBlockEntity.DATA_OPERATION_TIME_MOD);
+    }
+
+    public int getSlurryInTank() {
+        return blockEntity.getFluidInTank(0).getAmount();
     }
 
     public int getBatchSize() {

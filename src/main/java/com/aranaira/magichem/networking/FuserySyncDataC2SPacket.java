@@ -1,6 +1,7 @@
 package com.aranaira.magichem.networking;
 
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
+import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +43,9 @@ public class FuserySyncDataC2SPacket {
         context.enqueueWork(() -> {
             if(entity instanceof FuseryBlockEntity fbe) {
                 fbe.setRecipeByOutput(new ItemStack(recipeItem));
+            }
+            else if(entity instanceof GrandFuseryBlockEntity gfbe) {
+                gfbe.setRecipeByOutput(new ItemStack(recipeItem));
             }
         });
 

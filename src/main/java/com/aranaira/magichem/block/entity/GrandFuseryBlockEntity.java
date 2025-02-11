@@ -14,8 +14,10 @@ import com.aranaira.magichem.foundation.enums.GrandFuseryRouterType;
 import com.aranaira.magichem.gui.GrandFuseryMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -48,6 +50,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,16 +66,17 @@ import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COL
 
 public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
     public static final int
-        SLOT_COUNT = 26,
-        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1,
-        SLOT_INPUT_START = 2, SLOT_INPUT_COUNT = 6,
-        SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
-        GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 67, GUI_HEAT_GAUGE_HEIGHT = 16,
-        DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_POWER_SUFFICIENCY = 2, DATA_EFFICIENCY_MOD = 3, DATA_OPERATION_TIME_MOD = 4, DATA_BATCH_SIZE = 5;
+            SLOT_COUNT = 22,
+            SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 21,
+            SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
+            SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT  = 9,
+            GUI_GRIME_BAR_WIDTH = 50, GUI_PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 88,
+            DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_EFFICIENCY_MOD = 2, DATA_OPERATION_TIME_MOD = 3, DATA_BATCH_SIZE = 4, DATA_REDUCTION_RATE = 7, DATA_POWER_SUFFICIENCY = 5;
     public static final float
             CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f,
             WHEEL_TOP_SPEED = 0.375f, WHEEL_ACCELERATION_RATE = .003125f;
-    private int powerUsageSetting = 1;
+    private int
+            powerUsageSetting = 1, materiaToVent = 0;
     private boolean
             hasSufficientPower = false, redstonePaused = false;
 
@@ -102,10 +106,14 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(slot)))
-                        return ItemStack.EMPTY;
+                    ItemStack item = super.extractItem(slot, amount, simulate);
+                    if(item.hasTag()) {
+                        CompoundTag nbt = item.getTag();
+                        if(nbt.contains("CustomModelData")) return ItemStack.EMPTY;
+                    }
+                    return item;
                 }
-                if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
+                else if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
                     ItemStack item = super.extractItem(slot, amount, simulate);
                     item.removeTagKey("CustomModelData");
                     return item;
@@ -116,6 +124,8 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
             @Override
             protected void onContentsChanged(int slot) {
+                if(slot == SLOT_RECIPE)
+                    currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, getStackInSlot(SLOT_RECIPE));
                 setChanged();
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
                     isStalled = false;
@@ -124,13 +134,23 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                if (slot == SLOT_BOTTLES)
+                if(slot == SLOT_BOTTLES)
                     return stack.getItem() == Items.GLASS_BOTTLE || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
-                if (slot == SLOT_BOTTLES_OUTPUT)
-                    return stack.getItem() == Items.GLASS_BOTTLE;
-                if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
-                    return stack.getItem() instanceof MateriaItem;
-                if (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
+                if(slot == SLOT_BOTTLES_OUTPUT)
+                    return false;
+                if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(currentRecipe != null) {
+                        if(((slot - SLOT_INPUT_START) / 2) >= currentRecipe.getComponentMateria().size())
+                            return false;
+                        ItemStack component = currentRecipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
+                        return stack.getItem().equals(component.getItem());
+                    } else {
+                        return stack.getItem() instanceof AdmixtureItem;
+                    }
+                }
+                if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
+                    return false;
+                if(slot == SLOT_RECIPE)
                     return false;
 
                 return super.isItemValid(slot, stack);
@@ -159,6 +179,9 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     }
                     case DATA_BATCH_SIZE: {
                         return GrandFuseryBlockEntity.this.batchSize;
+                    }
+                    case DATA_REDUCTION_RATE: {
+                        return GrandFuseryBlockEntity.this.reductionRate;
                     }
                     default: return -1;
                 }
@@ -190,6 +213,10 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     }
                     case DATA_BATCH_SIZE: {
                         batchSize = pValue;
+                        break;
+                    }
+                    case DATA_REDUCTION_RATE: {
+                        reductionRate = pValue;
                         break;
                     }
                 }
@@ -224,6 +251,8 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyFluidHandler = LazyOptional.of(() -> this);
+        currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
     }
 
     @Override
@@ -234,6 +263,9 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        lazyFluidHandler.ifPresent(cap -> {
+            nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
+        });
         super.saveAdditional(nbt);
     }
 
@@ -246,6 +278,11 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         batchSize = nbt.getInt("batchSize");
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         redstonePaused = nbt.getBoolean("redstonePaused");
+        int fluidContents = nbt.getInt("fluidContents");
+        if(fluidContents > 0)
+            containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
+        else
+            containedSlurry = FluidStack.EMPTY;
     }
 
     @Override
@@ -257,6 +294,11 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        int fluidContents = nbt.getInt("fluidContents");
+        if(fluidContents > 0)
+            containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
+        else
+            containedSlurry = FluidStack.EMPTY;
         return nbt;
     }
 
@@ -290,6 +332,23 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     ////////////////////
     // DATA SLOT HANDLING
     ////////////////////
+
+    @Nullable
+    public FixationSeparationRecipe getCurrentRecipe() {
+        if(currentRecipe == null) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            }
+        } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            }
+        }
+
+        return currentRecipe;
+    }
 
     @Override
     public int getGrimeFromData() {
@@ -375,6 +434,58 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                 if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
+    }
+
+    private static final AABB validVentingParticleZone = new AABB(0.375, 0.5625, 0.375, 0.625, 0.5625, 0.625);
+    private void ventMateria(int pPackedSlots) {
+        for (int i = 0; i < SLOT_INPUT_COUNT; i++) {
+            if((pPackedSlots & (1 << i)) >> i == 1) {
+                ItemStack stackToCheck = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+
+                if (stackToCheck.getItem() instanceof MateriaItem mi) {
+                    InventoryHelper.generateMateriaVentingCloud(level, mi, validVentingParticleZone.move(getBlockPos()), 0.0625);
+                }
+            }
+        }
+
+        materiaToVent = 0;
+    }
+
+    public void setRecipeByOutput(ItemStack pRecipeOutput) {
+        itemHandler.setStackInSlot(SLOT_RECIPE, pRecipeOutput.copy());
+        getCurrentRecipe();
+        if(currentRecipe != null) {
+            if(!level.isClientSide()) {
+                getCurrentRecipe();
+
+                if (currentRecipe != null) {
+                    ItemStack[] componentMateria = new ItemStack[5];
+                    currentRecipe.getComponentMateria().toArray(componentMateria);
+
+                    for(int i=0; i<SLOT_INPUT_COUNT; i++) {
+                        if(componentMateria[i/2] != null) {
+                            if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
+                                ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                                if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                                    materiaToVent = materiaToVent | (1 << i);
+                                    itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                    continue;
+                                }
+                            }
+                        } else {
+                            ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                                materiaToVent = materiaToVent | (1 << i);
+                                itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                continue;
+                            }
+                        }
+                        materiaToVent = materiaToVent & ~(1 << i);
+                    }
+                }
+            }
+        }
+        syncAndSave();
     }
 
     ////////////////////
