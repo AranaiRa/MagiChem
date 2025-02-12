@@ -56,6 +56,7 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
             TOOLTIP_OPERATIONTIME_X = 193, TOOLTIP_OPERATIONTIME_Y = 62, TOOLTIP_OPERATIONTIME_W = 59, TOOLTIP_OPERATIONTIME_H = 15,
             TOOLTIP_GRIME_X = 180, TOOLTIP_GRIME_Y = 83, TOOLTIP_GRIME_W = 69, TOOLTIP_GRIME_H = 10,
             TOOLTIP_SELECTED_RECIPE_X = 79, TOOLTIP_SELECTED_RECIPE_Y = 94, TOOLTIP_SELECTED_RECIPE_S = 18,
+            TOOLTIP_SLURRY_X = 7, TOOLTIP_SLURRY_Y = 22, TOOLTIP_SLURRY_W = 10, TOOLTIP_SLURRY_H = 88,
             TOOLTIP_RECIPE_ZONE_X = -77, TOOLTIP_RECIPE_ZONE_Y = 22, TOOLTIP_RECIPE_ZONE_W = 54, TOOLTIP_RECIPE_ZONE_H = 90;
     private ImageButton
             b_powerLevelUp, b_powerLevelDown;
@@ -564,6 +565,28 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
                     .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
                     .append(" ")
                     .append(Component.literal(String.format("%.1f", GrandFuseryBlockEntity.getGrimePercent(menu.getGrime(), GrandFuseryBlockEntity::getVar)*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
+        }
+
+        //Slurry Bar
+        if(mouseX >= x+TOOLTIP_SLURRY_X && mouseX <= x+TOOLTIP_SLURRY_X+TOOLTIP_SLURRY_W &&
+                mouseY >= y+TOOLTIP_SLURRY_Y && mouseY <= y+TOOLTIP_SLURRY_Y+TOOLTIP_SLURRY_H) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line1"))
+                    .append(menu.blockEntity.getDisplayName())
+                    .append("."));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.slurry.tank.line2a")
+                    .append(Component.literal(ServerConfig.fixationFailureRefund+"%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line2b")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.slurry.tank.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(menu.getSlurryInTank()+"mB").withStyle(ChatFormatting.DARK_AQUA)));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
         gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
