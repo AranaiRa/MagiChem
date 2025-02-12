@@ -38,7 +38,15 @@ public class MateriaVesselContentsRenderUtil {
             RETORT_FLUID_START_XZ = 0.40625F,
             RETORT_FLUID_START_Y = 0.1875F,
             RETORT_FLUID_WIDTH = 0.1875F,
-            RETORT_FLUID_HEIGHT_MAX = 0.375F;
+            RETORT_FLUID_HEIGHT_MAX = 0.375F,
+            GRAND_FUSERY_MATERIA_START_XZ = -0.0625F,
+            GRAND_FUSERY_MATERIA_START_Y = 0.09375F,
+            GRAND_FUSERY_MATERIA_WIDTH = 0.125F,
+            GRAND_FUSERY_MATERIA_HEIGHT_MAX = 0.75F,
+            GRAND_FUSERY_SLURRY_START_XZ = -0.1875F,
+            GRAND_FUSERY_SLURRY_START_Y = 0.0F,
+            GRAND_FUSERY_SLURRY_WIDTH = 0.375F,
+            GRAND_FUSERY_SLURRY_HEIGHT_MAX = 0.4375F;
 
     public static void renderGrandCircleFabricationFluidContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {
         float height = FLOATING_VESSEL_FLUID_HEIGHT_MAX * fillAmount;
@@ -67,6 +75,66 @@ public class MateriaVesselContentsRenderUtil {
         RenderUtils.renderFaceWithUV(Direction.WEST, pose, normal, consumer, texture,
                 FLOATING_VESSEL_FLUID_START_XZ, FLOATING_VESSEL_FLUID_START_Y, 1 + FLOATING_VESSEL_FLUID_START_XZ, FLOATING_VESSEL_FLUID_WIDTH, height,
                 0, 0.125f, 0.0625f, 0.0625f + height,
+                color, packedLight);
+    }
+
+    public static void renderGrandFuseryMateriaContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight) {
+        float height = GRAND_FUSERY_MATERIA_HEIGHT_MAX * fillAmount;
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FLUID_TEXTURE);
+
+        RenderUtils.renderFaceWithUV(Direction.UP, pose, normal, consumer, texture,
+                GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_START_XZ +height, GRAND_FUSERY_MATERIA_WIDTH, FLOATING_VESSEL_FLUID_WIDTH,
+                0.75f, 0.875f, 0.75f, 0.875f,
+                color, packedLight);
+
+        RenderUtils.renderFaceWithUV(Direction.NORTH, pose, normal, consumer, texture,
+                GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_START_Y, GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_WIDTH, height,
+                0, 0.125f, 0.0625f, 0.0625f + height,
+                color, packedLight);
+
+        RenderUtils.renderFaceWithUV(Direction.EAST, pose, normal, consumer, texture,
+                GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_START_Y, GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_WIDTH, height,
+                0, 0.125f, 0.0625f, 0.0625f + height,
+                color, packedLight);
+
+        RenderUtils.renderFaceWithUV(Direction.SOUTH, pose, normal, consumer, texture,
+                GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_START_Y, 1 + GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_WIDTH, height,
+                0, 0.125f, 0.0625f, 0.0625f + height,
+                color, packedLight);
+
+        RenderUtils.renderFaceWithUV(Direction.WEST, pose, normal, consumer, texture,
+                GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_START_Y, 1 + GRAND_FUSERY_MATERIA_START_XZ, GRAND_FUSERY_MATERIA_WIDTH, height,
+                0, 0.125f, 0.0625f, 0.0625f + height,
+                color, packedLight);
+    }
+
+    public static void renderGrandFuserySlurryContents(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight, ResourceLocation slurryTexture) {
+        float height = GRAND_FUSERY_SLURRY_HEIGHT_MAX * fillAmount;
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(slurryTexture);
+
+        RenderUtils.renderFaceWithUV(Direction.UP, pose, normal, consumer, texture,
+                GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_START_XZ + height + 0.1875f, GRAND_FUSERY_SLURRY_WIDTH, GRAND_FUSERY_SLURRY_WIDTH,
+                0.375f, 0.75f, 0.375f, 0.75f,
+                color, packedLight);
+
+        RenderUtils.renderFaceWithUV(Direction.NORTH, pose, normal, consumer, texture,
+                GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_START_Y, GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_WIDTH, height,
+                0, 0.375f, 0.0625f, 0.0625f + height,
+                color, packedLight);
+
+        RenderUtils.renderFaceWithUV(Direction.EAST, pose, normal, consumer, texture,
+                GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_START_Y, GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_WIDTH, height,
+                0, 0.375f, 0.0625f, 0.0625f + height,
+                color, packedLight);
+
+        RenderUtils.renderFaceWithUV(Direction.SOUTH, pose, normal, consumer, texture,
+                GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_START_Y, 1 + GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_WIDTH, height,
+                0, 0.375f, 0.0625f, 0.0625f + height,
+                color, packedLight);
+
+        RenderUtils.renderFaceWithUV(Direction.WEST, pose, normal, consumer, texture,
+                GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_START_Y, 1 + GRAND_FUSERY_SLURRY_START_XZ, GRAND_FUSERY_SLURRY_WIDTH, height,
+                0, 0.375f, 0.0625f, 0.0625f + height,
                 color, packedLight);
     }
 

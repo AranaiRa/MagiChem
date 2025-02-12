@@ -14,6 +14,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -368,6 +369,22 @@ public class TooltipLoreBlockItem extends BlockItem {
                         }
                         if (nbt.contains("powerUsageSetting")) {
                             gdbe.setPowerUsageSetting(nbt.getInt("powerUsageSetting"));
+                        }
+                    }
+                } else if (cachedItem == BlockRegistry.GRAND_FUSERY.get().asItem()) {
+                    GrandFuseryBlockEntity gfbe = (GrandFuseryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (gfbe != null) {
+                        if (nbt.contains("inventory")) {
+                            gfbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("grime")) {
+                            GrimeProvider.getCapability(gfbe).setGrime(nbt.getInt("grime"));
+                        }
+                        if (nbt.contains("slurry")) {
+                            gfbe.setSlurryLevel(nbt.getInt("slurry"));
+                        }
+                        if (nbt.contains("powerUsageSetting")) {
+                            gfbe.setPowerUsageSetting(nbt.getInt("powerUsageSetting"));
                         }
                     }
                 } else if (cachedItem == BlockRegistry.VARIEGATOR.get().asItem()) {

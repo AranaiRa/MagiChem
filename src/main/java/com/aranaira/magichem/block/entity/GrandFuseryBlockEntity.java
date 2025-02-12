@@ -314,6 +314,8 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("grime", grimeCap.getGrime());
+        if(containedSlurry != null)
+            nbt.putInt("slurry", containedSlurry.getAmount());
         nbt.put("inventory", itemHandler.serializeNBT());
 
         stack.setTag(nbt);
@@ -601,6 +603,13 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         return ServerConfig.grandFuseryTankCapacity;
     }
 
+    public void setSlurryLevel(int amount) {
+        if(containedSlurry == null || containedSlurry.isEmpty())
+            containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), amount);
+        else
+            containedSlurry.setAmount(amount);
+    }
+
     ////////////////////
     // INTERACTION AND VFX
     ////////////////////
@@ -709,7 +718,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     @Override
     public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos().offset(-2, 0, -2), getBlockPos().offset(2,1,2));
+        return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,3,3));
     }
 
     @Override
