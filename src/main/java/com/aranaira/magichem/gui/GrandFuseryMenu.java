@@ -147,6 +147,10 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
         return data.get(GrandFuseryBlockEntity.DATA_PROGRESS);
     }
 
+    public int getReductionRate() {
+        return data.get(GrandFuseryBlockEntity.DATA_REDUCTION_RATE);
+    }
+
     public int getGrime() {
         return data.get(GrandFuseryBlockEntity.DATA_GRIME);
     }

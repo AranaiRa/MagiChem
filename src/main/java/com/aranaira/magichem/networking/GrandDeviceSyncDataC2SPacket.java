@@ -2,6 +2,7 @@ package com.aranaira.magichem.networking;
 
 import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
+import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -43,6 +44,10 @@ public class GrandDeviceSyncDataC2SPacket {
             else if(entity instanceof GrandCentrifugeBlockEntity gcbe) {
                 gcbe.setPowerUsageSetting(powerUsageSetting);
                 gcbe.syncAndSave();
+            }
+            else if(entity instanceof GrandFuseryBlockEntity gfbe) {
+                gfbe.setPowerUsageSetting(powerUsageSetting);
+                gfbe.syncAndSave();
             }
         });
 

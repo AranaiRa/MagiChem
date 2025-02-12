@@ -1,16 +1,19 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.block.GrandCentrifugeBlock;
 import com.aranaira.magichem.block.GrandFuseryBlock;
-import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandFuseryRouterBlockEntity;
+import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.block.FuseryBlock;
+import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
+import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
-import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.FuseryRouterType;
 import com.aranaira.magichem.foundation.enums.GrandFuseryRouterType;
+import com.aranaira.magichem.gui.FuseryMenu;
 import com.aranaira.magichem.gui.GrandFuseryMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
@@ -34,7 +37,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -54,29 +56,31 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 21,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT  = 9,
-            GUI_GRIME_BAR_WIDTH = 50, GUI_PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 88,
-            DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_EFFICIENCY_MOD = 2, DATA_OPERATION_TIME_MOD = 3, DATA_BATCH_SIZE = 4, DATA_REDUCTION_RATE = 7, DATA_POWER_SUFFICIENCY = 5;
+            GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 88,
+            DATA_COUNT = 7, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_POWER_SUFFICIENCY = 2, DATA_EFFICIENCY_MOD = 3, DATA_OPERATION_TIME_MOD = 4, DATA_BATCH_SIZE = 5, DATA_REDUCTION_RATE = 6,
+            NO_TORQUE_GRACE_PERIOD = 20;
     public static final float
-            CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f,
-            WHEEL_TOP_SPEED = 0.375f, WHEEL_ACCELERATION_RATE = .003125f;
-    private int
-            powerUsageSetting = 1, materiaToVent = 0;
+            CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f;
+    private int powerUsageSetting = 1;
     private boolean
             hasSufficientPower = false, redstonePaused = false;
 
@@ -93,7 +97,10 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     };
 
     public float
-            circlePercent = 0f, particlePercent = 0f, wheelAngle = 0f, wheelSpeed = 0f;
+            circlePercent = 0f, particlePercent = 0f;
+
+    private int
+            materiaToVent = 0;
 
     ////////////////////
     // CONSTRUCTOR
@@ -228,13 +235,12 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             }
         };
         this.lazyFluidHandler = LazyOptional.of(() -> this);
-
-        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
+        this.lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
-    //////////
+    ////////////////////
     // BOILERPLATE CODE
-    //////////
+    ////////////////////
 
     @Override
     public Component getDisplayName() {
@@ -257,12 +263,13 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
+        nbt.putInt("materiaToVent", this.materiaToVent);
+        this.materiaToVent = 0;
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
+        nbt.putInt("fluidContents", 0);
         nbt.putInt("batchSize", this.batchSize);
-        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
-        nbt.putBoolean("redstonePaused", this.redstonePaused);
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
         });
@@ -272,12 +279,12 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
+        if(nbt.contains("materiaToVent"))
+            ventMateria(nbt.getInt("materiaToVent"));
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
-        powerUsageSetting = nbt.getInt("powerUsageSetting");
-        redstonePaused = nbt.getBoolean("redstonePaused");
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -288,17 +295,16 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
+        nbt.putInt("materiaToVent", this.materiaToVent);
+        this.materiaToVent = 0;
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("batchSize", this.batchSize);
-        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
-        nbt.putBoolean("redstonePaused", this.redstonePaused);
-        int fluidContents = nbt.getInt("fluidContents");
-        if(fluidContents > 0)
-            containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
+        if(containedSlurry.isEmpty())
+            nbt.putInt("fluidContents", 0);
         else
-            containedSlurry = FluidStack.EMPTY;
+            nbt.putInt("fluidContents", containedSlurry.getAmount());
         return nbt;
     }
 
@@ -308,7 +314,6 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("grime", grimeCap.getGrime());
-        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.put("inventory", itemHandler.serializeNBT());
 
         stack.setTag(nbt);
@@ -357,7 +362,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     @Override
     public int getMaximumGrime() {
-        return ServerConfig.grandFuseryMaximumGrime;
+        return getVar(IDs.CONFIG_MAX_GRIME);
     }
 
     public boolean getPowerSufficiency() {
@@ -382,8 +387,12 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 
-    public static int getScaledGrime(int grime) {
-        return Math.min(ServerConfig.grandFuseryMaximumGrime, (GUI_GRIME_BAR_WIDTH * grime) / ServerConfig.grandFuseryMaximumGrime);
+    public static int getScaledGrime(int pGrime, Function<IDs, Integer> pVarFunc) {
+        return (GRIME_BAR_WIDTH * pGrime) / pVarFunc.apply(IDs.CONFIG_MAX_GRIME);
+    }
+
+    public static int getScaledSlurry(int pSlurry, Function<IDs, Integer> pVarFunc) {
+        return (FLUID_BAR_HEIGHT * pSlurry) / pVarFunc.apply(IDs.CONFIG_TANK_CAPACITY);
     }
 
     @Override
@@ -391,195 +400,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         this.data.set(DATA_PROGRESS, progress);
         this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
         this.data.set(DATA_POWER_SUFFICIENCY, hasSufficientPower ? 1 : 0);
-        //TODO: push op time mod
     }
-
-    ////////////////////
-    // ACTUATOR HANDLERS
-    ////////////////////
-
-    public DevicePlugDirection getPlugDirection() {
-        return DevicePlugDirection.NONE;
-    }
-
-    public BlockEntity getPlugEntity() {
-        BlockPos target = getBlockPos();
-
-        if(getPlugDirection() == DevicePlugDirection.NORTH) target = target.north();
-        else if(getPlugDirection() == DevicePlugDirection.EAST) target = target.east();
-        else if(getPlugDirection() == DevicePlugDirection.SOUTH) target = target.south();
-        else if(getPlugDirection() == DevicePlugDirection.WEST) target = target.west();
-
-        return getLevel().getBlockEntity(target);
-    }
-
-    @Override
-    public void linkPlugins() {
-        pluginDevices.clear();
-
-        //Start by grabbing the actuator plugged into the main block
-        if(getPlugEntity() instanceof AbstractDirectionalPluginBlockEntity dpbe)
-            pluginDevices.add(dpbe);
-
-        List<BlockEntity> query = new ArrayList<>();
-        for(Triplet<BlockPos, GrandFuseryRouterType, DevicePlugDirection> posAndType : GrandFuseryBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
-            BlockEntity be = level.getBlockEntity(getBlockPos().offset(posAndType.getFirst()));
-            if(be != null)
-                query.add(be);
-        }
-
-        for(BlockEntity be : query) {
-            if (be instanceof GrandFuseryRouterBlockEntity gcrbe) {
-                BlockEntity pe = gcrbe.getPlugEntity();
-                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
-            }
-        }
-    }
-
-    private static final AABB validVentingParticleZone = new AABB(0.375, 0.5625, 0.375, 0.625, 0.5625, 0.625);
-    private void ventMateria(int pPackedSlots) {
-        for (int i = 0; i < SLOT_INPUT_COUNT; i++) {
-            if((pPackedSlots & (1 << i)) >> i == 1) {
-                ItemStack stackToCheck = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-
-                if (stackToCheck.getItem() instanceof MateriaItem mi) {
-                    InventoryHelper.generateMateriaVentingCloud(level, mi, validVentingParticleZone.move(getBlockPos()), 0.0625);
-                }
-            }
-        }
-
-        materiaToVent = 0;
-    }
-
-    public void setRecipeByOutput(ItemStack pRecipeOutput) {
-        itemHandler.setStackInSlot(SLOT_RECIPE, pRecipeOutput.copy());
-        getCurrentRecipe();
-        if(currentRecipe != null) {
-            if(!level.isClientSide()) {
-                getCurrentRecipe();
-
-                if (currentRecipe != null) {
-                    ItemStack[] componentMateria = new ItemStack[5];
-                    currentRecipe.getComponentMateria().toArray(componentMateria);
-
-                    for(int i=0; i<SLOT_INPUT_COUNT; i++) {
-                        if(componentMateria[i/2] != null) {
-                            if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
-                                ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                                if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
-                                    materiaToVent = materiaToVent | (1 << i);
-                                    itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
-                                    continue;
-                                }
-                            }
-                        } else {
-                            ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
-                                materiaToVent = materiaToVent | (1 << i);
-                                itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
-                                continue;
-                            }
-                        }
-                        materiaToVent = materiaToVent & ~(1 << i);
-                    }
-                }
-            }
-        }
-        syncAndSave();
-    }
-
-    ////////////////////
-    // INTERACTION AND VFX
-    ////////////////////
-
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,3,3));
-    }
-
-    public void handleAnimationDrivers() {
-        if(particlePercent == 1) {
-            circlePercent = Math.min(1, circlePercent + CIRCLE_FILL_RATE);
-        } else if(particlePercent == 0) {
-            circlePercent = Math.max(0, circlePercent - CIRCLE_FILL_RATE);
-        }
-
-        if(hasSufficientPower && !redstonePaused) {
-            particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
-            if(circlePercent >= 1)
-                wheelSpeed = Math.min(wheelSpeed + WHEEL_ACCELERATION_RATE, WHEEL_TOP_SPEED);
-        } else {
-            particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
-            wheelSpeed = Math.max(wheelSpeed - WHEEL_ACCELERATION_RATE * 0.5f, 0f);
-        }
-
-        wheelAngle = (wheelAngle + wheelSpeed) % 360f;
-    }
-
-    ////////////////////
-    // POWER
-    ////////////////////
-
-    public int getPowerUsageSetting() {
-        return powerUsageSetting;
-    }
-
-    public int getPowerDraw() {
-        int baseDraw = POWER_DRAW[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
-        float fireActuatorModifier = 1 - (operationTimeMod / 100.0f);
-
-        int out = Math.round((float)baseDraw * fireActuatorModifier);
-
-        return Math.round((float)baseDraw * fireActuatorModifier);
-    }
-
-    public int getOperationTicks() {
-        return OPERATION_TICKS[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
-    }
-
-    public int setPowerUsageSetting(int pPowerUsageSetting) {
-        this.powerUsageSetting = pPowerUsageSetting;
-        this.resetProgress();
-        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
-            ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
-        return this.powerUsageSetting;
-    }
-
-    public int incrementPowerUsageSetting() {
-        if(powerUsageSetting + 1 < 31) {
-            this.powerUsageSetting++;
-            this.resetProgress();
-            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
-                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
-        }
-        return this.powerUsageSetting;
-    }
-
-    public int decrementPowerUsageSetting() {
-        if(powerUsageSetting - 1 > 0) {
-            this.powerUsageSetting--;
-            this.resetProgress();
-            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
-                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
-        }
-        return this.powerUsageSetting;
-    }
-
-    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
-        @Override
-        public void onEnergyChanged() {
-            setChanged();
-        }
-
-        @Override
-        public int receiveEnergy(int maxReceive, boolean simulate) {
-
-            int powerToLimit = Math.max(0, (getPowerDraw() * ServerConfig.circlePowerBuffer) - getEnergyStored());
-            int actualReceive = Math.min(maxReceive, powerToLimit);
-
-            return super.receiveEnergy(actualReceive, simulate);
-        }
-    };
 
     ////////////////////
     // OVERRIDES
@@ -590,9 +411,12 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandFuseryBlockEntity pEntity) {
-        pEntity.handleAnimationDrivers();
+        if(pLevel.isClientSide()) {
+            pEntity.handleAnimationDrivers();
+        }
 
         if(!pEntity.getLevel().isClientSide() && !pEntity.redstonePaused) {
+
             int powerDraw = pEntity.getPowerDraw();
             boolean sufficientThisTick = pEntity.ENERGY_STORAGE.getEnergyStored() >= powerDraw;
 
@@ -695,7 +519,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     BlockPos routerPos = rootPos.offset(x, y, z);
                     BlockState routerState = getLevel().getBlockState(routerPos);
 
-                    if(routerState.getBlock() == BlockRegistry.GRAND_FUSERY_ROUTER.get()) {
+                    if(routerState.getBlock() == BlockRegistry.GRAND_CENTRIFUGE_ROUTER.get()) {
                         BlockState newRouterState = routerState.setValue(HAS_LABORATORY_UPGRADE, true);
 
                         getLevel().setBlock(routerPos, newRouterState, 3);
@@ -726,43 +550,243 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
+            case SLOT_RECIPE -> SLOT_RECIPE;
 
             case DATA_PROGRESS -> DATA_PROGRESS;
             case DATA_GRIME -> DATA_GRIME;
             case DATA_EFFICIENCY_MOD -> DATA_EFFICIENCY_MOD;
             case DATA_OPERATION_TIME_MOD -> DATA_OPERATION_TIME_MOD;
 
-            case MODE_USES_RF -> 1;
+            case GUI_PROGRESS_BAR_WIDTH -> PROGRESS_BAR_WIDTH;
+            case GUI_GRIME_BAR_WIDTH -> GRIME_BAR_WIDTH;
 
-            case GUI_PROGRESS_BAR_WIDTH -> GUI_PROGRESS_BAR_WIDTH;
-            case GUI_GRIME_BAR_WIDTH -> GUI_GRIME_BAR_WIDTH;
+            case MODE_USES_RF -> 1;
 
             case CONFIG_BASE_EFFICIENCY -> ServerConfig.grandFuseryEfficiency;
             case CONFIG_MAX_GRIME -> ServerConfig.grandFuseryMaximumGrime;
             case CONFIG_GRIME_ON_SUCCESS -> ServerConfig.grandFuseryGrimeOnSuccess;
             case CONFIG_GRIME_ON_FAILURE -> ServerConfig.grandFuseryGrimeOnFailure;
+            case CONFIG_NO_TORQUE_GRACE_PERIOD -> NO_TORQUE_GRACE_PERIOD;
+            case CONFIG_TANK_CAPACITY -> ServerConfig.grandFuseryTankCapacity;
 
             default -> -1;
         };
     }
 
     @Override
-    public void destroyRouters() {
-        if(getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-            ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
-            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), charmStack);
-            getLevel().addFreshEntity(ie);
+    public void linkPlugins() {
+        pluginDevices.clear();
+
+        List<BlockEntity> query = new ArrayList<>();
+        for(Triplet<BlockPos, GrandFuseryRouterType, DevicePlugDirection> posAndType : GrandFuseryBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            BlockEntity be = level.getBlockEntity(getBlockPos().offset(posAndType.getFirst()));
+            if(be != null)
+                query.add(be);
         }
 
-        GrandCentrifugeBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+        for(BlockEntity be : query) {
+            if (be instanceof GrandFuseryRouterBlockEntity frbe) {
+                BlockEntity pe = frbe.getPlugEntity();
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            }
+        }
     }
+
+    ////////////////////
+    // FLUID HANDLING
+    ////////////////////
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return ServerConfig.grandFuseryTankCapacity;
+    }
+
+    ////////////////////
+    // INTERACTION AND VFX
+    ////////////////////
+
+    private void handleAnimationDrivers() {
+        if(particlePercent == 1) {
+            circlePercent = Math.min(1, circlePercent + CIRCLE_FILL_RATE);
+        } else if(particlePercent == 0) {
+            circlePercent = Math.max(0, circlePercent - CIRCLE_FILL_RATE);
+        }
+
+        if(hasSufficientPower && !redstonePaused) {
+            particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
+        } else {
+            particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
+        }
+    }
+
+    private static final AABB validVentingParticleZone = new AABB(0.375, 0.5625, 0.375, 0.625, 0.5625, 0.625);
+    private void ventMateria(int pPackedSlots) {
+        for (int i = 0; i < SLOT_INPUT_COUNT; i++) {
+            if((pPackedSlots & (1 << i)) >> i == 1) {
+                ItemStack stackToCheck = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+
+                if (stackToCheck.getItem() instanceof MateriaItem mi) {
+                    InventoryHelper.generateMateriaVentingCloud(level, mi, validVentingParticleZone.move(getBlockPos()), 0.0625);
+                }
+            }
+        }
+
+        materiaToVent = 0;
+    }
+
+    public void setRecipeByOutput(ItemStack pRecipeOutput) {
+        itemHandler.setStackInSlot(SLOT_RECIPE, pRecipeOutput.copy());
+        getCurrentRecipe();
+        if(currentRecipe != null) {
+            if(!level.isClientSide()) {
+                getCurrentRecipe();
+
+                if (currentRecipe != null) {
+                    ItemStack[] componentMateria = new ItemStack[5];
+                    currentRecipe.getComponentMateria().toArray(componentMateria);
+
+                    for(int i=0; i<SLOT_INPUT_COUNT; i++) {
+                        if(componentMateria[i/2] != null) {
+                            if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
+                                ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                                if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                                    materiaToVent = materiaToVent | (1 << i);
+                                    itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                    continue;
+                                }
+                            }
+                        } else {
+                            ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                                materiaToVent = materiaToVent | (1 << i);
+                                itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                continue;
+                            }
+                        }
+                        materiaToVent = materiaToVent & ~(1 << i);
+                    }
+                }
+            }
+        }
+        syncAndSave();
+    }
+
+    private static void generateCauldronSmokeParticles(Level pLevel, BlockPos pPos, GrandFuseryBlockEntity pEntity) {
+        if(pEntity.remainingTorque + pEntity.remainingAnimus > 0 && pEntity.containedSlurry.getAmount() > 0) {
+            int loopingTime = (int)(pLevel.getGameTime() % 8);
+            if(loopingTime % 2 == 0) {
+                Vector3f mid = switch (pEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+                    case NORTH -> new Vector3f(0.25f, 0.125f, 0.25f);
+                    case EAST -> new Vector3f(0.75f, 0.125f, 0.25f);
+                    case SOUTH -> new Vector3f(0.75f, 0.125f, 0.75f);
+                    case WEST -> new Vector3f(0.25f, 0.125f, 0.75f);
+                    default -> new Vector3f(0, 0, 0);
+                };
+
+                int i = loopingTime / 2;
+
+                float shiftDist = 0.125f;
+                Vector2f[] offsets = {
+                        new Vector2f(-shiftDist, -shiftDist),
+                        new Vector2f(-shiftDist, shiftDist),
+                        new Vector2f(shiftDist, shiftDist),
+                        new Vector2f(shiftDist, -shiftDist)
+                };
+                Vector3 pos = new Vector3(
+                        pPos.getX() + mid.x + offsets[loopingTime / 2].x,
+                        pPos.getY() + mid.y,
+                        pPos.getZ() + mid.z + offsets[loopingTime / 2].y);
+
+                pLevel.addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                                .setScale(0.0875f).setMaxAge(72)
+                                .setMover(new ParticleLerpMover(pos.x, pos.y, pos.z, pos.x, pos.y + 1.375, pos.z))
+                                .setColor(40, 140, 240, 48),
+                        pos.x, pos.y, pos.z,
+                        0, 0, 0);
+            }
+        }
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-2, 0, -2), getBlockPos().offset(2,1,2));
+    }
+
+    @Override
+    public void destroyRouters() {
+        GrandFuseryBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
+    ////////////////////
+    // POWER
+    ////////////////////
+
+    public int getPowerUsageSetting() {
+        return powerUsageSetting;
+    }
+
+    public int getPowerDraw() {
+        int baseDraw = POWER_DRAW[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
+        float fireActuatorModifier = 1 - (operationTimeMod / 100.0f);
+
+        int out = Math.round((float)baseDraw * fireActuatorModifier);
+
+        return Math.round((float)baseDraw * fireActuatorModifier);
+    }
+
+    public int getOperationTicks() {
+        return OPERATION_TICKS[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
+    }
+
+    public int setPowerUsageSetting(int pPowerUsageSetting) {
+        this.powerUsageSetting = pPowerUsageSetting;
+        this.resetProgress();
+        if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+            ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
+        return this.powerUsageSetting;
+    }
+
+    public int incrementPowerUsageSetting() {
+        if(powerUsageSetting + 1 < 31) {
+            this.powerUsageSetting++;
+            this.resetProgress();
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
+        }
+        return this.powerUsageSetting;
+    }
+
+    public int decrementPowerUsageSetting() {
+        if(powerUsageSetting - 1 > 0) {
+            this.powerUsageSetting--;
+            this.resetProgress();
+            if(ENERGY_STORAGE.getEnergyStored() > getPowerDraw() * ServerConfig.circlePowerBuffer)
+                ENERGY_STORAGE.setEnergy(getPowerDraw() * ServerConfig.circlePowerBuffer);
+        }
+        return this.powerUsageSetting;
+    }
+
+    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+        @Override
+        public void onEnergyChanged() {
+            setChanged();
+        }
+
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+
+            int powerToLimit = Math.max(0, (getPowerDraw() * ServerConfig.circlePowerBuffer) - getEnergyStored());
+            int actualReceive = Math.min(maxReceive, powerToLimit);
+
+            return super.receiveEnergy(actualReceive, simulate);
+        }
+    };
 
     ////////////////////
     // PROVISIONING AND SHLORPS
     ////////////////////
 
     private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
-    private static final List<AdmixtureItem> admixtureList = ItemRegistry.getAdmixtures();
 
     @Override
     public boolean allowIncreasedDeliverySize() {
@@ -771,30 +795,35 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     @Override
     public boolean needsProvisioning() {
-        //make sure there's space to PUT the provision
-        int openSlots = 0;
-        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
-            if(itemHandler.getStackInSlot(i).isEmpty()) {
-                openSlots++;
-            }
-        }
+        if(currentRecipe == null)
+            return false;
 
-        //make sure there aren't enough stacks on the way
-        return openSlots - activeProvisionRequests.size() > 0;
+        return getProvisioningNeeds().size() > 0;
     }
 
     @Override
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
         Map<MateriaItem, Integer> result = new HashMap<>();
 
-        for (AdmixtureItem ai : admixtureList) {
-            if(!activeProvisionRequests.contains(ai))
-                result.put(ai, 1);
-        }
+        if(currentRecipe != null) {
+            for (ItemStack recipeMateria : currentRecipe.getComponentMateria()) {
+                if(activeProvisionRequests.contains((MateriaItem)recipeMateria.getItem()))
+                    continue;
 
-        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
-            if(!itemHandler.getStackInSlot(i).isEmpty())
-                result.remove((MateriaItem)itemHandler.getStackInSlot(i).getItem());
+                int amountToAdd = recipeMateria.getCount();
+                for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                    ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+                    if(stackInSlot.getItem() == recipeMateria.getItem()) {
+                        amountToAdd -= stackInSlot.getCount();
+
+                        if(amountToAdd <= 0)
+                            break;
+                    }
+                }
+
+                if(amountToAdd > 0)
+                    result.put((MateriaItem)recipeMateria.getItem(), amountToAdd);
+            }
         }
 
         return result;
@@ -812,38 +841,58 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     @Override
     public void provide(ItemStack pStack) {
-        CompoundTag nbt = new CompoundTag();
+        CompoundTag nbt = pStack.getOrCreateTag();
         nbt.putInt("CustomModelData", 1);
         pStack.setTag(nbt);
+        if(!pStack.isEmpty()) {
+            activeProvisionRequests.remove((MateriaItem) pStack.getItem());
 
-        SimpleContainer inputSlots = new SimpleContainer(SLOT_INPUT_COUNT);
-        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
-            inputSlots.setItem(i-SLOT_INPUT_START, itemHandler.getStackInSlot(i));
-        }
-        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
-            if (itemHandler.getStackInSlot(i).isEmpty()) {
-                inputSlots.setItem(i-SLOT_INPUT_START, pStack);
-                break;
-            } else if(itemHandler.getStackInSlot(i).getItem() == pStack.getItem()) {
-                if(InventoryHelper.isMateriaUnbottled(itemHandler.getStackInSlot(i))) {
-                    inputSlots.getItem(i-SLOT_INPUT_START).grow(pStack.getCount());
-                    break;
+            boolean changed = false;
+            for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                if (itemHandler.isItemValid(i, pStack)) {
+                    ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+                    if (stackInSlot.isEmpty()) {
+                        int slotLimit = itemHandler.getSlotLimit(i);
+                        if (pStack.getCount() <= slotLimit) {
+                            itemHandler.setStackInSlot(i, pStack.copy());
+                            pStack.shrink(pStack.getCount());
+                            changed = true;
+                        } else {
+                            ItemStack copy = pStack.copy();
+                            copy.setCount(slotLimit);
+                            pStack.shrink(slotLimit);
+                            itemHandler.setStackInSlot(i, copy);
+                            changed = true;
+                        }
+
+                        if (pStack.isEmpty())
+                            break;
+                    } else if (stackInSlot.hasTag()) {
+                        CompoundTag nbtInSlot = stackInSlot.getTag();
+                        if (nbtInSlot.contains("CustomModelData")) {
+                            int capacity = (itemHandler.getSlotLimit(i) - stackInSlot.getCount());
+                            int delta = Math.min(capacity, pStack.getCount());
+                            stackInSlot.grow(delta);
+                            pStack.shrink(delta);
+
+                            changed = true;
+
+                            if (pStack.isEmpty())
+                                break;
+                        }
+                    }
                 }
             }
+
+            if (changed) {
+                syncAndSave();
+            }
         }
-
-        for(int i=0; i<SLOT_INPUT_COUNT; i++) {
-            itemHandler.setStackInSlot(SLOT_INPUT_START+i, inputSlots.getItem(i));
-        }
-
-        cancelProvisioningInProgress((MateriaItem)pStack.getItem());
-
-        syncAndSave();
     }
 
     @Override
     public int canAcceptStackFromShlorp(ItemStack pStack) {
-        return needsProvisioning() ? 0 : pStack.getCount();
+        return pStack.getCount();
     }
 
     @Override

@@ -89,7 +89,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    protected void syncAndSave() {
+    public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
@@ -500,7 +500,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     }
 
     public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
-        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc);
+        return Math.min(pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH), pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc));
     }
 
     @Override

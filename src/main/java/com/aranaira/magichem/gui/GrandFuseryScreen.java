@@ -6,7 +6,6 @@ import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
-import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
 import com.aranaira.magichem.gui.element.GrandFuseryButtonRecipeSelector;
 import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
 import com.aranaira.magichem.networking.GrandDeviceSyncDataC2SPacket;
@@ -27,6 +26,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -45,16 +45,18 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 207,
             PANEL_RECIPE_X = -84, PANEL_RECIPE_Y = -7, PANEL_RECIPE_U = 176, PANEL_RECIPE_W = 80, PANEL_RECIPE_H = 126,
-            PANEL_INGREDIENTS_X = 176, PANEL_INGREDIENTS_Y = 98, PANEL_INGREDIENTS_W = 80,
+            PANEL_INGREDIENTS_X = 176, PANEL_INGREDIENTS_Y = 100, PANEL_INGREDIENTS_W = 80,
             PANEL_INGREDIENTS_U1 = 160, PANEL_INGREDIENTS_U2 = 80, PANEL_INGREDIENTS_U3 = 160, PANEL_INGREDIENTS_U4 = 80, PANEL_INGREDIENTS_U5 = 0,
             PANEL_INGREDIENTS_V1 =  66, PANEL_INGREDIENTS_V2 = 84, PANEL_INGREDIENTS_V3 =   0, PANEL_INGREDIENTS_V4 =  0, PANEL_INGREDIENTS_V5 = 0,
             PANEL_INGREDIENTS_H1 =  30, PANEL_INGREDIENTS_H2 = 48, PANEL_INGREDIENTS_H3 =  66, PANEL_INGREDIENTS_H4 = 84, PANEL_INGREDIENTS_H5 = 102,
-            PANEL_GRIME_X = 176, PANEL_GRIME_Y = 22, PANEL_GRIME_W = 80, PANEL_GRIME_H = 80, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
+            PANEL_GRIME_X = 176, PANEL_GRIME_Y = 20, PANEL_GRIME_W = 80, PANEL_GRIME_H = 80, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
             SLURRY_X = 8, SLURRY_Y = 23, SLURRY_W = 8, SLURRY_H = 88,
-            TOOLTIP_EFFICIENCY_X = 193, TOOLTIP_EFFICIENCY_Y = 30, TOOLTIP_EFFICIENCY_W = 59, TOOLTIP_EFFICIENCY_H = 15,
-            TOOLTIP_POWERUSAGE_X = 193, TOOLTIP_POWERUSAGE_Y = 47, TOOLTIP_POWERUSAGE_W = 59, TOOLTIP_POWERUSAGE_H = 15,
-            TOOLTIP_OPERATIONTIME_X = 193, TOOLTIP_OPERATIONTIME_Y = 64, TOOLTIP_OPERATIONTIME_W = 59, TOOLTIP_OPERATIONTIME_H = 15,
-            TOOLTIP_GRIME_X = 180, TOOLTIP_GRIME_Y = 85, TOOLTIP_GRIME_W = 69, TOOLTIP_GRIME_H = 10;
+            TOOLTIP_EFFICIENCY_X = 193, TOOLTIP_EFFICIENCY_Y = 28, TOOLTIP_EFFICIENCY_W = 59, TOOLTIP_EFFICIENCY_H = 15,
+            TOOLTIP_POWERUSAGE_X = 193, TOOLTIP_POWERUSAGE_Y = 45, TOOLTIP_POWERUSAGE_W = 59, TOOLTIP_POWERUSAGE_H = 15,
+            TOOLTIP_OPERATIONTIME_X = 193, TOOLTIP_OPERATIONTIME_Y = 62, TOOLTIP_OPERATIONTIME_W = 59, TOOLTIP_OPERATIONTIME_H = 15,
+            TOOLTIP_GRIME_X = 180, TOOLTIP_GRIME_Y = 83, TOOLTIP_GRIME_W = 69, TOOLTIP_GRIME_H = 10,
+            TOOLTIP_SELECTED_RECIPE_X = 79, TOOLTIP_SELECTED_RECIPE_Y = 94, TOOLTIP_SELECTED_RECIPE_S = 18,
+            TOOLTIP_RECIPE_ZONE_X = -77, TOOLTIP_RECIPE_ZONE_Y = 22, TOOLTIP_RECIPE_ZONE_W = 54, TOOLTIP_RECIPE_ZONE_H = 90;
     private ImageButton
             b_powerLevelUp, b_powerLevelDown;
     private FixationSeparationRecipe lastRecipe = null;
@@ -88,14 +90,14 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
     }
 
     private void initializePowerLevelButtons(){
-        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 10, 12, 7, 232, 242, TEXTURE_GDIST, button -> {
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 7, 12, 7, 232, 242, TEXTURE_GDIST, button -> {
             menu.blockEntity.incrementPowerUsageSetting();
             PacketRegistry.sendToServer(new GrandDeviceSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     menu.blockEntity.getPowerUsageSetting()
             ));
         }));
-        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 55, 12, 7, 244, 242, TEXTURE_GDIST, button -> {
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 180, this.topPos + 52, 12, 7, 244, 242, TEXTURE_GDIST, button -> {
             menu.blockEntity.decrementPowerUsageSetting();
             PacketRegistry.sendToServer(new GrandDeviceSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
@@ -217,14 +219,14 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
 
         int sProg = GrandFuseryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandFuseryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
         if(sProg > 0)
-            gui.blit(TEXTURE, x+76, y+59, 0, 228, sProg, 28);
+            gui.blit(TEXTURE, x+74, y+53, 0, 228, sProg, 28);
 
         int powerLevel = menu.blockEntity.getPowerUsageSetting();
-        gui.blit(TEXTURE_GDIST, x+182, y + (70 - powerLevel), 24, 248 - powerLevel, 8, powerLevel);
+        gui.blit(TEXTURE_GDIST, x+182, y + (68 - powerLevel), 24, 248 - powerLevel, 8, powerLevel);
 
-        int sGrime = GrandFuseryBlockEntity.getScaledGrime(menu.getGrime());
+        int sGrime = GrandFuseryBlockEntity.getScaledGrime(menu.getGrime(), GrandFuseryBlockEntity::getVar);
         if(sGrime > 0)
-            gui.blit(TEXTURE_GDIST, x+181, y+90, 24, 248, sGrime, 8);
+            gui.blit(TEXTURE_GDIST, x+181, y+84, 24, 248, sGrime, 8);
 
         renderSelectedRecipe(gui, x + 79, y + 94);
 
@@ -236,6 +238,13 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         renderIngredientPanel(gui, x + PANEL_INGREDIENTS_X, y + PANEL_INGREDIENTS_Y);
         renderSlotGhosts(gui);
+
+        //Scroll Nubbin
+        if(recipeFilterRowTotal > 5) {
+            float percent = (float)recipeFilterRow / (float)(recipeFilterRowTotal - 5);
+            int nubbinShift = (int)Math.floor(percent * 80);
+            gui.blit(TEXTURE, x - 19, y + 23 + nubbinShift, 64, 240, 8, 8);
+        }
 
         if(!menu.blockEntity.getPowerSufficiency()) {
             renderPowerWarning(gui, x, y);
@@ -449,6 +458,58 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
+        //Selected recipe
+        if(mouseX >= x+TOOLTIP_SELECTED_RECIPE_X && mouseX <= x+TOOLTIP_SELECTED_RECIPE_X+TOOLTIP_SELECTED_RECIPE_S &&
+                mouseY >= y+TOOLTIP_SELECTED_RECIPE_Y && mouseY <= y+TOOLTIP_SELECTED_RECIPE_Y+TOOLTIP_SELECTED_RECIPE_S) {
+            ItemStack recipeItem = menu.getRecipeItem();
+            if(recipeItem == ItemStack.EMPTY) {
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            } else {
+                int slurryCost = Math.round(menu.getCurrentRecipe().getSlurryCost() * ((100f - menu.getReductionRate()) / 100f));
+
+                tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.fixationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.literal(slurryCost+"mB").withStyle(ChatFormatting.DARK_AQUA))
+                        .append(Component.translatable("tooltip.magichem.gui.fixationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
+                );
+            }
+        }
+
+        //Items in recipe picker
+        if(mouseX >= x+TOOLTIP_RECIPE_ZONE_X && mouseX <= x+TOOLTIP_RECIPE_ZONE_X+TOOLTIP_RECIPE_ZONE_W &&
+                mouseY >= y+TOOLTIP_RECIPE_ZONE_Y && mouseY <= y+TOOLTIP_RECIPE_ZONE_Y+TOOLTIP_RECIPE_ZONE_H) {
+            int mx = mouseX - (x+TOOLTIP_RECIPE_ZONE_X);
+            int my = mouseY - (y+TOOLTIP_RECIPE_ZONE_Y);
+            int id = ((my / 18) * 3) + ((mx / 18) % 3);
+
+            if (id >= 0 && id < 16) {
+                if(id + recipeFilterRow * 3 < filteredRecipes.size()) {
+                    ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3);
+                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                }
+            }
+        }
+
+        //Item ghosts
+        if(menu.blockEntity.getCurrentRecipe() != null) {
+            if (mouseX >= x + 24 && mouseX <= x + 60 &&
+                    mouseY >= y + 22 && mouseY <= y + 111) {
+                int recipeIndex = (mouseY - (y + 22)) / 18;
+                int left = mouseX <= x + 42 ? 0 : 1;
+                int slotIndex = recipeIndex * 2 + left;
+
+                ItemStack stackInSlot = menu.inputSlots[slotIndex].getItem();
+
+                if(stackInSlot.isEmpty() && recipeIndex < menu.blockEntity.getCurrentRecipe().getComponentMateria().size()) {
+                    String name = menu.blockEntity.getCurrentRecipe().getComponentMateria().get(recipeIndex).getDisplayName().getString();
+                    tooltipContents.add(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY));
+                }
+
+            }
+        }
+
         //Efficiency
         if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
                 mouseY >= y+TOOLTIP_EFFICIENCY_Y && mouseY <= y+TOOLTIP_EFFICIENCY_Y+TOOLTIP_EFFICIENCY_H) {
@@ -462,7 +523,7 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
-        //Efficiency
+        //Power Usage
         if(mouseX >= x+TOOLTIP_POWERUSAGE_X && mouseX <= x+TOOLTIP_POWERUSAGE_X+TOOLTIP_POWERUSAGE_W &&
                 mouseY >= y+TOOLTIP_POWERUSAGE_Y && mouseY <= y+TOOLTIP_POWERUSAGE_Y+TOOLTIP_POWERUSAGE_H) {
 
@@ -472,7 +533,6 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
                     .append(Component.translatable("tooltip.magichem.gui.powerusage.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.translatable("tooltip.magichem.gui.powerusage.line2"));
-            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
         //Operation Time
@@ -484,7 +544,6 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
                     .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
                     .append(": ")
                     .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
-            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
         //Grime Bar
@@ -505,24 +564,38 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
                     .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
                     .append(" ")
                     .append(Component.literal(String.format("%.1f", GrandFuseryBlockEntity.getGrimePercent(menu.getGrime(), GrandFuseryBlockEntity::getVar)*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
-            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
+
+        gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
     }
 
     @Override
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
 
-        gui.drawString(font, Component.literal(GrandFuseryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), GrandFuseryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 32, PANEL_GRIME_Y - 7, 0xff000000, false);
+        gui.drawString(font, Component.literal(GrandFuseryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), GrandFuseryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 32, PANEL_GRIME_Y - 8, 0xff000000, false);
 
         float fireActuatorReduction = 1 - (menu.getOperationTimeMod() / 10000f);
         int powerDraw = Math.round((float)menu.blockEntity.getPowerDraw() * fireActuatorReduction);
-        gui.drawString(font, Component.literal(powerDraw + "/t"), PANEL_GRIME_X + 32, PANEL_GRIME_Y + 10, 0xff000000, false);
+        gui.drawString(font, Component.literal(powerDraw + "/t"), PANEL_GRIME_X + 32, PANEL_GRIME_Y + 9, 0xff000000, false);
 
         int opTicks = GrandFuseryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandFuseryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
         int secWhole = opTicks / 20;
         int secPartial = (opTicks % 20) * 5;
-        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 32, PANEL_GRIME_Y + 27, 0xff000000, false);
+        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 32, PANEL_GRIME_Y + 26, 0xff000000, false);
+
+        //Recipe selector + current
+        Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> recipeCompound = getOrUpdateRecipe();
+        if(recipeCompound.getFirst() != null) {
+            for (int i = 0; i < recipeCompound.getSecond().size(); i++) {
+                Component text = Component.literal(recipeCompound.getSecond().get(i).getCount() + " x ")
+                        .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipeCompound.getSecond().get(i).getItem()+".short"));
+                gui.pose().scale(0.5f, 0.5f, 0.5f);
+
+                gui.drawString(Minecraft.getInstance().font, text, 400, 186 + i*36, 0xff000000, false);
+                gui.pose().scale(2.0f, 2.0f, 2.0f);
+            }
+        }
 
         if(!menu.blockEntity.getPowerSufficiency()) {
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
