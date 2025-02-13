@@ -43,8 +43,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_FUSERY;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 import static com.aranaira.magichem.foundation.enums.GrandFuseryRouterType.*;
 
 public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteractibleBlock<GrandFuseryBlock> {

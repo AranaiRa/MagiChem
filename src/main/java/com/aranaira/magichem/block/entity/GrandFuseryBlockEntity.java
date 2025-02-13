@@ -79,7 +79,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             DATA_COUNT = 7, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_POWER_SUFFICIENCY = 2, DATA_EFFICIENCY_MOD = 3, DATA_OPERATION_TIME_MOD = 4, DATA_BATCH_SIZE = 5, DATA_REDUCTION_RATE = 6,
             NO_TORQUE_GRACE_PERIOD = 20;
     public static final float
-            CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f;
+            CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f, ORB_SCALE_RATE = 0.0375f;
     private int powerUsageSetting = 1;
     private boolean
             hasSufficientPower = false, redstonePaused = false;
@@ -97,7 +97,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     };
 
     public float
-            circlePercent = 0f, particlePercent = 0f;
+            circlePercent = 0f, particlePercent = 0f, orbPercent = 0f;
 
     private int
             materiaToVent = 0;
@@ -270,6 +270,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("fluidContents", 0);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putBoolean("redstonePaused", this.redstonePaused);
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
         });
@@ -285,6 +286,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         progress = nbt.getInt("craftingProgress");
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
+        redstonePaused = nbt.getBoolean("redstonePaused");
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -301,6 +303,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         nbt.putInt("craftingProgress", this.progress);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putBoolean("redstonePaused", this.redstonePaused);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -454,7 +457,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             pEntity.remainingTorque = 0;
         }
 
-        //particle stuff
+        //control dais particle stuff
         if(pEntity.getLevel().isClientSide() && pEntity.particlePercent > 0) {
             Vector3 center = Vector3.zero();
             Direction facing = pEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
@@ -499,6 +502,64 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             }
         }
 
+        //slurry gas particle stuff
+        if(pEntity.getLevel().isClientSide() && !pEntity.redstonePaused) {
+            if(pEntity.getLevel().getGameTime() % 8 == 0) {
+                Vector3 start = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.8125, pPos.getZ() + 0.5);
+
+                pLevel.addParticle(new MAParticleType(ParticleInit.DUST_LERP.get())
+                                .setScale(0.0875f).setMaxAge(72)
+                                .setMover(new ParticleLerpMover(start.x, start.y, start.z, start.x, start.y + 0.9375, start.z))
+                                .setColor(40, 140, 240, 48),
+                        start.x, start.y, start.z,
+                        (r.nextDouble() - 0.5) * 0.1, 0, (r.nextDouble() - 0.5) * 0.1);
+            }
+        }
+
+        //floating orb particle stuff
+        if(pEntity.getLevel().isClientSide() && pEntity.particlePercent > 0) {
+            Vector3 center = new Vector3(pPos.getX() + 0.5, pPos.getY() + 2.5, pPos.getZ() + 0.5);
+
+            float scaleOrb = 0.2f + 0.4f * pEntity.orbPercent;
+            float scaleAurora = 0.09f + 0.18f * pEntity.orbPercent;
+            float distAurora = 0.3f + 0.6f * pEntity.orbPercent;
+            float scaleSparks = 0.015f + 0.03f * pEntity.orbPercent;
+
+            int auroraModulus = Math.round(1f + 8f * (1f - pEntity.orbPercent));
+
+            int colorIndex = r.nextInt(6);
+            if (pEntity.getLevel().getGameTime() % auroraModulus == 0) {
+                pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2])
+                                .setScale(scaleOrb * 2).setMaxAge(80),
+                        center.x, center.y, center.z,
+                        0, 0, 0);
+            }
+            pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                            .setColor(255, 255, 255).setScale(scaleOrb),
+                    center.x, center.y, center.z,
+                    0, 0, 0);
+
+            if(pEntity.particlePercent == 1) {
+                for (int i = 0; i < 2; i++) {
+                    Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(distAurora);
+                    pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                    .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2], 128)
+                                    .setScale(scaleAurora).setMaxAge(16)
+                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                            0, 0, 0);
+
+                    offset = offset.scale(1.0f + pEntity.orbPercent);
+                    pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                    .setScale(scaleSparks).setMaxAge(16)
+                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                            0, 0, 0);
+                }
+            }
+        }
+
         if(!pEntity.redstonePaused)
             AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, GrandFuseryBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
@@ -521,7 +582,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     BlockPos routerPos = rootPos.offset(x, y, z);
                     BlockState routerState = getLevel().getBlockState(routerPos);
 
-                    if(routerState.getBlock() == BlockRegistry.GRAND_CENTRIFUGE_ROUTER.get()) {
+                    if(routerState.getBlock() == BlockRegistry.GRAND_FUSERY_ROUTER.get()) {
                         BlockState newRouterState = routerState.setValue(HAS_LABORATORY_UPGRADE, true);
 
                         getLevel().setBlock(routerPos, newRouterState, 3);
@@ -623,6 +684,10 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
         if(hasSufficientPower && !redstonePaused) {
             particlePercent = Math.min(1, particlePercent + PARTICLE_PERCENT_RATE);
+            if(currentRecipe != null && canCraftItem(this, GrandFuseryBlockEntity::getVar))
+                orbPercent = Math.min(1,orbPercent + ORB_SCALE_RATE * 0.5f);
+            else
+                orbPercent = Math.max(0,orbPercent - ORB_SCALE_RATE);
         } else {
             particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
         }
@@ -833,6 +898,8 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                 if(amountToAdd > 0)
                     result.put((MateriaItem)recipeMateria.getItem(), amountToAdd);
             }
+        } else if(!itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty()) {
+            setRecipeByOutput(itemHandler.getStackInSlot(SLOT_RECIPE));
         }
 
         return result;
