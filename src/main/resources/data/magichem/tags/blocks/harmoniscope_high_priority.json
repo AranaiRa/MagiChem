@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:small_amethyst_bud",
+    "minecraft:medium_amethyst_bud",
+    "minecraft:large_amethyst_bud",
+    "minecraft:amethyst_cluster",
+    "magichem:cluster_signalite_small",
+    "magichem:cluster_signalite_medium",
+    "magichem:cluster_signalite_large",
+    "magichem:cluster_signalite",
+    "magichem:cluster_vinteum_small",
+    "magichem:cluster_vinteum_medium",
+    "magichem:cluster_vinteum_large",
+    "magichem:cluster_vinteum"
+  ]
+}

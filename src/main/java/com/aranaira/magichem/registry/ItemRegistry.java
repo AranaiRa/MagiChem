@@ -94,8 +94,8 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> HARMONISCOPE = ITEMS.register("harmoniscope",
-            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<HarmoniscopeItem> HARMONISCOPE = ITEMS.register("harmoniscope",
+            () -> new HarmoniscopeItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<TooltipLoreItem> NETHERITE_SHAPING_PLANE = ITEMS.register("netherite_shaping_plane",

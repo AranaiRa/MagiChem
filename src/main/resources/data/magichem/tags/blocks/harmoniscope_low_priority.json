@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:amethyst_block",
+    "minecraft:budding_amethyst",
+    "magichem:vinteum_crystal_block",
+    "magichem:vinteum_crystal_block_budding",
+    "magichem:signalite_block",
+    "magichem:signalite_block_budding",
+    "minecraft:obsidian"
+  ]
+}

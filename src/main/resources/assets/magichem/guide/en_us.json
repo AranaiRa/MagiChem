@@ -1323,6 +1323,46 @@
       }
     ]
   },
+  "Harmoniscope": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Harmoniscope"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "When tapped against a block, a "
+          },
+          {
+            "text": "Harmoniscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " creates a tone perfectly calibrated to shatter crystalline substances.\n\nAny crystalline block within a two block radius breaks, dropping itself.\n\nThe Harmoniscope's destructive frequencies are even capable of harvesting "
+          },
+          {
+            "text": "Budding crystal blocks",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; the days of riding a budding block onto a torch are a thing of the past.\n\nUsing the Harmoniscope while sneaking will cause it to only break a single block instead."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/harmoniscope"
+      }
+    ]
+  },
   "Power Spikes": {
     "index": "1405",
     "category": "magichem",

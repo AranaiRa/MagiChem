@@ -87,6 +87,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.GRAND_FUSERY.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.grandfusery")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.ACTUATOR_WATER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.actuator.water")

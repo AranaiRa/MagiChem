@@ -1,9 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.entities.SublimationRitualVFXEntity;
-import com.aranaira.magichem.entities.ShlorpEntity;
-import com.aranaira.magichem.entities.ThrownThunderstoneEntity;
+import com.aranaira.magichem.entities.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.Builder;
 import net.minecraft.world.entity.MobCategory;
@@ -22,6 +20,7 @@ public class EntitiesRegistry {
     public static final RegistryObject<EntityType<ShlorpEntity>> SHLORP_ENTITY;
     public static final RegistryObject<EntityType<SublimationRitualVFXEntity>> SUBLIMATION_RITUAL_VFX_ENTITY;
     public static final RegistryObject<EntityType<ThrownThunderstoneEntity>> THROWN_THUNDERSTONE_ENTITY;
+    public static final RegistryObject<EntityType<DestructiveHarmonicsEntity>> DESTRUCTIVE_HARMONICS_ENTITY;
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
@@ -46,6 +45,12 @@ public class EntitiesRegistry {
                 Builder.of(ThrownThunderstoneEntity::new, MobCategory.MISC)
                 .sized(0.1f, 0.8f)
                 .build(MagiChemMod.MODID+":thrown_thunderstone")
+        );
+
+        DESTRUCTIVE_HARMONICS_ENTITY = ENTITY_TYPES.register("destructive_harmonics", () ->
+                Builder.of(DestructiveHarmonicsEntity::new, MobCategory.MISC)
+                .sized(0.2f, 0.2f)
+                .build(MagiChemMod.MODID+":destructive_harmonics")
         );
     }
 }
