@@ -37,6 +37,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -293,7 +294,8 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         else
             containedSlurry = FluidStack.EMPTY;
 
-        getCurrentRecipe();
+        if(level != null)
+            getCurrentRecipe();
     }
 
     @Override
@@ -503,6 +505,16 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                             0, 0, 0);
                 }
             }
+
+            //zippity zappities to the fusion orb
+            if(pEntity.orbPercent > 0) {
+                Vector3 end = new Vector3(pPos.getX() + 0.5, pPos.getY() + 2.5, pPos.getZ() + 0.5);
+
+                pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                    .setMaxAge(8 + r.nextInt(6)).setScale(20),
+                            center.x, center.y, center.z,
+                            end.x, end.y, end.z);
+            }
         }
 
         //slurry gas particle stuff
@@ -562,6 +574,27 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                                     .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
                             center.x + offset.x, center.y + offset.y, center.z + offset.z,
                             0, 0, 0);
+                }
+
+                //zippity zappities out of the fusion orb
+                if(pEntity.orbPercent > 0.5 && pLevel.getGameTime() % 7 == 0) {
+                    for(int i=0; i<Math.max(1,r.nextInt(5) - 1); i++) {
+                        double theta = r.nextDouble(Math.PI * 2);
+                        Vector3 end = new Vector3(Math.cos(theta), r.nextDouble(0.5) - 0.25, Math.sin(theta)).scale(1.5f)
+                                .add(center);
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                        .setMaxAge(18 + r.nextInt(16)).setScale(20)
+                                        .setColor(SIX_STEP_PARTICLE_COLORS[colorIndex][0], SIX_STEP_PARTICLE_COLORS[colorIndex][1], SIX_STEP_PARTICLE_COLORS[colorIndex][2], 255),
+                                center.x, center.y, center.z,
+                                end.x, end.y, end.z);
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                        .setMaxAge(18 + r.nextInt(16)).setScale(20)
+                                        .setColor(64, 64, 64, 32),
+                                center.x, center.y, center.z,
+                                end.x, end.y, end.z);
+                    }
                 }
             }
         }
@@ -794,6 +827,12 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     @Override
     public void destroyRouters() {
+        if(getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
+            ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
+            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), charmStack);
+            getLevel().addFreshEntity(ie);
+        }
+
         GrandFuseryBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 
