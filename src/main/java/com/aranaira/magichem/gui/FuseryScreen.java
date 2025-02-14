@@ -151,7 +151,6 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                     menu.blockEntity.getBlockPos(),
                     filteredRecipes.get(trueIndex).getItem()
             ));
-            menu.setInputSlotFilters(menu.getRecipeItem());
         }
     }
 

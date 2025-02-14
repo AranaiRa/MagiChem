@@ -22,6 +22,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
 public class GrandFuseryMenu extends AbstractContainerMenu {
@@ -29,7 +30,7 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
     public final GrandFuseryBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
-    public OnlyMateriaInputSlot[] inputSlots = new OnlyMateriaInputSlot[FuseryBlockEntity.SLOT_INPUT_COUNT];
+    public SlotItemHandler[] inputSlots = new SlotItemHandler[FuseryBlockEntity.SLOT_INPUT_COUNT];
 
     public GrandFuseryMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(GrandFuseryBlockEntity.DATA_COUNT));
@@ -55,7 +56,7 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
             for(int i = FuseryBlockEntity.SLOT_INPUT_START; i< FuseryBlockEntity.SLOT_INPUT_START + FuseryBlockEntity.SLOT_INPUT_COUNT; i++)
             {
                 int j = i - FuseryBlockEntity.SLOT_INPUT_START;
-                OnlyMateriaInputSlot slot = new OnlyMateriaInputSlot(handler, i, 26 + 18 * (j % 2), 3 + 18 * (j / 2));
+                SlotItemHandler slot = new SlotItemHandler(handler, i, 26 + 18 * (j % 2), 3 + 18 * (j / 2));
                 this.addSlot(slot);
                 inputSlots[j] = slot;
             }
@@ -69,7 +70,7 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
                 this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 21 + (y) * 18, FuseryBlockEntity.SLOT_BOTTLES));
             }
 
-            setInputSlotFilters(blockEntity.getRecipeItem(FuseryBlockEntity::getVar));
+//            setInputSlotFilters(blockEntity.getRecipeItem(FuseryBlockEntity::getVar));
         });
 
         addDataSlots(data);
@@ -78,18 +79,6 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player, BlockRegistry.GRAND_FUSERY.get());
-    }
-
-    public void setInputSlotFilters(ItemStack pQueryStack) {
-        FixationSeparationRecipe newRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, pQueryStack);
-        if(newRecipe != null) {
-            int slotSet = 0;
-            for (ItemStack stack : newRecipe.getComponentMateria()) {
-                inputSlots[(slotSet * 2)].setSlotFilter((MateriaItem) stack.getItem());
-                inputSlots[(slotSet * 2) + 1].setSlotFilter((MateriaItem) stack.getItem());
-                slotSet++;
-            }
-        }
     }
 
     public ItemStack getRecipeItem() {

@@ -165,7 +165,6 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
                     menu.blockEntity.getBlockPos(),
                     filteredRecipes.get(trueIndex).getItem()
             ));
-            menu.setInputSlotFilters(menu.getRecipeItem());
         }
     }
 
