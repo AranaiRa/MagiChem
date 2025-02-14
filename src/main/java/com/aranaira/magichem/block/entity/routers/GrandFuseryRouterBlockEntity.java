@@ -40,7 +40,7 @@ import java.util.Map;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_FUSERY;
 
-public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester, IShlorpReceiver {
     private BlockPos masterPos;
     private GrandFuseryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -274,4 +274,25 @@ public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficie
 
         return master.needsSorting();
     }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(master != null || masterPos != null) {
+            if(getMaster() == null) return 0;
+            return master.canAcceptStackFromShlorp(pStack);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        if(master != null || masterPos != null) {
+            if(getMaster() == null) return 0;
+            return master.insertStackFromShlorp(pStack);
+        }
+
+        return 0;
+    }
 }
+

@@ -292,6 +292,8 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
         else
             containedSlurry = FluidStack.EMPTY;
+
+        getCurrentRecipe();
     }
 
     @Override
@@ -328,6 +330,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
         itemHandler.deserializeNBT(pInventoryTag);
+        getCurrentRecipe();
     }
 
     @Override
@@ -549,7 +552,10 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                                     .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
                             center.x + offset.x, center.y + offset.y, center.z + offset.z,
                             0, 0, 0);
+                }
 
+                for (int i = 0; i < (pEntity.progress > 0 ? 8 : 2); i++) {
+                    Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(distAurora);
                     offset = offset.scale(1.0f + pEntity.orbPercent);
                     pEntity.getLevel().addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
                                     .setScale(scaleSparks).setMaxAge(16)
