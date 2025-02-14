@@ -4385,6 +4385,92 @@
       }
     ]
   },
+  "Grand Fusery": {
+    "index": "1211",
+    "category": "magichem",
+    "tier": 4,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Grand Fusery"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Grand Fusery",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is the pinnacle of all devices capable of peforming "
+          },
+          {
+            "text": "Fixation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", boasting greatly improved "
+          },
+          {
+            "text": "Efficiency",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and two additional Elemental Actuator ports over the Centrifuge.\n\nUnlike the Fusery, the Grand Centrifuge requires FE from a "
+          },
+          {
+            "text": "Circle of Power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in order to run. The amount of FE required can be controlled; higher FE usage results in faster fixations.\n\nAt Tier 5, the Grand Distillery can be upgraded to have 6 Elemental Actuator ports using a "
+          },
+          {
+            "text": "Laboratory Charm",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Grand Fusery requires a significant amount of FE even at its minimum settings; a Circle of Power with "
+          },
+          {
+            "text": "two reagents",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or more should be sufficient.\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
+            "italic": false
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/grand_fusery"
+      },
+      {
+        "type": "eldrin_altar",
+        "location": "magichem:eldrin_altar/laboratory_charm"
+      }
+    ]
+  },
   "Laboratory Charm": {
     "index": "1299",
     "category": "magichem",
