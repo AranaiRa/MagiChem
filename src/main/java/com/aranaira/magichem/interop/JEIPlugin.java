@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.interop.jei.*;
 import com.aranaira.magichem.recipe.*;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.ItemInit;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -41,6 +42,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(ConjurationRecipeCategory.UID, ConjurationRecipe.class);
     public static RecipeType<AnointingRecipe> ANOINTING_TYPE =
             new RecipeType<>(AnointingRecipeCategory.UID, AnointingRecipe.class);
+    public static RecipeType<InfoPanelRecipe> INFO_PANEL_TYPE =
+            new RecipeType<>(InfoPanelRecipeCategory.UID, InfoPanelRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -67,6 +70,8 @@ public class JEIPlugin implements IModPlugin {
                 ConjurationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 AnointingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                InfoPanelRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -100,6 +105,9 @@ public class JEIPlugin implements IModPlugin {
 
         List<AnointingRecipe> recipesAnointing = rm.getAllRecipesFor(AnointingRecipe.Type.INSTANCE);
         registration.addRecipes(ANOINTING_TYPE, recipesAnointing);
+
+        List<InfoPanelRecipe> recipesInfoPanel = rm.getAllRecipesFor(InfoPanelRecipe.Type.INSTANCE);
+        registration.addRecipes(INFO_PANEL_TYPE, recipesInfoPanel);
     }
 
     @Override
@@ -124,6 +132,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.VARIEGATOR.get(), 1), COLORATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CONJURER.get(), 1), CONJURATION_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(ItemRegistry.DUMMY_INFO_PANEL.get(), 1), INFO_PANEL_TYPE);
 
         IModPlugin.super.registerRecipeCatalysts(registration);
     }

@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "magichem:rarefied_waste",
+  "tier": 1,
+  "info": "jei.magichem.info_panel.rarefied_waste"
+}

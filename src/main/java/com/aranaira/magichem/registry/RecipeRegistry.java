@@ -33,6 +33,9 @@ public class RecipeRegistry {
     public static final RegistryObject<RecipeSerializer<AnointingRecipe>> ANOINTING_SERIALIZER =
             SERIALIZERS.register("anointing", () -> AnointingRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<InfoPanelRecipe>> INFO_PANEL_SERIALIZER =
+            SERIALIZERS.register("info_panel", () -> InfoPanelRecipe.Serializer.INSTANCE);
+
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
     }

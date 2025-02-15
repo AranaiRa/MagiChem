@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "magichem:smoke_bucket",
+  "tier": 1,
+  "info": "jei.magichem.info_panel.smoke_bucket"
+}

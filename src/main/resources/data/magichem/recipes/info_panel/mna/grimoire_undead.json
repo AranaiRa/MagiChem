@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "mna:grimoire_undead",
+  "tier": 1,
+  "info": "jei.mna.info_panel.grimoire_faction"
+}

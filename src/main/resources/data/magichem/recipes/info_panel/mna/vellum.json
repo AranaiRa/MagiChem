@@ -2,5 +2,5 @@
   "type": "magichem:info_panel",
   "output": "mna:vellum",
   "tier": 1,
-  "text": "Use a piece of leather on water to get one roll of Vellum\n\nUse a piece of leather on a cauldron filled with water to get two rolls of Vellum."
+  "info": "jei.mna.info_panel.vellum"
 }

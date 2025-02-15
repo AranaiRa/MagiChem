@@ -338,6 +338,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties())
     );
 
+    public static final RegistryObject<Item> DUMMY_INFO_PANEL = ITEMS.register("dummy/dummy_info_panel",
+            () -> new Item(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> SUBLIMATION_IN_PROGRESS = ITEMS.register("sublimation_in_progress",
             () -> new SublimationInProgressItem(new Item.Properties().stacksTo(1))
     );
@@ -372,7 +376,7 @@ public class ItemRegistry {
 
     public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
             SUBLIMATION_IN_PROGRESS,
-            DUMMY_ANOINTING,
+            DUMMY_ANOINTING,DUMMY_INFO_PANEL,
             DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL, DUMMY_PROCESS_COLORATION, DUMMY_PROCESS_CONJURATION,
             ESSENTIA_DROPLETS_ENDER, ESSENTIA_DROPLETS_EARTH, ESSENTIA_DROPLETS_WATER, ESSENTIA_DROPLETS_AIR, ESSENTIA_DROPLETS_FIRE, ESSENTIA_DROPLETS_ARCANE
     );
