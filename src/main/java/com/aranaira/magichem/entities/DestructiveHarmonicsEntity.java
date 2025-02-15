@@ -95,6 +95,7 @@ public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditio
             if(level().isClientSide())
             {
                 Vector3 center = new Vector3(targetPos.getX()+0.5, targetPos.getY()+0.5, targetPos.getZ()+0.5);
+                int ts = (level().getDayTime() < 12000 || level().getDayTime() > 23000) ? 3 : 1;
 
                 if(phaseTimer == 20) {
                     for (int i = 0; i < 70; i++) {
@@ -120,7 +121,7 @@ public class DestructiveHarmonicsEntity extends Entity implements IEntityAdditio
 
                         int c = r.nextInt(155);
                         level().addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
-                                        .setColor(100+c, 100+c*2, 255, 48)
+                                        .setColor((100+c) / ts, (100+c) / ts, 255 / ts, 48)
                                         .setScale(1.6f).setMaxAge(132),
                                 point.x, point.y, point.z,
                                 point.x, point.y, point.z);

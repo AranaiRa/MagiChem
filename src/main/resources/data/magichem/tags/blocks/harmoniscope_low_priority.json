@@ -7,6 +7,21 @@
     "magichem:vinteum_crystal_block_budding",
     "magichem:signalite_block",
     "magichem:signalite_block_budding",
-    "minecraft:obsidian"
+    "minecraft:obsidian",
+    "minecraft:calcite",
+    "minecraft:glowstone",
+    "minecraft:quartz",
+    "minecraft:quartz_stairs",
+    "minecraft:quartz_slab",
+    "minecraft:chiseled_quartz_block",
+    "minecraft:quartz_bricks",
+    "minecraft:quartz_pillar",
+    "minecraft:smooth_quartz",
+    "minecraft:smooth_quartz_stairs",
+    "minecraft:smooth_quartz_slab",
+    "minecraft:ice",
+    "minecraft:packed_ice",
+    "minecraft:blue_ice",
+    "minecraft:sea_lantern"
   ]
 }
