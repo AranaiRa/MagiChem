@@ -106,12 +106,16 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
-                if (fire.getIsSatisfied() && !fire.getPaused() && pEntity.remainingHeat <= 20) {
-                    if(!(pEntity instanceof GrandDistilleryBlockEntity)) {
-                        pEntity.remainingHeat = 1000;
-                        pEntity.heatDuration = 1000;
+                final boolean satisfied = fire.getIsSatisfied();
+                final boolean paused = fire.getPaused();
+                final float reductionRate = (paused ? 0 : (satisfied ? fire.getReductionRate() : 0));
+
+                if(pEntity.operationTimeMod != reductionRate) {
+                    if(pVarFunc.apply(AbstractDistillationBlockEntity.IDs.MODE_USES_RF) == 0) {
+                        pEntity.remainingHeat = (fire.isPaused || !fire.getIsSatisfied()) ? 0 : 1000;
+                        pEntity.heatDuration = (fire.isPaused || !fire.getIsSatisfied()) ? 0 : 1000;
                     }
-                    pEntity.operationTimeMod = fire.getReductionRate();
+                    pEntity.operationTimeMod = reductionRate;
                     pEntity.syncAndSave();
                 }
             }

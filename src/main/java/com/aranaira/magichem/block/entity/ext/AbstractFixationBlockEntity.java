@@ -99,13 +99,19 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     ////////////////////
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractFixationBlockEntity pEntity, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
-        pEntity.reductionRate = 0;
         for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorFireBlockEntity fire) {
                 ActuatorFireBlockEntity.delegatedTick(pLevel, pPos, pState, fire);
-                if (fire.getIsSatisfied() && !fire.getPaused() && pEntity.remainingTorque <= 20) {
+                final boolean satisfied = fire.getIsSatisfied();
+                final boolean paused = fire.getPaused();
+                final float reductionRate = (paused ? 0 : (satisfied ? fire.getReductionRate() : 0));
+
+                if(pEntity.operationTimeMod != reductionRate) {
+                    if(pVarFunc.apply(IDs.MODE_USES_RF) == 0) pEntity.remainingTorque = (fire.isPaused || !fire.getIsSatisfied()) ? 0 : 100;
+                    pEntity.operationTimeMod = reductionRate;
+                    pEntity.syncAndSave();
+                } else if (pVarFunc.apply(IDs.MODE_USES_RF) == 0 && satisfied && !paused && pEntity.remainingTorque < 20) {
                     pEntity.remainingTorque = 100;
-                    pEntity.operationTimeMod = fire.getReductionRate();
                     pEntity.syncAndSave();
                 }
             }

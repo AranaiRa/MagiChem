@@ -412,6 +412,8 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             case GUI_PROGRESS_BAR_WIDTH -> PROGRESS_BAR_WIDTH;
             case GUI_GRIME_BAR_WIDTH -> GRIME_BAR_WIDTH;
 
+            case MODE_USES_RF -> 0;
+
             case CONFIG_BASE_EFFICIENCY -> ServerConfig.fuseryEfficiency;
             case CONFIG_MAX_GRIME -> ServerConfig.fuseryMaximumGrime;
             case CONFIG_GRIME_ON_SUCCESS -> ServerConfig.fuseryGrimeOnSuccess;
