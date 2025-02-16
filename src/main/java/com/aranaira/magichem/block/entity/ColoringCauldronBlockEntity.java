@@ -8,9 +8,11 @@ import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.Vector3;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -25,11 +27,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 public class ColoringCauldronBlockEntity extends BlockEntity {
 
@@ -58,15 +63,32 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
 
     public boolean insertItemStack(ItemStack pStack) {
         if(pStack.getItem() instanceof DyeItem) {
-            int bitpackID = getBitpackIDFromColor(DyeColor.getColor(pStack));
-            if((bitpackedColors & bitpackID) == 0 && getTotalColors() < 15) {
-                bitpackedColors = bitpackedColors | bitpackID;
-                progress = getOperationTicks();
-                operationsRemaining += 2;
-                syncAndSave();
-                return true;
+            if(getBlockState().getValue(LIT)) {
+                int bitpackID = getBitpackIDFromColor(DyeColor.getColor(pStack));
+                if ((bitpackedColors & bitpackID) == 0 && getTotalColors() < 15) {
+                    bitpackedColors = bitpackedColors | bitpackID;
+                    progress = getOperationTicks();
+                    operationsRemaining += ServerConfig.coloringCauldronNegativeCharges;
+                    syncAndSave();
+                    return true;
+                }
+                return false;
+            } else {
+                int bitpackID = ~getBitpackIDFromColor(DyeColor.getColor(pStack));
+                if (bitpackedColors == bitpackID) {
+                    progress = getOperationTicks();
+                    operationsRemaining += ServerConfig.coloringCauldronPositiveCharges;
+                    syncAndSave();
+                    return true;
+                } else if (bitpackedColors == 0) {
+                    bitpackedColors = bitpackID;
+                    progress = getOperationTicks();
+                    operationsRemaining += ServerConfig.coloringCauldronPositiveCharges;
+                    syncAndSave();
+                    return true;
+                }
+                return false;
             }
-            return false;
         }
 
         if(containedItem.isEmpty()) {
@@ -295,7 +317,21 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     }
 
     private int getOperationTicks() {
-        return Math.round(ServerConfig.coloringCauldronBaseOperationTime * (float)Math.pow(PROCESSING_TIME_COEFFICIENT, getTotalColors() - 1));
+        if(getBlockState().getValue(LIT)) {
+            return Math.round(0.5f * ServerConfig.coloringCauldronBaseOperationTime * (float) Math.pow(PROCESSING_TIME_COEFFICIENT, getTotalColors() - 1));
+        } else {
+            return Math.round(ServerConfig.coloringCauldronBaseOperationTime);
+        }
+    }
+
+    public void checkForColorVoid(boolean pNewStateIsLit) {
+        boolean currentState = getBlockState().getValue(LIT);
+
+        if(currentState != pNewStateIsLit) {
+            progress = 0;
+            bitpackedColors = 0;
+            operationsRemaining = 0;
+        }
     }
 
     private DyeColor pickRandomColorFromInverseBitpack(Set<DyeColor> validColors) {
@@ -362,6 +398,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         List<String> output = new ArrayList<>();
 
         String itemName = containedItem.getDisplayName().getString();
+//        output.add(containedItem.isEmpty() ? " " : itemName);
 
         if(readyToCollect)
             output.add(itemName + Component.translatable("hud.magichem.coloring_cauldron.current_item.waiting").getString());

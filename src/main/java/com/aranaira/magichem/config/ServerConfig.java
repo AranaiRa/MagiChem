@@ -331,6 +331,14 @@ public class ServerConfig
             .comment("The amount of time, in ticks, that it takes for a Coloring Cauldron with one dye to color an item. This time is exponentially reduced with more dyes down to a quarter at 15 dyes.")
             .defineInRange("coloringCauldronBaseOperationTime", 1200, 10, Integer.MAX_VALUE);
 
+    private static final ForgeConfigSpec.IntValue COLORING_CAULDRON_POSITIVE_CHARGES = BUILDER
+            .comment("The number of items that a Coloring Cauldron can color per unit of dye when in positive mode.")
+            .defineInRange("coloringCauldronPositiveCharges", 3, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue COLORING_CAULDRON_NEGATIVE_CHARGES = BUILDER
+            .comment("The number of items that a Coloring Cauldron can color per unit of dye when in positive mode.")
+            .defineInRange("coloringCauldronNegativeCharges", 5, 1, Integer.MAX_VALUE);
+
     //----------------VARIEGATOR
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_OPERATION_TIME_SLOW = BUILDER
@@ -456,6 +464,8 @@ public class ServerConfig
         galePressurizerTankCapacity,
         occultMatrixTankCapacity,
         coloringCauldronBaseOperationTime,
+        coloringCauldronPositiveCharges,
+        coloringCauldronNegativeCharges,
         variegatorOperationTimeSlow,
         variegatorOperationTimeFast,
         variegatorMatchedColorTimeDiscount,
@@ -545,6 +555,8 @@ public class ServerConfig
         galePressurizerTankCapacity = GALE_PRESSURIZER_TANK_CAPACITY.get();
         occultMatrixTankCapacity = OCCULT_MATRIX_TANK_CAPACITY.get();
         coloringCauldronBaseOperationTime = COLORING_CAULDRON_BASE_OPERATION_TIME.get();
+        coloringCauldronPositiveCharges = COLORING_CAULDRON_POSITIVE_CHARGES.get();
+        coloringCauldronNegativeCharges = COLORING_CAULDRON_NEGATIVE_CHARGES.get();
         variegatorOperationTimeSlow = VARIEGATOR_OPERATION_TIME_SLOW.get();
         variegatorOperationTimeFast = VARIEGATOR_OPERATION_TIME_FAST.get();
         variegatorMatchedColorTimeDiscount = VARIEGATOR_MATCHED_COLOR_TIME_DISCOUNT.get();

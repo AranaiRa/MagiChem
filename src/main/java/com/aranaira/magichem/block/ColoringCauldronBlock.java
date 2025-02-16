@@ -3,6 +3,9 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.block.entity.ColoringCauldronBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -17,25 +20,37 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
+
 public class ColoringCauldronBlock extends BaseEntityBlock {
 
     private static final VoxelShape
         VOXEL_SHAPE_FOOT_NS, VOXEL_SHAPE_FOOT_EW, VOXEL_SHAPE_BODY, VOXEL_SHAPE_RIM, VOXEL_SHAPE_AGGREGATE;
+    public static final TagKey<Block> PASSIVE_HEAT_TAG = BlockTags.create(new ResourceLocation("minecraft", "alembic_passive_heat_source"));
 
     public ColoringCauldronBlock(Properties pProperties) {
         super(pProperties);
+        registerDefaultState(this.defaultBlockState()
+                .setValue(LIT, false));
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new ColoringCauldronBlockEntity(pPos, pState);
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(LIT);
     }
 
     @Nullable
@@ -76,6 +91,19 @@ public class ColoringCauldronBlock extends BaseEntityBlock {
             ccbe.collectItem(pLevel, pPlayer);
         }
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+
+        boolean passiveHeat = pLevel.getBlockState(pPos.below()).is(PASSIVE_HEAT_TAG);
+
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof ColoringCauldronBlockEntity ccbe) {
+            ccbe.checkForColorVoid(passiveHeat);
+        }
+        pLevel.setBlock(pPos, defaultBlockState().setValue(LIT, passiveHeat), 3);
     }
 
     @Override

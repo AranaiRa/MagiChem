@@ -789,7 +789,9 @@
 
   "hud.magichem.coloring_cauldron.current_item.processing": "Coloring ",
   "hud.magichem.coloring_cauldron.current_item.waiting": " Complete",
-  "hud.magichem.coloring_cauldron.dye_list": "Possible Colors:",
+  "hud.magichem.coloring_cauldron.dye_list": "Possible Colors",
+  "hud.magichem.coloring_cauldron.dye_list.additive": "Additive",
+  "hud.magichem.coloring_cauldron.dye_list.subtractive": "Subtractive",
   "hud.magichem.coloring_cauldron.dye_list.waiting": "Waiting for Dyes...",
   "hud.magichem.coloring_cauldron.remaining.part1": "Can color ",
   "hud.magichem.coloring_cauldron.remaining.part2": " more items",

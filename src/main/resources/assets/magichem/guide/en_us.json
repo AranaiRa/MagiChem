@@ -1691,21 +1691,49 @@
             "color": "dark_purple"
           },
           {
-            "text": " is a device capable of performing simple, if imprecise, "
+            "text": " is a device capable of performing alchemical "
           },
           {
             "text": "Coloration",
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nYou must supply one or more pieces of dye in addition to the item to color. After waiting for the item to steep in the Cauldron for awhile, the item will transform into a color "
+            "text": ".\n\nThe Cauldron operates in "
+          },
+          {
+            "text": "Additive",
+            "color": "dark_green"
+          },
+          {
+            "text": " mode by default, or in "
+          },
+          {
+            "text": "Subtractive",
+            "color": "dark_red"
+          },
+          {
+            "text": " mode when placed on top of a passive heat source. If a passive heat source is added or removed any remaining dye in the Coloring Cauldron will be lost.\n\nDye and colorable items can be thrown into the Cauldron. If the Cauldron can't accept the item for any reason, it will remain in the world instead of being absorbed.\n\nWhen in "
+          },
+          {
+            "text": "Additive",
+            "color": "dark_green"
+          },
+          {
+            "text": " mode, the Cauldron can only accept one color of dye at a time. Each dye allows the Cauldron to color three items. A Coloring Cauldron in Positive mode can accept extra pieces of the same type of dye.\n\nWhen in "
+          },
+          {
+            "text": "Subtractive",
+            "color": "dark_red"
+          },
+          {
+            "text": " mode, the Cauldron can accept up to 15 different dye colors. When an item finishes processing, it will receive a random color "
           },
           {
             "text": "other than",
             "italic": true
           },
           {
-            "text": " the dye supplied.\n\nYou can supply multiple pieces of dye to remove other colors from the pool of potential colors. Each additional dye allows you to color an additional item with the same pool of potential colors after the initial item's coloring is complete. Only one piece of each color of dye can be added to the Coloring Cauldron until all the dye inside has been used up.\n\nItems are inserted into the Coloring Cauldron by throwing them. The coloring process takes about a minute if only a single piece of dye is supplied, but this time is significantly reduced by adding more pieces of dye.\n\n\n\n\n",
+            "text": " the colors supplied. For example, if you supply White, Light Gray, Gray, and Black dye the item will be set to a color except White, Light Gray, Gray, or Black. Dyes added to a Subtractive cauldron can color 5 items, but only one of each dye color can be added until the Cauldron is empty or changed to Positive mode.\n\nItems are colored significantly faster in Subtractive mode: A little more than twice as quickly as Additive mode with one dye, and around ten times as quickly if fifteen dye colors are supplied.",
             "italic": false
           }
         ]

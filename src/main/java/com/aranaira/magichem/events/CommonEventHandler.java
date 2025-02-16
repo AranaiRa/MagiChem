@@ -62,6 +62,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
 
 @Mod.EventBusSubscriber(
         modid = MagiChemMod.MODID,
@@ -305,29 +306,35 @@ public class CommonEventHandler {
                     }
                 }
                 else if (blockEntity instanceof ColoringCauldronBlockEntity ccbe) {
-//                    if(ccbe.hasItem()) {
-                        final List<String> infoReadout = ccbe.getInfoReadout();
-                        event.getGuiGraphics().drawString(font, infoReadout.get(0), x + 4, y + 4, 0xffffff, true);
+                    final List<String> infoReadout = ccbe.getInfoReadout();
 
-                        if(!ccbe.isReadyToCollect()) {
-                            if (ccbe.hasColors()) {
-                                event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.remaining.part1")
-                                        .append(Component.literal(""+ccbe.getOperationsRemaining())
-                                        .append(Component.translatable("hud.magichem.coloring_cauldron.remaining.part2"))),
-                                        x + 4, y + 20, 0xffffff, true);
+                    boolean lit = ccbe.getBlockState().getValue(LIT);
+                    MutableComponent indicator = Component.literal(" [")
+                        .append((lit ? Component.translatable("hud.magichem.coloring_cauldron.dye_list.subtractive") : Component.translatable("hud.magichem.coloring_cauldron.dye_list.additive")).withStyle(lit ? ChatFormatting.RED : ChatFormatting.GREEN)
+                        .append(Component.literal("]").withStyle(ChatFormatting.WHITE)));
 
-                                event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list"), x + 4, y + 36, 0xffffff, true);
+                    event.getGuiGraphics().drawString(font, infoReadout.get(0), x + 4, y + 4, 0xffffff, true);
 
-                                for(int i=1; i<infoReadout.size(); i++) {
-                                    event.getGuiGraphics().drawString(font, infoReadout.get(i), x + 10, y + 36 + (i * 12), 0xffffff, true);
-                                }
-                                return;
-                            } else {
-                                event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list.waiting"), x + 4, y + 20, 0xffffff, true);
-                                return;
+                    if(!ccbe.isReadyToCollect()) {
+                        if (ccbe.hasColors()) {
+                            event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.remaining.part1")
+                                    .append(Component.literal(""+ccbe.getOperationsRemaining())
+                                    .append(Component.translatable("hud.magichem.coloring_cauldron.remaining.part2"))),
+                                    x + 4, y + 20, 0xffffff, true);
+
+                            event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list")
+                                    .append(indicator).append(":"),
+                                    x + 4, y + 36, 0xffffff, true);
+
+                            for(int i=1; i<infoReadout.size(); i++) {
+                                event.getGuiGraphics().drawString(font, infoReadout.get(i), x + 10, y + 36 + (i * 12), 0xffffff, true);
                             }
+                            return;
+                        } else {
+                            event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list.waiting"), x + 4, y + 20, 0xffffff, true);
+                            return;
                         }
-//                    }
+                    }
                 }
                 else if (Minecraft.getInstance().player.isCrouching() && blockEntity != null) {
                     List<MutableComponent> components = new ArrayList<>();
