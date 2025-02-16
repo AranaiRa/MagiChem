@@ -414,17 +414,17 @@ public class CommonEventHandler {
                         }
                     } else if (blockEntity instanceof GrandFuseryRouterBlockEntity gfrbe) {
                         boolean hasLaboratoryUpgrade = state.getValue(HAS_LABORATORY_UPGRADE);
-                        GrandCentrifugeRouterType routerType = GrandCentrifugeRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_GRAND_CENTRIFUGE));
+                        GrandFuseryRouterType routerType = GrandFuseryRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_GRAND_FUSERY));
 
-                        if(routerType == GrandCentrifugeRouterType.PLUG_BACK_LEFT ||
-                           routerType == GrandCentrifugeRouterType.PLUG_BACK_RIGHT ||
-                           routerType == GrandCentrifugeRouterType.PLUG_FRONT_LEFT ||
-                           routerType == GrandCentrifugeRouterType.PLUG_FRONT_RIGHT) {
+                        if(routerType == GrandFuseryRouterType.PLUG_BACK_LEFT ||
+                           routerType == GrandFuseryRouterType.PLUG_BACK_RIGHT ||
+                           routerType == GrandFuseryRouterType.PLUG_FRONT_LEFT ||
+                           routerType == GrandFuseryRouterType.PLUG_FRONT_RIGHT) {
 
                             if(CommonEventHelper.checkDirectionAndPos(gfrbe.getPlugDirection(), bhr)) {
                                 mode = 1;
                             }
-                        } else if(hasLaboratoryUpgrade && (routerType == GrandCentrifugeRouterType.PLUG_MID_LEFT || routerType == GrandCentrifugeRouterType.PLUG_MID_RIGHT)) {
+                        } else if(hasLaboratoryUpgrade && (routerType == GrandFuseryRouterType.PLUG_MID_LEFT || routerType == GrandFuseryRouterType.PLUG_MID_RIGHT)) {
 
                             if(CommonEventHelper.checkDirectionAndPos(gfrbe.getPlugDirection(), bhr)) {
                                 mode = 1;
