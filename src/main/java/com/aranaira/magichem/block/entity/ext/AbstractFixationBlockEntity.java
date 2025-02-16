@@ -481,7 +481,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         else
             otmScalar = 1;
 
-        float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize / 4);
+        float batchScalar = ActuatorAirBlockEntity.getPenaltyRateFromBatchSize(pBatchSize);
 
         if(poweredOpTime == -1) {
             return Math.round(pVarFunc.apply(IDs.CONFIG_OPERATION_TIME) * getTimeScalar(pGrime, pVarFunc) * otmScalar * batchScalar);
