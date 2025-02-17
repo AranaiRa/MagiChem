@@ -181,8 +181,19 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
         //bg and panel elements
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
+        float dim = (menu.blockEntity.getAnimStage() == ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_CRAFTING_IDLE) ? 1.0f : 0.5f;
+        pGuiGraphics.setColor(dim, dim, dim, 1.0f);
         pGuiGraphics.blit(TEXTURE, x + PANEL_STATS_X, y + PANEL_STATS_Y, PANEL_STATS_U, PANEL_STATS_V, PANEL_STATS_W, PANEL_STATS_H);
+        pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         pGuiGraphics.blit(TEXTURE, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
+
+        if(dim != 1.0f) {
+            b_powerLevelDown.visible = false;
+            b_powerLevelUp.visible = false;
+        } else {
+            b_powerLevelDown.visible = true;
+            b_powerLevelUp.visible = true;
+        }
 
         //slurry gauge
         int slurryH = AlchemicalNexusBlockEntity.getScaledSlurry(menu.getSlurryInTank());
@@ -474,50 +485,58 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             }
         }
 
-        //Experience Cost
-        if(pX >= x+TOOLTIP_EXPERIENCE_X && pX <= x+TOOLTIP_EXPERIENCE_X+TOOLTIP_EXPERIENCE_W &&
-                pY >= y+TOOLTIP_EXPERIENCE_Y && pY <= y+TOOLTIP_EXPERIENCE_Y+TOOLTIP_EXPERIENCE_H) {
+        if(menu.blockEntity.getAnimStage() == ANIM_STAGE_IDLE) {
+            //Experience Cost
+            if (pX >= x + TOOLTIP_EXPERIENCE_X && pX <= x + TOOLTIP_EXPERIENCE_X + TOOLTIP_EXPERIENCE_W &&
+                    pY >= y + TOOLTIP_EXPERIENCE_Y && pY <= y + TOOLTIP_EXPERIENCE_Y + TOOLTIP_EXPERIENCE_H) {
 
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.experience").withStyle(ChatFormatting.GOLD))
-                    .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.experience.line1")));
-            tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.translatable("tooltip.magichem.gui.experience.line2"));
-        }
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.experience").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.experience.line1")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.experience.line2"));
+            }
 
-        //Operation Time
-        if(pX >= x+TOOLTIP_OPTIME_X && pX <= x+TOOLTIP_OPTIME_X+TOOLTIP_OPTIME_W &&
-                pY >= y+TOOLTIP_OPTIME_Y && pY <= y+TOOLTIP_OPTIME_Y+TOOLTIP_OPTIME_H) {
+            //Operation Time
+            if (pX >= x + TOOLTIP_OPTIME_X && pX <= x + TOOLTIP_OPTIME_X + TOOLTIP_OPTIME_W &&
+                    pY >= y + TOOLTIP_OPTIME_Y && pY <= y + TOOLTIP_OPTIME_Y + TOOLTIP_OPTIME_H) {
 
-            tooltipContents.clear();
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
-                    .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
-            tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime.nexus.line2")));
-        }
+                tooltipContents.clear();
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.operationtime.nexus.line2")));
+            }
 
-        //Siphon Mode
-        if(pX >= x+TOOLTIP_SIPHON_X && pX <= x+TOOLTIP_SIPHON_X+TOOLTIP_SIPHON_W &&
-                pY >= y+TOOLTIP_SIPHON_Y && pY <= y+TOOLTIP_SIPHON_Y+TOOLTIP_SIPHON_H) {
+            //Siphon Mode
+            if (pX >= x + TOOLTIP_SIPHON_X && pX <= x + TOOLTIP_SIPHON_X + TOOLTIP_SIPHON_W &&
+                    pY >= y + TOOLTIP_SIPHON_Y && pY <= y + TOOLTIP_SIPHON_Y + TOOLTIP_SIPHON_H) {
 
-            tooltipContents.clear();
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.siphonmode").withStyle(ChatFormatting.GOLD))
-                    .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.siphonmode.line1")));
-            tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.siphonmode.line2")));
-            tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.siphonmode.line3")));
-            tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.siphonmode.line4")));
+                tooltipContents.clear();
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.siphonmode").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.siphonmode.line1")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.siphonmode.line2")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.siphonmode.line3")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.siphonmode.line4")));
+            }
+        } else {
+            if (pX >= x + PANEL_STATS_X && pX <= x + PANEL_STATS_X + PANEL_STATS_W &&
+                    pY >= y + PANEL_STATS_Y && pY <= y + PANEL_STATS_Y + PANEL_STATS_H) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.sublimationconfiglocked")));
+            }
         }
 
         if(menu.getCurrentRecipe() != null) {
