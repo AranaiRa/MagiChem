@@ -150,6 +150,11 @@ public class CirclePowerBlock extends BaseEntityBlock {
                 CirclePowerBlockEntity::tick);
     }
 
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return 15;
+    }
+
     public static List<Pair<BlockPos, Integer>> getRouterOffsets() {
         List<Pair<BlockPos, Integer>> offsets = new ArrayList<>();
         BlockPos origin = new BlockPos(0,0,0);
