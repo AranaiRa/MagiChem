@@ -1,7 +1,7 @@
 {
   "type": "magichem:distillation_fabrication",
   "distill_only": true,
-  "output_rate": 0.0625,
+  "output_rate": 0.03125,
   "object": { "item": "minecraft:stick" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 1 }
