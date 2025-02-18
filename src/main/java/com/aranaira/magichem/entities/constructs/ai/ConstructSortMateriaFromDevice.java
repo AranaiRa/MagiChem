@@ -449,7 +449,12 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         }
 
         if(!voidExcess) {
-            if(foundFilter && jarTargetEntity.getCurrentStock() >= jarTargetEntity.getStorageLimit()) {
+            if(foundFilter) {
+                if(jarTargetEntity.getCurrentStock() >= jarTargetEntity.getStorageLimit()) {
+                    jarTargetEntity = firstEmpty;
+                    jarTargetPos = firstEmptyPos;
+                }
+            } else {
                 jarTargetEntity = firstEmpty;
                 jarTargetPos = firstEmptyPos;
             }
