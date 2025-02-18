@@ -375,6 +375,11 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
                         //try to push fuel to an open slot in an inferno engine if there is one
                         pEntity.itemHandler.setStackInSlot(SLOT_FUEL,fire.tryPushFuel(pEntity.itemHandler.getStackInSlot(SLOT_FUEL)));
                     }
+                    if(pEntity.remainingHeat == 0 && dpbe.getIsSatisfied() && !dpbe.getPaused()) {
+                        pEntity.remainingHeat = 1000;
+                        pEntity.heatDuration = 1000;
+                        pEntity.syncAndSave();
+                    }
                 }
             }
         }
