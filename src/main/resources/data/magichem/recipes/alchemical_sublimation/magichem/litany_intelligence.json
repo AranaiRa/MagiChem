@@ -1,0 +1,23 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:litany_intelligence",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 8,
+      "components": [
+        { "item": "mna:vellum" },
+        { "item": "minecraft:book" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_arcane", "count": 40 },
+        { "item": "magichem:admixture_thought", "count": 35 },
+        { "item": "magichem:admixture_construct", "count": 3 }
+      ]
+    }
+  ]
+}

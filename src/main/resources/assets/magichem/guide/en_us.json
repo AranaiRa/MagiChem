@@ -4974,24 +4974,24 @@
       }
     ]
   },
-  "Exaltations": {
+  "Litanies": {
     "index": "0",
     "category": "magichem_wonders",
     "tier": 2,
     "sections": [
       {
         "type": "title",
-        "value": "Exaltations"
+        "value": "Litanies"
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "An "
+            "text": "A "
           },
           {
-            "text": "Exaltation",
+            "text": "Litany",
             "color": "dark_purple"
           },
           {
@@ -5002,7 +5002,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " to upgrade it to a more advanced part.\n\nAn Exaltation has no effect on a summoned construct, it can only be combined with a construct part while it is in item form."
+            "text": " to upgrade it to a more advanced part.\n\nA Litany has no effect on a summoned construct, it can only be combined with a construct part while it is in item form."
           }
         ]
       }
@@ -5010,31 +5010,31 @@
     "related_recipes": [
       {
         "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/exaltation_intelligence"
+        "location": "magichem:alchemical_sublimation/magichem/litany_intelligence"
       },
       {
         "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/exaltation_resonance"
+        "location": "magichem:alchemical_sublimation/magichem/litany_resonance"
       },
       {
         "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/exaltation_emptiness"
+        "location": "magichem:alchemical_sublimation/magichem/litany_emptiness"
       },
       {
         "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/exaltation_resilience"
+        "location": "magichem:alchemical_sublimation/magichem/litany_resilience"
       },
       {
         "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/exaltation_saturation"
+        "location": "magichem:alchemical_sublimation/magichem/litany_saturation"
       },
       {
         "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/exaltation_sorcery"
+        "location": "magichem:alchemical_sublimation/magichem/litany_sorcery"
       },
       {
         "type": "crafting",
-        "location": "magichem:shapeless/construct/exaltation_head_stone_smart"
+        "location": "magichem:shapeless/construct/litany_head_stone_smart"
       }
     ]
   },

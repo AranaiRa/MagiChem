@@ -1,0 +1,24 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:litany_sorcery",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:vellum" },
+        { "item": "mna:mana_resevoir" },
+        { "item": "mna:mote_magic" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_nourishing", "count": 20 },
+        { "item": "magichem:admixture_mana", "count": 15 },
+        { "item": "magichem:admixture_construct", "count": 3 }
+      ]
+    }
+  ]
+}

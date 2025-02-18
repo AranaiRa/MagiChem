@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:litany_sorcery" },
+    { "item": "mna:constructs/construct_basic_torso_obsidian" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_mana_torso_obsidian",
+    "count": 1
+  }
+}

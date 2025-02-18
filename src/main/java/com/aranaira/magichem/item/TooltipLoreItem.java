@@ -289,39 +289,39 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == ItemRegistry.EXALTATION_INTELLIGENCE.get()) {
+        else if(pStack.getItem() == ItemRegistry.LITANY_INTELLIGENCE.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.exaltationintelligence")
+                    Component.translatable("tooltip.magichem.litanyintelligence")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == ItemRegistry.EXALTATION_RESONANCE.get()) {
+        else if(pStack.getItem() == ItemRegistry.LITANY_RESONANCE.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.exaltationresonance")
+                    Component.translatable("tooltip.magichem.litanyresonance")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == ItemRegistry.EXALTATION_EMPTINESS.get()) {
+        else if(pStack.getItem() == ItemRegistry.LITANY_EMPTINESS.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.exaltationemptiness")
+                    Component.translatable("tooltip.magichem.litanyemptiness")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == ItemRegistry.EXALTATION_RESILIENCE.get()) {
+        else if(pStack.getItem() == ItemRegistry.LITANY_RESILIENCE.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.exaltationresilience")
+                    Component.translatable("tooltip.magichem.litanyresilience")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == ItemRegistry.EXALTATION_SATURATION.get()) {
+        else if(pStack.getItem() == ItemRegistry.LITANY_SATURATION.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.exaltationsaturation")
+                    Component.translatable("tooltip.magichem.litanysaturation")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == ItemRegistry.EXALTATION_SORCERY.get()) {
+        else if(pStack.getItem() == ItemRegistry.LITANY_SORCERY.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.exaltationsorcery")
+                    Component.translatable("tooltip.magichem.litanysorcery")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }

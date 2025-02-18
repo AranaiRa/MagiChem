@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:litany_resilience" },
+    { "item": "mna:constructs/construct_basic_torso_stone" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_armor_torso_stone",
+    "count": 1
+  }
+}

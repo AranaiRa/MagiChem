@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:litany_intelligence" },
+    { "item": "mna:constructs/construct_basic_head_diamond" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_smart_head_diamond",
+    "count": 1
+  }
+}

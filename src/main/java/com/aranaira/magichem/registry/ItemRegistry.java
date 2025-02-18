@@ -130,27 +130,27 @@ public class ItemRegistry {
             () -> new ChargingTalismanItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<TooltipLoreItem> EXALTATION_INTELLIGENCE = ITEMS.register("exaltation_intelligence",
+    public static final RegistryObject<TooltipLoreItem> LITANY_INTELLIGENCE = ITEMS.register("litany_intelligence",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> EXALTATION_RESONANCE = ITEMS.register("exaltation_resonance",
+    public static final RegistryObject<TooltipLoreItem> LITANY_RESONANCE = ITEMS.register("litany_resonance",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> EXALTATION_EMPTINESS = ITEMS.register("exaltation_emptiness",
+    public static final RegistryObject<TooltipLoreItem> LITANY_EMPTINESS = ITEMS.register("litany_emptiness",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> EXALTATION_RESILIENCE = ITEMS.register("exaltation_resilience",
+    public static final RegistryObject<TooltipLoreItem> LITANY_RESILIENCE = ITEMS.register("litany_resilience",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> EXALTATION_SATURATION = ITEMS.register("exaltation_saturation",
+    public static final RegistryObject<TooltipLoreItem> LITANY_SATURATION = ITEMS.register("litany_saturation",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> EXALTATION_SORCERY = ITEMS.register("exaltation_sorcery",
+    public static final RegistryObject<TooltipLoreItem> LITANY_SORCERY = ITEMS.register("litany_sorcery",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 

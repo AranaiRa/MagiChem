@@ -1,0 +1,24 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:litany_resilience",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:vellum" },
+        { "item": "mna:rune_defense" },
+        { "item": "mna:mote_earth" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_wrought", "count": 20 },
+        { "item": "magichem:admixture_protection", "count": 15 },
+        { "item": "magichem:admixture_construct", "count": 3 }
+      ]
+    }
+  ]
+}

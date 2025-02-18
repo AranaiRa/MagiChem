@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:litany_resonance" },
+    { "item": "mna:constructs/construct_basic_head_iron" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_horn_head_iron",
+    "count": 1
+  }
+}
