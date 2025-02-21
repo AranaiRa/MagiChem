@@ -43,5 +43,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.SIGNALITE_SEER_BE.get(), SignaliteSeerBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.SIGNALITE_PAIR_BE.get(), SignalitePairBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.STANDING_RETORT_BE.get(), StandingRetortBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.PRISMATIC_CONDUIT_BE.get(), PrismaticConduitBlockEntityRenderer::new);
     }
 }

@@ -1,0 +1,42 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:prismatic_conduit"
+  },
+  "stages": [
+    {
+      "experience": 10,
+      "components": [
+        { "item": "mna:eldrin_conduit_ender" },
+        { "item": "magichem:rarefied_waste" },
+        { "item": "mna:eldrin_conduit_earth" },
+        { "item": "magichem:rarefied_waste" },
+        { "item": "mna:eldrin_conduit_water" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_realm", "count": 36 },
+        { "item": "magichem:essentia_ender", "count": 152 },
+        { "item": "magichem:essentia_earth", "count": 152 },
+        { "item": "magichem:essentia_water", "count": 152 }
+      ]
+    },
+    {
+      "experience": 15,
+      "components": [
+        { "item": "mna:eldrin_conduit_air" },
+        { "item": "magichem:rarefied_waste" },
+        { "item": "mna:eldrin_conduit_fire" },
+        { "item": "magichem:rarefied_waste" },
+        { "item": "mna:eldrin_conduit_arcane" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_permanence", "count": 21 },
+        { "item": "magichem:essentia_air", "count": 152 },
+        { "item": "magichem:essentia_fire", "count": 152 },
+        { "item": "magichem:essentia_arcane", "count": 152 }
+      ]
+    }
+  ]
+}

@@ -5371,5 +5371,56 @@
       }
     ]
   },
+  "Litanies": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Prismatic Conduits"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A skilled alchemist can combine all six varities of "
+          },
+          {
+            "text": "Eldrin Conduits",
+            "color": "dark_purple"
+          },
+          {
+            "text": " into a single "
+          },
+          {
+            "text": "Prismatic Conduit",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThis fused conduit can supply all six types of Eldrin power and has a buffer "
+          },
+          {
+            "text": "twelve times larger",
+            "color": "dark_purple"
+          },
+          {
+            "text": " than a single conduit."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/prismatic_conduit_lesser"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/prismatic_conduit"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

@@ -1,0 +1,42 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:prismatic_conduit_lesser"
+  },
+  "stages": [
+    {
+      "experience": 7,
+      "components": [
+        { "item": "mna:lesser_eldrin_conduit_ender" },
+        { "item": "magichem:alchemical_waste" },
+        { "item": "mna:lesser_eldrin_conduit_earth" },
+        { "item": "magichem:alchemical_waste" },
+        { "item": "mna:lesser_eldrin_conduit_water" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_realm", "count": 4 },
+        { "item": "magichem:essentia_ender", "count": 8 },
+        { "item": "magichem:essentia_earth", "count": 8 },
+        { "item": "magichem:essentia_water", "count": 8 }
+      ]
+    },
+    {
+      "experience": 9,
+      "components": [
+        { "item": "mna:lesser_eldrin_conduit_air" },
+        { "item": "magichem:alchemical_waste" },
+        { "item": "mna:lesser_eldrin_conduit_fire" },
+        { "item": "magichem:alchemical_waste" },
+        { "item": "mna:lesser_eldrin_conduit_arcane" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_permanence", "count": 4 },
+        { "item": "magichem:essentia_air", "count": 8 },
+        { "item": "magichem:essentia_fire", "count": 8 },
+        { "item": "magichem:essentia_arcane", "count": 8 }
+      ]
+    }
+  ]
+}

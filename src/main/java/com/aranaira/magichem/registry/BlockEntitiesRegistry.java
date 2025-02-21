@@ -227,6 +227,13 @@ public class BlockEntitiesRegistry {
             ).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<PrismaticConduitBlockEntity>> PRISMATIC_CONDUIT_BE = BLOCK_ENTITIES.register("prismatic_conduit", () ->
+            BlockEntityType.Builder.of(PrismaticConduitBlockEntity::new,
+                    BlockRegistry.PRISMATIC_CONDUIT.get(),
+                    BlockRegistry.PRISMATIC_CONDUIT_LESSER.get()
+                    ).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

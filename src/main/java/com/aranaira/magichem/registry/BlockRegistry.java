@@ -8,6 +8,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -287,6 +289,14 @@ public class BlockRegistry {
     public static final RegistryObject<Block> SIX_STATE_LEVER = registerBlock("six_state_lever",
             () -> new MultiStateLeverBlock(5, BlockBehaviour.Properties.of()
                     .strength(0.5f).noOcclusion().noCollission().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<PrismaticConduitBlock> PRISMATIC_CONDUIT = registerBlock("prismatic_conduit",
+            () -> new PrismaticConduitBlock(false)
+    );
+
+    public static final RegistryObject<PrismaticConduitBlock> PRISMATIC_CONDUIT_LESSER = registerBlock("prismatic_conduit_lesser",
+            () -> new PrismaticConduitBlock(true)
     );
 
     public static final RegistryObject<Block> BLEACHED_AMETHYST_BLOCK = registerBlock("bleached_amethyst_block",
