@@ -13,7 +13,7 @@
         "distill_only": false,
         "output_rate": 1.0,
         "object": {
-          "item": "hexerei:belladonna_flower"
+          "item": "hexerei:belladonna_plant"
         },
         "components": [
           {

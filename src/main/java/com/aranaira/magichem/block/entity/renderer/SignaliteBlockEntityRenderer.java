@@ -48,17 +48,22 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         float color = (signalStrength / 15f) * 0.4f + 0.3f + (signalStrength > 0 ? 0.3f : 0f);
 
         float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
+
         int bobPeriod = 182;
-        double bob = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 360f) % bobPeriod) / (float)bobPeriod) * Math.PI * 2);
+        int gt = (int)(pBlockEntity.getLevel().getGameTime() % (bobPeriod * 2));
+        double bob = (float) Math.sin(((((float)gt + pPartialTick + (posIndex / 12f) * 360f) % (float)bobPeriod) / (float)bobPeriod) * Math.PI * 2);
 
         int xPeriod = 216;
-        float xTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % xPeriod) / (float)xPeriod) * Math.PI * 2);
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (xPeriod * 2));
+        float xTime = (float) Math.sin(((((float)gt + pPartialTick + (posIndex / 12f) * 240f) % (float)xPeriod) / (float)xPeriod) * Math.PI * 2);
 
         int yPeriod = 432;
-        float yTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % yPeriod) / (float)yPeriod) * Math.PI * 2);
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (yPeriod * 2));
+        float yTime = (float) Math.sin(((((float)gt + pPartialTick + (posIndex / 12f) * 240f) % (float)yPeriod) / (float)yPeriod) * Math.PI * 2);
 
         int zPeriod = 288;
-        float zTime = (float) Math.sin((((world.getGameTime() + pPartialTick + (posIndex / 12f) * 240f) % zPeriod) / (float)zPeriod) * Math.PI * 2);
+        gt = (int)(pBlockEntity.getLevel().getGameTime() % (zPeriod * 2));
+        float zTime = (float) Math.sin(((((float)gt + pPartialTick + (posIndex / 12f) * 240f) % (float)zPeriod) / (float)zPeriod) * Math.PI * 2);
 
         pPoseStack.pushPose();
         pPoseStack.translate(0.5, 0.5 + bob * 0.015625, 0.5);

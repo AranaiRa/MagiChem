@@ -45,24 +45,24 @@ public class SignaliteSeerBlockEntityRenderer implements BlockEntityRenderer<Sig
         float posIndex = Math.abs(pos.getX() % 4) + Math.abs(pos.getY() % 4) + Math.abs(pos.getZ() % 4);
         int bobPeriod = 182;
         int gt = (int)(world.getGameTime() % (bobPeriod * 2));
-        double bob = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 360f) % bobPeriod) / (float)bobPeriod) * Math.PI * 2);
+        double bob = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 360f) % (float)bobPeriod) / (float)bobPeriod) * Math.PI * 2);
 
         int xPeriod = 216;
         gt = (int)(world.getGameTime() % (xPeriod * 2));
-        float xTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % xPeriod) / (float)xPeriod) * Math.PI * 2);
+        float xTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % (float)xPeriod) / (float)xPeriod) * Math.PI * 2);
 
         int yPeriod = 432;
         gt = (int)(world.getGameTime() % (yPeriod * 2));
-        float yTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % yPeriod) / (float)yPeriod) * Math.PI * 2);
+        float yTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % (float)yPeriod) / (float)yPeriod) * Math.PI * 2);
 
         int zPeriod = 288;
         gt = (int)(world.getGameTime() % (zPeriod * 2));
-        float zTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % zPeriod) / (float)zPeriod) * Math.PI * 2);
+        float zTime = (float) Math.sin(((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % (float)zPeriod) / (float)zPeriod) * Math.PI * 2);
 
         //if the seer is vertical also give it some slow Y rotation
         int verticalSpinPeriod = 984;
         gt = (int)(world.getGameTime() % (verticalSpinPeriod * 2));
-        float yVerticalRotDegrees = ((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % verticalSpinPeriod) / (float)verticalSpinPeriod) * 360f;
+        float yVerticalRotDegrees = ((float)((gt + pPartialTick + (posIndex / 12f) * 240f) % (float)verticalSpinPeriod) / (float)verticalSpinPeriod) * 360f;
 
         pPoseStack.pushPose();
         pPoseStack.translate(0.5, 0.5 + bob * 0.015625, 0.5);
