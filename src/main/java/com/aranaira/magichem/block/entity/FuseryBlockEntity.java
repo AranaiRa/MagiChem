@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 21,
@@ -706,5 +706,28 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         provide(pStack);
 
         return 0;
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        if(pStack.getItem() instanceof AdmixtureItem) {
+            itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(pStack.getItem()));
+            getCurrentRecipe();
+            syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+        return ERROR_CODE_MUST_BE_ADMIXTURE;
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        if(pMakeCopy)
+            return itemHandler.getStackInSlot(SLOT_RECIPE).copy();
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
     }
 }

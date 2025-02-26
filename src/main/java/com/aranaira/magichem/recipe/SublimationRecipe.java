@@ -116,7 +116,7 @@ public class SublimationRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static SublimationRecipe getInfusionRecipe(Level level, ItemStack query) {
+    public static SublimationRecipe getSublimationRecipe(Level level, ItemStack query) {
         SublimationRecipe result = null;
         List<SublimationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 

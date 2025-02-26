@@ -34,9 +34,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.aranaira.magichem.block.FuseryRouterBlock.*;
+import static com.aranaira.magichem.foundation.IHasDeviceRecipeSlot.ERROR_CODE_NO_BLOCK_ENTITY;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
-public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester {
+public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot {
     private BlockPos masterPos;
     private FuseryBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -328,5 +329,29 @@ public class FuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency i
         if(master == null) return false;
 
         return master.needsSorting();
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        if(master == null) getMaster();
+        if(master == null) return ERROR_CODE_NO_BLOCK_ENTITY;
+
+        return getMaster().setRecipe(pStack);
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        if(master == null) getMaster();
+        if(master == null) return null;
+
+        return getMaster().getRecipeItem();
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        if(master == null) getMaster();
+        if(master == null) return null;
+
+        return getMaster().getRecipeItem(pMakeCopy);
     }
 }

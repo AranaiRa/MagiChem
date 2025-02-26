@@ -3,10 +3,7 @@ package com.aranaira.magichem.block.entity.routers;
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.item.MateriaItem;
@@ -34,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver, IDestroysMasterOnDestruction, IMateriaProvisionRequester {
+public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot {
 
     private BlockPos masterPos;
     private AlchemicalNexusBlockEntity master;
@@ -298,5 +295,29 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     @Override
     public void provide(ItemStack pStack) {
         getMaster().provide(pStack);
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        if(masterPos == null)
+            return ERROR_CODE_NO_BLOCK_ENTITY;
+
+        return getMaster().setRecipe(pStack);
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        if(masterPos == null)
+            return null;
+
+        return getMaster().getRecipeItem();
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        if(masterPos == null)
+            return null;
+
+        return getMaster().getRecipeItem(pMakeCopy);
     }
 }

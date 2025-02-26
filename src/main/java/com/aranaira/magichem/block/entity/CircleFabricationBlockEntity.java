@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
+import com.aranaira.magichem.foundation.IHasDeviceRecipeSlot;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
@@ -56,7 +57,7 @@ import java.util.function.Consumer;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 
-public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction {
+public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
@@ -773,5 +774,25 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     @Override
     public void destroyRouters() {
         CircleFabricationBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        DistillationFabricationRecipe distillationFabricationRecipeQuery = DistillationFabricationRecipe.getFabricatingRecipe(getLevel(), pStack);
+        if(distillationFabricationRecipeQuery == null)
+            return ERROR_CODE_NO_SUCH_RECIPE;
+
+        setCurrentRecipe(pStack);
+        return ERROR_CODE_SUCCESS;
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
     }
 }

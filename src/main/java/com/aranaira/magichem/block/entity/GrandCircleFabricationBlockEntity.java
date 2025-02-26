@@ -5,14 +5,12 @@ import com.aranaira.magichem.block.GrandCircleFabricationBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandCircleFabricationRouterBlockEntity;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.gui.GrandCircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
@@ -60,7 +58,7 @@ import java.util.function.Consumer;
 
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction {
+public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
@@ -939,5 +937,25 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                 if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
             }
         }
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        final DistillationFabricationRecipe distillationRecipeQuery = DistillationFabricationRecipe.getDistillingRecipe(getLevel(), pStack);
+        if(distillationRecipeQuery == null)
+            return ERROR_CODE_NO_SUCH_RECIPE;
+
+        setCurrentRecipe(pStack);
+        return ERROR_CODE_SUCCESS;
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
     }
 }

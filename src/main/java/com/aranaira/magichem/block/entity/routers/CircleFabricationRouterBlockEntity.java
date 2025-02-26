@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
+import com.aranaira.magichem.foundation.IHasDeviceRecipeSlot;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
@@ -19,6 +20,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_FABRICATION;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_POWER;
 
-public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction {
+public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction, IHasDeviceRecipeSlot {
     private BlockPos masterPos;
     private CircleFabricationBlockEntity master;
 
@@ -119,5 +121,29 @@ public class CircleFabricationRouterBlockEntity extends BlockEntity implements M
     public void destroyMaster() {
         getLevel().destroyBlock(getMasterPos(), true);
         CirclePowerBlock.destroyRouters(getLevel(), getMasterPos(), null);
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        if(masterPos == null)
+            return ERROR_CODE_NO_BLOCK_ENTITY;
+
+        return getMaster().setRecipe(pStack);
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        if(masterPos == null)
+            return null;
+
+        return getMaster().getRecipeItem();
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        if(masterPos == null)
+            return null;
+
+        return getMaster().getRecipeItem(pMakeCopy);
     }
 }

@@ -33,7 +33,7 @@ import java.util.Map;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_CIRCLE_FABRICATION;
 
-public class GrandCircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver {
+public class GrandCircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IHasDeviceRecipeSlot {
     private BlockPos masterPos;
     private GrandCircleFabricationBlockEntity master;
     private DevicePlugDirection plugDirection;
@@ -212,5 +212,29 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
         return getMaster().insertStackFromShlorp(pStack);
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        if(masterPos == null)
+            return ERROR_CODE_NO_BLOCK_ENTITY;
+
+        return getMaster().setRecipe(pStack);
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        if(masterPos == null)
+            return null;
+
+        return getMaster().getRecipeItem();
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        if(masterPos == null)
+            return null;
+
+        return getMaster().getRecipeItem(pMakeCopy);
     }
 }

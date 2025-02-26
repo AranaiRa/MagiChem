@@ -63,7 +63,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester {
+public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot {
 
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -114,7 +114,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             @Override
             protected void onContentsChanged(int slot) {
                 if(slot == SLOT_RECIPE) {
-                    currentRecipe = SublimationRecipe.getInfusionRecipe(level, getStackInSlot(SLOT_RECIPE));
+                    currentRecipe = SublimationRecipe.getSublimationRecipe(level, getStackInSlot(SLOT_RECIPE));
                     setChanged();
                 }
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
@@ -228,7 +228,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
-        currentRecipe = SublimationRecipe.getInfusionRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
+        currentRecipe = SublimationRecipe.getSublimationRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
     }
 
     @Override
@@ -349,7 +349,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
         itemHandler.deserializeNBT(pInventoryTag);
         if(level != null)
-            currentRecipe = SublimationRecipe.getInfusionRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
+            currentRecipe = SublimationRecipe.getSublimationRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
         else
             doDeferredRecipeLinkages = true;
     }
@@ -383,9 +383,16 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
 
             if(anbe.doDeferredRecipeLinkages) {
-                if (!anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty() && anbe.currentRecipe == null) {
-                    anbe.currentRecipe = SublimationRecipe.getInfusionRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
+                boolean hasRecipe = anbe.currentRecipe != null;
+                boolean itemInRecipeSlot = !anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty();
+
+                if (itemInRecipeSlot && !hasRecipe) {
+                    anbe.currentRecipe = SublimationRecipe.getSublimationRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
+                } else if(hasRecipe){
+                    if(anbe.itemHandler.getStackInSlot(SLOT_RECIPE).getItem() != anbe.currentRecipe.getAlchemyObject().getItem())
+                        anbe.currentRecipe = SublimationRecipe.getSublimationRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
                 }
+
                 if(anbe.animStage != ANIM_STAGE_IDLE) {
                     anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
                 }
@@ -909,7 +916,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public void setRecipeFromOutput(Level pLevel, ItemStack pQuery) {
-        SublimationRecipe air = SublimationRecipe.getInfusionRecipe(pLevel, pQuery);
+        SublimationRecipe air = SublimationRecipe.getSublimationRecipe(pLevel, pQuery);
         if(air != null) {
             this.currentRecipe = air;
             this.itemHandler.setStackInSlot(SLOT_RECIPE, air.getAlchemyObject());
@@ -1311,5 +1318,25 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     @Override
     public void provide(ItemStack pStack) {
         satisfy(pStack);
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        final SublimationRecipe sublimationRecipeQuery = SublimationRecipe.getSublimationRecipe(getLevel(), pStack);
+        if(sublimationRecipeQuery == null)
+            return ERROR_CODE_NO_SUCH_RECIPE;
+
+        setRecipeFromOutput(getLevel(), pStack);
+        return ERROR_CODE_SUCCESS;
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
     }
 }
