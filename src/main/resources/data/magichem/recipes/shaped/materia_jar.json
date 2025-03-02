@@ -10,7 +10,7 @@
       "tag": "minecraft:wooden_slabs"
     },
     "P": {
-      "tag": "forge:glass_panes"
+      "item": "magichem:alchemically_treated_glass_pane"
     },
     "W": {
       "item": "magichem:alchemical_waste"

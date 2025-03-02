@@ -284,6 +284,78 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_WOOD.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_WOOD.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_SILVER.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_SILVER.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_ELECTRUM.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_ELECTRUM.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_GOLD.get().asItem() ||
+                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_GOLD.get().asItem()
+        ) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.alchemicallytreatedglass")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_WOOD.get().asItem() ||
+               pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_WOOD.get().asItem()) {
+                pTooltipComponents.add(
+                        Component.translatable("tooltip.magichem.alchemicallytreatedglass.wood")
+                                .withStyle(ChatFormatting.DARK_GRAY)
+                );
+            }
+            else if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_SILVER.get().asItem() ||
+               pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_SILVER.get().asItem()) {
+                pTooltipComponents.add(
+                        Component.translatable("tooltip.magichem.alchemicallytreatedglass.silver")
+                                .withStyle(ChatFormatting.DARK_GRAY)
+                );
+            }
+            else if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_ELECTRUM.get().asItem() ||
+               pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_ELECTRUM.get().asItem()) {
+                pTooltipComponents.add(
+                        Component.translatable("tooltip.magichem.alchemicallytreatedglass.electrum")
+                                .withStyle(ChatFormatting.DARK_GRAY)
+                );
+            }
+            else if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_GOLD.get().asItem() ||
+               pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_GOLD.get().asItem()) {
+                pTooltipComponents.add(
+                        Component.translatable("tooltip.magichem.alchemicallytreatedglass.gold")
+                                .withStyle(ChatFormatting.DARK_GRAY)
+                );
+            }
+        }
+        else if(pStack.getItem() == BlockRegistry.MIRROR_GLASS_BLOCK.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.mirrorglass")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.MAGIC_MIRROR.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.magicmirror.line1")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.magicmirror.line2")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.PRISMATIC_CONDUIT.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.prismaticconduit")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.PRISMATIC_CONDUIT_LESSER.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.prismaticconduit.lesser")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

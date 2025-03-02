@@ -5419,7 +5419,7 @@
       }
     ]
   },
-  "Litanies": {
+  "Prismatic Conduits": {
     "index": "0",
     "category": "magichem_wonders",
     "tier": 2,
@@ -5467,6 +5467,70 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/prismatic_conduit"
+      }
+    ]
+  },
+  "Alchemically Treated Glass": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Alchemically-Treated Glass"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Alchemical Waste",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is completely non-reactive with Materia. Coating glass with this unpleasant substance confers this non-reactive property, making it ideal for alchemical glasswork.\n\nAlchemically-Treated Glass can be used for decoration, but it's also a component of several alchemical recipes."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/alchemically_treated_glass"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/alchemically_treated_glass_pane"
+      }
+    ]
+  },
+  "Mirror Glass": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Mirror Glass"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Mirror Glass",
+            "color": "dark_purple"
+          },
+          {
+            "text": " has been alchemically bound and treated to amplify the magical properties inherent to a mirrored surface. It can be used for decoration and is also used for crafting mirror-based magical items.\n\nWhen gazing into the surface of this magical mirror, one can occasionally catch a glimpse of a maze-like structure."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/mirror_glass"
       }
     ]
   },

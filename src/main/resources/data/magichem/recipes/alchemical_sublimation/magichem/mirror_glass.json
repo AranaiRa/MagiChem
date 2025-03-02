@@ -1,0 +1,26 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:mirror_glass_block"
+  },
+  "stages": [
+    {
+      "experience": 7,
+      "components": [
+        { "item": "magichem:alchemically_treated_glass" },
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "magichem:alchemically_treated_glass" },
+        { "item": "mna:decoration/transmuted_silver_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_crystal", "count": 28 },
+        { "item": "magichem:admixture_wizard", "count": 16 },
+        { "item": "magichem:admixture_instrument", "count": 13 },
+        { "item": "magichem:admixture_light", "count": 9 },
+        { "item": "magichem:admixture_trap", "count": 9 }
+      ]
+    }
+  ]
+}

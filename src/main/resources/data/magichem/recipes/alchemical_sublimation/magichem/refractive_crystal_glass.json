@@ -9,9 +9,9 @@
     {
       "experience": 40,
       "components": [
-        { "item": "minecraft:glass" },
-        { "item": "minecraft:glass" },
-        { "item": "minecraft:glass" }
+        { "item": "magichem:alchemically_treated_glass" },
+        { "item": "magichem:alchemically_treated_glass" },
+        { "item": "magichem:alchemically_treated_glass" }
       ],
       "materia": [
         { "item": "magichem:admixture_instrument", "count": 52 },
