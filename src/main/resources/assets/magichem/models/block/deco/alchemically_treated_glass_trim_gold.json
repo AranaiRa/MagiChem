@@ -1,0 +1,13 @@
+{
+    "parent": "block/cube",
+    "render_type": "translucent",
+    "textures": {
+        "down":  "magichem:block/alchemically_treated_glass_gold",
+        "up":    "magichem:block/alchemically_treated_glass_gold",
+        "north": "magichem:block/alchemically_treated_glass_gold",
+        "east":  "magichem:block/alchemically_treated_glass_gold",
+        "south": "magichem:block/alchemically_treated_glass_gold",
+        "west":  "magichem:block/alchemically_treated_glass_gold",
+        "particle": "magichem:block/alchemically_treated_glass"
+    }
+}

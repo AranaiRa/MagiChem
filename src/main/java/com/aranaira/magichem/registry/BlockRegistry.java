@@ -6,10 +6,10 @@ import com.aranaira.magichem.item.*;
 import com.mna.blocks.decoration.SimpleRotationalBlock;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.TintedGlassBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -251,6 +251,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> MAGIC_MIRROR = registerBlock("magic_mirror",
+            () -> new MagicMirrorBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> SILVER_BUTTON = registerBlock("silver_button",
             () -> new SilverButtonBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
@@ -302,6 +307,61 @@ public class BlockRegistry {
     public static final RegistryObject<Block> BLEACHED_AMETHYST_BLOCK = registerBlock("bleached_amethyst_block",
             () -> new BleachedAmethystBlock(BlockBehaviour.Properties.of()
                     .strength(1.5f).sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS = registerBlock("alchemically_treated_glass",
+            () -> new AlchemicallyTreatedGlassBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_PANE = registerBlock("alchemically_treated_glass_pane",
+            () -> new IronBarsBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_TRIM_WOOD = registerBlock("alchemically_treated_glass_trim_wood",
+            () -> new AlchemicallyTreatedGlassBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_WOOD = registerBlock("alchemically_treated_glass_pane_trim_wood",
+            () -> new IronBarsBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_TRIM_SILVER = registerBlock("alchemically_treated_glass_trim_silver",
+            () -> new AlchemicallyTreatedGlassBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_SILVER = registerBlock("alchemically_treated_glass_pane_trim_silver",
+            () -> new IronBarsBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_TRIM_ELECTRUM = registerBlock("alchemically_treated_glass_trim_electrum",
+            () -> new AlchemicallyTreatedGlassBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_ELECTRUM = registerBlock("alchemically_treated_glass_pane_trim_electrum",
+            () -> new IronBarsBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_TRIM_GOLD = registerBlock("alchemically_treated_glass_trim_gold",
+            () -> new AlchemicallyTreatedGlassBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_GOLD = registerBlock("alchemically_treated_glass_pane_trim_gold",
+            () -> new IronBarsBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY))
+    );
+
+    public static final RegistryObject<Block> MIRROR_GLASS_BLOCK = registerBlock("mirror_glass_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(0.5f).sound(SoundType.GLASS).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> SIGNALITE = registerBlock("signalite",

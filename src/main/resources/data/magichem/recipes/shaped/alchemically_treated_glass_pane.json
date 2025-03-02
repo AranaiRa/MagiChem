@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "magichem:alchemically_treated_glass"
+    }
+  },
+  "result": {
+    "item": "magichem:alchemically_treated_glass_pane",
+    "count": 16
+  }
+}

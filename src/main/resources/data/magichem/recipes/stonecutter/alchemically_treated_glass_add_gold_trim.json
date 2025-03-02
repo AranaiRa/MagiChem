@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "magichem:alchemically_treated_glass"
+  },
+  "result": "magichem:alchemically_treated_glass_trim_gold",
+  "count": 1
+}

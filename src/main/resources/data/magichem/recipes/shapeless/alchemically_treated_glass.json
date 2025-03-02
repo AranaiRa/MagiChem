@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "magichem:alchemical_waste"
+    },
+    {
+      "item": "magichem:alchemical_waste"
+    }
+  ],
+  "result": {
+    "item": "magichem:alchemically_treated_glass"
+  }
+}

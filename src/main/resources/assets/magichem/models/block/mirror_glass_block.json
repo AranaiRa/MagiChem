@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "down":  "magichem:block/mirror_cap",
+        "up":    "magichem:block/mirror_cap",
+        "north": "magichem:block/mirror_glass_framed",
+        "east":  "magichem:block/mirror_glass_framed",
+        "south": "magichem:block/mirror_glass_framed",
+        "west":  "magichem:block/mirror_glass_framed",
+        "particle": "magichem:block/mirror_glass"
+    }
+}

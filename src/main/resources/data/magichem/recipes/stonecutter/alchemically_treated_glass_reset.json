@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "magichem:stonecutter_reset_alchemically_treated_glass"
+  },
+  "result": "magichem:alchemically_treated_glass",
+  "count": 1
+}
