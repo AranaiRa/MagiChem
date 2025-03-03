@@ -4,7 +4,7 @@ import com.aranaira.magichem.block.MateriaJarBlock;
 import com.aranaira.magichem.block.MateriaVesselBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
@@ -45,7 +45,7 @@ import java.util.*;
 public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSortMateriaFromDevice> {
     private static final ConstructCapability[] requiredCaps;
     private BlockPos takeFromTarget, jarTargetPos;
-    private AbstractMateriaStorageBlockEntity jarTargetEntity;
+    private AbstractMateriaStorageSingleTypeBlockEntity jarTargetEntity;
     private AABB area;
     private boolean voidExcess;
     private MateriaItem filter;
@@ -248,17 +248,17 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             }
 
             if(stack != ItemStack.EMPTY) {
-                Map<AbstractMateriaStorageBlockEntity, BlockPos> materiaVesselsInRegion = getMateriaVesselsInRegion();
+                Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> materiaVesselsInRegion = getMateriaVesselsInRegion();
 
                 boolean hasDestination = false;
-                for(AbstractMateriaStorageBlockEntity amsbe : materiaVesselsInRegion.keySet()) {
+                for(AbstractMateriaStorageSingleTypeBlockEntity amsbe : materiaVesselsInRegion.keySet()) {
                     if(amsbe.getMateriaType() == (MateriaItem) stack.getItem()) {
                         hasDestination = true;
                         break;
                     }
                 }
                 if(!hasDestination) {
-                    for (AbstractMateriaStorageBlockEntity amsbe : materiaVesselsInRegion.keySet()) {
+                    for (AbstractMateriaStorageSingleTypeBlockEntity amsbe : materiaVesselsInRegion.keySet()) {
                         if (amsbe.getMateriaType() == null) {
                             hasDestination = true;
                             break;
@@ -379,7 +379,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 Vector3 sP = new Vector3(startpoint.getBlockPos().getX(), startpoint.getBlockPos().getY(), startpoint.getBlockPos().getZ());
                 Vector3 eP = Vector3.zero(), eO = Vector3.zero(), eT = Vector3.up().scale(6);
 
-                if (endpoint instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                if (endpoint instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                     eP = new Vector3(endpoint.getBlockPos().getX(), endpoint.getBlockPos().getY(), endpoint.getBlockPos().getZ());
 
                     Pair<Vector3, Vector3> defaultOriginAndTangent = amsbe.getDefaultOriginAndTangent();
@@ -406,8 +406,8 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         return transferredAmount;
     }
 
-    private Map<AbstractMateriaStorageBlockEntity, BlockPos> getMateriaVesselsInRegion() {
-        Map<AbstractMateriaStorageBlockEntity, BlockPos> output = new HashMap<>();
+    private Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> getMateriaVesselsInRegion() {
+        Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> output = new HashMap<>();
 
         Level level = construct.asEntity().level();
 
@@ -416,7 +416,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 for (int z=(int)area.minZ; z<=(int)area.maxZ; z++) {
                     BlockPos pos = new BlockPos(x, y, z);
                     if(level.getBlockState(pos).getBlock() instanceof MateriaJarBlock || level.getBlockState(pos).getBlock() instanceof MateriaVesselBlock) {
-                        output.put((AbstractMateriaStorageBlockEntity) level.getBlockEntity(pos), pos);
+                        output.put((AbstractMateriaStorageSingleTypeBlockEntity) level.getBlockEntity(pos), pos);
                     }
                 }
             }
@@ -426,11 +426,11 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
     }
 
     private void setTargetVessel(MateriaItem filter) {
-        AbstractMateriaStorageBlockEntity firstEmpty = null;
+        AbstractMateriaStorageSingleTypeBlockEntity firstEmpty = null;
         BlockPos firstEmptyPos = null;
-        Map<AbstractMateriaStorageBlockEntity, BlockPos> map = getMateriaVesselsInRegion();
+        Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> map = getMateriaVesselsInRegion();
         boolean foundFilter = false;
-        for(AbstractMateriaStorageBlockEntity mvbe : map.keySet()) {
+        for(AbstractMateriaStorageSingleTypeBlockEntity mvbe : map.keySet()) {
             if (mvbe.getMateriaType() == null) {
                 if (firstEmpty == null) {
                     firstEmpty = mvbe;

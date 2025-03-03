@@ -1,8 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.foundation.ISortFromContainerBlacklist;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
@@ -14,17 +12,13 @@ import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskAreaParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskBooleanParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
-import com.mna.tools.InventoryUtilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
 
@@ -32,7 +26,7 @@ public class ConstructSortMateriaFromContainer extends ConstructAITask<Construct
 
     private static final ConstructCapability[] requiredCaps;
     private BlockPos takeFromTarget, bottleReturnTarget, jarTarget;
-    private AbstractMateriaStorageBlockEntity jarTargetEntity;
+    private AbstractMateriaStorageSingleTypeBlockEntity jarTargetEntity;
     private AABB area;
     private boolean voidExcess;
     private int waitTimer;

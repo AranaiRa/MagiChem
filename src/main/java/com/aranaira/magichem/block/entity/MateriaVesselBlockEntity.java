@@ -1,7 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.tools.math.Vector3;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.STACKED;
 
-public class MateriaVesselBlockEntity extends AbstractMateriaStorageBlockEntity  {
+public class MateriaVesselBlockEntity extends AbstractMateriaStorageSingleTypeBlockEntity {
 
     public MateriaVesselBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.MATERIA_VESSEL_BE.get(), pos, state);

@@ -2,7 +2,7 @@ package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.block.MateriaJarBlock;
 import com.aranaira.magichem.block.MateriaVesselBlock;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
@@ -41,7 +41,7 @@ import java.util.Random;
 public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMateria> {
     private static final ConstructCapability[] requiredCaps;
     private BlockPos takeFromTarget, deviceTargetPos;
-    private AbstractMateriaStorageBlockEntity jarTargetEntity;
+    private AbstractMateriaStorageSingleTypeBlockEntity jarTargetEntity;
     private AABB area;
     private MateriaItem filter;
     private ETaskPhase phase = ETaskPhase.SETUP;
@@ -106,11 +106,11 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                             BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                             if (be instanceof IMateriaProvisionRequester impr) {
                                 if (impr.needsProvisioning()) {
-                                    final Map<AbstractMateriaStorageBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
+                                    final Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
 
                                     boolean foundTarget = false;
                                     for (MateriaItem mi : impr.getProvisioningNeeds().keySet()) {
-                                        for (AbstractMateriaStorageBlockEntity amsbe : allVessels.keySet()) {
+                                        for (AbstractMateriaStorageSingleTypeBlockEntity amsbe : allVessels.keySet()) {
                                             if (amsbe.getMateriaType() == mi) {
                                                 this.jarTargetEntity = amsbe;
                                                 this.filter = mi;
@@ -208,11 +208,11 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                         BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                         if(be instanceof IMateriaProvisionRequester impr) {
                             if(impr.needsProvisioning()) {
-                                final Map<AbstractMateriaStorageBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
+                                final Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
 
                                 boolean foundTarget = false;
                                 for (MateriaItem mi : impr.getProvisioningNeeds().keySet()) {
-                                    for (AbstractMateriaStorageBlockEntity amsbe : allVessels.keySet()) {
+                                    for (AbstractMateriaStorageSingleTypeBlockEntity amsbe : allVessels.keySet()) {
                                         boolean leaveOneMode = leaveOneInContainer && amsbe.getMateriaType() == mi && amsbe.getCurrentStock() > 1;
                                         boolean leaveNoneMode = !leaveOneInContainer && amsbe.getMateriaType() == mi;
 
@@ -333,8 +333,8 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
         return Component.translatable("item.magichem." + prefix + filter.getMateriaName()).getString();
     }
 
-    private Map<AbstractMateriaStorageBlockEntity, BlockPos> getMateriaVesselsInRegion() {
-        Map<AbstractMateriaStorageBlockEntity, BlockPos> output = new HashMap<>();
+    private Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> getMateriaVesselsInRegion() {
+        Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> output = new HashMap<>();
 
         Level level = construct.asEntity().level();
 
@@ -343,7 +343,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                 for (int z=(int)area.minZ; z<=(int)area.maxZ; z++) {
                     BlockPos pos = new BlockPos(x, y, z);
                     if(level.getBlockState(pos).getBlock() instanceof MateriaJarBlock || level.getBlockState(pos).getBlock() instanceof MateriaVesselBlock) {
-                        output.put((AbstractMateriaStorageBlockEntity) level.getBlockEntity(pos), pos);
+                        output.put((AbstractMateriaStorageSingleTypeBlockEntity) level.getBlockEntity(pos), pos);
                     }
                 }
             }

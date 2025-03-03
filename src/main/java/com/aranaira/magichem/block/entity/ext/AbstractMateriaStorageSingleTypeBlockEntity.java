@@ -17,9 +17,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractMateriaStorageBlockEntity extends BlockEntity implements IShlorpReceiver {
+public abstract class AbstractMateriaStorageSingleTypeBlockEntity extends BlockEntity implements IShlorpReceiver {
 
-    public AbstractMateriaStorageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public AbstractMateriaStorageSingleTypeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 

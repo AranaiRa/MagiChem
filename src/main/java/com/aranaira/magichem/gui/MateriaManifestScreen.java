@@ -1,7 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
@@ -28,7 +28,7 @@ import java.util.Optional;
 public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManifestMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_materia_manifest.png");
-    private List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity>> materiaStorageInZone;
+    private List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity>> materiaStorageInZone;
     private HashMap<String, ItemStack> materiaMap = new HashMap<>();
     int pageIndex = 0;
     int pageCount = 1;
@@ -127,7 +127,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             int barX = x + 29 + (((i - startIndex) / 8) * 54);
             int barY = y + 31 + (((i - startIndex) % 8) * 23);
 
-            final Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity> entry = materiaStorageInZone.get(i);
+            final Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity> entry = materiaStorageInZone.get(i);
             MateriaItem mi = entry.getFirst();
             String id = (mi instanceof EssentiaItem ? "essentia_" : "admixture_") + mi.getMateriaName();
             ItemStack is = materiaMap.get(id);

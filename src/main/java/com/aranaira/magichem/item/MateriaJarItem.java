@@ -1,7 +1,7 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.entity.MateriaJarBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.item.renderer.MateriaJarItemRenderer;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.util.NonNullLazy;
 import org.jetbrains.annotations.Nullable;
@@ -85,13 +84,13 @@ public class MateriaJarItem extends BlockItem {
         if(pContext.getLevel().isClientSide()) {
             BlockEntity be = pContext.getLevel().getBlockEntity(pContext.getClickedPos());
 
-            if (be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+            if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                 return InteractionResult.SUCCESS;
             }
         } else {
             BlockEntity be = pContext.getLevel().getBlockEntity(pContext.getClickedPos());
 
-            if (be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+            if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                 ItemStack itemInHand = pContext.getItemInHand();
                 CompoundTag itemTag = itemInHand.getOrCreateTag();
 

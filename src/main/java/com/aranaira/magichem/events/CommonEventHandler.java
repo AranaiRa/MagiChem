@@ -6,7 +6,7 @@ import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
@@ -77,7 +77,7 @@ public class CommonEventHandler {
         ItemStack stack = event.getItemStack();
         BlockState targetState = event.getLevel().getBlockState(event.getPos());
         BlockEntity target = event.getLevel().getBlockEntity(event.getPos());
-        if(target instanceof AbstractMateriaStorageBlockEntity amsbe) {
+        if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
             if(stack.getItem() == Items.GLASS_BOTTLE) {
                 if(amsbe.getMateriaType() != null) {
                     ItemStack extracted = amsbe.extractMateria(stack.getCount(), false);
@@ -291,7 +291,7 @@ public class CommonEventHandler {
                 int y = event.getWindow().getGuiScaledHeight() / 2;
 
                 BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(bhr.getBlockPos());
-                if (blockEntity instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                if (blockEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                     MateriaItem type = amsbe.getMateriaType();
                     if (type != null && amsbe.getCurrentStock() > 0) {
 

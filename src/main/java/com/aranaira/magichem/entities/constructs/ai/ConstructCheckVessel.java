@@ -1,14 +1,12 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.IConstruct;
 import com.mna.api.entities.construct.ai.ConstructAITask;
 import com.mna.api.entities.construct.ai.parameter.*;
 import com.mna.entities.constructs.ai.conditionals.ConstructConditional;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +27,7 @@ public class ConstructCheckVessel extends ConstructConditional<ConstructCheckVes
             return false;
 
         BlockEntity be = construct.asEntity().level().getBlockEntity(targetVesselPos);
-        if(be instanceof AbstractMateriaStorageBlockEntity targetVessel) {
+        if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity targetVessel) {
             float stock = (float) targetVessel.getCurrentStock();
             float limit = (float) targetVessel.getStorageLimit();
             return (stock / limit) >= targetPercentage;

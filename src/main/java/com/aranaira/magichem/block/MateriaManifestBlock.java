@@ -1,14 +1,11 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaManifestBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.MateriaManifestRouterBlockEntity;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.ItemInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -30,7 +27,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
@@ -120,9 +116,9 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof MateriaManifestBlockEntity mmbe) {
                     if(mmbe.tetherTarget == null) {
-                        final List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
+                        final List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
                         if (player.getInventory().getSelected().getItem() instanceof MateriaItem mi) {
-                            for (Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity> entry : materiaStorageInZone) {
+                            for (Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity> entry : materiaStorageInZone) {
                                 MateriaItem type = entry.getFirst();
                                 if (type != null && type == mi) {
                                     mmbe.tetherTarget = entry.getThird();

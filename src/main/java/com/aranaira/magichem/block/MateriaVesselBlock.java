@@ -2,7 +2,7 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.foundation.IScannableByMateriaManifest;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
@@ -198,7 +198,7 @@ public class MateriaVesselBlock extends BaseEntityBlock implements IScannableByM
         ItemStack stack = new ItemStack(BlockRegistry.MATERIA_VESSEL.get());
 
         BlockEntity be = pLevel.getBlockEntity(pPos);
-        if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+        if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
             if(amsbe.getMateriaType() != null) {
                 CompoundTag tag = new CompoundTag();
                 tag.putString("type", amsbe.getMateriaType().getMateriaName());
@@ -218,7 +218,7 @@ public class MateriaVesselBlock extends BaseEntityBlock implements IScannableByM
     @Override
     public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
-        if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+        if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
             if(amsbe.getCurrentStock() > 0) {
                 return Math.max(1, Math.round(amsbe.getCurrentStockPercent() * 15));
             }

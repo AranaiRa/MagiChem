@@ -1,14 +1,13 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -85,13 +84,13 @@ public class MateriaVesselItem extends BlockItem {
         if(pContext.getLevel().isClientSide()) {
             BlockEntity be = pContext.getLevel().getBlockEntity(pContext.getClickedPos());
 
-            if (be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+            if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                 return InteractionResult.SUCCESS;
             }
         } else {
             BlockEntity be = pContext.getLevel().getBlockEntity(pContext.getClickedPos());
 
-            if (be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+            if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                 ItemStack itemInHand = pContext.getItemInHand();
                 CompoundTag itemTag = itemInHand.getOrCreateTag();
 

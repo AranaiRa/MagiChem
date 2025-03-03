@@ -1,7 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IScannableByMateriaManifest;
 import com.aranaira.magichem.foundation.Triplet;
@@ -71,8 +71,8 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
         }
     };
 
-    private List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity>> materiaStorageInZone = new ArrayList<>();
-    public AbstractMateriaStorageBlockEntity tetherTarget = null;
+    private List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity>> materiaStorageInZone = new ArrayList<>();
+    public AbstractMateriaStorageSingleTypeBlockEntity tetherTarget = null;
     public AABB RENDER_BOUNDING_BOX;
 
     public MateriaManifestBlockEntity(BlockPos pos, BlockState state) {
@@ -111,7 +111,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
                         BlockPos pos = new BlockPos(x, y, z);
                         if(level.getBlockState(pos).getBlock() instanceof IScannableByMateriaManifest) {
                             BlockEntity be = level.getBlockEntity(pos);
-                            if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                            if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                                 if(amsbe.getMateriaType() != null)
                                     materiaStorageInZone.add(new Triplet<>(amsbe.getMateriaType(), pos, amsbe));
                             }
@@ -124,7 +124,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
         }
     }
 
-    public List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageBlockEntity>> getMateriaStorageInZone() {
+    public List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity>> getMateriaStorageInZone() {
         return materiaStorageInZone;
     }
 

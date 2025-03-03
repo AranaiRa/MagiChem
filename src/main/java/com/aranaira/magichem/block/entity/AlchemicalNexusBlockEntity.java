@@ -3,7 +3,7 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
@@ -483,11 +483,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     anbe.syncAndSave();
                 }
                 else if(pLevel.getGameTime() % anbe.cachedSpec.ticksBetweenShlorpPulls == 0) {
-                    NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> marks = anbe.getMarkedEntitiesAndLocations();
+                    NonNullList<Pair<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos>> marks = anbe.getMarkedEntitiesAndLocations();
                     NonNullList<MateriaItem> outstanding = anbe.getDemandedMateriaNotInTransit();
 
                     if (!marks.isEmpty()) {
-                        Pair<AbstractMateriaStorageBlockEntity, BlockPos> pair;
+                        Pair<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> pair;
                         if (marks.size() == 1) pair = marks.get(0);
                         else {
                             if(anbe.shlorpIndex >= marks.size())
@@ -701,8 +701,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         }
     }
 
-    public NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> getMarkedEntitiesAndLocations() {
-        NonNullList<Pair<AbstractMateriaStorageBlockEntity, BlockPos>> markedPairs = NonNullList.create();
+    public NonNullList<Pair<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos>> getMarkedEntitiesAndLocations() {
+        NonNullList<Pair<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos>> markedPairs = NonNullList.create();
         ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_MARKS);
 
         if(stackInSlot.getItem() == ItemInit.RUNE_MARKING.get()) {
@@ -715,7 +715,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                     BlockEntity be = level.getBlockEntity(markedPos);
                     if(be != null) {
-                        if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                        if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                             markedPairs.add(new Pair<>(amsbe, markedPos));
                         }
                     }
@@ -739,7 +739,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                                 BlockEntity be = level.getBlockEntity(markedPos);
                                 if(be != null) {
-                                    if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                                    if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                                         markedPairs.add(new Pair<>(amsbe, markedPos));
                                     }
                                 }
@@ -751,7 +751,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                     BlockEntity be = level.getBlockEntity(markedPos);
                     if(be != null) {
-                        if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                        if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
                             markedPairs.add(new Pair<>(amsbe, markedPos));
                         }
                     }

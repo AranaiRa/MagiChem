@@ -1,11 +1,10 @@
 package com.aranaira.magichem.item;
 
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.registry.EntitiesRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.Vector3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -40,7 +39,7 @@ public class DebugOrbItem extends Item {
 
                 Vector3 originPoint = new Vector3(player.getPosition(0).x, player.getPosition(0).y, player.getPosition(0).z);
 
-                if(be instanceof AbstractMateriaStorageBlockEntity amsbe) {
+                if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
 
                     if(amsbe.getMateriaType() == null)
                         return super.useOn(pContext);
