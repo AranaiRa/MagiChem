@@ -307,12 +307,12 @@ public class InventoryHelper {
         }
     }
 
-    public static HashMap<MateriaItem, List<BlockEntity>> getAllMateriaStorageInZone(Level pLevel, BlockPos pCorner1, BlockPos pCorner2) {
+    public static HashMap<MateriaItem, List<BlockEntity>> getAllMateriaStorageInZone(Level pLevel, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         HashMap<MateriaItem, List<BlockEntity>> out = new HashMap<>();
 
-        for(int y=pCorner1.getY(); y<=pCorner2.getY(); y++) {
-            for (int z = pCorner1.getZ(); z <= pCorner2.getZ(); z++) {
-                for (int x = pCorner1.getX(); x <= pCorner2.getX(); x++) {
+        for(int y=minY; y<=maxY; y++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                for (int x = minX; x <= maxX; x++) {
                     BlockPos posQuery = new BlockPos(x, y, z);
                     BlockEntity be = pLevel.getBlockEntity(posQuery);
 
@@ -345,5 +345,9 @@ public class InventoryHelper {
         }
 
         return out;
+    }
+
+    public static HashMap<MateriaItem, List<BlockEntity>> getAllMateriaStorageInZone(Level pLevel, BlockPos pCorner1, BlockPos pCorner2) {
+        return getAllMateriaStorageInZone(pLevel, pCorner1.getX(), pCorner1.getY(), pCorner1.getZ(), pCorner2.getX(), pCorner2.getY(), pCorner2.getZ());
     }
 }

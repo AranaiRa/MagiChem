@@ -1,7 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.block.MateriaJarBlock;
-import com.aranaira.magichem.block.MateriaVesselBlock;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
@@ -11,6 +10,7 @@ import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.aranaira.magichem.registry.EntitiesRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.*;
@@ -41,7 +41,7 @@ import java.util.Random;
 public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMateria> {
     private static final ConstructCapability[] requiredCaps;
     private BlockPos takeFromTarget, deviceTargetPos;
-    private AbstractMateriaStorageSingleTypeBlockEntity jarTargetEntity;
+    private BlockEntity jarTargetEntity;
     private AABB area;
     private MateriaItem filter;
     private ETaskPhase phase = ETaskPhase.SETUP;
@@ -106,21 +106,50 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                             BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                             if (be instanceof IMateriaProvisionRequester impr) {
                                 if (impr.needsProvisioning()) {
-                                    final Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
+                                    final HashMap<MateriaItem, List<BlockEntity>> allStorage = getMateriaVesselsInRegion();
+                                    allStorage.remove(null);
 
                                     boolean foundTarget = false;
-                                    for (MateriaItem mi : impr.getProvisioningNeeds().keySet()) {
-                                        for (AbstractMateriaStorageSingleTypeBlockEntity amsbe : allVessels.keySet()) {
-                                            if (amsbe.getMateriaType() == mi) {
-                                                this.jarTargetEntity = amsbe;
-                                                this.filter = mi;
+                                    for (MateriaItem provisioningMateriaQuery : impr.getProvisioningNeeds().keySet()) {
+                                        for (MateriaItem storageMateriaQuery : allStorage.keySet()) {
+                                            if (storageMateriaQuery == provisioningMateriaQuery) {
+                                                for(int i=0; i<allStorage.get(storageMateriaQuery).size(); i++) {
+                                                    BlockEntity beQuery = allStorage.get(storageMateriaQuery).get(i);
 
-                                                this.waitTimer = 21;
-                                                this.phase = ETaskPhase.MOVE_TO_VESSEL;
-                                                this.takeFromTarget = allVessels.get(amsbe);
-                                                this.setMoveTarget(this.takeFromTarget);
-                                                foundTarget = true;
-                                                break;
+                                                    if(beQuery instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                                                        this.jarTargetEntity = single;
+                                                        this.filter = provisioningMateriaQuery;
+
+                                                        if(single.getCurrentStock() == 1 && leaveOneInContainer) continue;
+
+                                                        this.waitTimer = 21;
+                                                        this.phase = ETaskPhase.MOVE_TO_VESSEL;
+                                                        this.takeFromTarget = single.getBlockPos();
+                                                        this.setMoveTarget(this.takeFromTarget);
+                                                        foundTarget = true;
+                                                        break;
+                                                    }
+                                                    else if(beQuery instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                                                        for(MateriaItem multiMateriaQuery : multi.getMateriaTypes()) {
+                                                            if(multiMateriaQuery == provisioningMateriaQuery) {
+                                                                this.jarTargetEntity = multi;
+                                                                this.filter = provisioningMateriaQuery;
+
+                                                                if (multi.getCurrentStock(provisioningMateriaQuery) == 1 && leaveOneInContainer)
+                                                                    break;
+
+                                                                this.waitTimer = 21;
+                                                                this.phase = ETaskPhase.MOVE_TO_VESSEL;
+                                                                this.takeFromTarget = multi.getBlockPos();
+                                                                this.setMoveTarget(this.takeFromTarget);
+                                                                foundTarget = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if(foundTarget) break;
+                                                    }
+                                                }
+                                                if(foundTarget) break;
                                             }
                                         }
                                     }
@@ -148,12 +177,25 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                     final int required = impr.getProvisioningNeeds().get(filter);
 
                                     int collectionLimit = Math.min(required * craftCount, getCollectionLimit());
-                                    if(jarTargetEntity.getMateriaType() == filter) {
-                                        final ItemStack extracted = jarTargetEntity.extractMateria(collectionLimit, leaveOneInContainer);
-                                        CompoundTag nbt = construct.asEntity().getPersistentData();
-                                        nbt.put("transitMateria", extracted.serializeNBT());
+                                    if(jarTargetEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                                        if (single.getMateriaType() == filter) {
+                                            final ItemStack extracted = single.extractMateria(collectionLimit, leaveOneInContainer);
+                                            CompoundTag nbt = construct.asEntity().getPersistentData();
+                                            nbt.put("transitMateria", extracted.serializeNBT());
 
-                                        construct.asEntity().addAdditionalSaveData(nbt);
+                                            construct.asEntity().addAdditionalSaveData(nbt);
+                                        }
+                                    }
+                                    else if(jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                                        for(MateriaItem materiaQuery : multi.getMateriaTypes()) {
+                                            if (materiaQuery == filter) {
+                                                final ItemStack extracted = new ItemStack(filter, multi.drain(filter, collectionLimit, leaveOneInContainer));
+                                                CompoundTag nbt = construct.asEntity().getPersistentData();
+                                                nbt.put("transitMateria", extracted.serializeNBT());
+
+                                                construct.asEntity().addAdditionalSaveData(nbt);
+                                            }
+                                        }
                                     }
 
                                     impr.setProvisioningInProgress(filter);
@@ -208,19 +250,26 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                         BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                         if(be instanceof IMateriaProvisionRequester impr) {
                             if(impr.needsProvisioning()) {
-                                final Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> allVessels = getMateriaVesselsInRegion();
+                                final HashMap<MateriaItem, List<BlockEntity>> allStorage = getMateriaVesselsInRegion();
+                                allStorage.remove(null);
 
                                 boolean foundTarget = false;
-                                for (MateriaItem mi : impr.getProvisioningNeeds().keySet()) {
-                                    for (AbstractMateriaStorageSingleTypeBlockEntity amsbe : allVessels.keySet()) {
-                                        boolean leaveOneMode = leaveOneInContainer && amsbe.getMateriaType() == mi && amsbe.getCurrentStock() > 1;
-                                        boolean leaveNoneMode = !leaveOneInContainer && amsbe.getMateriaType() == mi;
+                                for (MateriaItem materiaProvisionQuery : impr.getProvisioningNeeds().keySet()) {
+                                    for (MateriaItem materiaStorageQuery : allStorage.keySet()) {
+                                        int stock = 0;
+                                        if(jarTargetEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity single) stock = single.getCurrentStock();
+                                        else if(jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) stock = multi.getCurrentStock(filter);
 
-                                        if (leaveNoneMode || leaveOneMode) {
-                                            this.filter = mi;
-                                            this.jarTargetEntity = amsbe;
-                                            foundTarget = true;
-                                            break;
+                                        boolean leaveOneMode = leaveOneInContainer && materiaStorageQuery == materiaProvisionQuery && stock > 1;
+                                        boolean leaveNoneMode = !leaveOneInContainer && materiaStorageQuery == materiaProvisionQuery;
+
+                                        for(int i=0; i<allStorage.get(materiaStorageQuery).size(); i++) {
+                                            if (leaveNoneMode || leaveOneMode) {
+                                                this.filter = materiaProvisionQuery;
+                                                this.jarTargetEntity = allStorage.get(materiaStorageQuery).get(i);
+                                                foundTarget = true;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
@@ -250,55 +299,112 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                 final int required = impr.getProvisioningNeeds().get(filter);
 
                                 int collectionLimit = Math.min(required * (impr.allowIncreasedDeliverySize() ? craftCount : 1), getCollectionLimit());
-                                if (jarTargetEntity.getMateriaType() == filter) {
-                                    ItemStack extracted = jarTargetEntity.extractMateria(collectionLimit, leaveOneInContainer);
-                                    this.waitTimer = Math.round(extracted.getCount() * 1.5f) + 22;
 
-                                    if(extracted.getCount() > 0) {
-                                        //create shlorp
-                                        {
-                                            if(!extracted.isEmpty()) {
-                                                impr.setProvisioningInProgress(filter);
+                                if(jarTargetEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                                    if (single.getMateriaType() == filter) {
+                                        ItemStack extracted = single.extractMateria(collectionLimit, leaveOneInContainer);
+                                        this.waitTimer = Math.round(extracted.getCount() * 1.5f) + 22;
 
-                                                Level level = construct.asEntity().level();
-                                                BlockEntity startpoint = jarTargetEntity;
-                                                BlockEntity endpoint = level.getBlockEntity(deviceTargetPos);
+                                        if (extracted.getCount() > 0) {
+                                            //create shlorp
+                                            {
+                                                if (!extracted.isEmpty()) {
+                                                    impr.setProvisioningInProgress(filter);
 
-                                                if (endpoint != null && startpoint != null) {
-                                                    Vector3 sP, sO, sT;
-                                                    Vector3 eP = new Vector3(endpoint.getBlockPos().getX(), endpoint.getBlockPos().getY(), endpoint.getBlockPos().getZ());
+                                                    Level level = construct.asEntity().level();
+                                                    BlockEntity startpoint = jarTargetEntity;
+                                                    BlockEntity endpoint = level.getBlockEntity(deviceTargetPos);
 
-                                                    sP = new Vector3(startpoint.getBlockPos().getX(), startpoint.getBlockPos().getY(), startpoint.getBlockPos().getZ());
+                                                    if (endpoint != null && startpoint != null) {
+                                                        Vector3 sP, sO, sT;
+                                                        Vector3 eP = new Vector3(endpoint.getBlockPos().getX(), endpoint.getBlockPos().getY(), endpoint.getBlockPos().getZ());
 
-                                                    Pair<Vector3, Vector3> defaultOriginAndTangent = jarTargetEntity.getDefaultOriginAndTangent();
-                                                    sO = defaultOriginAndTangent.getFirst();
-                                                    sT = defaultOriginAndTangent.getSecond().scale(6);
+                                                        sP = new Vector3(startpoint.getBlockPos().getX(), startpoint.getBlockPos().getY(), startpoint.getBlockPos().getZ());
 
-                                                    ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
-                                                    shlorp.setPos(new Vec3(sP.x, sP.y, sP.z));
-                                                    shlorp.configure(
-                                                            sP, sO, sT,
-                                                            eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 3.0f + 3f),
-                                                            0.035f, 0.125f,
-                                                            4 + extracted.getCount(),
-                                                            (MateriaItem) extracted.getItem(),
-                                                            extracted.getCount(),
-                                                            ShlorpParticleMode.DESTINATION_TANGENT);
-                                                    level.addFreshEntity(shlorp);
+                                                        Pair<Vector3, Vector3> defaultOriginAndTangent = single.getDefaultOriginAndTangent();
+                                                        sO = defaultOriginAndTangent.getFirst();
+                                                        sT = defaultOriginAndTangent.getSecond().scale(6);
+
+                                                        ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
+                                                        shlorp.setPos(new Vec3(sP.x, sP.y, sP.z));
+                                                        shlorp.configure(
+                                                                sP, sO, sT,
+                                                                eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 3.0f + 3f),
+                                                                0.035f, 0.125f,
+                                                                4 + extracted.getCount(),
+                                                                (MateriaItem) extracted.getItem(),
+                                                                extracted.getCount(),
+                                                                ShlorpParticleMode.DESTINATION_TANGENT);
+                                                        level.addFreshEntity(shlorp);
+                                                    }
                                                 }
                                             }
+
+                                            InteractionHand interactionHand = construct.getHandWithCapability(ConstructCapability.CAST_SPELL).get();
+                                            if (interactionHand == InteractionHand.MAIN_HAND)
+                                                construct.forceAnimation(Animations.CHANNEL_LEFT, true);
+                                            else
+                                                construct.forceAnimation(Animations.CHANNEL_RIGHT, true);
+
+                                            this.pushDiagnosticMessage("I moved " + extracted.getCount() + " " + getTranslatedNameFromItem(this.filter) + " to the device, boss. Shloop!", true);
                                         }
 
-                                        InteractionHand interactionHand = construct.getHandWithCapability(ConstructCapability.CAST_SPELL).get();
-                                        if(interactionHand == InteractionHand.MAIN_HAND)
-                                            construct.forceAnimation(Animations.CHANNEL_LEFT, true);
-                                        else
-                                            construct.forceAnimation(Animations.CHANNEL_RIGHT, true);
-
-                                        this.pushDiagnosticMessage("I moved " + extracted.getCount() + " " + getTranslatedNameFromItem(this.filter) + " to the device, boss. Shloop!", true);
+                                        this.phase = ETaskPhase.WAIT_AT_DEVICE;
                                     }
+                                }
+                                else if(jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                                    for(MateriaItem materiaStorageQuery : multi.getMateriaTypes()) {
+                                        if (materiaStorageQuery == filter) {
+                                            ItemStack extracted = new ItemStack(filter, multi.drain(filter, collectionLimit, leaveOneInContainer));
+                                            this.waitTimer = Math.round(extracted.getCount() * 1.5f) + 22;
 
-                                    this.phase = ETaskPhase.WAIT_AT_DEVICE;
+                                            if (extracted.getCount() > 0) {
+                                                //create shlorp
+                                                {
+                                                    if (!extracted.isEmpty()) {
+                                                        impr.setProvisioningInProgress(filter);
+
+                                                        Level level = construct.asEntity().level();
+                                                        BlockEntity startpoint = jarTargetEntity;
+                                                        BlockEntity endpoint = level.getBlockEntity(deviceTargetPos);
+
+                                                        if (endpoint != null && startpoint != null) {
+                                                            Vector3 sP, sO, sT;
+                                                            Vector3 eP = new Vector3(endpoint.getBlockPos().getX(), endpoint.getBlockPos().getY(), endpoint.getBlockPos().getZ());
+
+                                                            sP = new Vector3(startpoint.getBlockPos().getX(), startpoint.getBlockPos().getY(), startpoint.getBlockPos().getZ());
+
+                                                            Pair<Vector3, Vector3> defaultOriginAndTangent = multi.getDefaultOriginAndTangent(filter);
+                                                            sO = defaultOriginAndTangent.getFirst();
+                                                            sT = defaultOriginAndTangent.getSecond().scale(6);
+
+                                                            ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
+                                                            shlorp.setPos(new Vec3(sP.x, sP.y, sP.z));
+                                                            shlorp.configure(
+                                                                    sP, sO, sT,
+                                                                    eP, new Vector3(0.5, 0.5, 0.5), Vector3.up().scale(r.nextFloat() * 3.0f + 3f),
+                                                                    0.035f, 0.125f,
+                                                                    4 + extracted.getCount(),
+                                                                    (MateriaItem) extracted.getItem(),
+                                                                    extracted.getCount(),
+                                                                    ShlorpParticleMode.DESTINATION_TANGENT);
+                                                            level.addFreshEntity(shlorp);
+                                                        }
+                                                    }
+                                                }
+
+                                                InteractionHand interactionHand = construct.getHandWithCapability(ConstructCapability.CAST_SPELL).get();
+                                                if (interactionHand == InteractionHand.MAIN_HAND)
+                                                    construct.forceAnimation(Animations.CHANNEL_LEFT, true);
+                                                else
+                                                    construct.forceAnimation(Animations.CHANNEL_RIGHT, true);
+
+                                                this.pushDiagnosticMessage("I moved " + extracted.getCount() + " " + getTranslatedNameFromItem(this.filter) + " to the device, boss. Shloop!", true);
+                                            }
+
+                                            this.phase = ETaskPhase.WAIT_AT_DEVICE;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -333,23 +439,11 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
         return Component.translatable("item.magichem." + prefix + filter.getMateriaName()).getString();
     }
 
-    private Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> getMateriaVesselsInRegion() {
-        Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> output = new HashMap<>();
-
+    private HashMap<MateriaItem, List<BlockEntity>> getMateriaVesselsInRegion() {
         Level level = construct.asEntity().level();
-
-        for(int x=(int)area.minX; x<=(int)area.maxX; x++){
-            for(int y=(int)area.minY; y<=(int)area.maxY; y++) {
-                for (int z=(int)area.minZ; z<=(int)area.maxZ; z++) {
-                    BlockPos pos = new BlockPos(x, y, z);
-                    if(level.getBlockState(pos).getBlock() instanceof MateriaJarBlock || level.getBlockState(pos).getBlock() instanceof MateriaVesselBlock) {
-                        output.put((AbstractMateriaStorageSingleTypeBlockEntity) level.getBlockEntity(pos), pos);
-                    }
-                }
-            }
-        }
-
-        return output;
+        return InventoryHelper.getAllMateriaStorageInZone(level,
+                (int)area.minX, (int)area.minY, (int)area.minZ,
+                (int)area.maxX, (int)area.maxY, (int)area.maxZ);
     }
 
     @Override

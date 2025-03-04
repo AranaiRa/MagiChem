@@ -105,8 +105,8 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
 
             AABB zone = getExtents();
             materiaStorageInZone = InventoryHelper.getAllMateriaStorageInZone(getLevel(),
-                    new BlockPos((int) zone.minX, (int) zone.minY, (int) zone.minZ),
-                    new BlockPos((int) zone.maxX, (int) zone.maxY, (int) zone.maxZ)
+                    (int) zone.minX, (int) zone.minY, (int) zone.minZ,
+                    (int) zone.maxX, (int) zone.maxY, (int) zone.maxZ
             );
 
             Set<MateriaItem> keySet = materiaStorageInZone.keySet();
