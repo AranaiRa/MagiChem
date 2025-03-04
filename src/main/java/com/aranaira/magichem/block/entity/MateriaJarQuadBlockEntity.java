@@ -68,7 +68,7 @@ public class MateriaJarQuadBlockEntity extends AbstractMateriaStorageMultiTypeSt
     public Pair<Vector3, Vector3> getDefaultOriginAndTangent(MateriaItem pMateriaType) {
         int index = -1;
         for(int i=0; i<4; i++) {
-            if(storedMateria[i].getFirst() == pMateriaType) {
+            if(storedMateria[i] != null && storedMateria[i].getFirst() == pMateriaType) {
                 index = i;
                 break;
             }

@@ -238,11 +238,32 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
 
     @Override
     public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() instanceof MateriaItem mi) {
+            for(int i=0; i<storedMateria.length; i++) {
+                if(getMateriaTypeInSlot(i) == mi) {
+                    int capacity = getStorageLimit(mi) - getMateriaAmountInSlot(i);
+                    return Math.min(pStack.getCount(), capacity);
+                }
+            }
+        }
         return 0;
     }
 
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() instanceof MateriaItem mi) {
+            for(int i=0; i<storedMateria.length; i++) {
+                if(getMateriaTypeInSlot(i) == mi) {
+                    int capacity = getStorageLimit(mi) - getMateriaAmountInSlot(i);
+                    int actual = Math.min(pStack.getCount(), capacity);
+
+                    storedMateria[i] = new Pair<>(mi, storedMateria[i].getSecond() + actual);
+                    syncAndSave();
+
+                    return actual;
+                }
+            }
+        }
         return 0;
     }
 

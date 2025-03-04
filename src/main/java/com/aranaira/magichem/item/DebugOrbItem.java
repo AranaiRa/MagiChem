@@ -1,11 +1,13 @@
 package com.aranaira.magichem.item;
 
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeStaticBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.mna.tools.math.Vector3;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -39,9 +41,9 @@ public class DebugOrbItem extends Item {
 
                 Vector3 originPoint = new Vector3(player.getPosition(0).x, player.getPosition(0).y, player.getPosition(0).z);
 
-                if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
+                if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
 
-                    if(amsbe.getMateriaType() == null)
+                    if(single.getMateriaType() == null)
                         return super.useOn(pContext);
 
                     ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
@@ -53,7 +55,30 @@ public class DebugOrbItem extends Item {
                             new Vector3(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()),
                             new Vector3(0.5, 0.5, 0.5), new Vector3(0, 2, 0),
                             0.125f, 0.125f, 18,
-                            amsbe.getMateriaType(), 400, ShlorpParticleMode.NONE
+                            single.getMateriaType(), 400, ShlorpParticleMode.NONE
+                    );
+
+                    level.addFreshEntity(se);
+                    se.setPos(originPoint.x, originPoint.y, originPoint.z);
+                }
+                else if(be instanceof AbstractMateriaStorageMultiTypeStaticBlockEntity multiStatic) {
+
+                    int slot = multiStatic.getSlotFromWorldCoord(pContext.getClickLocation());
+
+                    if(multiStatic.getMateriaTypeInSlot(slot) == null)
+                        return super.useOn(pContext);
+
+                    ShlorpEntity se = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
+                    se.setPos(originPoint.x, originPoint.y, originPoint.z);
+                    Pair<Vector3, Vector3> endOriginAndTangent = multiStatic.getDefaultOriginAndTangent(multiStatic.getMateriaTypeInSlot(slot));
+
+                    se.configure(
+                            originPoint,
+                            new Vector3(0, 0, 0), new Vector3(0, 2, 0),
+                            new Vector3(be.getBlockPos().getX(), be.getBlockPos().getY(), be.getBlockPos().getZ()),
+                            endOriginAndTangent.getFirst(), endOriginAndTangent.getSecond(),
+                            0.125f, 0.125f, 18,
+                            multiStatic.getMateriaTypeInSlot(slot), 400, ShlorpParticleMode.NONE
                     );
 
                     level.addFreshEntity(se);
