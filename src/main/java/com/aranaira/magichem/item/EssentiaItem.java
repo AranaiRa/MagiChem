@@ -87,6 +87,42 @@ public class EssentiaItem extends MateriaItem {
         return result;
     }
 
+    public boolean isInHouse(EssentiaHouse houseQuery) {
+        boolean result = false;
+
+        switch(houseQuery) {
+            case ELEMENTS: {
+                for (String test : houseOfElements) {
+                    if (test.equals(getMateriaName())) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            case QUALITIES: {
+                for (String test : houseOfQualities) {
+                    if (test.equals(getMateriaName())) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            case ALCHEMY: {
+                for (String test : houseOfAlchemy) {
+                    if (test.equals(getMateriaName())) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public int getWheel() {
+        return wheel;
+    }
+
     private EssentiaHouse parseStringToHouse(String input, String nameForErrorHandling) {
         switch(input) {
             case "elements": return EssentiaHouse.ELEMENTS;

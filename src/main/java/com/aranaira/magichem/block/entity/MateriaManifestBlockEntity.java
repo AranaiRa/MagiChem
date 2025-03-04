@@ -5,10 +5,12 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBl
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IScannableByMateriaManifest;
 import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.enums.EssentiaHouse;
 import com.aranaira.magichem.gui.MateriaManifestMenu;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.items.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -33,10 +35,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
 
@@ -71,8 +70,10 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
         }
     };
 
-    private List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity>> materiaStorageInZone = new ArrayList<>();
-    public AbstractMateriaStorageSingleTypeBlockEntity tetherTarget = null;
+    private HashMap<MateriaItem, List<BlockEntity>> materiaStorageInZone = new HashMap<>();
+    private ArrayList<MateriaItem> materiaTypesSorted = new ArrayList<>();
+    public BlockEntity tetherTarget = null;
+    public MateriaItem tetherType = null;
     public AABB RENDER_BOUNDING_BOX;
 
     public MateriaManifestBlockEntity(BlockPos pos, BlockState state) {
@@ -101,31 +102,32 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
 
     public void scanMateriaInZone() {
         if(level != null) {
+
             AABB zone = getExtents();
+            materiaStorageInZone = InventoryHelper.getAllMateriaStorageInZone(getLevel(),
+                    new BlockPos((int) zone.minX, (int) zone.minY, (int) zone.minZ),
+                    new BlockPos((int) zone.maxX, (int) zone.maxY, (int) zone.maxZ)
+            );
 
-            materiaStorageInZone.clear();
+            Set<MateriaItem> keySet = materiaStorageInZone.keySet();
+            keySet.remove(null);
+            materiaTypesSorted.clear();
+            materiaTypesSorted.addAll(keySet);
 
-            for(int z = (int) zone.minZ; z<=zone.maxZ; z++) {
-                for (int y = (int) zone.minY; y <= zone.maxY; y++) {
-                    for (int x = (int) zone.minX; x <= zone.maxX; x++) {
-                        BlockPos pos = new BlockPos(x, y, z);
-                        if(level.getBlockState(pos).getBlock() instanceof IScannableByMateriaManifest) {
-                            BlockEntity be = level.getBlockEntity(pos);
-                            if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
-                                if(amsbe.getMateriaType() != null)
-                                    materiaStorageInZone.add(new Triplet<>(amsbe.getMateriaType(), pos, amsbe));
-                            }
-                        }
-                    }
-                }
-            }
-
-            Collections.sort(materiaStorageInZone, Comparator.comparing(o -> (o.getFirst() instanceof EssentiaItem ? "a_" : "z_") + o.getFirst().getMateriaName()));
+            materiaTypesSorted.sort(Comparator.comparing(o -> (o instanceof EssentiaItem ei ?
+                    "a_" + (ei.getEssentiaHouse() == EssentiaHouse.ELEMENTS ? "1_" + ei.getWheel() + "_"  :
+                            (ei.getEssentiaHouse() == EssentiaHouse.QUALITIES ? "2_" + ei.getWheel() + "_" : "3_" + ei.getWheel() + "_" )) :
+                    "z_") + o.getMateriaName()));
+            int a = 0;
         }
     }
 
-    public List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity>> getMateriaStorageInZone() {
+    public HashMap<MateriaItem, List<BlockEntity>> getMateriaStorageInZone() {
         return materiaStorageInZone;
+    }
+
+    public List<MateriaItem> getMateriaTypesSorted() {
+        return materiaTypesSorted;
     }
 
     /**

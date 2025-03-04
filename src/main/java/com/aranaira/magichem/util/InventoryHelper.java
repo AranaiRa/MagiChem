@@ -1,5 +1,8 @@
 package com.aranaira.magichem.util;
 
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeStaticBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
@@ -15,10 +18,11 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import org.joml.Vector2i;
 
-import java.util.Random;
+import java.util.*;
 
 public class InventoryHelper {
     private static final Random r = new Random();
@@ -301,5 +305,45 @@ public class InventoryHelper {
                     pos.x + x, pos.y, pos.z + z,
                     0, 0, 0);
         }
+    }
+
+    public static HashMap<MateriaItem, List<BlockEntity>> getAllMateriaStorageInZone(Level pLevel, BlockPos pCorner1, BlockPos pCorner2) {
+        HashMap<MateriaItem, List<BlockEntity>> out = new HashMap<>();
+
+        for(int y=pCorner1.getY(); y<=pCorner2.getY(); y++) {
+            for (int z = pCorner1.getZ(); z <= pCorner2.getZ(); z++) {
+                for (int x = pCorner1.getX(); x <= pCorner2.getX(); x++) {
+                    BlockPos posQuery = new BlockPos(x, y, z);
+                    BlockEntity be = pLevel.getBlockEntity(posQuery);
+
+                    if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsstbe) {
+                        MateriaItem typeQuery = amsstbe.getMateriaType();
+                        if(out.containsKey(typeQuery)) {
+                            List<BlockEntity> listQuery = out.get(typeQuery);
+                            if(!listQuery.contains(be)) listQuery.add(be);
+                        } else {
+                            List<BlockEntity> listQuery = new ArrayList<>();
+                            listQuery.add(be);
+                            out.put(typeQuery, listQuery);
+                        }
+                    }
+                    else if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe) {
+                        Collection<MateriaItem> materiaTypes = amsmtbe.getMateriaTypes();
+
+                        for(MateriaItem typeQuery : materiaTypes)
+                        if(out.containsKey(typeQuery)) {
+                            List<BlockEntity> listQuery = out.get(typeQuery);
+                            if(!listQuery.contains(be)) listQuery.add(be);
+                        } else {
+                            List<BlockEntity> listQuery = new ArrayList<>();
+                            listQuery.add(be);
+                            out.put(typeQuery, listQuery);
+                        }
+                    }
+                }
+            }
+        }
+
+        return out;
     }
 }

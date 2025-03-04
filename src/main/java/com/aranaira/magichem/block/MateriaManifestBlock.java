@@ -31,6 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
@@ -116,12 +117,12 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof MateriaManifestBlockEntity mmbe) {
                     if(mmbe.tetherTarget == null) {
-                        final List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
+                        final HashMap<MateriaItem, List<BlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
+                        final List<MateriaItem> materiaTypesSorted = mmbe.getMateriaTypesSorted();
                         if (player.getInventory().getSelected().getItem() instanceof MateriaItem mi) {
-                            for (Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity> entry : materiaStorageInZone) {
-                                MateriaItem type = entry.getFirst();
+                            for (MateriaItem type : materiaTypesSorted) {
                                 if (type != null && type == mi) {
-                                    mmbe.tetherTarget = entry.getThird();
+                                    mmbe.tetherTarget = materiaStorageInZone.get(mi).get(0);
                                     player.displayClientMessage(Component.empty()
                                             .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
                                             .append(Component.translatable("item."+mi.getCreatorModId(player.getInventory().getSelected())+"."+mi.toString())),

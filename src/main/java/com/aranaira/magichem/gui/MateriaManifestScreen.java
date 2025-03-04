@@ -1,12 +1,14 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -19,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +31,8 @@ import java.util.Optional;
 public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManifestMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_materia_manifest.png");
-    private List<Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity>> materiaStorageInZone;
     private HashMap<String, ItemStack> materiaMap = new HashMap<>();
+    private List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorage = new ArrayList<>();
     int pageIndex = 0;
     int pageCount = 1;
 
@@ -53,12 +56,22 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             }
         }
         menu.blockEntity.tetherTarget = null;
+        menu.blockEntity.tetherType = null;
     }
 
     private void updateStorageScan() {
         menu.blockEntity.scanMateriaInZone();
-        materiaStorageInZone = menu.blockEntity.getMateriaStorageInZone();
-        pageCount = (int)Math.ceil((float)materiaStorageInZone.size() / 32f);
+
+        orderedMateriaStorage.clear();
+        for(MateriaItem mi : menu.blockEntity.getMateriaTypesSorted()) {
+            if(mi == null) continue;
+            List<BlockEntity> listQuery = menu.blockEntity.getMateriaStorageInZone().get(mi);
+            for(BlockEntity be : listQuery) {
+                orderedMateriaStorage.add(new Pair<>(mi, be));
+            }
+        }
+
+        pageCount = (int)Math.ceil((float)orderedMateriaStorage.size() / 32f);
         if(pageCount <= 0)
             pageCount = 1;
     }
@@ -93,9 +106,10 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
 
     private void setTetherTarget(int pButtonID) {
         int index = pButtonID + (32 * pageIndex);
-        if(index < materiaStorageInZone.size()) {
-            menu.blockEntity.tetherTarget = materiaStorageInZone.get(index).getThird();
-            MateriaItem mi = materiaStorageInZone.get(index).getFirst();
+        if(index < orderedMateriaStorage.size()) {
+            MateriaItem mi = orderedMateriaStorage.get(index).getFirst();
+            menu.blockEntity.tetherTarget = orderedMateriaStorage.get(index).getSecond();
+            menu.blockEntity.tetherType = orderedMateriaStorage.get(index).getFirst();
 
             Minecraft.getInstance().player.displayClientMessage(Component.empty()
                             .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
@@ -119,7 +133,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, w, h);
 
         int startIndex = pageIndex * 32;
-        int endIndex = (materiaStorageInZone.size() - startIndex) > 32 ? startIndex + 32 : materiaStorageInZone.size();
+        int endIndex = (orderedMateriaStorage.size() - startIndex) > 32 ? startIndex + 32 : orderedMateriaStorage.size();
 
         for(int i=startIndex; i<endIndex; i++) {
             int itemX = x +  8 + (((i - startIndex) / 8) * 54);
@@ -127,7 +141,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             int barX = x + 29 + (((i - startIndex) / 8) * 54);
             int barY = y + 31 + (((i - startIndex) % 8) * 23);
 
-            final Triplet<MateriaItem, BlockPos, AbstractMateriaStorageSingleTypeBlockEntity> entry = materiaStorageInZone.get(i);
+            final Pair<MateriaItem, BlockEntity> entry = orderedMateriaStorage.get(i);
             MateriaItem mi = entry.getFirst();
             String id = (mi instanceof EssentiaItem ? "essentia_" : "admixture_") + mi.getMateriaName();
             ItemStack is = materiaMap.get(id);
@@ -145,7 +159,11 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 float b = (float)intB / 255f;
                 pGuiGraphics.setColor(r, g, b, 1);
 
-                int barW = Math.round(23 * entry.getThird().getCurrentStockPercent());
+                int barW = 0;
+                if(entry.getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity amsstbe)
+                    barW = Math.round(23 * amsstbe.getCurrentStockPercent());
+                else if(entry.getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe)
+                    barW = Math.round(23 * amsmtbe.getCurrentStockPercent(entry.getFirst()));
 
                 pGuiGraphics.blit(TEXTURE, barX, barY, 24, 254, barW, 2);
                 pGuiGraphics.setColor(1,1,1,1);
@@ -163,13 +181,17 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
         int startIndex = pageIndex * 32;
-        int endIndex = (materiaStorageInZone.size() - startIndex) > 32 ? startIndex + 32 : materiaStorageInZone.size();
+        int endIndex = (orderedMateriaStorage.size() - startIndex) > 32 ? startIndex + 32 : orderedMateriaStorage.size();
 
         for(int i=startIndex; i<endIndex; i++) {
             int counterX =  6 + (((i - startIndex) / 8) * 54);
             int counterY = -4 + (((i - startIndex) % 8) * 23);
 
-            int mLimit = materiaStorageInZone.get(i).getThird().getCurrentStock();
+            int mLimit = 1;
+            if(orderedMateriaStorage.get(i).getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity amsstbe)
+                mLimit = amsstbe.getCurrentStock();
+            else if(orderedMateriaStorage.get(i).getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe)
+                mLimit = amsmtbe.getCurrentStock(orderedMateriaStorage.get(i).getFirst());
 
             pGuiGraphics.drawString(font, ""+mLimit, counterX, counterY, 0x00000000, false);
         }
@@ -198,9 +220,9 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         if(pX >= leftStart && pY >= topStart && columnMod <= buttonSize && rowMod <= buttonSize) {
             int index = columnID * 8 + rowID + pageIndex * 32;
 
-            if(index < materiaStorageInZone.size())
+            if(index < orderedMateriaStorage.size())
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("item.magichem."+materiaStorageInZone.get(index).getFirst().toString()))
+                    .append(Component.translatable("item.magichem."+orderedMateriaStorage.get(index).getFirst().toString()))
             );
         }
 
