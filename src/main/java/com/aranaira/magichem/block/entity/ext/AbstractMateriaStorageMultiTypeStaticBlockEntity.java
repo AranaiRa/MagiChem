@@ -263,6 +263,18 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
                     return actual;
                 }
             }
+            //No existing type found, fill a new slot if possible
+            for(int i=0; i<storedMateria.length; i++) {
+                if(getMateriaTypeInSlot(i) == null) {
+                    int capacity = getStorageLimit(mi) - getMateriaAmountInSlot(i);
+                    int actual = Math.min(pStack.getCount(), capacity);
+
+                    storedMateria[i] = new Pair<>(mi, actual);
+                    syncAndSave();
+
+                    return actual;
+                }
+            }
         }
         return 0;
     }
