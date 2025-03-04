@@ -65,6 +65,16 @@ public abstract class AbstractMateriaProcessorBlockEntity extends BlockEntity im
         }
     }
 
+    public void clearInTransit(MateriaItem pQuery) {
+        for (int i = 0; i < satisfactionDemands.size(); i++) {
+            Triplet<MateriaItem, Integer, Boolean> demand = satisfactionDemands.get(i);
+            if (demand.getFirst() == pQuery) {
+                satisfactionDemands.set(i, new Triplet<>(demand.getFirst(), demand.getSecond(), false));
+                break;
+            }
+        }
+    }
+
     public NonNullList<MateriaItem> getDemandedMateriaNotInTransit() {
         NonNullList<MateriaItem> output = NonNullList.create();
         for (Triplet<MateriaItem, Integer, Boolean> demand : satisfactionDemands) {

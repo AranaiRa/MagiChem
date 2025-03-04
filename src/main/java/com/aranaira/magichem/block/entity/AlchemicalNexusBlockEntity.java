@@ -1318,6 +1318,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     @Override
     public void provide(ItemStack pStack) {
         satisfy(pStack);
+        if(pStack.getItem() instanceof MateriaItem mi)
+            clearInTransit(mi);
     }
 
     @Override
