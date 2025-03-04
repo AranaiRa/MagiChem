@@ -253,11 +253,11 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue MATERIA_JAR_ESSENTIA_CAPACITY = BUILDER
             .comment("How much of one type of Essentia can be stored inside of a Materia Jar.")
-            .defineInRange("materiaJarEssentiaCapacity", 360, 64, Integer.MAX_VALUE);
+            .defineInRange("materiaJarEssentiaCapacity", 720, 64, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue MATERIA_JAR_ADMIXTURE_CAPACITY = BUILDER
             .comment("How much of one type of Admixture can be stored inside of a Materia Jar.")
-            .defineInRange("materiaJarAdmixtureCapacity", 180, 64, Integer.MAX_VALUE);
+            .defineInRange("materiaJarAdmixtureCapacity", 360, 64, Integer.MAX_VALUE);
 
     //----------------MATERIA VESSEL
 
