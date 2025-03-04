@@ -132,6 +132,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(MateriaJarBlockEntity::new, BlockRegistry.MATERIA_JAR.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<MateriaJarQuadBlockEntity>> MATERIA_JAR_QUAD_BE = BLOCK_ENTITIES.register("materia_jar_quad", () ->
+            BlockEntityType.Builder.of(MateriaJarQuadBlockEntity::new, BlockRegistry.MATERIA_JAR_QUAD.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<MateriaVesselBlockEntity>> MATERIA_VESSEL_BE = BLOCK_ENTITIES.register("materia_vessel", () ->
             BlockEntityType.Builder.of(MateriaVesselBlockEntity::new, BlockRegistry.MATERIA_VESSEL.get()).build(null)
     );

@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,8 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,6 +65,26 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
         return types;
     }
 
+    @Nullable
+    public MateriaItem getMateriaTypeInSlot(int pSlot) {
+        if(pSlot < storedMateria.length) {
+            if(storedMateria[pSlot] != null)
+                return storedMateria[pSlot].getFirst();
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public int getMateriaAmountInSlot(int pSlot) {
+        if(pSlot < storedMateria.length) {
+            if(storedMateria[pSlot] != null)
+                return storedMateria[pSlot].getSecond();
+        }
+
+        return -1;
+    }
+
     @Override
     public void setContents(MateriaItem pMateriaType, int pCount) {
         for(int i=0; i<storedMateria.length; i++) {
@@ -94,6 +117,8 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
                     int remainder = pVoidExcess ? 0 : Math.max(0, actual - getStorageLimit(pMateriaType));
 
                     storedMateria[i] = new Pair<>(pMateriaType, Math.min(getStorageLimit(pMateriaType), actual));
+
+                    syncAndSave();
                     return remainder;
                 }
             } else if(firstEmptyIndex == -1){
@@ -105,7 +130,28 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
             int remainder = pVoidExcess ? 0 : Math.max(0, pAmount - getStorageLimit(pMateriaType));
 
             storedMateria[firstEmptyIndex] = new Pair<>(pMateriaType, Math.min(getStorageLimit(pMateriaType), pAmount));
+
+            syncAndSave();
             return remainder;
+        }
+
+        return 0;
+    }
+
+    public int fillSlot(int pSlot, MateriaItem pMateriaType, int pAmount, boolean pVoidExcess) {
+        Pair<MateriaItem, Integer> pmi = storedMateria[pSlot];
+        if(pmi == null) {
+            int inserted = Math.min(pAmount, getStorageLimitIgnoreStoredTypes(pMateriaType));
+            storedMateria[pSlot] = new Pair<>(pMateriaType, inserted);
+
+            syncAndSave();
+            return inserted;
+        } else if(pmi.getFirst() == pMateriaType) {
+            int inserted = Math.min(getStorageLimit(pMateriaType), pmi.getSecond() + pAmount);
+            storedMateria[pSlot] = new Pair<>(pMateriaType, inserted);
+
+            syncAndSave();
+            return pVoidExcess ? pAmount : inserted;
         }
 
         return 0;
@@ -119,7 +165,12 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
                 if(pmi.getFirst() == pMateriaType) {
                     int actual = Math.min(pKeepOne ? pmi.getSecond() - 1 : pmi.getSecond(), pAmount);
 
-                    storedMateria[i] = new Pair<>(pMateriaType, pmi.getSecond() - actual);
+                    if(pmi.getSecond() - actual <= 0) {
+                        storedMateria[i] = null;
+                    } else {
+                        storedMateria[i] = new Pair<>(pMateriaType, pmi.getSecond() - actual);
+                    }
+                    syncAndSave();
                     return actual;
                 }
             }
@@ -131,17 +182,59 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
     @Override
     public abstract int getStorageLimit(MateriaItem pMateriaType);
 
-    @Override
-    public abstract void load(CompoundTag nbt);
+    public abstract int getStorageLimitIgnoreStoredTypes(MateriaItem pMateriaType);
+
+    public abstract int getTypeLimit();
 
     @Override
-    protected abstract void saveAdditional(CompoundTag nbt);
+    public void load(CompoundTag nbt) {
+        for(int i=0; i<storedMateria.length; i++) {
+            CompoundTag entry = nbt.getCompound("materiaType"+i);
+            String type = entry.getString("type");
+            if(!type.equals("empty")) {
+                MateriaItem mi = ItemRegistry.getMateriaMap(false, false).get(type);
+                storedMateria[i] = new Pair<>(mi, entry.getInt("count"));
+            }
+        }
+        super.load(nbt);
+    }
 
     @Override
-    public abstract void handleUpdateTag(CompoundTag nbt);
+    protected void saveAdditional(CompoundTag nbt) {
+        for(int i=0; i<storedMateria.length; i++) {
+            CompoundTag entry = new CompoundTag();
+            entry.putString("type", storedMateria[i] == null ? "empty" : storedMateria[i].getFirst().getMateriaName());
+            entry.putInt("count", storedMateria[i] == null ? 0 : storedMateria[i].getSecond());
+
+            nbt.put("materiaType"+i, entry);
+        }
+        super.saveAdditional(nbt);
+    }
 
     @Override
-    public abstract CompoundTag getUpdateTag();
+    public void handleUpdateTag(CompoundTag nbt) {
+        super.handleUpdateTag(nbt);
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = new CompoundTag();
+        for(int i=0; i<4; i++) {
+            CompoundTag entry = new CompoundTag();
+            entry.putString("type", storedMateria[i] == null ? "empty" : storedMateria[i].getFirst().getMateriaName());
+            entry.putInt("count", storedMateria[i] == null ? 0 : storedMateria[i].getSecond());
+
+            nbt.put("materiaType"+i, entry);
+        }
+        return nbt;
+    }
+
+    public abstract int getSlotFromWorldCoord(Vec3 pCoord);
 
     @Override
     public int canAcceptStackFromShlorp(ItemStack pStack) {

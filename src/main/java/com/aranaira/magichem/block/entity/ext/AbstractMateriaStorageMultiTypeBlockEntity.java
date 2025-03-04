@@ -50,13 +50,9 @@ public abstract class AbstractMateriaStorageMultiTypeBlockEntity extends BlockEn
     public abstract int getStorageLimit(MateriaItem pMateriaType);
 
     @Override
-    public abstract void load(CompoundTag nbt);
-
-    @Override
-    protected abstract void saveAdditional(CompoundTag nbt);
-
-    @Override
-    public abstract void handleUpdateTag(CompoundTag nbt);
+    public void handleUpdateTag(CompoundTag nbt) {
+        super.handleUpdateTag(nbt);
+    }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
@@ -64,14 +60,17 @@ public abstract class AbstractMateriaStorageMultiTypeBlockEntity extends BlockEn
         super.onDataPacket(net, pkt);
     }
 
-    @Override
-    public abstract CompoundTag getUpdateTag();
-
     public final void syncAndSave() {
         if (!this.getLevel().isClientSide()) {
             this.setChanged();
             this.getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
         }
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override

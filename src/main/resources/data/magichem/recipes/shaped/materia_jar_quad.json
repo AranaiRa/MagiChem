@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "JJ",
+    "JJ"
+  ],
+  "key": {
+    "J": {
+      "item": "magichem:materia_jar"
+    }
+  },
+  "result": {
+    "item": "magichem:materia_jar_quad"
+  }
+}

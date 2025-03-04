@@ -3061,7 +3061,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " as much as Materia Jars containing Admixtures."
+            "text": " as much as Materia Jars containing Admixtures.\n\n"
+          },
+          {
+            "text": "Four Materia Jars",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be combined into a single block by crafting. Due to technical limitations, any materia inside the jars used to craft the Materia Jar Quad will be destroyed, so make sure to empty them first."
           }
         ]
       }
@@ -3070,6 +3077,10 @@
       {
         "type": "crafting",
         "location": "magichem:shaped/materia_jar"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/materia_jar_quad"
       }
     ]
   },
@@ -3104,7 +3115,7 @@
             "text": " that has been alchemically treated to hold large amounts of Materia. With default configs, it holds "
           },
           {
-            "text": "ten times",
+            "text": "five times",
             "color": "dark_purple"
           },
           {

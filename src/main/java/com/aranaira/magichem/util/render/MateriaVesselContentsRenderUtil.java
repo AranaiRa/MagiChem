@@ -184,6 +184,29 @@ public class MateriaVesselContentsRenderUtil {
                 JAR_FLUID_START_XZ, JAR_FLUID_START_Y, JAR_FLUID_START_XZ, JAR_FLUID_WIDTH, height, color, packedLight);
     }
 
+    public static void renderJarFluidContentsWithXZOffset(Matrix4f pose, Matrix3f normal, VertexConsumer consumer, float fillAmount, int color, int packedLight, float xOffset, float zOffset) {
+        float height = JAR_FLUID_HEIGHT_MAX * fillAmount;
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FLUID_TEXTURE);
+
+        RenderUtils.renderFace(Direction.UP, pose, normal, consumer, texture,
+                JAR_FLUID_START_XZ + xOffset, JAR_FLUID_START_XZ + zOffset, JAR_FLUID_START_Y +height, JAR_FLUID_WIDTH, JAR_FLUID_WIDTH, color, packedLight);
+
+        RenderUtils.renderFace(Direction.DOWN, pose, normal, consumer, texture,
+                JAR_FLUID_START_XZ + xOffset, JAR_FLUID_START_XZ + zOffset, 1.0f - JAR_FLUID_START_Y, JAR_FLUID_WIDTH, JAR_FLUID_WIDTH, color, packedLight);
+
+        RenderUtils.renderFace(Direction.NORTH, pose, normal, consumer, texture,
+                JAR_FLUID_START_XZ + xOffset, JAR_FLUID_START_Y, JAR_FLUID_START_XZ + zOffset, JAR_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.EAST, pose, normal, consumer, texture,
+                JAR_FLUID_START_XZ + zOffset, JAR_FLUID_START_Y, JAR_FLUID_START_XZ + xOffset, JAR_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.SOUTH, pose, normal, consumer, texture,
+                JAR_FLUID_START_XZ + xOffset, JAR_FLUID_START_Y, JAR_FLUID_START_XZ - zOffset, JAR_FLUID_WIDTH, height, color, packedLight);
+
+        RenderUtils.renderFace(Direction.WEST, pose, normal, consumer, texture,
+                JAR_FLUID_START_XZ + zOffset, JAR_FLUID_START_Y, JAR_FLUID_START_XZ - xOffset, JAR_FLUID_WIDTH, height, color, packedLight);
+    }
+
     private static final float
             VESSEL_FLUID_START_XZ = 0.25F,
             VESSEL_FLUID_START_Y = 0.1875F,

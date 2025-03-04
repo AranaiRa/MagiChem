@@ -1,12 +1,10 @@
 package com.aranaira.magichem.events;
 
+import com.aranaira.magichem.block.entity.ext.*;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.block.entity.*;
-import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
-import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
@@ -297,6 +295,22 @@ public class CommonEventHandler {
 
                         MutableComponent textRow1 = Component.translatable("item.magichem." + type.toString());
                         MutableComponent textRow2 = Component.literal("   " + amsbe.getCurrentStock() + " / " + amsbe.getStorageLimit());
+                        MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
+
+                        event.getGuiGraphics().drawString(font, textRow1, x + 4, y + 4, 0xffffff, true);
+                        event.getGuiGraphics().drawString(font, textRow2, x + 4, y + 14, 0xffffff, true);
+                        event.getGuiGraphics().drawString(font, textRow3, x + 4, y + 24, 0xffffff, true);
+                        return;
+                    }
+                }
+                else if (blockEntity instanceof AbstractMateriaStorageMultiTypeStaticBlockEntity amsbe) {
+                    int slot = amsbe.getSlotFromWorldCoord(hitResult.getLocation());
+                    if(slot == -1) return;
+
+                    MateriaItem type = amsbe.getMateriaTypeInSlot(slot);
+                    if (type != null && amsbe.getCurrentStock(type) > 0) {
+                        MutableComponent textRow1 = Component.translatable("item.magichem." + type.toString());
+                        MutableComponent textRow2 = Component.literal("   " + amsbe.getCurrentStock(type) + " / " + amsbe.getStorageLimit(type));
                         MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
 
                         event.getGuiGraphics().drawString(font, textRow1, x + 4, y + 4, 0xffffff, true);

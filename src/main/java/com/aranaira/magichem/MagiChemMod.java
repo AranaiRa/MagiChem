@@ -6,6 +6,7 @@ import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
 import com.aranaira.magichem.item.renderer.MateriaJarItemRenderer;
+import com.aranaira.magichem.item.renderer.MateriaJarQuadItemRenderer;
 import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
 import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.registry.*;
@@ -166,6 +167,7 @@ public class MagiChemMod
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
             event.register(MateriaVesselItemRenderer.RENDERER_VESSEL);
             event.register(MateriaJarItemRenderer.RENDERER_JAR);
+            event.register(MateriaJarQuadItemRenderer.RENDERER_JAR_QUAD);
 
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_COG);
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_WHEEL);
