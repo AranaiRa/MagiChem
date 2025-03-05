@@ -198,6 +198,16 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
     public abstract int getTypeLimit();
 
     @Override
+    public boolean isBelowTypeLimit() {
+        int nonNullTypes = 0;
+        for(int i=0; i<storedMateria.length; i++) {
+            if(storedMateria[i] != null) nonNullTypes ++;
+        }
+
+        return nonNullTypes < getTypeLimit();
+    }
+
+    @Override
     public void load(CompoundTag nbt) {
         for(int i=0; i<storedMateria.length; i++) {
             CompoundTag entry = nbt.getCompound("materiaType"+i);

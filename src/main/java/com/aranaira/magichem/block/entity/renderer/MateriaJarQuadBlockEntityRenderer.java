@@ -29,7 +29,7 @@ public class MateriaJarQuadBlockEntityRenderer implements BlockEntityRenderer<Ma
 
         for(int i=0; i<4; i++) {
             MateriaItem type = mvqbe.getMateriaTypeInSlot(i);
-            if(type != null) {
+            if(type != null && mvqbe.getMateriaAmountInSlot(i) > 0) {
                 MateriaVesselContentsRenderUtil.renderJarFluidContentsWithXZOffset(last.pose(), last.normal(), buffer, mvqbe.getCurrentStockPercent(type), type.getMateriaColor(), packedLight, X_OFFSET[i], Z_OFFSET[i]);
             }
         }

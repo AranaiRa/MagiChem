@@ -72,6 +72,11 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
     }
 
     @Override
+    public boolean isBelowTypeLimit() {
+        return false;
+    }
+
+    @Override
     public abstract void load(CompoundTag nbt);
 
     @Override

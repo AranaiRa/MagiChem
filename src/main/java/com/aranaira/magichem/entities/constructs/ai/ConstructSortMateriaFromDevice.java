@@ -479,13 +479,9 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                     }
                 }
                 else if(beQuery instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
-                    for(MateriaItem materiaBlockQuery : multi.getMateriaTypes()) {
-                        if (materiaBlockQuery == null) {
-                            if (firstEmpty == null) {
-                                firstEmpty = multi;
-                                firstEmptyPos = multi.getBlockPos();
-                            }
-                        } else if (materiaBlockQuery == filter) {
+                    final Collection<MateriaItem> materiaBlockTypes = multi.getMateriaTypes();
+                    for(MateriaItem materiaBlockQuery : materiaBlockTypes) {
+                        if (materiaBlockQuery == filter) {
                             jarTargetEntity = multi;
                             jarTargetPos = multi.getBlockPos();
                             foundFilter = true;
@@ -495,7 +491,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                         }
                     }
                     if(foundFilter) break;
-                    else {
+                    else if(multi.isBelowTypeLimit()) {
                         firstEmpty = multi;
                         firstEmptyPos = multi.getBlockPos();
                     }

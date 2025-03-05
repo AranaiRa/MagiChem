@@ -49,6 +49,8 @@ public abstract class AbstractMateriaStorageMultiTypeBlockEntity extends BlockEn
 
     public abstract int getStorageLimit(MateriaItem pMateriaType);
 
+    public abstract boolean isBelowTypeLimit();
+
     @Override
     public void handleUpdateTag(CompoundTag nbt) {
         super.handleUpdateTag(nbt);
