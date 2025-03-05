@@ -35,7 +35,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMateria> {
@@ -106,7 +105,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                             BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                             if (be instanceof IMateriaProvisionRequester impr) {
                                 if (impr.needsProvisioning()) {
-                                    final HashMap<MateriaItem, List<BlockEntity>> allStorage = getMateriaVesselsInRegion();
+                                    final HashMap<MateriaItem, List<BlockEntity>> allStorage = getMateriaStorageInRegion();
                                     allStorage.remove(null);
 
                                     boolean foundTarget = false;
@@ -250,7 +249,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                         BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                         if(be instanceof IMateriaProvisionRequester impr) {
                             if(impr.needsProvisioning()) {
-                                final HashMap<MateriaItem, List<BlockEntity>> allStorage = getMateriaVesselsInRegion();
+                                final HashMap<MateriaItem, List<BlockEntity>> allStorage = getMateriaStorageInRegion();
                                 allStorage.remove(null);
 
                                 boolean foundTarget = false;
@@ -439,7 +438,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
         return Component.translatable("item.magichem." + prefix + filter.getMateriaName()).getString();
     }
 
-    private HashMap<MateriaItem, List<BlockEntity>> getMateriaVesselsInRegion() {
+    private HashMap<MateriaItem, List<BlockEntity>> getMateriaStorageInRegion() {
         Level level = construct.asEntity().level();
         return InventoryHelper.getAllMateriaStorageInZone(level,
                 (int)area.minX, (int)area.minY, (int)area.minZ,

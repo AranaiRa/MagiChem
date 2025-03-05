@@ -87,16 +87,27 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
 
     @Override
     public void setContents(MateriaItem pMateriaType, int pCount) {
-        for(int i=0; i<storedMateria.length; i++) {
-            Pair<MateriaItem, Integer> pmi = storedMateria[i];
-            if(pmi != null) {
-                if(pmi.getFirst() == pMateriaType) {
-                    storedMateria[i] = new Pair<>(pMateriaType, pCount);
+        if (containsMateriaType(pMateriaType)) {
+            for(int i=0; i<storedMateria.length; i++) {
+                Pair<MateriaItem, Integer> pmi = storedMateria[i];
+                if(pmi != null) {
+                    if(pmi.getFirst() == pMateriaType) {
+                        storedMateria[i] = new Pair<>(pMateriaType, pCount);
+                        break;
+                    }
                 }
-            } else {
-                storedMateria[i] = new Pair<>(pMateriaType, pCount);
             }
         }
+        else {
+            for (int i = 0; i < storedMateria.length; i++) {
+                Pair<MateriaItem, Integer> pmi = storedMateria[i];
+                if (pmi == null) {
+                    storedMateria[i] = new Pair<>(pMateriaType, pCount);
+                    break;
+                }
+            }
+        }
+        syncAndSave();
     }
 
     @Override

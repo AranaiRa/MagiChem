@@ -1,11 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
-import com.aranaira.magichem.block.MateriaJarBlock;
-import com.aranaira.magichem.block.MateriaVesselBlock;
-import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.*;
 import com.aranaira.magichem.block.entity.routers.IRouterBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
@@ -14,6 +9,7 @@ import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.aranaira.magichem.registry.EntitiesRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.*;
@@ -45,7 +41,7 @@ import java.util.*;
 public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSortMateriaFromDevice> {
     private static final ConstructCapability[] requiredCaps;
     private BlockPos takeFromTarget, jarTargetPos;
-    private AbstractMateriaStorageSingleTypeBlockEntity jarTargetEntity;
+    private BlockEntity jarTargetEntity;
     private AABB area;
     private boolean voidExcess;
     private MateriaItem filter;
@@ -248,18 +244,33 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             }
 
             if(stack != ItemStack.EMPTY) {
-                Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> materiaVesselsInRegion = getMateriaVesselsInRegion();
+                HashMap<MateriaItem, List<BlockEntity>> allStorage = getMateriaStorageInRegion();
 
                 boolean hasDestination = false;
-                for(AbstractMateriaStorageSingleTypeBlockEntity amsbe : materiaVesselsInRegion.keySet()) {
-                    if(amsbe.getMateriaType() == (MateriaItem) stack.getItem()) {
-                        hasDestination = true;
-                        break;
+                for(MateriaItem materiaStorageQuery : allStorage.keySet()) {
+                    for(int i=0; i<allStorage.get(materiaStorageQuery).size(); i++) {
+                        BlockEntity storageQuery = allStorage.get(materiaStorageQuery).get(i);
+                        if(storageQuery instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                            if (single.getMateriaType() == (MateriaItem) stack.getItem()) {
+                                hasDestination = true;
+                                break;
+                            }
+                        }
+                        else if(storageQuery instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                            for(MateriaItem blockMateriaQuery : multi.getMateriaTypes()) {
+                                if (blockMateriaQuery == (MateriaItem) stack.getItem()) {
+                                    hasDestination = true;
+                                    break;
+                                }
+                            }
+                            if(hasDestination) break;
+                        }
                     }
+                    if(hasDestination) break;
                 }
                 if(!hasDestination) {
-                    for (AbstractMateriaStorageSingleTypeBlockEntity amsbe : materiaVesselsInRegion.keySet()) {
-                        if (amsbe.getMateriaType() == null) {
+                    for (MateriaItem materiaStorageQuery : allStorage.keySet()) {
+                        if (materiaStorageQuery == null) {
                             hasDestination = true;
                             break;
                         }
@@ -320,13 +331,28 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
             int count = itemTag.getByte("Count");
             transitMateria = new ItemStack(item, count);
         }
-        int transferredAmount;
+        int transferredAmount = 0;
 
-        if (this.jarTargetEntity.getMateriaType() == null) {
-            this.jarTargetEntity.setContents(filter, transitMateria.getCount());
-            transferredAmount = transitMateria.getCount();
-        } else {
-            transferredAmount = jarTargetEntity.fill(transitMateria.getCount(), this.voidExcess);
+        if(this.jarTargetEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+            if (single.getMateriaType() == null) {
+                single.setContents(filter, transitMateria.getCount());
+                transferredAmount = transitMateria.getCount();
+            } else {
+                transferredAmount = single.fill(transitMateria.getCount(), this.voidExcess);
+            }
+        }
+        else if(this.jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+            boolean didTransfer = false;
+            for(MateriaItem materiaBlockQuery : multi.getMateriaTypes()) {
+                if (materiaBlockQuery == filter) {
+                    transferredAmount = multi.fill(materiaBlockQuery, transitMateria.getCount(), this.voidExcess);
+                    didTransfer = true;
+                }
+            }
+            if(!didTransfer) {
+                multi.setContents(filter, transitMateria.getCount());
+                transferredAmount = transitMateria.getCount();
+            }
         }
 
         if(transferredAmount == transitMateria.getCount()) {
@@ -366,8 +392,14 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         }
 
         //force the type on the destination container to prevent voiding a ton of materia types
-        if(jarTargetEntity.getMateriaType() == null)
-            jarTargetEntity.setContents((MateriaItem)transitMateria.getItem(),0);
+        if(jarTargetEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+            if (single.getMateriaType() == null)
+                single.setContents((MateriaItem) transitMateria.getItem(), 0);
+        }
+        else if(jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+            if(!multi.containsMateriaType(filter))
+                multi.setContents((MateriaItem) transitMateria.getItem(), 0);
+        }
 
         //create shlorp here
         if(!transitMateria.isEmpty()) {
@@ -406,53 +438,78 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         return transferredAmount;
     }
 
-    private Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> getMateriaVesselsInRegion() {
-        Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> output = new HashMap<>();
-
+    private HashMap<MateriaItem, List<BlockEntity>> getMateriaStorageInRegion() {
         Level level = construct.asEntity().level();
-
-        for(int x=(int)area.minX; x<=(int)area.maxX; x++){
-            for(int y=(int)area.minY; y<=(int)area.maxY; y++) {
-                for (int z=(int)area.minZ; z<=(int)area.maxZ; z++) {
-                    BlockPos pos = new BlockPos(x, y, z);
-                    if(level.getBlockState(pos).getBlock() instanceof MateriaJarBlock || level.getBlockState(pos).getBlock() instanceof MateriaVesselBlock) {
-                        output.put((AbstractMateriaStorageSingleTypeBlockEntity) level.getBlockEntity(pos), pos);
-                    }
-                }
-            }
-        }
-
-        return output;
+        return InventoryHelper.getAllMateriaStorageInZone(level,
+                (int)area.minX, (int)area.minY, (int)area.minZ,
+                (int)area.maxX, (int)area.maxY, (int)area.maxZ);
     }
 
     private void setTargetVessel(MateriaItem filter) {
-        AbstractMateriaStorageSingleTypeBlockEntity firstEmpty = null;
+        BlockEntity firstEmpty = null;
         BlockPos firstEmptyPos = null;
-        Map<AbstractMateriaStorageSingleTypeBlockEntity, BlockPos> map = getMateriaVesselsInRegion();
+        HashMap<MateriaItem, List<BlockEntity>> allStorage = getMateriaStorageInRegion();
         boolean foundFilter = false;
-        for(AbstractMateriaStorageSingleTypeBlockEntity mvbe : map.keySet()) {
-            if (mvbe.getMateriaType() == null) {
-                if (firstEmpty == null) {
-                    firstEmpty = mvbe;
-                    firstEmptyPos = map.get(mvbe);
+
+        for(MateriaItem materiaStorageQuery : allStorage.keySet()) {
+            for (int i=0; i<allStorage.get(materiaStorageQuery).size(); i++) {
+                BlockEntity beQuery = allStorage.get(materiaStorageQuery).get(i);
+
+                if(beQuery instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                    if (single.getMateriaType() == null) {
+                        if (firstEmpty == null) {
+                            firstEmpty = single;
+                            firstEmptyPos = single.getBlockPos();
+                        }
+                    } else if (single.getMateriaType() == filter) {
+                        jarTargetEntity = single;
+                        jarTargetPos = single.getBlockPos();
+                        foundFilter = true;
+                        if (voidExcess)
+                            break;
+                    }
                 }
-            } else if (mvbe.getMateriaType() == filter) {
-                jarTargetEntity = mvbe;
-                jarTargetPos = map.get(mvbe);
-                foundFilter = true;
-                if(voidExcess)
+                else if(beQuery instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                    for(MateriaItem materiaBlockQuery : multi.getMateriaTypes()) {
+                        if (materiaBlockQuery == null) {
+                            if (firstEmpty == null) {
+                                firstEmpty = multi;
+                                firstEmptyPos = multi.getBlockPos();
+                            }
+                        } else if (materiaBlockQuery == filter) {
+                            jarTargetEntity = multi;
+                            jarTargetPos = multi.getBlockPos();
+                            foundFilter = true;
+                            if (voidExcess) {
+                                break;
+                            }
+                        }
+                    }
+                    if(foundFilter) break;
+                    else {
+                        firstEmpty = multi;
+                        firstEmptyPos = multi.getBlockPos();
+                    }
+                }
+
+                if (foundFilter && firstEmpty != null)
                     break;
             }
-
-            if(foundFilter && firstEmpty != null)
-                break;
         }
 
         if(!voidExcess) {
             if(foundFilter) {
-                if(jarTargetEntity.getCurrentStock() >= jarTargetEntity.getStorageLimit()) {
-                    jarTargetEntity = firstEmpty;
-                    jarTargetPos = firstEmptyPos;
+                if(jarTargetEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                    if (single.getCurrentStock() >= single.getStorageLimit()) {
+                        jarTargetEntity = firstEmpty;
+                        jarTargetPos = firstEmptyPos;
+                    }
+                }
+                else if(jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                    if (multi.getCurrentStock(filter) >= multi.getStorageLimit(filter)) {
+                        jarTargetEntity = firstEmpty;
+                        jarTargetPos = firstEmptyPos;
+                    }
                 }
             } else {
                 jarTargetEntity = firstEmpty;

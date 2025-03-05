@@ -316,8 +316,8 @@ public class InventoryHelper {
                     BlockPos posQuery = new BlockPos(x, y, z);
                     BlockEntity be = pLevel.getBlockEntity(posQuery);
 
-                    if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsstbe) {
-                        MateriaItem typeQuery = amsstbe.getMateriaType();
+                    if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                        MateriaItem typeQuery = single.getMateriaType();
                         if(out.containsKey(typeQuery)) {
                             List<BlockEntity> listQuery = out.get(typeQuery);
                             if(!listQuery.contains(be)) listQuery.add(be);
@@ -327,17 +327,31 @@ public class InventoryHelper {
                             out.put(typeQuery, listQuery);
                         }
                     }
-                    else if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe) {
-                        Collection<MateriaItem> materiaTypes = amsmtbe.getMateriaTypes();
+                    else if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                        Collection<MateriaItem> materiaTypes = multi.getMateriaTypes();
 
-                        for(MateriaItem typeQuery : materiaTypes)
-                        if(out.containsKey(typeQuery)) {
-                            List<BlockEntity> listQuery = out.get(typeQuery);
-                            if(!listQuery.contains(be)) listQuery.add(be);
-                        } else {
-                            List<BlockEntity> listQuery = new ArrayList<>();
-                            listQuery.add(be);
-                            out.put(typeQuery, listQuery);
+                        for(MateriaItem typeQuery : materiaTypes) {
+                            if (out.containsKey(typeQuery)) {
+                                List<BlockEntity> listQuery = out.get(typeQuery);
+                                if (!listQuery.contains(be)) listQuery.add(be);
+                            } else {
+                                List<BlockEntity> listQuery = new ArrayList<>();
+                                listQuery.add(be);
+                                out.put(typeQuery, listQuery);
+                            }
+                        }
+
+                        if(multi instanceof AbstractMateriaStorageMultiTypeStaticBlockEntity multiStatic) {
+                            if(materiaTypes.size() < multiStatic.getTypeLimit()) {
+                                if (out.containsKey(null)) {
+                                    out.get(null).add(be);
+                                }
+                                else {
+                                    ArrayList<BlockEntity> outList = new ArrayList<>();
+                                    outList.add(be);
+                                    out.put(null, outList);
+                                }
+                            }
                         }
                     }
                 }

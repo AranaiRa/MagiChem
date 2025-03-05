@@ -6,6 +6,7 @@
     }
   ],
   "result": {
-    "item": "magichem:materia_jar_quad"
+    "item": "magichem:materia_jar",
+    "count": 4
   }
 }
