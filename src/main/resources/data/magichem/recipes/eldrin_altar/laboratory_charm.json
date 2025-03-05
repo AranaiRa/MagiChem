@@ -3,7 +3,7 @@
 	"output": "magichem:laboratory_charm",
 	"tier": 5,
 	"items": [
-		"magichem:superheated_glass_pane",
+		"magichem:mirror_glass_block",
 		"minecraft:gold_ingot",
 		"minecraft:blackstone",
 		"minecraft:gold_ingot",
