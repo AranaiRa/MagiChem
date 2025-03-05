@@ -152,12 +152,14 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 case WAIT_AT_VESSEL -> {
                     this.waitTimer--;
                     if(this.waitTimer <= 0) {
+                        construct.clearForcedAnimation();
                         this.setSuccessCode();
                     }
                 }
                 case WAIT_TO_FAIL -> {
                     this.waitTimer--;
                     if(this.waitTimer <= 0) {
+                        construct.clearForcedAnimation();
                         this.forceFail();
                     }
                 }
@@ -411,10 +413,17 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 Vector3 sP = new Vector3(startpoint.getBlockPos().getX(), startpoint.getBlockPos().getY(), startpoint.getBlockPos().getZ());
                 Vector3 eP = Vector3.zero(), eO = Vector3.zero(), eT = Vector3.up().scale(6);
 
-                if (endpoint instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
+                if (endpoint instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
                     eP = new Vector3(endpoint.getBlockPos().getX(), endpoint.getBlockPos().getY(), endpoint.getBlockPos().getZ());
 
-                    Pair<Vector3, Vector3> defaultOriginAndTangent = amsbe.getDefaultOriginAndTangent();
+                    Pair<Vector3, Vector3> defaultOriginAndTangent = single.getDefaultOriginAndTangent();
+                    eO = defaultOriginAndTangent.getFirst();
+                    eT = defaultOriginAndTangent.getSecond().scale(6);
+                }
+                else if (endpoint instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                    eP = new Vector3(endpoint.getBlockPos().getX(), endpoint.getBlockPos().getY(), endpoint.getBlockPos().getZ());
+
+                    Pair<Vector3, Vector3> defaultOriginAndTangent = multi.getDefaultOriginAndTangent(filter);
                     eO = defaultOriginAndTangent.getFirst();
                     eT = defaultOriginAndTangent.getSecond().scale(6);
                 }
