@@ -638,7 +638,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
             return false;
         ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_ESSENTIA_INSERTION);
         if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
-            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION);
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_ESSENTIA_INSERTION) / 2;
         }
         return insertionStack.isEmpty();
     }

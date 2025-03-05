@@ -100,7 +100,12 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                     } else {
                         if(isAdvancedMode) {
                             this.setMoveTarget(this.deviceTargetPos);
-                            this.phase = ETaskPhase.MOVE_TO_MIDPOINT;
+                            BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
+                            if (be instanceof IMateriaProvisionRequester impr && impr.needsProvisioning()) {
+                                this.phase = ETaskPhase.MOVE_TO_MIDPOINT;
+                            } else {
+                                this.phase = ETaskPhase.WAIT_TO_FAIL;
+                            }
                         } else {
                             BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                             if (be instanceof IMateriaProvisionRequester impr) {
@@ -241,6 +246,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                 case WAIT_AT_DEVICE -> {
                     this.waitTimer--;
                     if(this.waitTimer <= 0) {
+                        construct.clearForcedAnimation();
                         this.setSuccessCode();
                     }
                 }
@@ -255,17 +261,22 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                                 boolean foundTarget = false;
                                 for (MateriaItem materiaProvisionQuery : impr.getProvisioningNeeds().keySet()) {
                                     for (MateriaItem materiaStorageQuery : allStorage.keySet()) {
-                                        int stock = 0;
-                                        if(jarTargetEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity single) stock = single.getCurrentStock();
-                                        else if(jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) stock = multi.getCurrentStock(filter);
+                                        if(materiaProvisionQuery != materiaStorageQuery) continue;
 
-                                        boolean leaveOneMode = leaveOneInContainer && materiaStorageQuery == materiaProvisionQuery && stock > 1;
-                                        boolean leaveNoneMode = !leaveOneInContainer && materiaStorageQuery == materiaProvisionQuery;
+
 
                                         for(int i=0; i<allStorage.get(materiaStorageQuery).size(); i++) {
-                                            if (leaveNoneMode || leaveOneMode) {
-                                                this.filter = materiaProvisionQuery;
-                                                this.jarTargetEntity = allStorage.get(materiaStorageQuery).get(i);
+                                            this.filter = materiaProvisionQuery;
+                                            this.jarTargetEntity = allStorage.get(materiaStorageQuery).get(i);
+
+                                            int stock = 0;
+                                            if(jarTargetEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity single) stock = single.getCurrentStock();
+                                            else if(jarTargetEntity instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) stock = multi.getCurrentStock(filter);
+
+                                            boolean leaveOneMode = leaveOneInContainer && materiaStorageQuery == materiaProvisionQuery && stock > 1;
+                                            boolean leaveNoneMode = !leaveOneInContainer && materiaStorageQuery == materiaProvisionQuery;
+
+                                            if(leaveOneMode || leaveNoneMode) {
                                                 foundTarget = true;
                                                 break;
                                             }
