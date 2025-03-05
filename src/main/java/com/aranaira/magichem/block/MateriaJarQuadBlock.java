@@ -78,7 +78,7 @@ public class MateriaJarQuadBlock extends BaseEntityBlock {
         ItemStack stack = pPlayer.getItemInHand(pHand);
         BlockEntity be = pLevel.getBlockEntity(pPos);
 
-        if(be instanceof MateriaJarQuadBlockEntity mjqbe) {
+        if(be instanceof MateriaJarQuadBlockEntity mjqbe && !pLevel.isClientSide()) {
             double hx = (((pHit.getLocation().x) % 1) + 2) % 1;
             double hz = (((pHit.getLocation().z) % 1) + 2) % 1;
             int ix = hx > 0.5 ? 1 : 0;
@@ -97,13 +97,18 @@ public class MateriaJarQuadBlock extends BaseEntityBlock {
                 pLevel.addFreshEntity(ie);
             }
             else if(stack.getItem() instanceof MateriaItem mi) {
-                int inserted = mjqbe.fillSlot(slot, mi, stack.getCount(), false);
-                stack.shrink(inserted);
+                boolean quadHasType = mjqbe.getMateriaTypes().contains(mi);
+                boolean slotMatchesType = mi == tis;
 
-                ItemEntity ie = new ItemEntity(pLevel,
+                if(!quadHasType || slotMatchesType) {
+                    int inserted = mjqbe.fillSlot(slot, mi, stack.getCount(), false);
+                    stack.shrink(inserted);
+
+                    ItemEntity ie = new ItemEntity(pLevel,
                             pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(),
                             new ItemStack(Items.GLASS_BOTTLE, inserted));
                     pLevel.addFreshEntity(ie);
+                }
             }
         }
 

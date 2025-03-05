@@ -158,8 +158,8 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
             syncAndSave();
             return inserted;
         } else if(pmi.getFirst() == pMateriaType) {
-            int inserted = Math.min(getStorageLimit(pMateriaType), pmi.getSecond() + pAmount);
-            storedMateria[pSlot] = new Pair<>(pMateriaType, inserted);
+            int inserted = Math.min(getStorageLimit(pMateriaType) - pmi.getSecond(), pAmount);
+            storedMateria[pSlot] = new Pair<>(pMateriaType, pmi.getSecond() + inserted);
 
             syncAndSave();
             return pVoidExcess ? pAmount : inserted;
