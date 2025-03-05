@@ -9,6 +9,7 @@
     {
       "experience": 7,
       "components": [
+        { "item": "magichem:superheated_glass_pane" },
         { "item": "magichem:alchemically_treated_glass" },
         { "item": "magichem:bleached_amethyst_shard" },
         { "item": "magichem:alchemically_treated_glass" },
