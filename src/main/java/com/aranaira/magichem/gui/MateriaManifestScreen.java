@@ -3,7 +3,6 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
-import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -16,7 +15,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,17 +27,23 @@ import java.util.List;
 import java.util.Optional;
 
 public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManifestMenu> {
-    private static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_materia_manifest.png");
+    private static final ResourceLocation TEXTURE_COMPACT =
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_materia_manifest_compact.png");
+    private static final ResourceLocation TEXTURE_EXPANDED =
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_materia_manifest_expanded.png");
     private HashMap<String, ItemStack> materiaMap = new HashMap<>();
     private List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorage = new ArrayList<>();
+    private ImageButton setCompactButton, setExpandedButton;
+    private ImageButton[]
+            materiaSelectorButtonsCompact = new ImageButton[32],
+            materiaSelectorButtonsExpanded = new ImageButton[16];
     int pageIndex = 0;
     int pageCount = 1;
 
     @Override
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
         if(pDelta < 0)
-            pageIndex = Math.min(pageIndex + 1, pageCount - 1);
+            pageIndex = Math.min(pageIndex + 1, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
         else if(pDelta > 0)
             pageIndex = Math.max(pageIndex - 1, 0);
 
@@ -88,24 +92,63 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             int buttonY = this.topPos - 6 + ((i % 8) * 23);
 
             int finalI = i;
-            this.addRenderableWidget(new ImageButton(buttonX, buttonY, 18, 18, 24, 218, TEXTURE, button -> {
+            materiaSelectorButtonsCompact[i] = this.addRenderableWidget(new ImageButton(buttonX, buttonY, 18, 18, 24, 218, TEXTURE_COMPACT, button -> {
                 setTetherTarget(finalI);
             }));
+            materiaSelectorButtonsCompact[i].visible = menu.blockEntity.isCompactMode;
+        }
+        for(int i=0; i<16; i++) {
+            int buttonX = this.leftPos - 16 + ((i / 8) * 108);
+            int buttonY = this.topPos - 6 + ((i % 8) * 23);
+
+            int finalI = i;
+            materiaSelectorButtonsExpanded[i] = this.addRenderableWidget(new ImageButton(buttonX, buttonY, 18, 18, 24, 218, TEXTURE_COMPACT, button -> {
+                setTetherTarget(finalI);
+            }));
+            materiaSelectorButtonsExpanded[i].visible = !menu.blockEntity.isCompactMode;
         }
 
         //next page button
-        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos + 177, 12, 7, 12, 242, TEXTURE, button -> {
-            pageIndex = Math.min(pageIndex + 1, pageCount - 1);
+        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos + 177, 12, 7, 12, 242, TEXTURE_COMPACT, button -> {
+            pageIndex = Math.min(pageIndex + 1, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
         }));
 
         //previous page button
-        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos - 17, 12, 7, 0, 242, TEXTURE, button -> {
+        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos - 17, 12, 7, 0, 242, TEXTURE_COMPACT, button -> {
             pageIndex = Math.max(pageIndex - 1, 0);
         }));
+
+        //expanded / compacted button
+        setCompactButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 22, 14, 14, 228, 228, TEXTURE_COMPACT, button -> {
+            menu.blockEntity.isCompactMode = false;
+            setCompactButton.visible = false;
+            setExpandedButton.visible = true;
+            for(ImageButton ib : materiaSelectorButtonsCompact) {
+                ib.visible = false;
+            }
+            for(ImageButton ib : materiaSelectorButtonsExpanded) {
+                ib.visible = true;
+            }
+        }));
+        setCompactButton.visible = !menu.blockEntity.isCompactMode;
+
+        //expanded / compacted button
+        setExpandedButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 22, 14, 14, 242, 228, TEXTURE_COMPACT, button -> {
+            menu.blockEntity.isCompactMode = true;
+            setCompactButton.visible = true;
+            setExpandedButton.visible = false;
+            for(ImageButton ib : materiaSelectorButtonsCompact) {
+                ib.visible = true;
+            }
+            for(ImageButton ib : materiaSelectorButtonsExpanded) {
+                ib.visible = false;
+            }
+        }));
+        setCompactButton.visible = menu.blockEntity.isCompactMode;
     }
 
     private void setTetherTarget(int pButtonID) {
-        int index = pButtonID + (32 * pageIndex);
+        int index = pButtonID + ((menu.blockEntity.isCompactMode ? 32 : 16) * pageIndex);
         if(index < orderedMateriaStorage.size()) {
             MateriaItem mi = orderedMateriaStorage.get(index).getFirst();
             menu.blockEntity.tetherTarget = orderedMateriaStorage.get(index).getSecond();
@@ -118,11 +161,15 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         }
     }
 
+    private ResourceLocation getTexture() {
+        return menu.blockEntity.isCompactMode ? TEXTURE_COMPACT : TEXTURE_EXPANDED;
+    }
+
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1,1,1,1);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderTexture(0, getTexture());
 
         int w = 222;
         int h = 213;
@@ -130,15 +177,24 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         int x = (width - w) / 2;
         int y = (height - h) / 2;
 
-        pGuiGraphics.blit(TEXTURE, x, y, 0, 0, w, h);
+        //main panel
+        pGuiGraphics.blit(getTexture(), x, y, 0, 0, w, h);
 
-        int startIndex = pageIndex * 32;
-        int endIndex = (orderedMateriaStorage.size() - startIndex) > 32 ? startIndex + 32 : orderedMateriaStorage.size();
+        //search bar
+        pGuiGraphics.blit(getTexture(), x - 84, y, 116, 224, 80, 32);
+
+        //button house
+        pGuiGraphics.blit(getTexture(), x - 36, y + 36, 196, 224, 32, 32);
+
+        int splitter = (menu.blockEntity.isCompactMode ? 32 : 16);
+
+        int startIndex = pageIndex * splitter;
+        int endIndex = (orderedMateriaStorage.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorage.size();
 
         for(int i=startIndex; i<endIndex; i++) {
-            int itemX = x +  8 + (((i - startIndex) / 8) * 54);
+            int itemX = x +  8 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
             int itemY = y + 18 + (((i - startIndex) % 8) * 23);
-            int barX = x + 29 + (((i - startIndex) / 8) * 54);
+            int barX = x + 29 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
             int barY = y + 31 + (((i - startIndex) % 8) * 23);
 
             final Pair<MateriaItem, BlockEntity> entry = orderedMateriaStorage.get(i);
@@ -165,7 +221,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 else if(entry.getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe)
                     barW = Math.round(23 * amsmtbe.getCurrentStockPercent(entry.getFirst()));
 
-                pGuiGraphics.blit(TEXTURE, barX, barY, 24, 254, barW, 2);
+                pGuiGraphics.blit(TEXTURE_COMPACT, barX, barY, 24, 254, barW, 2);
                 pGuiGraphics.setColor(1,1,1,1);
             }
         }
@@ -180,20 +236,35 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
 
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-        int startIndex = pageIndex * 32;
-        int endIndex = (orderedMateriaStorage.size() - startIndex) > 32 ? startIndex + 32 : orderedMateriaStorage.size();
+        int splitter = (menu.blockEntity.isCompactMode ? 32 : 16);
+
+        int startIndex = pageIndex * splitter;
+        int endIndex = (orderedMateriaStorage.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorage.size();
 
         for(int i=startIndex; i<endIndex; i++) {
-            int counterX =  6 + (((i - startIndex) / 8) * 54);
+            int counterX =  6 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
             int counterY = -4 + (((i - startIndex) % 8) * 23);
 
+            String type = "";
             int mLimit = 1;
-            if(orderedMateriaStorage.get(i).getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity amsstbe)
-                mLimit = amsstbe.getCurrentStock();
-            else if(orderedMateriaStorage.get(i).getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe)
-                mLimit = amsmtbe.getCurrentStock(orderedMateriaStorage.get(i).getFirst());
+            if(orderedMateriaStorage.get(i).getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                mLimit = single.getCurrentStock();
+                type = single.getMateriaType() instanceof EssentiaItem ?
+                                "item.magichem.essentia_" + single.getMateriaType().getMateriaName() + ".truncated" :
+                                "item.magichem.admixture_" + single.getMateriaType().getMateriaName() + ".truncated";
+            }
+            else if(orderedMateriaStorage.get(i).getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                mLimit = multi.getCurrentStock(orderedMateriaStorage.get(i).getFirst());
+                type = orderedMateriaStorage.get(i).getFirst() instanceof EssentiaItem ?
+                        "item.magichem.essentia_" + orderedMateriaStorage.get(i).getFirst().getMateriaName() + ".truncated" :
+                        "item.magichem.admixture_" + orderedMateriaStorage.get(i).getFirst().getMateriaName() + ".truncated";
+            }
 
             pGuiGraphics.drawString(font, ""+mLimit, counterX, counterY, 0x00000000, false);
+            if(!menu.blockEntity.isCompactMode) {
+
+                pGuiGraphics.drawString(font, Component.translatable(type), counterX + 28, counterY, 0x00000000, false);
+            }
         }
     }
 
@@ -217,13 +288,22 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         int rowID = (pY - topStart) / (buttonSize + paddingY);
         int rowMod = (pY - topStart) % (buttonSize + paddingY);
 
-        if(pX >= leftStart && pY >= topStart && columnMod <= buttonSize && rowMod <= buttonSize) {
-            int index = columnID * 8 + rowID + pageIndex * 32;
+        boolean xValidCompact = (columnID < 4);
+        boolean xValidExpanded = (columnID == 0 || columnID == 2);
+        boolean xValid = (columnID >= 0) && (menu.blockEntity.isCompactMode ? xValidCompact : xValidExpanded);
+        boolean yValid = (rowID >= 0) && (rowID < 8);
 
-            if(index < orderedMateriaStorage.size())
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("item.magichem."+orderedMateriaStorage.get(index).getFirst().toString()))
-            );
+        Minecraft.getInstance().player.displayClientMessage(Component.literal("c:"+columnID+"   r:"+rowID), true);
+
+        if(xValid && yValid) {
+            if (pX >= leftStart && pY >= topStart && columnMod <= buttonSize && rowMod <= buttonSize) {
+                int index = (menu.blockEntity.isCompactMode ? columnID : columnID / 2) * 8 + rowID + pageIndex * (menu.blockEntity.isCompactMode ? 32 : 16);
+
+                if (index < orderedMateriaStorage.size())
+                    tooltipContents.add(Component.empty()
+                            .append(Component.translatable("item.magichem." + orderedMateriaStorage.get(index).getFirst().toString()))
+                    );
+            }
         }
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);

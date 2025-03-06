@@ -123,6 +123,7 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                             for (MateriaItem type : materiaTypesSorted) {
                                 if (type != null && type == mi) {
                                     mmbe.tetherTarget = materiaStorageInZone.get(mi).get(0);
+                                    mmbe.tetherType = mi;
                                     player.displayClientMessage(Component.empty()
                                             .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
                                             .append(Component.translatable("item."+mi.getCreatorModId(player.getInventory().getSelected())+"."+mi.toString())),
