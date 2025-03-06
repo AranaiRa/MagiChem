@@ -6,6 +6,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBl
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -227,6 +228,18 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             recipeFilterBox.setSuggestion("");
 
         addRenderableWidget(recipeFilterBox);
+    }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (pKeyCode == InputConstants.KEY_ESCAPE) {
+            this.onClose();
+            return true;
+        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+            return true;
+        } else {
+            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
     }
 
     private void setTetherTarget(int pButtonID) {
