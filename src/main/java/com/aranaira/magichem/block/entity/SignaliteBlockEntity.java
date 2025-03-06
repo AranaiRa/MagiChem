@@ -278,6 +278,16 @@ public class SignaliteBlockEntity extends BlockEntity {
         return count == 0 ? 0 : Math.round(out / count);
     }
 
+    public int getLastInputStrength() {
+        int out = 0;
+
+        for (int signal : lastInputSignals) {
+            out = Math.max(signal, out);
+        }
+
+        return Math.min(out, 15);
+    }
+
     public int getLastInputSum() {
         int out = 0;
 
@@ -288,13 +298,13 @@ public class SignaliteBlockEntity extends BlockEntity {
         return Math.min(out, 15);
     }
 
-    public void incrementSpecialSignalSetting() {
-        specialSignalTarget = specialSignalTarget == 15 ? 0 : specialSignalTarget + 1;
+    public void incrementSpecialSignalSetting(int max) {
+        specialSignalTarget = specialSignalTarget == max ? 0 : specialSignalTarget + 1;
         syncAndSave();
     }
 
-    public void decrementSpecialSignalSetting() {
-        specialSignalTarget = specialSignalTarget == 0 ? 15 : specialSignalTarget - 1;
+    public void decrementSpecialSignalSetting(int max) {
+        specialSignalTarget = specialSignalTarget == 0 ? max : specialSignalTarget - 1;
         syncAndSave();
     }
 }

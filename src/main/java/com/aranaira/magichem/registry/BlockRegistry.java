@@ -405,6 +405,12 @@ public class BlockRegistry {
                     SignaliteBlock.SignaliteBlockType.GATEKEEPING)
     );
 
+    public static final RegistryObject<Block> SIGNALITE_METICULOUS = registerBlock("signalite_meticulous",
+            () -> new SignaliteBlock(BlockBehaviour.Properties.of()
+                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    SignaliteBlock.SignaliteBlockType.METICULOUS)
+    );
+
     public static final RegistryObject<Block> SIGNALITE_NEGATING = registerBlock("signalite_negating",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
                     .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),

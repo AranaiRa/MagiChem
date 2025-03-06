@@ -1,7 +1,7 @@
 {
   "type": "magichem:anointing",
   "targetBlock": "magichem:signalite",
-  "materia": "magichem:admixture_dust",
+  "materia": "magichem:admixture_thought",
   "chance": 100.0,
-  "result": "magichem:signalite_negating"
+  "result": "magichem:signalite_meticulous"
 }

@@ -112,12 +112,24 @@ public class SignaliteBlock extends BaseEntityBlock {
                 boolean isCenter = (x == 0) && (y == 0) && (z == 0);
                 if (isCenter) {
                     if (type == SignaliteBlockType.DEVOURING || type == SignaliteBlockType.GATEKEEPING) {
-                        if (pPlayer.isCrouching()) sbe.decrementSpecialSignalSetting();
-                        else sbe.incrementSpecialSignalSetting();
+                        if (pPlayer.isCrouching()) sbe.decrementSpecialSignalSetting(15);
+                        else sbe.incrementSpecialSignalSetting(15);
 
                         if(!pPlayer.level().isClientSide()) {
                             MutableComponent text = Component.empty()
                                     .append(Component.translatable("feedback.block.signalite.target"))
+                                    .append(Component.literal("" + sbe.specialSignalTarget).withStyle(ChatFormatting.BOLD, ChatFormatting.RED))
+                                    .append(".");
+                            pPlayer.sendSystemMessage(text);
+                        }
+                    }
+                    if (type == SignaliteBlockType.METICULOUS) {
+                        if (pPlayer.isCrouching()) sbe.decrementSpecialSignalSetting(4);
+                        else sbe.incrementSpecialSignalSetting(4);
+
+                        if(!pPlayer.level().isClientSide()) {
+                            MutableComponent text = Component.empty()
+                                    .append(Component.translatable(sbe.specialSignalTarget == 0 ? "feedback.block.signalite.nobittarget" : "feedback.block.signalite.bittarget"))
                                     .append(Component.literal("" + sbe.specialSignalTarget).withStyle(ChatFormatting.BOLD, ChatFormatting.RED))
                                     .append(".");
                             pPlayer.sendSystemMessage(text);
@@ -149,7 +161,7 @@ public class SignaliteBlock extends BaseEntityBlock {
 
             int signalStrength = pState.getValue(POWER);
             //We don't want signals cross-polluting if we're doing math on inputs
-            if(type == SignaliteBlockType.AGGREGATING || type == SignaliteBlockType.BURNISHING)
+            if(type == SignaliteBlockType.AGGREGATING || type == SignaliteBlockType.BURNISHING || type == SignaliteBlockType.METICULOUS)
                 signalStrength = 0;
 
             if(pDirection == Direction.NORTH && sbe.connectedSouth)
@@ -250,6 +262,13 @@ public class SignaliteBlock extends BaseEntityBlock {
                 else if(sb.getType() == SignaliteBlockType.GATEKEEPING) {
                     sbe.specialSignalStrength = signalStrength >= sbe.specialSignalTarget ? signalStrength : 0;
                 }
+                else if(sb.getType() == SignaliteBlockType.METICULOUS) {
+                    if(sbe.specialSignalTarget > 0) {
+                        int filter = 1 << sbe.specialSignalTarget - 1;
+                        boolean matches = filter == (sbe.getLastInputStrength() & filter);
+                        sbe.specialSignalStrength = matches ? 15 : 0;
+                    }
+                }
                 else if(sb.getType() == SignaliteBlockType.NEGATING) {
                     sbe.specialSignalStrength = 15 - signalStrength;
                 }
@@ -304,6 +323,7 @@ public class SignaliteBlock extends BaseEntityBlock {
         CHAOTIC,
         DEVOURING,
         GATEKEEPING,
+        METICULOUS,
         NEGATING
     }
 }

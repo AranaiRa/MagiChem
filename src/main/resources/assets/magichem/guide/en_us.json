@@ -928,7 +928,174 @@
             "color": "dark_purple"
           },
           {
-            "text": " back into a usable reagent with some Construct labor; with well-constructed Construct logic no Circle of Power should require more than two of any individual reagent.\n\nOne Construct can handle the needs of the first two reagents, but the third and fourth require a dedicated Construct each."
+            "text": " back into a usable reagent with some Construct labor; with well-constructed Construct logic no Circle of Power should require more than two of any individual reagent.\n\nOne Construct can handle the needs of the first two reagents, but the third and fourth require a dedicated Construct each.\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support"
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Circle of Power supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs a signal value based on which reagent slots are active.\nThe output strength is packed as a "
+          },
+          {
+            "text": "binary number",
+            "color": "dark_red"
+          },
+          {
+            "text": ": the first bit is 1 if the first reagent is active, or 0 if inactive, and so on for reagent/bit 2, 3, and 4.\n\n\n\n\n"
+          },
+          {
+            "text": "Meticulous Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is especially useful for interacting with a Circle of Power's comparator output.\n\n\n\n\n\n\n\n\n"
+          },
+          {
+            "text": "0",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": No reagents slots are active.\n"
+          },
+          {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slot 1 is active.\n"
+          },
+          {
+            "text": "2",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slot 2 is active.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 1 and 2 are active.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slot 3 is active.\n"
+          },
+          {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 1 and 3 are active.\n"
+          },
+          {
+            "text": "6",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 2 and 3 are active.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 1, 2, and 3 are active.\n"
+          },
+          {
+            "text": "8",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slot 4 is active.\n"
+          },
+          {
+            "text": "9",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 1 and 4 are active.\n"
+          },
+          {
+            "text": "10",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 2 and 4 are active.\n"
+          },
+          {
+            "text": "11",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 1, 2, and 4 are active.\n"
+          },
+          {
+            "text": "12",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 3 and 4 are active.\n"
+          },
+          {
+            "text": "13",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 1, 3, and 4 are active.\n"
+          },
+          {
+            "text": "14",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Slots 2, 3, and 4 are active.\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": All four slots are active."
           }
         ]
       }
@@ -5325,6 +5492,45 @@
       },
       {
         "type": "title",
+        "value": "Meticulous Signalite"
+      },
+      {
+        "type": "item",
+        "location": "magichem:signalite_meticulous",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The special transmitting mode of Meticulous Signalite will "
+          },
+          {
+            "text": "read a chosen bit of the input signal strength's binary representation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", outputting a signal with strength "
+          },
+          {
+            "text": "15",
+            "color": "dark_red"
+          },
+          {
+            "text": " if the bit is 1 or "
+          },
+          {
+            "text": "0",
+            "color": "dark_red"
+          },
+          {
+            "text": " if the bit is 0.\n\nWhich bit to read can be set by right clicking the center of the Signalite cluster.\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Negating Signalite"
       },
       {
@@ -5369,6 +5575,10 @@
       {
         "type": "anointing",
         "location": "magichem:anointing/magichem/signalite_to_gatekeeping"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/signalite_to_meticulous"
       },
       {
         "type": "anointing",

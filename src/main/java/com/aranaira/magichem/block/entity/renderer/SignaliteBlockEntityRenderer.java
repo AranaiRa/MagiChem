@@ -25,6 +25,7 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
     public static final ResourceLocation RENDERER_MODEL_SPIKE_CHAOTIC = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_chaotic");
     public static final ResourceLocation RENDERER_MODEL_SPIKE_DEVOURING = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_devouring");
     public static final ResourceLocation RENDERER_MODEL_SPIKE_GATEKEEPING = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_gatekeeping");
+    public static final ResourceLocation RENDERER_MODEL_SPIKE_METICULOUS = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_meticulous");
     public static final ResourceLocation RENDERER_MODEL_SPIKE_NEGATING = new ResourceLocation(MagiChemMod.MODID, "obj/special/signalite_spike_negating");
 
     public SignaliteBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -143,6 +144,7 @@ public class SignaliteBlockEntityRenderer implements BlockEntityRenderer<Signali
         else if(pSBT == SignaliteBlockType.CHAOTIC && pSpecial) return RENDERER_MODEL_SPIKE_CHAOTIC;
         else if(pSBT == SignaliteBlockType.DEVOURING && pSpecial) return RENDERER_MODEL_SPIKE_DEVOURING;
         else if(pSBT == SignaliteBlockType.GATEKEEPING && pSpecial) return RENDERER_MODEL_SPIKE_GATEKEEPING;
+        else if(pSBT == SignaliteBlockType.METICULOUS && pSpecial) return RENDERER_MODEL_SPIKE_METICULOUS;
         else if(pSBT == SignaliteBlockType.NEGATING && pSpecial) return RENDERER_MODEL_SPIKE_NEGATING;
         return RENDERER_MODEL_SPIKE;
     }
