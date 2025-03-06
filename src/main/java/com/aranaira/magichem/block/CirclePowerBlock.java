@@ -176,4 +176,25 @@ public class CirclePowerBlock extends BaseEntityBlock {
             pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
         }
     }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof CirclePowerBlockEntity cpbe) {
+            int signal = 0;
+            signal = signal | (cpbe.hasReagent(4) ? 1 : 0) << 3;
+            signal = signal | (cpbe.hasReagent(3) ? 1 : 0) << 2;
+            signal = signal | (cpbe.hasReagent(2) ? 1 : 0) << 1;
+            signal = signal | (cpbe.hasReagent(1) ? 1 : 0);
+
+            return signal;
+        }
+
+        return 0;
+    }
 }
