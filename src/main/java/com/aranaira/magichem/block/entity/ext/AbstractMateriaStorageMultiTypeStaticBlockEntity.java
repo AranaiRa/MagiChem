@@ -215,6 +215,8 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
             if(!type.equals("empty")) {
                 MateriaItem mi = ItemRegistry.getMateriaMap(false, false).get(type);
                 storedMateria[i] = new Pair<>(mi, entry.getInt("count"));
+            } else {
+                storedMateria[i] = null;
             }
         }
         super.load(nbt);
