@@ -12,6 +12,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -31,12 +32,14 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_materia_manifest_compact.png");
     private static final ResourceLocation TEXTURE_EXPANDED =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_materia_manifest_expanded.png");
-    private HashMap<String, ItemStack> materiaMap = new HashMap<>();
-    private List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorage = new ArrayList<>();
+    private final HashMap<String, ItemStack> materiaMap = new HashMap<>();
+    private final List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorage = new ArrayList<>();
+    final List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorageFiltered = new ArrayList<>();
     private ImageButton setCompactButton, setExpandedButton;
     private ImageButton[]
             materiaSelectorButtonsCompact = new ImageButton[32],
             materiaSelectorButtonsExpanded = new ImageButton[16];
+    private EditBox recipeFilterBox;
     int pageIndex = 0;
     int pageCount = 1;
 
@@ -75,7 +78,9 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             }
         }
 
-        pageCount = (int)Math.ceil((float)orderedMateriaStorage.size() / 32f);
+        updateMateriaOptionsByTextFilter();
+
+        pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 32f);
         if(pageCount <= 0)
             pageCount = 1;
     }
@@ -84,6 +89,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     protected void init() {
         super.init();
         initializeButtons();
+        initializeRecipeFilterBox();
     }
 
     private void initializeButtons() {
@@ -121,8 +127,8 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         //expanded / compacted button
         setExpandedButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 22, 14, 14, 242, 228, TEXTURE_COMPACT, button -> {
             menu.blockEntity.isCompactMode = true;
-            setCompactButton.visible = true;
-            setExpandedButton.visible = false;
+            if(setCompactButton != null) setCompactButton.visible = true;
+            if(setExpandedButton != null) setExpandedButton.visible = false;
             for(ImageButton ib : materiaSelectorButtonsCompact) {
                 ib.visible = true;
             }
@@ -130,13 +136,12 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 ib.visible = false;
             }
         }));
-        setCompactButton.visible = menu.blockEntity.isCompactMode;
 
         //expanded / compacted button
         setCompactButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 22, 14, 14, 228, 228, TEXTURE_COMPACT, button -> {
             menu.blockEntity.isCompactMode = false;
-            setCompactButton.visible = false;
-            setExpandedButton.visible = true;
+            if(setCompactButton != null) setCompactButton.visible = false;
+            if(setExpandedButton != null) setExpandedButton.visible = true;
             for(ImageButton ib : materiaSelectorButtonsCompact) {
                 ib.visible = false;
             }
@@ -144,15 +149,92 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 ib.visible = true;
             }
         }));
-        setCompactButton.visible = !menu.blockEntity.isCompactMode;
+
+        setCompactButton.visible = menu.blockEntity.isCompactMode;
+        setExpandedButton.visible = !menu.blockEntity.isCompactMode;
+    }
+
+    private void initializeRecipeFilterBox() {
+        int x = 0;//(width - 222) / 2;
+        int y = 5;//(height - 213) / 2;
+
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
+            @Override
+            public boolean charTyped(char pCodePoint, int pModifiers) {
+                final boolean b = super.charTyped(pCodePoint, pModifiers);
+                updateMateriaOptionsByTextFilter();
+                if(getValue().isEmpty())
+                    setSuggestion("Filter...");
+                else
+                    setSuggestion("");
+                return b;
+            }
+
+            @Override
+            public void deleteChars(int pNum) {
+                super.deleteChars(pNum);
+                updateMateriaOptionsByTextFilter();
+                if(getValue().isEmpty())
+                    setSuggestion("Filter...");
+                else
+                    setSuggestion("");
+            }
+
+            @Override
+            public void deleteWords(int pNum) {
+                super.deleteWords(pNum);
+                updateMateriaOptionsByTextFilter();
+                if(getValue().isEmpty())
+                    setSuggestion("Filter...");
+                else
+                    setSuggestion("");
+            }
+        };
+        this.recipeFilterBox.setMaxLength(60);
+        this.recipeFilterBox.setFocused(false);
+        this.recipeFilterBox.setCanLoseFocus(false);
+        this.setFocused(this.recipeFilterBox);
+
+        renderFilterBox();
+    }
+
+    private void updateMateriaOptionsByTextFilter() {
+        String filter = "";
+        if(recipeFilterBox != null) filter = recipeFilterBox.getValue();
+        orderedMateriaStorageFiltered.clear();
+        for (Pair<MateriaItem, BlockEntity> pair : orderedMateriaStorage) {
+            MateriaItem mi = pair.getFirst();
+            String name = mi instanceof EssentiaItem ?
+                    Component.translatable("item.magichem.essentia_" + mi.getMateriaName()).toString() :
+                    Component.translatable("item.magichem.admixture_" + mi.getMateriaName()).toString();
+
+            if(filter.equals("") || name.contains(filter)) {
+                orderedMateriaStorageFiltered.add(pair);
+            }
+        }
+    }
+
+    private void renderFilterBox() {
+        int xOrigin = (width - 222) / 2;
+        int yOrigin = (height - 213) / 2;
+
+        recipeFilterBox.setX(xOrigin - 76);
+        recipeFilterBox.setY(yOrigin + 8);
+
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
+
+        addRenderableWidget(recipeFilterBox);
     }
 
     private void setTetherTarget(int pButtonID) {
         int index = pButtonID + ((menu.blockEntity.isCompactMode ? 32 : 16) * pageIndex);
-        if(index < orderedMateriaStorage.size()) {
-            MateriaItem mi = orderedMateriaStorage.get(index).getFirst();
-            menu.blockEntity.tetherTarget = orderedMateriaStorage.get(index).getSecond();
-            menu.blockEntity.tetherType = orderedMateriaStorage.get(index).getFirst();
+        if(index < orderedMateriaStorageFiltered.size()) {
+            MateriaItem mi = orderedMateriaStorageFiltered.get(index).getFirst();
+            menu.blockEntity.tetherTarget = orderedMateriaStorageFiltered.get(index).getSecond();
+            menu.blockEntity.tetherType = orderedMateriaStorageFiltered.get(index).getFirst();
 
             Minecraft.getInstance().player.displayClientMessage(Component.empty()
                             .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
@@ -189,7 +271,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         int splitter = (menu.blockEntity.isCompactMode ? 32 : 16);
 
         int startIndex = pageIndex * splitter;
-        int endIndex = (orderedMateriaStorage.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorage.size();
+        int endIndex = (orderedMateriaStorageFiltered.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorageFiltered.size();
 
         for(int i=startIndex; i<endIndex; i++) {
             int itemX = x +  8 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
@@ -197,7 +279,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             int barX = x + 29 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
             int barY = y + 31 + (((i - startIndex) % 8) * 23);
 
-            final Pair<MateriaItem, BlockEntity> entry = orderedMateriaStorage.get(i);
+            final Pair<MateriaItem, BlockEntity> entry = orderedMateriaStorageFiltered.get(i);
             MateriaItem mi = entry.getFirst();
             String id = (mi instanceof EssentiaItem ? "essentia_" : "admixture_") + mi.getMateriaName();
             ItemStack is = materiaMap.get(id);
@@ -239,7 +321,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         int splitter = (menu.blockEntity.isCompactMode ? 32 : 16);
 
         int startIndex = pageIndex * splitter;
-        int endIndex = (orderedMateriaStorage.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorage.size();
+        int endIndex = (orderedMateriaStorageFiltered.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorageFiltered.size();
 
         for(int i=startIndex; i<endIndex; i++) {
             int counterX =  6 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
@@ -247,17 +329,17 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
 
             String type = "";
             int mLimit = 1;
-            if(orderedMateriaStorage.get(i).getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+            if(orderedMateriaStorageFiltered.get(i).getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
                 mLimit = single.getCurrentStock();
                 type = single.getMateriaType() instanceof EssentiaItem ?
                                 "item.magichem.essentia_" + single.getMateriaType().getMateriaName() + ".truncated" :
                                 "item.magichem.admixture_" + single.getMateriaType().getMateriaName() + ".truncated";
             }
-            else if(orderedMateriaStorage.get(i).getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
-                mLimit = multi.getCurrentStock(orderedMateriaStorage.get(i).getFirst());
-                type = orderedMateriaStorage.get(i).getFirst() instanceof EssentiaItem ?
-                        "item.magichem.essentia_" + orderedMateriaStorage.get(i).getFirst().getMateriaName() + ".truncated" :
-                        "item.magichem.admixture_" + orderedMateriaStorage.get(i).getFirst().getMateriaName() + ".truncated";
+            else if(orderedMateriaStorageFiltered.get(i).getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                mLimit = multi.getCurrentStock(orderedMateriaStorageFiltered.get(i).getFirst());
+                type = orderedMateriaStorageFiltered.get(i).getFirst() instanceof EssentiaItem ?
+                        "item.magichem.essentia_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated" :
+                        "item.magichem.admixture_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated";
             }
 
             pGuiGraphics.drawString(font, ""+mLimit, counterX, counterY, 0x00000000, false);
@@ -293,15 +375,13 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         boolean xValid = (columnID >= 0) && (menu.blockEntity.isCompactMode ? xValidCompact : xValidExpanded);
         boolean yValid = (rowID >= 0) && (rowID < 8);
 
-        Minecraft.getInstance().player.displayClientMessage(Component.literal("c:"+columnID+"   r:"+rowID), true);
-
         if(xValid && yValid) {
             if (pX >= leftStart && pY >= topStart && columnMod <= buttonSize && rowMod <= buttonSize) {
                 int index = (menu.blockEntity.isCompactMode ? columnID : columnID / 2) * 8 + rowID + pageIndex * (menu.blockEntity.isCompactMode ? 32 : 16);
 
-                if (index < orderedMateriaStorage.size())
+                if (index < orderedMateriaStorageFiltered.size())
                     tooltipContents.add(Component.empty()
-                            .append(Component.translatable("item.magichem." + orderedMateriaStorage.get(index).getFirst().toString()))
+                            .append(Component.translatable("item.magichem." + orderedMateriaStorageFiltered.get(index).getFirst().toString()))
                     );
             }
         }
