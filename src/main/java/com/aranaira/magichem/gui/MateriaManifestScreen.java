@@ -119,20 +119,6 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         }));
 
         //expanded / compacted button
-        setCompactButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 22, 14, 14, 228, 228, TEXTURE_COMPACT, button -> {
-            menu.blockEntity.isCompactMode = false;
-            setCompactButton.visible = false;
-            setExpandedButton.visible = true;
-            for(ImageButton ib : materiaSelectorButtonsCompact) {
-                ib.visible = false;
-            }
-            for(ImageButton ib : materiaSelectorButtonsExpanded) {
-                ib.visible = true;
-            }
-        }));
-        setCompactButton.visible = !menu.blockEntity.isCompactMode;
-
-        //expanded / compacted button
         setExpandedButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 22, 14, 14, 242, 228, TEXTURE_COMPACT, button -> {
             menu.blockEntity.isCompactMode = true;
             setCompactButton.visible = true;
@@ -145,6 +131,20 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             }
         }));
         setCompactButton.visible = menu.blockEntity.isCompactMode;
+
+        //expanded / compacted button
+        setCompactButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 22, 14, 14, 228, 228, TEXTURE_COMPACT, button -> {
+            menu.blockEntity.isCompactMode = false;
+            setCompactButton.visible = false;
+            setExpandedButton.visible = true;
+            for(ImageButton ib : materiaSelectorButtonsCompact) {
+                ib.visible = false;
+            }
+            for(ImageButton ib : materiaSelectorButtonsExpanded) {
+                ib.visible = true;
+            }
+        }));
+        setCompactButton.visible = !menu.blockEntity.isCompactMode;
     }
 
     private void setTetherTarget(int pButtonID) {
