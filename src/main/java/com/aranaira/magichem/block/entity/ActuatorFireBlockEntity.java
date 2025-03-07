@@ -347,6 +347,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
                     float mappedSmokePercent = Math.max(0, ((smoke / ServerConfig.infernoEngineTankCapacity) - 0.5f) * 2);
                     if (mappedSmokePercent > 0f) {
                         int spawnModulus = 5 - (int) Math.floor(mappedSmokePercent * 4);
+                        if(spawnModulus <= 0) spawnModulus = 1;
                         Vector3f mid = new Vector3f(0f, 1.6875f, 0f);
                         Vector3f left = new Vector3f(0f, 2f, 0f);
                         Vector3f right = new Vector3f(0f, 2f, 0f);
