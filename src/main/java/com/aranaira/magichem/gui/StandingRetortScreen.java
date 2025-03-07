@@ -233,4 +233,14 @@ public class StandingRetortScreen extends AbstractContainerScreen<StandingRetort
 //            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
 //        }
     }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        boolean isNumber = (pKeyCode >= 48) && (pKeyCode <= 57);
+        boolean isNumpadNumber = (pKeyCode >= 97) && (pKeyCode <= 105);
+
+        if(isNumber || isNumpadNumber) return false;
+
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
 }

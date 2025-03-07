@@ -204,4 +204,14 @@ public class GrandDistilleryScreen extends AbstractContainerScreen<GrandDistille
             gui.drawString(font, warningText, 89 - width/2, -40, 0xff000000, false);
         }
     }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        boolean isNumber = (pKeyCode >= 48) && (pKeyCode <= 57);
+        boolean isNumpadNumber = (pKeyCode >= 97) && (pKeyCode <= 105);
+
+        if(isNumber || isNumpadNumber) return false;
+
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
 }

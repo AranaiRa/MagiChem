@@ -57,6 +57,13 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if(!this.recipeFilterBox.isFocused()) {
+            boolean isNumber = (pKeyCode >= 48) && (pKeyCode <= 57);
+            boolean isNumpadNumber = (pKeyCode >= 97) && (pKeyCode <= 105);
+
+            if (isNumber || isNumpadNumber) return false;
+        }
+
         if (pKeyCode == InputConstants.KEY_ESCAPE) {
             this.onClose();
             return true;

@@ -145,4 +145,14 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
         int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 9, 0xff000000, false);
     }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        boolean isNumber = (pKeyCode >= 48) && (pKeyCode <= 57);
+        boolean isNumpadNumber = (pKeyCode >= 97) && (pKeyCode <= 105);
+
+        if(isNumber || isNumpadNumber) return false;
+
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
 }

@@ -11,6 +11,7 @@ import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
 import com.aranaira.magichem.networking.GrandDeviceSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -623,6 +624,25 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width/2, -40, 0xff000000, false);
+        }
+    }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if(!this.recipeFilterBox.isFocused()) {
+            boolean isNumber = (pKeyCode >= 48) && (pKeyCode <= 57);
+            boolean isNumpadNumber = (pKeyCode >= 97) && (pKeyCode <= 105);
+
+            if (isNumber || isNumpadNumber) return false;
+        }
+
+        if (pKeyCode == InputConstants.KEY_ESCAPE) {
+            this.onClose();
+            return true;
+        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+            return true;
+        } else {
+            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
     }
 }
