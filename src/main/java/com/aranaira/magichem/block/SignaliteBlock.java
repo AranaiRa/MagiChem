@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.LEVER_SIGNAL;
+import static net.minecraft.world.level.block.RedstoneTorchBlock.LIT;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWER;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
@@ -228,6 +229,10 @@ public class SignaliteBlock extends BaseEntityBlock {
                 int signalQuery = 0;
                 if (stateToCheck.hasProperty(POWER)) {
                     signalQuery = Math.max(0, stateToCheck.getSignal(pLevel, posQuery, dir) - ((myType == SignaliteBlockType.AGGREGATING || myType == SignaliteBlockType.BURNISHING) ? 0 : 1));
+                } else if (stateToCheck.getBlock() == Blocks.REDSTONE_TORCH) {
+                    signalStrength = stateToCheck.getValue(LIT) ? 15 : 0;
+                    sbe.setLastInputByDirection(dir, 15);
+                    break;
                 } else if (stateToCheck.getBlock() == Blocks.REDSTONE_BLOCK || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
                     signalStrength = 15;
                     sbe.setLastInputByDirection(dir, 15);
