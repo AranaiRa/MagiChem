@@ -371,66 +371,66 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> SIGNALITE = registerBlock("signalite",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.STANDARD)
     );
 
     public static final RegistryObject<Block> SIGNALITE_AGGREGATING = registerBlock("signalite_aggregating",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.AGGREGATING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_BURNISHING = registerBlock("signalite_burnishing",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.BURNISHING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_CHAOTIC = registerBlock("signalite_chaotic",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.CHAOTIC)
     );
 
     public static final RegistryObject<Block> SIGNALITE_DEVOURING = registerBlock("signalite_devouring",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.DEVOURING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_GATEKEEPING = registerBlock("signalite_gatekeeping",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.GATEKEEPING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_METICULOUS = registerBlock("signalite_meticulous",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.METICULOUS)
     );
 
     public static final RegistryObject<Block> SIGNALITE_NEGATING = registerBlock("signalite_negating",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.NEGATING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_SEER = registerBlock("signalite_seer",
             () -> new SignaliteSeerBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission())
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission())
     );
 
     public static final RegistryObject<Block> SIGNALITE_SINGING = registerBlock("signalite_singing",
             () -> new SignalitePairBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignalitePairBlock.SignalitePairType.SINGING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_LISTENING = registerBlock("signalite_listening",
             () -> new SignalitePairBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignalitePairBlock.SignalitePairType.LISTENING)
     );
 
