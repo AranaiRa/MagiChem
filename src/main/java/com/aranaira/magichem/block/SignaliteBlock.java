@@ -228,7 +228,10 @@ public class SignaliteBlock extends BaseEntityBlock {
 
                 int signalQuery = 0;
                 if (stateToCheck.hasProperty(POWER)) {
-                    signalQuery = Math.max(0, stateToCheck.getSignal(pLevel, posQuery, dir) - ((myType == SignaliteBlockType.AGGREGATING || myType == SignaliteBlockType.BURNISHING) ? 0 : 1));
+                    boolean noDecayImport = myType == SignaliteBlockType.AGGREGATING || myType == SignaliteBlockType.BURNISHING || myType == SignaliteBlockType.METICULOUS;
+                    boolean noDecayExport = stateToCheck.getBlock() == BlockRegistry.SIGNALITE_SEER.get() || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_LISTENING.get();
+
+                    signalQuery = Math.max(0, stateToCheck.getSignal(pLevel, posQuery, dir) - ((noDecayImport || noDecayExport) ? 0 : 1));
                 } else if (stateToCheck.getBlock() == Blocks.REDSTONE_TORCH) {
                     signalStrength = stateToCheck.getValue(LIT) ? 15 : 0;
                     sbe.setLastInputByDirection(dir, 15);
