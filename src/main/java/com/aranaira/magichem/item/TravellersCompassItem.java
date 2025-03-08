@@ -8,7 +8,7 @@ import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.ClientUtil;
 import com.mna.KeybindInit;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
-import com.mna.items.artifice.ItemThaumaturgicCompass;
+import com.mna.items.artifice.ThaumaturgicCompass;
 import com.mna.items.base.IRadialInventorySelect;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TravellersCompassItem extends ItemThaumaturgicCompass implements IRadialInventorySelect {
+public class TravellersCompassItem extends ThaumaturgicCompass implements IRadialInventorySelect {
     @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {

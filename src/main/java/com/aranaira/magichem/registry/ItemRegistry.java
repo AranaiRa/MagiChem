@@ -4,7 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.item.compat.occultism.*;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
-import com.mna.items.artifice.ItemThaumaturgicCompass;
+import com.mna.items.artifice.ThaumaturgicCompass;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
