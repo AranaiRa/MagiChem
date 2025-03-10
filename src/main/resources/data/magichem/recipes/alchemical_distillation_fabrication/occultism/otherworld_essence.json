@@ -13,28 +13,16 @@
         "distill_only": true,
         "output_rate": 1.0,
         "object": {
-          "item": "occultism:storage_controller"
+          "item": "occultism:otherworld_essence"
         },
         "components": [
           {
-            "item": "magichem:admixture_vessel",
-            "count": 255
-          },
-          {
             "item": "magichem:admixture_spirit",
-            "count": 47
+            "count": 5
           },
           {
-            "item": "magichem:admixture_instrument",
-            "count": 34
-          },
-          {
-            "item": "magichem:admixture_memory",
-            "count": 25
-          },
-          {
-            "item": "magichem:admixture_stone",
-            "count": 12
+            "item": "magichem:essentia_nourishing",
+            "count": 4
           }
         ]
       }
