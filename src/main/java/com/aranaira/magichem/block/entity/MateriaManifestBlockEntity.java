@@ -124,6 +124,10 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
     }
 
     public HashMap<MateriaItem, List<BlockEntity>> getMateriaStorageInZone() {
+        if(materiaStorageInZone.size() == 0) {
+            scanMateriaInZone();
+        }
+
         return materiaStorageInZone;
     }
 

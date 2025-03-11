@@ -116,17 +116,17 @@ public class MateriaManifestBlock extends BaseEntityBlock {
             if(!holdingMarkPair && holdingMateria) {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof MateriaManifestBlockEntity mmbe) {
-                    if(mmbe.tetherTarget == null) {
-                        final HashMap<MateriaItem, List<BlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
-                        final List<MateriaItem> materiaTypesSorted = mmbe.getMateriaTypesSorted();
-                        if (player.getInventory().getSelected().getItem() instanceof MateriaItem mi) {
+                    if (player.getInventory().getSelected().getItem() instanceof MateriaItem mi) {
+                        if(mmbe.tetherTarget == null || mmbe.tetherType != mi) {
+                            final HashMap<MateriaItem, List<BlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
+                            final List<MateriaItem> materiaTypesSorted = mmbe.getMateriaTypesSorted();
                             for (MateriaItem type : materiaTypesSorted) {
                                 if (type != null && type == mi) {
                                     mmbe.tetherTarget = materiaStorageInZone.get(mi).get(0);
                                     mmbe.tetherType = mi;
                                     player.displayClientMessage(Component.empty()
-                                            .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
-                                            .append(Component.translatable("item."+mi.getCreatorModId(player.getInventory().getSelected())+"."+mi.toString())),
+                                                    .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
+                                                    .append(Component.translatable("item." + mi.getCreatorModId(player.getInventory().getSelected()) + "." + mi.toString())),
                                             true);
                                 }
                             }
