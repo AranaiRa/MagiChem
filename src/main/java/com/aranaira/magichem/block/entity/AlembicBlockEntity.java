@@ -211,10 +211,12 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     @Override
     public int clean() {
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
+        float grimeBonus = ((float)ServerConfig.alembicBonusWaste + 100f) / 100f;
+        int boostedGrime = Math.round((float)grimeDetected * grimeBonus);
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
         data.set(DATA_GRIME, 0);
-        return grimeDetected / ServerConfig.grimePerWaste;
+        return boostedGrime / ServerConfig.grimePerWaste;
     }
 
     public static int getScaledGrime(int grime) {
