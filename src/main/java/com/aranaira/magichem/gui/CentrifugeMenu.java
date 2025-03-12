@@ -86,7 +86,7 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     private static final int SLOT_INVENTORY_COUNT = 36;
 
     private static final Pair<Item, Integer>[] DIRSPEC = new Pair[]{
-            new Pair(Items.GLASS_BOTTLE, SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_BOTTLES)
+            new Pair(Items.GLASS_BOTTLE, SLOT_INVENTORY_COUNT + CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT)
     };
     private static final Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i( //Input slots
