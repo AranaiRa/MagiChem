@@ -226,27 +226,7 @@ public class SignaliteBlock extends BaseEntityBlock {
                 BlockPos posQuery = pPos.offset(dir.getNormal());
                 BlockState stateToCheck = pLevel.getBlockState(posQuery);
 
-                int signalQuery = 0;
-                if (stateToCheck.hasProperty(POWER)) {
-                    boolean noDecayImport = myType == SignaliteBlockType.AGGREGATING || myType == SignaliteBlockType.BURNISHING || myType == SignaliteBlockType.METICULOUS;
-                    boolean noDecayExport = stateToCheck.getBlock() == BlockRegistry.SIGNALITE_SEER.get() || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_LISTENING.get();
-
-                    signalQuery = Math.max(0, stateToCheck.getSignal(pLevel, posQuery, dir) - ((noDecayImport || noDecayExport) ? 0 : 1));
-                } else if (stateToCheck.getBlock() == Blocks.REDSTONE_TORCH) {
-                    signalStrength = stateToCheck.getValue(LIT) ? 15 : 0;
-                    sbe.setLastInputByDirection(dir, 15);
-                    break;
-                } else if (stateToCheck.getBlock() == Blocks.REDSTONE_BLOCK || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
-                    signalStrength = 15;
-                    sbe.setLastInputByDirection(dir, 15);
-                    break;
-                } else if (stateToCheck.hasProperty(LEVER_SIGNAL)) {
-                    signalQuery = stateToCheck.getValue(LEVER_SIGNAL);
-                } else if (stateToCheck.hasProperty(POWERED) && !stateToCheck.hasProperty(POWER) && stateToCheck.getValue(POWERED)) {
-                    signalStrength = 15;
-                    sbe.setLastInputByDirection(dir, 15);
-                    break;
-                }
+                int signalQuery = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir.getOpposite());
                 sbe.setLastInputByDirection(dir, signalQuery);
 
                 if (signalQuery > signalStrength) {
