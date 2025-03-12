@@ -199,16 +199,7 @@ public class SignalitePairBlock extends BaseEntityBlock {
             BlockPos posQuery = pPos.offset(dir.getNormal());
             BlockState stateToCheck = pLevel.getBlockState(posQuery);
 
-            if (stateToCheck.hasProperty(POWER))
-                signalStrength = Math.max(0, stateToCheck.getSignal(pLevel, posQuery, dir) - 1);
-
-            if (stateToCheck.getBlock() == Blocks.REDSTONE_BLOCK || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_BLOCK.get()) {
-                signalStrength = 15;
-            } else if (stateToCheck.hasProperty(LEVER_SIGNAL)) {
-                signalStrength = stateToCheck.getValue(LEVER_SIGNAL);
-            } else if (stateToCheck.hasProperty(POWERED) && !stateToCheck.hasProperty(POWER) && stateToCheck.getValue(POWERED)) {
-                signalStrength = 15;
-            }
+            signalStrength = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir.getOpposite());
 
             if(signalStrength != oldSignalStrength) {
                 pLevel.setBlock(pPos, myState.setValue(POWER, signalStrength), 3);
