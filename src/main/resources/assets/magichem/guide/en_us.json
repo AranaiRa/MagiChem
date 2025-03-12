@@ -2579,7 +2579,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ". Successful operations produce more Grime than failed ones, and a device loses efficiency and has longer operation time when it has accumulated more than 50% of its Grime capacity.\n\nA device can be manually cleaned with a "
+            "text": ". Successful operations produce more Grime than failed ones, and as a consequence objects with more total materia in their formulation will produce more Grime.\n\nA device loses efficiency and has longer operation time when it has accumulated more than 50% of its Grime capacity.\n\nA device can be manually cleaned with a "
           },
           {
             "text": "Cleaning Brush",
