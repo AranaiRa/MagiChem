@@ -182,7 +182,8 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
         if(entityIn instanceof Player player) {
             if(player.getItemInHand(InteractionHand.MAIN_HAND).getItem() == ItemRegistry.TRAVELLERS_COMPASS.get() ||
                player.getItemInHand(InteractionHand.OFF_HAND).getItem() == ItemRegistry.TRAVELLERS_COMPASS.get()) {
-                player.addEffect(new MobEffectInstance(MobEffectsRegistry.SIXFOLD_PATH.get(), 80, 0, false, false, true));
+                if(worldIn.getGameTime() % 59 == 0)
+                    player.addEffect(new MobEffectInstance(MobEffectsRegistry.SIXFOLD_PATH.get(), 80, 0, false, false, true));
             }
         }
 
