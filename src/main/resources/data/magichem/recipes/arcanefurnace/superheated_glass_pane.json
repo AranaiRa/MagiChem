@@ -1,6 +1,6 @@
 {
 	"type": "mna:arcane-furnace",
-	"tier": 3,
+	"tier": 1,
 	"input": "minecraft:glass_pane",
 	"output": "magichem:superheated_glass_pane",
 	"outputQuantity": 1,

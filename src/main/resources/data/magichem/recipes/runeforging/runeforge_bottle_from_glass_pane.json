@@ -1,6 +1,6 @@
 {
 	"type": "mna:runeforging",
-	"tier": 2,
+	"tier": 1,
 	"material": "minecraft:glass_pane",
 	"hits": 4,
 	"pattern": "minecraft:glass_pane",

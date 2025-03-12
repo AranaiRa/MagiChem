@@ -1,6 +1,6 @@
 {
 	"type": "mna:runeforging",
-	"tier": 3,
+	"tier": 1,
 	"material": "magichem:superheated_glass_pane",
 	"hits": 1,
 	"pattern": "magichem:superheated_glass_pane",
