@@ -3706,7 +3706,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " in specific locations (specifically, the \"crook\" of the scale). If you attempt to start the ritual with missing or misplaced materia containers, the correct locations will be highlighted."
+            "text": " in specific locations (specifically, the \"crook\" of the scale).\n\nThe ritual requires single-typed Materia storage like a Jar or a Vessel; Materia Jar Quads or other blocks capable of storing multiple types of Materia cannot be used.\n\nIf you attempt to start the ritual with missing or misplaced materia containers, the correct locations will be highlighted."
           }
         ]
       }
