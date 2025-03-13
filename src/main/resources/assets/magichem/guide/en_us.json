@@ -633,6 +633,16 @@
         "value": "",
         "json": [
           {
+            "text": "3 Wide, 1 Tall, 3 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "The "
           },
           {
@@ -715,6 +725,16 @@
         "value": "",
         "json": [
           {
+            "text": "3 Wide, 3 Tall, 3 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "The "
           },
           {
@@ -786,6 +806,16 @@
         "value": "",
         "json": [
           {
+            "text": "1 Wide, 1 Tall, 1 Deep\n\nConstruct Path:\n5 Wide, 2 Tall, 5 Deep\n",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "Certain devices (such as the Circle of Fabrication) require "
           },
           {
@@ -845,6 +875,16 @@
       {
         "type": "title",
         "value": "Circle of Power"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3 Wide, 1 Tall, 3 Deep\nVisuals:\n9 Wide, 4 Tall, 9 Deep\n",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
@@ -928,7 +968,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " back into a usable reagent with some Construct labor; with well-constructed Construct logic no Circle of Power should require more than two of any individual reagent.\n\nOne Construct can handle the needs of the first two reagents, but the third and fourth require a dedicated Construct each.\n\n"
+            "text": " back into a usable reagent with some Construct labor; with well-constructed Construct logic no Circle of Power should require more than two of any individual reagent.\n\nOne Construct can handle the needs of the first two reagents, but the third and fourth require a dedicated Construct each."
           }
         ]
       },
@@ -1631,6 +1671,16 @@
         "value": "",
         "json": [
           {
+            "text": "2 Wide, 1 Tall, 2 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "The "
           },
           {
@@ -1666,7 +1716,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " as many items per operation as other alchemical devices.\n\n\n\n\n\n\n\n\n\n"
+            "text": " as many items per operation as other alchemical devices.\n\n\n\n\n\n\n\n"
           }
         ]
       },
@@ -1792,6 +1842,16 @@
         "value": "",
         "json": [
           {
+            "text": "2 Wide, 2 Tall, 2 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "The "
           },
           {
@@ -1813,7 +1873,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " in its tank for each operation. More complex admixtures require larger amounts of slurry than simpler Admixtures.\n"
+            "text": " in its tank for each operation. More complex admixtures require larger amounts of slurry than simpler Admixtures.\n\n\n\n\n\n\n\n\n\n\n\n"
           }
         ]
       },
@@ -1992,6 +2052,16 @@
         "value": "",
         "json": [
           {
+            "text": "1 Wide, 2 Tall, 1 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "A "
           },
           {
@@ -2020,7 +2090,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " to further enhance its speed. Admixture of Color acts as any dye and can be used to un-dye certain items. If the Variegator also has dye of a matching color, the process is further sped up based on how full the dye reservoir is. The dye is not consumed, only the Admixture of Color is.\n\n\n\n\n\n\n"
+            "text": " to further enhance its speed. Admixture of Color acts as any dye and can be used to un-dye certain items. If the Variegator also has dye of a matching color, the process is further sped up based on how full the dye reservoir is. The dye is not consumed, only the Admixture of Color is.\n\n\n\n\n"
           }
         ]
       },
@@ -2053,6 +2123,16 @@
       {
         "type": "title",
         "value": "Alchemical Nexus"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3 Wide, 3 Tall, 3 Deep\n\nVisuals:\n7 Wide, 5 Tall, 7 Deep\n",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
@@ -2101,7 +2181,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " task on a Lodestar is necessary to search for materia in a zone).\n\n\n\n\n\n"
+            "text": " task on a Lodestar is necessary to search for materia in a zone).\n"
           }
         ]
       },
@@ -2513,6 +2593,16 @@
       {
         "type": "title",
         "value": "Standing Retort"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "1 Wide, 2 Tall, 1 Deep",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
@@ -3331,6 +3421,16 @@
         "value": "",
         "json": [
           {
+            "text": "2 Wide, 2 Tall, 1 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "An improvement on the simple Alembic, a "
           },
           {
@@ -3359,7 +3459,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " spell.\n\n\n\n\n\n\n\n\n\n"
+            "text": " spell.\n\n\n\n\n\n\n"
           }
         ]
       },
@@ -4477,6 +4577,16 @@
         "value": "",
         "json": [
           {
+            "text": "3 Wide, 3 Tall, 3 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "The "
           },
           {
@@ -4561,6 +4671,16 @@
       {
         "type": "title",
         "value": "Grand Centrifuge"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3 Wide, 3 Tall, 3 Deep",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
@@ -4653,6 +4773,16 @@
         "value": "",
         "json": [
           {
+            "text": "3 Wide, 3 Tall, 3 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "The "
           },
           {
@@ -4695,7 +4825,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " or more should be sufficient.\n\n\n"
+            "text": " or more should be sufficient.\n"
           }
         ]
       },
@@ -4787,6 +4917,16 @@
       {
         "type": "title",
         "value": "Conjurer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "1 Wide, 2 Tall, 1 Deep",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
