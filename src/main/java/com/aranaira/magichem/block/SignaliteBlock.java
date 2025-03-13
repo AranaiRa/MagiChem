@@ -136,7 +136,7 @@ public class SignaliteBlock extends BaseEntityBlock {
                             pPlayer.sendSystemMessage(text);
                         }
                     }
-                } else {
+                } else if(!pPlayer.isCrouching()) {
                     sbe.toggle(dir);
                     updateSignalStrength(pLevel, pPos);
                 }
@@ -226,7 +226,11 @@ public class SignaliteBlock extends BaseEntityBlock {
                 BlockPos posQuery = pPos.offset(dir.getNormal());
                 BlockState stateToCheck = pLevel.getBlockState(posQuery);
 
-                int signalQuery = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir.getOpposite());
+                int signalQuery = 0;
+                if(stateToCheck.getBlock() == BlockRegistry.SIGNALITE_LISTENING.get() || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_SEER.get())
+                    signalQuery = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir);
+                else
+                    signalQuery = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir.getOpposite());
                 sbe.setLastInputByDirection(dir, signalQuery);
 
                 if (signalQuery > signalStrength) {
