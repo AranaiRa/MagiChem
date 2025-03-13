@@ -308,6 +308,10 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         //TODO: push op time mod
     }
 
+    public boolean hasFuelInSlot() {
+        return !itemHandler.getStackInSlot(SLOT_FUEL).isEmpty();
+    }
+
     ////////////////////
     // ACTUATOR HANDLERS
     ////////////////////

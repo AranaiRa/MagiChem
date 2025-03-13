@@ -24,6 +24,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -299,5 +300,28 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        if(pLevel.getBlockEntity(pPos) instanceof DistilleryBlockEntity dbe) {
+            boolean hasInputItems = !dbe.getContentsOfInputSlots(DistilleryBlockEntity::getVar).isEmpty();
+            boolean hasOutputItems = !dbe.getContentsOfInputSlots(DistilleryBlockEntity::getVar).isEmpty();
+            boolean hasFuel = dbe.hasFuelInSlot();
+
+            int signal = 0;
+            signal = signal | (hasFuel ? 1 : 0);
+            signal = signal | (hasInputItems ? 1 << 1 : 0);
+            signal = signal | (hasOutputItems ? 1 << 2 : 0);
+
+            return signal;
+        }
+
+        return 0;
     }
 }

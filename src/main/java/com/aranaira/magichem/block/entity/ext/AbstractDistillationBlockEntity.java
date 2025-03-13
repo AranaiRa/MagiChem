@@ -246,6 +246,20 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return new Pair<>(outputSlot, outputItem);
     }
 
+    public SimpleContainer getContentsOfInputSlots() {
+        return getContentsOfOutputSlots(AbstractDistillationBlockEntity::getVar);
+    }
+
+    public SimpleContainer getContentsOfInputSlots(Function<IDs, Integer> pVarFunc) {
+        SimpleContainer output = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
+
+        for(int i=pVarFunc.apply(IDs.SLOT_INPUT_START); i<pVarFunc.apply(IDs.SLOT_INPUT_START)+pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
+            output.setItem(i-pVarFunc.apply(IDs.SLOT_INPUT_START), itemHandler.getStackInSlot(i));
+        }
+
+        return output;
+    }
+
     public SimpleContainer getContentsOfOutputSlots() {
         return getContentsOfOutputSlots(AbstractDistillationBlockEntity::getVar);
     }
