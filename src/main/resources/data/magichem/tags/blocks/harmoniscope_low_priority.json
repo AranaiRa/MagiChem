@@ -22,6 +22,8 @@
     "minecraft:ice",
     "minecraft:packed_ice",
     "minecraft:blue_ice",
-    "minecraft:sea_lantern"
+    "minecraft:sea_lantern",
+    "#forge:glass",
+    "#forge:glass_panes"
   ]
 }
