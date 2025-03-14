@@ -35,6 +35,9 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -238,5 +241,26 @@ public class CentrifugeBlock extends BaseEntityBlock implements ISpellInteractib
     @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        if(pLevel.getBlockEntity(pPos) instanceof CentrifugeBlockEntity cbe) {
+            boolean hasInputItems = !cbe.getContentsOfInputSlots(CentrifugeBlockEntity::getVar).isEmpty();
+            boolean hasOutputItems = !cbe.getContentsOfOutputSlots(CentrifugeBlockEntity::getVar).isEmpty();
+
+            int signal = 0;
+            signal = signal | (hasInputItems ? 1 << 1 : 0);
+            signal = signal | (hasOutputItems ? 1 << 2 : 0);
+
+            return signal;
+        }
+
+        return 0;
     }
 }

@@ -198,6 +198,10 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         return output;
     }
 
+    public SimpleContainer getContentsOfInputSlots() {
+        return getContentsOfInputSlots(AbstractFixationBlockEntity::getVar);
+    }
+
     public SimpleContainer getContentsOfInputSlots(Function<IDs, Integer> pVarFunc) {
         SimpleContainer input = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
 

@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
     public static final int
@@ -276,6 +277,10 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         return (GRIME_BAR_WIDTH * grime) / ServerConfig.centrifugeMaximumGrime;
     }
 
+    public int getTorque() {
+        return remainingTorque;
+    }
+
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
@@ -289,6 +294,12 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     // OVERRIDES
     ////////////////////
 
+    @Override
+    public SimpleContainer getContentsOfInputSlots() {
+        return getContentsOfInputSlots(CentrifugeBlockEntity::getVar);
+    }
+
+    @Override
     public SimpleContainer getContentsOfOutputSlots() {
         return getContentsOfOutputSlots(CentrifugeBlockEntity::getVar);
     }

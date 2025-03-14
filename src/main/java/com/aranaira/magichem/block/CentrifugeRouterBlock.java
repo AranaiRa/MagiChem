@@ -137,6 +137,20 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
         return false;
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        if(pLevel.getBlockEntity(pPos) instanceof CentrifugeRouterBlockEntity crbe) {
+            return crbe.getMaster().getBlockState().getBlock().getAnalogOutputSignal(crbe.getMaster().getBlockState(), pLevel, crbe.getMasterPos());
+        }
+
+        return 0;
+    }
+
     static {
         VOXEL_SHAPE_LEFT_BASE_NORTH = Block.box(2.0D, 0.0D,  0.0D, 16.0D, 8.0D, 16.0D);
         VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);

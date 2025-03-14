@@ -353,6 +353,10 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         return (FLUID_BAR_HEIGHT * pSlurry) / pVarFunc.apply(IDs.CONFIG_TANK_CAPACITY);
     }
 
+    public int getTorque() {
+        return remainingTorque;
+    }
+
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
@@ -365,8 +369,14 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     // OVERRIDES
     ////////////////////
 
+    @Override
+    public SimpleContainer getContentsOfInputSlots() {
+        return super.getContentsOfInputSlots(FuseryBlockEntity::getVar);
+    }
+
+    @Override
     public SimpleContainer getContentsOfOutputSlots() {
-        return getContentsOfOutputSlots(FuseryBlockEntity::getVar);
+        return super.getContentsOfOutputSlots(FuseryBlockEntity::getVar);
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, FuseryBlockEntity pEntity) {

@@ -153,6 +153,20 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
         return false;
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        if(pLevel.getBlockEntity(pPos) instanceof FuseryRouterBlockEntity frbe) {
+            return frbe.getMaster().getBlockState().getBlock().getAnalogOutputSignal(frbe.getMaster().getBlockState(), pLevel, frbe.getMasterPos());
+        }
+
+        return 0;
+    }
+
     static {
         VOXEL_SHAPE_LEFT_BASE = Block.box(2.0D, 0.0D,  0.0D, 16.0D, 8.0D, 16.0D);
         VOXEL_SHAPE_LEFT_PLUG = Block.box(0.0D, 0.0D, 12.0D, 16.0D, 16.0D, 16.0D);
