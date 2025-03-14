@@ -1729,7 +1729,70 @@
         "value": "",
         "json": [
           {
-            "text": "The large slot in the center of the device holds the current Admixture being processed. The three slots to the left of that are for input items, which can be any Admixture.\n\nDirectly above the processing slot is a slot for bottles. Each time the centrifuge processes an Admixture, its bottle will be inserted into this slot. If there's not enough space for another bottle, the machine will stall until space is made.\n\nThe nine slots to the right of the processing slot hold separated Materia, which can only be extracted from the machine if bottles are present in the single slot above the output slots."
+            "text": "The large slot in the center of the device holds the current Admixture being processed. The three slots to the left of that are for input items, which can be any Admixture.\n\nDirectly above the processing slot is a slot for bottles. Each time the centrifuge processes an Admixture, its bottle will be inserted into this slot. If there's not enough space for another bottle, the machine will stall until space is made.\n\nThe nine slots to the right of the processing slot hold separated Materia, which can only be extracted from the machine if bottles are present in the single slot above the output slots.\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support"
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Centrifuge supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs a signal value based on its item slots.\nThe output strength is packed as a "
+          },
+          {
+            "text": "binary number",
+            "color": "dark_red"
+          },
+          {
+            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process; and the third bit is 1 if the device has output items that have yet to be sorted.\n\n\n"
+          },
+          {
+            "text": "Meticulous Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is especially useful for interacting with a Centrifuge's comparator output.\n\n\n\n\n\n\n\n\n"
+          },
+          {
+            "text": "2",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has output items.\n"
+          },
+          {
+            "text": "6",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input and output items.\n"
           }
         ]
       }
@@ -1886,7 +1949,102 @@
         "value": "",
         "json": [
           {
-            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world."
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world.\n\n\n\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support"
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Fusery supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs a signal value based on its item slots.\nThe output strength is packed as a "
+          },
+          {
+            "text": "binary number",
+            "color": "dark_red"
+          },
+          {
+            "text": ": the first is unused; the second bit is 1 if the device has input items it has yet to process; the third bit is 1 if the device has output items that have yet to be sorted; and the fourth bit is 1 if the device has Academic Slurry in its tank.\n"
+          },
+          {
+            "text": "Meticulous Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is especially useful for interacting with a Fusery's comparator output.\n\n\n\n\n\n\n\n\n"
+          },
+          {
+            "text": "2",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has output items.\n"
+          },
+          {
+            "text": "6",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "8",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has slurry.\n"
+          },
+          {
+            "text": "10",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has inputs and slurry.\n"
+          },
+          {
+            "text": "12",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has outputs and slurry.\n"
+          },
+          {
+            "text": "14",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has inputs, outputs, and slurry.\n"
           }
         ]
       }
@@ -3476,8 +3634,103 @@
             "italic": true
           },
           {
-            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nAt the bottom is a single slot that fuel items can be inserted into.",
+            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nAt the bottom is a single slot that fuel items can be inserted into.\n",
             "italic": false
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support"
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Distillery supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs a signal value based on its item slots.\nThe output strength is packed as a "
+          },
+          {
+            "text": "binary number",
+            "color": "dark_red"
+          },
+          {
+            "text": ": the first bit is 1 if the fuel slot has an item, or 0 if empty; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted.\n"
+          },
+          {
+            "text": "Meticulous Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is especially useful for interacting with a Distillery's comparator output.\n\n\n\n\n\n\n\n\n"
+          },
+          {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel.\n"
+          },
+          {
+            "text": "2",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel and input items.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has output items.\n"
+          },
+          {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel and output items.\n"
+          },
+          {
+            "text": "6",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel, input, and output items.\n"
           }
         ]
       }
