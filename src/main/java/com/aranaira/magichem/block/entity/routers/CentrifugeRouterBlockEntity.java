@@ -4,10 +4,7 @@ import com.aranaira.magichem.block.CentrifugeBlock;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.CentrifugeRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.item.MateriaItem;
@@ -39,7 +36,7 @@ import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
 
-public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester {
+public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -263,6 +260,13 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
     public void destroyMaster() {
         getLevel().destroyBlock(getMasterPos(), true);
         CentrifugeBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
+    }
+
+    @Override
+    public boolean needsSorting() {
+        if(master == null) return false;
+
+        return master.needsSorting();
     }
 
     @Override

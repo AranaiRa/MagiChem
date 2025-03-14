@@ -58,7 +58,7 @@ import java.util.function.Consumer;
 
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
+public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
@@ -957,5 +957,10 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
         return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public boolean needsSorting() {
+        return !getContentsOfOutputSlots(GrandCircleFabricationBlockEntity::getVar).isEmpty();
     }
 }

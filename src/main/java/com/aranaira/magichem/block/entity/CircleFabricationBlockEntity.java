@@ -3,10 +3,7 @@ package com.aranaira.magichem.block.entity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.CircleFabricationBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
-import com.aranaira.magichem.foundation.IHasDeviceRecipeSlot;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
@@ -57,7 +54,7 @@ import java.util.function.Consumer;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 
-public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
+public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
@@ -794,5 +791,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
         return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public boolean needsSorting() {
+        return !getContentsOfOutputSlots(CircleFabricationBlockEntity::getVar).isEmpty();
     }
 }

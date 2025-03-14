@@ -6,7 +6,10 @@ import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IHasDeviceRecipeSlot;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IMateriaSortingRequester;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -29,10 +32,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_FABRICATION;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_POWER;
 
-public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction, IHasDeviceRecipeSlot {
+public class CircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, IDestroysMasterOnDestruction, IHasDeviceRecipeSlot, IMateriaProvisionRequester, IMateriaSortingRequester {
     private BlockPos masterPos;
     private CircleFabricationBlockEntity master;
 
@@ -145,5 +150,40 @@ public class CircleFabricationRouterBlockEntity extends BlockEntity implements M
             return null;
 
         return getMaster().getRecipeItem(pMakeCopy);
+    }
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        return false;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        return null;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+
+    }
+
+    @Override
+    public boolean needsSorting() {
+        return false;
     }
 }

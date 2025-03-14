@@ -33,7 +33,7 @@ import java.util.Map;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_CIRCLE_FABRICATION;
 
-public class GrandCircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IHasDeviceRecipeSlot {
+public class GrandCircleFabricationRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester, IShlorpReceiver, IHasDeviceRecipeSlot {
     private BlockPos masterPos;
     private GrandCircleFabricationBlockEntity master;
     private DevicePlugDirection plugDirection;
@@ -236,5 +236,12 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
             return null;
 
         return getMaster().getRecipeItem(pMakeCopy);
+    }
+
+    @Override
+    public boolean needsSorting() {
+        if(master == null) return false;
+
+        return master.needsSorting();
     }
 }
