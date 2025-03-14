@@ -9,6 +9,7 @@ import com.aranaira.magichem.foundation.enums.EssentiaHouse;
 import com.aranaira.magichem.gui.MateriaManifestMenu;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.items.ItemInit;
@@ -115,11 +116,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
             materiaTypesSorted.clear();
             materiaTypesSorted.addAll(keySet);
 
-            materiaTypesSorted.sort(Comparator.comparing(o -> (o instanceof EssentiaItem ei ?
-                    "a_" + (ei.getEssentiaHouse() == EssentiaHouse.ELEMENTS ? "1_" + ei.getWheel() + "_"  :
-                            (ei.getEssentiaHouse() == EssentiaHouse.QUALITIES ? "2_" + ei.getWheel() + "_" : "3_" + ei.getWheel() + "_" )) :
-                    "z_") + o.getMateriaName()));
-            int a = 0;
+            materiaTypesSorted.sort(Comparator.comparing(MateriaItem::getMateriaSortingName));
         }
     }
 

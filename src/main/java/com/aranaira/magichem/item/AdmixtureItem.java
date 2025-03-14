@@ -180,4 +180,9 @@ public class AdmixtureItem extends MateriaItem {
         displayFormula = output;
         return output;
     }
+
+    @Override
+    public String getMateriaSortingName() {
+        return "2_0_0_"+this.name;
+    }
 }

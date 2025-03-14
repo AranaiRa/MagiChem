@@ -162,4 +162,13 @@ public class EssentiaItem extends MateriaItem {
     }
 
     public String getDisplayFormula() { return getAbbreviation(); }
+
+    @Override
+    public String getMateriaSortingName() {
+        int order = 0;
+        if(this.house == EssentiaHouse.QUALITIES) order = 1;
+        else if(this.house == EssentiaHouse.ALCHEMY) order = 2;
+
+        return "1_"+order+"_"+this.wheel+"_"+this.name;
+    }
 }

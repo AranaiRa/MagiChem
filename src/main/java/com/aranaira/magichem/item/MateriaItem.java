@@ -49,6 +49,10 @@ public class MateriaItem extends Item {
         return this.name;
     }
 
+    public String getMateriaSortingName() {
+        return "3_0_0_"+this.name;
+    }
+
     public int getMateriaColor() {
         return this.color;
     }
