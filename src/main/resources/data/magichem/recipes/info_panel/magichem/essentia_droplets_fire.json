@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "magichem:essentia_droplets_fire",
+  "tier": 1,
+  "info": "jei.magichem.info_panel.droplets"
+}

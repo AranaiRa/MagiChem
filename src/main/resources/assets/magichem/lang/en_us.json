@@ -483,7 +483,7 @@
   "feedback.block.materiamanifest.trackfrombottle": "Locating ",
   "feedback.block.signalite.target": "Signal target is now ",
   "feedback.block.signalite.bittarget": "Reading bit ",
-  "feedback.block.signalite.nobittarget": "Bit reading disabled.",
+  "feedback.block.signalite.nobittarget": "Bit reading disabled",
   "feedback.block.signaliteseer.target": "Seer is now reading comparator output from ",
   "feedback.block.signalitepair.target": "Listening to the signal-song from ",
   "feedback.item.hellfeathercharm.wrongdim": "You can only use this item in the Nether.",
@@ -1021,6 +1021,7 @@
 
   "jei.magichem.info_panel.academic_slurry": "Created by extracting Experience from a Crystal of Memories with an Experience Exchanger or an Occult Matrix. \n Some alchemical devices, like the Fusery, consume Academic Slurry.",
   "jei.magichem.info_panel.alchemical_waste": "Created by cleaning an alchemical device. Grime inside the device is removed and becomes Alchemical Waste. \n Devices can be cleaned with a Cleaning Brush, with a Splash spell, or through Construct automation.",
+  "jei.magichem.info_panel.droplets": "Created when a Standing Retort inserts elemental essentia into an Eldrin Fume Filter. \n Creates 50% more Eldrin power than a dram of elemental Essentia alone. \n If you remove it from the Fume Filter it will evaporate into nothing very quickly.",
   "jei.magichem.info_panel.rarefied_waste": "When an advanced alchemical device is hooked up to a Quake Refinery a portion of absorbed Grime becomes Rarefied Waste instead of Alchemical Waste. \n Rarefied Waste can be distilled into random Admixtures and generates no Grime.",
   "jei.magichem.info_panel.signalite": "Grows slowly over time on Budding Signalite. \n Can also be created through alchemical Anointing.",
   "jei.magichem.info_panel.smoke_bucket": "Created over time by an Inferno Engine as it operates. If the Inferno Engine's buffer fills up, any excess Smoke is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
