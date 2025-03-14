@@ -88,7 +88,7 @@ public class ActuatorEarthBlock extends BaseEntityBlock {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {
             if(be instanceof ActuatorEarthBlockEntity aebe) {
-                aebe.setPaused(pLevel.hasNeighborSignal(pPos));
+                aebe.checkPaused();
             }
         }
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);

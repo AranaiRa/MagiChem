@@ -86,7 +86,7 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {
             if(be instanceof ActuatorArcaneBlockEntity aabe) {
-                aabe.setPaused(pLevel.hasNeighborSignal(pPos));
+                aabe.checkPaused();
             }
         }
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);

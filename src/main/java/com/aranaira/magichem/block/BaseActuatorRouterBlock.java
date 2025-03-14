@@ -1,5 +1,7 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.ActuatorAirBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.base.INoCreativeTab;
@@ -130,6 +132,17 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
         }
 
         return super.getStateForPlacement(pContext);
+    }
+
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        BlockEntity be = pLevel.getBlockEntity(pPos.below());
+        if(be != null) {
+            if(be instanceof AbstractDirectionalPluginBlockEntity adpbe) {
+                adpbe.checkPaused();
+            }
+        }
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
     }
 
     static {

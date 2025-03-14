@@ -96,7 +96,7 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {
             if(be instanceof ActuatorWaterBlockEntity awbe) {
-                awbe.setPaused(pLevel.hasNeighborSignal(pPos));
+                awbe.checkPaused();
             }
         }
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);

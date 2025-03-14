@@ -103,7 +103,7 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {
             if(be instanceof ActuatorFireBlockEntity afbe) {
-                afbe.setPaused(pLevel.hasNeighborSignal(pPos));
+                afbe.checkPaused();
             }
         }
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);

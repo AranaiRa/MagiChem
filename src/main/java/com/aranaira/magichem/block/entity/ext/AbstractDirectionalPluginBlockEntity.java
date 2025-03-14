@@ -9,8 +9,10 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -101,6 +103,33 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
     public void setPaused(boolean pNewPauseState) {
         isPaused = pNewPauseState;
         syncAndSave();
+    }
+
+    public static final Pair[] ACTUATOR_REDSTONE_CHECK_LOCATIONS = {
+            new Pair(new Vec3i(0,-1,0), Direction.DOWN),
+            new Pair(new Vec3i(1,0,0), Direction.EAST),
+            new Pair(new Vec3i(0,0,1), Direction.SOUTH),
+            new Pair(new Vec3i(-1,0,0), Direction.WEST),
+            new Pair(new Vec3i(0,0,-1), Direction.NORTH),
+            new Pair(new Vec3i(1,1,0), Direction.EAST),
+            new Pair(new Vec3i(0,1,1), Direction.SOUTH),
+            new Pair(new Vec3i(-1,1,0), Direction.WEST),
+            new Pair(new Vec3i(0,1,-1), Direction.NORTH),
+            new Pair(new Vec3i(0,2,0), Direction.UP)
+    };
+    public void checkPaused() {
+        boolean shouldPause = false;
+
+        for (Pair<Vec3i, Direction> query : ACTUATOR_REDSTONE_CHECK_LOCATIONS) {
+            BlockPos posQuery = getBlockPos().offset(query.getFirst());
+            int signal = getLevel().getBlockState(posQuery).getSignal(getLevel(), posQuery, query.getSecond());
+            if(signal > 0) {
+                shouldPause = true;
+                break;
+            }
+        }
+
+        setPaused(shouldPause);
     }
 
     public int getPowerLevel() {
