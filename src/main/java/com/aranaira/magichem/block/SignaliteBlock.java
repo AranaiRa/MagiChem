@@ -227,11 +227,18 @@ public class SignaliteBlock extends BaseEntityBlock {
                 BlockState stateToCheck = pLevel.getBlockState(posQuery);
 
                 int signalQuery = 0;
-//                if(stateToCheck.getBlock() == BlockRegistry.SIGNALITE_LISTENING.get() || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_SEER.get())
+                if(stateToCheck.getBlock() == BlockRegistry.SIGNALITE_LISTENING.get() || stateToCheck.getBlock() == BlockRegistry.SIGNALITE_SEER.get()) {
                     signalQuery = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir);
-//                else
-//                    signalQuery = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir.getOpposite());
-                sbe.setLastInputByDirection(dir, signalQuery);
+                    sbe.setLastInputByDirection(dir, signalQuery + 1);
+                }
+                else {
+                    signalQuery = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir);
+                    sbe.setLastInputByDirection(dir, signalQuery);
+                }
+
+                if(stateToCheck.getBlock() == BlockRegistry.SIGNALITE.get() || stateToCheck.getBlock() == Blocks.REDSTONE_WIRE) {
+                    signalQuery = Math.max(0, signalQuery - 1);
+                }
 
                 if (signalQuery > signalStrength) {
                     signalStrength = signalQuery;
@@ -267,8 +274,8 @@ public class SignaliteBlock extends BaseEntityBlock {
             }
 
             if(signalStrength != oldSignalStrength) {
-                pLevel.setBlock(pPos, myState.setValue(POWER, signalStrength), 3);
-                pLevel.sendBlockUpdated(pPos, myState, myState.setValue(POWER, signalStrength), 2);
+                pLevel.setBlock(pPos, myState.setValue(POWER, Math.min(15, signalStrength)), 3);
+                pLevel.sendBlockUpdated(pPos, myState, myState.setValue(POWER, Math.min(15, signalStrength)), 2);
             }
 
             sbe.syncAndSave();
