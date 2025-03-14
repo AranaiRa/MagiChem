@@ -5,6 +5,6 @@
   "object": { "item": "minecraft:wooden_hoe" },
   "components": [
     { "item": "magichem:admixture_plant", "count": 2 },
-    { "item": "magichem:admixture_instrument", "count": 8 }
+    { "item": "magichem:admixture_instrument", "count": 4 }
   ]
 }
