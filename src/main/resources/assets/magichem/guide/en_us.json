@@ -5712,7 +5712,7 @@
       }
     ]
   },
-  "Signalite Variants": {
+  "Signalite, Variants": {
     "index": "0",
     "category": "magichem_wonders",
     "tier": 1,
@@ -5979,7 +5979,7 @@
       }
     ]
   },
-  "Signalite Seer": {
+  "Signalite, Seer": {
     "index": "0",
     "category": "magichem_wonders",
     "tier": 1,
@@ -6030,6 +6030,90 @@
       {
         "type": "crafting",
         "location": "magichem:shapeless/signalite_seer"
+      }
+    ]
+  },
+  "Signalite, Long-Range": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Singing & Listening Signalite"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Singing",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "Listening Signalites",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are simple devices capable of transmitting a Redstone signal over "
+          },
+          {
+            "text": "arbitrarily large ranges",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThere is "
+          },
+          {
+            "text": "no maximum distance",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that the signal can traverse; the only requirement is that the Singing Signalite and any paired Listening Signalites are in the "
+          },
+          {
+            "text": "same dimension",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and that both the Singing and Listening Signalites are in "
+          },
+          {
+            "text": "loaded chunks",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nTo pair a Listening Signalite to a Singing Signalite, use a "
+          },
+          {
+            "text": "Rune of Marking",
+            "color": "dark_purple"
+          },
+          {
+            "text": " bound to a Listening Signalite on it. Any number of Listening Signalites can be bound to the same Singing Signalite.\n\nSinging Signalites can only read a signal from a single direction. Likewise, a Listening Signalite can only transmit a signal in a single direction. Signals transmitted from a Listening Signalite are not reduced by one when it moves to an adjacent Signalite.\n\nLike conventional Signalites, Singing and Listening Signalites can be locked with an Admixture of Permanence or hidden with an Admixture of Lies."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/signalite_singing"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/signalite_listening_to_singing"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/signalite_listening"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/signalite_singing_to_listening"
       }
     ]
   },
