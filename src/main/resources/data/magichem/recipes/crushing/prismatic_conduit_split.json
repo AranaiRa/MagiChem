@@ -1,0 +1,39 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "magichem:prismatic_conduit_lesser",
+  "output": "minecraft:stick",
+  "output_quantity": 6,
+  "byproducts": [
+    {
+      "item": "mna:lesser_eldrin_conduit_ender",
+      "chance": 1,
+      "rolls": 1
+    },
+    {
+      "item": "mna:lesser_eldrin_conduit_earth",
+      "chance": 1,
+      "rolls": 1
+    },
+    {
+      "item": "mna:lesser_eldrin_conduit_water",
+      "chance": 1,
+      "rolls": 1
+    },
+    {
+      "item": "mna:lesser_eldrin_conduit_wind",
+      "chance": 1,
+      "rolls": 1
+    },
+    {
+      "item": "mna:lesser_eldrin_conduit_fire",
+      "chance": 1,
+      "rolls": 1
+    },
+    {
+      "item": "mna:lesser_eldrin_conduit_arcane",
+      "chance": 1,
+      "rolls": 1
+    }
+  ]
+}

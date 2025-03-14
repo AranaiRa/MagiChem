@@ -5815,7 +5815,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " than a single conduit."
+            "text": " than a single conduit.\n\nLesser Prismatic Conduits can be broken back into the six component Lesser Conduits by a construct using the "
+          },
+          {
+            "text": "Crush",
+            "color": "dark_purple"
+          },
+          {
+            "text": " task."
           }
         ]
       }
@@ -5828,6 +5835,10 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/prismatic_conduit"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/prismatic_conduit_split"
       }
     ]
   },
