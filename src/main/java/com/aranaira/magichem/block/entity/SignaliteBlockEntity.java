@@ -300,11 +300,13 @@ public class SignaliteBlockEntity extends BlockEntity {
 
     public void incrementSpecialSignalSetting(int max) {
         specialSignalTarget = specialSignalTarget == max ? 0 : specialSignalTarget + 1;
+        SignaliteBlock.updateSignalStrength(getLevel(), getBlockPos());
         syncAndSave();
     }
 
     public void decrementSpecialSignalSetting(int max) {
         specialSignalTarget = specialSignalTarget == 0 ? max : specialSignalTarget - 1;
+        SignaliteBlock.updateSignalStrength(getLevel(), getBlockPos());
         syncAndSave();
     }
 }

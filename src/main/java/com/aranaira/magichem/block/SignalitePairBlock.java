@@ -199,7 +199,7 @@ public class SignalitePairBlock extends BaseEntityBlock {
             BlockPos posQuery = pPos.offset(dir.getNormal());
             BlockState stateToCheck = pLevel.getBlockState(posQuery);
 
-            signalStrength = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir.getOpposite());
+            signalStrength = stateToCheck.getBlock().getSignal(stateToCheck, pLevel, posQuery, dir);
 
             if(signalStrength != oldSignalStrength) {
                 pLevel.setBlock(pPos, myState.setValue(POWER, signalStrength), 3);

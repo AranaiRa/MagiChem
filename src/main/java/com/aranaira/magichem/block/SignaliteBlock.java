@@ -131,7 +131,7 @@ public class SignaliteBlock extends BaseEntityBlock {
                         if(!pPlayer.level().isClientSide()) {
                             MutableComponent text = Component.empty()
                                     .append(Component.translatable(sbe.specialSignalTarget == 0 ? "feedback.block.signalite.nobittarget" : "feedback.block.signalite.bittarget"))
-                                    .append(Component.literal("" + sbe.specialSignalTarget).withStyle(ChatFormatting.BOLD, ChatFormatting.RED))
+                                    .append(Component.literal("" + (sbe.specialSignalTarget == 0 ? "" : sbe.specialSignalTarget)).withStyle(ChatFormatting.BOLD, ChatFormatting.RED))
                                     .append(".");
                             pPlayer.sendSystemMessage(text);
                         }
@@ -210,13 +210,14 @@ public class SignaliteBlock extends BaseEntityBlock {
         updateSignalStrength(pLevel, pPos);
     }
 
-    private void updateSignalStrength(Level pLevel, BlockPos pPos) {
+    public static void updateSignalStrength(Level pLevel, BlockPos pPos) {
         if(pLevel.getBlockEntity(pPos) instanceof SignaliteBlockEntity sbe) {
             int signalStrength = 0;
             BlockState myState = pLevel.getBlockState(pPos);
             SignaliteBlockType myType = ((SignaliteBlock) myState.getBlock()).getType();
             int oldSignalStrength = myState.getValue(POWER);
             sbe.clearLastInputSignals();
+            boolean changed = false;
 
             for (Direction dir : sbe.getTransmittingDirections()) {
                 if(myType != SignaliteBlockType.STANDARD && sbe.isTransmittingDirectionOneWay(dir)) {
@@ -266,7 +267,8 @@ public class SignaliteBlock extends BaseEntityBlock {
                         int filter = 1 << sbe.specialSignalTarget - 1;
                         boolean matches = filter == (sbe.getLastInputStrength() & filter);
                         sbe.specialSignalStrength = matches ? 15 : 0;
-                    }
+                    } else
+                        sbe.specialSignalStrength = 0;
                 }
                 else if(sb.getType() == SignaliteBlockType.NEGATING) {
                     sbe.specialSignalStrength = 15 - signalStrength;
