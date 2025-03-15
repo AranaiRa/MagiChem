@@ -28,22 +28,30 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
 
     @Override
     public int getCurrentStock(MateriaItem pMateriaType) {
+        if(materiaStorage.containsKey(pMateriaType)) {
+            return materiaStorage.get(pMateriaType);
+        }
+
         return 0;
     }
 
     @Override
     public float getCurrentStockPercent(MateriaItem pMateriaType) {
+        if(materiaStorage.containsKey(pMateriaType)) {
+            return (float)materiaStorage.get(pMateriaType) / (float)getStorageLimit(pMateriaType);
+        }
+
         return 0;
     }
 
     @Override
     public boolean containsMateriaType(MateriaItem pMateriaType) {
-        return false;
+        return materiaStorage.containsKey(pMateriaType);
     }
 
     @Override
     public Collection<MateriaItem> getMateriaTypes() {
-        return null;
+        return materiaStorage.keySet();
     }
 
     @Override

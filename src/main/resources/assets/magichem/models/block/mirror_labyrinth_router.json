@@ -1,0 +1,6 @@
+{
+  "parent": "magichem:block/mirror_labyrinth",
+  "textures": {
+    "particle": "magichem:block/breakparticle_arcane_sandstone"
+  }
+}

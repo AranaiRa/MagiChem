@@ -141,6 +141,16 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> MIRROR_LABYRINTH = registerBlock("mirror_labyrinth",
+            () -> new MirrorLabyrinthBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> MIRROR_LABYRINTH_ROUTER = registerBlock("mirror_labyrinth_router",
+            () -> new MirrorLabyrinthRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> POWER_SPIKE = registerBlock("power_spike",
             () -> new PowerSpikeBlock(BlockBehaviour.Properties.of()
                     .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

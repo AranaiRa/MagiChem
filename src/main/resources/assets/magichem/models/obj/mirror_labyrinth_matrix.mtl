@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl CHIMERITE
+map_Kd mna:block/oreblockchimerite
+
+newmtl MAGIC_MIRROR
+map_Kd magichem:block/mirror_glass
+
+newmtl MIRROR_LABYRINTH
+map_Kd magichem:block/mirror_labyrinth

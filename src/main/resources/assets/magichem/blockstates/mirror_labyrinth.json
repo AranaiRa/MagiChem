@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/mirror_labyrinth"
+    },
+    "facing=east": {
+      "model": "magichem:block/mirror_labyrinth",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/mirror_labyrinth",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/mirror_labyrinth",
+      "y": 270
+    }
+  }
+}

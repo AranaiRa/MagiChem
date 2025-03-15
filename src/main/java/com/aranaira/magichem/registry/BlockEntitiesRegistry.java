@@ -3,17 +3,11 @@ package com.aranaira.magichem.registry;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.routers.*;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
 
 
 public class BlockEntitiesRegistry {
@@ -237,6 +231,14 @@ public class BlockEntitiesRegistry {
                     BlockRegistry.PRISMATIC_CONDUIT.get(),
                     BlockRegistry.PRISMATIC_CONDUIT_LESSER.get()
                     ).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<MirrorLabyrinthBlockEntity>> MIRROR_LABYRINTH_BE = BLOCK_ENTITIES.register("mirror_labyrinth", () ->
+            BlockEntityType.Builder.of(MirrorLabyrinthBlockEntity::new, BlockRegistry.MIRROR_LABYRINTH.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<MirrorLabyrinthRouterBlockEntity>> MIRROR_LABYRINTH_ROUTER_BE = BLOCK_ENTITIES.register("mirror_labyrinth_router", () ->
+            BlockEntityType.Builder.of(MirrorLabyrinthRouterBlockEntity::new, BlockRegistry.MIRROR_LABYRINTH_ROUTER.get()).build(null)
     );
 
     public static void register(IEventBus eventBus) {
