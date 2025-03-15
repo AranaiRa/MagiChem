@@ -793,8 +793,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                                 BlockEntity be = level.getBlockEntity(markedPos);
                                 if(be != null) {
-                                    if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
-                                        markedPairs.add(new Pair<>(amsbe, markedPos));
+                                    if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                                        markedPairs.add(new Pair<>(single, markedPos));
+                                    }
+                                    else if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                                        markedPairs.add(new Pair<>(multi, markedPos));
                                     }
                                 }
                             }
@@ -805,8 +808,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
                     BlockEntity be = level.getBlockEntity(markedPos);
                     if(be != null) {
-                        if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
-                            markedPairs.add(new Pair<>(amsbe, markedPos));
+                        if(be instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                            markedPairs.add(new Pair<>(single, markedPos));
+                        }
+                        if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                            markedPairs.add(new Pair<>(multi, markedPos));
                         }
                     }
                 }
