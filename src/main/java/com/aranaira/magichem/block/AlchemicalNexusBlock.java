@@ -17,6 +17,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -209,7 +211,13 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
             } else {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof AlchemicalNexusBlockEntity anbe) {
-                    if (!player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent())
+                    if (player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
+                        if(player.getItemInHand(hand).getItem() == ItemRegistry.ACADEMIC_SLURRY_BUCKET.get()) {
+                            player.setItemInHand(hand, new ItemStack(Items.BUCKET));
+                        }
+
+                        return InteractionResult.CONSUME;
+                    } else
                         NetworkHooks.openScreen((ServerPlayer) player, anbe, pos);
                 } else {
                     throw new IllegalStateException("AlchemicalNexusBlockEntity container provider is missing!");
