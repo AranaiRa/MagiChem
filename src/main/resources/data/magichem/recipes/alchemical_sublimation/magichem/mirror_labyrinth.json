@@ -1,0 +1,74 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:mirror_labyrinth"
+  },
+  "stages": [
+    {
+      "experience": 150,
+      "components": [
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:vinteum_crystal_shard" },
+        { "item": "magichem:mirror_glass_block" },
+        { "item": "magichem:vinteum_crystal_shard" },
+        { "item": "mna:chimerite_gem" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_vessel", "count": 189 },
+        { "item": "magichem:admixture_travel", "count": 96 },
+        { "item": "magichem:admixture_memory", "count": 73 },
+        { "item": "magichem:admixture_trap", "count": 36 }
+      ]
+    },
+    {
+      "experience": 200,
+      "components": [
+        { "item": "magichem:vinteum_crystal_shard" },
+        { "item": "magichem:magic_mirror" },
+        { "item": "magichem:magic_mirror" },
+        { "item": "magichem:magic_mirror" },
+        { "item": "magichem:vinteum_crystal_shard" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_light", "count": 71 },
+        { "item": "magichem:admixture_alien", "count": 55 },
+        { "item": "magichem:admixture_comfort", "count": 46 },
+        { "item": "magichem:essentia_nigredo", "count": 150 }
+      ]
+    },
+    {
+      "experience": 250,
+      "components": [
+        { "item": "magichem:magic_mirror" },
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "magichem:magic_circle" },
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "magichem:magic_mirror" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_thought", "count": 71 },
+        { "item": "magichem:admixture_energy", "count": 55 },
+        { "item": "magichem:admixture_construct", "count": 46 },
+        { "item": "magichem:essentia_albedo", "count": 75 }
+      ]
+    },
+    {
+      "experience": 300,
+      "components": [
+        { "item": "magichem:magic_mirror" },
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "mna:slipstream_generator" },
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "magichem:magic_mirror" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_permanence", "count": 60 },
+        { "item": "magichem:admixture_flight", "count": 60 },
+        { "item": "magichem:admixture_history", "count": 60 },
+        { "item": "magichem:essentia_citrinitas", "count": 48 }
+      ]
+    }
+  ]
+}

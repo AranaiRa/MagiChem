@@ -1,0 +1,27 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:magic_mirror"
+  },
+  "stages": [
+    {
+      "experience": 20,
+      "components": [
+        { "item": "mna:chimerite_gem" },
+        { "item": "minecraft:diamond" },
+        { "item": "magichem:mirror_glass_block" },
+        { "item": "minecraft:diamond" },
+        { "item": "mna:chimerite_gem" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_travel", "count": 30 },
+        { "item": "magichem:admixture_color", "count": 22 },
+        { "item": "magichem:admixture_light", "count": 22 },
+        { "item": "magichem:admixture_potential", "count": 17 },
+        { "item": "magichem:admixture_comfort", "count": 14 }
+      ]
+    }
+  ]
+}
