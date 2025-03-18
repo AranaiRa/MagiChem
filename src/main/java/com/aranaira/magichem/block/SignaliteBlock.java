@@ -265,7 +265,7 @@ public class SignaliteBlock extends BaseEntityBlock {
                 else if(sb.getType() == SignaliteBlockType.METICULOUS) {
                     if(sbe.specialSignalTarget > 0) {
                         int filter = 1 << sbe.specialSignalTarget - 1;
-                        boolean matches = filter == (sbe.getLastInputStrength() & filter);
+                        boolean matches = filter == (signalStrength & filter);
                         sbe.specialSignalStrength = matches ? 15 : 0;
                     } else
                         sbe.specialSignalStrength = 0;

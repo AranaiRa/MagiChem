@@ -311,7 +311,7 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
     public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
         if(pLevel.getBlockEntity(pPos) instanceof DistilleryBlockEntity dbe) {
             boolean hasInputItems = !dbe.getContentsOfInputSlots(DistilleryBlockEntity::getVar).isEmpty();
-            boolean hasOutputItems = !dbe.getContentsOfInputSlots(DistilleryBlockEntity::getVar).isEmpty();
+            boolean hasOutputItems = !dbe.getContentsOfOutputSlots(DistilleryBlockEntity::getVar).isEmpty();
             boolean hasFuel = dbe.hasFuelInSlot();
 
             int signal = 0;

@@ -247,7 +247,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     public SimpleContainer getContentsOfInputSlots() {
-        return getContentsOfOutputSlots(AbstractDistillationBlockEntity::getVar);
+        return getContentsOfInputSlots(AbstractDistillationBlockEntity::getVar);
     }
 
     public SimpleContainer getContentsOfInputSlots(Function<IDs, Integer> pVarFunc) {
