@@ -268,8 +268,11 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         }
 
         //Protect/Drain Indicator
-        if(menu.blockEntity.preventDrawingLastMateria)
+        if(menu.blockEntity.preventDrawingLastMateria) {
+            pGuiGraphics.setColor(dim, dim, dim, 1.0f);
             pGuiGraphics.blit(TEXTURE, x + 196, y + 81, 221, 245, 11, 11);
+            pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        }
     }
 
     private void initializeRecipeSelectorButtons(){
