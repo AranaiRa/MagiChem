@@ -67,4 +67,26 @@ public class MathHelper {
 
         return output;
     }
+
+    public static float doubleExponentialSeat(float pInput, float pExponent) {
+        //Clamp
+        pInput = Math.min(1, Math.max(0, pInput));
+
+        if(pInput <= 0.5f) {
+            return (float) (Math.pow((2 * pInput), pExponent) / 2);
+        } else {
+            return 1 - (float)(Math.pow(2 * (1 - pInput), pExponent) / 2);
+        }
+    }
+
+    public static float doubleExponentialSigmoid(float pInput, float pInverseExponent) {
+        //Clamp
+        pInput = Math.min(1, Math.max(0, pInput));
+
+        if(pInput <= 0.5f) {
+            return (float) (Math.pow((2 * pInput), 1 / pInverseExponent) / 2);
+        } else {
+            return 1 - (float)(Math.pow(2 * (1 - pInput), 1 / pInverseExponent) / 2);
+        }
+    }
 }

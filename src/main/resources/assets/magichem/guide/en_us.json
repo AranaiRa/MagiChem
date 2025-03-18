@@ -2318,21 +2318,21 @@
             "color": "dark_purple"
           },
           {
-            "text": "; all recipes will consume some Slurry based on the speed setting of the device, but some recipes also require additional Slurry.\n\nAcademic Slurry can be inserted into the device with an "
+            "text": "; all recipes will consume some Slurry based on the speed setting of the device, but some recipes also require additional Slurry.\n\nAcademic Slurry can be inserted into the device by attaching an "
           },
           {
             "text": "Experience Exchanger",
             "color": "dark_purple"
           },
           {
-            "text": ", a "
+            "text": "to the device's tank, having a "
           },
           {
             "text": "Construct",
             "color": "dark_purple"
           },
           {
-            "text": ", or (once you reach Tier 4) an "
+            "text": "insert the Slurry, or (once you reach Tier 4) attaching an "
           },
           {
             "text": "Occult Matrix",

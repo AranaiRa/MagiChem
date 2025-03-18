@@ -56,21 +56,44 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
 
     @Override
     public void setContents(MateriaItem pMateriaType, int pCount) {
-
+        materiaStorage.put(pMateriaType, pCount);
     }
 
     @Override
     public void setContents(int pSlot, MateriaItem pMateriaType, int pCount) {
-
+        setContents(pMateriaType, pCount);
     }
 
     @Override
     public int fill(MateriaItem pMateriaType, int pAmount, boolean pVoidExcess) {
-        return 0;
+        if(materiaStorage.containsKey(pMateriaType)) {
+            int existing = materiaStorage.get(pMateriaType);
+            int limitedInsertion = Math.min(pAmount, getStorageLimit(pMateriaType) - existing);
+            int overflow = pVoidExcess ? 0 : Math.max(0, getStorageLimit(pMateriaType) - existing - limitedInsertion);
+
+            materiaStorage.put(pMateriaType, existing + limitedInsertion);
+            return overflow;
+        }
+        else {
+            int limitedInsertion = Math.min(pAmount, getStorageLimit(pMateriaType));
+            int overflow = pVoidExcess ? 0 : Math.max(0, getStorageLimit(pMateriaType) - limitedInsertion);
+
+            materiaStorage.put(pMateriaType, limitedInsertion);
+            return overflow;
+        }
     }
 
     @Override
     public int drain(MateriaItem pMateriaType, int pAmount, boolean pKeepOne) {
+        if(materiaStorage.containsKey(pMateriaType)) {
+            int existing = materiaStorage.get(pMateriaType);
+            if(pKeepOne && existing == 1) return 0;
+
+            int drained = Math.min((pKeepOne ? 1 : 0), existing - Math.min(existing, pAmount));
+
+            materiaStorage.put(pMateriaType, existing - drained);
+            return drained;
+        }
         return 0;
     }
 
@@ -98,11 +121,19 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
 
     @Override
     public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() instanceof MateriaItem mi) {
+            return Math.max(0, getStorageLimit(mi) - materiaStorage.get(mi));
+        }
+
         return 0;
     }
 
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() instanceof MateriaItem mi) {
+            return fill(mi, pStack.getCount(), true);
+        }
+
         return 0;
     }
 
