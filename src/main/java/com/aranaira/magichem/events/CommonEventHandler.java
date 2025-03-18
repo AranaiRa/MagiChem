@@ -8,6 +8,7 @@ import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.ICanAbsorbConstructs;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.enums.*;
@@ -237,17 +238,17 @@ public class CommonEventHandler {
                 event.setCanceled(true);
             }
         }
-        else if(target instanceof CircleToilBlockEntity ctbe) {
+        else if(target instanceof ICanAbsorbConstructs absorber) {
             if(!event.getLevel().isClientSide()) {
                 if (stack.getItem() == ItemInit.BELL_OF_BIDDING.get()) {
                     if (stack.hasTag()) {
                         if (stack.getTag().getInt("index") == 2) {
                             boolean ding = false;
-                            if(ctbe.hasConstruct()) {
-                                ctbe.ejectConstruct();
+                            if(absorber.hasConstruct()) {
+                                absorber.ejectConstruct();
                                 ding = true;
                             } else {
-                                ding = ctbe.tryAbsorbConstruct(event.getEntity());
+                                ding = absorber.tryAbsorbConstruct(event.getEntity());
                             }
 
                             if(ding) {

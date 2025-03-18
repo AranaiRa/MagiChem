@@ -108,10 +108,25 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
     }
 
     @Override
-    public abstract void load(CompoundTag nbt);
+    public void load(CompoundTag nbt) {
+        if(nbt.contains("materiaStorage")) {
+            materiaStorage.clear();
+            CompoundTag materiaStorageTag = nbt.getCompound("materiaStorage");
+            for(String query : materiaStorageTag.getAllKeys()) {
+                materiaStorage.put(materiaMap.get(query), materiaStorageTag.getInt(query));
+            }
+        }
+    }
 
     @Override
-    protected abstract void saveAdditional(CompoundTag nbt);
+    public void saveAdditional(CompoundTag nbt) {
+        CompoundTag materiaStorageTag = new CompoundTag();
+        for(MateriaItem materiaQuery : materiaStorage.keySet()) {
+            materiaStorageTag.putInt(materiaQuery.getMateriaName(), materiaStorage.get(materiaQuery));
+        }
+        nbt.put("materiaStorage", materiaStorageTag);
+        super.saveAdditional(nbt);
+    }
 
     @Override
     public abstract void handleUpdateTag(CompoundTag nbt);

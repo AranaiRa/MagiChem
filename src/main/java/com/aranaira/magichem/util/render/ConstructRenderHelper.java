@@ -1,6 +1,8 @@
 package com.aranaira.magichem.util.render;
 
+import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.tools.RLoc;
+import com.mna.entities.constructs.animated.ConstructMoodlets;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +26,7 @@ public class ConstructRenderHelper {
         if(pConstructConfig.contains("HEAD")) {
             final Pair<ResourceLocation, Vector3> head = tagKeyToRenderData(pConstructConfig.getString("HEAD"), false);
             out.put(ConstructPartType.HEAD, head);
-            out.put(ConstructPartType.EYES, new Pair<>(tagKeyToEyeResourceLocation(pConstructConfig.getString("HEAD")), head.getSecond()));
+            out.put(ConstructPartType.EYES, new Pair<>(tagKeyToEyeResourceLocation(pConstructConfig.getString("HEAD"), ConstructMoods.ANGRY), head.getSecond()));
         }
         if(pConstructConfig.contains("TORSO")) {
             out.put(ConstructPartType.TORSO, tagKeyToRenderData(pConstructConfig.getString("TORSO"), false));
@@ -84,21 +86,68 @@ public class ConstructRenderHelper {
         return new Pair<>(loc, outOffset);
     }
 
-    public static ResourceLocation tagKeyToEyeResourceLocation(String pTag) {
+    public static boolean isCasterArm(ResourceLocation pRL) {
+        final String[] parsedString = pRL.getPath().split("_");
+
+        if(parsedString.length >= 2) {
+            return parsedString[1].equals("caster");
+        }
+
+        return false;
+    }
+
+    public static ResourceLocation tagKeyToEyeResourceLocation(String pTag, ConstructMoods pMood) {
         final String[] parsedString = pTag.split("_");
         String outPath = "construct/";
+
+        String eyeType = "neutral";
+        if(pMood == ConstructMoods.ANGRY)
+            eyeType = "angry";
+        else if(pMood == ConstructMoods.CONCERN)
+            eyeType = "concern";
+        else if(pMood == ConstructMoods.CONFUSED)
+            eyeType = "confused";
+        else if(pMood == ConstructMoods.HAPPY)
+            eyeType = "happy";
+        else if(pMood == ConstructMoods.UNIMPRESSED)
+            eyeType = "unimpressed";
 
         if(parsedString[2].equals("head")) {
             if(parsedString[3].equals("wickerwood"))
                 return null;
             else if(parsedString[3].equals("bone"))
-                outPath += "bone/eyes_angry";
+                outPath += "bone/eyes_"+eyeType;
             else
-                outPath += "common/eyes_angry";
+                outPath += "common/eyes_"+eyeType;
         }
 
         ResourceLocation loc = new ResourceLocation("mna", outPath);
         return loc;
+    }
+
+    public static Map<ConstructPartType, Pair<ResourceLocation, Vector3>> replaceEyesInRenderData(Map<ConstructPartType, Pair<ResourceLocation, Vector3>> pRenderData, ConstructMoods pMood) {
+
+        if(pRenderData.containsKey(ConstructPartType.EYES)) {
+            final Pair<ResourceLocation, Vector3> data = pRenderData.get(ConstructPartType.EYES);
+            String path = data.getFirst().getPath();
+
+            final String[] s = path.split("_");
+            String out = "neutral";
+            if(pMood == ConstructMoods.ANGRY)
+                out = "angry";
+            else if(pMood == ConstructMoods.CONCERN)
+                out = "concern";
+            else if(pMood == ConstructMoods.CONFUSED)
+                out = "confused";
+            else if(pMood == ConstructMoods.HAPPY)
+                out = "happy";
+            else if(pMood == ConstructMoods.UNIMPRESSED)
+                out = "unimpressed";
+
+            pRenderData.put(ConstructPartType.EYES, new Pair<>(new ResourceLocation(ManaAndArtificeMod.ID,s[0]+"_"+out), data.getSecond()));
+        }
+
+        return pRenderData;
     }
 
     public static double mappedSinusoidalAngle(long pGameTime, float pPartialTicks, double pPeriod, double pTickOffset, double pMinAngle, double pMaxAngle) {
@@ -108,6 +157,15 @@ public class ConstructRenderHelper {
         double range = pMaxAngle - pMinAngle;
 
         return circleTime * range + pMinAngle;
+    }
+
+    public enum ConstructMoods {
+        NEUTRAL,
+        ANGRY,
+        CONCERN,
+        CONFUSED,
+        HAPPY,
+        UNIMPRESSED
     }
 
     public enum ConstructPartType {

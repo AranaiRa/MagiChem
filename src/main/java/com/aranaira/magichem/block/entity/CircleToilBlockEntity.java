@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.ICanAbsorbConstructs;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
@@ -35,7 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class CircleToilBlockEntity extends BlockEntity {
+public class CircleToilBlockEntity extends BlockEntity implements ICanAbsorbConstructs {
 
     private CompoundTag storedConstruct = new CompoundTag();
     public Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
@@ -113,6 +114,7 @@ public class CircleToilBlockEntity extends BlockEntity {
         return THETA_ACCELERATION_RATE_IRONGOLDBONE;
     }
 
+    @Override
     public boolean tryAbsorbConstruct(Player pPlayer) {
         AABB zone = new AABB(getBlockPos().offset(-5, -5, -5), getBlockPos().offset(5, 5, 5));
 
@@ -142,6 +144,7 @@ public class CircleToilBlockEntity extends BlockEntity {
         return !storedConstruct.isEmpty();
     }
 
+    @Override
     public void ejectConstruct() {
         if(!storedConstruct.isEmpty()) {
             Construct construct = new Construct(EntityInit.ANIMATED_CONSTRUCT.get(), getLevel());
@@ -154,6 +157,7 @@ public class CircleToilBlockEntity extends BlockEntity {
         }
     }
 
+    @Override
     public CompoundTag getStoredConstructComposition() {
         if(storedConstruct.contains("animated_construct_composition"))
             return storedConstruct.getCompound("animated_construct_composition");

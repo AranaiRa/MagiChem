@@ -2,14 +2,16 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.MirrorLabyrinthBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeDynamicBlockEntity;
-import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
-import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.util.render.ConstructRenderHelper;
+import com.mna.api.entities.construct.ConstructCapability;
+import com.mna.api.entities.construct.IConstructConstruction;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
+import com.mna.entities.EntityInit;
+import com.mna.entities.constructs.animated.Construct;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
@@ -17,6 +19,9 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,11 +29,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeDynamicBlockEntity implements IShlorpReceiver, IRequiresRouterCleanupOnDestruction {
+public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeDynamicBlockEntity implements IShlorpReceiver, IRequiresRouterCleanupOnDestruction, ICanAbsorbConstructs {
 
     public static final Random r = new Random();
     public static final float
@@ -36,11 +43,16 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
             MATRIX_ACTIVATION_RATE = 0.0125f, CONSTRUCT_ACTIVATION_RATE = 0.0185f, MIRROR_ACTIVATION_RATE = 0.0215f;
     private boolean
             hasSufficientPower = false, redstonePaused = false;
+    public boolean
+            constructDataChanged = false;
     public float
             circlePercent = 1.0f, particlePercent = 1.0f,
             mirrorActivationPercent = 0.0f, mirrorActivationSpeed = 0.0f,
             matrixActivationPercent = 0.0f, matrixActivationSpeed = 0.0f,
             constructActivationPercent = 0.0f, constructActivationSpeed = 0.0f;
+    private CompoundTag storedConstruct = new CompoundTag();
+    public Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
+
     public static final int[][] TRAIL_PARTICLE_COLORS = {
             {101, 112, 120},
             {101, 112, 120},
@@ -66,7 +78,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                     new Pair<>(
                             new Vector3(-1.27925, 1.08956, 0.925698),
                             new Vector3(-0.925698, 1.08956, 1.27925))),
-            new Triplet<>(Direction.NORTH,
+            new Triplet<>(Direction.SOUTH,
                     new Vector3(0, 2.5, -2),
                     new Pair<>(
                             new Vector3(-0.25, 1.08956, -1.55913),
@@ -86,7 +98,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                     new Pair<>(
                             new Vector3(1.27925, 1.08956, -0.925698),
                             new Vector3(0.925698, 1.08956, -1.27925))),
-            new Triplet<>(Direction.SOUTH,
+            new Triplet<>(Direction.NORTH,
                     new Vector3(0, 2.5, 2),
                     new Pair<>(
                             new Vector3(-0.25, 1.08956, 1.55913),
@@ -99,22 +111,32 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
     @Override
     public void load(CompoundTag nbt) {
+        if(nbt == null) nbt = new CompoundTag();
+
+        CompoundTag pre = storedConstruct.copy();
+        super.load(nbt);
+
+        storedConstruct = nbt.getCompound("construct");
+        if(!storedConstruct.equals(pre))
+            constructDataChanged = true;
 
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
-
+    public void saveAdditional(CompoundTag nbt) {
+        nbt.put("construct", storedConstruct);
+        super.saveAdditional(nbt);
     }
 
     @Override
     public void handleUpdateTag(CompoundTag nbt) {
-
+        load(nbt);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
+        nbt.put("construct", storedConstruct);
         return nbt;
     }
 
@@ -131,6 +153,63 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-5, 0, -5), getBlockPos().offset(5,6,5));
+    }
+
+    public boolean tryAbsorbConstruct(Player pPlayer) {
+        AABB zone = new AABB(getBlockPos().offset(-5, -5, -5), getBlockPos().offset(5, 5, 5));
+
+        Construct targetConstruct = null;
+        for (Construct constructInZone : pPlayer.level().getEntitiesOfClass(Construct.class, zone)) {
+            if(constructInZone.isFollowing(pPlayer)) {
+                final IConstructConstruction constructData = constructInZone.getConstructData();
+
+                boolean noEnderLeggy = !constructData.isCapabilityEnabled(ConstructCapability.TELEPORT);
+                boolean hasSmartHead = constructData.calculateIntelligence() > 9;
+                boolean hasCasterArm = constructData.isCapabilityEnabled(ConstructCapability.CAST_SPELL);
+                boolean otherArmValid =
+                        constructData.isCapabilityEnabled(ConstructCapability.CARRY) ||
+                        constructData.isCapabilityEnabled(ConstructCapability.SHEAR) ||
+                        constructData.isCapabilityEnabled(ConstructCapability.CHOP_WOOD) ||
+                        constructData.isCapabilityEnabled(ConstructCapability.SMITH) ||
+                        constructData.isCapabilityEnabled(ConstructCapability.FLUID_DISPENSE);
+
+                if(hasSmartHead && hasCasterArm && otherArmValid && noEnderLeggy) {
+                    targetConstruct = constructInZone;
+                    break;
+                }
+            }
+        }
+
+        if(targetConstruct == null)
+            return false;
+
+        storedConstruct = targetConstruct.serializeNBT();
+        targetConstruct.remove(Entity.RemovalReason.DISCARDED);
+        syncAndSave();
+
+        return true;
+    }
+
+    public boolean hasConstruct() {
+        return !storedConstruct.isEmpty();
+    }
+
+    public void ejectConstruct() {
+        if(!storedConstruct.isEmpty()) {
+            Construct construct = new Construct(EntityInit.ANIMATED_CONSTRUCT.get(), getLevel());
+            construct.deserializeNBT(storedConstruct);
+            construct.setPos(getBlockPos().getX(), getBlockPos().getY() + 1, getBlockPos().getZ());
+            getLevel().addFreshEntity(construct);
+            storedConstruct = new CompoundTag();
+            syncAndSave();
+        }
+    }
+
+    public CompoundTag getStoredConstructComposition() {
+        if(storedConstruct.contains("animated_construct_composition"))
+            return storedConstruct.getCompound("animated_construct_composition");
+        else
+            return new CompoundTag();
     }
 
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, MirrorLabyrinthBlockEntity pEntity) {

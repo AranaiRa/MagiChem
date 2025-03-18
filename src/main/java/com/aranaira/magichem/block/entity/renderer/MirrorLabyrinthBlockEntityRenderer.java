@@ -4,11 +4,13 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.MirrorLabyrinthBlockEntity;
 import com.aranaira.magichem.util.MathHelper;
+import com.aranaira.magichem.util.render.ConstructRenderHelper;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import com.mna.tools.render.ModelUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,6 +19,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
@@ -32,14 +35,35 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
     public static final ResourceLocation RENDERER_MODEL_MATRIX = new ResourceLocation(MagiChemMod.MODID, "obj/special/mirror_labyrinth_matrix");
     public static final ResourceLocation CIRCLE_TEXTURE = new ResourceLocation(MagiChemMod.MODID, "block/actuator_water");
 
+    private static final CompoundTag DEFAULT_CONSTRUCT = new CompoundTag();
+
     final TextureAtlasSprite circleTexture;
 
     public MirrorLabyrinthBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         circleTexture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
+
+        if(DEFAULT_CONSTRUCT.size() == 0) {
+            DEFAULT_CONSTRUCT.putString("HEAD", "mna:constructs/construct_smart_head_stone");
+            DEFAULT_CONSTRUCT.putString("TORSO", "mna:constructs/construct_basic_torso_stone");
+            DEFAULT_CONSTRUCT.putString("LEFT_ARM", "mna:constructs/construct_caster_arm_left_stone");
+            DEFAULT_CONSTRUCT.putString("RIGHT_ARM", "mna:constructs/construct_grabber_arm_right_stone");
+            DEFAULT_CONSTRUCT.putString("LEGS", "mna:constructs/construct_basic_legs_stone");
+        }
     }
 
     @Override
     public void render(MirrorLabyrinthBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        if(pBlockEntity.constructDataChanged || pBlockEntity.renderData.size() == 0) {
+            if(pBlockEntity.hasConstruct()) {
+                pBlockEntity.renderData = ConstructRenderHelper.getRenderDataFromTag(pBlockEntity.getStoredConstructComposition());
+                pBlockEntity.constructDataChanged = false;
+                ConstructRenderHelper.replaceEyesInRenderData(pBlockEntity.renderData, ConstructRenderHelper.ConstructMoods.NEUTRAL);
+            } else {
+                pBlockEntity.renderData.clear();
+                pBlockEntity.constructDataChanged = false;
+            }
+        }
+
         this.renderMirrors(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         this.renderConstruct(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         this.renderMatrix(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
@@ -122,6 +146,153 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
         Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
         pPoseStack.pushPose();
+
+        if(dir == Direction.NORTH) {
+            pPoseStack.translate(0.5, 1.375, -0.5);
+            pPoseStack.mulPose(Axis.YN.rotationDegrees(180));
+        } else if(dir == Direction.EAST) {
+            pPoseStack.translate(1.5, 1.375, 0.5);
+            pPoseStack.mulPose(Axis.YN.rotationDegrees(270));
+        } else if(dir == Direction.SOUTH) {
+            pPoseStack.translate(0.5, 1.375, 1.5);
+        } else if(dir == Direction.WEST) {
+            pPoseStack.translate(-0.5, 1.375, 0.5);
+            pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
+        }
+
+        if(pBlockEntity.renderData.size() > 0) {
+            Pair<ResourceLocation, Vector3> currentPiece;
+            int period = 360;
+            int gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(period * 2));
+            float bob = (float)Math.sin((float)((gt + pPartialTick) % period) / (float)period * Math.PI * 2) * 0.125f;
+            pPoseStack.translate(0, bob, 0);
+
+            double spin = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 376, 13, -65, 65);
+            pPoseStack.mulPose(Axis.YP.rotationDegrees((float)spin));
+
+            period = 12220;
+            gt = (int)(pBlockEntity.getLevel().getGameTime() % (int)(period * 2));
+            float circleRot = (float)(((gt + pPartialTick) % period) / (float)period) * 360f;
+
+            currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.TORSO);
+            double torsoRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 260, 0, -3, 3);
+
+            pPoseStack.pushPose();
+            {
+                pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) torsoRot), 0, -currentPiece.getSecond().y * 2 - 0.25f, 0);
+                pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+
+                currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.HEAD);
+                double headRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 286, 13, -60, 60);
+
+                pPoseStack.pushPose();
+                {
+                    pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                    pPoseStack.rotateAround(Axis.YP.rotationDegrees((float) headRot), 0, -currentPiece.getSecond().y * 2 - 0.25f, 0);
+
+                    pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                    ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                    ModelUtils.renderModel(pBuffer, world, pos, state, pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.EYES).getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                    pPoseStack.popPose();
+                }
+
+                currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.ARM_LEFT);
+                boolean isCasterArm = ConstructRenderHelper.isCasterArm(currentPiece.getFirst());
+                double casterArmRotX = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 118, 0, 65, 75);
+                double casterArmRotZ = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 74, 0, -10, 10);
+                double nonCasterArmRotX = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 96, 0, 45, 60);
+                double nonCasterArmRotZ = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, 54, 0, -3, 3);
+
+                pPoseStack.pushPose();
+                {
+                    pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                    if(isCasterArm) {
+                        pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)casterArmRotX), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+                        pPoseStack.rotateAround(Axis.ZP.rotationDegrees((float)casterArmRotZ), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+                    } else {
+                        pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)nonCasterArmRotX), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+                        pPoseStack.rotateAround(Axis.ZP.rotationDegrees((float)nonCasterArmRotZ), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+
+                        pPoseStack.pushPose();
+                        pPoseStack.scale(0.5f, 0.5f, 0.5f);
+                        pPoseStack.translate(1.825, 3.0, -0.0625);
+                        pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
+                        RenderUtils.generateMagicCircleRing(Vector3.zero(),
+                                7, 0.75f, 0.375f, -circleRot, circleTexture,
+                                new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
+                                pBlockEntity.circlePercent, pPoseStack, pBuffer, pPackedLight);
+                        pPoseStack.translate(0, -0.01, 0);
+                        pPoseStack.popPose();
+                    }
+
+                    pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                    ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                    pPoseStack.popPose();
+                }
+
+                currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.ARM_RIGHT);
+                isCasterArm = ConstructRenderHelper.isCasterArm(currentPiece.getFirst());
+
+                pPoseStack.pushPose();
+                {
+                    pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                    if(isCasterArm) {
+                        pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)casterArmRotX), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+                        pPoseStack.rotateAround(Axis.ZP.rotationDegrees((float)casterArmRotZ), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+                    } else {
+                        pPoseStack.rotateAround(Axis.XP.rotationDegrees((float)nonCasterArmRotX), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+                        pPoseStack.rotateAround(Axis.ZP.rotationDegrees((float)nonCasterArmRotZ), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+
+                        pPoseStack.pushPose();
+                        pPoseStack.scale(0.5f, 0.5f, 0.5f);
+                        pPoseStack.translate(1.825, 3.0, -0.0625);
+                        pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
+                        RenderUtils.generateMagicCircleRing(Vector3.zero(),
+                                7, 0.75f, 0.375f, -circleRot, circleTexture,
+                                new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
+                                pBlockEntity.circlePercent, pPoseStack, pBuffer, pPackedLight);
+                        pPoseStack.translate(0, -0.01, 0);
+                        pPoseStack.popPose();
+                    }
+
+                    pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                    ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                    pPoseStack.popPose();
+                }
+
+                pPoseStack.popPose();
+            }
+
+            double legPeriod = 144;
+            currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.LEG_LEFT);
+            double legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 350, 360);
+
+            pPoseStack.pushPose();
+            {
+                pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                pPoseStack.rotateAround(Axis.XP.rotationDegrees((float) legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+
+                pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                pPoseStack.popPose();
+            }
+
+            currentPiece = pBlockEntity.renderData.get(ConstructRenderHelper.ConstructPartType.LEG_RIGHT);
+            legRot = ConstructRenderHelper.mappedSinusoidalAngle(world.getGameTime(), pPartialTick, legPeriod, legPeriod * 0.5, 360, 370);
+
+            pPoseStack.pushPose();
+            {
+                pPoseStack.translate(currentPiece.getSecond().x, currentPiece.getSecond().y, currentPiece.getSecond().z);
+                pPoseStack.rotateAround(Axis.XN.rotationDegrees((float) legRot), -currentPiece.getSecond().x, -currentPiece.getSecond().y * 2, -currentPiece.getSecond().z * 2);
+
+                pPoseStack.translate(-currentPiece.getSecond().x, -currentPiece.getSecond().y, -currentPiece.getSecond().z);
+                ModelUtils.renderModel(pBuffer, world, pos, state, currentPiece.getFirst(), pPoseStack, pPackedLight, pPackedOverlay);
+                pPoseStack.popPose();
+            }
+        }
+
         pPoseStack.popPose();
     }
 
