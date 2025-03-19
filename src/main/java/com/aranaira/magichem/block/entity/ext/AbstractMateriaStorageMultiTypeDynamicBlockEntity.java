@@ -72,6 +72,7 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
             int overflow = pVoidExcess ? 0 : Math.max(0, getStorageLimit(pMateriaType) - existing - limitedInsertion);
 
             materiaStorage.put(pMateriaType, existing + limitedInsertion);
+            syncAndSave();
             return overflow;
         }
         else {
@@ -79,6 +80,7 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
             int overflow = pVoidExcess ? 0 : Math.max(0, getStorageLimit(pMateriaType) - limitedInsertion);
 
             materiaStorage.put(pMateriaType, limitedInsertion);
+            syncAndSave();
             return overflow;
         }
     }
@@ -132,7 +134,15 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
     public abstract void handleUpdateTag(CompoundTag nbt);
 
     @Override
-    public abstract CompoundTag getUpdateTag();
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = new CompoundTag();
+        CompoundTag materiaStorageTag = new CompoundTag();
+        for(MateriaItem materiaQuery : materiaStorage.keySet()) {
+            materiaStorageTag.putInt(materiaQuery.getMateriaName(), materiaStorage.get(materiaQuery));
+        }
+        nbt.put("materiaStorage", materiaStorageTag);
+        return nbt;
+    }
 
     @Override
     public int canAcceptStackFromShlorp(ItemStack pStack) {

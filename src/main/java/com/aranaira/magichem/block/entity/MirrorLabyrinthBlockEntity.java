@@ -2,7 +2,9 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.MirrorLabyrinthBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeDynamicBlockEntity;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
@@ -33,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
 public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeDynamicBlockEntity implements IShlorpReceiver, IRequiresRouterCleanupOnDestruction, ICanAbsorbConstructs {
@@ -62,51 +65,78 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
             { 48, 113, 171},
             { 34, 115, 111}
     };
-    public static final Triplet<Direction, Vector3, Pair<Vector3, Vector3>>[] MIRROR_BOLT_POSITION_DATA = new Triplet[]{
+    /**
+     * Used for generating the lightning bolts from the chimerite spikes to the mirrors as well as picking a random mirror position and tangent.
+     * Direction is a flag for the lightning bolts to skip drawing if the block's facing matches.
+     * First vector3 is the mirror's center
+     * First two Vector3s in the triplet are the positions of the tips of the two chimerite spikes
+     * Last Vector3 of the triplet is the mirror's tangent
+     */
+    public static final Triplet<Direction, Vector3, Triplet<Vector3, Vector3, Vector3>>[] MIRROR_BOLT_POSITION_DATA = new Triplet[]{
             new Triplet<>(null,
                     new Vector3(-1.41421, 2.5, -1.41421),
-                    new Pair<>(
+                    new Triplet<>(
                             new Vector3(-0.925698, 1.08956, -1.27925),
-                            new Vector3(-1.27925, 1.08956, -0.925698))),
+                            new Vector3(-1.27925, 1.08956, -0.925698),
+                            new Vector3(1.414, 0, 1.414))),
             new Triplet<>(Direction.WEST,
                     new Vector3(-2, 2.5, 0),
-                    new Pair<>(
+                    new Triplet<>(
                             new Vector3(-1.55913, 1.08956, -0.25),
-                            new Vector3(-1.55913, 1.08956, 0.25))),
+                            new Vector3(-1.55913, 1.08956, 0.25),
+                            new Vector3(2, 0, 0))),
             new Triplet<>(null,
                     new Vector3(-1.41421, 2.5, 1.41421),
-                    new Pair<>(
+                    new Triplet<>(
                             new Vector3(-1.27925, 1.08956, 0.925698),
-                            new Vector3(-0.925698, 1.08956, 1.27925))),
+                            new Vector3(-0.925698, 1.08956, 1.27925),
+                            new Vector3(1.414, 0, -1.414))),
             new Triplet<>(Direction.SOUTH,
                     new Vector3(0, 2.5, -2),
-                    new Pair<>(
+                    new Triplet<>(
                             new Vector3(-0.25, 1.08956, -1.55913),
-                            new Vector3(0.25, 1.08956, -1.55913))),
+                            new Vector3(0.25, 1.08956, -1.55913),
+                            new Vector3(0, 0, 2))),
             new Triplet<>(null,
                     new Vector3(1.41421, 2.5, 1.41421),
-                    new Pair<>(
+                    new Triplet<>(
                             new Vector3(1.27925, 1.08956, 0.925698),
-                            new Vector3(0.925698, 1.08956, 1.27925))),
+                            new Vector3(0.925698, 1.08956, 1.27925),
+                            new Vector3(-1.414, 0, -1.414))),
             new Triplet<>(Direction.EAST,
                     new Vector3(2, 2.5, 0),
-                    new Pair<>(
+                    new Triplet<>(
                             new Vector3(1.55913, 1.08956, -0.25),
-                            new Vector3(1.55913, 1.08956, 0.25))),
+                            new Vector3(1.55913, 1.08956, 0.25),
+                            new Vector3(-2, 0, 0))),
             new Triplet<>(null,
                     new Vector3(1.41421, 2.5, -1.41421),
-                    new Pair<>(
+                    new Triplet<>(
                             new Vector3(1.27925, 1.08956, -0.925698),
-                            new Vector3(0.925698, 1.08956, -1.27925))),
+                            new Vector3(0.925698, 1.08956, -1.27925),
+                            new Vector3(-1.414, 1.08956, 1.414))),
             new Triplet<>(Direction.NORTH,
                     new Vector3(0, 2.5, 2),
-                    new Pair<>(
+                    new Triplet<>(
                             new Vector3(-0.25, 1.08956, 1.55913),
-                            new Vector3(0.25, 1.08956, 1.55913))),
+                            new Vector3(0.25, 1.08956, 1.55913),
+                            new Vector3(0, 0, -2))),
     };
 
     public MirrorLabyrinthBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.MIRROR_LABYRINTH_BE.get(), pos, state);
+    }
+
+    @Override
+    public int getStorageLimit(MateriaItem pMateriaType) {
+        //TODO: Hook power into this
+        return pMateriaType instanceof EssentiaItem ? ServerConfig.materiaVesselEssentiaCapacity : ServerConfig.materiaVesselAdmixtureCapacity;
+    }
+
+    @Override
+    public boolean isBelowTypeLimit() {
+        //Mirror Labyrinth is ALWAYS hangry
+        return true;
     }
 
     @Override
@@ -135,19 +165,42 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
     @Override
     public CompoundTag getUpdateTag() {
-        CompoundTag nbt = new CompoundTag();
+        CompoundTag nbt = super.getUpdateTag();
         nbt.put("construct", storedConstruct);
         return nbt;
     }
 
     @Override
     public Pair<Vector3, Vector3> getDefaultOriginAndTangent(MateriaItem pMateriaType) {
+        final Direction facing = getBlockState().getValue(FACING);
+
+        int[] randomTangent = new int[0];
+        Vector3 offset = Vector3.zero();
+        if(facing == Direction.NORTH) {
+            randomTangent = new int[]{0, 1, 2, 3, 4, 5, 6};
+        }
+        else if(facing == Direction.EAST) {
+            randomTangent = new int[]{0, 1, 2, 3, 4, 6, 7};
+        }
+        else if(facing == Direction.SOUTH) {
+            randomTangent = new int[]{0,1,2,4,5,6,7};
+            offset = new Vector3(0.5, r.nextDouble() - 0.5, 1.5);
+        }
+        else if(facing == Direction.WEST) {
+            randomTangent = new int[]{0,2,3,4,5,6,7};
+        }
+
+        if(randomTangent.length > 0) {
+            int index = randomTangent[r.nextInt(randomTangent.length)];
+            return new Pair<>(MIRROR_BOLT_POSITION_DATA[index].getSecond().add(offset), MIRROR_BOLT_POSITION_DATA[index].getThird().getThird());
+        }
+
         return new Pair<>(Vector3.zero(), Vector3.up());
     }
 
     @Override
     public void destroyRouters() {
-        MirrorLabyrinthBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(MagiChemBlockStateProperties.FACING));
+        MirrorLabyrinthBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(FACING));
     }
 
     @Override
@@ -328,7 +381,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
                     if (pEntity.getLevel().getGameTime() % 2 == 0) {
                         int index = r.nextInt(MIRROR_BOLT_POSITION_DATA.length);
-                        final Triplet<Direction, Vector3, Pair<Vector3, Vector3>> data = MIRROR_BOLT_POSITION_DATA[index];
+                        final Triplet<Direction, Vector3, Triplet<Vector3, Vector3, Vector3>> data = MIRROR_BOLT_POSITION_DATA[index];
                         if(facing != data.getFirst()) {
                             Vector3 inner = r.nextBoolean() ? data.getThird().getFirst() : data.getThird().getSecond();
                             Vector3 outer = data.getSecond();
