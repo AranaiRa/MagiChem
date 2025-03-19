@@ -44,6 +44,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         startLocation, endLocation, startTangent, endTangent;
     ItemStack stackInTransit;
     ShlorpParticleMode particleMode;
+    BlockPos fallback = null;
 
     public void configure(BlockPos pStartLocation, Vector3 pStartOrigin, Vector3 pStartTangent, BlockPos pEndLocation, Vector3 pEndOrigin, Vector3 pEndTangent, float pSpeed, float pDistanceBetweenClusters, int pClusterCount, MateriaItem pMateriaType, int pMateriaCount, ShlorpParticleMode pParticleMode) {
         Vector3 start = new Vector3(pStartLocation.getX(), pStartLocation.getY(), pStartLocation.getZ());
@@ -78,6 +79,10 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         this.stackInTransit = new ItemStack(pMateriaType, pMateriaCount);
 
         this.particleMode = pParticleMode;
+    }
+
+    public void setFallback(BlockPos pBlockPos) {
+        this.fallback = pBlockPos;
     }
 
     @Override
@@ -116,6 +121,9 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
                 pCompound.getDouble("endTanY"),
                 pCompound.getDouble("endTanZ")
         );
+        if(pCompound.contains("fallback")) {
+            fallback = BlockPos.of(pCompound.getLong("fallback"));
+        }
 
         //Misc configs
         speed = pCompound.getFloat("speed");
@@ -148,6 +156,11 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         pCompound.putDouble("endTanX",endTangent.x);
         pCompound.putDouble("endTanY",endTangent.y);
         pCompound.putDouble("endTanZ",endTangent.z);
+
+        //fallback
+        if(fallback != null) {
+            pCompound.putLong("fallback",fallback.asLong());
+        }
 
         //Misc configs
         pCompound.putFloat("speed",speed);
@@ -190,6 +203,10 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         buffer.writeInt(vertClusterCount);
         buffer.writeInt(((MateriaItem)stackInTransit.getItem()).getMateriaColor());
         buffer.writeInt(particleMode.ordinal());
+
+        //fallback
+        buffer.writeBoolean(fallback != null);
+        if(fallback != null) buffer.writeLong(fallback.asLong());
     }
 
     @Override
@@ -231,6 +248,10 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         color[1] = packedColor >> 8 & 255;
         color[2] = packedColor & 255;
         particleMode = ShlorpParticleMode.values()[additionalData.readInt()];
+
+        if(additionalData.readBoolean()) {
+            fallback = BlockPos.of(additionalData.readLong());
+        }
     }
 
     public Vector3 generatePointOnBezierCurve(float time, float duration) {
@@ -257,6 +278,13 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
 
                 if(be instanceof IShlorpReceiver isr) {
                     isr.insertStackFromShlorp(stackInTransit);
+                }
+                else if(fallback != null) {
+                    be = this.level().getBlockEntity(fallback);
+
+                    if(be instanceof IShlorpReceiver isr) {
+                        isr.insertStackFromShlorp(stackInTransit);
+                    }
                 }
             }
             kill();

@@ -341,16 +341,13 @@ public class InventoryHelper {
                             }
                         }
 
-                        if(multi instanceof AbstractMateriaStorageMultiTypeStaticBlockEntity multiStatic) {
-                            if(materiaTypes.size() < multiStatic.getTypeLimit()) {
-                                if (out.containsKey(null)) {
-                                    out.get(null).add(be);
-                                }
-                                else {
-                                    ArrayList<BlockEntity> outList = new ArrayList<>();
-                                    outList.add(be);
-                                    out.put(null, outList);
-                                }
+                        if(multi.isBelowTypeLimit()) {
+                            if (out.containsKey(null)) {
+                                out.get(null).add(be);
+                            } else {
+                                ArrayList<BlockEntity> outList = new ArrayList<>();
+                                outList.add(be);
+                                out.put(null, outList);
                             }
                         }
                     }

@@ -438,6 +438,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                         (MateriaItem) transitMateria.getItem(),
                         transitMateria.getCount(),
                         ShlorpParticleMode.NONE);
+                shlorp.setFallback(endpoint.getBlockPos());
                 level.addFreshEntity(shlorp);
             }
         }
