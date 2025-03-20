@@ -130,7 +130,7 @@ public class CirclePowerBlock extends BaseEntityBlock {
                     NetworkHooks.openScreen((ServerPlayer) player, (CirclePowerBlockEntity) entity, pos);
                 }
             } else {
-                throw new IllegalStateException("MagicCircleBlockEntity container provider is missing!");
+                throw new IllegalStateException("CirclePowerBlockEntity container provider is missing!");
             }
         }
 

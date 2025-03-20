@@ -8,6 +8,10 @@ import com.aranaira.magichem.registry.BlockRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -20,6 +24,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -157,5 +163,25 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return createTickerHelper(pBlockEntityType, BlockEntitiesRegistry.MIRROR_LABYRINTH_BE.get(),
                 MirrorLabyrinthBlockEntity::tick);
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if(!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
+            if(entity instanceof MirrorLabyrinthBlockEntity) {
+                boolean holdingPowerSpike = player.getInventory().getSelected().getItem() == BlockRegistry.POWER_SPIKE.get().asItem();
+
+                if(holdingPowerSpike) {
+                    return InteractionResult.PASS;
+                } else {
+                    NetworkHooks.openScreen((ServerPlayer) player, (MirrorLabyrinthBlockEntity) entity, pos);
+                }
+            } else {
+                throw new IllegalStateException("MirrorLabyrinthBlockEntity container provider is missing!");
+            }
+        }
+
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }

@@ -4,9 +4,13 @@ import com.aranaira.magichem.block.MirrorLabyrinthBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeDynamicBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.gui.AlembicMenu;
+import com.aranaira.magichem.gui.MirrorLabyrinthMenu;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstructConstruction;
@@ -21,15 +25,30 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,9 +57,12 @@ import java.util.Random;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeDynamicBlockEntity implements IShlorpReceiver, IRequiresRouterCleanupOnDestruction, ICanAbsorbConstructs {
+public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeDynamicBlockEntity implements MenuProvider, IShlorpReceiver, IRequiresRouterCleanupOnDestruction, ICanAbsorbConstructs {
 
     public static final Random r = new Random();
+    public static final int
+            SLOT_COUNT = 4,
+            SLOT_INPUT = 0, SLOT_INPUT_RESULT = 1, SLOT_EXTRACT = 2, SLOT_EXTRACT_RESULT = 3;
     public static final float
             CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f,
             MATRIX_ACTIVATION_RATE = 0.0125f, CONSTRUCT_ACTIVATION_RATE = 0.0185f, MIRROR_ACTIVATION_RATE = 0.0215f;
@@ -55,6 +77,31 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
             constructActivationPercent = 0.0f, constructActivationSpeed = 0.0f;
     private CompoundTag storedConstruct = new CompoundTag();
     public Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
+    private ContainerData data = new SimpleContainerData(0);
+    protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            if(slot == SLOT_INPUT) {
+                return stack.getItem() instanceof MateriaItem ||
+                       stack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem() ||
+                       stack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem();
+            }
+            else if(slot == SLOT_EXTRACT) {
+                return stack.getItem() == Items.GLASS_BOTTLE ||
+                       stack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem() ||
+                       stack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            super.onContentsChanged(slot);
+        }
+    };
 
     public static final int[][] TRAIL_PARTICLE_COLORS = {
             {101, 112, 120},
@@ -139,6 +186,33 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         return true;
     }
 
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        return new MirrorLabyrinthMenu(pContainerId, pPlayerInventory, this, this.data);
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) {
+            return lazyItemHandler.cast();
+        }
+
+        return super.getCapability(cap, side);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyItemHandler.invalidate();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
+    }
+
     @Override
     public void load(CompoundTag nbt) {
         if(nbt == null) nbt = new CompoundTag();
@@ -150,11 +224,14 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         if(!storedConstruct.equals(pre))
             constructDataChanged = true;
 
+        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+
     }
 
     @Override
     public void saveAdditional(CompoundTag nbt) {
         nbt.put("construct", storedConstruct);
+        nbt.put("inventory", itemHandler.serializeNBT());
         super.saveAdditional(nbt);
     }
 
@@ -167,6 +244,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = super.getUpdateTag();
         nbt.put("construct", storedConstruct);
+        nbt.put("inventory", itemHandler.serializeNBT());
         return nbt;
     }
 
@@ -425,5 +503,18 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         } else {
             particlePercent = Math.max(0, particlePercent - PARTICLE_PERCENT_RATE);
         }
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.empty();
+    }
+
+    public boolean hasItemInInsertResultSlot() {
+        return !itemHandler.getStackInSlot(SLOT_INPUT_RESULT).isEmpty();
+    }
+
+    public boolean hasItemInExtractResultSlot() {
+        return !itemHandler.getStackInSlot(SLOT_EXTRACT_RESULT).isEmpty();
     }
 }

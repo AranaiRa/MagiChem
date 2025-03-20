@@ -81,6 +81,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<StandingRetortMenu>> STANDING_RETORT_MENU =
             registerMenuType(StandingRetortMenu::new, "standing_retort");
 
+    public static final RegistryObject<MenuType<MirrorLabyrinthMenu>> MIRROR_LABYRINTH_MENU =
+            registerMenuType(MirrorLabyrinthMenu::new, "mirror_labyrinth");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

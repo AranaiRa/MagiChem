@@ -160,6 +160,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.CONJURER_MENU.get(), ConjurerScreen::new);
                 MenuScreens.register(MenuRegistry.MATERIA_MANIFEST_MENU.get(), MateriaManifestScreen::new);
                 MenuScreens.register(MenuRegistry.STANDING_RETORT_MENU.get(), StandingRetortScreen::new);
+                MenuScreens.register(MenuRegistry.MIRROR_LABYRINTH_MENU.get(), MirrorLabyrinthScreen::new);
             });
         }
 
