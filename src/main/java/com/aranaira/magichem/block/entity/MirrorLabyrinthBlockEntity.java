@@ -11,6 +11,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstructConstruction;
@@ -50,9 +51,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
@@ -69,13 +68,14 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     private boolean
             hasSufficientPower = false, redstonePaused = false;
     public boolean
-            constructDataChanged = false;
+            constructDataChanged = false, isCompactMode = true;
     public float
             circlePercent = 1.0f, particlePercent = 1.0f,
             mirrorActivationPercent = 0.0f, mirrorActivationSpeed = 0.0f,
             matrixActivationPercent = 0.0f, matrixActivationSpeed = 0.0f,
             constructActivationPercent = 0.0f, constructActivationSpeed = 0.0f;
     private CompoundTag storedConstruct = new CompoundTag();
+    private ArrayList<MateriaItem> materiaTypesSorted = new ArrayList<>();
     public Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
     private ContainerData data = new SimpleContainerData(0);
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -226,6 +226,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
 
+        updateSortedMateriaTypeList();
     }
 
     @Override
@@ -516,5 +517,20 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
     public boolean hasItemInExtractResultSlot() {
         return !itemHandler.getStackInSlot(SLOT_EXTRACT_RESULT).isEmpty();
+    }
+
+    public void updateSortedMateriaTypeList() {
+        if(level != null) {
+            Set<MateriaItem> keySet = materiaStorage.keySet();
+            keySet.remove(null);
+            materiaTypesSorted.clear();
+            materiaTypesSorted.addAll(keySet);
+
+            materiaTypesSorted.sort(Comparator.comparing(MateriaItem::getMateriaSortingName));
+        }
+    }
+
+    public List<MateriaItem> getMateriaTypesSorted() {
+        return materiaTypesSorted;
     }
 }

@@ -37,22 +37,12 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
     private final List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorage = new ArrayList<>();
     final List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorageFiltered = new ArrayList<>();
     private ImageButton setCompactButton, setExpandedButton;
-    private ImageButton[]
+    private final ImageButton[]
             materiaSelectorButtonsCompact = new ImageButton[32],
             materiaSelectorButtonsExpanded = new ImageButton[16];
     private EditBox recipeFilterBox;
     int pageIndex = 0;
     int pageCount = 1;
-
-    @Override
-    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        if(pDelta < 0)
-            pageIndex = Math.min(pageIndex + 1, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
-        else if(pDelta > 0)
-            pageIndex = Math.max(pageIndex - 1, 0);
-
-        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
-    }
 
     public MateriaManifestScreen(MateriaManifestMenu menu, Inventory inv, Component component) {
         super(menu, inv, component);
@@ -240,6 +230,16 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
         } else {
             return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
         }
+    }
+
+    @Override
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+        if(pDelta < 0)
+            pageIndex = Math.min(pageIndex + 1, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
+        else if(pDelta > 0)
+            pageIndex = Math.max(pageIndex - 1, 0);
+
+        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
     }
 
     private void setTetherTarget(int pButtonID) {

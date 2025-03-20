@@ -3,19 +3,31 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.item.EssentiaItem;
+import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.registry.ItemRegistry;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,39 +42,265 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             TOOLTIP_EFFICIENCY_X = 178, TOOLTIP_EFFICIENCY_Y = 18, TOOLTIP_EFFICIENCY_W = 57, TOOLTIP_EFFICIENCY_H = 15,
             TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 37, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
             TOOLTIP_GRIME_X = 179, TOOLTIP_GRIME_Y = 53, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14;
+    private final HashMap<String, ItemStack> materiaMap = new HashMap<>();
+    private final List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorage = new ArrayList<>();
+    final List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorageFiltered = new ArrayList<>();
+    private ImageButton setCompactButton, setExpandedButton;
+    private final ImageButton[]
+            materiaSelectorButtonsCompact = new ImageButton[16],
+            materiaSelectorButtonsExpanded = new ImageButton[8];
+    private EditBox recipeFilterBox;
+    int pageIndex = 0;
+    int pageCount = 1;
 
     public MirrorLabyrinthScreen(MirrorLabyrinthMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        if(materiaMap.size() == 0) {
+            final HashMap<String, MateriaItem> baseMateriaMap = ItemRegistry.getMateriaMap(false, true);
+            for(String key : baseMateriaMap.keySet()) {
+                materiaMap.put(key, new ItemStack(baseMateriaMap.get(key)));
+            }
+        }
     }
 
     @Override
     protected void init() {
         super.init();
+        initializeButtons();
+        initializeRecipeFilterBox();
+    }
+
+    private void initializeButtons() {
+        for(int i=0; i<16; i++) {
+            int buttonX = this.leftPos - 16 + ((i / 4) * 54);
+            int buttonY = this.topPos - 20 + ((i % 4) * 23);
+
+            int finalI = i;
+            materiaSelectorButtonsCompact[i] = this.addRenderableWidget(new ImageButton(buttonX, buttonY, 18, 18, 24, 218, TEXTURE_COMPACT, button -> {
+                //setTetherTarget(finalI);
+            }));
+            materiaSelectorButtonsCompact[i].visible = menu.blockEntity.isCompactMode;
+        }
+        for(int i=0; i<8; i++) {
+            int buttonX = this.leftPos - 16 + ((i / 4) * 108);
+            int buttonY = this.topPos - 20 + ((i % 4) * 23);
+
+            int finalI = i;
+            materiaSelectorButtonsExpanded[i] = this.addRenderableWidget(new ImageButton(buttonX, buttonY, 18, 18, 24, 218, TEXTURE_COMPACT, button -> {
+                //setTetherTarget(finalI);
+            }));
+            materiaSelectorButtonsExpanded[i].visible = !menu.blockEntity.isCompactMode;
+        }
+
+        //next page button
+        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos + 71, 12, 7, 12, 242, TEXTURE_COMPACT, button -> {
+            pageIndex = Math.min(pageIndex + 1, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
+        }));
+
+        //previous page button
+        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos - 31, 12, 7, 0, 242, TEXTURE_COMPACT, button -> {
+            pageIndex = Math.max(pageIndex - 1, 0);
+        }));
+
+        //expanded / compacted button
+        setExpandedButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 8, 14, 14, 242, 228, TEXTURE_COMPACT, button -> {
+            menu.blockEntity.isCompactMode = true;
+            if(setCompactButton != null) setCompactButton.visible = true;
+            if(setExpandedButton != null) setExpandedButton.visible = false;
+            for(ImageButton ib : materiaSelectorButtonsCompact) {
+                ib.visible = true;
+            }
+            for(ImageButton ib : materiaSelectorButtonsExpanded) {
+                ib.visible = false;
+            }
+        }));
+
+        //expanded / compacted button
+        setCompactButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 8, 14, 14, 228, 228, TEXTURE_COMPACT, button -> {
+            menu.blockEntity.isCompactMode = false;
+            if(setCompactButton != null) setCompactButton.visible = false;
+            if(setExpandedButton != null) setExpandedButton.visible = true;
+            for(ImageButton ib : materiaSelectorButtonsCompact) {
+                ib.visible = false;
+            }
+            for(ImageButton ib : materiaSelectorButtonsExpanded) {
+                ib.visible = true;
+            }
+        }));
+
+        setCompactButton.visible = menu.blockEntity.isCompactMode;
+        setExpandedButton.visible = !menu.blockEntity.isCompactMode;
+    }
+
+    private void initializeRecipeFilterBox() {
+        int x = 0;//(width - 222) / 2;
+        int y = 5;//(height - 213) / 2;
+
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 65, 16, Component.empty()) {
+            @Override
+            public boolean charTyped(char pCodePoint, int pModifiers) {
+                final boolean b = super.charTyped(pCodePoint, pModifiers);
+                updateMateriaOptionsByTextFilter();
+                if(getValue().isEmpty())
+                    setSuggestion("Filter...");
+                else
+                    setSuggestion("");
+                return b;
+            }
+
+            @Override
+            public void deleteChars(int pNum) {
+                super.deleteChars(pNum);
+                updateMateriaOptionsByTextFilter();
+                if(getValue().isEmpty())
+                    setSuggestion("Filter...");
+                else
+                    setSuggestion("");
+            }
+
+            @Override
+            public void deleteWords(int pNum) {
+                super.deleteWords(pNum);
+                updateMateriaOptionsByTextFilter();
+                if(getValue().isEmpty())
+                    setSuggestion("Filter...");
+                else
+                    setSuggestion("");
+            }
+        };
+        this.recipeFilterBox.setMaxLength(60);
+        this.recipeFilterBox.setFocused(false);
+        this.recipeFilterBox.setCanLoseFocus(false);
+        this.setFocused(this.recipeFilterBox);
+
+        renderFilterBox();
+    }
+
+    private void updateMateriaOptionsByTextFilter() {
+        String filter = "";
+        if(recipeFilterBox != null) filter = recipeFilterBox.getValue();
+        orderedMateriaStorageFiltered.clear();
+        for (Pair<MateriaItem, BlockEntity> pair : orderedMateriaStorage) {
+            MateriaItem mi = pair.getFirst();
+            String name = mi instanceof EssentiaItem ?
+                    Component.translatable("item.magichem.essentia_" + mi.getMateriaName()).toString() :
+                    Component.translatable("item.magichem.admixture_" + mi.getMateriaName()).toString();
+
+            if(filter.equals("") || name.contains(filter)) {
+                orderedMateriaStorageFiltered.add(pair);
+            }
+        }
+    }
+
+    private void renderFilterBox() {
+        int xOrigin = (width - 222) / 2;
+        int yOrigin = (height - 213) / 2;
+
+        recipeFilterBox.setX(xOrigin - 76);
+        recipeFilterBox.setY(yOrigin - 6);
+
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
+
+        addRenderableWidget(recipeFilterBox);
+    }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (pKeyCode == InputConstants.KEY_ESCAPE) {
+            this.onClose();
+            return true;
+        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+            return true;
+        } else {
+            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
+    }
+
+    @Override
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+        if(pDelta < 0)
+            pageIndex = Math.min(pageIndex + 1, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
+        else if(pDelta > 0)
+            pageIndex = Math.max(pageIndex - 1, 0);
+
+        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+    }
+
+    private ResourceLocation getTexture() {
+        return menu.blockEntity.isCompactMode ? TEXTURE_COMPACT : TEXTURE_EXPANDED;
     }
 
     @Override
     protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1,1,1,1);
-        RenderSystem.setShaderTexture(0, TEXTURE_COMPACT);
 
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
         //materia panel
-        gui.blit(TEXTURE_COMPACT, x, y - 60, 0, 0, 222, 121);
+        gui.blit(getTexture(), x, y - 60, 0, 0, 222, 121);
 
         //inventory panel
-        gui.blit(TEXTURE_COMPACT, x - 7, y + 64, 0, 121, 176, 90);
+        gui.blit(getTexture(), x - 7, y + 64, 0, 121, 176, 90);
 
         //insertion panel
-        gui.blit(TEXTURE_COMPACT, x + 172, y + 64, 176, 121, 57, 90);
+        gui.blit(getTexture(), x + 172, y + 64, 176, 121, 57, 90);
+
+        //search bar
+        gui.blit(getTexture(), x - 84, y - 60, 116, 224, 80, 32);
+
+        //button house
+        gui.blit(getTexture(), x - 36, y - 24, 196, 224, 32, 32);
 
         //bottle ghosts for empty slots
         if(!menu.blockEntity.hasItemInInsertResultSlot())
-            gui.blit(TEXTURE_COMPACT, x + 204, y + 71, 0, 224, 18, 18);
+            gui.blit(getTexture(), x + 204, y + 71, 0, 224, 18, 18);
         if(!menu.blockEntity.hasItemInExtractResultSlot())
-            gui.blit(TEXTURE_COMPACT, x + 179, y + 129, 0, 224, 18, 18);
+            gui.blit(getTexture(), x + 179, y + 129, 0, 224, 18, 18);
+
+        int splitter = (menu.blockEntity.isCompactMode ? 16 : 8);
+
+        int startIndex = pageIndex * splitter;
+        int endIndex = (orderedMateriaStorageFiltered.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorageFiltered.size();
+
+        for(int i=startIndex; i<endIndex; i++) {
+            int itemX = x +  8 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
+            int itemY = y + 18 + (((i - startIndex) % 8) * 23);
+            int barX = x + 29 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
+            int barY = y + 31 + (((i - startIndex) % 8) * 23);
+
+            final Pair<MateriaItem, BlockEntity> entry = orderedMateriaStorageFiltered.get(i);
+            MateriaItem mi = entry.getFirst();
+            String id = (mi instanceof EssentiaItem ? "essentia_" : "admixture_") + mi.getMateriaName();
+            ItemStack is = materiaMap.get(id);
+
+            if(is != null) {
+                gui.renderItem(is, itemX, itemY);
+
+                int colorInt = mi.getMateriaColor();
+                int intR = (colorInt & 0x00ff0000) >> 16;
+                int intG = (colorInt & 0x0000ff00) >> 8;
+                int intB = (colorInt & 0x000000ff);
+
+                float r = (float)intR / 255f;
+                float g = (float)intG / 255f;
+                float b = (float)intB / 255f;
+                gui.setColor(r, g, b, 1);
+
+                int barW = 0;
+                if(entry.getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity amsstbe)
+                    barW = Math.round(23 * amsstbe.getCurrentStockPercent());
+                else if(entry.getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe)
+                    barW = Math.round(23 * amsmtbe.getCurrentStockPercent(entry.getFirst()));
+
+                gui.blit(TEXTURE_COMPACT, barX, barY, 24, 254, barW, 2);
+                gui.setColor(1,1,1,1);
+            }
+        }
 
 //        renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
 //
@@ -153,23 +391,41 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
     @Override
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
+        int splitter = (menu.blockEntity.isCompactMode ? 32 : 16);
 
-        gui.drawString(font, Component.literal("x:"+pMouseX+"\ny:"+pMouseY), -100, -10, 0xffffffff, false);
+        int startIndex = pageIndex * splitter;
+        int endIndex = (orderedMateriaStorageFiltered.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorageFiltered.size();
+
+        for(int i=startIndex; i<endIndex; i++) {
+            int counterX =  6 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
+            int counterY = -4 + (((i - startIndex) % 8) * 23);
+
+            String type = "";
+            int mLimit = 1;
+            if(orderedMateriaStorageFiltered.get(i).getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                mLimit = single.getCurrentStock();
+                type = single.getMateriaType() instanceof EssentiaItem ?
+                        "item.magichem.essentia_" + single.getMateriaType().getMateriaName() + ".truncated" :
+                        "item.magichem.admixture_" + single.getMateriaType().getMateriaName() + ".truncated";
+            }
+            else if(orderedMateriaStorageFiltered.get(i).getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                mLimit = multi.getCurrentStock(orderedMateriaStorageFiltered.get(i).getFirst());
+                type = orderedMateriaStorageFiltered.get(i).getFirst() instanceof EssentiaItem ?
+                        "item.magichem.essentia_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated" :
+                        "item.magichem.admixture_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated";
+            }
+
+            gui.drawString(font, ""+mLimit, counterX, counterY, 0x00000000, false);
+            if(!menu.blockEntity.isCompactMode) {
+
+                gui.drawString(font, Component.translatable(type), counterX + 28, counterY, 0x00000000, false);
+            }
+        }
 
 //        gui.drawString(font, Component.literal(DistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), DistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 10, 0xff000000, false);
 
 //        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
 //        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
 //        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", PANEL_GRIME_X + 20, PANEL_GRIME_Y + 9, 0xff000000, false);
-    }
-
-    @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        boolean isNumber = (pKeyCode >= 48) && (pKeyCode <= 57);
-        boolean isNumpadNumber = (pKeyCode >= 97) && (pKeyCode <= 105);
-
-        if(isNumber || isNumpadNumber) return false;
-
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
     }
 }
