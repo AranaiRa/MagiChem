@@ -1,18 +1,12 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
-import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,12 +18,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrinthMenu> {
     private static final ResourceLocation TEXTURE_COMPACT =
@@ -43,8 +35,8 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             TOOLTIP_OPERATIONTIME_X = 178, TOOLTIP_OPERATIONTIME_Y = 37, TOOLTIP_OPERATIONTIME_W = 57, TOOLTIP_OPERATIONTIME_H = 15,
             TOOLTIP_GRIME_X = 179, TOOLTIP_GRIME_Y = 53, TOOLTIP_GRIME_W = 56, TOOLTIP_GRIME_H = 14;
     private final HashMap<String, ItemStack> materiaMap = new HashMap<>();
-    private final List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorage = new ArrayList<>();
-    final List<Pair<MateriaItem, BlockEntity>> orderedMateriaStorageFiltered = new ArrayList<>();
+    private final List<Pair<MateriaItem, Integer>> orderedMateriaStorage = new ArrayList<>();
+    final List<Pair<MateriaItem, Integer>> orderedMateriaStorageFiltered = new ArrayList<>();
     private ImageButton setCompactButton, setExpandedButton;
     private final ImageButton[]
             materiaSelectorButtonsCompact = new ImageButton[16],
@@ -180,7 +172,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         String filter = "";
         if(recipeFilterBox != null) filter = recipeFilterBox.getValue();
         orderedMateriaStorageFiltered.clear();
-        for (Pair<MateriaItem, BlockEntity> pair : orderedMateriaStorage) {
+        for (Pair<MateriaItem, Integer> pair : orderedMateriaStorage) {
             MateriaItem mi = pair.getFirst();
             String name = mi instanceof EssentiaItem ?
                     Component.translatable("item.magichem.essentia_" + mi.getMateriaName()).toString() :
@@ -233,6 +225,21 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         return menu.blockEntity.isCompactMode ? TEXTURE_COMPACT : TEXTURE_EXPANDED;
     }
 
+    private void updateStorageOrder() {
+        orderedMateriaStorage.clear();
+        for(MateriaItem mi : menu.blockEntity.getMateriaTypesSorted()) {
+            orderedMateriaStorage.add(new Pair<>(mi, menu.blockEntity.getCurrentStock(mi)));
+        }
+
+        updateMateriaOptionsByTextFilter();
+
+        pageCount = (int)Math.ceil((float)orderedMateriaStorageFiltered.size() / 16f);
+        if(pageCount <= 0)
+            pageCount = 1;
+
+        menu.blockEntity.needsGuiStorageUpdate = false;
+    }
+
     @Override
     protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -262,18 +269,22 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         if(!menu.blockEntity.hasItemInExtractResultSlot())
             gui.blit(getTexture(), x + 179, y + 129, 0, 224, 18, 18);
 
+        if(menu.blockEntity.needsGuiStorageUpdate) {
+            updateStorageOrder();
+        }
+
         int splitter = (menu.blockEntity.isCompactMode ? 16 : 8);
 
         int startIndex = pageIndex * splitter;
         int endIndex = (orderedMateriaStorageFiltered.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorageFiltered.size();
 
         for(int i=startIndex; i<endIndex; i++) {
-            int itemX = x +  8 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
-            int itemY = y + 18 + (((i - startIndex) % 8) * 23);
-            int barX = x + 29 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
-            int barY = y + 31 + (((i - startIndex) % 8) * 23);
+            int itemX = x +  8 + (((i - startIndex) / 4) * (menu.blockEntity.isCompactMode ? 54 : 108));
+            int itemY = y - 42 + (((i - startIndex) % 4) * 23);
+            int barX = x + 29 + (((i - startIndex) / 4) * (menu.blockEntity.isCompactMode ? 54 : 108));
+            int barY = y - 29 + (((i - startIndex) % 4) * 23);
 
-            final Pair<MateriaItem, BlockEntity> entry = orderedMateriaStorageFiltered.get(i);
+            final Pair<MateriaItem, Integer> entry = orderedMateriaStorageFiltered.get(i);
             MateriaItem mi = entry.getFirst();
             String id = (mi instanceof EssentiaItem ? "essentia_" : "admixture_") + mi.getMateriaName();
             ItemStack is = materiaMap.get(id);
@@ -291,11 +302,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                 float b = (float)intB / 255f;
                 gui.setColor(r, g, b, 1);
 
-                int barW = 0;
-                if(entry.getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity amsstbe)
-                    barW = Math.round(23 * amsstbe.getCurrentStockPercent());
-                else if(entry.getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe)
-                    barW = Math.round(23 * amsmtbe.getCurrentStockPercent(entry.getFirst()));
+                int barW = Math.round(23 * Math.min(1, (float)entry.getSecond() / (float)menu.blockEntity.getStorageLimit(mi)));
 
                 gui.blit(TEXTURE_COMPACT, barX, barY, 24, 254, barW, 2);
                 gui.setColor(1,1,1,1);
@@ -391,29 +398,19 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
     @Override
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
-        int splitter = (menu.blockEntity.isCompactMode ? 32 : 16);
+        int splitter = (menu.blockEntity.isCompactMode ? 16 : 8);
 
         int startIndex = pageIndex * splitter;
         int endIndex = (orderedMateriaStorageFiltered.size() - startIndex) > splitter ? startIndex + splitter : orderedMateriaStorageFiltered.size();
 
         for(int i=startIndex; i<endIndex; i++) {
-            int counterX =  6 + (((i - startIndex) / 8) * (menu.blockEntity.isCompactMode ? 54 : 108));
-            int counterY = -4 + (((i - startIndex) % 8) * 23);
+            int counterX =  6 + (((i - startIndex) / 4) * (menu.blockEntity.isCompactMode ? 54 : 108));
+            int counterY = -18 + (((i - startIndex) % 4) * 23);
 
-            String type = "";
-            int mLimit = 1;
-            if(orderedMateriaStorageFiltered.get(i).getSecond() instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
-                mLimit = single.getCurrentStock();
-                type = single.getMateriaType() instanceof EssentiaItem ?
-                        "item.magichem.essentia_" + single.getMateriaType().getMateriaName() + ".truncated" :
-                        "item.magichem.admixture_" + single.getMateriaType().getMateriaName() + ".truncated";
-            }
-            else if(orderedMateriaStorageFiltered.get(i).getSecond() instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
-                mLimit = multi.getCurrentStock(orderedMateriaStorageFiltered.get(i).getFirst());
-                type = orderedMateriaStorageFiltered.get(i).getFirst() instanceof EssentiaItem ?
-                        "item.magichem.essentia_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated" :
-                        "item.magichem.admixture_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated";
-            }
+            int mLimit = orderedMateriaStorageFiltered.get(i).getSecond();
+            String type = orderedMateriaStorageFiltered.get(i).getFirst() instanceof EssentiaItem ?
+                    "item.magichem.essentia_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated" :
+                    "item.magichem.admixture_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated";
 
             gui.drawString(font, ""+mLimit, counterX, counterY, 0x00000000, false);
             if(!menu.blockEntity.isCompactMode) {

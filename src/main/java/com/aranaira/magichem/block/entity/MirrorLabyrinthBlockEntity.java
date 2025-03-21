@@ -68,7 +68,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     private boolean
             hasSufficientPower = false, redstonePaused = false;
     public boolean
-            constructDataChanged = false, isCompactMode = true;
+            constructDataChanged = false, isCompactMode = true, needsGuiStorageUpdate = true;
     public float
             circlePercent = 1.0f, particlePercent = 1.0f,
             mirrorActivationPercent = 0.0f, mirrorActivationSpeed = 0.0f,
@@ -520,14 +520,14 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     }
 
     public void updateSortedMateriaTypeList() {
-        if(level != null) {
-            Set<MateriaItem> keySet = materiaStorage.keySet();
-            keySet.remove(null);
-            materiaTypesSorted.clear();
-            materiaTypesSorted.addAll(keySet);
+        Set<MateriaItem> keySet = materiaStorage.keySet();
+        keySet.remove(null);
+        materiaTypesSorted.clear();
+        materiaTypesSorted.addAll(keySet);
 
-            materiaTypesSorted.sort(Comparator.comparing(MateriaItem::getMateriaSortingName));
-        }
+        materiaTypesSorted.sort(Comparator.comparing(MateriaItem::getMateriaSortingName));
+
+        needsGuiStorageUpdate = true;
     }
 
     public List<MateriaItem> getMateriaTypesSorted() {
