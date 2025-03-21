@@ -287,7 +287,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 if(level.getGameTime() % 100 == 0) {
                     final Direction facing = state.getValue(FACING);
                     if(facing == Direction.NORTH) {
-                        for(int z=-2; z>=-8; z--) {
+                        for(int z=-2; z>=-10; z--) {
                             BlockPos queryPos = pos.offset(0, 0, z);
                             if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
                                 entity.linkedCircleToil = queryPos;
