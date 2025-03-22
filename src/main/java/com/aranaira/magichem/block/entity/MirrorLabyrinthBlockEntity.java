@@ -225,6 +225,8 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
 
+        powerLevel = nbt.getByte("powerLevel");
+
         updateSortedMateriaTypeList();
     }
 
@@ -232,6 +234,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     public void saveAdditional(CompoundTag nbt) {
         nbt.put("construct", storedConstruct);
         nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putByte("powerLevel", (byte)powerLevel);
         super.saveAdditional(nbt);
     }
 
@@ -245,6 +248,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         CompoundTag nbt = super.getUpdateTag();
         nbt.put("construct", storedConstruct);
         nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putByte("powerLevel", (byte)powerLevel);
         return nbt;
     }
 
@@ -550,6 +554,76 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                     }
                 }
             }
+            //handle extraction
+            if(!pEntity.itemHandler.getStackInSlot(SLOT_EXTRACT).isEmpty() && pEntity.materiaStorage.containsKey(pEntity.activeMateriaType)) {
+                final ItemStack extractionStack = pEntity.itemHandler.getStackInSlot(SLOT_EXTRACT);
+                final ItemStack extractionContainers = pEntity.itemHandler.getStackInSlot(SLOT_EXTRACT_RESULT);
+
+                if(extractionStack.getItem() == Items.GLASS_BOTTLE) {
+                    if(extractionContainers.isEmpty() || extractionContainers.getItem() == pEntity.activeMateriaType) {
+                        int extractionLimit = Math.min(
+                                pEntity.materiaStorage.get(pEntity.activeMateriaType), Math.min(
+                                extractionStack.getCount(), 64 - extractionContainers.getCount()));
+                        if(extractionLimit > 0) {
+                            extractionStack.shrink(extractionLimit);
+                            pEntity.materiaStorage.put(pEntity.activeMateriaType, pEntity.materiaStorage.get(pEntity.activeMateriaType) - extractionLimit);
+                            pEntity.itemHandler.setStackInSlot(SLOT_EXTRACT_RESULT, new ItemStack(pEntity.activeMateriaType, extractionContainers.getCount() + extractionLimit));
+                            pEntity.syncAndSave();
+                        }
+                    }
+                }
+                else if(extractionStack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem() || extractionStack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem()) {
+                    if(extractionStack.hasTag() && extractionStack.getTag().contains("type") && extractionStack.getTag().contains("amount")) {
+                        MateriaItem mi = materiaMap.get(extractionStack.getTag().getString("type"));
+                        if(mi == pEntity.activeMateriaType) {
+                            int containerLimit = extractionStack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem() ?
+                                    (mi instanceof EssentiaItem ? ServerConfig.materiaJarEssentiaCapacity : ServerConfig.materiaJarAdmixtureCapacity) :
+                                    (mi instanceof EssentiaItem ? ServerConfig.materiaVesselEssentiaCapacity : ServerConfig.materiaVesselAdmixtureCapacity);
+                            int existing = extractionStack.getTag().getInt("amount");
+
+                            if (pEntity.materiaStorage.containsKey(mi) && extractionContainers.isEmpty()) {
+                                int extractionLimit = Math.min(
+                                        containerLimit - existing,
+                                        pEntity.materiaStorage.get(mi));
+                                ItemStack newOutput = new ItemStack(extractionStack.getItem());
+                                CompoundTag newOutputTag = new CompoundTag();
+                                newOutputTag.putString("type", mi.getMateriaName());
+                                newOutputTag.putInt("amount", extractionLimit + existing);
+
+                                newOutput.setTag(newOutputTag);
+                                pEntity.itemHandler.setStackInSlot(SLOT_EXTRACT_RESULT, newOutput);
+                                extractionStack.shrink(1);
+
+                                pEntity.materiaStorage.put(mi, pEntity.materiaStorage.get(mi) - extractionLimit);
+
+                                pEntity.syncAndSave();
+                            }
+                        }
+                    } else if(pEntity.activeMateriaType != null) {
+                        int containerLimit = extractionStack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem() ?
+                                (pEntity.activeMateriaType instanceof EssentiaItem ? ServerConfig.materiaJarEssentiaCapacity : ServerConfig.materiaJarAdmixtureCapacity) :
+                                (pEntity.activeMateriaType instanceof EssentiaItem ? ServerConfig.materiaVesselEssentiaCapacity : ServerConfig.materiaVesselAdmixtureCapacity);
+
+                        if(pEntity.materiaStorage.containsKey(pEntity.activeMateriaType) && extractionContainers.isEmpty()) {
+                            int extractionLimit = Math.min(
+                                    containerLimit,
+                                    pEntity.materiaStorage.get(pEntity.activeMateriaType));
+                            ItemStack newOutput = new ItemStack(extractionStack.getItem());
+                            CompoundTag newOutputTag = new CompoundTag();
+                            newOutputTag.putString("type", pEntity.activeMateriaType.getMateriaName());
+                            newOutputTag.putInt("amount", extractionLimit);
+
+                            newOutput.setTag(newOutputTag);
+                            pEntity.itemHandler.setStackInSlot(SLOT_EXTRACT_RESULT, newOutput);
+                            extractionStack.shrink(1);
+
+                            pEntity.materiaStorage.put(pEntity.activeMateriaType, pEntity.materiaStorage.get(pEntity.activeMateriaType) - extractionLimit);
+
+                            pEntity.syncAndSave();
+                        }
+                    }
+                }
+            }
         }
 
         pEntity.hasSufficientPower = true;//pLevel.getGameTime() % 600 < 300;
@@ -635,22 +709,16 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         int drain = BASE_ENERGY_DRAIN;
         for(int i=0; i<this.powerLevel; i++) {
             float scalar = (POWER_LEVEL_SCALARS[i] * 0.5f) + 1f;
-            drain = Math.round((float)(drain/100) * scalar * 100f);
+            drain = Math.round((float)drain * scalar);
+            drain = Math.round((float)drain / 100f);
+            drain *= 100;
         }
         return drain;
     }
 
     @Override
     public int getStorageLimit(MateriaItem pMateriaType) {
-        int limit = pMateriaType instanceof EssentiaItem ?
-                ServerConfig.materiaVesselEssentiaCapacity :
-                ServerConfig.materiaVesselAdmixtureCapacity;
-
-        for(int i=0; i<this.powerLevel; i++) {
-            float scalar = (POWER_LEVEL_SCALARS[i]) + 1f;
-            limit = Math.round((float)(limit/100) * scalar * 100f);
-        }
-        return limit;
+        return pMateriaType instanceof EssentiaItem ? getEssentiaStorageLimit() : getAdmixtureStorageLimit();
     }
 
     public int getEssentiaStorageLimit() {
@@ -658,18 +726,17 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
         for(int i=0; i<this.powerLevel; i++) {
             float scalar = (POWER_LEVEL_SCALARS[i]) + 1f;
-            limit = Math.round((float)(limit/100) * scalar * 100f);
+            limit = Math.round((float)limit * scalar);
+            limit = Math.round((float)limit / 100f);
+            limit *= 100;
         }
         return limit;
     }
 
     public int getAdmixtureStorageLimit() {
-        int limit = ServerConfig.materiaVesselAdmixtureCapacity;
+        int limit = getEssentiaStorageLimit();
+        limit = Math.round(limit * ((float)ServerConfig.materiaVesselAdmixtureCapacity / (float)ServerConfig.materiaVesselEssentiaCapacity));
 
-        for(int i=0; i<this.powerLevel; i++) {
-            float scalar = (POWER_LEVEL_SCALARS[i]) + 1f;
-            limit = Math.round((float)(limit/100) * scalar * 100f);
-        }
         return limit;
     }
 

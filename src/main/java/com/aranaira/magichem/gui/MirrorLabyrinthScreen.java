@@ -9,6 +9,7 @@ import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -72,7 +73,15 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
 
             int finalI = i;
             materiaSelectorButtonsCompact[i] = this.addRenderableWidget(new ImageButton(buttonX, buttonY, 18, 18, 24, 218, TEXTURE_COMPACT, button -> {
-                //setTetherTarget(finalI);
+                MateriaItem mi = getMateriaTypeFromButtonID(finalI);
+                if(mi != null) {
+                    menu.blockEntity.setActiveMateriaType(mi);
+                    PacketRegistry.sendToServer(new MirrorLabyrinthSyncDataC2SPacket(
+                            menu.blockEntity.getBlockPos(),
+                            mi,
+                            menu.blockEntity.getPowerUsageSetting()
+                    ));
+                }
             }));
             materiaSelectorButtonsCompact[i].visible = menu.blockEntity.isCompactMode;
         }
@@ -82,7 +91,15 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
 
             int finalI = i;
             materiaSelectorButtonsExpanded[i] = this.addRenderableWidget(new ImageButton(buttonX, buttonY, 18, 18, 24, 218, TEXTURE_COMPACT, button -> {
-                //setTetherTarget(finalI);
+                MateriaItem mi = getMateriaTypeFromButtonID(finalI);
+                if(mi != null) {
+                    menu.blockEntity.setActiveMateriaType(mi);
+                    PacketRegistry.sendToServer(new MirrorLabyrinthSyncDataC2SPacket(
+                            menu.blockEntity.getBlockPos(),
+                            mi,
+                            menu.blockEntity.getPowerUsageSetting()
+                    ));
+                }
             }));
             materiaSelectorButtonsExpanded[i].visible = !menu.blockEntity.isCompactMode;
         }
@@ -212,6 +229,15 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                 orderedMateriaStorageFiltered.add(pair);
             }
         }
+    }
+
+    private MateriaItem getMateriaTypeFromButtonID(int pButtonID) {
+        int index = pButtonID + ((menu.blockEntity.isCompactMode ? 16 : 8) * pageIndex);
+        if(index < orderedMateriaStorageFiltered.size()) {
+            return orderedMateriaStorageFiltered.get(index).getFirst();
+        }
+
+        return null;
     }
 
     private void renderFilterBox() {
