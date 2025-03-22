@@ -61,7 +61,8 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     public static final Random r = new Random();
     public static final int
             SLOT_COUNT = 4,
-            SLOT_INPUT = 0, SLOT_INPUT_RESULT = 1, SLOT_EXTRACT = 2, SLOT_EXTRACT_RESULT = 3;
+            SLOT_INPUT = 0, SLOT_INPUT_RESULT = 1, SLOT_EXTRACT = 2, SLOT_EXTRACT_RESULT = 3,
+            BASE_ENERGY_DRAIN = 2000;
     public static final float
             CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f,
             MATRIX_ACTIVATION_RATE = 0.0125f, CONSTRUCT_ACTIVATION_RATE = 0.0185f, MIRROR_ACTIVATION_RATE = 0.0215f;
@@ -74,8 +75,11 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
             mirrorActivationPercent = 0.0f, mirrorActivationSpeed = 0.0f,
             matrixActivationPercent = 0.0f, matrixActivationSpeed = 0.0f,
             constructActivationPercent = 0.0f, constructActivationSpeed = 0.0f;
+    private int
+            powerLevel = 0;
     private CompoundTag storedConstruct = new CompoundTag();
     private ArrayList<MateriaItem> materiaTypesSorted = new ArrayList<>();
+    private MateriaItem activeMateriaType = null;
     public Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
     private ContainerData data = new SimpleContainerData(0);
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -85,6 +89,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
             if(slot == SLOT_INPUT) {
                 return stack.getItem() instanceof MateriaItem ||
                        stack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem() ||
+                       stack.getItem() == BlockRegistry.MATERIA_JAR_QUAD.get().asItem() ||
                        stack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem();
             }
             else if(slot == SLOT_EXTRACT) {
@@ -172,12 +177,6 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
     public MirrorLabyrinthBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.MIRROR_LABYRINTH_BE.get(), pos, state);
-    }
-
-    @Override
-    public int getStorageLimit(MateriaItem pMateriaType) {
-        //TODO: Hook power into this
-        return pMateriaType instanceof EssentiaItem ? ServerConfig.materiaVesselEssentiaCapacity : ServerConfig.materiaVesselAdmixtureCapacity;
     }
 
     @Override
@@ -474,6 +473,84 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                 }
             }
         }
+        else {
+            //handle insertion
+            if(!pEntity.itemHandler.getStackInSlot(SLOT_INPUT).isEmpty()) {
+                final ItemStack insertionStack = pEntity.itemHandler.getStackInSlot(SLOT_INPUT);
+                final ItemStack insertionContainers = pEntity.itemHandler.getStackInSlot(SLOT_INPUT_RESULT);
+
+                if(insertionStack.getItem() instanceof MateriaItem mi) {
+                    int insertionLimit = 0;
+                    if(insertionContainers.isEmpty()) insertionLimit = 64;
+                    else if(insertionContainers.getItem() == Items.GLASS_BOTTLE) insertionLimit = 64 - insertionContainers.getCount();
+
+                    int inserted = Math.min(insertionLimit, insertionStack.getCount());
+
+                    if(inserted > 0) {
+                        int extant = 0;
+                        if(pEntity.materiaStorage.containsKey(mi)) {
+                            extant = pEntity.materiaStorage.get(mi);
+                        }
+                        pEntity.materiaStorage.put(mi, Math.min(pEntity.getStorageLimit(mi), extant + inserted));
+
+                        insertionStack.shrink(inserted);
+                        pEntity.itemHandler.setStackInSlot(SLOT_INPUT_RESULT, new ItemStack(Items.GLASS_BOTTLE, insertionContainers.getCount() + inserted));
+                        pEntity.syncAndSave();
+                    }
+                }
+                else if(insertionStack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem() || insertionStack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem()) {
+                    int insertionLimit = 0;
+                    if(insertionContainers.isEmpty()) insertionLimit = 64;
+                    else if(insertionContainers.getItem() == insertionStack.getItem()) insertionLimit = 64 - insertionContainers.getCount();
+
+                    if(insertionStack.hasTag() && insertionStack.getTag().contains("type") && insertionStack.getTag().contains("amount")) {
+
+                        int inserted = insertionStack.getTag().getInt("amount");
+                        MateriaItem mi = materiaMap.get(insertionStack.getTag().getString("type"));
+
+                        if (inserted > 0 && insertionLimit > 0) {
+                            int extant = 0;
+                            if (pEntity.materiaStorage.containsKey(mi)) {
+                                extant = pEntity.materiaStorage.get(mi);
+                            }
+                            pEntity.materiaStorage.put(mi, Math.min(pEntity.getStorageLimit(mi), extant + inserted));
+
+                            pEntity.itemHandler.setStackInSlot(SLOT_INPUT_RESULT, new ItemStack(insertionStack.getItem(), insertionContainers.getCount() + 1));
+                            insertionStack.shrink(1);
+                            pEntity.syncAndSave();
+                        }
+                    }
+                }
+                else if(insertionStack.getItem() == BlockRegistry.MATERIA_JAR_QUAD.get().asItem()) {
+                    int insertionLimit = 0;
+                    if (insertionContainers.isEmpty()) insertionLimit = 64;
+                    else if (insertionContainers.getItem() == BlockRegistry.MATERIA_JAR.get().asItem())
+                        insertionLimit = 64 - insertionContainers.getCount();
+
+                    if(insertionLimit >= 4) {
+                        for (int i = 0; i < 4; i++) {
+                            if (insertionStack.hasTag() && insertionStack.getTag().contains("materiaType" + i)) {
+
+                                int inserted = insertionStack.getTag().getCompound("materiaType"+i).getInt("count");
+                                MateriaItem mi = materiaMap.get(insertionStack.getTag().getCompound("materiaType"+i).getString("type"));
+
+                                if (inserted > 0) {
+                                    int extant = 0;
+                                    if (pEntity.materiaStorage.containsKey(mi)) {
+                                        extant = pEntity.materiaStorage.get(mi);
+                                    }
+                                    pEntity.materiaStorage.put(mi, Math.min(pEntity.getStorageLimit(mi), extant + inserted));
+                                }
+                            }
+                        }
+
+                        pEntity.itemHandler.setStackInSlot(SLOT_INPUT_RESULT, new ItemStack(BlockRegistry.MATERIA_JAR.get().asItem(), insertionContainers.getCount() + 4));
+                        insertionStack.shrink(1);
+                        pEntity.syncAndSave();
+                    }
+                }
+            }
+        }
 
         pEntity.hasSufficientPower = true;//pLevel.getGameTime() % 600 < 300;
     }
@@ -532,5 +609,75 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
     public List<MateriaItem> getMateriaTypesSorted() {
         return materiaTypesSorted;
+    }
+
+    public int getPowerUsageSetting() {
+        return this.powerLevel;
+    }
+
+    public void incrementPowerUsageSetting() {
+        this.powerLevel = Math.min(this.powerLevel + 1, 5);
+        this.setChanged();
+    }
+
+    public void decrementPowerUsageSetting() {
+        this.powerLevel = Math.max(this.powerLevel - 1, 0);
+        this.setChanged();
+    }
+
+    public void setPowerUsageSetting(int pNewSetting) {
+        this.powerLevel = pNewSetting;
+        this.setChanged();
+    }
+
+    private static final float[] POWER_LEVEL_SCALARS = {0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
+    public int getEnergyConsumptionRate() {
+        int drain = BASE_ENERGY_DRAIN;
+        for(int i=0; i<this.powerLevel; i++) {
+            float scalar = (POWER_LEVEL_SCALARS[i] * 0.5f) + 1f;
+            drain = Math.round((float)(drain/100) * scalar * 100f);
+        }
+        return drain;
+    }
+
+    @Override
+    public int getStorageLimit(MateriaItem pMateriaType) {
+        int limit = pMateriaType instanceof EssentiaItem ?
+                ServerConfig.materiaVesselEssentiaCapacity :
+                ServerConfig.materiaVesselAdmixtureCapacity;
+
+        for(int i=0; i<this.powerLevel; i++) {
+            float scalar = (POWER_LEVEL_SCALARS[i]) + 1f;
+            limit = Math.round((float)(limit/100) * scalar * 100f);
+        }
+        return limit;
+    }
+
+    public int getEssentiaStorageLimit() {
+        int limit = ServerConfig.materiaVesselEssentiaCapacity;
+
+        for(int i=0; i<this.powerLevel; i++) {
+            float scalar = (POWER_LEVEL_SCALARS[i]) + 1f;
+            limit = Math.round((float)(limit/100) * scalar * 100f);
+        }
+        return limit;
+    }
+
+    public int getAdmixtureStorageLimit() {
+        int limit = ServerConfig.materiaVesselAdmixtureCapacity;
+
+        for(int i=0; i<this.powerLevel; i++) {
+            float scalar = (POWER_LEVEL_SCALARS[i]) + 1f;
+            limit = Math.round((float)(limit/100) * scalar * 100f);
+        }
+        return limit;
+    }
+
+    public MateriaItem getActiveMateriaType() {
+        return activeMateriaType;
+    }
+
+    public void setActiveMateriaType(MateriaItem pSelection) {
+        activeMateriaType = pSelection;
     }
 }

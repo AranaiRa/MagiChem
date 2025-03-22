@@ -3,7 +3,9 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.networking.MirrorLabyrinthSyncDataC2SPacket;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
@@ -53,6 +55,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                 materiaMap.put(key, new ItemStack(baseMateriaMap.get(key)));
             }
         }
+        updateStorageOrder();
     }
 
     @Override
@@ -95,7 +98,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         }));
 
         //expanded / compacted button
-        setExpandedButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 8, 14, 14, 242, 228, TEXTURE_COMPACT, button -> {
+        setExpandedButton = this.addRenderableWidget(new ImageButton(this.leftPos + 212, this.topPos - 28, 14, 14, 242, 228, TEXTURE_COMPACT, button -> {
             menu.blockEntity.isCompactMode = true;
             if(setCompactButton != null) setCompactButton.visible = true;
             if(setExpandedButton != null) setExpandedButton.visible = false;
@@ -108,7 +111,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         }));
 
         //expanded / compacted button
-        setCompactButton = this.addRenderableWidget(new ImageButton(this.leftPos - 50, this.topPos + 8, 14, 14, 228, 228, TEXTURE_COMPACT, button -> {
+        setCompactButton = this.addRenderableWidget(new ImageButton(this.leftPos + 212, this.topPos - 28, 14, 14, 228, 228, TEXTURE_COMPACT, button -> {
             menu.blockEntity.isCompactMode = false;
             if(setCompactButton != null) setCompactButton.visible = false;
             if(setExpandedButton != null) setExpandedButton.visible = true;
@@ -122,6 +125,33 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
 
         setCompactButton.visible = menu.blockEntity.isCompactMode;
         setExpandedButton.visible = !menu.blockEntity.isCompactMode;
+
+        //power level buttons
+
+        this.addRenderableWidget(new ImageButton(this.leftPos - 100, this.topPos + 6, 12, 7, 0, 242, TEXTURE_COMPACT, button -> {
+            menu.blockEntity.incrementPowerUsageSetting();
+            MateriaItem fillTarget = null;
+            if(menu.blockEntity.getActiveMateriaType() != null) {
+                fillTarget = menu.blockEntity.getActiveMateriaType();
+            }
+            PacketRegistry.sendToServer(new MirrorLabyrinthSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    fillTarget,
+                    menu.blockEntity.getPowerUsageSetting()
+            ));
+        }));
+        this.addRenderableWidget(new ImageButton(this.leftPos - 100, this.topPos + 51, 12, 7, 12, 242, TEXTURE_COMPACT, button -> {
+            menu.blockEntity.decrementPowerUsageSetting();
+            MateriaItem fillTarget = null;
+            if(menu.blockEntity.getActiveMateriaType() != null) {
+                fillTarget = menu.blockEntity.getActiveMateriaType();
+            }
+            PacketRegistry.sendToServer(new MirrorLabyrinthSyncDataC2SPacket(
+                    menu.blockEntity.getBlockPos(),
+                    fillTarget,
+                    menu.blockEntity.getPowerUsageSetting()
+            ));
+        }));
     }
 
     private void initializeRecipeFilterBox() {
@@ -252,22 +282,29 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         gui.blit(getTexture(), x, y - 60, 0, 0, 222, 121);
 
         //inventory panel
-        gui.blit(getTexture(), x - 7, y + 64, 0, 121, 176, 90);
+        gui.blit(TEXTURE_COMPACT, x - 7, y + 64, 0, 121, 176, 90);
 
         //insertion panel
-        gui.blit(getTexture(), x + 172, y + 64, 176, 121, 57, 90);
+        gui.blit(TEXTURE_COMPACT, x + 172, y + 64, 176, 121, 57, 90);
+
+        //power panel
+        gui.blit(TEXTURE_EXPANDED, x - 84, y - 24, 0, 121, 80, 66);
+
+        //power bar
+        int pH = (menu.blockEntity.getPowerUsageSetting() + 1) * 5;
+        gui.blit(TEXTURE_EXPANDED, x - 75, y + 24 - pH, 0, 226 + (30 - pH), 8, pH);
 
         //search bar
-        gui.blit(getTexture(), x - 84, y - 60, 116, 224, 80, 32);
+        gui.blit(TEXTURE_COMPACT, x - 84, y - 60, 116, 224, 80, 32);
 
         //button house
-        gui.blit(getTexture(), x - 36, y - 24, 196, 224, 32, 32);
+        gui.blit(TEXTURE_COMPACT, x + 226, y - 60, 196, 224, 32, 32);
 
         //bottle ghosts for empty slots
         if(!menu.blockEntity.hasItemInInsertResultSlot())
-            gui.blit(getTexture(), x + 204, y + 71, 0, 224, 18, 18);
+            gui.blit(TEXTURE_COMPACT, x + 204, y + 71, 0, 224, 18, 18);
         if(!menu.blockEntity.hasItemInExtractResultSlot())
-            gui.blit(getTexture(), x + 179, y + 129, 0, 224, 18, 18);
+            gui.blit(TEXTURE_COMPACT, x + 179, y + 129, 0, 224, 18, 18);
 
         if(menu.blockEntity.needsGuiStorageUpdate) {
             updateStorageOrder();
@@ -408,18 +445,29 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             int counterY = -18 + (((i - startIndex) % 4) * 23);
 
             int mLimit = orderedMateriaStorageFiltered.get(i).getSecond();
+            String mLimitFormatted = mLimit > 9999 ? ""+mLimit / 1000 + "K" : ""+mLimit;
             String type = orderedMateriaStorageFiltered.get(i).getFirst() instanceof EssentiaItem ?
                     "item.magichem.essentia_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated" :
                     "item.magichem.admixture_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated";
 
-            gui.drawString(font, ""+mLimit, counterX, counterY, 0x00000000, false);
+            gui.drawString(font, mLimitFormatted, counterX, counterY, 0x00000000, false);
             if(!menu.blockEntity.isCompactMode) {
 
                 gui.drawString(font, Component.translatable(type), counterX + 28, counterY, 0x00000000, false);
             }
         }
 
-//        gui.drawString(font, Component.literal(DistilleryBlockEntity.getActualEfficiency(menu.getEfficiencyMod(), menu.getGrime(), DistilleryBlockEntity::getVar)+"%"), PANEL_GRIME_X + 20, PANEL_GRIME_Y - 10, 0xff000000, false);
+        gui.drawString(font, Component.literal(menu.blockEntity.getEnergyConsumptionRate()+"/t"), -68, 12, 0xff000000, false);
+
+        int essentiaStorage = menu.blockEntity.getEssentiaStorageLimit();
+        String essentiaStorageFormatted = essentiaStorage > 9999 ? "x"+essentiaStorage / 1000 + "K" : "x"+essentiaStorage;
+
+        gui.drawString(font, Component.literal(essentiaStorageFormatted), -68, 27, 0xff000000, false);
+
+        int admixtureStorage = menu.blockEntity.getAdmixtureStorageLimit();
+        String admixtureStorageFormatted = admixtureStorage > 9999 ? "x"+admixtureStorage / 1000 + "K" : "x"+admixtureStorage;
+
+        gui.drawString(font, Component.literal(admixtureStorageFormatted), -68, 44, 0xff000000, false);
 
 //        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
 //        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;

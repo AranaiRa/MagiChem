@@ -83,6 +83,12 @@ public class PacketRegistry {
                 .consumerMainThread(StandingRetortSyncDataC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(MirrorLabyrinthSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(MirrorLabyrinthSyncDataC2SPacket::new)
+                .encoder(MirrorLabyrinthSyncDataC2SPacket::toBytes)
+                .consumerMainThread(MirrorLabyrinthSyncDataC2SPacket::handle)
+                .add();
+
         //Server to Clients
 
         MagiChemMod.CHANNEL.registerMessage(ID(), ParticleSpawnAnointingS2CPacket.class,
