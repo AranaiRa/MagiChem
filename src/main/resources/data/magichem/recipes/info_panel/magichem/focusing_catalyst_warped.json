@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "magichem:focusing_catalyst_warped",
+  "tier": 1,
+  "info": "jei.magichem.info_panel.focusing_catalyst_warped"
+}

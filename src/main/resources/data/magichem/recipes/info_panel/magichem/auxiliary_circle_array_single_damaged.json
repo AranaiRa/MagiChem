@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "magichem:auxiliary_circle_array_single_damaged",
+  "tier": 1,
+  "info": "jei.magichem.info_panel.auxiliary_circle_array_single_damaged"
+}

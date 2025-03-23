@@ -1030,6 +1030,11 @@
   "jei.magichem.info_panel.steam_bucket": "Created over time by a Deluge Purifier as it operates. If the Deluge Purifier's buffer fills up, any excess Smoke is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
   "jei.magichem.info_panel.vinteum_crystal_shard": "Grows slowly over time on Budding Vinteum Crystal.",
 
+  "jei.magichem.info_panel.tarnished_silver_lump": "Created as a waste product by the Circle of Power when Grains of Quicksilver finish processing.",
+  "jei.magichem.info_panel.focusing_catalyst_warped": "Created as a waste product by the Circle of Power when a Focusing Catalyst finishes processing.",
+  "jei.magichem.info_panel.malformed_brindle_glass": "Created as a waste product by the Circle of Power when an Amplifying Prism finishes processing.",
+  "jei.magichem.info_panel.auxiliary_circle_array_single_damaged": "Six of these are created as waste products by the Circle of Power when an Auxiliary Circle Array finishes processing.",
+
   "jei.mna.info_panel.grimoire": "An enhanced spellbook with twice as many active spell slots, but no storage slots. \n Every Grimoire you conjure contains the same spells, even if your previous Grimoire was lost or destroyed. \n Created with a cantrip at Tier 3.",
   "jei.mna.info_panel.grimoire_faction": "A faction-specific replacement for the Grimoire. Its differences are only cosmetic. \n Created with a cantrip at Tier 4.",
   "jei.mna.info_panel.hat": "A whimsical object that can be worn on the head. Constructs are particularly fond of hats. \n Can be found in Mana and Artifice structures.",
