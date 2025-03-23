@@ -813,6 +813,11 @@
   "tooltip.magichem.gui.actuator.arcane.tank.line1": "How much Academic Slurry is currently stored inside of the Occult Matrix.",
   "tooltip.magichem.gui.actuator.arcane.tank.line2": "Current Academic Slurry: ",
 
+  "feedback.magichem.gui.mirrorlabyrinth.noconstruct.line1a": "Your Materia is lost in the mirror",
+  "feedback.magichem.gui.mirrorlabyrinth.noconstruct.line1b": "dimension and cannot be found!",
+  "feedback.magichem.gui.mirrorlabyrinth.noconstruct.line2a": "Materia cannot be inserted or extracted",
+  "feedback.magichem.gui.mirrorlabyrinth.noconstruct.line2b": "until a Construct is bound to this device.",
+
   "tooltip.magichem.jei.coloration.cauldron.part1": "This recipe ",
   "tooltip.magichem.jei.coloration.cauldron.part2": " be crafted in a Coloring Cauldron",
   "tooltip.magichem.jei.coloration.variegator.part1": "This recipe ",
@@ -827,6 +832,7 @@
   "gui.magichem.typetofilter": "Filter...",
   "gui.magichem.generating": "Generating ",
   "gui.magichem.insufficientpower": "Insufficient power!",
+  "gui.magichem.insufficientpower.labyrinth": "No Materia insertion!",
   "gui.magichem.insufficientwater": "Insufficient Water!",
   "gui.magichem.insufficientsand": "Insufficient Sand!",
   "gui.magichem.insufficientsteam": "Insufficient Steam!",

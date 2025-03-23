@@ -681,8 +681,19 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         needsGuiStorageUpdate = true;
     }
 
+    @Override
+    public Collection<MateriaItem> getMateriaTypes() {
+        if(hasConstruct())
+            return super.getMateriaTypes();
+
+        return new ArrayList<>();
+    }
+
     public List<MateriaItem> getMateriaTypesSorted() {
-        return materiaTypesSorted;
+        if(hasConstruct())
+            return materiaTypesSorted;
+
+        return new ArrayList<>();
     }
 
     public int getPowerUsageSetting() {
@@ -740,11 +751,39 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         return limit;
     }
 
+    public boolean hasSufficientPower() {
+        return hasSufficientPower;
+    }
+
     public MateriaItem getActiveMateriaType() {
         return activeMateriaType;
     }
 
     public void setActiveMateriaType(MateriaItem pSelection) {
         activeMateriaType = pSelection;
+    }
+
+    @Override
+    public int fill(MateriaItem pMateriaType, int pAmount, boolean pVoidExcess) {
+        if(hasSufficientPower)
+            return super.fill(pMateriaType, pAmount, pVoidExcess);
+
+        return pAmount;
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(hasSufficientPower)
+            return super.canAcceptStackFromShlorp(pStack);
+
+        return 0;
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        if(hasSufficientPower)
+            return super.insertStackFromShlorp(pStack);
+
+        return pStack.getCount();
     }
 }

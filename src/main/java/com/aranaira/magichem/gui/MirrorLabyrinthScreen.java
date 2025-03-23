@@ -18,6 +18,7 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -31,6 +32,8 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_mirror_labyrinth_compact.png");
     private static final ResourceLocation TEXTURE_EXPANDED =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_mirror_labyrinth_expanded.png");
+    private static final ResourceLocation TEXTURE_EXT =
+            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_mirror_labyrinth_ext.png");
     private static final int
             PANEL_MAIN_W = 222, PANEL_MAIN_H = 121,
             PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 64, PANEL_GRIME_H = 59, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
@@ -40,7 +43,9 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
     private final HashMap<String, ItemStack> materiaMap = new HashMap<>();
     private final List<Pair<MateriaItem, Integer>> orderedMateriaStorage = new ArrayList<>();
     final List<Pair<MateriaItem, Integer>> orderedMateriaStorageFiltered = new ArrayList<>();
-    private ImageButton setCompactButton, setExpandedButton;
+    private ImageButton
+            setCompactButton, setExpandedButton,
+            nextPageButton, previousPageButton;
     private final ImageButton[]
             materiaSelectorButtonsCompact = new ImageButton[16],
             materiaSelectorButtonsExpanded = new ImageButton[8];
@@ -105,12 +110,12 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         }
 
         //next page button
-        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos + 71, 12, 7, 12, 242, TEXTURE_COMPACT, button -> {
+        nextPageButton = this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos + 71, 12, 7, 12, 242, TEXTURE_COMPACT, button -> {
             pageIndex = Math.min(pageIndex + 1, (menu.blockEntity.isCompactMode ? pageCount : pageCount * 2) - 1);
         }));
 
         //previous page button
-        this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos - 31, 12, 7, 0, 242, TEXTURE_COMPACT, button -> {
+        previousPageButton = this.addRenderableWidget(new ImageButton(this.leftPos + 82, this.topPos - 31, 12, 7, 0, 242, TEXTURE_COMPACT, button -> {
             pageIndex = Math.max(pageIndex - 1, 0);
         }));
 
@@ -144,7 +149,6 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         setExpandedButton.visible = !menu.blockEntity.isCompactMode;
 
         //power level buttons
-
         this.addRenderableWidget(new ImageButton(this.leftPos - 100, this.topPos + 6, 12, 7, 0, 242, TEXTURE_COMPACT, button -> {
             menu.blockEntity.incrementPowerUsageSetting();
             MateriaItem fillTarget = null;
@@ -169,6 +173,18 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                     menu.blockEntity.getPowerUsageSetting()
             ));
         }));
+
+        //Disable certain buttons if there's no construct or no power
+        if(!menu.blockEntity.hasConstruct() || !menu.blockEntity.hasSufficientPower()) {
+            for (ImageButton imageButton : materiaSelectorButtonsCompact) {
+                imageButton.visible = false;
+            }
+            for (ImageButton imageButton : materiaSelectorButtonsExpanded) {
+                imageButton.visible = false;
+            }
+            nextPageButton.visible = false;
+            previousPageButton.visible = false;
+        }
     }
 
     private void initializeRecipeFilterBox() {
@@ -305,7 +321,8 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         int y = (height - PANEL_MAIN_H) / 2;
 
         //materia panel
-        gui.blit(getTexture(), x, y - 60, 0, 0, 222, 121);
+        gui.blit(menu.blockEntity.hasConstruct() ? getTexture() : TEXTURE_EXT,
+                x, y - 60, 0, 0, 222, 121);
 
         //inventory panel
         gui.blit(TEXTURE_COMPACT, x - 7, y + 64, 0, 121, 176, 90);
@@ -331,6 +348,12 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             gui.blit(TEXTURE_COMPACT, x + 204, y + 71, 0, 224, 18, 18);
         if(!menu.blockEntity.hasItemInExtractResultSlot())
             gui.blit(TEXTURE_COMPACT, x + 179, y + 129, 0, 224, 18, 18);
+
+        //warning
+        if(!menu.blockEntity.hasSufficientPower()) {
+            RenderSystem.setShaderTexture(0, TEXTURE_EXT);
+            renderPowerWarning(gui, x, y);
+        }
 
         if(menu.blockEntity.needsGuiStorageUpdate) {
             updateStorageOrder();
@@ -371,26 +394,16 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                 gui.setColor(1,1,1,1);
             }
         }
-
-//        renderGrimePanel(gui, x + PANEL_GRIME_X, y + PANEL_GRIME_Y);
-//
-//        int sProg = DistilleryBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
-//        if(sProg > 0)
-//            gui.blit(TEXTURE, x+76, y+47, 0, 228, sProg, 28);
-//
-//        int sGrime = DistilleryBlockEntity.getScaledGrime(menu.getGrime());
-//        if(sGrime > 0)
-//            gui.blit(TEXTURE, x+182, y+57, 24, 248, sGrime, 8);
-//
-//        if(menu.getHeatDuration() > 0) {
-//            int sHeat = DistilleryBlockEntity.getScaledHeat(menu.getHeat(), menu.getHeatDuration(), DistilleryBlockEntity::getVar);
-//            int hHeat = DistilleryBlockEntity.getVar(AbstractDistillationBlockEntity.IDs.GUI_HEAT_GAUGE_HEIGHT) - sHeat;
-//            gui.blit(TEXTURE, x + 79, y + 78 + hHeat, 24, 232 + hHeat, 18, sHeat);
-//        }
     }
 
-    private void renderGrimePanel(GuiGraphics gui, int x, int y) {
-        gui.blit(TEXTURE_COMPACT, x, y, PANEL_GRIME_U, PANEL_GRIME_V, PANEL_GRIME_W, PANEL_GRIME_H);
+    protected void renderPowerWarning(GuiGraphics gui, int x, int y) {
+        long cycle = Minecraft.getInstance().level.getGameTime() % 20;
+
+        gui.blit(TEXTURE_EXT, x+33 , y-90, 0, 230, 156, 26);
+        if(cycle < 10) {
+            gui.blit(TEXTURE_EXT, x + 40, y - 83, 156, 244, 12, 12);
+            gui.blit(TEXTURE_EXT, x + 170, y - 83, 156, 244, 12, 12);
+        }
     }
 
     @Override
@@ -494,6 +507,36 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         String admixtureStorageFormatted = admixtureStorage > 9999 ? "x"+admixtureStorage / 1000 + "K" : "x"+admixtureStorage;
 
         gui.drawString(font, Component.literal(admixtureStorageFormatted), -68, 44, 0xff000000, false);
+
+        if(!menu.blockEntity.hasConstruct()) {
+            MutableComponent warningText = Component.translatable("feedback.magichem.gui.mirrorlabyrinth.noconstruct.line1a");
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width/2, 8, 0xff000000, false);
+
+            warningText = Component.translatable("feedback.magichem.gui.mirrorlabyrinth.noconstruct.line1b");
+            width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width/2, 18, 0xff000000, false);
+
+            warningText = Component.translatable("feedback.magichem.gui.mirrorlabyrinth.noconstruct.line2a");
+            width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width/2, 36, 0xff000000, false);
+
+            warningText = Component.translatable("feedback.magichem.gui.mirrorlabyrinth.noconstruct.line2b");
+            width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width/2, 46, 0xff000000, false);
+        }
+
+        //power warning
+        if(!menu.blockEntity.hasSufficientPower()) {
+            long cycle = Minecraft.getInstance().level.getGameTime() % 80;
+
+            MutableComponent warningText = cycle >= 40 ?
+                    Component.translatable("gui.magichem.insufficientpower") :
+                    Component.translatable("gui.magichem.insufficientpower.labyrinth");
+
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width/2, -58, 0xff000000, false);
+        }
 
 //        int secWhole = DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) / 20;
 //        int secPartial = (DistilleryBlockEntity.getOperationTicks(menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), DistilleryBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime) % 20) * 5;
