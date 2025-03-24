@@ -495,7 +495,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                         if(pEntity.materiaStorage.containsKey(mi)) {
                             extant = pEntity.materiaStorage.get(mi);
                         }
-                        pEntity.materiaStorage.put(mi, Math.min(pEntity.getStorageLimit(mi), extant + inserted));
+                        pEntity.materiaStorage.put(mi, Math.max(extant, Math.min(pEntity.getStorageLimit(mi), extant + inserted)));
 
                         insertionStack.shrink(inserted);
                         pEntity.itemHandler.setStackInSlot(SLOT_INPUT_RESULT, new ItemStack(Items.GLASS_BOTTLE, insertionContainers.getCount() + inserted));
@@ -517,7 +517,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                             if (pEntity.materiaStorage.containsKey(mi)) {
                                 extant = pEntity.materiaStorage.get(mi);
                             }
-                            pEntity.materiaStorage.put(mi, Math.min(pEntity.getStorageLimit(mi), extant + inserted));
+                            pEntity.materiaStorage.put(mi, Math.max(extant, Math.min(pEntity.getStorageLimit(mi), extant + inserted)));
 
                             pEntity.itemHandler.setStackInSlot(SLOT_INPUT_RESULT, new ItemStack(insertionStack.getItem(), insertionContainers.getCount() + 1));
                             insertionStack.shrink(1);
