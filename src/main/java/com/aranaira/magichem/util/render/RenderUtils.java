@@ -747,10 +747,11 @@ public class RenderUtils {
                         MathUtils.lerpf(qvd.d.x, qvd.c.x, drawLerp), qvd.c.y, MathUtils.lerpf(qvd.d.z, qvd.c.z, drawLerp),
                         MathUtils.lerpf(ur.x, ul.x, drawLerp), ul.y, 0, 0, color);
                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                        qvd.d.x, qvd.d.y, qvd.d.z, ul.x, ul.y, 0, 0, color);
+                        qvd.d.x, qvd.d.y, qvd.d.z,
+                        ur.x, ur.y, 0, 0, color);
                 addVertex(vertexBuilder, renderMatrix, normalMatrix, pTexture, pPackedLight,
-                        qvd.a.x, qvd.a.y, qvd.a.z, ll.x, ll.y, 0, 0, color);
-
+                        qvd.a.x, qvd.a.y, qvd.a.z,
+                        lr.x, lr.y, 0, 0, color);
                 pPoseStack.popPose();
 
                 if(segmentsToDraw < 1)

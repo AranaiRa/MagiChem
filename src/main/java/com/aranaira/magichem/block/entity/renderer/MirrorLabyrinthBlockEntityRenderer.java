@@ -67,7 +67,7 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
         this.renderMirrors(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         this.renderConstruct(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         this.renderMatrix(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
-        this.renderMagicCircle(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight);
+//        this.renderMagicCircle(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight);
     }
 
     private void renderMirrors(MirrorLabyrinthBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
