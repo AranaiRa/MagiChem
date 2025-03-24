@@ -3512,7 +3512,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " can be combined into a single block by crafting. Due to technical limitations, any materia inside the jars used to craft the Materia Jar Quad will be destroyed, so make sure to empty them first."
+            "text": " can be combined into a single block by crafting. Due to technical limitations, any materia inside the jars used to craft the Materia Jar Quad will be destroyed, so make sure to empty them first.\n\nDue to technical limitations, a single Materia Jar Quad cannot contain "
+          },
+          {
+            "text": "the same materia type",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in more than one of its component jars."
           }
         ]
       }
