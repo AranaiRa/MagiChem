@@ -46,7 +46,7 @@ public class SignaliteSeerBlockEntity extends BlockEntity {
     }
 
     private void updateSignalStrength() {
-        if(level != null && remoteMonitoringPos != null) {
+        if(level != null && remoteMonitoringPos != null && !level.isClientSide()) {
             BlockState stateQuery = level.getBlockState(remoteMonitoringPos);
             if(stateQuery.getBlock().hasAnalogOutputSignal(stateQuery)) {
                 int signal = stateQuery.getBlock().getAnalogOutputSignal(stateQuery, level, remoteMonitoringPos);
