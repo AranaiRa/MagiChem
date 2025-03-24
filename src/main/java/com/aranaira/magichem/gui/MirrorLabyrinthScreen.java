@@ -26,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrinthMenu> {
     private static final ResourceLocation TEXTURE_COMPACT =
@@ -416,64 +417,123 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
     @Override
     protected void renderTooltip(GuiGraphics gui, int mouseX, int mouseY) {
         super.renderTooltip(gui, mouseX, mouseY);
-//
-//        Font font = Minecraft.getInstance().font;
-//        List<Component> tooltipContents = new ArrayList<>();
-//        int x = (width - PANEL_MAIN_W) / 2;
-//        int y = (height - PANEL_MAIN_H) / 2;
-//
-//        int g = 40;
-//
-//        //Efficiency
-//        if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
-//            mouseY >= y+TOOLTIP_EFFICIENCY_Y && mouseY <= y+TOOLTIP_EFFICIENCY_Y+TOOLTIP_EFFICIENCY_H) {
-//
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.translatable("tooltip.magichem.gui.efficiency").withStyle(ChatFormatting.GOLD))
-//                    .append(": ")
-//                    .append(Component.translatable("tooltip.magichem.gui.efficiency.line1")));
-//            tooltipContents.add(Component.empty());
-//            tooltipContents.add(Component.translatable("tooltip.magichem.gui.efficiency.line2"));
-//            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
-//        }
-//
-//        //Operation Time
-//        if(mouseX >= x+TOOLTIP_OPERATIONTIME_X && mouseX <= x+TOOLTIP_OPERATIONTIME_X+TOOLTIP_OPERATIONTIME_W &&
-//            mouseY >= y+TOOLTIP_OPERATIONTIME_Y && mouseY <= y+TOOLTIP_OPERATIONTIME_Y+TOOLTIP_OPERATIONTIME_H) {
-//
-//            tooltipContents.clear();
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
-//                    .append(": ")
-//                    .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
-//            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
-//        }
-//
-//        //Grime Bar
-//        if(mouseX >= x+TOOLTIP_GRIME_X && mouseX <= x+TOOLTIP_GRIME_X+TOOLTIP_GRIME_W &&
-//            mouseY >= y+TOOLTIP_GRIME_Y && mouseY <= y+TOOLTIP_GRIME_Y+TOOLTIP_GRIME_H) {
-//
-//            tooltipContents.clear();
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.translatable("tooltip.magichem.gui.grime").withStyle(ChatFormatting.GOLD))
-//                    .append(": ")
-//                    .append(Component.translatable("tooltip.magichem.gui.grime.line1")));
-//            tooltipContents.add(Component.empty());
-//            tooltipContents.add(Component.translatable("tooltip.magichem.gui.grime.line2.1")
-//                    .append(Component.literal(ServerConfig.grimePenaltyPoint+"%").withStyle(ChatFormatting.DARK_AQUA))
-//                    .append(Component.translatable("tooltip.magichem.gui.grime.line2.2")));
-//            tooltipContents.add(Component.empty());
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.translatable("tooltip.magichem.gui.grime.line3").withStyle(ChatFormatting.DARK_GRAY))
-//                    .append(" ")
-//                    .append(Component.literal(String.format("%.1f", DistilleryBlockEntity.getGrimePercent(menu.getGrime(), DistilleryBlockEntity::getVar)*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
-//            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
-//        }
+
+        Font font = Minecraft.getInstance().font;
+        List<Component> tooltipContents = new ArrayList<>();
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        int
+            TOOLTIP_POWER_USAGE_X = -63, TOOLTIP_POWER_USAGE_Y = -13, TOOLTIP_POWER_USAGE_W = 54, TOOLTIP_POWER_USAGE_H = 11,
+            TOOLTIP_ESSENTIA_X = -63, TOOLTIP_ESSENTIA_Y = 1, TOOLTIP_ESSENTIA_W = 54, TOOLTIP_ESSENTIA_H = 14,
+            TOOLTIP_ADMIXTURE_X = -63, TOOLTIP_ADMIXTURE_Y = 18, TOOLTIP_ADMIXTURE_W = 54, TOOLTIP_ADMIXTURE_H = 14,
+            TOOLTIP_INSERT_X = 179, TOOLTIP_INSERT_Y = 72, TOOLTIP_INSERT_S = 16,
+            TOOLTIP_EXTRACT_X = 204, TOOLTIP_EXTRACT_Y = 130, TOOLTIP_EXTRACT_S = 16;
+
+        //Insertion
+        if(!menu.blockEntity.hasItemInInsertSlot()) {
+            if (mouseX >= x + TOOLTIP_INSERT_X && mouseX <= x + TOOLTIP_INSERT_X + TOOLTIP_INSERT_S &&
+                    mouseY >= y + TOOLTIP_INSERT_Y && mouseY <= y + TOOLTIP_INSERT_Y + TOOLTIP_INSERT_S) {
+
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.insertion").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.insertion.part1")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.insertion.part2"));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
+        }
+
+        //Insertion
+        if(!menu.blockEntity.hasItemInExtractSlot()) {
+            if (mouseX >= x + TOOLTIP_EXTRACT_X && mouseX <= x + TOOLTIP_EXTRACT_X + TOOLTIP_EXTRACT_S &&
+                    mouseY >= y + TOOLTIP_EXTRACT_Y && mouseY <= y + TOOLTIP_EXTRACT_Y + TOOLTIP_EXTRACT_S) {
+
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.extraction").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.extraction.part1")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.extraction.part2"));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
+        }
+
+        //Power Usage
+        if(mouseX >= x+TOOLTIP_POWER_USAGE_X && mouseX <= x+TOOLTIP_POWER_USAGE_X+TOOLTIP_POWER_USAGE_W &&
+            mouseY >= y+TOOLTIP_POWER_USAGE_Y && mouseY <= y+TOOLTIP_POWER_USAGE_Y+TOOLTIP_POWER_USAGE_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.powerusage").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.powerusage.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.powerusage.labyrinth"));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Essentia Storage
+        if(mouseX >= x+TOOLTIP_ESSENTIA_X && mouseX <= x+TOOLTIP_ESSENTIA_X+TOOLTIP_ESSENTIA_W &&
+            mouseY >= y+TOOLTIP_ESSENTIA_Y && mouseY <= y+TOOLTIP_ESSENTIA_Y+TOOLTIP_ESSENTIA_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.essentialimit").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.essentialimit.line1")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Admixture Storage
+        if(mouseX >= x+TOOLTIP_ADMIXTURE_X && mouseX <= x+TOOLTIP_ADMIXTURE_X+TOOLTIP_ADMIXTURE_W &&
+           mouseY >= y+TOOLTIP_ADMIXTURE_Y && mouseY <= y+TOOLTIP_ADMIXTURE_Y+TOOLTIP_ADMIXTURE_H) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.admixturelimit").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.admixturelimit.line1")));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Materia storage tooltips
+        {
+            int leftStart = x + 7;
+            int topStart = y - 43;
+            int buttonSize = 18;
+            int paddingX = 36;
+            int paddingY = 5;
+
+            int columnID = (mouseX - leftStart) / (buttonSize + paddingX);
+            int columnMod = (mouseX - leftStart) % (buttonSize + paddingX);
+            int rowID = (mouseY - topStart) / (buttonSize + paddingY);
+            int rowMod = (mouseY - topStart) % (buttonSize + paddingY);
+
+            boolean xValidCompact = (columnID < 4);
+            boolean xValidExpanded = (columnID == 0 || columnID == 2);
+            boolean xValid = (columnID >= 0) && (menu.blockEntity.isCompactMode ? xValidCompact : xValidExpanded);
+            boolean yValid = (rowID >= 0) && (rowID < 4);
+
+            if (xValid && yValid) {
+                if (mouseX >= leftStart && mouseY >= topStart && columnMod <= buttonSize && rowMod <= buttonSize) {
+                    int index = (menu.blockEntity.isCompactMode ? columnID : columnID / 2) * 4 + rowID + pageIndex * (menu.blockEntity.isCompactMode ? 16 : 8);
+
+                    if (index < orderedMateriaStorageFiltered.size())
+                        tooltipContents.add(Component.empty()
+                                .append(Component.translatable("item.magichem." + orderedMateriaStorageFiltered.get(index).getFirst().toString()))
+                        );
+                    gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+                }
+            }
+        }
     }
 
     @Override
     protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
+
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
         int splitter = (menu.blockEntity.isCompactMode ? 16 : 8);
 
         int startIndex = pageIndex * splitter;

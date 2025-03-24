@@ -662,8 +662,16 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         return Component.empty();
     }
 
+    public boolean hasItemInInsertSlot() {
+        return !itemHandler.getStackInSlot(SLOT_INPUT).isEmpty();
+    }
+
     public boolean hasItemInInsertResultSlot() {
         return !itemHandler.getStackInSlot(SLOT_INPUT_RESULT).isEmpty();
+    }
+
+    public boolean hasItemInExtractSlot() {
+        return !itemHandler.getStackInSlot(SLOT_EXTRACT).isEmpty();
     }
 
     public boolean hasItemInExtractResultSlot() {
