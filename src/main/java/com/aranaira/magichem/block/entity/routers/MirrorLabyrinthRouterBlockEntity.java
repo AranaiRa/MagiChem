@@ -11,10 +11,15 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 
@@ -100,5 +105,10 @@ public class MirrorLabyrinthRouterBlockEntity extends AbstractMateriaStorageMult
     @Override
     public CompoundTag getStoredConstructComposition() {
         return getMaster().getStoredConstructComposition();
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        return getMaster().getCapability(cap, side);
     }
 }

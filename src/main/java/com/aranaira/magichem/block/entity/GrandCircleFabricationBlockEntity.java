@@ -190,6 +190,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyEnergyHandler.invalidate();
     }
 
     @Override

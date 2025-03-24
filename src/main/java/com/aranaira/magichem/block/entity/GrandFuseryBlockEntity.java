@@ -255,6 +255,12 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     }
 
     @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyEnergyHandler.invalidate();
+    }
+
+    @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);

@@ -11,6 +11,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
 import com.mna.api.entities.construct.ConstructCapability;
@@ -46,6 +47,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -83,6 +85,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     public Map<ConstructRenderHelper.ConstructPartType, Pair<ResourceLocation, Vector3>> renderData = new HashMap<>();
     private ContainerData data = new SimpleContainerData(0);
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    protected LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
@@ -105,6 +108,22 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         protected void onContentsChanged(int slot) {
             setChanged();
             super.onContentsChanged(slot);
+        }
+    };
+
+    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+        @Override
+        public void onEnergyChanged() {
+            setChanged();
+        }
+
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+
+            int powerToLimit = Math.max(0, (getEnergyConsumptionRate() * ServerConfig.circlePowerBuffer) - getEnergyStored());
+            int actualReceive = Math.min(maxReceive, powerToLimit);
+
+            return super.receiveEnergy(actualReceive, simulate);
         }
     };
 
@@ -177,6 +196,8 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
     public MirrorLabyrinthBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.MIRROR_LABYRINTH_BE.get(), pos, state);
+
+        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
     @Override
@@ -196,6 +217,9 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
+        else if(cap == ForgeCapabilities.ENERGY) {
+            return lazyEnergyHandler.cast();
+        }
 
         return super.getCapability(cap, side);
     }
@@ -204,6 +228,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyEnergyHandler.invalidate();
     }
 
     @Override
@@ -227,6 +252,9 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
         powerLevel = nbt.getByte("powerLevel");
 
+        hasSufficientPower = nbt.getBoolean("hasSufficientPower");
+        redstonePaused = nbt.getBoolean("redstonePaused");
+
         updateSortedMateriaTypeList();
     }
 
@@ -235,6 +263,8 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         nbt.put("construct", storedConstruct);
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putByte("powerLevel", (byte)powerLevel);
+        nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
+        nbt.putBoolean("redstonePaused", this.redstonePaused);
         super.saveAdditional(nbt);
     }
 
@@ -249,6 +279,9 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         nbt.put("construct", storedConstruct);
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putByte("powerLevel", (byte)powerLevel);
+        nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
+        nbt.putBoolean("redstonePaused", this.redstonePaused);
+        super.saveAdditional(nbt);
         return nbt;
     }
 
@@ -477,7 +510,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                 }
             }
         }
-        else {
+        else if(!pEntity.redstonePaused) {
             //handle insertion
             if(!pEntity.itemHandler.getStackInSlot(SLOT_INPUT).isEmpty()) {
                 final ItemStack insertionStack = pEntity.itemHandler.getStackInSlot(SLOT_INPUT);
@@ -624,9 +657,18 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                     }
                 }
             }
-        }
+            //handle power consumption
+            {
+                int powerDraw = pEntity.getEnergyConsumptionRate();
+                boolean sufficientThisTick = pEntity.ENERGY_STORAGE.getEnergyStored() >= powerDraw;
 
-        pEntity.hasSufficientPower = true;//pLevel.getGameTime() % 600 < 300;
+                if(sufficientThisTick != pEntity.hasSufficientPower) {
+                    pEntity.hasSufficientPower = sufficientThisTick;
+                    pEntity.syncAndSave();
+                }
+                pEntity.ENERGY_STORAGE.extractEnergy(powerDraw, false);
+            }
+        }
     }
 
     public void handleAnimationDrivers() {

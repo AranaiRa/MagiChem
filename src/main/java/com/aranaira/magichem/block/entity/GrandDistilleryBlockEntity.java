@@ -207,6 +207,12 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     }
 
     @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyEnergyHandler.invalidate();
+    }
+
+    @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);

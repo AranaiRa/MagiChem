@@ -219,6 +219,12 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     }
 
     @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyEnergyHandler.invalidate();
+    }
+
+    @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
