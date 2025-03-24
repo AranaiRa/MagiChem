@@ -11,7 +11,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -78,11 +81,27 @@ public class SignaliteBlock extends BaseEntityBlock {
                 if(mi.getMateriaName().equals("permanence") && !sbe.locked) {
                     sbe.locked = true;
                     sbe.syncAndSave();
+
+                    if(!pPlayer.isCreative()) {
+                        pPlayer.getItemInHand(pHand).shrink(1);
+                        ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE, 1);
+                        ItemEntity bottleEntity = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), bottle);
+                        pLevel.addFreshEntity(bottleEntity);
+                    }
+
                     MateriaItem.generateSuccessParticles(pPos.getX(), pPos.getY(), pPos.getZ(), mi.getMateriaColor());
                 }
                 else if(mi.getMateriaName().equals("lies") && !sbe.hidden) {
                     sbe.hidden = true;
                     sbe.syncAndSave();
+
+                    if(!pPlayer.isCreative()) {
+                        pPlayer.getItemInHand(pHand).shrink(1);
+                        ItemStack bottle = new ItemStack(Items.GLASS_BOTTLE, 1);
+                        ItemEntity bottleEntity = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), bottle);
+                        pLevel.addFreshEntity(bottleEntity);
+                    }
+
                     MateriaItem.generateSuccessParticles(pPos.getX(), pPos.getY(), pPos.getZ(), mi.getMateriaColor());
                 }
 
