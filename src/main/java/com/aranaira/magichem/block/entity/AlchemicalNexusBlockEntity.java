@@ -881,7 +881,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
         contentsOfOutputSlots.addItem(alchemyObject.copy());
 
-        for(int i=SLOT_OUTPUT_START;i<SLOT_INPUT_START+SLOT_OUTPUT_COUNT;i++) {
+        for(int i=SLOT_OUTPUT_START;i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT;i++) {
             itemHandler.setStackInSlot(i, contentsOfOutputSlots.getItem(i-SLOT_OUTPUT_START));
         }
 
