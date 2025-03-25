@@ -798,4 +798,9 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     public boolean needsSorting() {
         return !getContentsOfOutputSlots(CircleFabricationBlockEntity::getVar).isEmpty();
     }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-2, 0, -2), getBlockPos().offset(2,0,2));
+    }
 }
