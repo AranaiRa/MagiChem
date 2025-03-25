@@ -91,9 +91,10 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
             int existing = materiaStorage.get(pMateriaType);
             if(pKeepOne && existing == 1) return 0;
 
-            int drained = Math.min((pKeepOne ? 1 : 0), existing - Math.min(existing, pAmount));
+            int drained = Math.min(pKeepOne ? existing - 1 : existing, pAmount);
 
             materiaStorage.put(pMateriaType, existing - drained);
+            syncAndSave();
             return drained;
         }
         return 0;

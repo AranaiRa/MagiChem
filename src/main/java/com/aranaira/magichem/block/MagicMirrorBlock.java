@@ -1,35 +1,37 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.MagicMirrorBlockEntity;
 import com.aranaira.magichem.util.MathHelper;
-import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
+import com.mna.items.ItemInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.AttachFace;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.USER_TIER_TYPE;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.ATTACH_FACE;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
-public class MagicMirrorBlock extends Block {
+public class MagicMirrorBlock extends BaseEntityBlock {
 
     public static final VoxelShape
             VOXEL_SHAPE_N, VOXEL_SHAPE_E, VOXEL_SHAPE_S, VOXEL_SHAPE_W,
@@ -97,5 +99,65 @@ public class MagicMirrorBlock extends Block {
 
         VOXEL_SHAPE_F_NS = Block.box(2, 0, 0, 14, 2, 16);
         VOXEL_SHAPE_F_EW = MathHelper.rotateVoxelShape(VOXEL_SHAPE_F_NS, 1);
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new MagicMirrorBlockEntity(pPos, pState);
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        ItemStack stackInHand = pPlayer.getItemInHand(pHand);
+
+        if(pLevel.getBlockEntity(pPos) instanceof MagicMirrorBlockEntity mmbe) {
+            if (stackInHand.getItem() == ItemInit.RUNE_MARKING.get()) {
+                if(stackInHand.hasTag()) {
+                    CompoundTag nbt = stackInHand.getTag().getCompound("mark");
+
+                    if(pLevel.isClientSide()) {
+                        final MutableComponent feedback = Component.translatable("feedback.block.magicmirror.link")
+                                .append(Component.literal("(" +
+                                        nbt.getInt("x") + ", " +
+                                        nbt.getInt("y") + ", " +
+                                        nbt.getInt("z") + ")."));
+                        pPlayer.sendSystemMessage(feedback);
+                    } else {
+                        mmbe.setMasterPos(new BlockPos(
+                                nbt.getInt("x"),
+                                nbt.getInt("y"),
+                                nbt.getInt("z")
+                        ));
+                    }
+                }
+
+                return InteractionResult.CONSUME;
+            } else if (stackInHand.getItem() == ItemInit.WORLD_CHARM.get()) {
+                if(stackInHand.hasTag()) {
+                    CompoundTag nbt = stackInHand.getTag();
+
+                    if(nbt != null && nbt.contains("world_key_value")) {
+                        if (pLevel.isClientSide()) {
+                            final MutableComponent feedback = Component.translatable("feedback.block.magicmirror.link")
+                                    .append(Component.literal("\"" +
+                                            nbt.getString("world_key_value") + "\"."));
+                            pPlayer.sendSystemMessage(feedback);
+                        } else {
+                            mmbe.setMasterDim(nbt.getString("world_key_value"));
+                        }
+                    }
+                }
+
+                return InteractionResult.CONSUME;
+            }
+        }
+
+        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
     }
 }

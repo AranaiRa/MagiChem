@@ -241,6 +241,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(MirrorLabyrinthRouterBlockEntity::new, BlockRegistry.MIRROR_LABYRINTH_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<MagicMirrorBlockEntity>> MAGIC_MIRROR_BE = BLOCK_ENTITIES.register("magic_mirror", () ->
+            BlockEntityType.Builder.of(MagicMirrorBlockEntity::new, BlockRegistry.MAGIC_MIRROR.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

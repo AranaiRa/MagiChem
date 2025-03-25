@@ -478,6 +478,7 @@
   "feedback.ritual.sublimation.insufficient.and": " and ",
   "feedback.ritual.sublimation.insufficient.more": " more ",
   "feedback.ritual.sublimation.materia_in_ingredient": "One of the supplied ingredients is a Materia Jar or Materia Vessel that contains materia. Please empty the container out before using it as an ingredient.",
+  "feedback.block.magicmirror.link": "This Magic Mirror is now linked to ",
   "feedback.block.materiamanifest.accepted": "The Materia Manifest will now monitor Jars and Vessels in the Rune of Marking Pair's designated area.",
   "feedback.block.materiamanifest.toofar": "The designated area is too far from the Materia Manifest.",
   "feedback.block.materiamanifest.toobig.part1": "The designated area is too large. The maximum allowable size on each axis is ",
