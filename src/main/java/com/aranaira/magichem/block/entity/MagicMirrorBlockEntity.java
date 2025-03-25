@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeDynamicBlockEntity;
+import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.tools.math.Vector3;
@@ -55,12 +56,18 @@ public class MagicMirrorBlockEntity extends AbstractMateriaStorageMultiTypeDynam
                     if(be instanceof MirrorLabyrinthBlockEntity mlbe) {
                         master = mlbe;
                         return master;
+                    } else if(be instanceof MirrorLabyrinthRouterBlockEntity mlrbe) {
+                        master = mlrbe.getMaster();
+                        return master;
                     }
                 }
             } else if(level.isLoaded(masterPos)) {
                 BlockEntity be = level.getBlockEntity(masterPos);
                 if(be instanceof MirrorLabyrinthBlockEntity mlbe) {
                     master = mlbe;
+                    return master;
+                } else if(be instanceof MirrorLabyrinthRouterBlockEntity mlrbe) {
+                    master = mlrbe.getMaster();
                     return master;
                 }
             }
