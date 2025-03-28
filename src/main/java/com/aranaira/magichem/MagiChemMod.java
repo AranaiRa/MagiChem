@@ -191,6 +191,8 @@ public class MagiChemMod
             event.register(ActuatorArcaneBlockEntityRenderer.RENDERER_MODEL_CUBE_VAR1);
             event.register(ActuatorArcaneBlockEntityRenderer.RENDERER_MODEL_CUBE_VAR2);
 
+            event.register(ActuatorEnderBlockEntityRenderer.RENDERER_MODEL_LOCATOR);
+
             event.register(VariegatorBlockEntityRenderer.RENDERER_MODEL_LIMB_ABOVE);
             event.register(VariegatorBlockEntityRenderer.RENDERER_MODEL_LIMB_ABOVE_TINTABLE);
             event.register(VariegatorBlockEntityRenderer.RENDERER_MODEL_LIMB_LONG);

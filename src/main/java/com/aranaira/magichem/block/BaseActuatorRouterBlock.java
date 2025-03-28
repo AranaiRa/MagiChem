@@ -55,7 +55,9 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
             VOXEL_SHAPE_AIR_SIPHON_BASE, VOXEL_SHAPE_AIR_SIPHON_CONNECTOR, VOXEL_SHAPE_AIR_SIPHON, VOXEL_SHAPE_AIR_TANK, VOXEL_SHAPE_AIR_TANK_MOUNT,
             VOXEL_SHAPE_AIR_AGGREGATE_NORTH, VOXEL_SHAPE_AIR_AGGREGATE_EAST, VOXEL_SHAPE_AIR_AGGREGATE_SOUTH, VOXEL_SHAPE_AIR_AGGREGATE_WEST,
 
-            VOXEL_SHAPE_ARCANE;
+            VOXEL_SHAPE_ARCANE,
+
+            VOXEL_SHAPE_ENDER;
 
     @Nullable
     @Override
@@ -117,6 +119,8 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
             if (facing == Direction.WEST) return VOXEL_SHAPE_AIR_AGGREGATE_WEST;
         } else if(element == ELEMENT_ARCANE) {
             return VOXEL_SHAPE_ARCANE;
+        } else if(element == ELEMENT_ENDER) {
+            return VOXEL_SHAPE_ENDER;
         }
 
         return super.getShape(pState, pLevel, pPos, pContext);
@@ -288,5 +292,7 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_AIR_TANK_MOUNT, 3));
 
         VOXEL_SHAPE_ARCANE      = Block.box(5, 2, 5, 11, 10, 11);
+
+        VOXEL_SHAPE_ENDER       = Block.box(4, 2, 4, 12, 14, 12);
     }
 }

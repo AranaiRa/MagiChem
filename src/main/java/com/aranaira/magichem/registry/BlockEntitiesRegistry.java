@@ -154,6 +154,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(ActuatorArcaneBlockEntity::new, BlockRegistry.ACTUATOR_ARCANE.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<ActuatorEnderBlockEntity>> ACTUATOR_ENDER_BE = BLOCK_ENTITIES.register("actuator_ender", () ->
+            BlockEntityType.Builder.of(ActuatorEnderBlockEntity::new, BlockRegistry.ACTUATOR_ENDER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<BaseActuatorRouterBlockEntity>> BASE_ACTUATOR_ROUTER_BE = BLOCK_ENTITIES.register("actuator_router", () ->
             BlockEntityType.Builder.of(BaseActuatorRouterBlockEntity::new, BlockRegistry.BASE_ACTUATOR_ROUTER.get()).build(null)
     );
@@ -176,6 +180,10 @@ public class BlockEntitiesRegistry {
 
     public static final RegistryObject<BlockEntityType<ActuatorArcaneRouterBlockEntity>> ACTUATOR_ARCANE_ROUTER_BE = BLOCK_ENTITIES.register("actuator_arcane_router", () ->
             BlockEntityType.Builder.of(ActuatorArcaneRouterBlockEntity::new, BlockRegistry.ACTUATOR_ARCANE_ROUTER.get()).build(null)
+    );
+
+    public static final RegistryObject<BlockEntityType<ActuatorEnderRouterBlockEntity>> ACTUATOR_ENDER_ROUTER_BE = BLOCK_ENTITIES.register("actuator_ender_router", () ->
+            BlockEntityType.Builder.of(ActuatorEnderRouterBlockEntity::new, BlockRegistry.ACTUATOR_ENDER_ROUTER.get()).build(null)
     );
 
     public static final RegistryObject<BlockEntityType<ColoringCauldronBlockEntity>> COLORING_CAULDRON_BE = BLOCK_ENTITIES.register("coloring_cauldron", () ->

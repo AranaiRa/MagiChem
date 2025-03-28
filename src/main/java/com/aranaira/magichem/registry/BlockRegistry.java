@@ -201,6 +201,11 @@ public class BlockRegistry {
                     .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> ACTUATOR_ENDER = registerBlock("actuator_ender",
+            () -> new ActuatorEnderBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> BASE_ACTUATOR_ROUTER = registerBlock("base_actuator_router",
             () -> new BaseActuatorRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
@@ -228,6 +233,11 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> ACTUATOR_ARCANE_ROUTER = registerBlock("actuator_arcane_router",
             () -> new ActuatorArcaneRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> ACTUATOR_ENDER_ROUTER = registerBlock("actuator_ender_router",
+            () -> new ActuatorEnderRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
