@@ -47,9 +47,10 @@ public class MirrorLabyrinthSyncDataC2SPacket {
         BlockEntity entity = player.level().getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
-            if(entity instanceof MirrorLabyrinthBlockEntity mlbe && recipeItem instanceof MateriaItem mi) {
+            if(entity instanceof MirrorLabyrinthBlockEntity mlbe) {
                 mlbe.setPowerUsageSetting(powerUsageSetting);
-                mlbe.setActiveMateriaType(mi);
+                if(recipeItem instanceof MateriaItem mi)
+                    mlbe.setActiveMateriaType(mi);
             }
         });
 
