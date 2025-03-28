@@ -147,7 +147,8 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == BlockRegistry.OCCULTED_CINDER.get().asItem()) {
+        else if(pStack.getItem() == BlockRegistry.OCCULTED_CINDER.get().asItem() ||
+                pStack.getItem() == BlockRegistry.OCCULTED_SPARK.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.occultedcinder")
                     .withStyle(ChatFormatting.DARK_GRAY)

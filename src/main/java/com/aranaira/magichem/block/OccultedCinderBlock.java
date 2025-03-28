@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.mna.api.blocks.WaterloggableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -11,9 +12,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class OccultedCinderBlock extends WaterloggableBlock {
 
-    public OccultedCinderBlock(Properties properties, boolean startWaterlogged) {
-        super(properties, startWaterlogged);
+    public OccultedCinderBlock(Properties pProperties, int pLightEmission, boolean pStartWaterlogged) {
+        super(pProperties, pStartWaterlogged);
+        lightEmission = pLightEmission;
     }
+
+    private int lightEmission;
 
     @Override
     public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
@@ -22,7 +26,7 @@ public class OccultedCinderBlock extends WaterloggableBlock {
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        return 15;
+        return lightEmission;
     }
 
     @Override

@@ -4326,7 +4326,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " can't be seen, touched, or quenched, but casts light as though it were an invisible lantern."
+            "text": " can't be seen, touched, or quenched, but casts light as though it were an invisible lantern.\n\nOcculted Cinders can also be split into "
+          },
+          {
+            "text": "Occulted Sparks",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", which have half the light strength of an Occulted Cinder."
           }
         ]
       }
@@ -4339,6 +4346,10 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/occulted_cinder"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/occulted_cinder_to_sparks"
       }
     ]
   },

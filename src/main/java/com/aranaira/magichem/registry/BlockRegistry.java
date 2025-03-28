@@ -511,7 +511,14 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> OCCULTED_CINDER = registerBlock("occulted_cinder",
             () -> new OccultedCinderBlock(BlockBehaviour.Properties.of()
-                    .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false), false)
+                    .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false),
+                    15, false)
+    );
+
+    public static final RegistryObject<Block> OCCULTED_SPARK = registerBlock("occulted_spark",
+            () -> new OccultedCinderBlock(BlockBehaviour.Properties.of()
+                    .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false),
+                    8, false)
     );
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
