@@ -136,7 +136,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                     }
                 }
                 case MOVE_TO_VESSEL -> {
-                    if(doMove(2.0F)) {
+                    if(doMove(2.0F + construct.getConstructData().getAffinityScore(Affinity.WATER) * 0.5f)) {
                         int amount = doMateriaTransfer();
                         if(amount > 0) {
                             this.pushDiagnosticMessage("I moved " + amount + " " + getTranslatedNameFromItem(this.filter) + " to a vessel, boss. Bloop!", true);

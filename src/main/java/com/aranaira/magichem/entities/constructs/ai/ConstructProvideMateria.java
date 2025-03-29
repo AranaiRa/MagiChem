@@ -173,7 +173,7 @@ public class ConstructProvideMateria extends ConstructAITask<ConstructProvideMat
                     }
                 }
                 case MOVE_TO_VESSEL -> {
-                    if(doMove(2.0f)) {
+                    if(doMove(2.0f + construct.getConstructData().getAffinityScore(Affinity.WATER) * 0.5f)) {
                         BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTargetPos);
                         if(be instanceof IMateriaProvisionRequester impr) {
                             if (impr.needsProvisioning()) {

@@ -2937,7 +2937,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " inside, it can move 32 additional drams of materia per operation.\n\n"
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\nWater affinity increases the reach distance of basic sorting constructs when putting materia into containers."
           }
         ]
       },
@@ -3061,7 +3061,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " inside, it can move 32 additional drams of materia per operation.\n\nMateria provided to an Alchemical Nexus by a construct transfers at a slower rate than the Nexus can pull on its own, and it does not benefit from the increased speed from increasing the experience cost per crafting stage."
+            "text": " inside, it can move 32 additional drams of materia per operation.\n\nWater affinity increases the reach distance of basic sorting constructs when putting materia into containers.\n\nMateria provided to an Alchemical Nexus by a construct transfers at a slower rate than the Nexus can pull on its own, and it does not benefit from the increased speed from increasing the experience cost per crafting stage."
           }
         ]
       },
