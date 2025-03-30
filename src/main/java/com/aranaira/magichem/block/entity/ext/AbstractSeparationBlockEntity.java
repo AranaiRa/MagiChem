@@ -124,6 +124,26 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                 ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, false);
             }
+            else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
+                ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
+                //exporting
+                if(ender.getMirrorTarget() != null){
+                    boolean instant = ender.getPowerLevel() == 3;
+                    if(instant || pLevel.getGameTime() % 10 == 0) {
+                        final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();
+                        if(!outputs.isEmpty()) {
+                            for(int i=0; i<outputs.getContainerSize(); i++) {
+                                if(!outputs.getItem(i).isEmpty()) {
+                                    final ItemStack outputStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(AbstractSeparationBlockEntity.IDs.SLOT_OUTPUT_START) + i);
+                                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractSeparationBlockEntity.IDs.SLOT_OUTPUT_START)+i, ItemStack.EMPTY);
+                                    ender.createShlorpToTarget(outputStack, instant);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         pEntity.remainingTorque = Math.max(-pVarFunc.apply(IDs.CONFIG_NO_TORQUE_GRACE_PERIOD), pEntity.remainingTorque - 1);

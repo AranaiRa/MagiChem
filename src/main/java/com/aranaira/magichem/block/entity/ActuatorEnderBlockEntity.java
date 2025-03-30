@@ -4,21 +4,27 @@ import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEnti
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.GrandFuseryRouterBlockEntity;
+import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.gui.ActuatorArcaneMenu;
 import com.aranaira.magichem.gui.ActuatorArcaneScreen;
+import com.aranaira.magichem.gui.ActuatorEnderMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.items.ItemInit;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -53,6 +59,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
 
@@ -60,10 +67,10 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
             ELDRIN_POWER_USAGE = {0, 5, 140, 500};
     public static final int
             MAX_POWER_LEVEL = 3,
-            SLOT_COUNT = 2, SLOT_ESSENTIA_INSERTION = 0, SLOT_BOTTLES = 1,
-            FLAG_IS_REDUCTION_MODE = 1;
+            SLOT_COUNT = 3, SLOT_MARK = 0, SLOT_ESSENTIA_INSERTION = 1, SLOT_BOTTLES = 2;
     protected ContainerData data;
     public static final MateriaItem ESSENTIA_ENDER = ItemRegistry.getEssentiaMap(false, false).get("ender");
+    private static final Random r = new Random();
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
@@ -105,6 +112,8 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
                     else if(stack.getItem() instanceof MateriaItem mi) {
                         return mi == ESSENTIA_ENDER;
                     }
+                } else if(slot == SLOT_MARK) {
+                    return stack.getItem() == ItemInit.RUNE_MARKING.get();
                 }
                 return false;
             }
@@ -215,7 +224,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
         }
     }
 
-    public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorEnderBlockEntity entity, boolean reductionMode) {
+    public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorEnderBlockEntity entity) {
         boolean changed = AbstractDirectionalPluginBlockEntity.delegatedTick(level, pos, state, entity,
                 ActuatorEnderBlockEntity::getValue,
                 ActuatorEnderBlockEntity::getAffinity,
@@ -227,6 +236,59 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
 
     public void handleAnimationDrivers() {
 
+    }
+
+    @Nullable
+    public BlockEntity getMirrorTarget() {
+        final ItemStack markStack = itemHandler.getStackInSlot(SLOT_MARK);
+        if(markStack.hasTag() && level != null) {
+            final CompoundTag markTag = markStack.getTag().getCompound("mark");
+
+            BlockPos posQuery = new BlockPos(markTag.getInt("x"),markTag.getInt("y"),markTag.getInt("z"));
+            BlockEntity entityQuery = level.getBlockEntity(posQuery);
+
+            if(entityQuery instanceof MagicMirrorBlockEntity ||
+               entityQuery instanceof MirrorLabyrinthBlockEntity ||
+               entityQuery instanceof MirrorLabyrinthRouterBlockEntity) {
+                return entityQuery;
+            }
+        }
+
+        return null;
+    }
+
+    public void createShlorpToTarget(ItemStack pPayload, boolean isInstant) {
+        BlockEntity beQuery = getMirrorTarget();
+        if(beQuery instanceof IShlorpReceiver isr && level != null) {
+            double theta = r.nextDouble() * Math.PI;
+
+            Vector3 origin = Vector3.zero(), tangent = Vector3.zero();
+            if(pPayload.getItem() instanceof MateriaItem mi) {
+                if (beQuery instanceof MagicMirrorBlockEntity mmbe) {
+                    origin = mmbe.getDefaultOriginAndTangent(mi).getFirst();
+                    tangent = mmbe.getDefaultOriginAndTangent(mi).getSecond();
+                } else if (beQuery instanceof MirrorLabyrinthBlockEntity mlbe) {
+                    origin = mlbe.getDefaultOriginAndTangent(mi).getFirst();
+                    tangent = mlbe.getDefaultOriginAndTangent(mi).getSecond();
+                } else if (beQuery instanceof MirrorLabyrinthRouterBlockEntity mlrbe) {
+                    origin = mlrbe.getDefaultOriginAndTangent(mi).getFirst();
+                    tangent = mlrbe.getDefaultOriginAndTangent(mi).getSecond();
+                }
+
+                ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
+                shlorp.configure(
+                        getBlockPos().above(), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(Math.cos(theta), r.nextFloat() - 0.5f, Math.sin(theta)).scale(3f),
+                        beQuery.getBlockPos(), origin, tangent,
+                        isInstant ? (0.375f + r.nextFloat() * 0.125f) : (0.120f + r.nextFloat() * 0.06f), isInstant ? 0.2125f : 0.1875f, pPayload.getCount() * 2 + 2, mi, pPayload.getCount(),
+                        ShlorpParticleMode.DESTINATION_TANGENT
+                );
+
+                if(isInstant)
+                    shlorp.setInstantPayload();
+
+                level.addFreshEntity(shlorp);
+            }
+        }
     }
 
     @Override
@@ -250,7 +312,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new ActuatorArcaneMenu(i, inventory, this, this.data);
+        return new ActuatorEnderMenu(i, inventory, this, this.data);
     }
 
     @Override

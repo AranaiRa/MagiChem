@@ -45,6 +45,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     ItemStack stackInTransit;
     ShlorpParticleMode particleMode;
     BlockPos fallback = null;
+    boolean doInstantPayload = false, processedFirstTick = false;
 
     public void configure(BlockPos pStartLocation, Vector3 pStartOrigin, Vector3 pStartTangent, BlockPos pEndLocation, Vector3 pEndOrigin, Vector3 pEndTangent, float pSpeed, float pDistanceBetweenClusters, int pClusterCount, MateriaItem pMateriaType, int pMateriaCount, ShlorpParticleMode pParticleMode) {
         Vector3 start = new Vector3(pStartLocation.getX(), pStartLocation.getY(), pStartLocation.getZ());
@@ -79,6 +80,10 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         this.stackInTransit = new ItemStack(pMateriaType, pMateriaCount);
 
         this.particleMode = pParticleMode;
+    }
+
+    public void setInstantPayload() {
+        doInstantPayload = true;
     }
 
     public void setFallback(BlockPos pBlockPos) {
@@ -131,6 +136,8 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         currentPosOnTrack = pCompound.getFloat("currentPos");
         vertClusterCount = pCompound.getInt("clusters");
         particleMode = ShlorpParticleMode.values()[pCompound.getInt("particleMode")];
+        doInstantPayload = pCompound.getBoolean("doInstantPayload");
+        processedFirstTick = pCompound.getBoolean("processedFirstTick");
     }
 
     @Override
@@ -168,6 +175,8 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         pCompound.putFloat("currentPos",currentPosOnTrack);
         pCompound.putInt("clusters",vertClusterCount);
         pCompound.putInt("particleMode",particleMode.ordinal());
+        pCompound.putBoolean("doInstantPayload",doInstantPayload);
+        pCompound.putBoolean("processedFirstTick",processedFirstTick);
     }
 
     @Override
@@ -203,6 +212,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         buffer.writeInt(vertClusterCount);
         buffer.writeInt(((MateriaItem)stackInTransit.getItem()).getMateriaColor());
         buffer.writeInt(particleMode.ordinal());
+        buffer.writeBoolean(doInstantPayload);
 
         //fallback
         buffer.writeBoolean(fallback != null);
@@ -248,6 +258,7 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         color[1] = packedColor >> 8 & 255;
         color[2] = packedColor & 255;
         particleMode = ShlorpParticleMode.values()[additionalData.readInt()];
+        doInstantPayload = additionalData.readBoolean();
 
         if(additionalData.readBoolean()) {
             fallback = BlockPos.of(additionalData.readLong());
@@ -267,24 +278,21 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     public void tick() {
         super.tick();
 
+        if(!processedFirstTick) {
+            processedFirstTick = true;
+
+            if(doInstantPayload) {
+                deliverPayload();
+            }
+        }
+
         float limit = distanceBetweenClusters * (vertClusterCount + 1);
 
         if(currentPosOnTrack >= length + limit) {
             //deliver the payload
             if(!this.level().isClientSide()) {
-                Vector3 actualTargetPos = endLocation.add(new Vector3(position().x, position().y, position().z));
-                BlockPos targetBlockPos = new BlockPos((int)Math.floor(actualTargetPos.x-0.5), (int)Math.floor(actualTargetPos.y), (int)Math.floor(actualTargetPos.z-0.5));
-                BlockEntity be = this.level().getBlockEntity(targetBlockPos);
-
-                if(be instanceof IShlorpReceiver isr) {
-                    isr.insertStackFromShlorp(stackInTransit);
-                }
-                else if(fallback != null) {
-                    be = this.level().getBlockEntity(fallback);
-
-                    if(be instanceof IShlorpReceiver isr) {
-                        isr.insertStackFromShlorp(stackInTransit);
-                    }
+                if(!doInstantPayload) {
+                    deliverPayload();
                 }
             }
             kill();
@@ -328,6 +336,22 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
                             .setMover(new ParticleVelocityMover(speed.x, speed.y, speed.z, true)),
                     pos.x - 0.5, pos.y, pos.z - 0.5,
                     0,0,0);
+        }
+    }
+
+    private void deliverPayload() {
+        Vector3 actualTargetPos = endLocation.add(new Vector3(position().x, position().y, position().z));
+        BlockPos targetBlockPos = new BlockPos((int) Math.floor(actualTargetPos.x - 0.5), (int) Math.floor(actualTargetPos.y), (int) Math.floor(actualTargetPos.z - 0.5));
+        BlockEntity be = this.level().getBlockEntity(targetBlockPos);
+
+        if (be instanceof IShlorpReceiver isr) {
+            isr.insertStackFromShlorp(stackInTransit);
+        } else if (fallback != null) {
+            be = this.level().getBlockEntity(fallback);
+
+            if (be instanceof IShlorpReceiver isr) {
+                isr.insertStackFromShlorp(stackInTransit);
+            }
         }
     }
 

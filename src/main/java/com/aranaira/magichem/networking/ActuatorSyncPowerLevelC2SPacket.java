@@ -70,6 +70,8 @@ public class ActuatorSyncPowerLevelC2SPacket {
                         adpbe.increasePowerLevel(ActuatorFireBlockEntity::getValue);
                     else if(elementMap[elementID] == Affinity.ARCANE)
                         adpbe.increasePowerLevel(ActuatorArcaneBlockEntity::getValue);
+                    else if(elementMap[elementID] == Affinity.ENDER)
+                        adpbe.increasePowerLevel(ActuatorEnderBlockEntity::getValue);
                 } else {
                     adpbe.decreasePowerLevel();
                 }

@@ -380,6 +380,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             anbe.syncAndSave();
                         }
                     }
+                    else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
+                        ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pBlockState, ender);
+                    }
                 }
             }
 

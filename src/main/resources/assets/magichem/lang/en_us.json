@@ -825,6 +825,9 @@
   "tooltip.magichem.gui.actuator.arcane.tank": "Reservoir (Academic Slurry)",
   "tooltip.magichem.gui.actuator.arcane.tank.line1": "How much Academic Slurry is currently stored inside of the Occult Matrix.",
   "tooltip.magichem.gui.actuator.arcane.tank.line2": "Current Academic Slurry: ",
+  "tooltip.magichem.gui.actuator.ender.speed.fast": "Fast",
+  "tooltip.magichem.gui.actuator.ender.speed.instant.import": "§kDang§r",
+  "tooltip.magichem.gui.actuator.ender.speed.instant.export": "§kHeck§r",
 
   "feedback.magichem.gui.mirrorlabyrinth.noconstruct.line1a": "Your Materia is lost in the mirror",
   "feedback.magichem.gui.mirrorlabyrinth.noconstruct.line1b": "dimension and cannot be found!",

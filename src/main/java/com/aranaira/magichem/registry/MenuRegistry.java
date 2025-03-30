@@ -66,6 +66,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<ActuatorArcaneMenu>> ACTUATOR_ARCANE_MENU =
             registerMenuType(ActuatorArcaneMenu::new, "actuator_arcane");
 
+    public static final RegistryObject<MenuType<ActuatorEnderMenu>> ACTUATOR_ENDER_MENU =
+            registerMenuType(ActuatorEnderMenu::new, "actuator_ender");
+
     public static final RegistryObject<MenuType<VariegatorMenu>> VARIEGATOR_MENU =
             registerMenuType(VariegatorMenu::new, "variegator");
 

@@ -154,6 +154,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.ACTUATOR_EARTH_MENU.get(), ActuatorEarthScreen::new);
                 MenuScreens.register(MenuRegistry.ACTUATOR_AIR_MENU.get(), ActuatorAirScreen::new);
                 MenuScreens.register(MenuRegistry.ACTUATOR_ARCANE_MENU.get(), ActuatorArcaneScreen::new);
+                MenuScreens.register(MenuRegistry.ACTUATOR_ENDER_MENU.get(), ActuatorEnderScreen::new);
                 MenuScreens.register(MenuRegistry.VARIEGATOR_MENU.get(), VariegatorScreen::new);
                 MenuScreens.register(MenuRegistry.CHARGING_TALISMAN_MENU.get(), ChargingTalismanScreen::new);
                 MenuScreens.register(MenuRegistry.TRAVELLERS_COMPASS_MENU.get(), TravellersCompassScreen::new);
