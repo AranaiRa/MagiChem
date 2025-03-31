@@ -104,7 +104,7 @@ public class ActuatorEnderMenu extends AbstractContainerMenu {
             SLOT_INVENTORY_COUNT = 36;
     Pair<Item, Integer>[] DIRSPEC = new Pair[]{
             new Pair<>(ESSENTIA_ENDER, SLOT_INVENTORY_COUNT + SLOT_ESSENTIA_INSERTION),
-            new Pair<>(ItemInit.RUNE_MARKING, SLOT_INVENTORY_COUNT + SLOT_MARK)
+            new Pair<>(ItemInit.RUNE_MARKING.get(), SLOT_INVENTORY_COUNT + SLOT_MARK)
     };
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)

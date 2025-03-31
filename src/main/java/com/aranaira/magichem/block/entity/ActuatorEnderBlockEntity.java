@@ -276,11 +276,12 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
                 }
 
                 ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
+                shlorp.setPos(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
                 shlorp.configure(
                         getBlockPos().above(), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(Math.cos(theta), r.nextFloat() - 0.5f, Math.sin(theta)).scale(3f),
                         beQuery.getBlockPos(), origin, tangent,
-                        isInstant ? (0.375f + r.nextFloat() * 0.125f) : (0.120f + r.nextFloat() * 0.06f), isInstant ? 0.2125f : 0.1875f, pPayload.getCount() * 2 + 2, mi, pPayload.getCount(),
-                        ShlorpParticleMode.DESTINATION_TANGENT
+                        isInstant ? (0.375f + r.nextFloat() * 0.125f) : (0.120f + r.nextFloat() * 0.06f), 0.125f, pPayload.getCount() * 2 + 2, mi, pPayload.getCount(),
+                        ShlorpParticleMode.INVERSE_ENTRY_TANGENT
                 );
 
                 if(isInstant)
