@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "magichem:signalite",
+  "materia": "magichem:admixture_delight",
+  "chance": 100.0,
+  "result": "magichem:signalite_equating"
+}

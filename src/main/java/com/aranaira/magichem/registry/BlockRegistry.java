@@ -391,72 +391,78 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> SIGNALITE = registerBlock("signalite",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.STANDARD)
     );
 
     public static final RegistryObject<Block> SIGNALITE_AGGREGATING = registerBlock("signalite_aggregating",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.AGGREGATING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_BURNISHING = registerBlock("signalite_burnishing",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.BURNISHING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_CHAOTIC = registerBlock("signalite_chaotic",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.CHAOTIC)
     );
 
     public static final RegistryObject<Block> SIGNALITE_DEVOURING = registerBlock("signalite_devouring",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.DEVOURING)
+    );
+
+    public static final RegistryObject<Block> SIGNALITE_EQUATING = registerBlock("signalite_equating",
+            () -> new SignaliteBlock(BlockBehaviour.Properties.of()
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    SignaliteBlock.SignaliteBlockType.EQUATING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_GATEKEEPING = registerBlock("signalite_gatekeeping",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.GATEKEEPING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_METICULOUS = registerBlock("signalite_meticulous",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.METICULOUS)
     );
 
     public static final RegistryObject<Block> SIGNALITE_NEGATING = registerBlock("signalite_negating",
             () -> new SignaliteBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignaliteBlock.SignaliteBlockType.NEGATING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_SEER = registerBlock("signalite_seer",
             () -> new SignaliteSeerBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission())
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission())
     );
 
     public static final RegistryObject<Block> SIGNALITE_SINGING = registerBlock("signalite_singing",
             () -> new SignalitePairBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignalitePairBlock.SignalitePairType.SINGING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_LISTENING = registerBlock("signalite_listening",
             () -> new SignalitePairBlock(BlockBehaviour.Properties.of()
-                    .instabreak().forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
+                    .instabreak().forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY).noCollission(),
                     SignalitePairBlock.SignalitePairType.LISTENING)
     );
 
     public static final RegistryObject<Block> SIGNALITE_BLOCK = registerBlock("signalite_block",
             () -> new DecorativeSignaliteBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> BUDDING_SIGNALITE_BLOCK = registerBlock("signalite_block_budding",
@@ -466,27 +472,27 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> SIGNALITE_CLUSTER = registerBlock("cluster_signalite",
             () -> new CrystalClusterBudBlock(7, 3, BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> LARGE_SIGNALITE_CLUSTER = registerBlock("cluster_signalite_large",
             () -> new CrystalClusterBudBlock(5, 3, BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> MEDIUM_SIGNALITE_CLUSTER = registerBlock("cluster_signalite_medium",
             () -> new CrystalClusterBudBlock(4, 3, BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> SMALL_SIGNALITE_CLUSTER = registerBlock("cluster_signalite_small",
             () -> new CrystalClusterBudBlock(3, 4, BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> VINTEUM_CRYSTAL_BLOCK = registerBlock("vinteum_crystal_block",
             () -> new VinteumCrystalBlock(BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> BUDDING_VINTEUM_CRYSTAL_BLOCK = registerBlock("vinteum_crystal_block_budding",
@@ -496,22 +502,22 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> VINTEUM_CLUSTER = registerBlock("cluster_vinteum",
             () -> new CrystalClusterBudBlock(7, 3, BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> LARGE_VINTEUM_CLUSTER = registerBlock("cluster_vinteum_large",
             () -> new CrystalClusterBudBlock(5, 3, BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> MEDIUM_VINTEUM_CLUSTER = registerBlock("cluster_vinteum_medium",
             () -> new CrystalClusterBudBlock(4, 3, BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> SMALL_VINTEUM_CLUSTER = registerBlock("cluster_vinteum_small",
             () -> new CrystalClusterBudBlock(3, 4, BlockBehaviour.Properties.of()
-                    .strength(1.5f).forceSolidOn().noOcclusion().randomTicks().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
+                    .strength(1.5f).forceSolidOn().noOcclusion().sound(SoundType.AMETHYST).lightLevel(param -> 5).pushReaction(PushReaction.DESTROY))
     );
 
     public static final RegistryObject<Block> CRYSTAL_CANDLE = registerBlock("crystal_candle",

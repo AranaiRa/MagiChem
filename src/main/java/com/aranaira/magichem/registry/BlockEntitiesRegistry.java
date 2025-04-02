@@ -217,6 +217,7 @@ public class BlockEntitiesRegistry {
                 BlockRegistry.SIGNALITE_BURNISHING.get(),
                 BlockRegistry.SIGNALITE_CHAOTIC.get(),
                 BlockRegistry.SIGNALITE_DEVOURING.get(),
+                BlockRegistry.SIGNALITE_EQUATING.get(),
                 BlockRegistry.SIGNALITE_GATEKEEPING.get(),
                 BlockRegistry.SIGNALITE_METICULOUS.get(),
                 BlockRegistry.SIGNALITE_NEGATING.get()

@@ -6094,6 +6094,31 @@
       },
       {
         "type": "title",
+        "value": "Equating Signalite"
+      },
+      {
+        "type": "item",
+        "location": "magichem:signalite_equating",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The special transmitting mode of Equating Signalite will "
+          },
+          {
+            "text": "transmit a full-strength signal",
+            "color": "dark_purple"
+          },
+          {
+            "text": " if and only if the input strength matches its signal target.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster.\n\n\n\n\n\n\n"
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Gatekeeping Signalite"
       },
       {
@@ -6198,6 +6223,10 @@
       {
         "type": "anointing",
         "location": "magichem:anointing/magichem/signalite_to_devouring"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/signalite_to_equating"
       },
       {
         "type": "anointing",

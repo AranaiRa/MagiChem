@@ -131,7 +131,7 @@ public class SignaliteBlock extends BaseEntityBlock {
 
                 boolean isCenter = (x == 0) && (y == 0) && (z == 0);
                 if (isCenter) {
-                    if (type == SignaliteBlockType.DEVOURING || type == SignaliteBlockType.GATEKEEPING) {
+                    if (type == SignaliteBlockType.DEVOURING || type == SignaliteBlockType.EQUATING || type == SignaliteBlockType.GATEKEEPING) {
                         if (pPlayer.isCrouching()) sbe.decrementSpecialSignalSetting(15);
                         else sbe.incrementSpecialSignalSetting(15);
 
@@ -278,6 +278,9 @@ public class SignaliteBlock extends BaseEntityBlock {
                 else if(sb.getType() == SignaliteBlockType.DEVOURING) {
                     sbe.specialSignalStrength = Math.min(signalStrength, sbe.specialSignalTarget);
                 }
+                else if(sb.getType() == SignaliteBlockType.EQUATING) {
+                    sbe.specialSignalStrength = signalStrength == sbe.specialSignalTarget ? 15 : 0;
+                }
                 else if(sb.getType() == SignaliteBlockType.GATEKEEPING) {
                     sbe.specialSignalStrength = signalStrength >= sbe.specialSignalTarget ? signalStrength : 0;
                 }
@@ -342,6 +345,7 @@ public class SignaliteBlock extends BaseEntityBlock {
         BURNISHING,
         CHAOTIC,
         DEVOURING,
+        EQUATING,
         GATEKEEPING,
         METICULOUS,
         NEGATING

@@ -223,6 +223,16 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.SIGNALITE_EQUATING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.equating")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.SIGNALITE_GATEKEEPING.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.signalite.variant")
