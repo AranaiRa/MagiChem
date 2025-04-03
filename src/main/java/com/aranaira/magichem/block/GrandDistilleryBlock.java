@@ -313,6 +313,27 @@ public class GrandDistilleryBlock extends BaseEntityBlock implements ISpellInter
         return false;
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandDistilleryBlockEntity dbe) {
+            boolean hasInputItems = !dbe.getContentsOfInputSlots(GrandDistilleryBlockEntity::getVar).isEmpty();
+            boolean hasOutputItems = !dbe.getContentsOfOutputSlots(GrandDistilleryBlockEntity::getVar).isEmpty();
+
+            int signal = 0;
+            signal = signal | (hasInputItems ? 1 << 1 : 0);
+            signal = signal | (hasOutputItems ? 1 << 2 : 0);
+
+            return signal;
+        }
+
+        return 0;
+    }
+
     static {
         VOXEL_SHAPE_ERROR = Block.box(4, 4, 4, 12, 12, 12);
 

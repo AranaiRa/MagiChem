@@ -352,6 +352,20 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
         return false;
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandDistilleryRouterBlockEntity drbe) {
+            return drbe.getMaster().getBlockState().getBlock().getAnalogOutputSignal(drbe.getMaster().getBlockState(), pLevel, drbe.getMasterPos());
+        }
+
+        return 0;
+    }
+
     static {
         //DAIS
         {

@@ -344,6 +344,20 @@ public class GrandCentrifugeRouterBlock extends BaseEntityBlock implements INoCr
         return false;
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandCentrifugeRouterBlockEntity crbe) {
+            return crbe.getMaster().getBlockState().getBlock().getAnalogOutputSignal(crbe.getMaster().getBlockState(), pLevel, crbe.getMasterPos());
+        }
+
+        return 0;
+    }
+
     static {
         //DAIS
         {

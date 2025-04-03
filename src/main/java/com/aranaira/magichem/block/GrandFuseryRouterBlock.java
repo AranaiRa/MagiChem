@@ -361,6 +361,20 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
         return false;
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandFuseryRouterBlockEntity frbe) {
+            return frbe.getMaster().getBlockState().getBlock().getAnalogOutputSignal(frbe.getMaster().getBlockState(), pLevel, frbe.getMasterPos());
+        }
+
+        return 0;
+    }
+
     static {
         //DAIS
         {
