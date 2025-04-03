@@ -376,6 +376,10 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
             ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_BOTTLES));
             getLevel().addFreshEntity(ie);
         }
+        if(!itemHandler.getStackInSlot(SLOT_MARK).isEmpty() && getLevel() != null) {
+            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_MARK));
+            getLevel().addFreshEntity(ie);
+        }
     }
 
     ////////////////////
