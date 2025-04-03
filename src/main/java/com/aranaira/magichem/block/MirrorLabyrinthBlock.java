@@ -93,6 +93,18 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
         }
     }
 
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if(blockEntity instanceof MirrorLabyrinthBlockEntity) {
+                ((MirrorLabyrinthBlockEntity) blockEntity).ejectConstruct();
+                ((MirrorLabyrinthBlockEntity) blockEntity).packInventoryToBlockItem();
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
+
     public static List<Pair<BlockPos, MirrorLabyrinthRouterType>> getRouterOffsets(Direction pFacing) {
         List<Pair<BlockPos, MirrorLabyrinthRouterType>> offsets = new ArrayList<>();
         BlockPos origin = new BlockPos(0,0,0);

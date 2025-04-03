@@ -4,15 +4,12 @@ import com.aranaira.magichem.block.MirrorLabyrinthBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeDynamicBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.*;
-import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.gui.MirrorLabyrinthMenu;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
-import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstructConstruction;
@@ -29,6 +26,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -40,7 +38,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -73,12 +70,12 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     public boolean
             constructDataChanged = false, isCompactMode = true, needsGuiStorageUpdate = true;
     public float
-            circlePercent = 1.0f, particlePercent = 1.0f,
+            circlePercent = 0.0f, particlePercent = 0.0f,
             mirrorActivationPercent = 0.0f, mirrorActivationSpeed = 0.0f,
             matrixActivationPercent = 0.0f, matrixActivationSpeed = 0.0f,
             constructActivationPercent = 0.0f, constructActivationSpeed = 0.0f;
     private int
-            powerLevel = 0;
+            powerUsageSetting = 0;
     private CompoundTag storedConstruct = new CompoundTag();
     private ArrayList<MateriaItem> materiaTypesSorted = new ArrayList<>();
     private MateriaItem activeMateriaType = null;
@@ -212,6 +209,23 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         return new MirrorLabyrinthMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
+    public void packInventoryToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.MIRROR_LABYRINTH.get());
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.put("materiaStorage", packMateriaStorageToTag());
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
+        itemHandler.deserializeNBT(pInventoryTag);
+    }
+
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
@@ -250,7 +264,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
 
-        powerLevel = nbt.getByte("powerLevel");
+        powerUsageSetting = nbt.getByte("powerLevel");
 
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         redstonePaused = nbt.getBoolean("redstonePaused");
@@ -262,7 +276,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     public void saveAdditional(CompoundTag nbt) {
         nbt.put("construct", storedConstruct);
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putByte("powerLevel", (byte)powerLevel);
+        nbt.putByte("powerLevel", (byte) powerUsageSetting);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         super.saveAdditional(nbt);
@@ -278,7 +292,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         CompoundTag nbt = super.getUpdateTag();
         nbt.put("construct", storedConstruct);
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.putByte("powerLevel", (byte)powerLevel);
+        nbt.putByte("powerLevel", (byte) powerUsageSetting);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         super.saveAdditional(nbt);
@@ -747,28 +761,28 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     }
 
     public int getPowerUsageSetting() {
-        return this.powerLevel;
+        return this.powerUsageSetting;
     }
 
     public void incrementPowerUsageSetting() {
-        this.powerLevel = Math.min(this.powerLevel + 1, 5);
+        this.powerUsageSetting = Math.min(this.powerUsageSetting + 1, 5);
         this.setChanged();
     }
 
     public void decrementPowerUsageSetting() {
-        this.powerLevel = Math.max(this.powerLevel - 1, 0);
+        this.powerUsageSetting = Math.max(this.powerUsageSetting - 1, 0);
         this.setChanged();
     }
 
     public void setPowerUsageSetting(int pNewSetting) {
-        this.powerLevel = pNewSetting;
+        this.powerUsageSetting = pNewSetting;
         this.setChanged();
     }
 
     private static final float[] POWER_LEVEL_SCALARS = {0.5f, 0.6f, 0.7f, 0.8f, 0.9f};
     public int getEnergyConsumptionRate() {
         int drain = BASE_ENERGY_DRAIN;
-        for(int i=0; i<this.powerLevel; i++) {
+        for(int i = 0; i<this.powerUsageSetting; i++) {
             float scalar = (POWER_LEVEL_SCALARS[i] * 0.5f) + 1f;
             drain = Math.round((float)drain * scalar);
             drain = Math.round((float)drain / 100f);
@@ -785,7 +799,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     public int getEssentiaStorageLimit() {
         int limit = ServerConfig.materiaVesselEssentiaCapacity;
 
-        for(int i=0; i<this.powerLevel; i++) {
+        for(int i = 0; i<this.powerUsageSetting; i++) {
             float scalar = (POWER_LEVEL_SCALARS[i]) + 1f;
             limit = Math.round((float)limit * scalar);
             limit = Math.round((float)limit / 100f);

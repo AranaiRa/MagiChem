@@ -110,24 +110,31 @@ public abstract class AbstractMateriaStorageMultiTypeDynamicBlockEntity extends 
         return false;
     }
 
+    public CompoundTag packMateriaStorageToTag() {
+        CompoundTag materiaStorageTag = new CompoundTag();
+        for(MateriaItem materiaQuery : materiaStorage.keySet()) {
+            materiaStorageTag.putInt(materiaQuery.getMateriaName(), materiaStorage.get(materiaQuery));
+        }
+        return materiaStorageTag;
+    }
+
+    public void unpackMateriaStorageFromTag(CompoundTag nbt) {
+        materiaStorage.clear();
+        for(String query : nbt.getAllKeys()) {
+            materiaStorage.put(materiaMap.get(query), nbt.getInt(query));
+        }
+    }
+
     @Override
     public void load(CompoundTag nbt) {
         if(nbt.contains("materiaStorage")) {
-            materiaStorage.clear();
-            CompoundTag materiaStorageTag = nbt.getCompound("materiaStorage");
-            for(String query : materiaStorageTag.getAllKeys()) {
-                materiaStorage.put(materiaMap.get(query), materiaStorageTag.getInt(query));
-            }
+            unpackMateriaStorageFromTag(nbt.getCompound("materiaStorage"));
         }
     }
 
     @Override
     public void saveAdditional(CompoundTag nbt) {
-        CompoundTag materiaStorageTag = new CompoundTag();
-        for(MateriaItem materiaQuery : materiaStorage.keySet()) {
-            materiaStorageTag.putInt(materiaQuery.getMateriaName(), materiaStorage.get(materiaQuery));
-        }
-        nbt.put("materiaStorage", materiaStorageTag);
+        nbt.put("materiaStorage", packMateriaStorageToTag());
         super.saveAdditional(nbt);
     }
 

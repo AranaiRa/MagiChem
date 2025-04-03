@@ -511,6 +511,19 @@ public class TooltipLoreBlockItem extends BlockItem {
                             gcfbe.setPowerUsageSetting(nbt.getInt("powerUsageSetting"));
                         }
                     }
+                } else if (cachedItem == BlockRegistry.MIRROR_LABYRINTH.get().asItem()) {
+                    MirrorLabyrinthBlockEntity mlbe = (MirrorLabyrinthBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (mlbe != null) {
+                        if (nbt.contains("inventory")) {
+                            mlbe.unpackInventoryFromNBT((CompoundTag) nbt.get("inventory"));
+                        }
+                        if (nbt.contains("powerUsageSetting")) {
+                            mlbe.setPowerUsageSetting(nbt.getInt("powerUsageSetting"));
+                        }
+                        if (nbt.contains("materiaStorage")) {
+                            mlbe.unpackMateriaStorageFromTag(nbt.getCompound("materiaStorage"));
+                        }
+                    }
                 }
             }
             return result;
