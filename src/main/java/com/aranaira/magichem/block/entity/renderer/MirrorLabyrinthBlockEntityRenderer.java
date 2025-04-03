@@ -160,6 +160,12 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
             pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
         }
 
+        float xzScale = (float)Math.sin((((double)pBlockEntity.constructActivationPercent + (pPartialTick * pBlockEntity.constructActivationSpeed)) - 0.5) * 3.14159) * 0.5f + 0.5f;
+        float yScale = xzScale * 0.5f + 0.5f;
+        float yShift = (1 - xzScale) * (1 - xzScale) * - 3f;
+        pPoseStack.scale(xzScale, yScale, xzScale);
+        pPoseStack.translate(0, yShift, 0);
+
         if(pBlockEntity.renderData.size() > 0) {
             Pair<ResourceLocation, Vector3> currentPiece;
             int period = 360;
