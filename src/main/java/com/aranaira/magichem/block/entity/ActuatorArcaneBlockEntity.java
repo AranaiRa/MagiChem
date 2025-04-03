@@ -25,6 +25,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -521,6 +522,11 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         if(!itemHandler.getStackInSlot(SLOT_BOTTLES).isEmpty() && getLevel() != null) {
             ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemHandler.getStackInSlot(SLOT_BOTTLES));
             getLevel().addFreshEntity(ie);
+        }
+        int xpOrbSize = Math.round((float)(containedSlurry.getAmount() / ServerConfig.fluidPerXPPoint) * 0.95f);
+        if(xpOrbSize > 0) {
+            final ExperienceOrb experienceOrb = new ExperienceOrb(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), xpOrbSize);
+            getLevel().addFreshEntity(experienceOrb);
         }
     }
 
