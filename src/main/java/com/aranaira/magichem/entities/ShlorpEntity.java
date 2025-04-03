@@ -344,14 +344,14 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         BlockPos targetBlockPos = new BlockPos((int) Math.floor(actualTargetPos.x - 0.5), (int) Math.floor(actualTargetPos.y), (int) Math.floor(actualTargetPos.z - 0.5));
         BlockEntity be = this.level().getBlockEntity(targetBlockPos);
 
-        if (be instanceof IShlorpReceiver isr) {
-            isr.insertStackFromShlorp(stackInTransit);
-        } else if (fallback != null) {
+        if (fallback != null) {
             be = this.level().getBlockEntity(fallback);
 
             if (be instanceof IShlorpReceiver isr) {
                 isr.insertStackFromShlorp(stackInTransit);
             }
+        } else if (be instanceof IShlorpReceiver isr) {
+            isr.insertStackFromShlorp(stackInTransit);
         }
     }
 

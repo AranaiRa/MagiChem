@@ -44,6 +44,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
@@ -245,12 +246,14 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
             final CompoundTag markTag = markStack.getTag().getCompound("mark");
 
             BlockPos posQuery = new BlockPos(markTag.getInt("x"),markTag.getInt("y"),markTag.getInt("z"));
-            BlockEntity entityQuery = level.getBlockEntity(posQuery);
+            if(level.isLoaded(posQuery)) {
+                BlockEntity entityQuery = level.getBlockEntity(posQuery);
 
-            if(entityQuery instanceof MagicMirrorBlockEntity ||
-               entityQuery instanceof MirrorLabyrinthBlockEntity ||
-               entityQuery instanceof MirrorLabyrinthRouterBlockEntity) {
-                return entityQuery;
+                if (entityQuery instanceof MagicMirrorBlockEntity ||
+                        entityQuery instanceof MirrorLabyrinthBlockEntity ||
+                        entityQuery instanceof MirrorLabyrinthRouterBlockEntity) {
+                    return entityQuery;
+                }
             }
         }
 
@@ -283,6 +286,45 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
                         isInstant ? (0.375f + r.nextFloat() * 0.125f) : (0.120f + r.nextFloat() * 0.06f), 0.125f, pPayload.getCount() * 2 + 2, mi, pPayload.getCount(),
                         ShlorpParticleMode.INVERSE_ENTRY_TANGENT
                 );
+
+                if(isInstant)
+                    shlorp.setInstantPayload();
+
+                level.addFreshEntity(shlorp);
+            }
+        }
+    }
+
+    public void createShlorpFromTarget(ItemStack pPayload, boolean isInstant) {
+        BlockEntity beQuery = getMirrorTarget();
+        if(beQuery instanceof IShlorpReceiver isr && level != null) {
+            double theta = r.nextDouble() * Math.PI;
+
+            Vector3 origin = Vector3.zero(), tangent = Vector3.zero();
+            if(pPayload.getItem() instanceof MateriaItem mi) {
+                if (beQuery instanceof MagicMirrorBlockEntity mmbe) {
+                    origin = mmbe.getDefaultOriginAndTangent(mi).getFirst();
+                    tangent = mmbe.getDefaultOriginAndTangent(mi).getSecond();
+                } else if (beQuery instanceof MirrorLabyrinthBlockEntity mlbe) {
+                    origin = mlbe.getDefaultOriginAndTangent(mi).getFirst();
+                    tangent = mlbe.getDefaultOriginAndTangent(mi).getSecond();
+                } else if (beQuery instanceof MirrorLabyrinthRouterBlockEntity mlrbe) {
+                    origin = mlrbe.getDefaultOriginAndTangent(mi).getFirst();
+                    tangent = mlrbe.getDefaultOriginAndTangent(mi).getSecond();
+                }
+
+                Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+                BlockPos masterPos = getBlockPos().offset(facing.getNormal());
+
+                ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
+                shlorp.setPos(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
+                shlorp.configure(
+                        beQuery.getBlockPos(), origin, tangent,
+                        getBlockPos().above(), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(Math.cos(theta), r.nextFloat() - 0.5f, Math.sin(theta)).scale(3f),
+                        isInstant ? (0.375f + r.nextFloat() * 0.125f) : (0.120f + r.nextFloat() * 0.06f), 0.125f, pPayload.getCount() * 2 + 2, mi, pPayload.getCount(),
+                        ShlorpParticleMode.INVERSE_ENTRY_TANGENT
+                );
+                shlorp.setFallback(masterPos);
 
                 if(isInstant)
                     shlorp.setInstantPayload();

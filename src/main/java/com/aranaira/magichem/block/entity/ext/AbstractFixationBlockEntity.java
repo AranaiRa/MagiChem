@@ -5,6 +5,8 @@ import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.mojang.datafixers.util.Pair;
@@ -36,10 +38,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins, IFluidHandler {
+public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins, IFluidHandler, IMateriaProvisionRequester {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected LazyOptional<IFluidHandler> lazyFluidHandler;
@@ -153,6 +156,23 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                                     break;
                                 }
                             }
+                        }
+                    }
+                }
+                //importing
+                final Map<MateriaItem, Integer> provisioningNeeds = pEntity.getProvisioningNeeds();
+                if(provisioningNeeds != null && provisioningNeeds.size() > 0){
+                    if(ender.getMirrorTarget() instanceof AbstractMateriaStorageMultiTypeDynamicBlockEntity multi) {
+                        for (MateriaItem mi : provisioningNeeds.keySet()) {
+                            int requested = provisioningNeeds.get(mi);
+                            int inStorage = multi.getCurrentStock(mi);
+                            boolean instant = ender.getPowerLevel() == 3;
+
+                            int actualDrain = Math.min(requested, inStorage);
+                            multi.drain(mi, actualDrain, false);
+                            ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
+
+                            pEntity.setProvisioningInProgress(mi);
                         }
                     }
                 }
@@ -488,6 +508,40 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     @Override
     public @NotNull FluidStack drain(int i, FluidAction fluidAction) {
         return drain(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), i), fluidAction);
+    }
+
+    ////////////////////
+    // PROVISION HANDLING
+    ////////////////////
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        return false;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        return null;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+
     }
 
     ////////////////////
