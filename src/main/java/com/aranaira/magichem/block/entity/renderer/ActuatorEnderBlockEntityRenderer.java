@@ -49,9 +49,15 @@ public class ActuatorEnderBlockEntityRenderer implements BlockEntityRenderer<Act
         gt = (int)((pBlockEntity.getLevel().getGameTime()) % (period * 2));
         float swivelZ = (float)Math.sin(((double)(gt + pPartialTick) / (double)period) * Math.PI * 2) * 5f;
 
+        int baseRot = 0;
+        final Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        if(facing == Direction.EAST) baseRot = -90;
+        else if(facing == Direction.SOUTH) baseRot = 180;
+        else if(facing == Direction.WEST) baseRot = 90;
+
         pPoseStack.pushPose();
         pPoseStack.translate(0.5, 1.5, 0.5);
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(-90 + swivelY)); //TODO: Figure out aim vector towards mirror
+        pPoseStack.mulPose(Axis.YP.rotationDegrees(baseRot + swivelY)); //TODO: Figure out aim vector towards mirror
         pPoseStack.mulPose(Axis.XP.rotationDegrees(swivelX));
         pPoseStack.mulPose(Axis.ZP.rotationDegrees(swivelZ));
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_LOCATOR, pPoseStack, pPackedLight, pPackedOverlay);
