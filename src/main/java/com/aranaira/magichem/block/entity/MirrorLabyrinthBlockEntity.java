@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.MirrorLabyrinthBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeDynamicBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.*;
+import com.aranaira.magichem.foundation.enums.MirrorLabyrinthRouterType;
 import com.aranaira.magichem.gui.MirrorLabyrinthMenu;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
@@ -849,5 +850,32 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
             return super.insertStackFromShlorp(pStack);
 
         return pStack.getCount();
+    }
+
+    public void checkPaused() {
+        boolean shouldPause = false;
+        BlockPos myPos = getBlockPos();
+
+        for (Pair<BlockPos, MirrorLabyrinthRouterType> query : MirrorLabyrinthBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            for(Direction dir : Direction.values()) {
+                BlockPos posQuery = myPos.offset(query.getFirst()).offset(dir.getNormal());
+                BlockState stateQuery = getLevel().getBlockState(posQuery);
+                if(stateQuery.getBlock() != BlockRegistry.MIRROR_LABYRINTH.get() && stateQuery.getBlock() != BlockRegistry.MIRROR_LABYRINTH_ROUTER.get()) {
+                    int signal = getLevel().getBlockState(posQuery).getSignal(getLevel(), posQuery, dir);
+                    if (signal > 0) {
+                        shouldPause = true;
+                        break;
+                    }
+                }
+            }
+            if(shouldPause) break;
+        }
+
+        setPaused(shouldPause);
+    }
+
+    public void setPaused(boolean pNewPauseState) {
+        redstonePaused = pNewPauseState;
+        syncAndSave();
     }
 }

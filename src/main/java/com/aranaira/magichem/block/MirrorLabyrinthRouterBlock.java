@@ -62,6 +62,17 @@ public class MirrorLabyrinthRouterBlock extends BaseEntityBlock implements INoCr
         return new ItemStack(BlockRegistry.MIRROR_LABYRINTH.get());
     }
 
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be != null) {
+            if(be instanceof MirrorLabyrinthRouterBlockEntity router && router.getMaster() != null) {
+                router.getMaster().checkPaused();
+            }
+        }
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+    }
+
     public static int mapRouterTypeToInt(MirrorLabyrinthRouterType pRouterType) {
         if(pRouterType == null)
             return 0;
