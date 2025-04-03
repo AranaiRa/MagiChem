@@ -37,7 +37,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ", groupings of Essentia types that share similar themes.\n\n\nThe "
+            "text": ", groupings of Essentia types that share similar themes.\n\nThe "
           },
           {
             "text": "House of Elements",
@@ -86,7 +86,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ". In addition to their uses for alchemy, Essentia of the House of Elements can be burned in an Eldrin Fume Filter to generate small amounts of Eldrin power (though the bottle it's carried in is, unfortunately, destroyed in the process).\n\n\nThe "
+            "text": ". In addition to their uses for alchemy, Essentia of the House of Elements can be burned in an Eldrin Fume Filter to generate small amounts of Eldrin power (though the bottle it's carried in is, unfortunately, destroyed in the process).\n\nThe "
           },
           {
             "text": "House of Qualities",
@@ -156,7 +156,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\n\nThe "
+            "text": ".\n\nThe "
           },
           {
             "text": "House of Alchemy",
@@ -511,7 +511,8 @@
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -522,7 +523,8 @@
             "italic": true
           },
           {
-            "text": "\n\nThe three slots to the right of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nThe wavy lines below the alchemical Distillation symbol represent the device's current heat. A bright yellow-orange represents heat from a furnace, blast furnace, or smoker, while a dark red represents a passive heat source."
+            "text": "\n\nThe three slots to the right of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nThe wavy lines below the alchemical Distillation symbol represent the device's current heat. A bright yellow-orange represents heat from a furnace, blast furnace, or smoker, while a dark red represents a passive heat source.",
+            "italic": false
           }
         ]
       }
@@ -678,13 +680,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " in a straight line in the direction the alchemical circle is pointing (through the standing stone with a hole in it).\n\n\n\n\n\n"
+            "text": " in a straight line in the direction the alchemical circle is pointing (through the standing stone with a hole in it)."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -763,13 +766,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ". The amount of FE required can be controlled; higher FE usage results in faster fabrications.\n\n\n\n\n\n\n\n\n\n"
+            "text": ". The amount of FE required can be controlled; higher FE usage results in faster fabrications."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -1175,13 +1179,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " as a waste product.\n\n\n\n\n\n\n\n"
+            "text": " as a waste product."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Reprocessing"
+        "value": "Reprocessing",
+        "newPage": true
       },
       {
         "type": "text",
@@ -1250,13 +1255,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " as a waste product.\n\n\n\n\n"
+            "text": " as a waste product."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Reprocessing"
+        "value": "Reprocessing",
+        "newPage": true
       },
       {
         "type": "text",
@@ -1346,13 +1352,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " as a waste product.\n\n\n\n"
+            "text": " as a waste product."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Reprocessing"
+        "value": "Reprocessing",
+        "newPage": true
       },
       {
         "type": "text",
@@ -1428,13 +1435,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " as a waste product.\n\n\n\n"
+            "text": " as a waste product."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Reprocessing"
+        "value": "Reprocessing",
+        "newPage": true
       },
       {
         "type": "text",
@@ -1716,13 +1724,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " as many items per operation as other alchemical devices.\n\n\n\n\n\n\n\n"
+            "text": " as many items per operation as other alchemical devices."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -1735,7 +1744,8 @@
       },
       {
         "type": "title",
-        "value": "Comparator Support"
+        "value": "Comparator Support",
+        "newPage": true
       },
       {
         "type": "item",
@@ -1768,12 +1778,13 @@
             "color": "dark_purple"
           },
           {
-            "text": " is especially useful for interacting with a Centrifuge's comparator output.\n\n\n\n\n\n\n\n\n"
+            "text": " is especially useful for interacting with a Centrifuge's comparator output."
           },
           {
             "text": "2",
             "bold": true,
-            "color": "dark_red"
+            "color": "dark_red",
+            "newPage": true
           },
           {
             "text": ": Has input items.\n"
@@ -1936,26 +1947,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " in its tank for each operation. More complex admixtures require larger amounts of slurry than simpler Admixtures.\n\n\n\n\n\n\n\n\n\n\n\n"
+            "text": " in its tank for each operation. More complex admixtures require larger amounts of slurry than simpler Admixtures."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
         "value": "",
         "json": [
           {
-            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world.\n\n\n\n\n\n\n\n\n\n"
+            "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Comparator Support"
+        "value": "Comparator Support",
+        "newPage": true
       },
       {
         "type": "item",
@@ -2125,7 +2138,8 @@
       },
       {
         "type": "title",
-        "value": "Comparator Support"
+        "value": "Comparator Support",
+        "newPage": true
       },
       {
         "type": "item",
@@ -2248,13 +2262,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " to further enhance its speed. Admixture of Color acts as any dye and can be used to un-dye certain items. If the Variegator also has dye of a matching color, the process is further sped up based on how full the dye reservoir is. The dye is not consumed, only the Admixture of Color is.\n\n\n\n\n"
+            "text": " to further enhance its speed. Admixture of Color acts as any dye and can be used to un-dye certain items. If the Variegator also has dye of a matching color, the process is further sped up based on how full the dye reservoir is. The dye is not consumed, only the Admixture of Color is."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -2360,13 +2375,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " task on a Lodestar is necessary to search for materia in a zone).\n\n\n\n"
+            "text": " task on a Lodestar is necessary to search for materia in a zone)."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -2446,6 +2462,10 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/actuator_arcane"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/actuator_ender"
       }
     ]
   },
@@ -2470,13 +2490,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Earth Essentia and/or Earth Eldrin power. It must also be supplied with sand, some of which is consumed every operation.\n\nWhen the device the Quake Refinery is modifying finishes an operation, the Grime produced is reduced and stored inside the Refinery's impressively large internal buffer.\n\nA portion of the reduced Grime becomes Rarefied Waste instead of Alchemical Waste. The Quake Refinery doesn't need to be cleaned; waste can be directly extracted instead.\n\n\n\n\n\n\n\n"
+            "text": " is an Elemental Actuator that uses Earth Essentia and/or Earth Eldrin power. It must also be supplied with sand, some of which is consumed every operation.\n\nWhen the device the Quake Refinery is modifying finishes an operation, the Grime produced is reduced and stored inside the Refinery's impressively large internal buffer.\n\nA portion of the reduced Grime becomes Rarefied Waste instead of Alchemical Waste. The Quake Refinery doesn't need to be cleaned; waste can be directly extracted instead."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -2525,13 +2546,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Water Essentia and/or Water Eldrin power. It must also be supplied with water, some of which is consumed every operation.\n\nThe device the Deluge Purifier is modifying benefits from increased Efficiency.\n\n\n\n\n\n\n\n\n\n\n"
+            "text": " is an Elemental Actuator that uses Water Essentia and/or Water Eldrin power. It must also be supplied with water, some of which is consumed every operation.\n\nThe device the Deluge Purifier is modifying benefits from increased Efficiency."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -2585,13 +2607,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Fire Essentia and/or Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate a Distillery, Centrifuge, or Fusery.\n"
+            "text": " is an Elemental Actuator that uses Fire Essentia and/or Fire Eldrin power. It can optionally be given fuel items, which increases the device's effectiveness.\n\nWhen modifying an alchemical device that uses FE, the device's FE usage is decreased. Devices that don't use FE have their operation time reduced instead.\n\nAn Inferno Engine will also constantly operate a Distillery, Centrifuge, or Fusery."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -2666,13 +2689,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " (a byproduct of the Inferno Engine) in order to function. If set to the highest power setting, it must be supplied with both.\n\n\n"
+            "text": " (a byproduct of the Inferno Engine) in order to function. If set to the highest power setting, it must be supplied with both."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -2740,13 +2764,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " whenever the linked device completes an operation.\n\n\n\n\n\n"
+            "text": " whenever the linked device completes an operation."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -2769,6 +2794,96 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/actuator_arcane"
+      }
+    ]
+  },
+  "Labyrinthine Navigator": {
+    "index": "1306",
+    "category": "magichem",
+    "tier": 4,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Labyrinthine Navigator"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Labyrinthine Navigator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an Elemental Actuator that uses Ender Essentia and/or Arcane Eldrin Power.\n\nIt allows materia to be "
+          },
+          {
+            "text": "directly imported or exported",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from a "
+          },
+          {
+            "text": "Mirror Labyrinth",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or a "
+          },
+          {
+            "text": "Magic Mirror",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at exceptionally high speeds.\n\nHigher settings will cause the materia shlorps to "
+          },
+          {
+            "text": "violate the laws of causality",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", arriving at their destination before the stream of materia does, nearly instantaneously."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "GUI",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The leftmost gauge lets you tell the Labyrinthine Navigator how much Eldrin power to use each cycle. The elemental ender symbol to its right displays the amount of time remaining until more Eldrin power is consumed.\n\nTo the right of this, there is an item slot for a "
+          },
+          {
+            "text": "Rune of Marking",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that must be bound to either a Magic Mirror or a Mirror Labyrinth.\n\nThe rightmost area of the interface shows you how quickly materia will import and export, as well the amount of Eldrin power consumed each cycle."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/actuator_ender"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/mirror_labyrinth"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/magic_mirror"
       }
     ]
   },
@@ -3653,13 +3768,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " spell.\n\n\n\n\n\n\n"
+            "text": " spell."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -3677,7 +3793,8 @@
       },
       {
         "type": "title",
-        "value": "Comparator Support"
+        "value": "Comparator Support",
+        "newPage": true
       },
       {
         "type": "item",
@@ -3710,12 +3827,13 @@
             "color": "dark_purple"
           },
           {
-            "text": " is especially useful for interacting with a Distillery's comparator output.\n\n\n\n\n\n\n\n\n"
+            "text": " is especially useful for interacting with a Distillery's comparator output."
           },
           {
             "text": "1",
             "bold": true,
-            "color": "dark_red"
+            "color": "dark_red",
+            "newPage": true
           },
           {
             "text": ": Has fuel.\n"
@@ -4803,7 +4921,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "of Academic Slurry.\n\nYou can insert the orb into the sand slot of a Quake Refinery. It acts as an "
+            "text": " of Academic Slurry.\n\nYou can insert the orb into the sand slot of a Quake Refinery. It acts as an "
           },
           {
             "text": "infinite source",
@@ -5122,7 +5240,8 @@
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -5222,7 +5341,8 @@
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -5312,13 +5432,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " or more should be sufficient.\n"
+            "text": " or more should be sufficient."
           }
         ]
       },
       {
         "type": "title",
-        "value": "GUI"
+        "value": "GUI",
+        "newPage": true
       },
       {
         "type": "text",
@@ -5988,13 +6109,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\n\n"
+            "text": "."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Aggregating Signalite"
+        "value": "Aggregating Signalite",
+        "newPage": true
       },
       {
         "type": "item",
@@ -6013,13 +6135,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ", to a maximum of 15.\n\n\n\nUnlike most Signalite, spikes in normal transmitting mode will not transmit signals, only read them.\n\n\n\n\n\n\n\n"
+            "text": ", to a maximum of 15.\nUnlike most Signalite, spikes in normal transmitting mode will not transmit signals, only read them."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Burnishing Signalite"
+        "value": "Burnishing Signalite",
+        "newPage": true
       },
       {
         "type": "item",
@@ -6038,13 +6161,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nUnlike most Signalite, spikes in normal transmitting mode will not transmit signals, only read them.\n\n\n\n\n\n\n\n\n\n\n"
+            "text": ".\n\nUnlike most Signalite, spikes in normal transmitting mode will not transmit signals, only read them."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Chaotic Signalite"
+        "value": "Chaotic Signalite",
+        "newPage": true
       },
       {
         "type": "item",
@@ -6063,13 +6187,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " between 1 and the highest input strength it's currently receiving. The signal is re-randomized every time the block updates.\n\n\n\n\n\n\n\n\n\n\n"
+            "text": " between 1 and the highest input strength it's currently receiving. The signal is re-randomized every time the block updates."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Devouring Signalite"
+        "value": "Devouring Signalite",
+        "newPage": true
       },
       {
         "type": "item",
@@ -6088,13 +6213,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " to the target signal strength.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster.\n\n\n\n\n\n\n\n\n\n\n"
+            "text": " to the target signal strength.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Equating Signalite"
+        "value": "Equating Signalite",
+        "newPage": true
       },
       {
         "type": "item",
@@ -6113,13 +6239,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " if and only if the input strength matches its signal target.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster.\n\n\n\n\n\n\n"
+            "text": " if and only if the input strength matches its signal target.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Gatekeeping Signalite"
+        "value": "Gatekeeping Signalite",
+        "newPage": true
       },
       {
         "type": "item",
@@ -6138,13 +6265,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " that are greater than or equal to its signal target to transmit.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster.\n\n\n\n\n\n\n\n\n"
+            "text": " that are greater than or equal to its signal target to transmit.\n\nTarget signal strength can be set by right clicking the center of the Signalite cluster."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Meticulous Signalite"
+        "value": "Meticulous Signalite",
+        "newPage": true
       },
       {
         "type": "item",
@@ -6177,13 +6305,14 @@
             "color": "dark_red"
           },
           {
-            "text": " if the bit is 0.\n\nWhich bit to read can be set by right clicking the center of the Signalite cluster.\n\n\n\n\n"
+            "text": " if the bit is 0.\n\nWhich bit to read can be set by right clicking the center of the Signalite cluster."
           }
         ]
       },
       {
         "type": "title",
-        "value": "Negating Signalite"
+        "value": "Negating Signalite",
+        "newPage": true
       },
       {
         "type": "item",
