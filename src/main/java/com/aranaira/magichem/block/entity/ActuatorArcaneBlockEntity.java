@@ -507,7 +507,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     public @NotNull FluidStack drain(int maxDrain, FluidAction fluidAction) {
         if(containedSlurry.getAmount() > 0)
             setChanged();
-        return drain(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), maxDrain), fluidAction);
+        return drain(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), Math.min(containedSlurry.getAmount(), maxDrain)), fluidAction);
     }
 
     public static Affinity getAffinity(Void v) {
