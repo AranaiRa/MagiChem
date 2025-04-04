@@ -7,7 +7,7 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.GrandFuseryButtonRecipeSelector;
-import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
+import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.networking.GrandDeviceSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -162,7 +162,7 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
     public void setActiveRecipe(int index) {
         int trueIndex = recipeFilterRow*3 + index;
         if(trueIndex < filteredRecipes.size()) {
-            PacketRegistry.sendToServer(new FuserySyncDataC2SPacket(
+            PacketRegistry.sendToServer(new DeviceRecipeSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     filteredRecipes.get(trueIndex).getItem()
             ));

@@ -4,6 +4,8 @@ import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mojang.datafixers.util.Pair;
@@ -32,9 +34,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
-public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins {
+public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins, IMateriaProvisionRequester {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
@@ -43,6 +46,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
+    protected FixationSeparationRecipe currentRecipe;
 
     ////////////////////
     // CONSTRUCTOR
@@ -143,6 +147,25 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                         }
                     }
                 }
+                //importing
+                final Map<MateriaItem, Integer> provisioningNeeds = pEntity.getProvisioningNeeds();
+                if(provisioningNeeds != null && provisioningNeeds.size() > 0){
+                    if(ender.getMirrorTarget() instanceof AbstractMateriaStorageMultiTypeDynamicBlockEntity multi) {
+                        for (MateriaItem mi : provisioningNeeds.keySet()) {
+                            int requested = provisioningNeeds.get(mi);
+                            int inStorage = multi.getCurrentStock(mi);
+                            boolean instant = ender.getPowerLevel() == 3;
+
+                            int actualDrain = Math.min(requested, inStorage);
+                            if(actualDrain > 0) {
+                                multi.drain(mi, actualDrain, false);
+                                ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
+
+                                pEntity.setProvisioningInProgress(mi);
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -164,13 +187,12 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             int processingSlot = processing.getFirst();
             ItemStack processingItem = processing.getSecond();
 
-            FixationSeparationRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
-            if (processingItem != ItemStack.EMPTY && recipe != null) {
-                if (canCraftItem(pEntity, recipe, pVarFunc)) {
+            if (processingItem != ItemStack.EMPTY && pEntity.currentRecipe != null) {
+                if (canCraftItem(pEntity, pVarFunc)) {
 
                     if (pEntity.progress > operationTicks) {
                         if (!pLevel.isClientSide()) {
-                            craftItem(pEntity, recipe, processingSlot, pVarFunc);
+                            craftItem(pEntity, processingSlot, pVarFunc);
                         }
                         if (!pEntity.isStalled)
                             pEntity.resetProgress();
@@ -220,7 +242,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     }
 
     public SimpleContainer getContentsOfInputSlots() {
-        return getContentsOfOutputSlots(AbstractSeparationBlockEntity::getVar);
+        return getContentsOfInputSlots(AbstractSeparationBlockEntity::getVar);
     }
 
     public SimpleContainer getContentsOfInputSlots(Function<IDs, Integer> pVarFunc) {
@@ -259,37 +281,28 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     // RECIPE HANDLING
     ////////////////////
 
-    protected static FixationSeparationRecipe getRecipeInSlot(AbstractSeparationBlockEntity pEntity, int pSlot) {
-        Level level = pEntity.level;
-
-        FixationSeparationRecipe recipe = FixationSeparationRecipe.getSeparatingRecipe(level, pEntity.itemHandler.getStackInSlot(pSlot));
-
-        if(recipe != null) {
-            return recipe;
-        }
-
-        return null;
-    }
-
-    protected static boolean canCraftItem(AbstractSeparationBlockEntity entity, FixationSeparationRecipe recipe, Function<IDs, Integer> pVarFunc) {
-        if(entity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT)).getCount() == 64)
+    protected static boolean canCraftItem(AbstractSeparationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
+        //Can't craft if there's no set recipe
+        if(pEntity.currentRecipe == null)
             return false;
 
-        SimpleContainer cont = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
-        for(int i=pVarFunc.apply(IDs.SLOT_OUTPUT_START); i<pVarFunc.apply(IDs.SLOT_OUTPUT_START)+pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
-            cont.setItem(i-pVarFunc.apply(IDs.SLOT_OUTPUT_START), entity.itemHandler.getStackInSlot(i).copy());
-        }
+        //Can't craft if the bottle output is full
+        if(pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT)).getCount() == 64)
+            return false;
 
-        for(int i=0; i<recipe.getComponentMateria().size(); i++) {
-            if(!cont.canAddItem(recipe.getComponentMateria().get(i).copy()))
+        //Check to see if the output area has space to add the item
+        SimpleContainer output = pEntity.getContentsOfOutputSlots(pVarFunc);
+        for(ItemStack component : pEntity.currentRecipe.getComponentMateria()) {
+            ItemStack result = output.addItem(component);
+            if(!result.isEmpty()) {
                 return false;
-            cont.addItem(recipe.getComponentMateria().get(i).copy());
+            }
         }
 
         return true;
     }
 
-    protected static void craftItem(AbstractSeparationBlockEntity pEntity, FixationSeparationRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
+    protected static void craftItem(AbstractSeparationBlockEntity pEntity, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
         int bottlesToInsert = 0;
 
         SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
@@ -301,10 +314,10 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         int craftLimit = Math.min(pEntity.batchSize, pEntity.itemHandler.getStackInSlot(pProcessingSlot).getCount());
         for(int batch=0; batch< craftLimit; batch++) {
             totalCycles++;
-            if (!canCraftItem(pEntity, pRecipe, pVarFunc)) {
+            if (!canCraftItem(pEntity, pVarFunc)) {
                 break;
             }
-            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), AbstractSeparationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pEntity.currentRecipe.getComponentMateria(), AbstractSeparationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc), 1.0f, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
             int grimeToAdd = Math.round(pair.getFirst());
             NonNullList<ItemStack> componentMateria = pair.getSecond();
 
@@ -452,6 +465,10 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         return 0;
     }
 
+    public ItemStack getRecipeItem(Function<IDs, Integer> pVarFunc) {
+        return itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE));
+    }
+
     ////////////////////
     // ACTUATOR HANDLING
     ////////////////////
@@ -508,7 +525,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     }
 
     public enum IDs {
-        SLOT_BOTTLES, SLOT_BOTTLES_OUTPUT, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT,
+        SLOT_BOTTLES, SLOT_BOTTLES_OUTPUT, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT, SLOT_RECIPE,
         CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_GRIME_ON_SUCCESS, CONFIG_GRIME_ON_FAILURE,
         MODE_USES_RF,
         CONFIG_NO_TORQUE_GRACE_PERIOD, CONFIG_TORQUE_GAIN_ON_ACTIVATION, CONFIG_ANIMUS_GAIN_ON_DUSTING,

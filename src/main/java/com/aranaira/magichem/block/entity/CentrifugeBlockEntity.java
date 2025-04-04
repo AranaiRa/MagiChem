@@ -13,6 +13,7 @@ import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.gui.CentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -48,8 +49,8 @@ import java.util.function.Function;
 
 public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
     public static final int
-        SLOT_COUNT = 14,
-        SLOT_BOTTLES = 13, SLOT_BOTTLES_OUTPUT = 0,
+        SLOT_COUNT = 15,
+        SLOT_BOTTLES = 13, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 14,
         SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 3,
         SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 9,
         GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 24,
@@ -87,6 +88,8 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             
             @Override
             protected void onContentsChanged(int slot) {
+                if(slot == SLOT_RECIPE)
+                    currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, getStackInSlot(SLOT_RECIPE));
                 setChanged();
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
                     isStalled = false;
@@ -99,9 +102,15 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                     return stack.getItem() == Items.GLASS_BOTTLE || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                 if(slot == SLOT_BOTTLES_OUTPUT)
                     return false;
-                if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
-                    return stack.getItem() instanceof AdmixtureItem;
+                if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(currentRecipe != null) {
+                        return stack.getItem() == currentRecipe.getResultAdmixture().getItem();
+                    }
+                    return false;
+                }
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
+                    return false;
+                if(slot == SLOT_RECIPE)
                     return false;
 
                 return super.isItemValid(slot, stack);
@@ -331,6 +340,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
+            case SLOT_RECIPE -> SLOT_RECIPE;
 
             case DATA_PROGRESS -> DATA_PROGRESS;
             case DATA_GRIME -> DATA_GRIME;
@@ -421,12 +431,65 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         CentrifugeBlock.destroyRouters(getLevel(), getBlockPos(), getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
     }
 
+    public void setRecipeByOutput(ItemStack pRecipeOutput) {
+        itemHandler.setStackInSlot(SLOT_RECIPE, pRecipeOutput.copy());
+        getCurrentRecipe();
+        if(currentRecipe != null) {
+            if(!level.isClientSide()) {
+                getCurrentRecipe();
+
+                if (currentRecipe != null) {
+                    ItemStack[] componentMateria = new ItemStack[5];
+                    currentRecipe.getComponentMateria().toArray(componentMateria);
+
+                    for(int i=0; i<SLOT_INPUT_COUNT; i++) {
+                        if(componentMateria[i/2] != null) {
+                            if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
+                                ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                                if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+//                                    materiaToVent = materiaToVent | (1 << i);
+                                    itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                    continue;
+                                }
+                            }
+                        } else {
+                            ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+//                                materiaToVent = materiaToVent | (1 << i);
+                                itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                continue;
+                            }
+                        }
+//                        materiaToVent = materiaToVent & ~(1 << i);
+                    }
+                }
+            }
+        }
+        syncAndSave();
+    }
+
+    @Nullable
+    public FixationSeparationRecipe getCurrentRecipe() {
+        if(currentRecipe == null) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            }
+        } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            }
+        }
+
+        return currentRecipe;
+    }
+
     ////////////////////
     // PROVISIONING AND SHLORPS
     ////////////////////
 
     private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
-    private static final List<AdmixtureItem> admixtureList = ItemRegistry.getAdmixtures();
 
     @Override
     public boolean allowIncreasedDeliverySize() {
@@ -451,14 +514,10 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
         Map<MateriaItem, Integer> result = new HashMap<>();
 
-        for (AdmixtureItem ai : admixtureList) {
-            if(!activeProvisionRequests.contains(ai))
-                result.put(ai, 1);
-        }
-
-        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
-            if(!itemHandler.getStackInSlot(i).isEmpty())
-                result.remove((MateriaItem)itemHandler.getStackInSlot(i).getItem());
+        if(currentRecipe != null) {
+            if (!activeProvisionRequests.contains((MateriaItem) currentRecipe.getResultAdmixture().getItem())) {
+                result.put((MateriaItem) currentRecipe.getResultAdmixture().getItem(), 1);
+            }
         }
 
         return result;

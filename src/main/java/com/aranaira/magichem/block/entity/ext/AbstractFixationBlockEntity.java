@@ -169,10 +169,12 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                             boolean instant = ender.getPowerLevel() == 3;
 
                             int actualDrain = Math.min(requested, inStorage);
-                            multi.drain(mi, actualDrain, false);
-                            ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
+                            if(actualDrain > 0) {
+                                multi.drain(mi, actualDrain, false);
+                                ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
 
-                            pEntity.setProvisioningInProgress(mi);
+                                pEntity.setProvisioningInProgress(mi);
+                            }
                         }
                     }
                 }

@@ -40,7 +40,7 @@ import java.util.Map;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_CENTRIFUGE;
 
-public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester, IShlorpReceiver {
     private BlockPos masterPos;
     private GrandCentrifugeBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -273,5 +273,19 @@ public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEff
         if(master == null) return false;
 
         return master.needsSorting();
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(getMaster() == null) return 0;
+
+        return master.canAcceptStackFromShlorp(pStack);
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        if(getMaster() == null) return 0;
+
+        return master.insertStackFromShlorp(pStack);
     }
 }

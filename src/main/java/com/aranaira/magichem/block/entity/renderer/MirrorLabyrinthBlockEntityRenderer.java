@@ -223,7 +223,7 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
 
                         pPoseStack.pushPose();
                         pPoseStack.scale(0.5f, 0.5f, 0.5f);
-                        pPoseStack.translate(-1.825, 3.0, -0.0625);
+                        pPoseStack.translate(-1.825, 3.0, -0.0125);
                         pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
                         RenderUtils.generateMagicCircleRing(Vector3.zero(),
                                 7, 0.75f, 0.375f, -circleRot, circleTexture,
@@ -253,7 +253,7 @@ public class MirrorLabyrinthBlockEntityRenderer implements BlockEntityRenderer<M
 
                         pPoseStack.pushPose();
                         pPoseStack.scale(0.5f, 0.5f, 0.5f);
-                        pPoseStack.translate(1.825, 3.0, -0.0625);
+                        pPoseStack.translate(1.825, 3.0, -0.0125);
                         pPoseStack.mulPose(Axis.XP.rotationDegrees(180));
                         RenderUtils.generateMagicCircleRing(Vector3.zero(),
                                 7, 0.75f, 0.375f, -circleRot, circleTexture,

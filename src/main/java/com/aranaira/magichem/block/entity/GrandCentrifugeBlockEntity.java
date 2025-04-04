@@ -13,6 +13,7 @@ import com.aranaira.magichem.foundation.enums.GrandCentrifugeRouterType;
 import com.aranaira.magichem.gui.GrandCentrifugeMenu;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -62,8 +63,8 @@ import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COL
 
 public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
     public static final int
-        SLOT_COUNT = 26,
-        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1,
+        SLOT_COUNT = 27,
+        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1, SLOT_RECIPE = 26,
         SLOT_INPUT_START = 2, SLOT_INPUT_COUNT = 6,
         SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 67, GUI_HEAT_GAUGE_HEIGHT = 16,
@@ -115,6 +116,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
             @Override
             protected void onContentsChanged(int slot) {
+                if(slot == SLOT_RECIPE)
+                    currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, getStackInSlot(SLOT_RECIPE));
                 setChanged();
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
                     isStalled = false;
@@ -127,8 +130,12 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                     return stack.getItem() == Items.GLASS_BOTTLE || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
                 if (slot == SLOT_BOTTLES_OUTPUT)
                     return stack.getItem() == Items.GLASS_BOTTLE;
-                if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT)
-                    return stack.getItem() instanceof MateriaItem;
+                if (slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
+                    if(currentRecipe != null) {
+                        return stack.getItem() == currentRecipe.getResultAdmixture().getItem();
+                    }
+                    return false;
+                }
                 if (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
                     return false;
 
@@ -430,6 +437,60 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         wheelAngle = (wheelAngle + wheelSpeed) % 360f;
     }
 
+    public void setRecipeByOutput(ItemStack pRecipeOutput) {
+        itemHandler.setStackInSlot(SLOT_RECIPE, pRecipeOutput.copy());
+        getCurrentRecipe();
+        if(currentRecipe != null) {
+            if(!level.isClientSide()) {
+                getCurrentRecipe();
+
+                if (currentRecipe != null) {
+                    ItemStack[] componentMateria = new ItemStack[5];
+                    currentRecipe.getComponentMateria().toArray(componentMateria);
+
+                    for(int i=0; i<SLOT_INPUT_COUNT; i++) {
+                        if(componentMateria[i/2] != null) {
+                            if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
+                                ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                                if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+//                                    materiaToVent = materiaToVent | (1 << i);
+                                    itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                    continue;
+                                }
+                            }
+                        } else {
+                            ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+//                                materiaToVent = materiaToVent | (1 << i);
+                                itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                                continue;
+                            }
+                        }
+//                        materiaToVent = materiaToVent & ~(1 << i);
+                    }
+                }
+            }
+        }
+        syncAndSave();
+    }
+
+    @Nullable
+    public FixationSeparationRecipe getCurrentRecipe() {
+        if(currentRecipe == null) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            }
+        } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
+            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
+            if(!stackInSlot.isEmpty()) {
+                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            }
+        }
+
+        return currentRecipe;
+    }
+
     ////////////////////
     // POWER
     ////////////////////
@@ -640,6 +701,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
+            case SLOT_RECIPE -> SLOT_RECIPE;
 
             case DATA_PROGRESS -> DATA_PROGRESS;
             case DATA_GRIME -> DATA_GRIME;
@@ -676,7 +738,6 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     ////////////////////
 
     private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
-    private static final List<AdmixtureItem> admixtureList = ItemRegistry.getAdmixtures();
 
     @Override
     public boolean allowIncreasedDeliverySize() {
@@ -701,14 +762,21 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
         Map<MateriaItem, Integer> result = new HashMap<>();
 
-        for (AdmixtureItem ai : admixtureList) {
-            if(!activeProvisionRequests.contains(ai))
-                result.put(ai, 1);
-        }
+        if(currentRecipe != null) {
+            boolean requestInTransit = activeProvisionRequests.contains((MateriaItem) currentRecipe.getResultAdmixture().getItem());
 
-        for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
-            if(!itemHandler.getStackInSlot(i).isEmpty())
-                result.remove((MateriaItem)itemHandler.getStackInSlot(i).getItem());
+            boolean itemInInputs = false;
+            final SimpleContainer inputs = getContentsOfInputSlots(GrandCentrifugeBlockEntity::getVar);
+            for(int i=0; i<inputs.getContainerSize(); i++) {
+                if(inputs.getItem(i).getItem() == currentRecipe.getResultAdmixture().getItem()) {
+                    itemInInputs = true;
+                    break;
+                }
+            }
+
+            if (!requestInTransit && !itemInInputs) {
+                result.put((MateriaItem) currentRecipe.getResultAdmixture().getItem(), 1);
+            }
         }
 
         return result;

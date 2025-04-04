@@ -6,7 +6,7 @@ import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
-import com.aranaira.magichem.networking.FuserySyncDataC2SPacket;
+import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -154,7 +154,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     public void setActiveRecipe(int index) {
         int trueIndex = recipeFilterRow*3 + index;
         if(trueIndex < filteredRecipes.size()) {
-            PacketRegistry.sendToServer(new FuserySyncDataC2SPacket(
+            PacketRegistry.sendToServer(new DeviceRecipeSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
                     filteredRecipes.get(trueIndex).getItem()
             ));

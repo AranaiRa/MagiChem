@@ -96,6 +96,9 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                     item.removeTagKey("CustomModelData");
                     return item;
                 }
+                else if(slot == SLOT_RECIPE) {
+                    return ItemStack.EMPTY;
+                }
 
                 return super.extractItem(slot, amount, simulate);
             }

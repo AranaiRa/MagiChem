@@ -35,10 +35,10 @@ public class PacketRegistry {
                 .consumerMainThread(FabricationSyncDataC2SPacket::handle)
                 .add();
 
-        net.messageBuilder(FuserySyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(FuserySyncDataC2SPacket::new)
-                .encoder(FuserySyncDataC2SPacket::toBytes)
-                .consumerMainThread(FuserySyncDataC2SPacket::handle)
+        net.messageBuilder(DeviceRecipeSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(DeviceRecipeSyncDataC2SPacket::new)
+                .encoder(DeviceRecipeSyncDataC2SPacket::toBytes)
+                .consumerMainThread(DeviceRecipeSyncDataC2SPacket::handle)
                 .add();
 
         net.messageBuilder(ActuatorSyncPowerLevelC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)

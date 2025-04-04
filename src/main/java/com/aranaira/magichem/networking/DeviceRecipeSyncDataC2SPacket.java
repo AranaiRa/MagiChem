@@ -1,6 +1,8 @@
 package com.aranaira.magichem.networking;
 
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
+import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,16 +14,16 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class FuserySyncDataC2SPacket {
+public class DeviceRecipeSyncDataC2SPacket {
     private final BlockPos blockPos;
     private final Item recipeItem;
 
-    public FuserySyncDataC2SPacket(BlockPos pBlockPos, Item pRecipeItem) {
+    public DeviceRecipeSyncDataC2SPacket(BlockPos pBlockPos, Item pRecipeItem) {
         this.blockPos = pBlockPos;
         this.recipeItem = pRecipeItem;
     }
 
-    public FuserySyncDataC2SPacket(FriendlyByteBuf buf) {
+    public DeviceRecipeSyncDataC2SPacket(FriendlyByteBuf buf) {
         this.blockPos = buf.readBlockPos();
         this.recipeItem = buf.readItem().getItem();
     }
@@ -46,6 +48,12 @@ public class FuserySyncDataC2SPacket {
             }
             else if(entity instanceof GrandFuseryBlockEntity gfbe) {
                 gfbe.setRecipeByOutput(new ItemStack(recipeItem));
+            }
+            else if(entity instanceof CentrifugeBlockEntity cbe) {
+                cbe.setRecipeByOutput(new ItemStack(recipeItem));
+            }
+            else if(entity instanceof GrandCentrifugeBlockEntity gcbe) {
+                gcbe.setRecipeByOutput(new ItemStack(recipeItem));
             }
         });
 

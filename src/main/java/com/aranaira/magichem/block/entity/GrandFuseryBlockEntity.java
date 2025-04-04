@@ -126,6 +126,9 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     item.removeTagKey("CustomModelData");
                     return item;
                 }
+                else if(slot == SLOT_RECIPE) {
+                    return ItemStack.EMPTY;
+                }
 
                 return super.extractItem(slot, amount, simulate);
             }
