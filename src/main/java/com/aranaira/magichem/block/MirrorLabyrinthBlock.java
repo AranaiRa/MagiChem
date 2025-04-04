@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEnti
 import com.aranaira.magichem.foundation.enums.MirrorLabyrinthRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.util.MathHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -25,6 +27,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,6 +41,10 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUT
 import static com.aranaira.magichem.foundation.enums.MirrorLabyrinthRouterType.*;
 
 public class MirrorLabyrinthBlock extends BaseEntityBlock {
+    public static final VoxelShape
+            VOXEL_SHAPE_BASE, VOXEL_SHAPE_BODY, VOXEL_SHAPE_DAIS_CONNECTOR,
+            VOXEL_SHAPE_AGGREGATE_NS, VOXEL_SHAPE_AGGREGATE_EW;
+
     public MirrorLabyrinthBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -119,7 +128,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             offsets.add(new Pair<>(origin.north().north().east(), RIGHT_BACK));
             offsets.add(new Pair<>(origin.north().above(), CONSTRUCT_LOWER));
             offsets.add(new Pair<>(origin.north().above().above(), CONSTRUCT_UPPER));
-            offsets.add(new Pair<>(origin.north().offset(0,3,0), MATRIX_UPPER));
+            offsets.add(new Pair<>(origin.north().offset(0,3,0), MATRIX_LOWER));
             offsets.add(new Pair<>(origin.north().offset(0,4,0), MATRIX_UPPER));
         } else if(pFacing == Direction.SOUTH) {
             offsets.add(new Pair<>(origin.north(), DAIS));
@@ -132,7 +141,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             offsets.add(new Pair<>(origin.south().south().west(), RIGHT_BACK));
             offsets.add(new Pair<>(origin.south().above(), CONSTRUCT_LOWER));
             offsets.add(new Pair<>(origin.south().above().above(), CONSTRUCT_UPPER));
-            offsets.add(new Pair<>(origin.south().offset(0,3,0), MATRIX_UPPER));
+            offsets.add(new Pair<>(origin.south().offset(0,3,0), MATRIX_LOWER));
             offsets.add(new Pair<>(origin.south().offset(0,4,0), MATRIX_UPPER));
         } else if(pFacing == Direction.EAST) {
             offsets.add(new Pair<>(origin.west(), DAIS));
@@ -145,7 +154,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             offsets.add(new Pair<>(origin.east().east().south(), RIGHT_BACK));
             offsets.add(new Pair<>(origin.east().above(), CONSTRUCT_LOWER));
             offsets.add(new Pair<>(origin.east().above().above(), CONSTRUCT_UPPER));
-            offsets.add(new Pair<>(origin.east().offset(0,3,0), MATRIX_UPPER));
+            offsets.add(new Pair<>(origin.east().offset(0,3,0), MATRIX_LOWER));
             offsets.add(new Pair<>(origin.east().offset(0,4,0), MATRIX_UPPER));
         } else if(pFacing == Direction.WEST) {
             offsets.add(new Pair<>(origin.east(), DAIS));
@@ -158,7 +167,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             offsets.add(new Pair<>(origin.west().west().north(), RIGHT_BACK));
             offsets.add(new Pair<>(origin.west().above(), CONSTRUCT_LOWER));
             offsets.add(new Pair<>(origin.west().above().above(), CONSTRUCT_UPPER));
-            offsets.add(new Pair<>(origin.west().offset(0,3,0), MATRIX_UPPER));
+            offsets.add(new Pair<>(origin.west().offset(0,3,0), MATRIX_LOWER));
             offsets.add(new Pair<>(origin.west().offset(0,4,0), MATRIX_UPPER));
         }
         return offsets;
@@ -195,5 +204,42 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide());
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        BlockState state = pLevel.getBlockState(pPos);
+
+        if (state.getBlock() == BlockRegistry.MIRROR_LABYRINTH.get()) {
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+            //Again, switch statements always default here and I have no idea why
+            if (facing == Direction.NORTH || facing == Direction.SOUTH) {
+                return VOXEL_SHAPE_AGGREGATE_NS;
+            }
+            else if (facing == Direction.EAST || facing == Direction.WEST) {
+                return VOXEL_SHAPE_AGGREGATE_EW;
+            }
+        }
+
+        return MirrorLabyrinthRouterBlock.VOXEL_SHAPE_DEFAULT;
+    }
+
+    static {
+        VOXEL_SHAPE_BASE = Block.box(0, 0, 0, 16, 7, 16);
+        VOXEL_SHAPE_BODY = Block.box(0, 7, 7.1, 16, 16, 16);
+        VOXEL_SHAPE_DAIS_CONNECTOR = Block.box(5, 7, 0, 11, 14, 16);
+
+        VOXEL_SHAPE_AGGREGATE_NS = Shapes.or(
+                VOXEL_SHAPE_BASE,
+                VOXEL_SHAPE_BODY,
+                VOXEL_SHAPE_DAIS_CONNECTOR
+        );
+
+        VOXEL_SHAPE_AGGREGATE_EW = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_CONNECTOR, 2)
+        );
     }
 }
