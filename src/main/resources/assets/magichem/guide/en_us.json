@@ -3637,6 +3637,63 @@
             "text": " in more than one of its component jars."
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Materia Jars (but not Materia Jar Quads) support measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": ".\nThe output strength is based on "
+          },
+          {
+            "text": "the jar's contents",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". An empty jar outputs a signal strength of "
+          },
+          {
+            "text": "0",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": " and a jar with contents will output a signal strength between "
+          },
+          {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ", scaling linearly with how full the jar is."
+          }
+        ]
       }
     ],
     "related_recipes": [
@@ -3693,6 +3750,63 @@
           },
           {
             "text": "—the contents of Materia Jars will not be kept in the upgrading process, so make sure to empty them out first."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Materia Vessels support measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": ".\nThe output strength is based on "
+          },
+          {
+            "text": "the vessel's contents",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". An empty vessel outputs a signal strength of "
+          },
+          {
+            "text": "0",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": " and a vessel with contents will output a signal strength between "
+          },
+          {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ", scaling linearly with how full the vessel is."
           }
         ]
       }
