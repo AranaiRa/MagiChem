@@ -330,6 +330,15 @@ public class GrandCentrifugeBlock extends BaseEntityBlock implements ISpellInter
         return 0;
     }
 
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandCentrifugeBlockEntity gcbe) {
+            gcbe.checkPaused();
+        }
+
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+    }
+
     static {
         VOXEL_SHAPE_ERROR = Block.box(4, 4, 4, 12, 12, 12);
 

@@ -610,10 +610,32 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return insert;
     }
 
-    public void setRedstonePaused(boolean pPaused) {
-        redstonePaused = pPaused;
+    public void checkPaused() {
+        boolean shouldPause = false;
+        BlockPos myPos = getBlockPos();
+
+        for (Triplet<BlockPos, Integer, DevicePlugDirection> query : GrandCircleFabricationBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            for(Direction dir : Direction.values()) {
+                BlockPos posQuery = myPos.offset(query.getFirst()).offset(dir.getNormal());
+                BlockState stateQuery = getLevel().getBlockState(posQuery);
+                if(stateQuery.getBlock() != BlockRegistry.GRAND_CIRCLE_FABRICATION.get() && stateQuery.getBlock() != BlockRegistry.GRAND_CIRCLE_FABRICATION_ROUTER.get()) {
+                    int signal = getLevel().getBlockState(posQuery).getSignal(getLevel(), posQuery, dir);
+                    if (signal > 0) {
+                        shouldPause = true;
+                        break;
+                    }
+                }
+            }
+            if(shouldPause) break;
+        }
+
+        setPaused(shouldPause);
+    }
+
+    public void setPaused(boolean pNewPauseState) {
+        redstonePaused = pNewPauseState;
         for (AbstractDirectionalPluginBlockEntity pluginDevice : pluginDevices) {
-            pluginDevice.setPaused(pPaused);
+            pluginDevice.setPaused(pNewPauseState);
         }
         syncAndSave();
     }

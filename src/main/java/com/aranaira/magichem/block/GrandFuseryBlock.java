@@ -346,6 +346,15 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
         return 0;
     }
 
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandFuseryBlockEntity gfbe) {
+            gfbe.checkPaused();
+        }
+
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+    }
+
     static {
         VOXEL_SHAPE_ERROR = Block.box(4, 4, 4, 12, 12, 12);
 

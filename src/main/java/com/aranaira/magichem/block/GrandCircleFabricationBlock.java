@@ -205,6 +205,15 @@ public class GrandCircleFabricationBlock extends BaseEntityBlock {
                 GrandCircleFabricationBlockEntity::tick);
     }
 
+    @Override
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandCircleFabricationBlockEntity gcfbe) {
+            gcfbe.checkPaused();
+        }
+
+        super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
+    }
+
     static {
         VOXEL_SHAPE_BASE = Block.box(0, 0, 0, 16, 15, 16);
         VOXEL_SHAPE_HOLE = Block.box(4, 15, 4, 12, 16, 12);

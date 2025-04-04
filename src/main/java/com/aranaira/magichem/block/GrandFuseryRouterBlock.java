@@ -268,22 +268,8 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
 
     @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
-        BlockState state = pLevel.getBlockState(pNeighborPos);
-
-        if(state.hasProperty(BlockStateProperties.POWERED)) {
-            boolean powered = state.getValue(BlockStateProperties.POWERED);
-            BlockEntity be = pLevel.getBlockEntity(pPos);
-            if(be instanceof GrandFuseryRouterBlockEntity gfrbe) {
-                if(gfrbe.getMaster() != null)
-                    gfrbe.getMaster().setRedstonePaused(powered);
-            }
-        } else if(state.hasProperty(BlockStateProperties.POWER)) {
-            int power = state.getValue(BlockStateProperties.POWER);
-            BlockEntity be = pLevel.getBlockEntity(pPos);
-            if(be instanceof GrandFuseryRouterBlockEntity gfrbe) {
-                if(gfrbe.getMaster() != null)
-                    gfrbe.getMaster().setRedstonePaused(power > 0);
-            }
+        if(pLevel.getBlockEntity(pPos) instanceof GrandFuseryRouterBlockEntity router) {
+            router.getMaster().checkPaused();
         }
 
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
