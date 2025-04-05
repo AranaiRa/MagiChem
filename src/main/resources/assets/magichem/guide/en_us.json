@@ -2675,7 +2675,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " at the cost of increasing the device's operation time (or its power usage, if the device uses FE).\n\nA Gale Pressurizer only has 3 possible power consumption settings. If set to the middle power setting, it must be supplied with either "
+            "text": " at the cost of increasing the device's operation time.\n\nA Gale Pressurizer only has 3 possible power consumption settings. If set to the middle power setting, it must be supplied with either "
           },
           {
             "text": "Steam",
