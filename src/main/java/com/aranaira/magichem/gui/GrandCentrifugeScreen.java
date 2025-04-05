@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
@@ -7,6 +8,7 @@ import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.GrandCentrifugeButtonRecipeSelector;
 import com.aranaira.magichem.gui.element.GrandFuseryButtonRecipeSelector;
+import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.networking.GrandDeviceSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
@@ -56,15 +58,23 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
 
     public GrandCentrifugeScreen(GrandCentrifugeMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        updateDisplayedRecipes("");
     }
 
     private Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> getOrUpdateRecipe(){
-        if(lastRecipeResultAdmixture.getItem() != menu.blockEntity.getRecipeItem(GrandCentrifugeBlockEntity::getVar).getItem()) {
-            lastRecipe = menu.getCurrentRecipe();
-            lastRecipeResultAdmixture = menu.getCurrentRecipe().getResultAdmixture().copy();
-            lastRecipeComponentMateria = NonNullList.create();
-            for(ItemStack is : menu.getCurrentRecipe().getComponentMateria()) {
-                lastRecipeComponentMateria.add(is.copy());
+        ItemStack recipeItemQuery = menu.blockEntity.getRecipeItem(GrandCentrifugeBlockEntity::getVar);
+        if(lastRecipeResultAdmixture.getItem() != recipeItemQuery.getItem()) {
+            if(recipeItemQuery.isEmpty()) {
+                lastRecipe = null;
+                lastRecipeResultAdmixture = ItemStack.EMPTY;
+                lastRecipeComponentMateria = NonNullList.create();
+            } else {
+                lastRecipe = menu.getCurrentRecipe();
+                lastRecipeResultAdmixture = menu.getCurrentRecipe().getResultAdmixture().copy();
+                lastRecipeComponentMateria = NonNullList.create();
+                for (ItemStack is : menu.getCurrentRecipe().getComponentMateria()) {
+                    lastRecipeComponentMateria.add(is.copy());
+                }
             }
         }
         return new Triplet<>(lastRecipe, lastRecipeComponentMateria, lastRecipeResultAdmixture);
@@ -108,6 +118,15 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
                 c++;
             }
         }
+
+        int x = this.leftPos + 68;
+        int y = this.topPos + 68;
+        new ButtonData(this.addRenderableWidget(new GrandCentrifugeButtonRecipeSelector(
+                this, c, x, y, 9, 9, 33, 220, TEXTURE, button -> {
+
+            GrandCentrifugeScreen query = (GrandCentrifugeScreen) ((GrandCentrifugeButtonRecipeSelector) button).getScreen();
+            query.clearActiveRecipe();
+        })), x, y);
 
         renderButtons();
     }
@@ -154,6 +173,13 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
                     filteredRecipes.get(trueIndex).getItem()
             ));
         }
+    }
+
+    public void clearActiveRecipe() {
+        menu.blockEntity.clearRecipeAfterNextProcess = true;
+        PacketRegistry.sendToServer(new DeviceRecipeClearC2SPacket(
+                menu.blockEntity.getBlockPos()
+        ));
     }
 
     private List<ItemStack> filteredRecipes = new ArrayList<>();
@@ -208,7 +234,7 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
 
         int sProg = GrandCentrifugeBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), GrandCentrifugeBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
         if(sProg > 0)
-            gui.blit(TEXTURE, x+76, y+47, 0, 228, sProg, 28);
+            gui.blit(TEXTURE, x+76, y+38, 0, 228, sProg, 28);
 
         int powerLevel = menu.blockEntity.getPowerUsageSetting();
         gui.blit(TEXTURE_GDIST, x+182, y + (62 - powerLevel), 24, 248 - powerLevel, 8, powerLevel);
@@ -284,7 +310,10 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
             gui.blit(TEXTURE, x, y, 24, 238, 18, 18);
         }
         else {
+            float alpha = menu.blockEntity.clearRecipeAfterNextProcess ? 0.5f : 1.0f;
+            gui.setColor(1,1,1, alpha);
             gui.renderFakeItem(recipeCompound.getThird(), x+1, y+1);
+            gui.setColor(1,1,1, 1);
         }
     }
 

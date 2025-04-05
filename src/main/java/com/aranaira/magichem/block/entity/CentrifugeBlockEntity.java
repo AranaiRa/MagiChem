@@ -555,7 +555,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             boolean requestInTransit = activeProvisionRequests.contains((MateriaItem) currentRecipe.getResultAdmixture().getItem());
 
             boolean itemInInputs = false;
-            final SimpleContainer inputs = getContentsOfInputSlots(GrandCentrifugeBlockEntity::getVar);
+            final SimpleContainer inputs = getContentsOfInputSlots(CentrifugeBlockEntity::getVar);
             for(int i=0; i<inputs.getContainerSize(); i++) {
                 if(inputs.getItem(i).getItem() == currentRecipe.getResultAdmixture().getItem()) {
                     itemInInputs = true;
