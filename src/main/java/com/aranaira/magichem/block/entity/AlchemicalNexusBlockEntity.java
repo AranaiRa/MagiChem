@@ -1,11 +1,8 @@
 package com.aranaira.magichem.block.entity;
 
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
+import com.aranaira.magichem.block.entity.ext.*;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaProcessorBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
-import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.block.entity.renderer.AlchemicalNexusBlockEntityRenderer;
 import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.entities.ShlorpEntity;
@@ -382,6 +379,25 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     }
                     else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                         ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pBlockState, ender);
+                        //importing
+                        final Map<MateriaItem, Integer> provisioningNeeds = anbe.getProvisioningNeeds();
+                        if(provisioningNeeds != null && provisioningNeeds.size() > 0){
+                            if(ender.getMirrorTarget() instanceof AbstractMateriaStorageMultiTypeDynamicBlockEntity multi) {
+                                for (MateriaItem mi : provisioningNeeds.keySet()) {
+                                    int requested = provisioningNeeds.get(mi);
+                                    int inStorage = multi.getCurrentStock(mi);
+                                    boolean instant = ender.getPowerLevel() == 3;
+
+                                    int actualDrain = Math.min(requested, inStorage);
+                                    if(actualDrain > 0) {
+                                        multi.drain(mi, actualDrain, false);
+                                        ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
+
+                                        anbe.setProvisioningInProgress(mi);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1352,10 +1368,12 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
         Map<MateriaItem, Integer> result = new HashMap<>();
 
-        for (Triplet<MateriaItem, Integer, Boolean> demand : satisfactionDemands) {
-            if(!demand.getThird()) {
-                if(demand.getSecond() > 0)
-                    result.put(demand.getFirst(), demand.getSecond());
+        if(animStage == ANIM_STAGE_SHLORPS) {
+            for (Triplet<MateriaItem, Integer, Boolean> demand : satisfactionDemands) {
+                if (!demand.getThird()) {
+                    if (demand.getSecond() > 0)
+                        result.put(demand.getFirst(), demand.getSecond());
+                }
             }
         }
 
