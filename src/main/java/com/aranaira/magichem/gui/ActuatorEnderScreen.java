@@ -12,7 +12,6 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -33,9 +32,9 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
             TOOLTIP_POWER_X = 20, TOOLTIP_POWER_Y = 17, TOOLTIP_POWER_W = 12, TOOLTIP_POWER_H = 30,
             TOOLTIP_GRIME_X = 55, TOOLTIP_GRIME_Y = 14, TOOLTIP_GRIME_W = 6, TOOLTIP_GRIME_H = 35,
             TOOLTIP_SAND_X = 105, TOOLTIP_SAND_Y = 14, TOOLTIP_SAND_W = 6, TOOLTIP_SAND_H = 35,
-            TOOLTIP_GRIMEREDUCTION_X = 114, TOOLTIP_GRIMEREDUCTION_Y = 10, TOOLTIP_GRIMEREDUCTION_W = 46, TOOLTIP_GRIMEREDUCTION_H = 11,
-            TOOLTIP_SANDCONSUMPTION_X = 114, TOOLTIP_SANDCONSUMPTION_Y = 25, TOOLTIP_SANDCONSUMPTION_W = 46, TOOLTIP_SANDCONSUMPTION_H = 11,
-            TOOLTIP_ELDRIN_X = 114, TOOLTIP_ELDRIN_Y = 40, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 11;
+            TOOLTIP_IMPORTRATE_X = 108, TOOLTIP_IMPORTRATE_Y = 10, TOOLTIP_IMPORTRATE_W = 46, TOOLTIP_IMPORTRATE_H = 11,
+            TOOLTIP_EXPORTRATE_X = 108, TOOLTIP_EXPORTRATE_Y = 25, TOOLTIP_EXPORTRATE_W = 46, TOOLTIP_EXPORTRATE_H = 11,
+            TOOLTIP_ELDRIN_X = 108, TOOLTIP_ELDRIN_Y = 40, TOOLTIP_ELDRIN_W = 46, TOOLTIP_ELDRIN_H = 11;
     public static final int
             FLUID_GAUGE_H = 33;
     private ImageButton
@@ -132,31 +131,29 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
-        //Grime Reduction Rate
-        if(mouseX >= x+TOOLTIP_GRIMEREDUCTION_X && mouseX <= x+TOOLTIP_GRIMEREDUCTION_X+TOOLTIP_GRIMEREDUCTION_W &&
-                mouseY >= y+TOOLTIP_GRIMEREDUCTION_Y && mouseY <= y+TOOLTIP_GRIMEREDUCTION_Y+TOOLTIP_GRIMEREDUCTION_H) {
+        //Materia Import Rate
+        if(mouseX >= x+ TOOLTIP_IMPORTRATE_X && mouseX <= x+ TOOLTIP_IMPORTRATE_X + TOOLTIP_IMPORTRATE_W &&
+                mouseY >= y+ TOOLTIP_IMPORTRATE_Y && mouseY <= y+ TOOLTIP_IMPORTRATE_Y + TOOLTIP_IMPORTRATE_H) {
 
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.importrate").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.importrate.line1")));
             tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.empty()
-                    .append(Component.literal(ServerConfig.quakeRefineryRarefiedRate+"% ").withStyle(ChatFormatting.DARK_AQUA))
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.grimereduction.line2")));
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.importexporttime"));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
-        //Sand Consumption Rate
-        if(mouseX >= x+TOOLTIP_SANDCONSUMPTION_X && mouseX <= x+TOOLTIP_SANDCONSUMPTION_X+TOOLTIP_SANDCONSUMPTION_W &&
-                mouseY >= y+TOOLTIP_SANDCONSUMPTION_Y && mouseY <= y+TOOLTIP_SANDCONSUMPTION_Y+TOOLTIP_SANDCONSUMPTION_H) {
+        //Materia Export Rate
+        if(mouseX >= x+ TOOLTIP_EXPORTRATE_X && mouseX <= x+ TOOLTIP_EXPORTRATE_X + TOOLTIP_EXPORTRATE_W &&
+                mouseY >= y+ TOOLTIP_EXPORTRATE_Y && mouseY <= y+ TOOLTIP_EXPORTRATE_Y + TOOLTIP_EXPORTRATE_H) {
 
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.sandconsume").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.exportrate").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.sandconsume.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.actuator.exportrate.line1")));
             tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.sandconsume.line2"));
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.actuator.importexporttime"));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
