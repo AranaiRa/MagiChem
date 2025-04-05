@@ -61,7 +61,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot {
     public static final int
         SLOT_COUNT = 27,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1, SLOT_RECIPE = 26,
@@ -245,6 +245,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         super.saveAdditional(nbt);
     }
 
@@ -257,6 +258,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         batchSize = nbt.getInt("batchSize");
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         redstonePaused = nbt.getBoolean("redstonePaused");
+        clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
     }
 
     @Override
@@ -268,6 +270,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         return nbt;
     }
 
@@ -453,20 +456,15 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                             if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
                                 ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
                                 if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
-//                                    materiaToVent = materiaToVent | (1 << i);
                                     itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
-                                    continue;
                                 }
                             }
                         } else {
                             ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
                             if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
-//                                materiaToVent = materiaToVent | (1 << i);
                                 itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
-                                continue;
                             }
                         }
-//                        materiaToVent = materiaToVent & ~(1 << i);
                     }
                 }
             }
@@ -480,15 +478,48 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
                 currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            } else {
+                currentRecipe = null;
             }
         } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
                 currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            } else {
+                currentRecipe = null;
             }
         }
 
         return currentRecipe;
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        if(pStack.getItem() instanceof AdmixtureItem) {
+            itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(pStack.getItem()));
+            getCurrentRecipe();
+            syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+        else if(pStack.isEmpty()) {
+            itemHandler.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+            currentRecipe = null;
+            syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+        return ERROR_CODE_MUST_BE_ADMIXTURE;
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        if(pMakeCopy)
+            return itemHandler.getStackInSlot(SLOT_RECIPE).copy();
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
     }
 
     ////////////////////
@@ -775,7 +806,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             }
 
             if (!requestInTransit && !itemInInputs) {
-                result.put((MateriaItem) currentRecipe.getResultAdmixture().getItem(), 1);
+                result.put((MateriaItem) currentRecipe.getResultAdmixture().getItem(), batchSize);
             }
         }
 

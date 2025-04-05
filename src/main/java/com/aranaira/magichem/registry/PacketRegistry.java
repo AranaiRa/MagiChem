@@ -41,6 +41,12 @@ public class PacketRegistry {
                 .consumerMainThread(DeviceRecipeSyncDataC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(DeviceRecipeClearC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(DeviceRecipeClearC2SPacket::new)
+                .encoder(DeviceRecipeClearC2SPacket::toBytes)
+                .consumerMainThread(DeviceRecipeClearC2SPacket::handle)
+                .add();
+
         net.messageBuilder(ActuatorSyncPowerLevelC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ActuatorSyncPowerLevelC2SPacket::new)
                 .encoder(ActuatorSyncPowerLevelC2SPacket::toBytes)

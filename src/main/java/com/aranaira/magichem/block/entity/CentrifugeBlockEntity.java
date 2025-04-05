@@ -47,7 +47,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot {
+
     public static final int
         SLOT_COUNT = 15,
         SLOT_BOTTLES = 13, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 14,
@@ -217,6 +218,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         super.saveAdditional(nbt);
     }
 
@@ -228,6 +230,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
         batchSize = nbt.getInt("batchSize");
+        clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
         updateActuatorValues(this);
     }
 
@@ -239,6 +242,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         return nbt;
     }
 
@@ -474,15 +478,48 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
                 currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            } else {
+                currentRecipe = null;
             }
         } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
                 currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            } else {
+                currentRecipe = null;
             }
         }
 
         return currentRecipe;
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        if(pStack.getItem() instanceof AdmixtureItem) {
+            itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(pStack.getItem()));
+            getCurrentRecipe();
+            syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+        else if(pStack.isEmpty()) {
+            itemHandler.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+            currentRecipe = null;
+            syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+        return ERROR_CODE_MUST_BE_ADMIXTURE;
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        if(pMakeCopy)
+            return itemHandler.getStackInSlot(SLOT_RECIPE).copy();
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
     }
 
     ////////////////////
@@ -515,8 +552,19 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         Map<MateriaItem, Integer> result = new HashMap<>();
 
         if(currentRecipe != null) {
-            if (!activeProvisionRequests.contains((MateriaItem) currentRecipe.getResultAdmixture().getItem())) {
-                result.put((MateriaItem) currentRecipe.getResultAdmixture().getItem(), 1);
+            boolean requestInTransit = activeProvisionRequests.contains((MateriaItem) currentRecipe.getResultAdmixture().getItem());
+
+            boolean itemInInputs = false;
+            final SimpleContainer inputs = getContentsOfInputSlots(GrandCentrifugeBlockEntity::getVar);
+            for(int i=0; i<inputs.getContainerSize(); i++) {
+                if(inputs.getItem(i).getItem() == currentRecipe.getResultAdmixture().getItem()) {
+                    itemInInputs = true;
+                    break;
+                }
+            }
+
+            if (!requestInTransit && !itemInInputs) {
+                result.put((MateriaItem) currentRecipe.getResultAdmixture().getItem(), batchSize);
             }
         }
 

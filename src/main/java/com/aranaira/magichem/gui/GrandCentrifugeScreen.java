@@ -217,13 +217,13 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
         if(sGrime > 0)
             gui.blit(TEXTURE_GDIST, x+181, y+78, 24, 248, sGrime, 8);
 
-        renderSlotGhosts(gui);
+//        renderSlotGhosts(gui);
 
         //Scroll Nubbin
         if(recipeFilterRowTotal > 5) {
             float percent = (float)recipeFilterRow / (float)(recipeFilterRowTotal - 5);
             int nubbinShift = (int)Math.floor(percent * 80);
-            gui.blit(TEXTURE, x - 19, y + 23 + nubbinShift, 64, 240, 8, 8);
+            gui.blit(TEXTURE, x - 19, y + 23 + nubbinShift, 60, 240, 8, 8);
         }
 
         if(!menu.blockEntity.getPowerSufficiency()) {

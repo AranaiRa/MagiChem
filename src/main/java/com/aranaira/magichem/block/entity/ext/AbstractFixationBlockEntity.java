@@ -49,6 +49,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     protected ContainerData data;
     protected int
             progress = 0, batchSize = 1, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3, reductionRate = 0;
+    public boolean clearRecipeAfterNextProcess = false;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -430,6 +431,11 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
         resolveActuators(pEntity, totalCycles);
+        if(totalCycles > 0 && pEntity.clearRecipeAfterNextProcess) {
+            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE), ItemStack.EMPTY);
+            pEntity.clearRecipeAfterNextProcess = false;
+            pEntity.syncAndSave();
+        }
     }
 
     ////////////////////

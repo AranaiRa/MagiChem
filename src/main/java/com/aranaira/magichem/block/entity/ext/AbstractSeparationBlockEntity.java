@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity.ext;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.ICanHaveRecipeChanged;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.item.MateriaItem;
@@ -43,6 +44,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected ContainerData data;
     protected int
             progress = 0, batchSize = 4, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
+    public boolean clearRecipeAfterNextProcess = false;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -405,6 +407,11 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
         resolveActuators(pEntity, totalCycles);
+        if(totalCycles > 0 && pEntity.clearRecipeAfterNextProcess) {
+            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE), ItemStack.EMPTY);
+            pEntity.clearRecipeAfterNextProcess = false;
+            pEntity.syncAndSave();
+        }
     }
 
     ////////////////////
@@ -447,7 +454,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     }
 
     public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
-        return pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc);
+        return Math.min(pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH), pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc));
     }
 
     @Override

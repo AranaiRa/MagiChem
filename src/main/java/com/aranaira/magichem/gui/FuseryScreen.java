@@ -6,6 +6,8 @@ import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.FuseryButtonRecipeSelector;
+import com.aranaira.magichem.gui.element.GrandFuseryButtonRecipeSelector;
+import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -63,12 +65,19 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     }
 
     private Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> getOrUpdateRecipe(){
-        if(lastRecipeResultAdmixture.getItem() != menu.blockEntity.getRecipeItem(FuseryBlockEntity::getVar).getItem()) {
-            lastRecipe = menu.getCurrentRecipe();
-            lastRecipeResultAdmixture = menu.getCurrentRecipe().getResultAdmixture().copy();
-            lastRecipeComponentMateria = NonNullList.create();
-            for(ItemStack is : menu.getCurrentRecipe().getComponentMateria()) {
-                lastRecipeComponentMateria.add(is.copy());
+        ItemStack recipeItemQuery = menu.blockEntity.getRecipeItem(FuseryBlockEntity::getVar);
+        if(lastRecipeResultAdmixture.getItem() != recipeItemQuery.getItem()) {
+            if(recipeItemQuery.isEmpty()) {
+                lastRecipe = null;
+                lastRecipeResultAdmixture = ItemStack.EMPTY;
+                lastRecipeComponentMateria = NonNullList.create();
+            } else {
+                lastRecipe = menu.getCurrentRecipe();
+                lastRecipeResultAdmixture = menu.getCurrentRecipe().getResultAdmixture().copy();
+                lastRecipeComponentMateria = NonNullList.create();
+                for (ItemStack is : menu.getCurrentRecipe().getComponentMateria()) {
+                    lastRecipeComponentMateria.add(is.copy());
+                }
             }
         }
         return new Triplet<>(lastRecipe, lastRecipeComponentMateria, lastRecipeResultAdmixture);
@@ -76,9 +85,9 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
 
     @Override
     protected void init() {
+        super.init();
         initializeRecipeSelectorButtons();
         initializeRecipeFilterBox();
-        super.init();
     }
 
     @Override
@@ -113,6 +122,15 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                 c++;
             }
         }
+
+        int x = this.leftPos + 68;
+        int y = this.topPos + 74;
+        new ButtonData(this.addRenderableWidget(new FuseryButtonRecipeSelector(
+                this, c, x, y, 9, 9, 37, 220, TEXTURE, button -> {
+
+            FuseryScreen query = (FuseryScreen) ((FuseryButtonRecipeSelector) button).getScreen();
+            query.clearActiveRecipe();
+        })), x, y);
 
         renderButtons();
     }
@@ -159,6 +177,13 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
                     filteredRecipes.get(trueIndex).getItem()
             ));
         }
+    }
+
+    public void clearActiveRecipe() {
+        menu.blockEntity.clearRecipeAfterNextProcess = true;
+        PacketRegistry.sendToServer(new DeviceRecipeClearC2SPacket(
+                menu.blockEntity.getBlockPos()
+        ));
     }
 
     private List<ItemStack> filteredRecipes = new ArrayList<>();
@@ -278,7 +303,10 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
             gui.blit(TEXTURE, x, y, 28, 238, 18, 18);
         }
         else {
+            float alpha = menu.blockEntity.clearRecipeAfterNextProcess ? 0.5f : 1.0f;
+            gui.setColor(1,1,1, alpha);
             gui.renderFakeItem(recipeCompound.getThird(), x+1, y+1);
+            gui.setColor(1,1,1, 1);
         }
     }
 

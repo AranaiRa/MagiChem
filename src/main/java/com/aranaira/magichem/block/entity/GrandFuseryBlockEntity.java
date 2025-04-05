@@ -70,7 +70,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaSortingRequester {
+public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 21,
@@ -281,6 +281,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         nbt.putInt("fluidContents", 0);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
         });
@@ -297,6 +298,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
         redstonePaused = nbt.getBoolean("redstonePaused");
+        clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -317,6 +319,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -353,6 +356,35 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         return super.getCapability(cap, side);
     }
 
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        if(pStack.getItem() instanceof AdmixtureItem) {
+            itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(pStack.getItem()));
+            getCurrentRecipe();
+            syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+        else if(pStack.isEmpty()) {
+            itemHandler.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+            currentRecipe = null;
+            syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+        return ERROR_CODE_MUST_BE_ADMIXTURE;
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        if(pMakeCopy)
+            return itemHandler.getStackInSlot(SLOT_RECIPE).copy();
+        return itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
     ////////////////////
     // DATA SLOT HANDLING
     ////////////////////
@@ -363,11 +395,15 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
                 currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            } else {
+                currentRecipe = null;
             }
         } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
                 currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            } else {
+                currentRecipe = null;
             }
         }
 

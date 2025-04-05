@@ -251,6 +251,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         nbt.putInt("remainingAnimus", this.remainingAnimus);
         nbt.putInt("fluidContents", 0);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
         });
@@ -267,6 +268,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
         batchSize = nbt.getInt("batchSize");
+        clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -284,6 +286,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         nbt.putInt("remainingTorque", this.remainingTorque);
         nbt.putInt("remainingAnimus", this.remainingAnimus);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -318,11 +321,15 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
                 currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            } else {
+                currentRecipe = null;
             }
         } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
                 currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
+            } else {
+                currentRecipe = null;
             }
         }
 
@@ -726,6 +733,12 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         if(pStack.getItem() instanceof AdmixtureItem) {
             itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(pStack.getItem()));
             getCurrentRecipe();
+            syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+        else if(pStack.isEmpty()) {
+            itemHandler.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+            currentRecipe = null;
             syncAndSave();
             return ERROR_CODE_SUCCESS;
         }
