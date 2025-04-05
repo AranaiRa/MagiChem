@@ -28,6 +28,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -43,10 +44,12 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 192,
             PANEL_GRIME_X = 176, PANEL_GRIME_Y = 14, PANEL_GRIME_W = 80, PANEL_GRIME_H = 80, PANEL_GRIME_U = 176, PANEL_GRIME_V = 0,
             PANEL_RECIPE_X = -84, PANEL_RECIPE_Y = -7, PANEL_RECIPE_U = 176, PANEL_RECIPE_W = 80, PANEL_RECIPE_H = 126,
+            TOOLTIP_SELECTED_RECIPE_X = 79, TOOLTIP_SELECTED_RECIPE_Y = 79, TOOLTIP_SELECTED_RECIPE_S = 18,
             TOOLTIP_EFFICIENCY_X = 193, TOOLTIP_EFFICIENCY_Y = 22, TOOLTIP_EFFICIENCY_W = 59, TOOLTIP_EFFICIENCY_H = 15,
             TOOLTIP_POWERUSAGE_X = 193, TOOLTIP_POWERUSAGE_Y = 39, TOOLTIP_POWERUSAGE_W = 59, TOOLTIP_POWERUSAGE_H = 15,
             TOOLTIP_OPERATIONTIME_X = 193, TOOLTIP_OPERATIONTIME_Y = 56, TOOLTIP_OPERATIONTIME_W = 59, TOOLTIP_OPERATIONTIME_H = 15,
-            TOOLTIP_GRIME_X = 180, TOOLTIP_GRIME_Y = 77, TOOLTIP_GRIME_W = 69, TOOLTIP_GRIME_H = 10;
+            TOOLTIP_GRIME_X = 180, TOOLTIP_GRIME_Y = 77, TOOLTIP_GRIME_W = 69, TOOLTIP_GRIME_H = 10,
+            TOOLTIP_RECIPE_ZONE_X = -77, TOOLTIP_RECIPE_ZONE_Y = 22, TOOLTIP_RECIPE_ZONE_W = 54, TOOLTIP_RECIPE_ZONE_H = 90;
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
     private ImageButton
@@ -120,7 +123,7 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
         }
 
         int x = this.leftPos + 68;
-        int y = this.topPos + 68;
+        int y = this.topPos + 66;
         new ButtonData(this.addRenderableWidget(new GrandCentrifugeButtonRecipeSelector(
                 this, c, x, y, 9, 9, 33, 220, TEXTURE, button -> {
 
@@ -436,6 +439,34 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
         List<Component> tooltipContents = new ArrayList<>();
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
+
+        //Selected recipe
+        if(mouseX >= x+TOOLTIP_SELECTED_RECIPE_X && mouseX <= x+TOOLTIP_SELECTED_RECIPE_X+TOOLTIP_SELECTED_RECIPE_S &&
+                mouseY >= y+TOOLTIP_SELECTED_RECIPE_Y && mouseY <= y+TOOLTIP_SELECTED_RECIPE_Y+TOOLTIP_SELECTED_RECIPE_S) {
+            ItemStack recipeItem = menu.getRecipeItem();
+            if(recipeItem == ItemStack.EMPTY) {
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            } else {
+                tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            }
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Items in recipe picker
+        if(mouseX >= x+TOOLTIP_RECIPE_ZONE_X && mouseX <= x+TOOLTIP_RECIPE_ZONE_X+TOOLTIP_RECIPE_ZONE_W &&
+                mouseY >= y+TOOLTIP_RECIPE_ZONE_Y && mouseY <= y+TOOLTIP_RECIPE_ZONE_Y+TOOLTIP_RECIPE_ZONE_H) {
+            int mx = mouseX - (x+TOOLTIP_RECIPE_ZONE_X);
+            int my = mouseY - (y+TOOLTIP_RECIPE_ZONE_Y);
+            int id = ((my / 18) * 3) + ((mx / 18) % 3);
+
+            if (id >= 0 && id < 16) {
+                if(id + recipeFilterRow * 3 < filteredRecipes.size()) {
+                    ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3);
+                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                    gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+                }
+            }
+        }
 
         //Efficiency
         if(mouseX >= x+TOOLTIP_EFFICIENCY_X && mouseX <= x+TOOLTIP_EFFICIENCY_X+TOOLTIP_EFFICIENCY_W &&
