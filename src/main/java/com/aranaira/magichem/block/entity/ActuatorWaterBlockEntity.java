@@ -516,43 +516,39 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
         //Steam is extract only
         Fluid fluid = fluidStack.getFluid();
-        int incomingAmount = fluidStack.getAmount();
+        int drainRequest = fluidStack.getAmount();
+        FluidStack out = FluidStack.EMPTY;
+
+        boolean doUpdate = fluidAction.execute();
+
         if(fluid == Fluids.WATER) {
             int extantAmount = containedWater.getAmount();
-            if(extantAmount >= incomingAmount) {
-                if(fluidAction == FluidAction.EXECUTE) {
-                    containedWater.shrink(incomingAmount);
-                    syncAndSave();
-                }
-                return new FluidStack(fluid, incomingAmount);
+            if(extantAmount >= drainRequest) {
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedWater.shrink(drainRequest);
+                out = new FluidStack(fluid, drainRequest);
             } else {
-                if(fluidAction == FluidAction.EXECUTE) {
+                if(fluidAction == FluidAction.EXECUTE)
                     containedWater = FluidStack.EMPTY;
-                    syncAndSave();
-                }
-                return new FluidStack(fluid, incomingAmount - extantAmount);
+                out = new FluidStack(fluid, extantAmount);
             }
         }
         else if(fluid == FluidRegistry.STEAM.get()) {
             int extantAmount = containedSteam.getAmount();
-            if(extantAmount >= incomingAmount) {
-                if(fluidAction == FluidAction.EXECUTE) {
-                    containedSteam.shrink(incomingAmount);
-                    syncAndSave();
-                }
-                return new FluidStack(fluid, incomingAmount);
+            if(extantAmount >= drainRequest) {
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedSteam.shrink(drainRequest);
+                out = new FluidStack(fluid, drainRequest);
             } else {
-                if(incomingAmount - extantAmount > 0) {
-                    if (fluidAction == FluidAction.EXECUTE) {
-                        containedSteam = FluidStack.EMPTY;
-                        syncAndSave();
-                    }
-                }
-                return new FluidStack(fluid, Math.min(incomingAmount, extantAmount));
+                if(fluidAction == FluidAction.EXECUTE)
+                    containedSteam = FluidStack.EMPTY;
+                out = new FluidStack(fluid, extantAmount);
             }
         }
 
-        return fluidStack;
+        if(doUpdate) syncAndSave();
+
+        return out;
     }
 
     @Override

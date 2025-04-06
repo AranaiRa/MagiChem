@@ -477,30 +477,30 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
 
     @Override
     public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
-        if(fluidAction.execute()) {
-            setChanged();
-            level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-        }
+        if(containedSlurry.isEmpty()) return FluidStack.EMPTY;
+        FluidStack out = FluidStack.EMPTY;
+
+        boolean doUpdate = fluidAction.execute();
 
         //Steam is extract only
         Fluid fluid = fluidStack.getFluid();
-        int incomingAmount = fluidStack.getAmount();
+        int drainRequest = fluidStack.getAmount();
         if(fluid == FluidRegistry.ACADEMIC_SLURRY.get()) {
             int extantAmount = containedSlurry.getAmount();
-            if(extantAmount >= incomingAmount) {
+            if(extantAmount >= drainRequest) {
                 if(fluidAction == FluidAction.EXECUTE)
-                    containedSlurry.shrink(incomingAmount);
-                setChanged();
-                return new FluidStack(fluid, incomingAmount);
+                    containedSlurry.shrink(drainRequest);
+                out = new FluidStack(fluid, drainRequest);
             } else {
                 if(fluidAction == FluidAction.EXECUTE)
                     containedSlurry = FluidStack.EMPTY;
-                if(incomingAmount - extantAmount > 0)
-                    setChanged();
-                return new FluidStack(fluid, incomingAmount - extantAmount);
+                out = new FluidStack(fluid, extantAmount);
             }
         }
-        return fluidStack;
+
+        if(doUpdate) syncAndSave();
+
+        return out;
     }
 
     @Override

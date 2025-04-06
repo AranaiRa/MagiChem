@@ -564,31 +564,30 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
 
     @Override
     public @NotNull FluidStack drain(FluidStack fluidStack, FluidAction fluidAction) {
-        boolean doUpdate = false;
-        if(fluidAction.execute()) doUpdate = true;
+        if(containedSmoke.isEmpty()) return FluidStack.EMPTY;
+        FluidStack out = FluidStack.EMPTY;
+
+        boolean doUpdate = fluidAction.execute();
 
         //Smoke is extract only
         Fluid fluid = fluidStack.getFluid();
-        int incomingAmount = fluidStack.getAmount();
+        int drainRequest = fluidStack.getAmount();
         if(fluid == FluidRegistry.SMOKE.get()) {
             int extantAmount = containedSmoke.getAmount();
-            if(extantAmount >= incomingAmount) {
+            if(extantAmount >= drainRequest) {
                 if(fluidAction == FluidAction.EXECUTE)
-                    containedSmoke.shrink(incomingAmount);
-                setChanged();
-                return new FluidStack(fluid, incomingAmount);
+                    containedSmoke.shrink(drainRequest);
+                out = new FluidStack(fluid, drainRequest);
             } else {
                 if(fluidAction == FluidAction.EXECUTE)
                     containedSmoke = FluidStack.EMPTY;
-                if(incomingAmount - extantAmount > 0)
-                    setChanged();
-                return new FluidStack(fluid, Math.min(incomingAmount, extantAmount));
+                out = new FluidStack(fluid, extantAmount);
             }
         }
 
         if(doUpdate) syncAndSave();
 
-        return fluidStack;
+        return out;
     }
 
     @Override
