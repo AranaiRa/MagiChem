@@ -256,7 +256,7 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
 
     @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
-        if(pLevel.getBlockEntity(pPos) instanceof GrandDistilleryRouterBlockEntity router) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandDistilleryRouterBlockEntity router && router.getMaster() != null) {
             router.getMaster().checkPaused();
         }
 

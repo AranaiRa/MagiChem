@@ -255,7 +255,7 @@ public class GrandCentrifugeRouterBlock extends BaseEntityBlock implements INoCr
 
     @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
-        if(pLevel.getBlockEntity(pPos) instanceof GrandCentrifugeRouterBlockEntity router) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandCentrifugeRouterBlockEntity router && router.getMaster() != null) {
             router.getMaster().checkPaused();
         }
 
