@@ -493,6 +493,8 @@
   "feedback.block.signalitepair.target": "Listening to the signal-song from ",
   "feedback.item.hellfeathercharm.wrongdim": "You can only use this item in the Nether.",
   "feedback.item.hellfeathercharm.noportalpos": "You have never entered the Nether through a portal.",
+  "feedback.warning.inventorysizemismatch.part1": "A MagiChem ",
+  "feedback.warning.inventorysizemismatch.part2": " tried to load an inventory with a mismatched slot count (probably due to an update changing how the block works). Its saved inventory has been cleared to prevent corruption.",
 
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",

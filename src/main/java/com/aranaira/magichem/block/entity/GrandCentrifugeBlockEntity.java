@@ -24,11 +24,15 @@ import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -63,10 +67,10 @@ import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COL
 
 public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot {
     public static final int
-        SLOT_COUNT = 27,
-        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1, SLOT_RECIPE = 26,
+        SLOT_COUNT = 24,
+        SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1, SLOT_RECIPE = 23,
         SLOT_INPUT_START = 2, SLOT_INPUT_COUNT = 6,
-        SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 18,
+        SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT  = 15,
         GUI_PROGRESS_BAR_WIDTH = 24, GUI_GRIME_BAR_WIDTH = 67, GUI_HEAT_GAUGE_HEIGHT = 16,
         DATA_COUNT = 6, DATA_PROGRESS = 0, DATA_GRIME = 1, DATA_POWER_SUFFICIENCY = 2, DATA_EFFICIENCY_MOD = 3, DATA_OPERATION_TIME_MOD = 4, DATA_BATCH_SIZE = 5;
     public static final float
@@ -252,7 +256,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
@@ -289,7 +293,19 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     }
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        itemHandler.deserializeNBT(pInventoryTag);
+        int size = pInventoryTag.getInt("Size");
+        if(size == SLOT_COUNT) {
+            itemHandler.deserializeNBT(pInventoryTag);
+        } else if(getLevel() != null && getLevel().isClientSide()) {
+            final LocalPlayer player = Minecraft.getInstance().player;
+            if(player != null) {
+                MutableComponent msg = Component.translatable("feedback.warning.inventorysizemismatch.part1")
+                        .append(Component.translatable("block.magichem.grand_centrifuge").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("feedback.warning.inventorysizemismatch.part2"));
+                player.displayClientMessage(msg, false);
+            }
+        }
+        getCurrentRecipe();
     }
 
     @Override

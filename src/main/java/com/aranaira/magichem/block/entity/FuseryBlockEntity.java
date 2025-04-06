@@ -23,10 +23,14 @@ import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.Vector3;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -263,7 +267,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         super.load(nbt);
         if(nbt.contains("materiaToVent"))
             ventMateria(nbt.getInt("materiaToVent"));
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
@@ -308,7 +312,19 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     }
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        itemHandler.deserializeNBT(pInventoryTag);
+        int size = pInventoryTag.getInt("Size");
+        if(size == SLOT_COUNT) {
+            itemHandler.deserializeNBT(pInventoryTag);
+        } else if(getLevel() != null && getLevel().isClientSide()) {
+            final LocalPlayer player = Minecraft.getInstance().player;
+            if(player != null) {
+                MutableComponent msg = Component.translatable("feedback.warning.inventorysizemismatch.part1")
+                        .append(Component.translatable("block.magichem.fusery").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("feedback.warning.inventorysizemismatch.part2"));
+                player.displayClientMessage(msg, false);
+            }
+        }
+        getCurrentRecipe();
     }
 
     ////////////////////

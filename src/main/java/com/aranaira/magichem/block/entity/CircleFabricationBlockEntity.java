@@ -17,12 +17,16 @@ import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.particles.types.movers.ParticleVelocityMover;
 import com.mna.tools.math.Vector3;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -189,15 +193,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         super.load(nbt);
         if(nbt.contains("materiaToVent"))
             ventMateria(nbt.getInt("materiaToVent"));
-        if(nbt.getCompound("inventory").getInt("Size") != itemHandler.getSlots()) {
-            ItemStackHandler temp = new ItemStackHandler(nbt.getCompound("inventory").size());
-            temp.deserializeNBT(nbt.getCompound("inventory"));
-            for(int i=0; i<temp.getSlots(); i++) {
-                itemHandler.setStackInSlot(i, temp.getStackInSlot(i));
-            }
-        } else {
-            this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-        }
+        unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
         isFESatisfied = nbt.getBoolean("isFESatisfied");
@@ -224,6 +220,21 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         return nbt;
+    }
+
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
+        int size = pInventoryTag.getInt("Size");
+        if(size == SLOT_COUNT) {
+            itemHandler.deserializeNBT(pInventoryTag);
+        } else if(getLevel() != null && getLevel().isClientSide()) {
+            final LocalPlayer player = Minecraft.getInstance().player;
+            if(player != null) {
+                MutableComponent msg = Component.translatable("feedback.warning.inventorysizemismatch.part1")
+                        .append(Component.translatable("block.magichem.circle_fabrication").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("feedback.warning.inventorysizemismatch.part2"));
+                player.displayClientMessage(msg, false);
+            }
+        }
     }
 
     public final void syncAndSave() {

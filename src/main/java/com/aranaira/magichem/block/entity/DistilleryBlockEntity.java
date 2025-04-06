@@ -19,10 +19,14 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.items.ItemInit;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -227,7 +231,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         remainingHeat = nbt.getInt("remainingHeat");
         heatDuration = nbt.getInt("heatDuration");
@@ -265,7 +269,18 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
     }
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        itemHandler.deserializeNBT(pInventoryTag);
+        int size = pInventoryTag.getInt("Size");
+        if(size == SLOT_COUNT) {
+            itemHandler.deserializeNBT(pInventoryTag);
+        } else if(getLevel() != null && getLevel().isClientSide()) {
+            final LocalPlayer player = Minecraft.getInstance().player;
+            if(player != null) {
+                MutableComponent msg = Component.translatable("feedback.warning.inventorysizemismatch.part1")
+                        .append(Component.translatable("block.magichem.distillery").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("feedback.warning.inventorysizemismatch.part2"));
+                player.displayClientMessage(msg, false);
+            }
+        }
     }
 
     ////////////////////

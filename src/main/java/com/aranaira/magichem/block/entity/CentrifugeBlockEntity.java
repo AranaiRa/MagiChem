@@ -18,10 +18,15 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -225,7 +230,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
@@ -260,7 +265,19 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     }
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        itemHandler.deserializeNBT(pInventoryTag);
+        int size = pInventoryTag.getInt("Size");
+        if(size == SLOT_COUNT) {
+            itemHandler.deserializeNBT(pInventoryTag);
+        } else if(getLevel() != null && getLevel().isClientSide()) {
+            final LocalPlayer player = Minecraft.getInstance().player;
+            if(player != null) {
+                MutableComponent msg = Component.translatable("feedback.warning.inventorysizemismatch.part1")
+                        .append(Component.translatable("block.magichem.centrifuge").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("feedback.warning.inventorysizemismatch.part2"));
+                player.displayClientMessage(msg, false);
+            }
+        }
+        getCurrentRecipe();
     }
 
     ////////////////////
