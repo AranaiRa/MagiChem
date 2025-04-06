@@ -33,122 +33,122 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> CENTRIFUGE = registerBlock("centrifuge",
             () -> new CentrifugeBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> CENTRIFUGE_ROUTER = registerBlock("centrifuge_router",
             () -> new CentrifugeRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> DISTILLERY = registerBlock("distillery",
             () -> new DistilleryBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> DISTILLERY_ROUTER = registerBlock("distillery_router",
             () -> new DistilleryRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> FUSERY = registerBlock("fusery",
             () -> new FuseryBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> FUSERY_ROUTER = registerBlock("fusery_router",
             () -> new FuseryRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ALCHEMICAL_NEXUS = registerBlock("alchemical_nexus",
             () -> new AlchemicalNexusBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ALCHEMICAL_NEXUS_ROUTER = registerBlock("alchemical_nexus_router",
             () -> new AlchemicalNexusRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> GRAND_DISTILLERY = registerBlock("grand_distillery",
             () -> new GrandDistilleryBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> GRAND_DISTILLERY_ROUTER = registerBlock("grand_distillery_router",
             () -> new GrandDistilleryRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> GRAND_CENTRIFUGE = registerBlock("grand_centrifuge",
             () -> new GrandCentrifugeBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> GRAND_CENTRIFUGE_ROUTER = registerBlock("grand_centrifuge_router",
             () -> new GrandCentrifugeRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> GRAND_FUSERY = registerBlock("grand_fusery",
             () -> new GrandFuseryBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> GRAND_FUSERY_ROUTER = registerBlock("grand_fusery_router",
             () -> new GrandFuseryRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> CONJURER_ROUTER = registerBlock("conjurer_router",
             () -> new ConjurerRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> CIRCLE_TOIL = registerBlock("circle_toil",
             () -> new CircleToilBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> CIRCLE_POWER = registerBlock("circle_power",
             () -> new CirclePowerBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> CIRCLE_POWER_ROUTER = registerBlock("circle_power_router",
             () -> new CirclePowerRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> CIRCLE_FABRICATION = registerBlock("circle_fabrication",
             () -> new CircleFabricationBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> CIRCLE_FABRICATION_ROUTER = registerBlock("circle_fabrication_router",
             () -> new CircleFabricationRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> GRAND_CIRCLE_FABRICATION = registerBlock("grand_circle_fabrication",
             () -> new GrandCircleFabricationBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> GRAND_CIRCLE_FABRICATION_ROUTER = registerBlock("grand_circle_fabrication_router",
             () -> new GrandCircleFabricationRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> MIRROR_LABYRINTH = registerBlock("mirror_labyrinth",
             () -> new MirrorLabyrinthBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> MIRROR_LABYRINTH_ROUTER = registerBlock("mirror_labyrinth_router",
             () -> new MirrorLabyrinthRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> POWER_SPIKE = registerBlock("power_spike",
@@ -178,67 +178,67 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> ACTUATOR_FIRE = registerBlock("actuator_fire",
             () -> new ActuatorFireBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_WATER = registerBlock("actuator_water",
             () -> new ActuatorWaterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_EARTH = registerBlock("actuator_earth",
             () -> new ActuatorEarthBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_AIR = registerBlock("actuator_air",
             () -> new ActuatorAirBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_ARCANE = registerBlock("actuator_arcane",
             () -> new ActuatorArcaneBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_ENDER = registerBlock("actuator_ender",
             () -> new ActuatorEnderBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> BASE_ACTUATOR_ROUTER = registerBlock("base_actuator_router",
             () -> new BaseActuatorRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_FIRE_ROUTER = registerBlock("actuator_fire_router",
             () -> new ActuatorFireRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_WATER_ROUTER = registerBlock("actuator_water_router",
             () -> new ActuatorWaterRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_EARTH_ROUTER = registerBlock("actuator_earth_router",
             () -> new ActuatorEarthRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_AIR_ROUTER = registerBlock("actuator_air_router",
             () -> new ActuatorAirRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_ARCANE_ROUTER = registerBlock("actuator_arcane_router",
             () -> new ActuatorArcaneRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> ACTUATOR_ENDER_ROUTER = registerBlock("actuator_ender_router",
             () -> new ActuatorEnderRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> COLORING_CAULDRON = registerBlock("coloring_cauldron",
@@ -253,7 +253,7 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> VARIEGATOR_ROUTER = registerBlock("variegator_router",
             () -> new VariegatorRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> CONJURER = registerBlock("conjurer",
@@ -268,7 +268,7 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> MATERIA_MANIFEST_ROUTER = registerBlock("materia_manifest_router",
             () -> new MateriaManifestRouterBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> EXPERIENCE_EXCHANGER = registerBlock("experience_exchanger",
@@ -527,13 +527,13 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> OCCULTED_CINDER = registerBlock("occulted_cinder",
             () -> new OccultedCinderBlock(BlockBehaviour.Properties.of()
-                    .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false),
+                    .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn(),
                     15, false)
     );
 
     public static final RegistryObject<Block> OCCULTED_SPARK = registerBlock("occulted_spark",
             () -> new OccultedCinderBlock(BlockBehaviour.Properties.of()
-                    .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false),
+                    .noCollission().instabreak().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn(),
                     8, false)
     );
 

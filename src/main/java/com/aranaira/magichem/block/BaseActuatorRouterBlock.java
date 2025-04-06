@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -90,6 +91,16 @@ public class BaseActuatorRouterBlock extends BaseEntityBlock implements INoCreat
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
+        return false;
+    }
+
+    @Override
+    public boolean canBeReplaced(BlockState pState, Fluid pFluid) {
+        return false;
     }
 
     @Override
