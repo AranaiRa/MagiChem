@@ -2,6 +2,8 @@ package com.aranaira.magichem.block.entity.ext;
 
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.util.InventoryHelper;
 import net.minecraft.core.BlockPos;
@@ -28,10 +30,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
-public abstract class AbstractFabricationBlockEntity extends BlockEntity implements ICanTakePlugins {
+public abstract class AbstractFabricationBlockEntity extends BlockEntity implements ICanTakePlugins, IMateriaProvisionRequester {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
@@ -92,6 +95,28 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
             if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                 ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, false);
+            }
+            if (dpbe instanceof ActuatorEnderBlockEntity ender) {
+                ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
+                //importing
+                final Map<MateriaItem, Integer> provisioningNeeds = pEntity.getProvisioningNeeds();
+                if(provisioningNeeds != null && provisioningNeeds.size() > 0){
+                    if(ender.getMirrorTarget() instanceof AbstractMateriaStorageMultiTypeDynamicBlockEntity multi) {
+                        for (MateriaItem mi : provisioningNeeds.keySet()) {
+                            int requested = provisioningNeeds.get(mi);
+                            int inStorage = multi.getCurrentStock(mi);
+                            boolean instant = ender.getPowerLevel() == 3;
+
+                            int actualDrain = Math.min(requested, inStorage);
+                            if(actualDrain > 0) {
+                                multi.drain(mi, actualDrain, false);
+                                ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
+
+                                pEntity.setProvisioningInProgress(mi);
+                            }
+                        }
+                    }
+                }
             }
         }
 
