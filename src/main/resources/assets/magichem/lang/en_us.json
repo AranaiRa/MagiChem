@@ -901,6 +901,7 @@
   "construct.magichem:query_device_needs_provisioning": "Condition: Device Needs Provisioning",
   "construct.magichem:query_device_needs_sorting": "Condition: Device Needs Sorting",
   "construct.magichem:set_device_recipe": "Set Device Recipe",
+  "construct.magichem:query_has_eldrin_in_buffer": "Condition: Has Eldrin Power in Buffer",
 
   "gui.mna.codex_search.recipe.anointing": "Alchemical Anointing > ",
   "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
@@ -935,6 +936,9 @@
   "gui.mna.parameter.set_device_recipe.point1": "What device's recipe should the construct set?",
   "gui.mna.parameter.set_device_recipe.point2": "What block holds the recipe output that the construct should set the device to craft?\n\nThe selected recipe item will be the block's first inventory slot; Blocks with a single slot inventory like Pedestals are ideal for this purpose.",
   "gui.mna.parameter.set_device_recipe.stack": "What should the construct set the device to craft?\n\nIgnored if the previous parameter is set.",
+
+  "gui.mna.parameter.query_has_eldrin_in_buffer.int.selector": "What eldrin affinity should the construct check?\n\n 1: Ender\n 2: Earth\n 3: Water\n 4: Air\n 5: Fire\n 6: Arcane",
+  "gui.mna.parameter.query_has_eldrin_in_buffer.int.amount": "What percent full should your Eldrin power buffer for the chosen affinity be?",
 
   "hud.magichem.coloring_cauldron.current_item.processing": "Coloring ",
   "hud.magichem.coloring_cauldron.current_item.waiting": " Complete",
