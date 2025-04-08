@@ -43,10 +43,23 @@ public class ConstructHasEldrinInBuffer extends ConstructConditional<ConstructHa
             } else {
                 IWellspringNodeRegistry wellspringNetwork = worldMagic.getWellspringRegistry();
                 HashMap<Affinity, Float> curAmt = wellspringNetwork.getNodeNetworkAmountFor(construct.getOwner().getUUID(), construct.getOwner().level());
-                float contained = curAmt.getOrDefault(affinityToCheck, 0f);
-                float resolvedPercent = (float)amountToCheck / 100f;
+                if(affinityToCheck == Affinity.UNKNOWN) {
+                    float containedEnder = curAmt.getOrDefault(Affinity.ENDER, 0f);
+                    float containedEarth = curAmt.getOrDefault(Affinity.EARTH, 0f);
+                    float containedWater = curAmt.getOrDefault(Affinity.WATER, 0f);
+                    float containedAir   = curAmt.getOrDefault(Affinity.WIND, 0f);
+                    float containedFire  = curAmt.getOrDefault(Affinity.FIRE, 0f);
+                    float containedArcane= curAmt.getOrDefault(Affinity.ARCANE, 0f);
 
-                return contained >= resolvedPercent * 1000f;
+                    float resolvedPercent = (float)amountToCheck / 100f;
+
+                    return ((containedEnder + containedEarth + containedWater + containedAir + containedFire + containedArcane) / 6f) >= resolvedPercent * 1000f;
+                } else {
+                    float contained = curAmt.getOrDefault(affinityToCheck, 0f);
+                    float resolvedPercent = (float) amountToCheck / 100f;
+
+                    return contained >= resolvedPercent * 1000f;
+                }
             }
         }
 
@@ -61,7 +74,7 @@ public class ConstructHasEldrinInBuffer extends ConstructConditional<ConstructHa
     @Override
     protected List<ConstructAITaskParameter> instantiateParameters() {
         List<ConstructAITaskParameter> parameters = super.instantiateParameters();
-        parameters.add(new ConstructTaskIntegerParameter("query_has_eldrin_in_buffer.int.selector", 1, 6));
+        parameters.add(new ConstructTaskIntegerParameter("query_has_eldrin_in_buffer.int.selector", 0, 6));
         parameters.add(new ConstructTaskIntegerParameter("query_has_eldrin_in_buffer.int.amount", 1, 100));
         return parameters;
     }

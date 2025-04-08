@@ -3593,6 +3593,88 @@
     ],
     "related_recipes": []
   },
+  "Condition: Has Eldrin Power in Buffer": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Has Eldrin Power in Buffer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will "
+          },
+          {
+            "text": "check the construct's owner's Eldrin Power levels",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", returning "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if the owner's Eldrin power level is above a certain percent, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it isn't.\n\nThe Affinity to check is set using the first slider. By default the construct will check the average of all six Eldrin affinities, but a single Affinity can be checked by setting the slider to a particular number.\n\n1: Ender   2: Earth\n3: Water   4: Air\n5: Fire   6: Arcane"
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
+  "Condition: Device Recipe Matches": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Device Recipe Matches"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will "
+          },
+          {
+            "text": "check the current recipe on an alchemical device",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", returning "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if the current recipe matches, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it doesn't."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Materia Jar": {
     "index": "1212",
     "category": "magichem",
