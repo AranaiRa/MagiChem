@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "magichem:block/materia_reflector_body"
+      "model": "magichem:block/materia_reflector"
     }
   }
 }

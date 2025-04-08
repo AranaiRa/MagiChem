@@ -607,6 +607,10 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     // OVERRIDES
     ////////////////////
 
+    public SimpleContainer getContentsOfInputSlots() {
+        return getContentsOfInputSlots(GrandCentrifugeBlockEntity::getVar);
+    }
+
     public SimpleContainer getContentsOfOutputSlots() {
         return getContentsOfOutputSlots(GrandCentrifugeBlockEntity::getVar);
     }

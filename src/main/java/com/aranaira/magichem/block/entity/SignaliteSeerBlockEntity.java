@@ -102,6 +102,7 @@ public class SignaliteSeerBlockEntity extends BlockEntity {
     public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 2);
+        this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
     }
 
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, SignaliteSeerBlockEntity pEntity) {

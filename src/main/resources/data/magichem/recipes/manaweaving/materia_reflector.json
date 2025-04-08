@@ -1,0 +1,12 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:materia_reflector",
+  "tier": 4,
+  "items": [
+    "magichem:mirror_glass_block",
+    "magichem:signalite_seer"
+  ],
+  "patterns": [
+    "mna:hourglass"
+  ]
+}

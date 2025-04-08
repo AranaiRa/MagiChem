@@ -47,5 +47,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.STANDING_RETORT_BE.get(), StandingRetortBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.PRISMATIC_CONDUIT_BE.get(), PrismaticConduitBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.MIRROR_LABYRINTH_BE.get(), MirrorLabyrinthBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.MATERIA_REFLECTOR_BE.get(), MateriaReflectorBlockEntityRenderer::new);
     }
 }

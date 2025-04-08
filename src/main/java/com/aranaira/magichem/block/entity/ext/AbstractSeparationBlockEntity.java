@@ -132,16 +132,28 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             }
             else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                 ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
+                final SimpleContainer inputs = pEntity.getContentsOfInputSlots();
+                final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();
                 //exporting
                 if(ender.getMirrorTarget() != null){
                     boolean instant = ender.getPowerLevel() == 3;
                     if(instant || pLevel.getGameTime() % 10 == 0) {
-                        final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();
                         if(!outputs.isEmpty()) {
                             for(int i=0; i<outputs.getContainerSize(); i++) {
                                 if(!outputs.getItem(i).isEmpty()) {
-                                    final ItemStack outputStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(AbstractSeparationBlockEntity.IDs.SLOT_OUTPUT_START) + i);
-                                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractSeparationBlockEntity.IDs.SLOT_OUTPUT_START)+i, ItemStack.EMPTY);
+                                    final ItemStack outputStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i);
+                                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i, ItemStack.EMPTY);
+                                    ender.createShlorpToTarget(outputStack, instant);
+                                    break;
+                                }
+                            }
+                        }
+                        //export stuff in the input slots if there's no recipe
+                        if(!inputs.isEmpty() && pEntity.currentRecipe == null) {
+                            for(int i=0; i<inputs.getContainerSize(); i++) {
+                                if(!inputs.getItem(i).isEmpty()) {
+                                    final ItemStack outputStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START) + i);
+                                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START)+i, ItemStack.EMPTY);
                                     ender.createShlorpToTarget(outputStack, instant);
                                     break;
                                 }

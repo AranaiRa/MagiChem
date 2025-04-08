@@ -227,4 +227,13 @@ public class ColorUtils {
             default -> -1;
         };
     }
+
+    public static float[] packedColorToFloatArray(int pPackedColor) {
+        int a = (pPackedColor >> 24) & 0x000000ff;
+        int r = (pPackedColor >> 16) & 0x000000ff;
+        int g = (pPackedColor >> 8) & 0x000000ff;
+        int b = pPackedColor & 0x000000ff;
+
+        return new float[]{(float)r / 255f, (float)g / 255f, (float)b / 255f, (float)a / 255f};
+    }
 }

@@ -36,7 +36,7 @@ import static com.aranaira.magichem.block.CentrifugeRouterBlock.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CENTRIFUGE;
 
-public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester {
+public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IDestroysMasterOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot {
     private BlockPos masterPos;
     private CentrifugeBlockEntity master;
     private DevicePlugDirection plugDirection = DevicePlugDirection.NONE;
@@ -307,5 +307,20 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
         return getMaster().insertStackFromShlorp(pStack);
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack) {
+        return getMaster().setRecipe(pStack);
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return getMaster().getRecipeItem();
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return getMaster().getRecipeItem(pMakeCopy);
     }
 }

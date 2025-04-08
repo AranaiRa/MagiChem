@@ -162,6 +162,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.MATERIA_MANIFEST_MENU.get(), MateriaManifestScreen::new);
                 MenuScreens.register(MenuRegistry.STANDING_RETORT_MENU.get(), StandingRetortScreen::new);
                 MenuScreens.register(MenuRegistry.MIRROR_LABYRINTH_MENU.get(), MirrorLabyrinthScreen::new);
+                MenuScreens.register(MenuRegistry.MATERIA_REFLECTOR_MENU.get(), MateriaReflectorScreen::new);
             });
         }
 
@@ -244,6 +245,9 @@ public class MagiChemMod
 
             event.register(MirrorLabyrinthBlockEntityRenderer.RENDERER_MODEL_MIRROR);
             event.register(MirrorLabyrinthBlockEntityRenderer.RENDERER_MODEL_MATRIX);
+
+            event.register(MateriaReflectorBlockEntityRenderer.RENDERER_MODEL_EYE);
+            event.register(MateriaReflectorBlockEntityRenderer.RENDERER_MODEL_IRIS);
         }
     }
 }

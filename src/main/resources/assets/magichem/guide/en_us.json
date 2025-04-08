@@ -4318,6 +4318,10 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/actuator_ender"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/materia_reflector"
       }
     ]
   },
@@ -4405,6 +4409,73 @@
       {
         "type": "crafting",
         "location": "magichem:shaped/materia_manifest"
+      }
+    ]
+  },
+  "Materia Reflector": {
+    "index": "1216",
+    "category": "magichem",
+    "tier": 4,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Materia Reflector"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Materia Reflector",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an automation tool that "
+          },
+          {
+            "text": "outputs a redstone signal",
+            "color": "dark_purple"
+          },
+          {
+            "text": " based on the contents of your Mirror Labyrinth.\n\nA "
+          },
+          {
+            "text": "Rune of Marking",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that points to your Mirror Labyrinth (or to a valid Magic Mirror) must be provided.\n\nEach face of the Materia Reflector can be bound to a particular type of materia. That face will then output a redstone signal between "
+          },
+          {
+            "text": "0",
+            "color": "dark_red",
+            "bold": true
+          },
+          {
+            "text": " (if completely empty) and "
+          },
+          {
+            "text": "15",
+            "color": "dark_red",
+            "bold": true
+          },
+          {
+            "text": " (if full or over-full)."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/materia_reflector"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/mirror_labyrinth"
       }
     ]
   },

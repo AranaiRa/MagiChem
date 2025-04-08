@@ -33,10 +33,5 @@ public class MagiChemBlockStateProperties {
     public static final IntegerProperty USER_TIER_TYPE = IntegerProperty.create("user_tier_type", 0, 5);
     public static final IntegerProperty VERTICAL_CRYSTAL_SHAPE_TYPE = IntegerProperty.create("vertical_crystal_shape_type", 0, 5);
 
-    public static final IntegerProperty REFLECTOR_N = IntegerProperty.create("reflector_n", 0, 15);
-    public static final IntegerProperty REFLECTOR_E = IntegerProperty.create("reflector_e", 0, 15);
-    public static final IntegerProperty REFLECTOR_S = IntegerProperty.create("reflector_s", 0, 15);
-    public static final IntegerProperty REFLECTOR_W = IntegerProperty.create("reflector_w", 0, 15);
-    public static final IntegerProperty REFLECTOR_U = IntegerProperty.create("reflector_u", 0, 15);
-    public static final IntegerProperty REFLECTOR_D = IntegerProperty.create("reflector_d", 0, 15);
+    public static final BooleanProperty NEEDS_HARD_UPDATE = BooleanProperty.create("needs_hard_update");
 }
