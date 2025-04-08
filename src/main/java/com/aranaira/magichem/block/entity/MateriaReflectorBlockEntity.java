@@ -17,7 +17,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -303,5 +305,13 @@ public class MateriaReflectorBlockEntity extends BlockEntity implements MenuProv
         }
 
         return super.getCapability(cap);
+    }
+
+    public void dropContents(){
+        SimpleContainer drops = new SimpleContainer(SLOT_COUNT);
+        for(int i=0; i<itemHandler.getSlots(); i++) {
+            drops.addItem(itemHandler.getStackInSlot(i));
+        }
+        Containers.dropContents(getLevel(), getBlockPos(), drops);
     }
 }

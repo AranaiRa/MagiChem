@@ -95,4 +95,14 @@ public class MateriaReflectorBlock extends BaseEntityBlock {
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return VOXEL_SHAPE;
     }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if(be instanceof MateriaReflectorBlockEntity reflector) {
+            reflector.dropContents();
+        }
+
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
 }
