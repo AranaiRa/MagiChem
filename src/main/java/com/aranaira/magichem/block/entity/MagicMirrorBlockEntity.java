@@ -37,7 +37,7 @@ public class MagicMirrorBlockEntity extends AbstractMateriaStorageMultiTypeDynam
         super(BlockEntitiesRegistry.MAGIC_MIRROR_BE.get(), pos, state);
     }
 
-    private MirrorLabyrinthBlockEntity getMaster() {
+    public MirrorLabyrinthBlockEntity getMaster() {
         if(master != null)
             return master;
 

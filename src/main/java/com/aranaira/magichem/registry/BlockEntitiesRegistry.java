@@ -254,6 +254,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(MagicMirrorBlockEntity::new, BlockRegistry.MAGIC_MIRROR.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<MateriaReflectorBlockEntity>> MATERIA_REFLECTOR_BE = BLOCK_ENTITIES.register("materia_reflector", () ->
+            BlockEntityType.Builder.of(MateriaReflectorBlockEntity::new, BlockRegistry.MATERIA_REFLECTOR.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }
