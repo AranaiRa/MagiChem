@@ -79,22 +79,26 @@ public class MirrorLabyrinthMenu extends AbstractContainerMenu {
     private static final int SLOT_INVENTORY_BEGIN = 0;
     private static final int SLOT_INVENTORY_COUNT = 36;
 
-    Pair<Item, Integer>[] DIRSPEC = new Pair[]{
-            new Pair(Items.GLASS_BOTTLE, SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_BOTTLES)
-    };
+    Pair<Item, Integer>[] DIRSPEC = null;
     Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
-            new Vector2i( //Input slots
-                    SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_INPUT_START,
-                    SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_INPUT_START + DistilleryBlockEntity.SLOT_INPUT_COUNT),
+            new Vector2i( //Input slot
+                    SLOT_INVENTORY_COUNT + MirrorLabyrinthBlockEntity.SLOT_INPUT,
+                    SLOT_INVENTORY_COUNT + MirrorLabyrinthBlockEntity.SLOT_INPUT + 1),
+            new Vector2i( //Extraction slot
+                    SLOT_INVENTORY_COUNT + MirrorLabyrinthBlockEntity.SLOT_EXTRACT,
+                    SLOT_INVENTORY_COUNT + MirrorLabyrinthBlockEntity.SLOT_EXTRACT + 1),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
     Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
+            new Vector2i( //Input slot
+                    SLOT_INVENTORY_COUNT + MirrorLabyrinthBlockEntity.SLOT_INPUT_RESULT,
+                    SLOT_INVENTORY_COUNT + MirrorLabyrinthBlockEntity.SLOT_INPUT_RESULT + 1),
+            new Vector2i( //Extraction slot
+                    SLOT_INVENTORY_COUNT + MirrorLabyrinthBlockEntity.SLOT_EXTRACT_RESULT,
+                    SLOT_INVENTORY_COUNT + MirrorLabyrinthBlockEntity.SLOT_EXTRACT_RESULT + 1),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
-    Pair<Integer, Vector2i> SPEC_CONTAINER = new Pair<>(SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_BOTTLES, new Vector2i(
-            SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_OUTPUT_START,
-            SLOT_INVENTORY_COUNT + DistilleryBlockEntity.SLOT_OUTPUT_START + DistilleryBlockEntity.SLOT_OUTPUT_COUNT
-    ));
+    Pair<Integer, Vector2i> SPEC_CONTAINER = null;
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
