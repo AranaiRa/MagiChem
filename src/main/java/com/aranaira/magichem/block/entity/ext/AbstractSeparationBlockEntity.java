@@ -132,10 +132,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             }
             else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                 ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
-                final SimpleContainer inputs = pEntity.getContentsOfInputSlots();
-                final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();
                 //exporting
                 if(ender.getMirrorTarget() != null){
+                    final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();
                     boolean instant = ender.getPowerLevel() == 3;
                     if(instant || pLevel.getGameTime() % 10 == 0) {
                         if(!outputs.isEmpty()) {
@@ -143,17 +142,6 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                                 if(!outputs.getItem(i).isEmpty()) {
                                     final ItemStack outputStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i);
                                     pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i, ItemStack.EMPTY);
-                                    ender.createShlorpToTarget(outputStack, instant);
-                                    break;
-                                }
-                            }
-                        }
-                        //export stuff in the input slots if there's no recipe
-                        if(!inputs.isEmpty() && pEntity.currentRecipe == null) {
-                            for(int i=0; i<inputs.getContainerSize(); i++) {
-                                if(!inputs.getItem(i).isEmpty()) {
-                                    final ItemStack outputStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START) + i);
-                                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START)+i, ItemStack.EMPTY);
                                     ender.createShlorpToTarget(outputStack, instant);
                                     break;
                                 }
@@ -201,7 +189,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             int processingSlot = processing.getFirst();
             ItemStack processingItem = processing.getSecond();
 
-            if (processingItem != ItemStack.EMPTY && pEntity.currentRecipe != null) {
+            if (processingItem != ItemStack.EMPTY) {
                 if (canCraftItem(pEntity, pVarFunc)) {
 
                     if (pEntity.progress > operationTicks) {
@@ -296,20 +284,50 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     ////////////////////
 
     protected static boolean canCraftItem(AbstractSeparationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
-        //Can't craft if there's no set recipe
-        if(pEntity.currentRecipe == null)
-            return false;
-
         //Can't craft if the bottle output is full
         if(pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT)).getCount() == 64)
             return false;
 
         //Check to see if the output area has space to add the item
         SimpleContainer output = pEntity.getContentsOfOutputSlots(pVarFunc);
-        for(ItemStack component : pEntity.currentRecipe.getComponentMateria()) {
-            ItemStack result = output.addItem(component);
-            if(!result.isEmpty()) {
-                return false;
+
+        if(output.isEmpty()) return true;
+        else if(pEntity.currentRecipe == null) {
+            ItemStack stackInProcessingSlot = ItemStack.EMPTY;
+
+            for(int i=pVarFunc.apply(IDs.SLOT_INPUT_START) + pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i>=pVarFunc.apply(IDs.SLOT_INPUT_START); i--) {
+                ItemStack query = pEntity.itemHandler.getStackInSlot(i);
+                if(!query.isEmpty()) {
+                    stackInProcessingSlot = query;
+                    break;
+                }
+            }
+
+            boolean usedTemporaryRecipe = false;
+            //set a temporary recipe if there's no active recipe but stuff in the input slots
+            if(!stackInProcessingSlot.isEmpty() && pEntity.getLevel() != null) {
+                if(stackInProcessingSlot.getItem() instanceof MateriaItem mi) {
+                    pEntity.currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(pEntity.getLevel(), stackInProcessingSlot);
+                    usedTemporaryRecipe = true;
+                }
+            }
+
+            if(pEntity.currentRecipe == null) return false;
+
+            for (ItemStack component : pEntity.currentRecipe.getComponentMateria()) {
+                ItemStack result = output.addItem(component);
+                if (!result.isEmpty()) {
+                    return false;
+                }
+            }
+
+            if(usedTemporaryRecipe) pEntity.currentRecipe = null;
+        } else {
+            for (ItemStack component : pEntity.currentRecipe.getComponentMateria()) {
+                ItemStack result = output.addItem(component);
+                if (!result.isEmpty()) {
+                    return false;
+                }
             }
         }
 
@@ -317,6 +335,16 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     }
 
     protected static void craftItem(AbstractSeparationBlockEntity pEntity, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
+        boolean usedTemporaryRecipe = false;
+        //set a temporary recipe if there's no active recipe but stuff in the input slots
+        if(pEntity.currentRecipe == null && pEntity.getLevel() != null) {
+            ItemStack stackInProcessingSlot = pEntity.itemHandler.getStackInSlot(pProcessingSlot);
+            if(stackInProcessingSlot.getItem() instanceof MateriaItem mi) {
+                pEntity.currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(pEntity.getLevel(), stackInProcessingSlot);
+                usedTemporaryRecipe = true;
+            }
+        }
+
         int bottlesToInsert = 0;
 
         SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
@@ -424,6 +452,8 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             pEntity.clearRecipeAfterNextProcess = false;
             pEntity.syncAndSave();
         }
+
+        if(usedTemporaryRecipe) pEntity.currentRecipe = null;
     }
 
     ////////////////////
