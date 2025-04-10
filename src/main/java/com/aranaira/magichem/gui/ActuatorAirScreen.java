@@ -55,11 +55,12 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
     private void initializePowerLevelButtons() {
         b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 37, this.topPos + 12, 12, 7, 176, 26, TEXTURE, button -> {
             menu.incrementPowerLevel();
-
         }));
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 37, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
             menu.decrementPowerLevel();
-
+        }));
+        this.addRenderableWidget(new ImageButton(this.leftPos + 202, this.topPos + 12, 11, 11, 202, 0, TEXTURE, button -> {
+            menu.toggleEldrinMode();
         }));
     }
 
@@ -107,6 +108,9 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         gui.blit(TEXTURE, x + 151, y + 3, 0, 172, 40, 58);
         int sM = Math.min(42, menu.blockEntity.getStoredMateria() * 42 / ServerConfig.actuatorMateriaBufferMaximum);
         gui.blit(TEXTURE, x + 159, y + 11 + (42 - sM), 200, 0, 2, sM);
+
+        //Power draw
+        gui.blit(TEXTURE, x + 195, y, 40, 174 + (menu.blockEntity.doEldrinPowerConsumption ? 28 : 0), 57, 28);
     }
 
     @Override
@@ -272,6 +276,18 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
                             .append(Component.literal(String.format("%.1f", Math.min(1, percent) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Consumption rules
+        if(mouseX >= x+195 && mouseX <= x+195+57 &&
+                mouseY >= y && mouseY <= y+28) {
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrinmode").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable(menu.blockEntity.doEldrinPowerConsumption ? "tooltip.magichem.gui.eldrinmode.both" : "tooltip.magichem.gui.eldrinmode.single")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }

@@ -234,6 +234,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("isGasSatisfied", isGasSatisfied);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -261,6 +262,8 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
         this.isGasSatisfied = nbt.getBoolean("isGasSatisfied");
+        if(nbt.contains("doEldrinPowerConsumption"))
+            this.doEldrinPowerConsumption = nbt.getBoolean("doEldrinPowerConsumption");
         this.flags = nbt.getInt("flags");
         this.isPaused = nbt.getBoolean("isPaused");
 
@@ -298,6 +301,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("isGasSatisfied", isGasSatisfied);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);

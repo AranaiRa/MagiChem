@@ -36,6 +36,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
     protected float
         remainingEldrinForSatisfaction = 1;
     protected ItemStackHandler itemHandler;
+    public boolean doEldrinPowerConsumption = true;
 
     public AbstractDirectionalPluginBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -204,9 +205,11 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
 
         if (ownerCheck != null) {
             //Consume Eldrin for this cycle if there's any outstanding
-            float eldrinConsumption = entity.consume(ownerCheck, pos, pos.getCenter(), pGetAffinity.apply(null), Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
-            if(eldrinConsumption > 0)
-                entity.remainingEldrinForSatisfaction -= eldrinConsumption;
+            if(entity.doEldrinPowerConsumption) {
+                float eldrinConsumption = entity.consume(ownerCheck, pos, pos.getCenter(), pGetAffinity.apply(null), Math.min(powerDraw, entity.remainingEldrinForSatisfaction));
+                if (eldrinConsumption > 0)
+                    entity.remainingEldrinForSatisfaction -= eldrinConsumption;
+            }
 
             //Consume Essentia for this cycle if there's any outstanding
             if (entity.remainingEssentiaForSatisfaction > 0) {

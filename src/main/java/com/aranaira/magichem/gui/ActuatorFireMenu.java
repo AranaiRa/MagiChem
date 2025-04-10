@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
+import com.aranaira.magichem.networking.ActuatorToggleEldrinC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -93,6 +94,13 @@ public class ActuatorFireMenu extends AbstractContainerMenu {
                     blockEntity.getBlockPos(), false, Affinity.FIRE
             ));
         }
+    }
+
+    public void toggleEldrinMode() {
+        blockEntity.doEldrinPowerConsumption = !blockEntity.doEldrinPowerConsumption;
+        PacketRegistry.sendToServer(new ActuatorToggleEldrinC2SPacket(
+                blockEntity.getBlockPos(), blockEntity.doEldrinPowerConsumption
+        ));
     }
 
     private static final int

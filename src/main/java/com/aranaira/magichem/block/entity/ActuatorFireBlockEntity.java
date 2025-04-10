@@ -241,6 +241,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putInt("fuelDuration", fuelDuration);
         nbt.putInt("remainingFuelTime", remainingFuelTime);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
@@ -268,6 +269,8 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
+        if(nbt.contains("doEldrinPowerConsumption"))
+            this.doEldrinPowerConsumption = nbt.getBoolean("doEldrinPowerConsumption");
         this.fuelDuration = nbt.getInt("fuelDuration");
         this.remainingFuelTime = nbt.getInt("remainingFuelTime");
         this.flags = nbt.getInt("flags");
@@ -298,6 +301,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putInt("fuelDuration", fuelDuration);
         nbt.putInt("remainingFuelTime", remainingFuelTime);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());

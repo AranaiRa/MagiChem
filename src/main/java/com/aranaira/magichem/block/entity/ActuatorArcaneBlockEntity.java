@@ -186,6 +186,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
         nbt.putBoolean("isPaused", isPaused);
@@ -211,6 +212,8 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
+        if(nbt.contains("doEldrinPowerConsumption"))
+            this.doEldrinPowerConsumption = nbt.getBoolean("doEldrinPowerConsumption");
         if(this.containedSlurry == FluidStack.EMPTY)
             this.containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), nbt.getInt("containedSlurry"));
         else
@@ -238,6 +241,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
         nbt.putBoolean("isPaused", isPaused);

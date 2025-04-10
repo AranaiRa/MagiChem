@@ -166,6 +166,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
@@ -193,6 +194,8 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
+        if(nbt.contains("doEldrinPowerConsumption"))
+            this.doEldrinPowerConsumption = nbt.getBoolean("doEldrinPowerConsumption");
         this.remainingSand = nbt.getInt("remainingSand");
         this.currentGrime = nbt.getInt("currentGrime");
         this.currentRarefiedGrime = nbt.getInt("currentRarefiedGrime");
@@ -218,6 +221,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);

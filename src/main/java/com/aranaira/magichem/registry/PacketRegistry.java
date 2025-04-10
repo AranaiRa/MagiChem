@@ -53,6 +53,12 @@ public class PacketRegistry {
                 .consumerMainThread(ActuatorSyncPowerLevelC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(ActuatorToggleEldrinC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ActuatorToggleEldrinC2SPacket::new)
+                .encoder(ActuatorToggleEldrinC2SPacket::toBytes)
+                .consumerMainThread(ActuatorToggleEldrinC2SPacket::handle)
+                .add();
+
         net.messageBuilder(NexusSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(NexusSyncDataC2SPacket::new)
                 .encoder(NexusSyncDataC2SPacket::toBytes)

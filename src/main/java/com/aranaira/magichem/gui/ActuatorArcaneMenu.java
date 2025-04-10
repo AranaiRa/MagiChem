@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorEarthBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.networking.ActuatorSyncPowerLevelC2SPacket;
+import com.aranaira.magichem.networking.ActuatorToggleEldrinC2SPacket;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -97,6 +98,13 @@ public class ActuatorArcaneMenu extends AbstractContainerMenu {
                     blockEntity.getBlockPos(), false, Affinity.ARCANE
             ));
         }
+    }
+
+    public void toggleEldrinMode() {
+        blockEntity.doEldrinPowerConsumption = !blockEntity.doEldrinPowerConsumption;
+        PacketRegistry.sendToServer(new ActuatorToggleEldrinC2SPacket(
+                blockEntity.getBlockPos(), blockEntity.doEldrinPowerConsumption
+        ));
     }
 
     private static final int

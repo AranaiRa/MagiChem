@@ -147,6 +147,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
@@ -170,6 +171,8 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
+        if(nbt.contains("doEldrinPowerConsumption"))
+            this.doEldrinPowerConsumption = nbt.getBoolean("doEldrinPowerConsumption");
         this.isPaused = nbt.getBoolean("isPaused");
 
         if(nbt.contains("owner"))
@@ -191,6 +194,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
+        nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
         nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);

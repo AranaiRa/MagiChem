@@ -123,6 +123,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.ACTUATOR_ENDER.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.actuator.ender")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.COLORING_CAULDRON.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.coloringcauldron")
