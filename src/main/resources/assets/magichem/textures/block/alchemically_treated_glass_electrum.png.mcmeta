@@ -1,0 +1,10 @@
+{
+    "ctm":{
+        "ctm_version": 1,
+        "type":"CTM",
+        "layer":"TRANSLUCENT",
+        "textures":[
+            "magichem:block/alchemically_treated_glass_electrum_ctm"
+        ]
+    }
+}

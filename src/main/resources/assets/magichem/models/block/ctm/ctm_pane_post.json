@@ -1,0 +1,18 @@
+{
+  "__comment": "Copyright © InsomniaKitten 2017; Pasted from https://github.com/Chisel-Team/ConnectedTexturesPack/blob/master/assets/minecraft/models/block since it's not built into CTM",
+  "parent": "block/block",
+  "textures": {
+    "particle": "#side",
+    "cap": "#cap"
+  },
+  "elements": [
+    {
+      "from": [ 7, 0, 7 ],
+      "to": [ 9, 16, 9 ],
+      "faces": {
+        "down": { "uv": [ 7, 7, 9, 9 ], "texture": "#cap", "cullface": "down" },
+        "up": { "uv": [ 7, 7, 9, 9 ], "texture": "#cap", "cullface": "up" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "__comment": "Copyright © InsomniaKitten 2017; Pasted from https://github.com/Chisel-Team/ConnectedTexturesPack/blob/master/assets/minecraft/models/block since it's not built into CTM",
+  "parent": "block/block",
+  "textures": {
+    "particle": "#side",
+    "side": "#side"
+  },
+  "elements": [
+    {
+      "from": [ 7, 0, 7 ],
+      "to": [ 9, 16, 9 ],
+      "faces": {
+        "north": { "uv": [ 7, 0, 9, 16 ], "texture": "#side" }
+      }
+    }
+  ]
+}

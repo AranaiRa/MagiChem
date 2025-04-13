@@ -1,77 +1,29 @@
 {
   "multipart": [
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_post"
-      }
+    {   "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_post", "uvlock": true }},
+    {   "when": { "north": true },
+      "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_side", "uvlock": true  }
     },
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_side"
-      },
-      "when": {
-        "north": "true"
-      }
+    {   "when": { "east": true },
+      "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_side", "y": 90, "uvlock": true  }
     },
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_side",
-        "y": 90
-      },
-      "when": {
-        "east": "true"
-      }
+    {   "when": { "south": true },
+      "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_side", "y": 180, "uvlock": true  }
     },
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_side_alt"
-      },
-      "when": {
-        "south": "true"
-      }
+    {   "when": { "west": true },
+      "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_side", "y": 270, "uvlock": true  }
     },
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_side_alt",
-        "y": 90
-      },
-      "when": {
-        "west": "true"
-      }
+    {   "when": { "north": false },
+      "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_noside", "uvlock": true  }
     },
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_noside"
-      },
-      "when": {
-        "north": "false"
-      }
+    {   "when": { "east": false },
+      "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_noside", "y": 90, "uvlock": true  }
     },
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_noside_alt"
-      },
-      "when": {
-        "east": "false"
-      }
+    {   "when": { "south": false },
+      "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_noside", "y": 180, "uvlock": true  }
     },
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_noside_alt",
-        "y": 90
-      },
-      "when": {
-        "south": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_noside",
-        "y": 270
-      },
-      "when": {
-        "west": "false"
-      }
+    {   "when": { "west": false },
+      "apply": { "model": "magichem:block/deco/alchemically_treated_glass_pane_trim_gold_noside", "y": 270, "uvlock": true  }
     }
   ]
 }

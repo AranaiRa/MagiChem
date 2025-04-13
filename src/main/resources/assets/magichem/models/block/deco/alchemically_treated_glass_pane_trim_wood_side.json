@@ -1,8 +1,7 @@
 {
-  "parent": "minecraft:block/template_glass_pane_side",
-  "render_type": "translucent",
+  "parent": "magichem:block/ctm/ctm_pane_side",
   "textures": {
-    "edge": "magichem:block/alchemically_treated_glass_wood",
-    "pane": "magichem:block/alchemically_treated_glass_wood"
+    "cap":  "magichem:block/alchemically_treated_glass_wood",
+    "side": "magichem:block/alchemically_treated_glass_wood"
   }
 }

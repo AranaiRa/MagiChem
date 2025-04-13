@@ -2,12 +2,12 @@
     "parent": "block/cube",
     "render_type": "translucent",
     "textures": {
-        "down":  "magichem:block/alchemically_treated_glass",
-        "up":    "magichem:block/alchemically_treated_glass",
-        "north": "magichem:block/alchemically_treated_glass",
-        "east":  "magichem:block/alchemically_treated_glass",
-        "south": "magichem:block/alchemically_treated_glass",
-        "west":  "magichem:block/alchemically_treated_glass",
-        "particle": "magichem:block/alchemically_treated_glass"
+        "down":  "magichem:block/alchemically_treated_glass_borderless",
+        "up":    "magichem:block/alchemically_treated_glass_borderless",
+        "north": "magichem:block/alchemically_treated_glass_borderless",
+        "east":  "magichem:block/alchemically_treated_glass_borderless",
+        "south": "magichem:block/alchemically_treated_glass_borderless",
+        "west":  "magichem:block/alchemically_treated_glass_borderless",
+        "particle": "magichem:block/alchemically_treated_glass_borderless"
     }
 }

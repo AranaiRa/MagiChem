@@ -8,6 +8,6 @@
         "east":  "magichem:block/alchemically_treated_glass_wood",
         "south": "magichem:block/alchemically_treated_glass_wood",
         "west":  "magichem:block/alchemically_treated_glass_wood",
-        "particle": "magichem:block/alchemically_treated_glass"
+        "particle": "magichem:block/alchemically_treated_glass_borderless"
     }
 }
