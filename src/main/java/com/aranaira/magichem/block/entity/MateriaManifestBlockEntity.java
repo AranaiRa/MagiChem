@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -41,22 +42,7 @@ import java.util.*;
 public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    protected ContainerData data = new ContainerData() {
-        @Override
-        public int get(int pIndex) {
-            return 0;
-        }
-
-        @Override
-        public void set(int pIndex, int pValue) {
-
-        }
-
-        @Override
-        public int getCount() {
-            return 0;
-        }
-    };
+    protected ContainerData data = new SimpleContainerData(0);
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override

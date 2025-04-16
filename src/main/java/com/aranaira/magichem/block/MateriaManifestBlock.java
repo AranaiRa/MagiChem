@@ -97,7 +97,14 @@ public class MateriaManifestBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if(!level.isClientSide()) {
+        if(player.isCrouching()) {
+            BlockEntity entity = level.getBlockEntity(pos);
+            if (entity instanceof MateriaManifestBlockEntity mmbe) {
+                mmbe.tetherTarget = null;
+                mmbe.tetherType = null;
+            }
+        }
+        else if(!level.isClientSide()) {
             boolean holdingMarkPair = player.getInventory().getSelected().getItem() == ItemInit.RUNE_MARKING_PAIR.get();
             boolean holdingMateria = player.getInventory().getSelected().getItem() instanceof MateriaItem;
 
