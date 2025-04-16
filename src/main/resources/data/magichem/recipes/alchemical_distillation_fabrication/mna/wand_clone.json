@@ -5,6 +5,7 @@
   "object": { "item": "mna:wand_clone" },
   "components": [
     { "item": "magichem:admixture_lies", "count": 16 },
+    { "item": "magichem:admixture_whimsy", "count": 4 },
     { "item": "magichem:admixture_instrument", "count": 1 }
   ]
 }

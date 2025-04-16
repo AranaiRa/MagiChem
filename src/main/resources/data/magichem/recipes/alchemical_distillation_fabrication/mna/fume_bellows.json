@@ -1,0 +1,13 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "distill_only": true,
+  "output_rate": 1.0,
+  "object": { "item": "mna:fume_bellows" },
+  "components": [
+    { "item": "magichem:admixture_energy", "count": 6 },
+    { "item": "magichem:admixture_breath", "count": 4 },
+    { "item": "magichem:admixture_mana", "count": 4 },
+    { "item": "magichem:admixture_wizard", "count": 2 },
+    { "item": "magichem:admixture_realm", "count": 1 }
+  ]
+}
