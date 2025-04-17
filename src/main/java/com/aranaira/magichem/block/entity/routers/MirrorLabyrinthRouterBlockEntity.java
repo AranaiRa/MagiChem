@@ -14,12 +14,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 
@@ -56,7 +60,7 @@ public class MirrorLabyrinthRouterBlockEntity extends AbstractMateriaStorageMult
 
     @Override
     public Pair<Vector3, Vector3> getDefaultOriginAndTangent(MateriaItem pMateriaType) {
-        return null;
+        return new Pair<>(new Vector3(0.5f, 0.5f, 0.5f), Vector3.up());
     }
 
     public void configure(BlockPos pPos) {
@@ -74,6 +78,7 @@ public class MirrorLabyrinthRouterBlockEntity extends AbstractMateriaStorageMult
         if(master == null) {
             BlockEntity be = getLevel().getBlockEntity(masterPos);
             if(be instanceof MirrorLabyrinthBlockEntity mmbe) {
+                master = mmbe;
                 return mmbe;
             }
         }
@@ -110,5 +115,113 @@ public class MirrorLabyrinthRouterBlockEntity extends AbstractMateriaStorageMult
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         return getMaster().getCapability(cap, side);
+    }
+
+    @Override
+    public int getCurrentStock(MateriaItem pMateriaType) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return 0;
+
+        return master.getCurrentStock(pMateriaType);
+    }
+
+    @Override
+    public float getCurrentStockPercent(MateriaItem pMateriaType) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return 0;
+
+        return master.getCurrentStockPercent(pMateriaType);
+    }
+
+    @Override
+    public boolean containsMateriaType(MateriaItem pMateriaType) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return false;
+
+        return master.containsMateriaType(pMateriaType);
+    }
+
+    @Override
+    public Collection<MateriaItem> getMateriaTypes() {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return new ArrayList<>();
+
+        return master.getMateriaTypes();
+    }
+
+    @Override
+    public void setContents(MateriaItem pMateriaType, int pCount) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master != null) {
+            master.setContents(pMateriaType, pCount);
+        }
+    }
+
+    @Override
+    public void setContents(int pSlot, MateriaItem pMateriaType, int pCount) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master != null) {
+            master.setContents(pSlot, pMateriaType, pCount);
+        }
+    }
+
+    @Override
+    public int fill(MateriaItem pMateriaType, int pAmount, boolean pVoidExcess) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return 0;
+
+        return master.fill(pMateriaType, pAmount, pVoidExcess);
+    }
+
+    @Override
+    public int drain(MateriaItem pMateriaType, int pAmount, boolean pKeepOne) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return 0;
+
+        return master.drain(pMateriaType, pAmount, pKeepOne);
+    }
+
+    @Override
+    public int getStorageLimit(MateriaItem pMateriaType) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return 0;
+
+        return master.getStorageLimit(pMateriaType);
+    }
+
+    @Override
+    public boolean isBelowTypeLimit() {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return false;
+
+        return master.isBelowTypeLimit();
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return 0;
+
+        return master.canAcceptStackFromShlorp(pStack);
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        if(masterPos != null || master != null)
+            getMaster();
+        if(master == null) return pStack.getCount();
+
+        return master.insertStackFromShlorp(pStack);
     }
 }

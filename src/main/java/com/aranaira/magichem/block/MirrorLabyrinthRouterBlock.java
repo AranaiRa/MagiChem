@@ -197,6 +197,11 @@ public class MirrorLabyrinthRouterBlock extends BaseEntityBlock implements INoCr
         return VOXEL_SHAPE_DEFAULT;
     }
 
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_MIRROR_LABYRINTH)) == DAIS ? 15 : 0;
+    }
+
     static {
         VOXEL_SHAPE_DEFAULT = Block.box(0,0,0,16,16,16);
         VOXEL_SHAPE_TOP_HALF = Block.box(0,8,0,16,16,16);

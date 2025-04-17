@@ -1,8 +1,6 @@
 package com.aranaira.magichem.util.render;
 
 import com.mna.api.ManaAndArtificeMod;
-import com.mna.api.tools.RLoc;
-import com.mna.entities.constructs.animated.ConstructMoodlets;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.nbt.CompoundTag;
