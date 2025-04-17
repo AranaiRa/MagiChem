@@ -1011,7 +1011,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is especially useful for interacting with a Circle of Power's comparator output.\n\n\n\n\n\n\n\n\n"
+            "text": " is especially useful for interacting with a Circle of Power's comparator output.\n\n"
           },
           {
             "text": "0",
@@ -1778,7 +1778,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is especially useful for interacting with a Centrifuge's comparator output."
+            "text": " is especially useful for interacting with a Centrifuge's comparator output.\n\n"
           },
           {
             "text": "2",
@@ -2001,7 +2001,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is especially useful for interacting with a Fusery's comparator output.\n\n\n\n\n\n\n\n\n"
+            "text": " is especially useful for interacting with a Fusery's comparator output.\n\n"
           },
           {
             "text": "2",
@@ -3957,7 +3957,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nUnlike the Alembic, the Distillery has a furnace built in and can supply its own heat if given fuel. The Distillery will burn fuel even if there is no item to process.\n\nThe sides of the device have Elemental Actuator ports if you wish to enhance the device using Eldrin power.\n\nLike an Alembic, the Distillery can be lit with a "
+            "text": ".\n\nUnlike the Alembic, the Distillery has a furnace built in and can supply its own heat if given fuel. The Distillery will burn fuel even if there is no item to process.\n\nThe sides of the device have "
+          },
+          {
+            "text": "Elemental Actuator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " ports if you wish to enhance the device using Eldrin power.\n\nLike an Alembic, the Distillery can be lit with a "
           },
           {
             "text": "Fire Damage",
@@ -4023,7 +4030,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is especially useful for interacting with a Distillery's comparator output."
+            "text": " is especially useful for interacting with a Distillery's comparator output.\n\n"
           },
           {
             "text": "1",
@@ -6673,7 +6680,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "will lock it from being edited until broken, and anointing with "
+            "text": " will lock it from being edited until broken, and anointing with "
           },
           {
             "text": "Admixture of Lies",
