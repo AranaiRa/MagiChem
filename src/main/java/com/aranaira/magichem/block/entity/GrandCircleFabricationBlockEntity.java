@@ -133,6 +133,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
             @Override
             protected void onContentsChanged(int slot) {
+                setChanged();
                 DistillationFabricationRecipe pre = recipe;
                 if(slot == SLOT_RECIPE) {
                     getCurrentRecipe();
@@ -227,7 +228,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     public static int getScaledProgress(GrandCircleFabricationBlockEntity entity) {
-        return entity.getCraftingProgress() * 28 / entity.getOperationTicks();
+        return Math.min(entity.getCraftingProgress() * 28 / entity.getOperationTicks(), 28);
     }
 
     public int getCraftingProgress(){
@@ -261,6 +262,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandCircleFabricationBlockEntity pEntity) {
+        boolean wasFESatisfied = pEntity.isFESatisfied;
         if(!pLevel.isClientSide() && !pEntity.redstonePaused) {
             //Power check
             if(pEntity.operationTicks > 0) {
@@ -526,6 +528,10 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         boolean changed = false;
         if(!pEntity.redstonePaused)
             changed = AbstractFabricationBlockEntity.tick(pLevel, pPos, pState, pEntity, GrandCircleFabricationBlockEntity::getVar);
+
+        if(wasFESatisfied != pEntity.isFESatisfied) {
+            changed = true;
+        }
 
         if(changed)
             pEntity.syncAndSave();

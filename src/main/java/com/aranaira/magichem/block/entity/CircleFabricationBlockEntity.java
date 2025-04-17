@@ -113,6 +113,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
             @Override
             protected void onContentsChanged(int slot) {
+                setChanged();
                 DistillationFabricationRecipe pre = recipe;
                 if(slot == SLOT_RECIPE) {
                     getCurrentRecipe();
