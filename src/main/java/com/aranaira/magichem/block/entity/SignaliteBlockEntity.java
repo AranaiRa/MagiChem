@@ -200,7 +200,6 @@ public class SignaliteBlockEntity extends BlockEntity {
     public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 2);
-//        this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
     }
 
     private int packConnectionsToInt() {

@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.MirrorLabyrinthBlock;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeDynamicBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
@@ -10,6 +11,7 @@ import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.aranaira.magichem.util.render.ConstructRenderHelper;
 import com.mna.api.entities.construct.ConstructCapability;
@@ -69,7 +71,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
     private boolean
             hasSufficientPower = false, redstonePaused = false;
     public boolean
-            constructDataChanged = false, isCompactMode = true, needsGuiStorageUpdate = true;
+            constructDataChanged = false, isCompactMode = true, needsGuiStorageUpdate = true, shouldFloodMateria = false;
     public float
             circlePercent = 0.0f, particlePercent = 0.0f,
             mirrorActivationPercent = 0.0f, mirrorActivationSpeed = 0.0f,
@@ -91,7 +93,8 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                 return stack.getItem() instanceof MateriaItem ||
                        stack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem() ||
                        stack.getItem() == BlockRegistry.MATERIA_JAR_QUAD.get().asItem() ||
-                       stack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem();
+                       stack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem() ||
+                       stack.getItem() == ItemRegistry.DEBUG_ORB.get();
             }
             else if(slot == SLOT_EXTRACT) {
                 return stack.getItem() == Items.GLASS_BOTTLE ||
@@ -105,6 +108,9 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
+            if(getStackInSlot(slot).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                shouldFloodMateria = true;
+            }
             super.onContentsChanged(slot);
         }
     };
@@ -338,6 +344,7 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         return new AABB(getBlockPos().offset(-5, 0, -5), getBlockPos().offset(5,6,5));
     }
 
+    public static final ResourceLocation CONSTRUCT_ERROR_TEXTURE = new ResourceLocation(MagiChemMod.MODID, "item/dummy/dummy_info_panel");
     public boolean tryAbsorbConstruct(Player pPlayer) {
         AABB zone = new AABB(getBlockPos().offset(-5, -5, -5), getBlockPos().offset(5, 5, 5));
 
@@ -345,6 +352,12 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         for (Construct constructInZone : pPlayer.level().getEntitiesOfClass(Construct.class, zone)) {
             if(constructInZone.isFollowing(pPlayer)) {
                 final IConstructConstruction constructData = constructInZone.getConstructData();
+
+                //can't absorb, already a construct present
+                if(storedConstruct != null) {
+                    constructInZone.pushDiagnosticMessage("I can't get into that Mirror Labyrinth, boss. There's already a Construct in there!", CONSTRUCT_ERROR_TEXTURE, false);
+                    constructInZone.setConfused(40);
+                }
 
                 boolean noEnderLeggy = !constructData.isCapabilityEnabled(ConstructCapability.TELEPORT);
                 boolean hasSmartHead = constructData.calculateIntelligence() > 9;
@@ -359,6 +372,12 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                 if(hasSmartHead && hasCasterArm && otherArmValid && noEnderLeggy) {
                     targetConstruct = constructInZone;
                     break;
+                }
+
+                //can't absorb, wrong parts
+                if(storedConstruct != null) {
+                    constructInZone.pushDiagnosticMessage("I can't get into that Mirror Labyrinth, boss. I don't think I have the right parts for the job!", CONSTRUCT_ERROR_TEXTURE, false);
+                    constructInZone.setConfused(40);
                 }
             }
         }
@@ -683,6 +702,11 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
                 }
                 pEntity.ENERGY_STORAGE.extractEnergy(powerDraw, false);
             }
+
+            //handle creative flooding
+            if(!pLevel.isClientSide() && pEntity.shouldFloodMateria) {
+                pEntity.floodMateria();
+            }
         }
     }
 
@@ -876,6 +900,16 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
 
     public void setPaused(boolean pNewPauseState) {
         redstonePaused = pNewPauseState;
+        syncAndSave();
+    }
+
+    private void floodMateria() {
+        for(MateriaItem mi : materiaMap.values()) {
+            materiaStorage.put(mi, getStorageLimit(mi));
+        }
+        itemHandler.setStackInSlot(SLOT_INPUT, ItemStack.EMPTY);
+        itemHandler.setStackInSlot(SLOT_INPUT_RESULT, new ItemStack(ItemRegistry.DEBUG_ORB.get()));
+        shouldFloodMateria = false;
         syncAndSave();
     }
 }
