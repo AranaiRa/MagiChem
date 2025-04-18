@@ -281,7 +281,7 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue ACTUATOR_DOUBLE_SUPPLIED_PERIOD = BUILDER
             .comment("The amount of time, in ticks, that actuators take in between drawing Eldrin power and consuming materia units when both are present.")
-            .defineInRange("actuatorDoubleSuppliedPeriod", 900, 1, Integer.MAX_VALUE);
+            .defineInRange("actuatorDoubleSuppliedPeriod", 1200, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue ACTUATOR_MATERIA_BUFFER_MAXIMUM = BUILDER
             .comment("The amount of materia units that an actuator can store.")
