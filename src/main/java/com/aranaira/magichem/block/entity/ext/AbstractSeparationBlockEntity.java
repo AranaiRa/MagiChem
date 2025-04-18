@@ -232,7 +232,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         while(processingSlot > pVarFunc.apply(IDs.SLOT_INPUT_START) - 1) {
             processingItem = pEntity.itemHandler.getStackInSlot(processingSlot);
 
-            if(processingItem == ItemStack.EMPTY)  processingSlot--;
+            if(processingItem.isEmpty())  processingSlot--;
             else {
                 outputSlot = processingSlot;
                 outputItem = processingItem.copy();

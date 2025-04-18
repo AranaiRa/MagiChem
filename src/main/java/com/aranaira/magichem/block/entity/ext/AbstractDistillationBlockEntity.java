@@ -255,7 +255,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         while(processingSlot > pVarFunc.apply(IDs.SLOT_INPUT_START) - 1) {
             processingItem = entity.itemHandler.getStackInSlot(processingSlot);
 
-            if(processingItem == ItemStack.EMPTY)  processingSlot--;
+            if(processingItem.isEmpty())  processingSlot--;
             else {
                 outputSlot = processingSlot;
                 outputItem = processingItem.copy();
