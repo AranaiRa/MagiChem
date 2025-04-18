@@ -4,6 +4,6 @@
   "power_provided":
   {
     "affinity": "WIND",
-    "amount": 200
+    "amount": 60
   }
 }
