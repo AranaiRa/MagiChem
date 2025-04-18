@@ -234,8 +234,10 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         }
 
         int bottlesGenerated = 0;
+        int materiaCreated = 0;
         for (ItemStack item : pRecipe.getComponentMateria()) {
             int totalThisIngredient = item.getCount();
+            materiaCreated += totalThisIngredient;
 
             //tally up bottles
             for (int i=0; i<inputSlots.getContainerSize(); i++) {
@@ -258,7 +260,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
         }
 
-        resolveActuators(pEntity);
+        resolveActuators(pEntity, materiaCreated);
 
         //Put bottles into output slot, eject the rest
         ItemStack bottleStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES));
@@ -301,9 +303,9 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     // ACTUATOR HANDLING
     ////////////////////
 
-    public static void resolveActuators(AbstractFabricationBlockEntity pEntity) {
+    public static void resolveActuators(AbstractFabricationBlockEntity pEntity, int pMateriaCreated) {
         for(AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            dpbe.processCompletedOperation(1);
+            dpbe.processCompletedOperation(dpbe instanceof ActuatorArcaneBlockEntity ? pMateriaCreated : 1);
         }
     }
 

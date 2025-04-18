@@ -2764,6 +2764,13 @@
             "color": "dark_purple"
           },
           {
+            "text": " for each "
+          },
+          {
+            "text": "processed dram of Materia",
+            "color": "dark_purple"
+          },
+          {
             "text": " whenever the linked device completes an operation."
           }
         ]

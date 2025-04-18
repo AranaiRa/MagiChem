@@ -353,6 +353,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         }
 
         int totalCycles = 0;
+        int materiaCreated = 0;
         int craftLimit = Math.min(pEntity.batchSize, pEntity.itemHandler.getStackInSlot(pProcessingSlot).getCount());
         for(int batch=0; batch< craftLimit; batch++) {
             totalCycles++;
@@ -364,7 +365,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             NonNullList<ItemStack> componentMateria = pair.getSecond();
 
             for (ItemStack item : componentMateria) {
+
                 if (outputSlots.canAddItem(item)) {
+                    materiaCreated += item.getCount();
                     CompoundTag nbt = item.getOrCreateTag();
                     nbt.putInt("CustomModelData", 1);
                     item.setTag(nbt);
@@ -446,7 +449,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         }
         Containers.dropContents(pEntity.getLevel(), pEntity.getBlockPos(), bottleSpill);
 
-        resolveActuators(pEntity, totalCycles);
+        resolveActuators(pEntity, totalCycles, materiaCreated);
         if(totalCycles > 0 && pEntity.clearRecipeAfterNextProcess) {
             pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE), ItemStack.EMPTY);
             pEntity.clearRecipeAfterNextProcess = false;
@@ -530,9 +533,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         }
     }
 
-    public static void resolveActuators(AbstractSeparationBlockEntity pEntity, int pCyclesCompleted) {
+    public static void resolveActuators(AbstractSeparationBlockEntity pEntity, int pCyclesCompleted, int pMateriaCreated) {
         for(AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            dpbe.processCompletedOperation(pCyclesCompleted);
+            dpbe.processCompletedOperation(dpbe instanceof ActuatorArcaneBlockEntity ? pMateriaCreated : pCyclesCompleted);
         }
     }
 

@@ -361,6 +361,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         }
 
         int totalCycles = 0;
+        int materiaCreated = 0;
         int craftLimit = Math.min(pEntity.batchSize, pEntity.itemHandler.getStackInSlot(pProcessingSlot).getCount());
         for(int batch=0; batch<craftLimit; batch++) {
             totalCycles++;
@@ -379,6 +380,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                     ItemStack query = item.copy();
                     while(query.getCount() > 0) {
                         ItemStack stackToAdd = new ItemStack(query.getItem(), Math.min(64, query.getCount()));
+                        materiaCreated += query.getCount();
 
                         CompoundTag nbt = item.getOrCreateTag();
                         nbt.putInt("CustomModelData", 1);
@@ -416,7 +418,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             }
         }
 
-        resolveActuators(pEntity, totalCycles);
+        resolveActuators(pEntity, totalCycles, materiaCreated);
     }
 
     protected static void craftRandomAdmixture(AbstractDistillationBlockEntity pEntity, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
@@ -462,7 +464,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             }
         }
 
-        resolveActuators(pEntity, totalCycles);
+        resolveActuators(pEntity, totalCycles, totalCycles);
     }
 
     ////////////////////
@@ -531,9 +533,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         }
     }
 
-    public static void resolveActuators(AbstractDistillationBlockEntity pEntity, int pCyclesCompleted) {
+    public static void resolveActuators(AbstractDistillationBlockEntity pEntity, int pCyclesCompleted, int pMateriaCreated) {
         for(AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-            dpbe.processCompletedOperation(pCyclesCompleted);
+            dpbe.processCompletedOperation(dpbe instanceof ActuatorArcaneBlockEntity ? pMateriaCreated : pCyclesCompleted);
         }
     }
 

@@ -798,7 +798,7 @@
   "tooltip.magichem.gui.actuator.slurryreduction": "Academic Slurry Reduction Rate",
   "tooltip.magichem.gui.actuator.slurryreduction.line1": "How much Academic Slurry consumption in the linked device is reduced by.",
   "tooltip.magichem.gui.actuator.slurrygeneration": "Academic Slurry Generatiom Rate",
-  "tooltip.magichem.gui.actuator.slurrygeneration.line1": "How much Academic Slurry is created when the linked device completes an operation.",
+  "tooltip.magichem.gui.actuator.slurrygeneration.line1": "How much Academic Slurry is created per processed dram of Materia when the linked device completes an operation.",
   "tooltip.magichem.gui.actuator.importrate": "Import Speed",
   "tooltip.magichem.gui.actuator.importrate.line1": "How quickly the Labyrinthine Navigator draws materia in from the Mirror Labyrinth.",
   "tooltip.magichem.gui.actuator.exportrate": "Export Speed",

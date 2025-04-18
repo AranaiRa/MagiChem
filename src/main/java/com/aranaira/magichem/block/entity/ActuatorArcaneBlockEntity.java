@@ -56,7 +56,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
 
     private static final int[]
             ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
-            SLURRY_PER_OPERATION = {0, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20},
+            SLURRY_PER_OPERATION = {0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
             SLURRY_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
     public static final int
             MAX_POWER_LEVEL = 13,
@@ -258,10 +258,11 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        if((flags & FLAG_IS_REDUCTION_MODE) == 0 && !this.getPaused() && getIsSatisfied()) {
-            fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), getSlurryGeneratedPerOperation() * pCyclesCompleted), FluidAction.EXECUTE);
+        if(!this.getPaused() && getIsSatisfied()) {
+            if ((flags & FLAG_IS_REDUCTION_MODE) == 0) {
+                fill(new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), getSlurryGeneratedPerOperation() * pCyclesCompleted), FluidAction.EXECUTE);
+            }
         }
-
         syncAndSave();
     }
 
