@@ -56,7 +56,7 @@ import java.util.Map;
 public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
-            ELDRIN_POWER_USAGE = {0, 5, 140, 500},
+            ELDRIN_POWER_USAGE = {0, 1, 28, 100},
             GAS_PER_PROCESS = {0, 0, 16, 32};
     private static final float[]
             POWER_PENALTY = {1.0f, 1.5f, 2.25f, 3.375f};

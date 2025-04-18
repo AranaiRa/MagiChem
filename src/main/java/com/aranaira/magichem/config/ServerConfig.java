@@ -285,11 +285,11 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue ACTUATOR_MATERIA_BUFFER_MAXIMUM = BUILDER
             .comment("The amount of materia units that an actuator can store.")
-            .defineInRange("actuatorMateriaBufferMaximum", 1000, 1, Integer.MAX_VALUE);
+            .defineInRange("actuatorMateriaBufferMaximum", 400, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue ACTUATOR_MATERIA_UNITS_PER_DRAM = BUILDER
             .comment("The number of materia units that an Actuator gets from a single dram of materia")
-            .defineInRange("actuatorMateriaUnitsPerDram", 200, 1, Integer.MAX_VALUE);
+            .defineInRange("actuatorMateriaUnitsPerDram", 40, 1, Integer.MAX_VALUE);
 
     //----------------DELUGE PURIFIER
 

@@ -65,7 +65,7 @@ import java.util.Random;
 public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
-            ELDRIN_POWER_USAGE = {0, 5, 140, 500};
+            ELDRIN_POWER_USAGE = {0, 1, 28, 100};
     public static final int
             MAX_POWER_LEVEL = 3,
             SLOT_COUNT = 3, SLOT_MARK = 0, SLOT_ESSENTIA_INSERTION = 1, SLOT_BOTTLES = 2;
