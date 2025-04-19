@@ -11,6 +11,7 @@ import com.aranaira.magichem.recipe.ConjurationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.tools.math.Vector3;
@@ -291,6 +292,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
 
                 if(insert.getItem() == entity.recipe.getMateria()) {
                     boolean allowInsertion = false;
+                    boolean doBottles = !InventoryHelper.isMateriaUnbottled(insert);
                     if(entity.materiaType == null) allowInsertion = true;
                     else if(entity.materiaType == insert.getItem()) allowInsertion = true;
 
@@ -302,10 +304,13 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
                                 entity.materiaType = (MateriaItem)insert.getItem();
 
                                 insert.shrink(1);
-                                if(bottles.isEmpty()) {
-                                    bottles = new ItemStack(Items.GLASS_BOTTLE, 1);
-                                } else {
-                                    bottles.grow(1);
+                                //skip adding bottles if the materia is unbottled
+                                if(doBottles) {
+                                    if (bottles.isEmpty()) {
+                                        bottles = new ItemStack(Items.GLASS_BOTTLE, 1);
+                                    } else {
+                                        bottles.grow(1);
+                                    }
                                 }
                                 entity.itemExtractionHandler.setStackInSlot(SLOT_EXTRACTION_BOTTLES, bottles);
                                 syncThisTick = true;
@@ -513,14 +518,16 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
         Map<MateriaItem, Integer> result = new HashMap<>();
 
         //We obviously don't need materia provided if we don't have a recipe
-        if(itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST).isEmpty() && recipe != null) {
+        if(!itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST).isEmpty() && recipe != null) {
             //Don't report that we have a materia need if there's already a pile incoming
             if (!activeProvisionRequests.contains(recipe.getMateria())) {
                 //Otherwise, only report that Admixture of Color is necessary if we're below half capacity
-                if (materiaAmount < ServerConfig.variegatorMaxAdmixture) {
-                    int needed = Math.max(0, ServerConfig.conjurerMateriaCapacity - materiaAmount);
-                    if (needed > 0)
-                        result.put(recipe.getMateria(), (int) Math.ceil((float) needed / ServerConfig.conjurerPointsPerDram));
+                if (materiaAmount < ServerConfig.conjurerMateriaCapacity * 0.75f) {
+                    ItemStack insertionStack = itemInsertionHandler.getStackInSlot(SLOT_INSERTION_MATERIA);
+                    if(insertionStack.isEmpty() || InventoryHelper.isMateriaUnbottled(insertionStack)) {
+                        int needed = 8;
+                        result.put(recipe.getMateria(), needed);
+                    }
                 }
             }
         }
@@ -543,8 +550,12 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
     public void provide(ItemStack pStack) {
         if(pStack.getItem() == recipe.getMateria()) {
             activeProvisionRequests.remove(recipe.getMateria());
-            materiaAmount += ServerConfig.conjurerPointsPerDram * pStack.getCount();
-            materiaType = recipe.getMateria();
+            ItemStack insertionStack = itemInsertionHandler.getStackInSlot(SLOT_INSERTION_MATERIA);
+            if(insertionStack.isEmpty()) {
+                itemInsertionHandler.setStackInSlot(SLOT_INSERTION_MATERIA, pStack);
+            } else if(insertionStack.getItem() == pStack.getItem() && InventoryHelper.isMateriaUnbottled(insertionStack)) {
+                insertionStack.setCount(Math.min(64, insertionStack.getCount() + pStack.getCount()));
+            }
             syncAndSave();
         }
     }
@@ -560,6 +571,10 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
         if(pStack.getItem() == recipe.getMateria()) {
+            final CompoundTag tag = new CompoundTag();
+            tag.putInt("CustomModelData", 1);
+            pStack.setTag(tag);
+
             provide(pStack);
         }
 
