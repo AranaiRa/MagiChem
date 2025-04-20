@@ -27,11 +27,11 @@
 		},
 		"thirdperson_righthand": {
 			"rotation": [0, 0, 0],
-			"translation": [0, 5, -0.5]
+			"translation": [8, 8, 8]
 		},
 		"thirdperson_lefthand": {
 			"rotation": [0, 0, 0],
-			"translation": [0, 5, -0.5]
+			"translation": [-8, 8, 8]
 		},
 		"gui": {
 			"rotation": [30, 0, -45],
