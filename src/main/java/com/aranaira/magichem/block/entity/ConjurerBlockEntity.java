@@ -503,7 +503,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
 
     @Override
     public boolean needsProvisioning() {
-        if(itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST).isEmpty())
+        if(itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST).isEmpty() || recipe == null)
             return false;
 
         //We don't need provisioning if something is en route

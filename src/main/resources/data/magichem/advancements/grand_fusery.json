@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:grand_fusery"
+    },
+    "title": {
+      "translate": "advancements.magichem.grand_fusery.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.grand_fusery.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:grand_distillery",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:grand_fusery"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

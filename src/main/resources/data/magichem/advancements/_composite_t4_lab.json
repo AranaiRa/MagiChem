@@ -27,7 +27,8 @@
                 "type": "player",
                 "advancements": {
                   "magichem:grand_distillery": true,
-                  "magichem:grand_centrifuge": true
+                  "magichem:grand_centrifuge": true,
+                  "magichem:grand_fusery": true
                 }
               }
             }

@@ -4,6 +4,8 @@
     "magichem:actuator_air",
     "magichem:actuator_earth",
     "magichem:actuator_fire",
-    "magichem:actuator_water"
+    "magichem:actuator_water",
+    "magichem:actuator_arcane",
+    "magichem:actuator_ender"
   ]
 }
