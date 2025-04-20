@@ -67,14 +67,11 @@ public class MateriaReflectorMenu extends AbstractContainerMenu {
     private static final Pair<Item, Integer>[] DIRSPEC = null;
     private static final Vector2i[] SPEC_FROM_INVENTORY = new Vector2i[] {
             new Vector2i( //Input slots
-                    SLOT_INVENTORY_COUNT + SLOT_COUNT,
-                    SLOT_INVENTORY_COUNT + SLOT_COUNT + 1),
+                    SLOT_INVENTORY_COUNT,
+                    SLOT_INVENTORY_COUNT + SLOT_COUNT),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
     private static final Vector2i[] SPEC_TO_INVENTORY = new Vector2i[] {
-            new Vector2i( //Input slots
-                    SLOT_INVENTORY_COUNT + SLOT_COUNT,
-                    SLOT_INVENTORY_COUNT + SLOT_COUNT),
             new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT)
     };
     private static final Pair<Integer, Vector2i> SPEC_CONTAINER = null;
