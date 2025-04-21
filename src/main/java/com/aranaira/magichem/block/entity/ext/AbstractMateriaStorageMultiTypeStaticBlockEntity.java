@@ -115,6 +115,7 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
         if(pSlot < storedMateria.length) {
             storedMateria[pSlot] = new Pair<>(pMateriaType, pCount);
         }
+        syncAndSave();
     }
 
     @Override
@@ -146,7 +147,7 @@ public abstract class AbstractMateriaStorageMultiTypeStaticBlockEntity extends A
             return remainder;
         }
 
-        return 0;
+        return pAmount;
     }
 
     public int fillSlot(int pSlot, MateriaItem pMateriaType, int pAmount, boolean pVoidExcess) {

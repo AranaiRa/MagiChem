@@ -1,6 +1,8 @@
 package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.entity.MateriaJarBlockEntity;
+import com.aranaira.magichem.block.entity.MateriaJarQuadBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.item.renderer.MateriaJarItemRenderer;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -19,6 +21,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.util.NonNullLazy;
 import org.jetbrains.annotations.Nullable;
@@ -84,13 +87,13 @@ public class MateriaJarItem extends BlockItem {
         if(pContext.getLevel().isClientSide()) {
             BlockEntity be = pContext.getLevel().getBlockEntity(pContext.getClickedPos());
 
-            if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
+            if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity || be instanceof AbstractMateriaStorageMultiTypeBlockEntity) {
                 return InteractionResult.SUCCESS;
             }
         } else {
             BlockEntity be = pContext.getLevel().getBlockEntity(pContext.getClickedPos());
 
-            if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
+            if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
                 ItemStack itemInHand = pContext.getItemInHand();
                 CompoundTag itemTag = itemInHand.getOrCreateTag();
 
@@ -98,10 +101,10 @@ public class MateriaJarItem extends BlockItem {
                     String itemTypeString = itemTag.getString("type");
                     int itemAmount = itemTag.getInt("amount");
 
-                    if (amsbe.getMateriaType() != null) {
-                        String targetTypeString = amsbe.getMateriaType().getMateriaName();
+                    if (single.getMateriaType() != null) {
+                        String targetTypeString = single.getMateriaType().getMateriaName();
                         if (targetTypeString.equals(itemTypeString)) {
-                            int inserted = amsbe.insertMateria(itemAmount);
+                            int inserted = single.insertMateria(itemAmount);
                             int remaining = itemAmount - inserted;
                             if(remaining == 0) {
                                 itemInHand.removeTagKey("type");
@@ -115,10 +118,46 @@ public class MateriaJarItem extends BlockItem {
                         MateriaItem itemType = ItemRegistry.getMateriaMap(false, false).get(itemTypeString);
 
                         if(itemType != null) {
-                            amsbe.insertMateria(new ItemStack(itemType, itemAmount));
+                            single.insertMateria(new ItemStack(itemType, itemAmount));
                             itemInHand.removeTagKey("type");
                             itemInHand.removeTagKey("amount");
                         }
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+            else if (be instanceof MateriaJarQuadBlockEntity quad) {
+                ItemStack itemInHand = pContext.getItemInHand();
+                CompoundTag itemTag = itemInHand.getOrCreateTag();
+                int slot = quad.getSlotFromWorldCoord(pContext.getClickLocation());
+
+                if (itemTag.contains("type")) {
+                    String itemTypeString = itemTag.getString("type");
+                    int itemAmount = itemTag.getInt("amount");
+                    MateriaItem mi = AbstractMateriaStorageMultiTypeBlockEntity.materiaMap.getOrDefault(itemTypeString, null);
+
+                    final MateriaItem typeInSlot = quad.getMateriaTypeInSlot(slot);
+
+                    if (mi != null && typeInSlot != null) {
+                        final int amountInSlot = quad.getMateriaAmountInSlot(slot);
+                        final int limitInSlot = quad.getStorageLimit(typeInSlot);
+
+                        int remainingSpace = limitInSlot - amountInSlot;
+
+                        int inserted = Math.min(remainingSpace, itemAmount);
+                        int remaining = itemAmount - inserted;
+                        if(remaining == 0) {
+                            itemInHand.removeTagKey("type");
+                            itemInHand.removeTagKey("amount");
+                        } else {
+                            itemTag.putInt("amount", remaining);
+                            itemInHand.setTag(itemTag);
+                        }
+                        quad.setContents(slot, typeInSlot, amountInSlot + inserted);
+                    } else if(mi != null) {
+                        itemInHand.removeTagKey("type");
+                        itemInHand.removeTagKey("amount");
+                        quad.setContents(slot, mi, itemAmount);
                     }
                     return InteractionResult.SUCCESS;
                 }
