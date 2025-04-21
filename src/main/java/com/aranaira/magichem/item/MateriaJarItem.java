@@ -4,7 +4,9 @@ import com.aranaira.magichem.block.entity.MateriaJarBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaJarQuadBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.item.renderer.MateriaJarItemRenderer;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -13,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -92,43 +95,115 @@ public class MateriaJarItem extends BlockItem {
             }
         } else {
             BlockEntity be = pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+            ItemStack itemInHand = pContext.getItemInHand();
+            boolean spawnNew = itemInHand.getCount() > 1;
+            CompoundTag itemTag = itemInHand.getOrCreateTag();
 
             if (be instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
-                ItemStack itemInHand = pContext.getItemInHand();
-                CompoundTag itemTag = itemInHand.getOrCreateTag();
-
                 if (itemTag.contains("type")) {
                     String itemTypeString = itemTag.getString("type");
                     int itemAmount = itemTag.getInt("amount");
+                    MateriaItem mi = AbstractMateriaStorageMultiTypeBlockEntity.materiaMap.getOrDefault(itemTypeString, null);
 
-                    if (single.getMateriaType() != null) {
-                        String targetTypeString = single.getMateriaType().getMateriaName();
-                        if (targetTypeString.equals(itemTypeString)) {
-                            int inserted = single.insertMateria(itemAmount);
-                            int remaining = itemAmount - inserted;
-                            if(remaining == 0) {
+                    final MateriaItem typeInContainer = single.getMateriaType();
+
+                    if (mi != null && typeInContainer == mi) {
+                        final int amountInContainer = Math.max(0,single.getCurrentStock());
+                        final int limitInContainer = single.getStorageLimit();
+
+                        int remainingSpace = limitInContainer - amountInContainer;
+
+                        int inserted = Math.min(remainingSpace, itemAmount);
+                        int remaining = itemAmount - inserted;
+
+                        if (remaining == 0) {
+                            if(spawnNew) {
+                                ItemStack is = new ItemStack(BlockRegistry.MATERIA_JAR.get().asItem());
+                                ItemEntity ie = new ItemEntity(
+                                        pContext.getLevel(),
+                                        pContext.getPlayer().getX(),
+                                        pContext.getPlayer().getY(),
+                                        pContext.getPlayer().getZ(),
+                                        is
+                                );
+                                itemInHand.shrink(1);
+                                pContext.getPlayer().setItemInHand(pContext.getHand(), itemInHand);
+                                pContext.getLevel().addFreshEntity(ie);
+                            } else {
                                 itemInHand.removeTagKey("type");
                                 itemInHand.removeTagKey("amount");
+                            }
+                        } else {
+                            if(spawnNew) {
+                                ItemStack is = new ItemStack(BlockRegistry.MATERIA_JAR.get().asItem());
+
+                                if(remaining > 0) {
+                                    CompoundTag nbt = new CompoundTag();
+                                    nbt.putString("type", mi.getMateriaName());
+                                    nbt.putInt("amount", remaining);
+                                    is.setTag(nbt);
+                                }
+
+                                ItemEntity ie = new ItemEntity(
+                                        pContext.getLevel(),
+                                        pContext.getPlayer().getX(),
+                                        pContext.getPlayer().getY(),
+                                        pContext.getPlayer().getZ(),
+                                        is
+                                );
+                                itemInHand.shrink(1);
+                                pContext.getPlayer().setItemInHand(pContext.getHand(), itemInHand);
+                                pContext.getLevel().addFreshEntity(ie);
                             } else {
                                 itemTag.putInt("amount", remaining);
                                 itemInHand.setTag(itemTag);
                             }
                         }
-                    } else {
-                        MateriaItem itemType = ItemRegistry.getMateriaMap(false, false).get(itemTypeString);
+                        single.setContents(typeInContainer, amountInContainer + inserted);
+                    } else if(mi != null && typeInContainer == null) {
+                        final int amountInContainer = Math.max(0, single.getCurrentStock());
+                        final int limitInContainer = single.getStorageLimit();
 
-                        if(itemType != null) {
-                            single.insertMateria(new ItemStack(itemType, itemAmount));
-                            itemInHand.removeTagKey("type");
-                            itemInHand.removeTagKey("amount");
+                        int remainingSpace = limitInContainer - amountInContainer;
+
+                        int inserted = Math.min(remainingSpace, itemAmount);
+                        int remaining = itemAmount - inserted;
+
+                        if (spawnNew) {
+                            ItemStack is = new ItemStack(BlockRegistry.MATERIA_JAR.get().asItem());
+
+                            if(remaining > 0) {
+                                CompoundTag nbt = new CompoundTag();
+                                nbt.putString("type", mi.getMateriaName());
+                                nbt.putInt("amount", remaining);
+                                is.setTag(nbt);
+                            }
+                            ItemEntity ie = new ItemEntity(
+                                    pContext.getLevel(),
+                                    pContext.getPlayer().getX(),
+                                    pContext.getPlayer().getY(),
+                                    pContext.getPlayer().getZ(),
+                                    is
+                            );
+                            itemInHand.shrink(1);
+                            pContext.getPlayer().setItemInHand(pContext.getHand(), itemInHand);
+                            pContext.getLevel().addFreshEntity(ie);
+                        } else {
+                            if(remaining > 0) {
+                                itemTag.putInt("amount", remaining);
+                                itemInHand.setTag(itemTag);
+                                pContext.getPlayer().setItemInHand(pContext.getHand(), itemInHand);
+                            } else {
+                                itemInHand.removeTagKey("type");
+                                itemInHand.removeTagKey("amount");
+                            }
                         }
+                        single.setContents(mi, inserted);
                     }
                     return InteractionResult.SUCCESS;
                 }
             }
             else if (be instanceof MateriaJarQuadBlockEntity quad) {
-                ItemStack itemInHand = pContext.getItemInHand();
-                CompoundTag itemTag = itemInHand.getOrCreateTag();
                 int slot = quad.getSlotFromWorldCoord(pContext.getClickLocation());
 
                 if (itemTag.contains("type")) {
@@ -139,25 +214,90 @@ public class MateriaJarItem extends BlockItem {
                     final MateriaItem typeInSlot = quad.getMateriaTypeInSlot(slot);
 
                     if (mi != null && typeInSlot != null) {
-                        final int amountInSlot = quad.getMateriaAmountInSlot(slot);
-                        final int limitInSlot = quad.getStorageLimit(typeInSlot);
+                        final int amountInSlot = Math.max(0,quad.getMateriaAmountInSlot(slot));
+                        final int limitInSlot = quad.getStorageLimitIgnoreStoredTypes(typeInSlot);
 
                         int remainingSpace = limitInSlot - amountInSlot;
 
                         int inserted = Math.min(remainingSpace, itemAmount);
                         int remaining = itemAmount - inserted;
                         if(remaining == 0) {
-                            itemInHand.removeTagKey("type");
-                            itemInHand.removeTagKey("amount");
+                            if(spawnNew) {
+                                ItemStack is = new ItemStack(BlockRegistry.MATERIA_JAR.get().asItem());
+                                ItemEntity ie = new ItemEntity(
+                                        pContext.getLevel(),
+                                        pContext.getPlayer().getX(),
+                                        pContext.getPlayer().getY(),
+                                        pContext.getPlayer().getZ(),
+                                        is
+                                );
+                                itemInHand.shrink(1);
+                                pContext.getPlayer().setItemInHand(pContext.getHand(), itemInHand);
+                                pContext.getLevel().addFreshEntity(ie);
+                            } else {
+                                itemInHand.removeTagKey("type");
+                                itemInHand.removeTagKey("amount");
+                            }
                         } else {
-                            itemTag.putInt("amount", remaining);
-                            itemInHand.setTag(itemTag);
+                            if(spawnNew) {
+                                ItemStack is = new ItemStack(BlockRegistry.MATERIA_JAR.get().asItem());
+
+                                if(remaining > 0) {
+                                    CompoundTag nbt = new CompoundTag();
+                                    nbt.putString("type", mi.getMateriaName());
+                                    nbt.putInt("amount", remaining);
+                                    is.setTag(nbt);
+                                }
+
+                                ItemEntity ie = new ItemEntity(
+                                        pContext.getLevel(),
+                                        pContext.getPlayer().getX(),
+                                        pContext.getPlayer().getY(),
+                                        pContext.getPlayer().getZ(),
+                                        is
+                                );
+                                itemInHand.shrink(1);
+                                pContext.getPlayer().setItemInHand(pContext.getHand(), itemInHand);
+                                pContext.getLevel().addFreshEntity(ie);
+                            } else {
+                                itemTag.putInt("amount", remaining);
+                                itemInHand.setTag(itemTag);
+                            }
                         }
                         quad.setContents(slot, typeInSlot, amountInSlot + inserted);
                     } else if(mi != null) {
-                        itemInHand.removeTagKey("type");
-                        itemInHand.removeTagKey("amount");
-                        quad.setContents(slot, mi, itemAmount);
+                        final int limitInSlot = quad.getStorageLimitIgnoreStoredTypes(mi);
+
+                        int inserted = Math.min(limitInSlot, itemAmount);
+                        int remaining = itemAmount - inserted;
+
+                        if(spawnNew) {
+                            ItemStack is = new ItemStack(BlockRegistry.MATERIA_JAR.get().asItem());
+
+                            if(remaining > 0) {
+                                CompoundTag nbt = new CompoundTag();
+                                nbt.putString("type", mi.getMateriaName());
+                                nbt.putInt("amount", remaining);
+                                is.setTag(nbt);
+                            }
+
+                            ItemEntity ie = new ItemEntity(
+                                    pContext.getLevel(),
+                                    pContext.getPlayer().getX(),
+                                    pContext.getPlayer().getY(),
+                                    pContext.getPlayer().getZ(),
+                                    is
+                            );
+                            pContext.getLevel().addFreshEntity(ie);
+
+                            itemTag.putInt("amount", remaining);
+                            itemInHand.setTag(itemTag);
+                            pContext.getPlayer().setItemInHand(pContext.getHand(), itemInHand);
+                        } else {
+                            itemInHand.removeTagKey("type");
+                            itemInHand.removeTagKey("amount");
+                        }
+                        quad.setContents(slot, mi, inserted);
                     }
                     return InteractionResult.SUCCESS;
                 }
