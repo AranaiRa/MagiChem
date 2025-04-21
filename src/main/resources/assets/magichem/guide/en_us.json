@@ -1012,6 +1012,17 @@
           },
           {
             "text": " is especially useful for interacting with a Circle of Power's comparator output.\n\n"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
           },
           {
             "text": "0",
@@ -1779,6 +1790,17 @@
           },
           {
             "text": " is especially useful for interacting with a Centrifuge's comparator output.\n\n"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
           },
           {
             "text": "2",
@@ -2001,7 +2023,18 @@
             "color": "dark_purple"
           },
           {
-            "text": " is especially useful for interacting with a Fusery's comparator output.\n\n"
+            "text": " is especially useful for interacting with a Fusery's comparator output."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
           },
           {
             "text": "2",
@@ -2158,7 +2191,18 @@
             "bold": true
           },
           {
-            "text": " and outputs the following signal values.\n\n\n"
+            "text": " and outputs the following signal values."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
           },
           {
             "text": "0",
@@ -4037,7 +4081,18 @@
             "color": "dark_purple"
           },
           {
-            "text": " is especially useful for interacting with a Distillery's comparator output.\n\n"
+            "text": " is especially useful for interacting with a Distillery's comparator output."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
           },
           {
             "text": "1",
@@ -5537,6 +5592,103 @@
             "italic": false
           }
         ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Grand Distillery supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs a signal value based on its item slots.\nThe output strength is packed as a "
+          },
+          {
+            "text": "binary number",
+            "color": "dark_red"
+          },
+          {
+            "text": ": the first bit is 1 if the fuel slot has an item, or 0 if empty; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted.\n\n"
+          },
+          {
+            "text": "Meticulous Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is especially useful for interacting with a Grand Distillery's comparator output."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
+          },
+          {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel.\n"
+          },
+          {
+            "text": "2",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items.\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel and input items.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has output items.\n"
+          },
+          {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel and output items.\n"
+          },
+          {
+            "text": "6",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel, input, and output items.\n"
+          }
+        ]
       }
     ],
     "related_recipes": [
@@ -5577,7 +5729,7 @@
             "text": "The "
           },
           {
-            "text": "Grand Distillery",
+            "text": "Grand Centrifuge",
             "color": "dark_purple"
           },
           {
@@ -5632,6 +5784,82 @@
           {
             "text": "The six slots to the left for input admixtures. Items placed within these slots will process from the bottom-most slot to the top-most slot. The alchemical Separation symbol in the center acts as a progress bar and fills as the current items are Separating.\n\nThe eighteen slots to the right of the processing slot hold Separated materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
             "italic": false
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Grand Centrifuge supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs a signal value based on its item slots.\nThe output strength is packed as a "
+          },
+          {
+            "text": "binary number",
+            "color": "dark_red"
+          },
+          {
+            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process; and the third bit is 1 if the device has output items that have yet to be sorted.\n\n\n"
+          },
+          {
+            "text": "Meticulous Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is especially useful for interacting with a Grand Centrifuge's comparator output."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
+          },
+          {
+            "text": "2",
+            "bold": true,
+            "color": "dark_red",
+            "newPage": true
+          },
+          {
+            "text": ": Has input items.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has output items.\n"
+          },
+          {
+            "text": "6",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input and output items.\n"
           }
         ]
       }
@@ -5729,6 +5957,113 @@
           {
             "text": "On the far left side is a panel with fifteen slots used to select what you want the Fusery to craft. Typing in the black bar on the top of the panel filters which recipes are shown. Once a recipe is selected, it appears under the alchemical Fixation symbol in the center and a second panel appears to the lower right to indicate what Materia are required for each craft.\n\nThe alchemical Fixation symbol in the center represents the progress on the current craft, and fills as the process gets closer to completion.\n\nTo the left of the alchemical Fixation symbol are ten slots for input Materia. When a recipe is selected, two slots will be reserved for each type of Materia required by the recipe and no other types of Materia can be inserted.\n\nWhenever the Fusery creates an Admixture, all of the Materia used is consumed and the bottles are pushed to the bottle output slot above the alchemical Fixation symbol. If there's not enough space in the bottle output slot, excess bottles will be ejected into the world.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
             "italic": false
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Grand Fusery supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs a signal value based on its item slots.\nThe output strength is packed as a "
+          },
+          {
+            "text": "binary number",
+            "color": "dark_red"
+          },
+          {
+            "text": ": the first is unused; the second bit is 1 if the device has input items it has yet to process; the third bit is 1 if the device has output items that have yet to be sorted; and the fourth bit is 1 if the device has Academic Slurry in its tank.\n"
+          },
+          {
+            "text": "Meticulous Signalite",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is especially useful for interacting with a Grand Fusery's comparator output.\n\n"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
+          },
+          {
+            "text": "2",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has output items.\n"
+          },
+          {
+            "text": "6",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "8",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has slurry.\n"
+          },
+          {
+            "text": "10",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has inputs and slurry.\n"
+          },
+          {
+            "text": "12",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has outputs and slurry.\n"
+          },
+          {
+            "text": "14",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has inputs, outputs, and slurry.\n"
           }
         ]
       }
