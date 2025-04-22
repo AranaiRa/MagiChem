@@ -1,6 +1,7 @@
 package com.aranaira.magichem.entities.renderers;
 
 import com.aranaira.magichem.entities.ShlorpEntity;
+import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -55,6 +56,14 @@ public class ShlorpEntityRenderer extends EntityRenderer<ShlorpEntity> {
         Matrix4f renderMatrix = pPoseStack.last().pose();
         Matrix3f normalMatrix = pPoseStack.last().normal();
         int[] color = pEntity.color;
+        if(pEntity.isPayloadAdmixtureOfColor()) {
+            int period = 67;
+            int gt = (int)(pEntity.level().getGameTime() % (period * 2));
+            float pScaledTime = ((float)((gt + pPartialTick) % period)) / (float)period;
+
+            int packedColor = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            color = ColorUtils.getRGBAIntTintFromPackedInt(packedColor);
+        }
 
         //If we don't have at least 2 entries in the vert data list, shit's going to break. So skip rendering if it's not compliant.
         if(vertData.size() < 2)

@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.block.entity.MateriaVesselBlockEntity;
 import com.aranaira.magichem.item.EssentiaItem;
+import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -23,8 +24,17 @@ public class MateriaVesselBlockEntityRenderer implements BlockEntityRenderer<Mat
         if(mvbe.getCurrentStockPercent() > 0 && mvbe.getMateriaType() != null) {
             VertexConsumer buffer = bufferSource.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
 
+            int color = mvbe.getMateriaType().getMateriaColor();
+            if(mvbe.getMateriaType().getMateriaName().equals("color")) {
+                int period = 200;
+                int gt = (int)(mvbe.getLevel().getGameTime() % (period * 2));
+                float pScaledTime = ((float)((gt + pPartialTick) % period)) / (float)period;
+
+                color = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
+
             PoseStack.Pose last = poseStack.last();
-            MateriaVesselContentsRenderUtil.renderVesselFluidContents(last.pose(), last.normal(), buffer, mvbe.getCurrentStockPercent(), mvbe.getMateriaType().getMateriaColor(), packedLight);
+            MateriaVesselContentsRenderUtil.renderVesselFluidContents(last.pose(), last.normal(), buffer, mvbe.getCurrentStockPercent(), color, packedLight);
 
             if(mvbe.getMateriaType() instanceof EssentiaItem ei) {
                 MateriaVesselContentsRenderUtil.renderVesselEssentiaLabel(last.pose(), last.normal(), buffer, ei, mvbe.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), packedLight);

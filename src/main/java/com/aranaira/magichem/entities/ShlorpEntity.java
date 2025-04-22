@@ -3,6 +3,7 @@ package com.aranaira.magichem.entities;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
@@ -358,5 +359,9 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     @Override
     public AABB getBoundingBoxForCulling() {
         return new AABB(getX()-1000, getY()-100, getZ()-1000, getX()+1000, getY()+100, getZ()+1000);
+    }
+
+    public boolean isPayloadAdmixtureOfColor() {
+        return stackInTransit.getItem() instanceof AdmixtureItem ai && ai.getMateriaName().equals("color");
     }
 }

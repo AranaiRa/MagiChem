@@ -211,6 +211,13 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[0];
 
             color1 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int periodColor = 200;
+                int gtColor = (int)(pBlockEntity.getLevel().getGameTime() % (periodColor * 2));
+                float pScaledTime = ((float)((gtColor + pPartialTick) % periodColor)) / (float)periodColor;
+
+                color1 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill1 = Math.min(1, (
                     (contentsOfInputSlots[0].isEmpty() ? 0 : contentsOfInputSlots[0].getCount()) +
                     (contentsOfInputSlots[1].isEmpty() ? 0 : contentsOfInputSlots[1].getCount())
@@ -223,6 +230,13 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[2];
 
             color2 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int periodColor = 200;
+                int gtColor = (int)(pBlockEntity.getLevel().getGameTime() % (periodColor * 2));
+                float pScaledTime = ((float)((gtColor + pPartialTick) % periodColor)) / (float)periodColor;
+
+                color2 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill2 = Math.min(1, (
                     (contentsOfInputSlots[2].isEmpty() ? 0 : contentsOfInputSlots[2].getCount()) +
                     (contentsOfInputSlots[3].isEmpty() ? 0 : contentsOfInputSlots[3].getCount())
@@ -235,6 +249,13 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[4];
 
             color3 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int periodColor = 200;
+                int gtColor = (int)(pBlockEntity.getLevel().getGameTime() % (periodColor * 2));
+                float pScaledTime = ((float)((gtColor + pPartialTick) % periodColor)) / (float)periodColor;
+
+                color3 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill3 = Math.min(1, (
                     (contentsOfInputSlots[4].isEmpty() ? 0 : contentsOfInputSlots[4].getCount()) +
                     (contentsOfInputSlots[5].isEmpty() ? 0 : contentsOfInputSlots[5].getCount())
@@ -247,6 +268,13 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[6];
 
             color4 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int periodColor = 200;
+                int gtColor = (int)(pBlockEntity.getLevel().getGameTime() % (periodColor * 2));
+                float pScaledTime = ((float)((gtColor + pPartialTick) % periodColor)) / (float)periodColor;
+
+                color4 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill4 = Math.min(1, (
                     (contentsOfInputSlots[6].isEmpty() ? 0 : contentsOfInputSlots[6].getCount()) +
                     (contentsOfInputSlots[7].isEmpty() ? 0 : contentsOfInputSlots[7].getCount())
@@ -259,6 +287,13 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
                     contentsOfInputSlots[8];
 
             color5 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int periodColor = 200;
+                int gtColor = (int)(pBlockEntity.getLevel().getGameTime() % (periodColor * 2));
+                float pScaledTime = ((float)((gtColor + pPartialTick) % periodColor)) / (float)periodColor;
+
+                color5 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill5 = Math.min(1, (
                     (contentsOfInputSlots[8].isEmpty() ? 0 : contentsOfInputSlots[8].getCount()) +
                     (contentsOfInputSlots[9].isEmpty() ? 0 : contentsOfInputSlots[9].getCount())

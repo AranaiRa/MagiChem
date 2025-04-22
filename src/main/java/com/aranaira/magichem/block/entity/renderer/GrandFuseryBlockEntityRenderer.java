@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.tools.math.Vector3;
@@ -64,6 +65,13 @@ public class GrandFuseryBlockEntityRenderer implements BlockEntityRenderer<Grand
                     contentsOfInputSlots.getItem(0);
 
             color1 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int period = 200;
+                int gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+                float pScaledTime = ((float)((gt + pPartialTick) % period)) / (float)period;
+
+                color1 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill1 = Math.min(1, (
                     (contentsOfInputSlots.getItem(0).isEmpty() ? 0 : contentsOfInputSlots.getItem(0).getCount()) +
                     (contentsOfInputSlots.getItem(1).isEmpty() ? 0 : contentsOfInputSlots.getItem(1).getCount())
@@ -76,6 +84,13 @@ public class GrandFuseryBlockEntityRenderer implements BlockEntityRenderer<Grand
                     contentsOfInputSlots.getItem(2);
 
             color2 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int period = 200;
+                int gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+                float pScaledTime = ((float)((gt + pPartialTick) % period)) / (float)period;
+
+                color2 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill2 = Math.min(1, (
                     (contentsOfInputSlots.getItem(2).isEmpty() ? 0 : contentsOfInputSlots.getItem(2).getCount()) +
                     (contentsOfInputSlots.getItem(3).isEmpty() ? 0 : contentsOfInputSlots.getItem(3).getCount())
@@ -88,6 +103,13 @@ public class GrandFuseryBlockEntityRenderer implements BlockEntityRenderer<Grand
                     contentsOfInputSlots.getItem(4);
 
             color3 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int period = 200;
+                int gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+                float pScaledTime = ((float)((gt + pPartialTick) % period)) / (float)period;
+
+                color3 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill3 = Math.min(1, (
                     (contentsOfInputSlots.getItem(4).isEmpty() ? 0 : contentsOfInputSlots.getItem(4).getCount()) +
                     (contentsOfInputSlots.getItem(5).isEmpty() ? 0 : contentsOfInputSlots.getItem(5).getCount())
@@ -100,6 +122,13 @@ public class GrandFuseryBlockEntityRenderer implements BlockEntityRenderer<Grand
                     contentsOfInputSlots.getItem(6);
 
             color4 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int period = 200;
+                int gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+                float pScaledTime = ((float)((gt + pPartialTick) % period)) / (float)period;
+
+                color4 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill4 = Math.min(1, (
                     (contentsOfInputSlots.getItem(6).isEmpty() ? 0 : contentsOfInputSlots.getItem(6).getCount()) +
                     (contentsOfInputSlots.getItem(7).isEmpty() ? 0 : contentsOfInputSlots.getItem(7).getCount())
@@ -112,6 +141,13 @@ public class GrandFuseryBlockEntityRenderer implements BlockEntityRenderer<Grand
                     contentsOfInputSlots.getItem(8);
 
             color5 = ((MateriaItem)stack.getItem()).getMateriaColor();
+            if(((MateriaItem)stack.getItem()).getMateriaName().equals("color")) {
+                int period = 200;
+                int gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+                float pScaledTime = ((float)((gt + pPartialTick) % period)) / (float)period;
+
+                color5 = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
             fill5 = Math.min(1, (
                     (contentsOfInputSlots.getItem(8).isEmpty() ? 0 : contentsOfInputSlots.getItem(8).getCount()) +
                     (contentsOfInputSlots.getItem(9).isEmpty() ? 0 : contentsOfInputSlots.getItem(9).getCount())

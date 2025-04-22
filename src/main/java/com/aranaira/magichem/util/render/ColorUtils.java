@@ -1,7 +1,10 @@
 package com.aranaira.magichem.util.render;
 
 import com.aranaira.magichem.item.MateriaItem;
+import com.mna.tools.math.MathUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
@@ -49,6 +52,14 @@ public class ColorUtils {
             {2, 32, 32},
             {2, 2, 64},
             {32, 2, 32}
+    };
+    public static final int[][] SIX_STEP_PARTICLE_COLORS_BRIGHT = {
+            {255, 100, 100},
+            {196, 196, 100},
+            {100, 255, 100},
+            {100, 196, 196},
+            {100, 100, 255},
+            {196, 100, 196}
     };
 
     public static int[] getRGBIntTint(DyeColor pColorCode) {
@@ -235,5 +246,19 @@ public class ColorUtils {
         int b = pPackedColor & 0x000000ff;
 
         return new float[]{(float)r / 255f, (float)g / 255f, (float)b / 255f, (float)a / 255f};
+    }
+
+    public static int getLerpedRainbowColor(float pScaledTime) {
+        pScaledTime = pScaledTime % 1f;
+        int indexA = (int)Math.floor(pScaledTime * 6f);
+        int[] colorA = SIX_STEP_PARTICLE_COLORS_BRIGHT[indexA];
+        int indexB = (int)Math.ceil(pScaledTime * 6f);
+        int[] colorB = SIX_STEP_PARTICLE_COLORS_BRIGHT[indexB == 6 ? 0 : indexB];
+        float alpha = (pScaledTime * 6f) % 1f;
+
+        int packedColorA = 0xff000000 | colorA[0] << 16 | colorA[1] << 8 | colorA[2];
+        int packedColorB = 0xff000000 | colorB[0] << 16 | colorB[1] << 8 | colorB[2];
+
+        return MathUtils.lerpColor(packedColorA, packedColorB, alpha);
     }
 }

@@ -10,7 +10,7 @@
       "predicate": {
         "custom_model_data": 1
       },
-      "model": "magichem:item/materia_unbottled"
+      "model": "magichem:item/materia_unbottled_color"
     }
   ]
 }
