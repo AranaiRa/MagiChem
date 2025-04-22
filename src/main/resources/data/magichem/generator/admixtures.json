@@ -76,7 +76,7 @@
     },
     {
       "name": "color",
-      "color": "f1924c",
+      "color": "ffffff",
       "depth": 2,
       "components": [
         { "essentia": "air", "count": 4 },
