@@ -1,13 +1,16 @@
 {
   "type": "magichem:distillation_fabrication",
-  "distill_only": false,
+  "wisdom": 2,
+  "categories": 48,
   "output_rate": 1.0,
+  "batch_size": 1,
+  "required_advancement": "minecraft:nether/summon_wither",
   "object": { "item": "minecraft:nether_star" },
   "components": [
-    { "item": "magichem:admixture_light", "count": 64 },
-    { "item": "magichem:admixture_curse", "count": 64 },
-    { "item": "magichem:admixture_protection", "count": 64 },
-    { "item": "magichem:essentia_precious", "count": 64 },
-    { "item": "magichem:essentia_rubedo", "count": 38 }
+    { "item": "magichem:admixture_light", "count": 50 },
+    { "item": "magichem:admixture_curse", "count": 19 },
+    { "item": "magichem:admixture_protection", "count": 13 },
+    { "item": "magichem:admixture_potential", "count": 8 },
+    { "item": "magichem:essentia_citrinitas", "count": 7 }
   ]
 }

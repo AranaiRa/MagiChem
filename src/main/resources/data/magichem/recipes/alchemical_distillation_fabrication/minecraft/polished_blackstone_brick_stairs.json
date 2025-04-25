@@ -1,7 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
-  "distill_only": true,
+  "wisdom": 255,
+  "categories": 0,
   "output_rate": 0.667,
+  "batch_size": 1,
   "object": { "item": "minecraft:polished_blackstone_brick_stairs" },
   "components": [
     { "item": "magichem:admixture_demon", "count": 4 },

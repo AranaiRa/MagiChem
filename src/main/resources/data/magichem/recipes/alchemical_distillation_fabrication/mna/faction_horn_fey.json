@@ -1,7 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
-  "distill_only": true,
+  "wisdom": 255,
+  "categories": 0,
   "output_rate": 1.0,
+  "batch_size": 1,
   "object": { "item": "mna:faction_horn_fey" },
   "components": [
     { "item": "magichem:admixture_sound", "count": 24 },

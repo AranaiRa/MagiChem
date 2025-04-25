@@ -1,7 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
-  "distill_only": false,
+  "wisdom": 0,
+  "categories": 0,
   "output_rate": 1.0,
+  "batch_size": 1,
   "object": { "item": "minecraft:bone_meal" },
   "components": [
     { "item": "magichem:admixture_bone", "count": 2 },

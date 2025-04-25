@@ -6,8 +6,8 @@
       "depth": 2,
       "components": [
         { "essentia": "nourishing", "count": 2 },
-        { "essentia": "wrought", "count": 2 },
-        { "admixture": "poison", "count": 1 }
+        { "admixture": "poison", "count": 1 },
+        { "essentia": "wrought", "count": 2 }
       ]
     },
     {
@@ -136,8 +136,8 @@
       "color": "131418",
       "depth": 2,
       "components": [
-        { "essentia": "rotten", "count": 2 },
-        { "admixture": "light", "count": 1 }
+        { "admixture": "light", "count": 1 },
+        { "essentia": "rotten", "count": 2 }
       ]
     },
     {
@@ -145,8 +145,8 @@
       "color": "262b29",
       "depth": 2,
       "components": [
-        { "essentia": "rotten", "count": 2 },
-        { "admixture": "breath", "count": 1 }
+        { "admixture": "breath", "count": 1 },
+        { "essentia": "rotten", "count": 2 }
       ]
     },
     {
@@ -210,8 +210,8 @@
       "color": "f6c95f",
       "depth": 2,
       "components": [
-        { "essentia": "wrought", "count": 2 },
-        { "admixture": "storm", "count": 1 }
+        { "admixture": "storm", "count": 1 },
+        { "essentia": "wrought", "count": 2 }
       ]
     },
     {
@@ -220,8 +220,8 @@
       "depth": 1,
       "components": [
         { "essentia": "ender", "count": 2 },
-        { "essentia": "mineral", "count": 4 },
-        { "essentia": "rotten", "count": 2 }
+        { "essentia": "rotten", "count": 2 },
+        { "essentia": "mineral", "count": 4 }
       ]
     },
     {
@@ -280,8 +280,8 @@
       "color": "f54c4c",
       "depth": 2,
       "components": [
-        { "admixture": "nectar", "count": 1 },
         { "admixture": "blood", "count": 1 },
+        { "admixture": "nectar", "count": 1 },
         { "essentia": "nourishing", "count": 8 }
       ]
     },
@@ -291,8 +291,8 @@
       "depth": 3,
       "components": [
         { "admixture": "permanence", "count": 7 },
-        { "admixture": "memory", "count": 4 },
         { "admixture": "lies", "count": 4 },
+        { "admixture": "memory", "count": 4 },
         { "essentia": "conceptual", "count": 4 }
       ]
     },
@@ -301,9 +301,9 @@
       "color": "30326e",
       "depth": 3,
       "components": [
-        { "admixture": "thought", "count": 1 },
-        { "admixture": "instrument", "count": 1 },
         { "admixture": "energy", "count": 1 },
+        { "admixture": "instrument", "count": 1 },
+        { "admixture": "thought", "count": 1 },
         { "essentia": "wrought", "count": 4 }
       ]
     },
@@ -312,9 +312,9 @@
       "color": "6a6dd4",
       "depth": 2,
       "components": [
-        { "essentia": "wrought", "count": 2 },
+        { "admixture": "permanence", "count": 1 },
         { "admixture": "thought", "count": 1 },
-        { "admixture": "permanence", "count": 1 }
+        { "essentia": "wrought", "count": 2 }
       ]
     },
     {
@@ -334,8 +334,8 @@
       "color": "a57994",
       "depth": 2,
       "components": [
-        { "essentia": "rotten", "count": 2 },
-        { "admixture": "thought", "count": 1 }
+        { "admixture": "thought", "count": 1 },
+        { "essentia": "rotten", "count": 2 }
       ]
     },
     {
@@ -371,8 +371,8 @@
       "color": "7cd623",
       "depth": 2,
       "components": [
-        { "essentia": "precious", "count": 2 },
-        { "admixture": "thought", "count": 1 }
+        { "admixture": "thought", "count": 1 },
+        { "essentia": "precious", "count": 2 }
       ]
     },
     {
@@ -428,9 +428,9 @@
       "color": "2f5f3d",
       "depth": 2,
       "components": [
-        { "essentia": "verdant", "count": 2 },
+        { "admixture": "breath", "count": 1 },
         { "admixture": "nectar", "count": 1 },
-        { "admixture": "breath", "count": 1 }
+        { "essentia": "verdant", "count": 2 }
       ]
     },
     {
@@ -488,8 +488,8 @@
       "color": "af50d7",
       "depth": 2,
       "components": [
-        { "admixture": "wizard", "count": 1 },
         { "admixture": "mana", "count": 6 },
+        { "admixture": "wizard", "count": 1 },
         { "essentia": "conceptual", "count": 2 }
       ]
     },
@@ -498,9 +498,9 @@
       "color": "570b2f",
       "depth": 2,
       "components": [
-        { "admixture": "thought", "count": 1 },
+        { "essentia": "air", "count": 2 },
         { "admixture": "motion", "count": 2 },
-        { "essentia": "air", "count": 2 }
+        { "admixture": "thought", "count": 1 }
       ]
     },
     {
@@ -547,8 +547,8 @@
       "color": "4a4842",
       "depth": 2,
       "components": [
-        { "essentia": "rotten", "count": 2 },
-        { "admixture": "motion", "count": 1 }
+        { "admixture": "motion", "count": 1 },
+        { "essentia": "rotten", "count": 2 }
       ]
     },
     {
@@ -576,8 +576,8 @@
       "color": "683b1e",
       "depth": 2,
       "components": [
-        { "admixture": "thought", "count": 1 },
-        { "admixture": "destruction", "count": 1 }
+        { "admixture": "destruction", "count": 1 },
+        { "admixture": "thought", "count": 1 }
       ]
     },
     {

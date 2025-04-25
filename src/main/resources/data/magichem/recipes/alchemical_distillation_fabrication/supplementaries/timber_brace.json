@@ -10,9 +10,11 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "distill_only": true,
-        "output_rate": 0.25,
-        "object": {
+        "wisdom": 255,
+        "categories": 0,
+  "output_rate": 0.25,
+        "batch_size": 1,
+  "object": {
           "item": "supplementaries:timber_brace"
         },
         "components": [
