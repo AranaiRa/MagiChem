@@ -1,6 +1,6 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 255,
+  "wisdom": 6,
   "categories": 0,
   "output_rate": 0.1875,
   "batch_size": 1,

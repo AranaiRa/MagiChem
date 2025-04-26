@@ -30,6 +30,26 @@ public class ItemRegistry {
     // MAGICHEM ITEMS
     ///////////////
 
+    public static final RegistryObject<PhilosophersStoneItem> ASHEN_WISDOM_STONE = ITEMS.register("wisdom_stone_nigredo",
+            () -> new PhilosophersStoneItem(new Item.Properties().stacksTo(1), 1)
+    );
+
+    public static final RegistryObject<PhilosophersStoneItem> BLEACHED_WISDOM_STONE = ITEMS.register("wisdom_stone_albedo",
+            () -> new PhilosophersStoneItem(new Item.Properties().stacksTo(1), 2)
+    );
+
+    public static final RegistryObject<PhilosophersStoneItem> YELLOWED_WISDOM_STONE = ITEMS.register("wisdom_stone_citrinitas",
+            () -> new PhilosophersStoneItem(new Item.Properties().stacksTo(1), 3)
+    );
+
+    public static final RegistryObject<PhilosophersStoneItem> FLUSHED_WISDOM_STONE = ITEMS.register("wisdom_stone_rubedo",
+            () -> new PhilosophersStoneItem(new Item.Properties().stacksTo(1), 4)
+    );
+
+    public static final RegistryObject<PhilosophersStoneItem> PHILOSOPHERS_STONE = ITEMS.register("philosophers_stone",
+            () -> new PhilosophersStoneItem(new Item.Properties().stacksTo(1), 5)
+    );
+
     public static final RegistryObject<SublimationPrimerItem> SUBLIMATION_PRIMER = ITEMS.register("sublimation_primer",
             () -> new SublimationPrimerItem(new Item.Properties().stacksTo(1))
     );

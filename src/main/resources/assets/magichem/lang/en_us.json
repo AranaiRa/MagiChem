@@ -64,6 +64,11 @@
   "item.magichem.tube_components": "Tube Components",
   "item.magichem.vinteum_crystal_shard": "Vinteum Crystal Shard",
   "item.magichem.winter_charge": "Winter Charge",
+  "item.magichem.wisdom_stone_nigredo": "Ashen Wisdom Stone",
+  "item.magichem.wisdom_stone_albedo": "Bleached Wisdom Stone",
+  "item.magichem.wisdom_stone_citrinitas": "Yellowed Wisdom Stone",
+  "item.magichem.wisdom_stone_rubedo": "Flushed Wisdom Stone",
+  "item.magichem.philosophers_stone": "Philosopher's Stone",
 
   "item.magichem.academic_slurry_bucket": "Academic Slurry Bucket",
   "item.magichem.liquid_light_bucket": "Liquid Light Bucket",

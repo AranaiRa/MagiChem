@@ -20,8 +20,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
-import static com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity.SLOT_INPUT_COUNT;
-import static com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity.SLOT_INPUT_START;
+import static com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity.*;
 
 public class GrandCircleFabricationMenu extends AbstractContainerMenu {
 
@@ -58,6 +57,8 @@ public class GrandCircleFabricationMenu extends AbstractContainerMenu {
                 int shiftedSlot = i - GrandCircleFabricationBlockEntity.SLOT_OUTPUT_START;
                 this.addSlot(new SlotItemHandler(handler, i, 118 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
             }
+
+            this.addSlot(new SlotItemHandler(handler, SLOT_STONE, 193, 95));
         });
     }
 

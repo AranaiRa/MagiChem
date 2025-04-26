@@ -222,12 +222,15 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             renderPowerWarning(gui, x, y);
         }
 
-        //Scroll Nubbin
+        //Scroll Nubbin for Recipe Selector
         if(recipeFilterRowTotal > 5) {
             float percent = (float)recipeFilterRow / (float)(recipeFilterRowTotal - 5);
             int nubbinShift = (int)Math.floor(percent * 80);
             gui.blit(TEXTURE, x - 20, y + 40 + nubbinShift, 28, 230, 8, 8);
         }
+
+        //Philosopher's Stone hole
+        gui.blit(TEXTURE, x + 188, y + 100, 224, 66, 32, 32);
     }
 
     @Override

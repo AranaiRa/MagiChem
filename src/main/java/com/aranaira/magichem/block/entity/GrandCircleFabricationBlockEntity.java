@@ -9,6 +9,7 @@ import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.gui.GrandCircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -43,6 +44,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -64,8 +66,8 @@ import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COL
 
 public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
     public static final int
-            SLOT_COUNT = 22,
-            SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
+            SLOT_COUNT = 23,
+            SLOT_BOTTLES = 0, SLOT_RECIPE = 21, SLOT_STONE = 22,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10;
     public static final float
@@ -111,6 +113,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                         return false;
                     }
                 }
+                if(slot == SLOT_STONE) {
+                    return stack.getItem() instanceof PhilosophersStoneItem;
+                }
 
                 return false;
             }
@@ -132,13 +137,23 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             }
 
             @Override
+            public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+                if(slot == SLOT_STONE) {
+                    setStackInSlot(slot, stack);
+                    return ItemStack.EMPTY;
+                }
+
+                return super.insertItem(slot, stack, simulate);
+            }
+
+            @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
-                DistillationFabricationRecipe pre = recipe;
+                DistillationFabricationRecipe recipePre = recipe;
                 if(slot == SLOT_RECIPE) {
                     getCurrentRecipe();
                 }
-                if(recipe != pre)
+                if(recipe != recipePre)
                     syncAndSave();
             }
         };
