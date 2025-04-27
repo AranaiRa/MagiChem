@@ -5,11 +5,11 @@
   },
   "components": [
     {
-      "item": "magichem:admixture_nectar",
+      "item": "magichem:admixture_blood",
       "count": 1
     },
     {
-      "item": "magichem:admixture_blood",
+      "item": "magichem:admixture_nectar",
       "count": 1
     },
     {

@@ -5,15 +5,19 @@
   },
   "components": [
     {
-      "item": "magichem:admixture_plant",
-      "count": 3
+      "item": "magichem:admixture_blood",
+      "count": 1
     },
     {
       "item": "magichem:admixture_crystal",
       "count": 1
     },
     {
-      "item": "magichem:admixture_blood",
+      "item": "magichem:admixture_fungus",
+      "count": 1
+    },
+    {
+      "item": "magichem:admixture_plant",
       "count": 1
     }
   ]

@@ -1,7 +1,7 @@
 {
   "type": "magichem:fixation_separation",
   "object": {
-    "item": "magichem:admixture_instrument"
+    "item": "magichem:admixture_signals"
   },
   "components": [
     {
@@ -9,7 +9,7 @@
       "count": 1
     },
     {
-      "item": "magichem:essentia_wrought",
+      "item": "magichem:essentia_mineral",
       "count": 2
     }
   ]

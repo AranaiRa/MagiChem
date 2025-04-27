@@ -11,6 +11,10 @@
     {
       "item": "magichem:admixture_breath",
       "count": 1
+    },
+    {
+      "item": "magichem:essentia_fleshy",
+      "count": 3
     }
   ]
 }

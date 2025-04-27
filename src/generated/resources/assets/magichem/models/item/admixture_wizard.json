@@ -2,7 +2,8 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "magichem:item/phial_admixture_fill",
-    "layer1": "magichem:item/phial_admixture"
+    "layer1": "magichem:item/phial_admixture",
+    "layer2": "magichem:item/overlays/admixture_d3"
   },
   "overrides": [
     {

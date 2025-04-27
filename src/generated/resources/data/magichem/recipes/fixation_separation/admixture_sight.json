@@ -1,15 +1,15 @@
 {
   "type": "magichem:fixation_separation",
   "object": {
-    "item": "magichem:admixture_sound"
+    "item": "magichem:admixture_sight"
   },
   "components": [
     {
-      "item": "magichem:essentia_ender",
-      "count": 3
+      "item": "magichem:essentia_arcane",
+      "count": 1
     },
     {
-      "item": "magichem:admixture_motion",
+      "item": "magichem:admixture_light",
       "count": 2
     },
     {

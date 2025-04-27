@@ -5,12 +5,20 @@
   },
   "components": [
     {
-      "item": "magichem:essentia_rotten",
+      "item": "magichem:essentia_earth",
+      "count": 3
+    },
+    {
+      "item": "magichem:admixture_blood",
+      "count": 1
+    },
+    {
+      "item": "magichem:admixture_dust",
       "count": 2
     },
     {
-      "item": "magichem:admixture_breath",
-      "count": 1
+      "item": "magichem:essentia_rotten",
+      "count": 2
     }
   ]
 }

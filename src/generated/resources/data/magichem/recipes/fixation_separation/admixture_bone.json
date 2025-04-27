@@ -9,7 +9,11 @@
       "count": 4
     },
     {
-      "item": "magichem:essentia_fleshy",
+      "item": "magichem:admixture_blood",
+      "count": 2
+    },
+    {
+      "item": "magichem:essentia_mineral",
       "count": 2
     }
   ]

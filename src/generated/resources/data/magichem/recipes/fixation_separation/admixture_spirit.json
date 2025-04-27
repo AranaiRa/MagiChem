@@ -6,15 +6,15 @@
   "components": [
     {
       "item": "magichem:essentia_ender",
-      "count": 8
+      "count": 2
     },
     {
       "item": "magichem:essentia_fire",
-      "count": 4
+      "count": 1
     },
     {
       "item": "magichem:admixture_breath",
-      "count": 3
+      "count": 1
     },
     {
       "item": "magichem:essentia_precious",

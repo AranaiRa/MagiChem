@@ -6,10 +6,14 @@
   "components": [
     {
       "item": "magichem:admixture_energy",
+      "count": 2
+    },
+    {
+      "item": "magichem:admixture_motion",
       "count": 1
     },
     {
-      "item": "magichem:admixture_sleep",
+      "item": "magichem:admixture_thought",
       "count": 1
     }
   ]

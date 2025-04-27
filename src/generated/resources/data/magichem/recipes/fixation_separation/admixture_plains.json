@@ -1,7 +1,7 @@
 {
   "type": "magichem:fixation_separation",
   "object": {
-    "item": "magichem:admixture_fey"
+    "item": "magichem:admixture_plains"
   },
   "components": [
     {
@@ -9,12 +9,12 @@
       "count": 4
     },
     {
-      "item": "magichem:admixture_sorcery",
-      "count": 1
+      "item": "magichem:essentia_earth",
+      "count": 2
     },
     {
-      "item": "magichem:essentia_fleshy",
-      "count": 2
+      "item": "magichem:admixture_realm",
+      "count": 1
     }
   ]
 }

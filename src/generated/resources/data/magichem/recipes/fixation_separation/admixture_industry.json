@@ -5,7 +5,7 @@
   },
   "components": [
     {
-      "item": "magichem:admixture_thought",
+      "item": "magichem:admixture_energy",
       "count": 1
     },
     {
@@ -13,7 +13,7 @@
       "count": 1
     },
     {
-      "item": "magichem:admixture_energy",
+      "item": "magichem:admixture_thought",
       "count": 1
     },
     {

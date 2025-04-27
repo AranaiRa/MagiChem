@@ -1,19 +1,19 @@
 {
   "type": "magichem:fixation_separation",
   "object": {
-    "item": "magichem:admixture_nectar"
+    "item": "magichem:admixture_hells"
   },
   "components": [
     {
-      "item": "magichem:essentia_water",
+      "item": "magichem:essentia_fire",
       "count": 4
     },
     {
-      "item": "magichem:essentia_verdant",
+      "item": "magichem:essentia_ender",
       "count": 2
     },
     {
-      "item": "magichem:essentia_nourishing",
+      "item": "magichem:admixture_realm",
       "count": 1
     }
   ]

@@ -5,19 +5,19 @@
   },
   "components": [
     {
-      "item": "magichem:essentia_air",
-      "count": 4
+      "item": "magichem:essentia_earth",
+      "count": 3
     },
     {
-      "item": "magichem:admixture_change",
+      "item": "magichem:admixture_sight",
+      "count": 1
+    },
+    {
+      "item": "magichem:admixture_instrument",
       "count": 1
     },
     {
       "item": "magichem:essentia_conceptual",
-      "count": 2
-    },
-    {
-      "item": "magichem:essentia_verdant",
       "count": 2
     }
   ]

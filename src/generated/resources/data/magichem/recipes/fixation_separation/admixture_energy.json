@@ -5,12 +5,12 @@
   },
   "components": [
     {
-      "item": "magichem:essentia_wrought",
-      "count": 2
-    },
-    {
       "item": "magichem:admixture_storm",
       "count": 1
+    },
+    {
+      "item": "magichem:essentia_wrought",
+      "count": 2
     }
   ]
 }

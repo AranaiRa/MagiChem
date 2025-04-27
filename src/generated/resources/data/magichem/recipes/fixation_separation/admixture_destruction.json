@@ -11,6 +11,10 @@
     {
       "item": "magichem:essentia_conceptual",
       "count": 2
+    },
+    {
+      "item": "magichem:essentia_wrought",
+      "count": 1
     }
   ]
 }

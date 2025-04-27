@@ -1,7 +1,7 @@
 {
   "type": "magichem:fixation_separation",
   "object": {
-    "item": "magichem:admixture_fungus"
+    "item": "magichem:admixture_wood"
   },
   "components": [
     {
@@ -9,7 +9,7 @@
       "count": 1
     },
     {
-      "item": "magichem:admixture_filth",
+      "item": "magichem:admixture_protection",
       "count": 1
     },
     {

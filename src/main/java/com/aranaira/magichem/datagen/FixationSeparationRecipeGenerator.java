@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class FixationSeparationRecipeGenerator {
 
-    private static final String RECIPE_DIRECTORY = "C:\\Users\\arana\\Documents\\ForgeModding\\1.19.2\\MagnumOpus\\src\\generated\\resources\\data\\magichem\\recipes\\fixation_separation\\";
+    private static final String RECIPE_DIRECTORY = "C:\\Users\\Aranai\\Documents\\Forge\\1.19.2\\MagnumOpus\\src\\generated\\resources\\data\\magichem\\recipes\\fixation_separation\\";
 
     private static List<AlchemicalRecipeData> recipeData = new ArrayList<>();
 

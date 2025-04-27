@@ -5,12 +5,16 @@
   },
   "components": [
     {
-      "item": "magichem:admixture_wizard",
+      "item": "magichem:admixture_mana",
+      "count": 2
+    },
+    {
+      "item": "magichem:admixture_thought",
       "count": 1
     },
     {
-      "item": "magichem:admixture_mana",
-      "count": 6
+      "item": "magichem:essentia_wrought",
+      "count": 2
     },
     {
       "item": "magichem:essentia_conceptual",

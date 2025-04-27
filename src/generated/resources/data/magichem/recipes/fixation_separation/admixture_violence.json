@@ -5,12 +5,16 @@
   },
   "components": [
     {
+      "item": "magichem:admixture_destruction",
+      "count": 1
+    },
+    {
       "item": "magichem:admixture_thought",
       "count": 1
     },
     {
-      "item": "magichem:admixture_destruction",
-      "count": 1
+      "item": "magichem:essentia_wrought",
+      "count": 2
     }
   ]
 }

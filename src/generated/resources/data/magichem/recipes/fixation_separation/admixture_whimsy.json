@@ -5,12 +5,16 @@
   },
   "components": [
     {
-      "item": "magichem:admixture_fey",
+      "item": "magichem:admixture_lies",
       "count": 2
     },
     {
       "item": "magichem:admixture_thought",
       "count": 1
+    },
+    {
+      "item": "magichem:essentia_wrought",
+      "count": 2
     },
     {
       "item": "magichem:essentia_conceptual",

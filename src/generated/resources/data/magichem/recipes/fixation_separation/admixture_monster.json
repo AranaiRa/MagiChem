@@ -1,20 +1,20 @@
 {
   "type": "magichem:fixation_separation",
   "object": {
-    "item": "magichem:admixture_fey"
+    "item": "magichem:admixture_monster"
   },
   "components": [
     {
-      "item": "magichem:essentia_air",
-      "count": 4
+      "item": "magichem:admixture_darkness",
+      "count": 1
     },
     {
-      "item": "magichem:admixture_sorcery",
+      "item": "magichem:admixture_violence",
       "count": 1
     },
     {
       "item": "magichem:essentia_fleshy",
-      "count": 2
+      "count": 3
     }
   ]
 }
