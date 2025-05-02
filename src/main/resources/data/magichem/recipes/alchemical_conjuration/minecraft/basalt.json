@@ -1,7 +1,7 @@
 {
   "type": "magichem:conjuration",
   "catalyst": "minecraft:basalt",
-  "materia": "magichem:admixture_demon",
+  "materia": "magichem:admixture_hells",
   "passive": {
     "item": "minecraft:basalt",
     "count": 1,

@@ -1,13 +1,14 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 2,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "minecraft:red_sand" },
   "components": [
-    { "item": "magichem:essentia_air", "count": 4 },
-    { "item": "magichem:essentia_fire", "count": 2 },
-    { "item": "magichem:admixture_dust", "count": 1 }
+    { "item": "magichem:essentia_air", "count": 1 },
+    { "item": "magichem:essentia_fire", "count": 1 },
+    { "item": "magichem:admixture_dust", "count": 1 },
+    { "item": "magichem:admixture_wastes", "count": 1 }
   ]
 }

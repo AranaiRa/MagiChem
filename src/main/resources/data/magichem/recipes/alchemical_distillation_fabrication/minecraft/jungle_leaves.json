@@ -1,11 +1,12 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
-  "output_rate": 1.0,
-  "batch_size": 1,
+  "categories": 6,
+  "output_rate": 0.25,
+  "batch_size": 16,
   "object": { "item": "minecraft:jungle_leaves" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 1 }
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_swamps", "count": 1 }
   ]
 }

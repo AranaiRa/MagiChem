@@ -1,7 +1,7 @@
 {
   "type": "magichem:conjuration",
   "catalyst": "minecraft:netherrack",
-  "materia": "magichem:admixture_demon",
+  "materia": "magichem:admixture_hells",
   "passive": {
     "item": "minecraft:netherrack",
     "count": 1,

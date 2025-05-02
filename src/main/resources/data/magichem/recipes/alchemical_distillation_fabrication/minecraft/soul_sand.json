@@ -1,12 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 1,
+  "categories": 2,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
+  "required_advancement": "minecraft:story/enter_the_nether",
   "object": { "item": "minecraft:soul_sand" },
   "components": [
-    { "item": "magichem:admixture_demon", "count": 4 },
+    { "item": "magichem:admixture_hells", "count": 2 },
     { "item": "magichem:admixture_trap", "count": 2 },
     { "item": "magichem:admixture_dust", "count": 1 },
     { "item": "magichem:admixture_death", "count": 1 }

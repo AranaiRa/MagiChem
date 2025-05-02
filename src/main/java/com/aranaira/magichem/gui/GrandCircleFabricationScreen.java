@@ -231,6 +231,9 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
         //Philosopher's Stone hole
         gui.blit(TEXTURE, x + 188, y + 100, 224, 66, 32, 32);
+
+        //Batch Size Selector
+        gui.blit(TEXTURE_EXT, x - 85, y + 142, 0, 168, 81, 45);
     }
 
     @Override
@@ -493,6 +496,12 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                 int rightAlignShift = 17 - font.width(text.getString());
 
                 gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
+            }
+
+            if(recipe.getOutputRate() < 1f) {
+                int amt = (int)Math.round(1f / recipe.getOutputRate());
+
+                gui.drawString(font, amt < 9 ? "x"+amt : ""+amt, 101, 72, 0xff000000, false);
             }
         }
 

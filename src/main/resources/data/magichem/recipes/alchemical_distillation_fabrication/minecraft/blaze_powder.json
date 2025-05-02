@@ -1,14 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 17,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "minecraft:blaze_powder" },
   "components": [
     { "item": "magichem:essentia_fire", "count": 8 },
-    { "item": "magichem:admixture_demon", "count": 1 },
-    { "item": "magichem:admixture_dust", "count": 1 },
-    { "item": "magichem:essentia_verdant", "count": 1 }
+    { "item": "magichem:admixture_hells", "count": 1 },
+    { "item": "magichem:admixture_dust", "count": 1 }
   ]
 }

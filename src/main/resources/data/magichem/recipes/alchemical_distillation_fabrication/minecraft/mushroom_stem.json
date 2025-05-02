@@ -1,11 +1,12 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 6,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 8,
   "object": { "item": "minecraft:mushroom_stem" },
   "components": [
-    { "item": "magichem:admixture_fungus", "count": 9 }
+    { "item": "magichem:admixture_fungus", "count": 5 },
+    { "item": "magichem:admixture_wood", "count": 1 }
   ]
 }

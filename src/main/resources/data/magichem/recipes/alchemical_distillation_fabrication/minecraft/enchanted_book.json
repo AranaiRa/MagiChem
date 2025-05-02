@@ -1,15 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 6,
-  "categories": 0,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "minecraft:enchanted_book" },
   "components": [
-    { "item": "magichem:admixture_sorcery", "count": 18 },
+    { "item": "magichem:admixture_sorcery", "count": 24 },
     { "item": "magichem:admixture_thought", "count": 12 },
-    { "item": "magichem:admixture_permanence", "count": 4 },
+    { "item": "magichem:admixture_permanence", "count": 6 },
     { "item": "magichem:essentia_wrought", "count": 4 },
-    { "item": "magichem:essentia_precious", "count": 2 }
+    { "item": "magichem:essentia_precious", "count": 4 }
   ]
 }

@@ -1,13 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 10,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "minecraft:lily_pad" },
   "components": [
-    { "item": "magichem:essentia_water", "count": 4 },
-    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_swamps", "count": 1 },
     { "item": "magichem:admixture_travel", "count": 1 }
   ]
 }

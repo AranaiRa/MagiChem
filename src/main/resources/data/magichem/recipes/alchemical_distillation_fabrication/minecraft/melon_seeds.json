@@ -1,9 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 6,
   "output_rate": 0.5,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "minecraft:melon_seeds" },
   "components": [
     { "item": "magichem:admixture_nectar", "count": 1 }

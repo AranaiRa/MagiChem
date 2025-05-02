@@ -1,12 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 10,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 4,
   "object": { "item": "minecraft:rose_bush" },
   "components": [
-    { "item": "magichem:admixture_odors", "count": 1 },
-    { "item": "magichem:admixture_plant", "count": 2 }
+    { "item": "magichem:admixture_odors", "count": 3 },
+    { "item": "magichem:admixture_plant", "count": 3 },
+    { "item": "magichem:admixture_forests", "count": 1 }
   ]
 }

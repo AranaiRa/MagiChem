@@ -1,13 +1,14 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 6,
-  "categories": 0,
+  "wisdom": 2,
+  "categories": 1,
   "output_rate": 0.5,
   "batch_size": 1,
   "object": { "item": "minecraft:acacia_fence_gate" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_wood", "count": 2 },
     { "item": "magichem:admixture_motion", "count": 1 },
+    { "item": "magichem:admixture_plains", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 1 }
   ]
 }

@@ -1,11 +1,11 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 5,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 4,
   "object": { "item": "minecraft:pink_dye" },
   "components": [
-    { "item": "magichem:admixture_color", "count": 2 }
+    { "item": "magichem:admixture_color", "count": 3 }
   ]
 }

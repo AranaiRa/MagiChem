@@ -1,13 +1,14 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
-  "output_rate": 1.0,
-  "batch_size": 1,
+  "categories": 3,
+  "output_rate": 0.0625,
+  "batch_size": 4,
   "object": { "item": "minecraft:podzol" },
   "components": [
     { "item": "magichem:essentia_earth", "count": 4 },
-    { "item": "magichem:admixture_dust", "count": 1 },
+    { "item": "magichem:admixture_forests", "count": 3 },
+    { "item": "magichem:admixture_plant", "count": 2 },
     { "item": "magichem:essentia_rotten", "count": 4 }
   ]
 }

@@ -1,9 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 1,
+  "categories": 1,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 4,
   "object": { "item": "minecraft:writable_book" },
   "components": [
     { "item": "magichem:admixture_thought", "count": 10 },

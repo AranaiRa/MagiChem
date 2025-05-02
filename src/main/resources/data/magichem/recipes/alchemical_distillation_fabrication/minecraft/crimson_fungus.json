@@ -1,12 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
-  "output_rate": 1.0,
+  "categories": 10,
+  "output_rate": 0.333,
   "batch_size": 1,
+  "required_advancement": "minecraft:story/enter_the_nether",
   "object": { "item": "minecraft:crimson_fungus" },
   "components": [
     { "item": "magichem:admixture_fungus", "count": 1 },
-    { "item": "magichem:admixture_demon", "count": 1 }
+    { "item": "magichem:admixture_hells", "count": 1 }
   ]
 }

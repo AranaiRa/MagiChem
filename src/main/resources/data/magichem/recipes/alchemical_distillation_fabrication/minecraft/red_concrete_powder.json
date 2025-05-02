@@ -1,14 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 5,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "minecraft:red_concrete_powder" },
   "components": [
     { "item": "magichem:admixture_erosion", "count": 2 },
     { "item": "magichem:admixture_dust", "count": 2 },
     { "item": "magichem:admixture_change", "count": 2 },
+    { "item": "magichem:admixture_color", "count": 1 },
     { "item": "magichem:essentia_mineral", "count": 2 }
   ]
 }

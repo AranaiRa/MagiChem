@@ -1,15 +1,16 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 6,
-  "categories": 0,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
+  "required_advancement": "minecraft:nether/obtain_ancient_debris",
   "object": { "item": "minecraft:netherite_sword" },
   "components": [
-    { "item": "magichem:admixture_metal", "count": 40 },
-    { "item": "magichem:admixture_demon", "count": 24 },
-    { "item": "magichem:admixture_violence", "count": 6 },
-    { "item": "magichem:essentia_precious", "count": 48 },
-    { "item": "magichem:essentia_albedo", "count": 24 }
+    { "item": "magichem:admixture_violence", "count": 16 },
+    { "item": "magichem:admixture_metal", "count": 8 },
+    { "item": "magichem:admixture_hells", "count": 4 },
+    { "item": "magichem:essentia_precious", "count": 26 },
+    { "item": "magichem:essentia_albedo", "count": 16 }
   ]
 }

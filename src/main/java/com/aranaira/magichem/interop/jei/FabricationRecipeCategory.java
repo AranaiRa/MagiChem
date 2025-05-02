@@ -7,11 +7,14 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -59,5 +62,19 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
             builder.addSlot(RecipeIngredientRole.INPUT, 4 + i*18, 4).addItemStack(stack);
             i++;
         }
+    }
+
+    public void draw(DistillationFabricationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.font != null) {
+            if(recipe.getOutputRate() < 1.0f) {
+                int amt = (int)Math.round(1f / recipe.getOutputRate());
+
+                Component oRateComponent = Component.literal("x"+amt);
+
+                gui.drawString(mc.font, oRateComponent, 62, 91, 0x000000, false);
+            }
+        }
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, gui, mouseX, mouseY);
     }
 }

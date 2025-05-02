@@ -1,13 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 7,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "minecraft:gravel" },
   "components": [
+    { "item": "magichem:admixture_erosion", "count": 3 },
     { "item": "magichem:admixture_stone", "count": 2 },
-    { "item": "magichem:admixture_erosion", "count": 2 },
     { "item": "magichem:admixture_dust", "count": 1 }
   ]
 }

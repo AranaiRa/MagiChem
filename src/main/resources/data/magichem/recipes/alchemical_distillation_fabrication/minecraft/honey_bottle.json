@@ -1,9 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 5,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 8,
   "object": { "item": "minecraft:honey_bottle" },
   "components": [
     { "item": "magichem:admixture_nectar", "count": 9 },

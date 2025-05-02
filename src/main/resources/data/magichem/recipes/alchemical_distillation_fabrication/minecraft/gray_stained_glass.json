@@ -1,13 +1,12 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 6,
-  "categories": 0,
+  "categories": 5,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "minecraft:gray_stained_glass" },
   "components": [
     { "item": "magichem:admixture_crystal", "count": 2 },
-    { "item": "magichem:admixture_change", "count": 1 },
     { "item": "magichem:admixture_color", "count": 1 }
   ]
 }

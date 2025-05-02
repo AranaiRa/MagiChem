@@ -1,14 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 2,
+  "categories": 24,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 14,
+  "required_advancement": "magichem:vanilla/kill_wither",
   "object": { "item": "minecraft:wither_rose" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 2 },
     { "item": "magichem:admixture_death", "count": 16 },
     { "item": "magichem:admixture_curse", "count": 2 },
+    { "item": "magichem:admixture_plant", "count": 2 },
     { "item": "magichem:essentia_nigredo", "count": 4 }
   ]
 }

@@ -1,12 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 6,
-  "categories": 0,
+  "wisdom": 2,
+  "categories": 2,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 4,
   "object": { "item": "minecraft:bee_nest" },
   "components": [
     { "item": "magichem:admixture_nectar", "count": 9 },
+    { "item": "magichem:admixture_realm", "count": 7 },
     { "item": "magichem:admixture_instrument", "count": 2 },
     { "item": "magichem:essentia_nourishing", "count": 6 },
     { "item": "magichem:essentia_verdant", "count": 6 }

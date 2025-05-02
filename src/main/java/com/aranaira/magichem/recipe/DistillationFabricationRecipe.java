@@ -236,6 +236,10 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer> {
                 extractedIngredients.add(ing);
             });
 
+            if(categories == 0) {
+                MagiChemMod.LOGGER.warn("Distillation/Fabrication recipe for \""+pRecipeId.getNamespace()+":"+pRecipeId.getPath()+"\" has no assigned Categories. Is this intentional?");
+            }
+
             return new DistillationFabricationRecipe(pRecipeId, recipeObject, extractedIngredients, wisdom, categories, batchSize, rate, requiredAdvancementRL, forbiddenAdvancementRL);
         }
 

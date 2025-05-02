@@ -1,13 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 6,
-  "categories": 0,
+  "wisdom": 2,
+  "categories": 7,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "minecraft:blue_ice" },
   "components": [
-    { "item": "magichem:essentia_water", "count": 64 },
-    { "item": "magichem:essentia_mineral", "count": 64 },
-    { "item": "magichem:admixture_cold", "count": 64 }
+    { "item": "magichem:essentia_water", "count": 54 },
+    { "item": "magichem:admixture_cold", "count": 81 },
+    { "item": "magichem:essentia_mineral", "count": 4 }
   ]
 }

@@ -1,12 +1,12 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 1,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 32,
   "object": { "item": "minecraft:paper" },
   "components": [
-    { "item": "magichem:admixture_thought", "count": 1 },
+    { "item": "magichem:admixture_thought", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

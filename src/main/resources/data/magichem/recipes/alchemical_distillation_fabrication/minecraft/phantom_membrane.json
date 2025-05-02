@@ -1,13 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 16,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "minecraft:phantom_membrane" },
   "components": [
     { "item": "magichem:admixture_flight", "count": 4 },
-    { "item": "magichem:admixture_death", "count": 2 },
+    { "item": "magichem:admixture_exanimate", "count": 2 },
     { "item": "magichem:admixture_sleep", "count": 2 },
     { "item": "magichem:essentia_fleshy", "count": 1 }
   ]

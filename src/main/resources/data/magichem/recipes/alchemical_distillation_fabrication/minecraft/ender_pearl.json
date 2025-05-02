@@ -1,9 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 17,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 2,
   "object": { "item": "minecraft:ender_pearl" },
   "components": [
     { "item": "magichem:admixture_alien", "count": 32 },

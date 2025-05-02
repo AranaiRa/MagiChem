@@ -1,13 +1,14 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 1,
+  "categories": 2,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 8,
   "object": { "item": "minecraft:fire_coral" },
   "components": [
-    { "item": "magichem:essentia_water", "count": 8 },
+    { "item": "magichem:admixture_depths", "count": 2 },
     { "item": "magichem:admixture_bone", "count": 2 },
+    { "item": "magichem:admixture_color", "count": 1 },
     { "item": "magichem:admixture_creature", "count": 1 }
   ]
 }

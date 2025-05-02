@@ -1,0 +1,13 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "wisdom": 4,
+  "categories": 32,
+  "output_rate": 1.0,
+  "batch_size": 1,
+  "required_advancement": "minecraft:adventure/craft_decorated_pot_using_only_sherds",
+  "object": { "item": "minecraft:heart_pottery_sherd" },
+  "components": [
+    { "item": "magichem:admixture_healing", "count": 152 },
+    { "item": "magichem:admixture_history", "count": 12 }
+  ]
+}

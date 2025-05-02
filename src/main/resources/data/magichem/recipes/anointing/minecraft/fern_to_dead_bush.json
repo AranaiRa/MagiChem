@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:fern",
+  "materia": "magichem:admixture_death",
+  "chance": 100.0,
+  "result": "minecraft:dead_bush"
+}

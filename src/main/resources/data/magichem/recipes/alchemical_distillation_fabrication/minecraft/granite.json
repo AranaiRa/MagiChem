@@ -1,12 +1,12 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
-  "output_rate": 1.0,
-  "batch_size": 1,
+  "categories": 7,
+  "output_rate": 0.0625,
+  "batch_size": 4,
   "object": { "item": "minecraft:granite" },
   "components": [
     { "item": "magichem:admixture_stone", "count": 3 },
-    { "item": "magichem:admixture_permanence", "count": 1 }
+    { "item": "magichem:admixture_permanence", "count": 2 }
   ]
 }

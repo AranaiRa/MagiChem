@@ -1,7 +1,7 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 1,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "minecraft:ender_eye" },
@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_alien", "count": 48 },
     { "item": "magichem:admixture_travel", "count": 24 },
     { "item": "magichem:admixture_crystal", "count": 8 },
-    { "item": "magichem:admixture_instrument", "count": 6 },
+    { "item": "magichem:admixture_sight", "count": 6 },
     { "item": "magichem:essentia_precious", "count": 4 }
   ]
 }

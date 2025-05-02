@@ -1,14 +1,16 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 2,
+  "categories": 7,
   "output_rate": 1.0,
   "batch_size": 1,
+  "required_advancement": "minecraft:story/enter_the_nether",
   "object": { "item": "minecraft:nether_wart_block" },
   "components": [
-    { "item": "magichem:admixture_demon", "count": 18 },
-    { "item": "magichem:admixture_plant", "count": 9 },
     { "item": "magichem:admixture_mana", "count": 9 },
-    { "item": "magichem:essentia_nourishing", "count": 36 }
+    { "item": "magichem:admixture_fungus", "count": 3 },
+    { "item": "magichem:admixture_hells", "count": 3 },
+    { "item": "magichem:admixture_plant", "count": 3 },
+    { "item": "magichem:essentia_nourishing", "count": 3 }
   ]
 }

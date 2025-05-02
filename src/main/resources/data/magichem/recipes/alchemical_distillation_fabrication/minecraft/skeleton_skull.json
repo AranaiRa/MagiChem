@@ -1,13 +1,14 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 2,
+  "categories": 48,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "minecraft:skeleton_skull" },
   "components": [
     { "item": "magichem:admixture_death", "count": 8 },
     { "item": "magichem:admixture_bone", "count": 6 },
+    { "item": "magichem:admixture_exanimate", "count": 4 },
     { "item": "magichem:essentia_fleshy", "count": 4 },
     { "item": "magichem:essentia_precious", "count": 2 }
   ]

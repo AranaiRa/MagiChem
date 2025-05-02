@@ -1,13 +1,14 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 6,
-  "categories": 0,
+  "categories": 5,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "minecraft:brown_concrete" },
   "components": [
     { "item": "magichem:admixture_permanence", "count": 4 },
     { "item": "magichem:admixture_change", "count": 2 },
-    { "item": "magichem:essentia_mineral", "count": 2 }
+    { "item": "magichem:admixture_color", "count": 1 },
+    { "item": "magichem:essentia_mineral", "count": 4 }
   ]
 }

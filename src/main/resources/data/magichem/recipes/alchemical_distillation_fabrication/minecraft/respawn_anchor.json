@@ -1,14 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 6,
-  "categories": 0,
+  "wisdom": 3,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
+  "required_advancement": "minecraft:story/enter_the_nether",
   "object": { "item": "minecraft:respawn_anchor" },
   "components": [
-    { "item": "magichem:essentia_fire", "count": 64 },
     { "item": "magichem:admixture_travel", "count": 38 },
-    { "item": "magichem:admixture_light", "count": 4 },
+    { "item": "magichem:admixture_hells", "count": 27 },
+    { "item": "magichem:admixture_light", "count": 24 },
     { "item": "magichem:admixture_permanence", "count": 8 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]

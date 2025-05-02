@@ -1,9 +1,10 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 2,
+  "categories": 16,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
+  "required_advancement": "minecraft:end/find_end_city",
   "object": { "item": "minecraft:shulker_shell" },
   "components": [
     { "item": "magichem:admixture_creature", "count": 2 },

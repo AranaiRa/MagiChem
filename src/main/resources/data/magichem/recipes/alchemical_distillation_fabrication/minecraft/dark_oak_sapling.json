@@ -1,11 +1,12 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
-  "output_rate": 1.0,
+  "categories": 4,
+  "output_rate": 0.333,
   "batch_size": 1,
   "object": { "item": "minecraft:dark_oak_sapling" },
   "components": [
+    { "item": "magichem:admixture_forests", "count": 1 },
     { "item": "magichem:admixture_plant", "count": 1 }
   ]
 }

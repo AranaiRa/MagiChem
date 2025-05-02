@@ -1,11 +1,12 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 6,
   "output_rate": 0.111,
-  "batch_size": 1,
+  "batch_size": 7,
   "object": { "item": "minecraft:bamboo" },
   "components": [
+    { "item": "magichem:admixture_wood", "count": 2 },
     { "item": "magichem:admixture_plant", "count": 1 }
   ]
 }

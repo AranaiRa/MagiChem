@@ -1,9 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 1,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "minecraft:torch" },
   "components": [
     { "item": "magichem:admixture_light", "count": 1 }
