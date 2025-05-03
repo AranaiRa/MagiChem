@@ -96,8 +96,16 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer> {
         return requiredAdvancement != null;
     }
 
+    public ResourceLocation getRequiredAdvancement() {
+        return requiredAdvancement;
+    }
+
     public boolean isForbiddenByAdvancement() {
         return forbiddenAdvancement != null;
+    }
+
+    public ResourceLocation getForbiddenAdvancement() {
+        return forbiddenAdvancement;
     }
 
     @Override

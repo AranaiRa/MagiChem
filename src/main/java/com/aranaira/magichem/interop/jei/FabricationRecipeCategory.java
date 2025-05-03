@@ -1,6 +1,7 @@
 package com.aranaira.magichem.interop.jei;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -26,6 +27,8 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
 
     private final IDrawable background;
     private final IDrawable icon;
+
+    private static ItemStack[] WISDOM_STONES = new ItemStack[6];
 
     public FabricationRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 96, 0, 96, 110);
@@ -62,6 +65,10 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
             builder.addSlot(RecipeIngredientRole.INPUT, 4 + i*18, 4).addItemStack(stack);
             i++;
         }
+
+        if(recipe.getWisdom() < 6 && recipe.getWisdom() > 0) {
+            builder.addSlot(RecipeIngredientRole.CATALYST, 4, 22).addItemStack(getStackForWisdom(recipe.getWisdom()));
+        }
     }
 
     public void draw(DistillationFabricationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
@@ -74,7 +81,62 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
 
                 gui.drawString(mc.font, oRateComponent, 62, 91, 0x000000, false);
             }
+
+            int offset = 0;
+            for(DistillationSourceCategory dsc : recipe.getSourceCategories()) {
+                gui.drawString(mc.font, dsc.name(), -120, offset, 0xffffff, true);
+                offset += 12;
+            }
+
+            offset += 12;
+            if(recipe.isAdvancementRequired()) {
+                gui.drawString(mc.font, "Needs Advancement:", -120, offset, 0xffffff, true);
+                offset += 12;
+                gui.drawString(mc.font, recipe.getRequiredAdvancement().getNamespace()+":"+recipe.getRequiredAdvancement().getPath(), -120, offset, 0xffffff, true);
+            }
         }
+
         IRecipeCategory.super.draw(recipe, recipeSlotsView, gui, mouseX, mouseY);
+    }
+
+    private static ItemStack
+            ASHEN = ItemStack.EMPTY,
+            BLEACHED = ItemStack.EMPTY,
+            YELLOWED = ItemStack.EMPTY,
+            FLUSHED = ItemStack.EMPTY,
+            PHILOSOPHERS = ItemStack.EMPTY;
+    private ItemStack getStackForWisdom(int pWisdom) {
+        if(pWisdom == 1) {
+            if(ASHEN.isEmpty()) {
+                ASHEN = new ItemStack(ItemRegistry.ASHEN_WISDOM_STONE.get());
+            }
+            return ASHEN;
+        }
+        else if(pWisdom == 2) {
+            if(BLEACHED.isEmpty()) {
+                BLEACHED = new ItemStack(ItemRegistry.BLEACHED_WISDOM_STONE.get());
+            }
+            return BLEACHED;
+        }
+        else if(pWisdom == 3) {
+            if(YELLOWED.isEmpty()) {
+                YELLOWED = new ItemStack(ItemRegistry.YELLOWED_WISDOM_STONE.get());
+            }
+            return YELLOWED;
+        }
+        else if(pWisdom == 4) {
+            if(FLUSHED.isEmpty()) {
+                FLUSHED = new ItemStack(ItemRegistry.FLUSHED_WISDOM_STONE.get());
+            }
+            return FLUSHED;
+        }
+        else if(pWisdom == 5) {
+            if(PHILOSOPHERS.isEmpty()) {
+                PHILOSOPHERS = new ItemStack(ItemRegistry.PHILOSOPHERS_STONE.get());
+            }
+            return PHILOSOPHERS;
+        }
+
+        return ItemStack.EMPTY;
     }
 }

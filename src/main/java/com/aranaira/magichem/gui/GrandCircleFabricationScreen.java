@@ -3,6 +3,7 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
+import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
@@ -509,6 +510,34 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width/2, -33, 0xff000000, false);
+        }
+
+        int offset = 0;
+        for(DistillationSourceCategory dsc : recipe.getSourceCategories()) {
+            gui.drawString(font, dsc.name(), -160, offset, 0xffffff, true);
+            offset += 12;
+        }
+
+        if(recipe.getWisdom() < 6 && recipe.getWisdom() > 0) {
+            int xLabel = 226;
+            int yLabel = 100;
+            if(recipe.getWisdom() == 1) gui.drawString(font, "ASHEN (Lv1)", xLabel, yLabel, 0xffffff, true);
+            if(recipe.getWisdom() == 2) gui.drawString(font, "BLEACHED (Lv2)", xLabel, yLabel, 0xffffff, true);
+            if(recipe.getWisdom() == 3) gui.drawString(font, "YELLOWED (Lv3)", xLabel, yLabel, 0xffffff, true);
+            if(recipe.getWisdom() == 4) gui.drawString(font, "FLUSHED (Lv4)", xLabel, yLabel, 0xffffff, true);
+            if(recipe.getWisdom() == 5) gui.drawString(font, "PHILOSOPHER'S STONE (LvMax)", xLabel, yLabel, 0xffffff, true);
+
+            gui.drawString(font, "Is Required", xLabel, yLabel + 12, 0xffffff, true);
+        }
+
+        if(recipe.isAdvancementRequired()) {
+            gui.drawString(font, "Needs Advancement:", 186, 130, 0xffffff, true);
+            gui.drawString(font, recipe.getRequiredAdvancement().getNamespace()+":"+recipe.getRequiredAdvancement().getPath(), 186, 142, 0xffffff, true);
+
+        }
+
+        if(recipe.isForbiddenByAdvancement()) {
+
         }
     }
 }

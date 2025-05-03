@@ -1,6 +1,7 @@
 package com.aranaira.magichem.interop.jei;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -81,7 +82,14 @@ public class DistillationRecipeCategory implements IRecipeCategory<DistillationF
 
                 gui.drawString(mc.font, oRateComponent, 64, 34, 0x000000, false);
             }
+
+            int offset = 0;
+            for(DistillationSourceCategory dsc : recipe.getSourceCategories()) {
+                gui.drawString(mc.font, dsc.name(), -120, offset, 0xffffff, true);
+                offset += 12;
+            }
         }
+
         IRecipeCategory.super.draw(recipe, recipeSlotsView, gui, mouseX, mouseY);
     }
 }
