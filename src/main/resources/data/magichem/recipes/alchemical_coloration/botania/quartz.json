@@ -41,6 +41,10 @@
           {
             "color": "purple",
             "item": "botania:quartz_lavender"
+          },
+          {
+            "color": "black",
+            "item": "botania:quartz_dark"
           }
         ]
       }
