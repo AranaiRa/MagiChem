@@ -1,15 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 6,
-  "categories": 0,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "mna:arcane_crown" },
   "components": [
-    { "item": "magichem:admixture_protection", "count": 64 },
-    { "item": "magichem:admixture_sorcery", "count": 64 },
+    { "item": "magichem:admixture_protection", "count": 104 },
+    { "item": "magichem:admixture_sorcery", "count": 72 },
     { "item": "magichem:admixture_mana", "count": 52 },
-    { "item": "magichem:admixture_instrument", "count": 8 },
-    { "item": "magichem:essentia_rubedo", "count": 44 }
+    { "item": "magichem:admixture_wizard", "count": 48 },
+    { "item": "magichem:essentia_rubedo", "count": 34 }
   ]
 }

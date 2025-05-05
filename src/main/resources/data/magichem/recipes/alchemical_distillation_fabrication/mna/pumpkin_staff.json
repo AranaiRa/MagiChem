@@ -1,13 +1,14 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 6,
-  "categories": 0,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "mna:pumpkin_staff" },
   "components": [
     { "item": "magichem:admixture_memory", "count": 56 },
     { "item": "magichem:admixture_sorcery", "count": 24 },
+    { "item": "magichem:admixture_whimsy", "count": 3 },
     { "item": "magichem:admixture_instrument", "count": 1 }
   ]
 }

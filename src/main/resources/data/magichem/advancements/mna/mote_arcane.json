@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "mna:mote_arcane"
+    },
+    "title": {
+      "translate": "advancements.magichem.mote_arcane.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.mote_arcane.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "mna:tier_2/perform_mote_ritual",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mna:mote_arcane"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

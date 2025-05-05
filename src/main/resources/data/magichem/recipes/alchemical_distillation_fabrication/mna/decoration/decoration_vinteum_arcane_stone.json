@@ -1,13 +1,14 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
-  "output_rate": 1.0,
-  "batch_size": 1,
+  "wisdom": 1,
+  "categories": 1,
+  "output_rate": 0.0625,
+  "batch_size": 4,
   "object": { "item": "mna:decoration/vinteum_arcane_stone" },
   "components": [
     { "item": "magichem:essentia_arcane", "count": 2 },
-    { "item": "magichem:admixture_stone", "count": 3 },
-    { "item": "magichem:admixture_mana", "count": 1 }
+    { "item": "magichem:admixture_mana", "count": 8 },
+    { "item": "magichem:admixture_dust", "count": 4 },
+    { "item": "magichem:admixture_stone", "count": 3 }
   ]
 }

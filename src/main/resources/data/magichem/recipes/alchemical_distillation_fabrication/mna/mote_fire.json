@@ -1,9 +1,10 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
+  "required_advancement": "magichem:mna/mote_fire",
   "object": { "item": "mna:mote_fire" },
   "components": [
     { "item": "magichem:essentia_fire", "count": 42 },

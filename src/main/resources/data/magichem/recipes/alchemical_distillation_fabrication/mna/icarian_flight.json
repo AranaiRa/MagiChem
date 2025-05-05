@@ -1,15 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 6,
-  "categories": 0,
-  "output_rate": 1.0,
-  "batch_size": 1,
+  "wisdom": 3,
+  "categories": 32,
+  "output_rate": 0.333,
+  "batch_size": 3,
   "object": { "item": "mna:icarian_flight" },
   "components": [
-    { "item": "magichem:admixture_flight", "count": 64 },
-    { "item": "magichem:admixture_travel", "count": 64 },
+    { "item": "magichem:admixture_flight", "count": 75 },
+    { "item": "magichem:admixture_travel", "count": 50 },
     { "item": "magichem:admixture_instrument", "count": 7 },
     { "item": "magichem:admixture_thought", "count": 5 },
-    { "item": "magichem:admixture_legend", "count": 1 }
+    { "item": "magichem:admixture_legend", "count": 4 }
   ]
 }

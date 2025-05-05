@@ -1,15 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 3,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "mna:wellspring_sight_unguent" },
   "components": [
+    { "item": "magichem:admixture_sight", "count": 14 },
     { "item": "magichem:admixture_realm", "count": 4 },
-    { "item": "magichem:admixture_thought", "count": 4 },
     { "item": "magichem:admixture_mana", "count": 2 },
     { "item": "magichem:admixture_sorcery", "count": 1 },
-    { "item": "magichem:essentia_albedo", "count": 2 }
+    { "item": "magichem:essentia_citrinitas", "count": 4 }
   ]
 }

@@ -1,12 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 4,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
+  "required_advancement": "magichem:mna/greater_mote_fire",
   "object": { "item": "mna:greater_mote_fire" },
   "components": [
-    { "item": "magichem:essentia_fire", "count": 64 },
+    { "item": "magichem:essentia_fire", "count": 72 },
     { "item": "magichem:admixture_mana", "count": 34 },
     { "item": "magichem:admixture_energy", "count": 28 },
     { "item": "magichem:admixture_sorcery", "count": 11 },

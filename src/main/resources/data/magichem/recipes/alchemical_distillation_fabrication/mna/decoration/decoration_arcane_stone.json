@@ -1,9 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 0,
-  "categories": 0,
-  "output_rate": 1.0,
-  "batch_size": 1,
+  "categories": 1,
+  "output_rate": 0.0625,
+  "batch_size": 4,
   "object": { "item": "mna:decoration/arcane_stone" },
   "components": [
     { "item": "magichem:essentia_arcane", "count": 2 },

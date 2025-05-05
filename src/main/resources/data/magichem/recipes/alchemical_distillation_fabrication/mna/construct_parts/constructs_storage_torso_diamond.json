@@ -1,7 +1,7 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 6,
-  "categories": 0,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "mna:constructs/construct_storage_torso_diamond" },
@@ -9,6 +9,6 @@
     { "item": "magichem:admixture_crystal", "count": 10 },
     { "item": "magichem:admixture_construct", "count": 10 },
     { "item": "magichem:essentia_precious", "count": 15 },
-    { "item": "magichem:essentia_albedo", "count": 6 }
+    { "item": "magichem:essentia_citrinitas", "count": 6 }
   ]
 }

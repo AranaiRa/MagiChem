@@ -1,7 +1,7 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 0,
-  "categories": 0,
+  "wisdom": 1,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
   "object": { "item": "mna:chimerite_crystal_magenta" },
@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_crystal", "count": 24 },
     { "item": "magichem:admixture_change", "count": 20 },
     { "item": "magichem:admixture_luck", "count": 8 },
-    { "item": "magichem:admixture_construct", "count": 2 },
-    { "item": "magichem:essentia_mineral", "count": 16 }
+    { "item": "magichem:admixture_color", "count": 7 },
+    { "item": "magichem:admixture_construct", "count": 2 }
   ]
 }
