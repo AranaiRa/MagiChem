@@ -94,6 +94,13 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                 offset += 12;
                 gui.drawString(mc.font, recipe.getRequiredAdvancement().getNamespace()+":"+recipe.getRequiredAdvancement().getPath(), -120, offset, 0xffffff, true);
             }
+
+            offset += recipe.isAdvancementRequired() ? 12 : 0;
+            if(recipe.isForbiddenByAdvancement()) {
+                gui.drawString(mc.font, "Removed by Advancement:", -120, offset, 0xffffff, true);
+                offset += 12;
+                gui.drawString(mc.font, recipe.getForbiddenAdvancement().getNamespace()+":"+recipe.getForbiddenAdvancement().getPath(), -120, offset, 0xffffff, true);
+            }
         }
 
         IRecipeCategory.super.draw(recipe, recipeSlotsView, gui, mouseX, mouseY);

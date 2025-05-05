@@ -232,6 +232,8 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
         //Philosopher's Stone hole
         gui.blit(TEXTURE, x + 188, y + 100, 224, 66, 32, 32);
+        if(menu.blockEntity.getStoneItem().isEmpty())
+            gui.blit(TEXTURE, x + 195, y + 107, 238, 98, 18, 18);
 
         //Batch Size Selector
         gui.blit(TEXTURE_EXT, x - 85, y + 142, 0, 168, 81, 45);
@@ -535,11 +537,11 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             if (recipe.isAdvancementRequired()) {
                 gui.drawString(font, "Needs Advancement:", 186, 130, 0xffffff, true);
                 gui.drawString(font, recipe.getRequiredAdvancement().getNamespace() + ":" + recipe.getRequiredAdvancement().getPath(), 186, 142, 0xffffff, true);
-
             }
 
             if (recipe.isForbiddenByAdvancement()) {
-
+                gui.drawString(font, "Removed by Advancement:", 186, 130, 0xffffff, true);
+                gui.drawString(font, recipe.getForbiddenAdvancement().getNamespace() + ":" + recipe.getForbiddenAdvancement().getPath(), 186, 142, 0xffffff, true);
             }
         }
     }

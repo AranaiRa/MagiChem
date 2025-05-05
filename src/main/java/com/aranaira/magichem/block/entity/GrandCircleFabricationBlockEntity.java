@@ -1010,6 +1010,14 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
     }
 
+    public ItemStack getStoneItem() {
+        return itemHandler.getStackInSlot(SLOT_STONE);
+    }
+
+    public ItemStack getStoneItem(boolean pMakeCopy) {
+        return pMakeCopy ? itemHandler.getStackInSlot(SLOT_STONE).copy() : itemHandler.getStackInSlot(SLOT_STONE);
+    }
+
     @Override
     public boolean needsSorting() {
         return !getContentsOfOutputSlots(GrandCircleFabricationBlockEntity::getVar).isEmpty();
