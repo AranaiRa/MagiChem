@@ -7,7 +7,7 @@
   "required_advancement": "minecraft:adventure/craft_decorated_pot_using_only_sherds",
   "object": { "item": "minecraft:brewer_pottery_sherd" },
   "components": [
-    { "item": "magichem:admixture_sorcery", "count": 152 },
+    { "item": "magichem:admixture_sorcery", "count": 125 },
     { "item": "magichem:admixture_history", "count": 12 }
   ]
 }
