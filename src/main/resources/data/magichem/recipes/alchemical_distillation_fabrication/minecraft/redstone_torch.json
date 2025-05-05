@@ -6,9 +6,8 @@
   "batch_size": 16,
   "object": { "item": "minecraft:redstone_torch" },
   "components": [
-    { "item": "magichem:admixture_signals", "count": 3 },
+    { "item": "magichem:admixture_signals", "count": 2 },
     { "item": "magichem:admixture_light", "count": 1 },
-    { "item": "magichem:admixture_energy", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 1 }
   ]
 }

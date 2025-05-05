@@ -1,6 +1,6 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 6,
+  "wisdom": 2,
   "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
@@ -8,8 +8,8 @@
   "components": [
     { "item": "magichem:admixture_plant", "count": 2 },
     { "item": "magichem:admixture_nectar", "count": 1 },
-    { "item": "magichem:admixture_darkness", "count": 1 },
+    { "item": "magichem:admixture_light", "count": 1 },
     { "item": "magichem:admixture_whimsy", "count": 1 },
-    { "item": "magichem:essentia_nourishing", "count": 10 }
+    { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

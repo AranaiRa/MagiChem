@@ -6,7 +6,7 @@
   "batch_size": 8,
   "object": { "item": "minecraft:frogspawn" },
   "components": [
-    { "item": "magichem:essentia_water", "count": 8 },
+    { "item": "magichem:admixture_swamps", "count": 6 },
     { "item": "magichem:admixture_filth", "count": 2 },
     { "item": "magichem:admixture_sound", "count": 1 },
     { "item": "magichem:essentia_fleshy", "count": 8 }

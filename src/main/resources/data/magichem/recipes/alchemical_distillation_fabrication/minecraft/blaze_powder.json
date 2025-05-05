@@ -4,6 +4,7 @@
   "categories": 17,
   "output_rate": 1.0,
   "batch_size": 1,
+  "required_advancement": "minecraft:story/enter_the_nether",
   "object": { "item": "minecraft:blaze_powder" },
   "components": [
     { "item": "magichem:essentia_fire", "count": 8 },

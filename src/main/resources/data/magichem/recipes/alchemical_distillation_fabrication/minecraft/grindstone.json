@@ -6,10 +6,9 @@
   "batch_size": 1,
   "object": { "item": "minecraft:grindstone" },
   "components": [
-    { "item": "magichem:essentia_earth", "count": 10 },
-    { "item": "magichem:admixture_stone", "count": 8 },
     { "item": "magichem:admixture_instrument", "count": 2 },
     { "item": "magichem:admixture_erosion", "count": 1 },
+    { "item": "magichem:admixture_stone", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

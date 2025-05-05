@@ -6,6 +6,8 @@
   "batch_size": 16,
   "object": { "item": "minecraft:bread" },
   "components": [
+    { "item": "magichem:essentia_air", "count": 3 },
+    { "item": "magichem:admixture_delight", "count": 1 },
     { "item": "magichem:essentia_nourishing", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]

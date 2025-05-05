@@ -7,6 +7,7 @@
   "object": { "item": "minecraft:mushroom_stew" },
   "components": [
     { "item": "magichem:admixture_fungus", "count": 2 },
-    { "item": "magichem:essentia_nourishing", "count": 4 }
+    { "item": "magichem:essentia_nourishing", "count": 4 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

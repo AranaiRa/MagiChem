@@ -4,7 +4,7 @@
   "categories": 34,
   "output_rate": 1.0,
   "batch_size": 1,
-  "required_advancement": "minecraft:end/root",
+  "required_advancement": "minecraft:end/kill_dragon",
   "object": { "item": "minecraft:elytra" },
   "components": [
     { "item": "magichem:admixture_flight", "count": 36 },

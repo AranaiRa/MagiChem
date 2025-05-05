@@ -6,7 +6,7 @@
   "batch_size": 1,
   "object": { "item": "minecraft:cherry_sapling" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_plant", "count": 1 },
     { "item": "magichem:admixture_mountains", "count": 1 }
   ]
 }

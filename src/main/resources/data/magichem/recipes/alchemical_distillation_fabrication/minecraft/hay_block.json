@@ -7,6 +7,7 @@
   "object": { "item": "minecraft:hay_block" },
   "components": [
     { "item": "magichem:essentia_air", "count": 18 },
+    { "item": "magichem:admixture_plant", "count": 3 },
     { "item": "magichem:essentia_nourishing", "count": 18 }
   ]
 }

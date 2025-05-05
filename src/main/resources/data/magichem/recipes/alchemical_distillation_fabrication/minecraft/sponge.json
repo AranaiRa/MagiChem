@@ -6,7 +6,7 @@
   "batch_size": 8,
   "object": { "item": "minecraft:sponge" },
   "components": [
-    { "item": "magichem:essentia_water", "count": 8 },
+    { "item": "magichem:admixture_depths", "count": 3 },
     { "item": "magichem:admixture_dust", "count": 2 },
     { "item": "magichem:admixture_vessel", "count": 2 }
   ]

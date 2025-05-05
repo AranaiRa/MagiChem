@@ -7,6 +7,7 @@
   "object": { "item": "minecraft:observer" },
   "components": [
     { "item": "magichem:admixture_change", "count": 20 },
+    { "item": "magichem:admixture_sight", "count": 4 },
     { "item": "magichem:admixture_signals", "count": 4 },
     { "item": "magichem:admixture_industry", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 1 }

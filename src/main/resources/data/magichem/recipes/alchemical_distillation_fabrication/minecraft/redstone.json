@@ -6,9 +6,7 @@
   "batch_size": 16,
   "object": { "item": "minecraft:redstone" },
   "components": [
-    { "item": "magichem:admixture_signals", "count": 3 },
     { "item": "magichem:admixture_dust", "count": 2 },
-    { "item": "magichem:admixture_energy", "count": 1 },
-    { "item": "magichem:essentia_mineral", "count": 1 }
+    { "item": "magichem:admixture_signals", "count": 2 }
   ]
 }

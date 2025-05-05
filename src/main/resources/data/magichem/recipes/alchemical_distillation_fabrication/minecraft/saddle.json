@@ -9,6 +9,7 @@
     { "item": "magichem:admixture_domestication", "count": 11 },
     { "item": "magichem:admixture_travel", "count": 4 },
     { "item": "magichem:admixture_comfort", "count": 2 },
+    { "item": "magichem:essentia_fleshy", "count": 12 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

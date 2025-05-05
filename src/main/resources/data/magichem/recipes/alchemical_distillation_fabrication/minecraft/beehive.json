@@ -7,8 +7,8 @@
   "object": { "item": "minecraft:beehive" },
   "components": [
     { "item": "magichem:admixture_nectar", "count": 9 },
-    { "item": "magichem:admixture_realm", "count": 7 },
     { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_realm", "count": 1 },
     { "item": "magichem:essentia_nourishing", "count": 6 }
   ]
 }

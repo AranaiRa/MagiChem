@@ -6,10 +6,10 @@
   "batch_size": 1,
   "object": { "item": "minecraft:composter" },
   "components": [
+    { "item": "magichem:essentia_earth", "count": 5 },
     { "item": "magichem:admixture_wood", "count": 8 },
     { "item": "magichem:admixture_instrument", "count": 1 },
     { "item": "magichem:admixture_filth", "count": 2 },
-    { "item": "magichem:essentia_rotten", "count": 2 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+    { "item": "magichem:essentia_rotten", "count": 2 }
   ]
 }

@@ -7,8 +7,8 @@
   "object": { "item": "minecraft:repeater" },
   "components": [
     { "item": "magichem:admixture_signals", "count": 8 },
-    { "item": "magichem:admixture_stone", "count": 6 },
     { "item": "magichem:admixture_industry", "count": 2 },
+    { "item": "magichem:admixture_stone", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 1 }
   ]
 }

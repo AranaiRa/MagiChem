@@ -9,8 +9,8 @@
   "components": [
     { "item": "magichem:admixture_death", "count": 10 },
     { "item": "magichem:admixture_bone", "count": 8 },
-    { "item": "magichem:essentia_fleshy", "count": 4 },
-    { "item": "magichem:essentia_precious", "count": 12 },
+    { "item": "magichem:admixture_exanimate", "count": 4 },
+    { "item": "magichem:admixture_curse", "count": 1 },
     { "item": "magichem:essentia_nigredo", "count": 2 }
   ]
 }

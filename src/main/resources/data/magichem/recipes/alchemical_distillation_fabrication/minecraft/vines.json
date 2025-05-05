@@ -6,6 +6,7 @@
   "batch_size": 16,
   "object": { "item": "minecraft:vine" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 1 }
+    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_swamps", "count": 1 }
   ]
 }

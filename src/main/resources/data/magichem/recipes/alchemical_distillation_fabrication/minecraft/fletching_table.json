@@ -6,8 +6,8 @@
   "batch_size": 1,
   "object": { "item": "minecraft:fletching_table" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 8 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_wood", "count": 2 },
     { "item": "magichem:admixture_violence", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]

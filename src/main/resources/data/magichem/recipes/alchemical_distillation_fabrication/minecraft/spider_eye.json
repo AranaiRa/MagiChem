@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:admixture_poison", "count": 2 },
     { "item": "magichem:admixture_blood", "count": 1 },
-    { "item": "magichem:admixture_sight", "count": 1 },
+    { "item": "magichem:admixture_sight", "count": 2 },
     { "item": "magichem:essentia_fleshy", "count": 2 }
   ]
 }

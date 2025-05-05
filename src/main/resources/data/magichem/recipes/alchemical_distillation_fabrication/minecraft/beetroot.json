@@ -6,7 +6,7 @@
   "batch_size": 16,
   "object": { "item": "minecraft:beetroot" },
   "components": [
-    { "item": "magichem:essentia_earth", "count": 2 },
+    { "item": "magichem:essentia_arcane", "count": 2 },
     { "item": "magichem:essentia_nourishing", "count": 2 }
   ]
 }

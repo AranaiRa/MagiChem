@@ -8,6 +8,7 @@
   "components": [
     { "item": "magichem:admixture_bone", "count": 9 },
     { "item": "magichem:admixture_death", "count": 3 },
+    { "item": "magichem:admixture_dust", "count": 3 },
     { "item": "magichem:essentia_nourishing", "count": 18 }
   ]
 }

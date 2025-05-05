@@ -9,7 +9,6 @@
   "components": [
     { "item": "magichem:admixture_history", "count": 18 },
     { "item": "magichem:admixture_bone", "count": 9 },
-    { "item": "magichem:admixture_creature", "count": 3 },
-    { "item": "magichem:essentia_mineral", "count": 2 }
+    { "item": "magichem:admixture_creature", "count": 3 }
   ]
 }

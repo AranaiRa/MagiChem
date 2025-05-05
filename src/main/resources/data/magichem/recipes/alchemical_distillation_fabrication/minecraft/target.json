@@ -7,6 +7,7 @@
   "object": { "item": "minecraft:target" },
   "components": [
     { "item": "magichem:admixture_violence", "count": 4 },
+    { "item": "magichem:admixture_plant", "count": 3 },
     { "item": "magichem:admixture_signals", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]

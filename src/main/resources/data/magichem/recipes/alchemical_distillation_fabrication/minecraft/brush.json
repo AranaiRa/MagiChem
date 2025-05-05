@@ -7,7 +7,8 @@
   "object": { "item": "minecraft:brush" },
   "components": [
     { "item": "magichem:admixture_instrument", "count": 3 },
-    { "item": "magichem:admixture_metal", "count": 2 },
+    { "item": "magichem:admixture_metal", "count": 1 },
+    { "item": "magichem:essentia_fleshy", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

@@ -4,11 +4,12 @@
   "categories": 48,
   "output_rate": 1.0,
   "batch_size": 1,
-  "object": { "item": "minecraft:skeleton_skull" },
+  "object": { "item": "minecraft:piglin_head" },
   "components": [
     { "item": "magichem:admixture_death", "count": 8 },
-    { "item": "magichem:admixture_bone", "count": 6 },
-    { "item": "magichem:admixture_exanimate", "count": 4 },
+    { "item": "magichem:admixture_hells", "count": 4 },
+    { "item": "magichem:admixture_thought", "count": 4 },
+    { "item": "magichem:essentia_fleshy", "count": 4 },
     { "item": "magichem:essentia_precious", "count": 2 }
   ]
 }

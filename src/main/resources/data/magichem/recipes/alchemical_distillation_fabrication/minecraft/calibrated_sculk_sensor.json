@@ -7,8 +7,8 @@
   "object": { "item": "minecraft:calibrated_sculk_sensor" },
   "components": [
     { "item": "magichem:admixture_sound", "count": 26 },
-    { "item": "magichem:admixture_thought", "count": 14 },
     { "item": "magichem:admixture_trap", "count": 10 },
+    { "item": "magichem:admixture_signals", "count": 8 },
     { "item": "magichem:admixture_crystal", "count": 6 },
     { "item": "magichem:essentia_nigredo", "count": 12 }
   ]

@@ -6,6 +6,6 @@
   "batch_size": 16,
   "object": { "item": "minecraft:sugar_cane" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 2 }
+    { "item": "magichem:admixture_plant", "count": 1 }
   ]
 }

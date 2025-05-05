@@ -6,6 +6,7 @@
   "batch_size": 1,
   "object": { "item": "minecraft:arrow" },
   "components": [
-    { "item": "magichem:admixture_violence", "count": 1 }
+    { "item": "magichem:admixture_violence", "count": 1 },
+    { "item": "magichem:admixture_wrought", "count": 1 }
   ]
 }

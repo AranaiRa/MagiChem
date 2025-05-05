@@ -6,9 +6,9 @@
   "batch_size": 1,
   "object": { "item": "minecraft:ender_chest" },
   "components": [
+    { "item": "magichem:essentia_ender", "count": 13 },
     { "item": "magichem:admixture_travel", "count": 36 },
     { "item": "magichem:admixture_vessel", "count": 28 },
-    { "item": "magichem:admixture_alien", "count": 8 },
-    { "item": "magichem:essentia_albedo", "count": 2 }
+    { "item": "magichem:admixture_alien", "count": 8 }
   ]
 }

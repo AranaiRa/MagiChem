@@ -7,7 +7,7 @@
   "required_advancement": "minecraft:end/kill_dragon",
   "object": { "item": "minecraft:dragon_head" },
   "components": [
-    { "item": "magichem:admixture_creature", "count": 36 },
+    { "item": "magichem:admixture_monster", "count": 36 },
     { "item": "magichem:admixture_death", "count": 18 },
     { "item": "magichem:essentia_precious", "count": 32 },
     { "item": "magichem:essentia_fleshy", "count": 14 },

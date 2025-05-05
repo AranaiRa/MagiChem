@@ -6,9 +6,9 @@
   "batch_size": 16,
   "object": { "item": "minecraft:glow_lichen" },
   "components": [
+    { "item": "magichem:admixture_caves", "count": 1 },
     { "item": "magichem:admixture_fungus", "count": 1 },
-    { "item": "magichem:admixture_stone", "count": 1 },
     { "item": "magichem:admixture_light", "count": 1 },
-    { "item": "magichem:admixture_darkness", "count": 1 }
+    { "item": "magichem:admixture_stone", "count": 1 }
   ]
 }

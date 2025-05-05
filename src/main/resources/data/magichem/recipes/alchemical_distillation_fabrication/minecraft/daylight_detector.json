@@ -8,7 +8,8 @@
   "components": [
     { "item": "magichem:admixture_signals", "count": 4 },
     { "item": "magichem:admixture_realm", "count": 3 },
-    { "item": "magichem:admixture_industry", "count": 2 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+    { "item": "magichem:admixture_darkness", "count": 2 },
+    { "item": "magichem:admixture_light", "count": 2 },
+    { "item": "magichem:admixture_industry", "count": 2 }
   ]
 }

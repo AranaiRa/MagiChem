@@ -7,7 +7,7 @@
   "object": { "item": "minecraft:cobweb" },
   "components": [
     { "item": "magichem:admixture_trap", "count": 3 },
-    { "item": "magichem:admixture_creature", "count": 1 },
+    { "item": "magichem:admixture_monster", "count": 1 },
     { "item": "magichem:essentia_fleshy", "count": 1 }
   ]
 }

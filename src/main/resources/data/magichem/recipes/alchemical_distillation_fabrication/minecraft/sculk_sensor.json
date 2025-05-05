@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_sound", "count": 24 },
     { "item": "magichem:admixture_alien", "count": 12 },
     { "item": "magichem:admixture_trap", "count": 6 },
-    { "item": "magichem:essentia_verdant", "count": 6 },
+    { "item": "magichem:admixture_signals", "count": 4 },
     { "item": "magichem:essentia_nigredo", "count": 12 }
   ]
 }

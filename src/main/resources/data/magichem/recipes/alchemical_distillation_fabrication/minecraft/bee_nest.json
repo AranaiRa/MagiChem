@@ -7,8 +7,7 @@
   "object": { "item": "minecraft:bee_nest" },
   "components": [
     { "item": "magichem:admixture_nectar", "count": 9 },
-    { "item": "magichem:admixture_realm", "count": 7 },
-    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_realm", "count": 3 },
     { "item": "magichem:essentia_nourishing", "count": 6 },
     { "item": "magichem:essentia_verdant", "count": 6 }
   ]

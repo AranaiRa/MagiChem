@@ -9,7 +9,7 @@
   "components": [
     { "item": "magichem:admixture_travel", "count": 24 },
     { "item": "magichem:admixture_realm", "count": 21 },
-    { "item": "magichem:admixture_hells", "count": 2 },
+    { "item": "magichem:admixture_metal", "count": 4 },
     { "item": "magichem:essentia_precious", "count": 15 },
     { "item": "magichem:essentia_albedo", "count": 10 }
   ]

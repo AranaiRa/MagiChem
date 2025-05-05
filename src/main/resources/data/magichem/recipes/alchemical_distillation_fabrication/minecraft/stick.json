@@ -6,6 +6,6 @@
   "batch_size": 1,
   "object": { "item": "minecraft:stick" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 1 }
+    { "item": "magichem:admixture_wood", "count": 1 }
   ]
 }

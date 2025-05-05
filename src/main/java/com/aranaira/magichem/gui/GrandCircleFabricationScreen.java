@@ -513,9 +513,11 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         }
 
         int offset = 0;
-        for(DistillationSourceCategory dsc : recipe.getSourceCategories()) {
-            gui.drawString(font, dsc.name(), -160, offset, 0xffffff, true);
-            offset += 12;
+        if(recipe != null){
+            for (DistillationSourceCategory dsc : recipe.getSourceCategories()) {
+                gui.drawString(font, dsc.name(), -160, offset, 0xffffff, true);
+                offset += 12;
+            }
         }
 
         if(recipe.getWisdom() < 6 && recipe.getWisdom() > 0) {

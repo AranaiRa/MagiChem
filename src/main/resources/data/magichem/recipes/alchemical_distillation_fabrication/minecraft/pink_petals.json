@@ -6,6 +6,7 @@
   "batch_size": 16,
   "object": { "item": "minecraft:pink_petals" },
   "components": [
+    { "item": "magichem:admixture_mountains", "count": 1 },
     { "item": "magichem:admixture_odors", "count": 1 },
     { "item": "magichem:admixture_plant", "count": 1 }
   ]

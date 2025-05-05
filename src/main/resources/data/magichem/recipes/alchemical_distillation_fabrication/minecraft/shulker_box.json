@@ -8,7 +8,7 @@
   "object": { "item": "minecraft:shulker_box" },
   "components": [
     { "item": "magichem:admixture_vessel", "count": 24 },
-    { "item": "magichem:admixture_creature", "count": 4 },
+    { "item": "magichem:admixture_monster", "count": 4 },
     { "item": "magichem:admixture_alien", "count": 2 },
     { "item": "magichem:essentia_albedo", "count": 8 }
   ]

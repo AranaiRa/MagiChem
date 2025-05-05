@@ -6,6 +6,7 @@
   "batch_size": 16,
   "object": { "item": "minecraft:glass_bottle" },
   "components": [
-    { "item": "magichem:admixture_crystal", "count": 2 }
+    { "item": "magichem:admixture_crystal", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
   ]
 }

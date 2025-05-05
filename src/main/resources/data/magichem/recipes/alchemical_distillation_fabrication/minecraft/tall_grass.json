@@ -6,6 +6,7 @@
   "batch_size": 16,
   "object": { "item": "minecraft:tall_grass" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 2 }
+    { "item": "magichem:admixture_plant", "count": 2 },
+    { "item": "magichem:admixture_plains", "count": 1 }
   ]
 }

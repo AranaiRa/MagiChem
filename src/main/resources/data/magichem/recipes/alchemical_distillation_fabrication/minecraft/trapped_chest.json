@@ -6,9 +6,10 @@
   "batch_size": 1,
   "object": { "item": "minecraft:trapped_chest" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 8 },
+    { "item": "magichem:admixture_vessel", "count": 12 },
+    { "item": "magichem:admixture_wood", "count": 8 },
     { "item": "magichem:admixture_trap", "count": 4 },
-    { "item": "magichem:admixture_vessel", "count": 4 },
+    { "item": "magichem:admixture_signals", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }
