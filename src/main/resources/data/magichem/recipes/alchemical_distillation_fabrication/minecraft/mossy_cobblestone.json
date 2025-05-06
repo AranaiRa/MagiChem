@@ -7,7 +7,6 @@
   "object": { "item": "minecraft:mossy_cobblestone" },
   "components": [
     { "item": "magichem:admixture_stone", "count": 2 },
-    { "item": "magichem:admixture_fey", "count": 1 },
     { "item": "magichem:admixture_plant", "count": 1 }
   ]
 }

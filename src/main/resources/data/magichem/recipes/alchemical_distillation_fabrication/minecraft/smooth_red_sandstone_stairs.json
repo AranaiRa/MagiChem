@@ -1,14 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 1,
-  "categories": 3,
+  "categories": 1,
   "output_rate": 1.0,
   "batch_size": 16,
   "object": { "item": "minecraft:smooth_red_sandstone_stairs" },
   "components": [
-    { "item": "magichem:essentia_air", "count": 3 },
-    { "item": "magichem:essentia_fire", "count": 3 },
+    { "item": "magichem:essentia_air", "count": 4 },
+    { "item": "magichem:essentia_fire", "count": 4 },
     { "item": "magichem:admixture_wastes", "count": 4 },
-    { "item": "magichem:admixture_dust", "count": 2 }
+    { "item": "magichem:admixture_dust", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
   ]
 }

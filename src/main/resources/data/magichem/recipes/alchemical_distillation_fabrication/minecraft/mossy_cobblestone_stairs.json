@@ -7,7 +7,6 @@
   "object": { "item": "minecraft:mossy_cobblestone_stairs" },
   "components": [
     { "item": "magichem:admixture_stone", "count": 4 },
-    { "item": "magichem:admixture_fey", "count": 1 },
     { "item": "magichem:admixture_plant", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 1 }
   ]

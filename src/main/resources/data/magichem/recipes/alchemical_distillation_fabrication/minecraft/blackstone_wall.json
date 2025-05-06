@@ -1,7 +1,7 @@
 {
   "type": "magichem:distillation_fabrication",
   "wisdom": 2,
-  "categories": 6,
+  "categories": 1,
   "output_rate": 0.5,
   "batch_size": 4,
   "object": { "item": "minecraft:blackstone_wall" },

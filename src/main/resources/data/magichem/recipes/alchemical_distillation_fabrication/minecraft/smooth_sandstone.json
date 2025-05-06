@@ -6,8 +6,8 @@
   "batch_size": 16,
   "object": { "item": "minecraft:smooth_sandstone" },
   "components": [
-    { "item": "magichem:essentia_air", "count": 3 },
-    { "item": "magichem:essentia_fire", "count": 3 },
+    { "item": "magichem:essentia_air", "count": 8 },
+    { "item": "magichem:essentia_fire", "count": 8 },
     { "item": "magichem:admixture_dust", "count": 2 }
   ]
 }

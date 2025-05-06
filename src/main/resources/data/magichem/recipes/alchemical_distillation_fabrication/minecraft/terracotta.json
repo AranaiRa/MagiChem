@@ -7,7 +7,6 @@
   "object": { "item": "minecraft:terracotta" },
   "components": [
     { "item": "magichem:essentia_fire", "count": 6 },
-    { "item": "magichem:admixture_change", "count": 2 },
     { "item": "magichem:admixture_wastes", "count": 1 },
     { "item": "magichem:essentia_mineral", "count": 4 }
   ]

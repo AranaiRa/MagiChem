@@ -8,6 +8,7 @@
   "components": [
     { "item": "magichem:admixture_metal", "count": 12 },
     { "item": "magichem:admixture_trap", "count": 2 },
+    { "item": "magichem:admixture_signals", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

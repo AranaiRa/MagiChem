@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:admixture_crystal", "count": 63 },
     { "item": "magichem:essentia_mineral", "count": 36 },
-    { "item": "magichem:essentia_precious", "count": 64 },
+    { "item": "magichem:essentia_precious", "count": 72 },
     { "item": "magichem:essentia_nigredo", "count": 18 }
   ]
 }

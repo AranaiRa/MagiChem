@@ -1,15 +1,15 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 2,
+  "wisdom": 3,
   "categories": 1,
-  "output_rate": 0.5,
+  "output_rate": 1.0,
   "batch_size": 4,
   "required_advancement": "minecraft:story/enter_the_nether",
-  "object": { "item": "minecraft:blackstone_stairs" },
+  "object": { "item": "minecraft:cracked_nether_bricks" },
   "components": [
-    { "item": "magichem:admixture_hells", "count": 2 },
-    { "item": "magichem:admixture_darkness", "count": 1 },
+    { "item": "magichem:admixture_erosion", "count": 3 },
     { "item": "magichem:admixture_stone", "count": 3 },
+    { "item": "magichem:admixture_hells", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

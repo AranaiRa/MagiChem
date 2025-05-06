@@ -6,9 +6,10 @@
   "batch_size": 1,
   "object": { "item": "minecraft:cut_sandstone" },
   "components": [
-    { "item": "magichem:essentia_air", "count": 16 },
+    { "item": "magichem:essentia_air", "count": 8 },
     { "item": "magichem:essentia_fire", "count": 8 },
     { "item": "magichem:admixture_dust", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 1 }
   ]
 }

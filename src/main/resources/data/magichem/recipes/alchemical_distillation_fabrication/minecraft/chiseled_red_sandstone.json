@@ -1,13 +1,13 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 2,
+  "wisdom": 1,
   "categories": 1,
   "output_rate": 1.0,
   "batch_size": 16,
   "object": { "item": "minecraft:chiseled_red_sandstone" },
   "components": [
-    { "item": "magichem:essentia_air", "count": 3 },
-    { "item": "magichem:essentia_fire", "count": 3 },
+    { "item": "magichem:essentia_air", "count": 4 },
+    { "item": "magichem:essentia_fire", "count": 4 },
     { "item": "magichem:admixture_wastes", "count": 4 },
     { "item": "magichem:admixture_dust", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 1 }

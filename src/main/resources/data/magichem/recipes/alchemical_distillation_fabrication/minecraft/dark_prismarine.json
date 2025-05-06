@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_depths", "count": 8 },
     { "item": "magichem:admixture_crystal", "count": 8 },
     { "item": "magichem:admixture_alien", "count": 2 },
-    { "item": "magichem:admixture_color", "count": 1 },
+    { "item": "magichem:admixture_darkness", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

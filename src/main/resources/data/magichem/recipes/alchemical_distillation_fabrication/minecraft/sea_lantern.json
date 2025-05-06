@@ -9,6 +9,7 @@
     { "item": "magichem:admixture_crystal", "count": 40 },
     { "item": "magichem:admixture_light", "count": 30 },
     { "item": "magichem:admixture_alien", "count": 9 },
-    { "item": "magichem:admixture_depths", "count": 9 }
+    { "item": "magichem:admixture_depths", "count": 9 },
+    { "item": "magichem:essentia_nigredo", "count": 10 }
   ]
 }
