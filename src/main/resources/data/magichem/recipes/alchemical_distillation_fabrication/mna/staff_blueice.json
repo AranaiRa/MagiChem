@@ -4,7 +4,7 @@
   "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
-  "object": { "item": "mna:staff_iron" },
+  "object": { "item": "mna:staff_blueice" },
   "components": [
     { "item": "magichem:admixture_sorcery", "count": 2 },
     { "item": "magichem:admixture_fey", "count": 1 },

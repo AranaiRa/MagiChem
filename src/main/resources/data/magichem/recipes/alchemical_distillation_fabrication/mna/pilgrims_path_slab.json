@@ -1,0 +1,14 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "wisdom": 2,
+  "categories": 1,
+  "output_rate": 0.0625,
+  "batch_size": 4,
+  "object": { "item": "mna:pilgrims_path_slab" },
+  "components": [
+    { "item": "magichem:essentia_arcane", "count": 2 },
+    { "item": "magichem:admixture_stone", "count": 2 },
+    { "item": "magichem:admixture_travel", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

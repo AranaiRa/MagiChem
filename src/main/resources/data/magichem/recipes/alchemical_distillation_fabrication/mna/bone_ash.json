@@ -6,9 +6,8 @@
   "batch_size": 16,
   "object": { "item": "mna:bone_ash" },
   "components": [
-    { "item": "magichem:admixture_bone", "count": 3 },
-    { "item": "magichem:admixture_dust", "count": 2 },
+    { "item": "magichem:admixture_bone", "count": 4 },
     { "item": "magichem:admixture_death", "count": 1 },
-    { "item": "magichem:essentia_fleshy", "count": 3 }
+    { "item": "magichem:admixture_dust", "count": 2 }
   ]
 }

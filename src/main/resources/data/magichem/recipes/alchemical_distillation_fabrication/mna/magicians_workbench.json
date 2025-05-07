@@ -6,10 +6,10 @@
   "batch_size": 1,
   "object": { "item": "mna:magicians_workbench" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 8 },
-    { "item": "magichem:admixture_metal", "count": 4 },
     { "item": "magichem:admixture_thought", "count": 4 },
+    { "item": "magichem:admixture_wood", "count": 3 },
     { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_metal", "count": 3 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

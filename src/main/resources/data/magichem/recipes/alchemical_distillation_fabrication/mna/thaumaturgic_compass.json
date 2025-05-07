@@ -6,8 +6,8 @@
   "batch_size": 1,
   "object": { "item": "mna:thaumaturgic_compass" },
   "components": [
-    { "item": "magichem:essentia_earth", "count": 14 },
     { "item": "magichem:admixture_travel", "count": 23 },
+    { "item": "magichem:admixture_realm", "count": 14 },
     { "item": "magichem:admixture_metal", "count": 12 },
     { "item": "magichem:admixture_instrument", "count": 1 },
     { "item": "magichem:admixture_sorcery", "count": 1 }

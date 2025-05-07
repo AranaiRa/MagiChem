@@ -7,6 +7,7 @@
   "object": { "item": "mna:vellum" },
   "components": [
     { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_wizard", "count": 1 },
     { "item": "magichem:essentia_fleshy", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]

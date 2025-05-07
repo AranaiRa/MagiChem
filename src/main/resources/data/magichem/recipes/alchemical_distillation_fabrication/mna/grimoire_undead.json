@@ -6,6 +6,6 @@
   "batch_size": 1,
   "object": { "item": "mna:grimoire_undead" },
   "components": [
-    { "item": "magichem:admixture_exanimate", "count": 2 }
+    { "item": "magichem:admixture_exanimate", "count": 3 }
   ]
 }

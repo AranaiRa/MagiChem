@@ -7,6 +7,7 @@
   "object": { "item": "minecraft:stripped_mangrove_wood" },
   "components": [
     { "item": "magichem:admixture_wood", "count": 2 },
-    { "item": "magichem:admixture_swamps", "count": 1 }
+    { "item": "magichem:admixture_swamps", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
   ]
 }

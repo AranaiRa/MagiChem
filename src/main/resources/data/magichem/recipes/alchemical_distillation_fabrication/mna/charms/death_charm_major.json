@@ -4,7 +4,7 @@
   "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
-  "object": { "item": "mna:damage_charm_major" },
+  "object": { "item": "mna:death_charm_major" },
   "components": [
     { "item": "magichem:admixture_death", "count": 24 },
     { "item": "magichem:admixture_protection", "count": 12 },

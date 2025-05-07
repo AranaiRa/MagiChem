@@ -6,7 +6,7 @@
   "batch_size": 1,
   "object": { "item": "mna:low_health_charm_major" },
   "components": [
-    { "item": "magichem:admixture_healing", "count": 18 },
+    { "item": "magichem:admixture_healing", "count": 24 },
     { "item": "magichem:admixture_protection", "count": 12 },
     { "item": "magichem:admixture_sorcery", "count": 9 },
     { "item": "magichem:admixture_instrument", "count": 4 },

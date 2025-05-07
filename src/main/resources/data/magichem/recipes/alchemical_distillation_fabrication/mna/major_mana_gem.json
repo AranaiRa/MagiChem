@@ -6,7 +6,7 @@
   "batch_size": 1,
   "object": { "item": "mna:major_mana_gem" },
   "components": [
-    { "item": "magichem:admixture_mana", "count": 64 },
+    { "item": "magichem:admixture_mana", "count": 88 },
     { "item": "magichem:admixture_crystal", "count": 51 },
     { "item": "magichem:admixture_energy", "count": 12 },
     { "item": "magichem:essentia_mineral", "count": 12 },

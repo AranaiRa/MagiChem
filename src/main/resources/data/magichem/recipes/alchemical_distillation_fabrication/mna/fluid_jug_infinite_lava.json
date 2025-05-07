@@ -7,7 +7,7 @@
   "forbidden_advancement": "magichem:craft_a_relic",
   "object": { "item": "mna:fluid_jug_infinite_lava" },
   "components": [
-    { "item": "magichem:essentia_fire", "count": 112 },
+    { "item": "magichem:essentia_fire", "count": 118 },
     { "item": "magichem:admixture_vessel", "count": 16 },
     { "item": "magichem:admixture_legend", "count": 6 },
     { "item": "magichem:admixture_sorcery", "count": 4 },

@@ -6,10 +6,9 @@
   "batch_size": 1,
   "object": { "item": "mna:patch_speed_3" },
   "components": [
-    { "item": "magichem:essentia_air", "count": 36 },
-    { "item": "magichem:essentia_arcane", "count": 12 },
-    { "item": "magichem:admixture_motion", "count": 18 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:essentia_arcane", "count": 48 },
+    { "item": "magichem:admixture_motion", "count": 24 },
+    { "item": "magichem:admixture_instrument", "count": 4 },
     { "item": "magichem:essentia_citrinitas", "count": 2 }
   ]
 }

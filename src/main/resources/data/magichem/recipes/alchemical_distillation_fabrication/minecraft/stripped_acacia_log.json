@@ -7,6 +7,7 @@
   "object": { "item": "minecraft:stripped_acacia_log" },
   "components": [
     { "item": "magichem:admixture_wood", "count": 2 },
-    { "item": "magichem:admixture_plains", "count": 1 }
+    { "item": "magichem:admixture_plains", "count": 1 },
+    { "item": "magichem:essentia_wrought", "count": 1 }
   ]
 }

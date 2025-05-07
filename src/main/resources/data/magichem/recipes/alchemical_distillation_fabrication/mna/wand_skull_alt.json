@@ -8,6 +8,7 @@
   "components": [
     { "item": "magichem:admixture_sorcery", "count": 2 },
     { "item": "magichem:admixture_exanimate", "count": 1 },
-    { "item": "magichem:admixture_instrument", "count": 1 }
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_violence", "count": 1 }
   ]
 }

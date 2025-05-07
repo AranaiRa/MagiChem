@@ -6,9 +6,9 @@
   "batch_size": 1,
   "object": { "item": "mna:bed_charm" },
   "components": [
-    { "item": "magichem:admixture_travel", "count": 8 },
+    { "item": "magichem:admixture_travel", "count": 18 },
     { "item": "magichem:admixture_alien", "count": 4 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

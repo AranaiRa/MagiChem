@@ -6,7 +6,7 @@
   "batch_size": 1,
   "object": { "item": "mna:player_charm" },
   "components": [
-    { "item": "magichem:admixture_creature", "count": 9 },
+    { "item": "magichem:admixture_thought", "count": 9 },
     { "item": "magichem:admixture_crystal", "count": 3 },
     { "item": "magichem:admixture_memory", "count": 1 }
   ]

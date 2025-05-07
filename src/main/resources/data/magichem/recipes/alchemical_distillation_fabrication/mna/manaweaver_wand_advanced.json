@@ -6,9 +6,10 @@
   "batch_size": 1,
   "object": { "item": "mna:manaweaver_wand_advanced" },
   "components": [
-    { "item": "magichem:admixture_mana", "count": 6 },
+    { "item": "magichem:admixture_mana", "count": 12 },
+    { "item": "magichem:admixture_permanence", "count": 6 },
     { "item": "magichem:admixture_crystal", "count": 4 },
-    { "item": "magichem:admixture_sorcery", "count": 2 },
+    { "item": "magichem:admixture_sorcery", "count": 4 },
     { "item": "magichem:admixture_instrument", "count": 1 }
   ]
 }

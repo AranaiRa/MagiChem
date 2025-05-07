@@ -6,10 +6,10 @@
   "batch_size": 1,
   "object": { "item": "mna:collector_ring_lesser" },
   "components": [
+    { "item": "magichem:admixture_alien", "count": 7 },
     { "item": "magichem:admixture_motion", "count": 7 },
     { "item": "magichem:admixture_vessel", "count": 7 },
     { "item": "magichem:admixture_instrument", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 },
     { "item": "magichem:essentia_nigredo", "count": 2 }
   ]
 }

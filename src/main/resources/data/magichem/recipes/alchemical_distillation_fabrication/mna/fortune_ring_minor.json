@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_luck", "count": 7 },
     { "item": "magichem:admixture_instrument", "count": 1 },
     { "item": "magichem:essentia_precious", "count": 8 },
-    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 4 },
     { "item": "magichem:essentia_nigredo", "count": 4 }
   ]
 }

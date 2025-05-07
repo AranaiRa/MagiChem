@@ -6,8 +6,9 @@
   "batch_size": 8,
   "object": { "item": "mna:ritual_focus_minor" },
   "components": [
-    { "item": "magichem:admixture_metal", "count": 2 },
-    { "item": "magichem:admixture_sorcery", "count": 1 },
-    { "item": "magichem:admixture_instrument", "count": 1 }
+    { "item": "magichem:admixture_crystal", "count": 1 },
+    { "item": "magichem:admixture_metal", "count": 1 },
+    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_sorcery", "count": 1 }
   ]
 }

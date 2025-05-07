@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:essentia_water", "count": 40 },
     { "item": "magichem:admixture_travel", "count": 14 },
-    { "item": "magichem:admixture_protection", "count": 7 },
+    { "item": "magichem:admixture_breath", "count": 7 },
     { "item": "magichem:admixture_instrument", "count": 2 },
     { "item": "magichem:essentia_albedo", "count": 6 }
   ]

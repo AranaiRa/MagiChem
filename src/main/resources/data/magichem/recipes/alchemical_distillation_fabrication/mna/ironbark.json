@@ -8,8 +8,8 @@
   "components": [
     { "item": "magichem:admixture_fey", "count": 2 },
     { "item": "magichem:admixture_metal", "count": 1 },
-    { "item": "magichem:admixture_plant", "count": 1 },
+    { "item": "magichem:admixture_wood", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 },
-    { "item": "magichem:essentia_albedo", "count": 2 }
+    { "item": "magichem:essentia_albedo", "count": 1 }
   ]
 }

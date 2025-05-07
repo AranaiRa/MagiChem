@@ -7,6 +7,6 @@
   "object": { "item": "mna:illusion_block" },
   "components": [
     { "item": "magichem:admixture_lies", "count": 1 },
-    { "item": "magichem:essentia_mineral", "count": 2 }
+    { "item": "magichem:admixture_crystal", "count": 2 }
   ]
 }

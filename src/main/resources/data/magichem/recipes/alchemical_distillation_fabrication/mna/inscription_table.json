@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:admixture_sorcery", "count": 10 },
     { "item": "magichem:admixture_thought", "count": 8 },
-    { "item": "magichem:admixture_plant", "count": 6 },
+    { "item": "magichem:admixture_wood", "count": 6 },
     { "item": "magichem:essentia_wrought", "count": 16 }
   ]
 }

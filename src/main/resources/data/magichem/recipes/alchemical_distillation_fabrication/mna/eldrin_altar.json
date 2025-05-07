@@ -6,10 +6,10 @@
   "batch_size": 1,
   "object": { "item": "mna:eldrin_altar" },
   "components": [
-    { "item": "magichem:admixture_crystal", "count": 64 },
+    { "item": "magichem:admixture_crystal", "count": 144 },
     { "item": "magichem:admixture_energy", "count": 51 },
     { "item": "magichem:admixture_mana", "count": 37 },
-    { "item": "magichem:admixture_stone", "count": 4 },
-    { "item": "magichem:essentia_wrought", "count": 64 }
+    { "item": "magichem:essentia_wrought", "count": 51 },
+    { "item": "magichem:essentia_citrinitas", "count": 11 }
   ]
 }

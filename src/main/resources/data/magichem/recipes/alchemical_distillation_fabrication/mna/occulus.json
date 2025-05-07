@@ -6,7 +6,8 @@
   "batch_size": 1,
   "object": { "item": "mna:occulus" },
   "components": [
+    { "item": "magichem:admixture_thought", "count": 4 },
     { "item": "magichem:admixture_sorcery", "count": 1 },
-    { "item": "magichem:admixture_thought", "count": 4 }
+    { "item": "magichem:admixture_wood", "count": 1 }
   ]
 }

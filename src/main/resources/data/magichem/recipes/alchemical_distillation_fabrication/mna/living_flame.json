@@ -6,8 +6,8 @@
   "batch_size": 1,
   "object": { "item": "mna:living_flame" },
   "components": [
+    { "item": "magichem:essentia_fire", "count": 17 },
     { "item": "magichem:admixture_demon", "count": 2 },
-    { "item": "magichem:admixture_filth", "count": 1 },
     { "item": "magichem:admixture_crystal", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 },
     { "item": "magichem:essentia_albedo", "count": 2 }

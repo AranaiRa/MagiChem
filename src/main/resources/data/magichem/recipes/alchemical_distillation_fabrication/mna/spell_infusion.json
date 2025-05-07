@@ -9,6 +9,7 @@
     { "item": "magichem:admixture_sorcery", "count": 31 },
     { "item": "magichem:admixture_permanence", "count": 27 },
     { "item": "magichem:admixture_instrument", "count": 21 },
+    { "item": "magichem:admixture_wood", "count": 3 },
     { "item": "magichem:essentia_albedo", "count": 6 }
   ]
 }

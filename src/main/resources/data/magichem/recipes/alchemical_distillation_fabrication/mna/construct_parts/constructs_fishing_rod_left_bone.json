@@ -4,7 +4,7 @@
   "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
-  "object": { "item": "mna:constructs/construct_fishing_rod_left_iron" },
+  "object": { "item": "mna:constructs/construct_fishing_rod_left_bone" },
   "components": [
     { "item": "magichem:admixture_bone", "count": 6 },
     { "item": "magichem:admixture_construct", "count": 6 },

@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:essentia_arcane", "count": 2 },
     { "item": "magichem:admixture_mana", "count": 8 },
-    { "item": "magichem:admixture_dust", "count": 4 },
-    { "item": "magichem:admixture_stone", "count": 3 }
+    { "item": "magichem:admixture_stone", "count": 7 },
+    { "item": "magichem:admixture_change", "count": 1 }
   ]
 }

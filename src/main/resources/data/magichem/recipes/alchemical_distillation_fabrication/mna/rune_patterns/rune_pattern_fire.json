@@ -7,7 +7,7 @@
   "object": { "item": "mna:rune_pattern_fire" },
   "components": [
     { "item": "magichem:admixture_thought", "count": 1 },
-    { "item": "magichem:admixture_change", "count": 1 },
+    { "item": "magichem:admixture_permanence", "count": 1 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 0,
+  "input": "mna:rune_marking_pair",
+  "output": "mna:rune_marking",
+  "output_quantity": 2
+}

@@ -8,7 +8,8 @@
   "components": [
     { "item": "magichem:admixture_poison", "count": 7 },
     { "item": "magichem:admixture_protection", "count": 7 },
+    { "item": "magichem:admixture_healing", "count": 5 },
     { "item": "magichem:admixture_instrument", "count": 1 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+    { "item": "magichem:essentia_nigredo", "count": 2 }
   ]
 }

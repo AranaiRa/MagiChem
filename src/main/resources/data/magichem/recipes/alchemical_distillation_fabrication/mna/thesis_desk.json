@@ -8,6 +8,7 @@
   "components": [
     { "item": "magichem:admixture_memory", "count": 54 },
     { "item": "magichem:admixture_sorcery", "count": 28 },
+    { "item": "magichem:admixture_wood", "count": 3 },
     { "item": "magichem:admixture_instrument", "count": 2 },
     { "item": "magichem:essentia_citrinitas", "count": 4 }
   ]

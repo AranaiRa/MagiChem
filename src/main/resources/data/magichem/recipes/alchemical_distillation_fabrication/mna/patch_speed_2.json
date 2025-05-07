@@ -6,10 +6,9 @@
   "batch_size": 1,
   "object": { "item": "mna:patch_speed_2" },
   "components": [
-    { "item": "magichem:essentia_air", "count": 24 },
-    { "item": "magichem:essentia_fire", "count": 12 },
+    { "item": "magichem:essentia_arcane", "count": 24 },
     { "item": "magichem:admixture_motion", "count": 12 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
-    { "item": "magichem:essentia_nigredo", "count": 2 }
+    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:essentia_albedo", "count": 2 }
   ]
 }

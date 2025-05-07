@@ -1,0 +1,13 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "wisdom": 2,
+  "categories": 1,
+  "output_rate": 1.0,
+  "batch_size": 8,
+  "object": { "item": "mna:pylon/inert" },
+  "components": [
+    { "item": "magichem:admixture_realm", "count": 3 },
+    { "item": "magichem:admixture_stone", "count": 2 },
+    { "item": "magichem:essentia_wrought", "count": 2 }
+  ]
+}

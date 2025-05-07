@@ -6,8 +6,9 @@
   "batch_size": 1,
   "object": { "item": "mna:resonating_lump" },
   "components": [
-    { "item": "magichem:admixture_plant", "count": 6 },
+    { "item": "magichem:admixture_alien", "count": 6 },
     { "item": "magichem:admixture_crystal", "count": 6 },
+    { "item": "magichem:admixture_fungus", "count": 6 },
     { "item": "magichem:admixture_light", "count": 6 }
   ]
 }

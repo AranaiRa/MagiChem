@@ -7,8 +7,7 @@
   "object": { "item": "mna:decoration/amethyst_arcane_stone_slab" },
   "components": [
     { "item": "magichem:essentia_arcane", "count": 14 },
-    { "item": "magichem:admixture_crystal", "count": 4 },
-    { "item": "magichem:admixture_stone", "count": 3 },
+    { "item": "magichem:admixture_stone", "count": 7 },
     { "item": "magichem:admixture_darkness", "count": 2 },
     { "item": "magichem:admixture_change", "count": 1 }
   ]

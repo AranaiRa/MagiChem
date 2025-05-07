@@ -1,6 +1,6 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 6,
+  "wisdom": 3,
   "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:admixture_construct", "count": 9 },
     { "item": "magichem:admixture_memory", "count": 7 },
-    { "item": "magichem:admixture_plant", "count": 3 },
-    { "item": "magichem:essentia_fleshy", "count": 4 }
+    { "item": "magichem:admixture_thought", "count": 3 },
+    { "item": "magichem:admixture_wood", "count": 3 }
   ]
 }

@@ -6,7 +6,7 @@
   "batch_size": 1,
   "object": { "item": "mna:fluid_jug_infinite_water" },
   "components": [
-    { "item": "magichem:essentia_water", "count": 210 },
+    { "item": "magichem:essentia_water", "count": 118 },
     { "item": "magichem:admixture_vessel", "count": 16 },
     { "item": "magichem:admixture_sorcery", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 2 },
