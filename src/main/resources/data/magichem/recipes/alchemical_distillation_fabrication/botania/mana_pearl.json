@@ -10,30 +10,20 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "required_advancement": "botania:main/mana_pool_pickup",
+        "object": {
           "item": "botania:mana_pearl"
         },
         "components": [
-          {
-            "item": "magichem:admixture_alien",
-            "count": 16
-          },
-          {
-            "item": "magichem:admixture_mana",
-            "count": 13
-          },
-          {
-            "item": "magichem:admixture_crystal",
-            "count": 11
-          },
-          {
-            "item": "magichem:essentia_precious",
-            "count": 14
-          }
+          { "item": "magichem:admixture_mana", "count": 18 },
+          { "item": "magichem:admixture_crystal", "count": 11 },
+          { "item": "magichem:admixture_change", "count": 5 },
+          { "item": "magichem:admixture_vessel", "count": 3 },
+          { "item": "magichem:essentia_nigredo", "count": 1 }
         ]
       }
     }

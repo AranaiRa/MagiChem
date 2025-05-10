@@ -10,26 +10,17 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 0.25,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 8,
+        "object": {
           "item": "botania:pattern_framed_dreamwood"
         },
         "components": [
-          {
-            "item": "magichem:admixture_plant",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_fey",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_verdant",
-            "count": 2
-          }
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:admixture_bargain", "count": 1 },
+          { "item": "magichem:essentia_verdant", "count": 1 }
         ]
       }
     }

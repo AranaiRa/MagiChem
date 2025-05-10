@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "required_advancement": "botania:main/mana_pool_pickup",
+        "object": {
+          "item": "botania:manaweave_cloth"
+        },
+        "components": [
+          { "item": "magichem:admixture_mana", "count": 3 },
+          { "item": "magichem:admixture_comfort", "count": 2 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

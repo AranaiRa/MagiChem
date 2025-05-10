@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "botania:light_blue_shiny_flower"
+        },
+        "components": [
+          { "item": "magichem:admixture_light", "count": 20 },
+          { "item": "magichem:admixture_color", "count": 1 },
+          { "item": "magichem:admixture_mana", "count": 1 },
+          { "item": "magichem:admixture_plant", "count": 1 },
+          { "item": "magichem:essentia_verdant", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

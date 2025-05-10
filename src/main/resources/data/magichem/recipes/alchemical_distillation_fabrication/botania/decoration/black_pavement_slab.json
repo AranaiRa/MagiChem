@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 8,
+        "output_rate": 0.166,
+        "batch_size": 8,
+        "object": {
+          "item": "botania:black_pavement_slab"
+        },
+        "components": [
+          { "item": "magichem:admixture_stone", "count": 2 },
+          { "item": "magichem:admixture_color", "count": 1 },
+          { "item": "magichem:admixture_erosion", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

@@ -11,21 +11,16 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
           "item": "botania:chiseled_elf_quartz"
         },
         "components": [
-          {
-            "item": "magichem:admixture_crystal",
-            "count": 12
-          },
-          {
-            "item": "magichem:admixture_bargain",
-            "count": 8
-          }
+          { "item": "magichem:admixture_crystal", "count": 48 },
+          { "item": "magichem:admixture_fey", "count": 32 },
+          { "item": "magichem:admixture_color", "count": 8 }
         ]
       }
     }

@@ -10,34 +10,20 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "required_advancement": "botania:main/elf_portal_open",
+        "object": {
           "item": "botania:pixie_dust"
         },
         "components": [
-          {
-            "item": "magichem:admixture_fey",
-            "count": 7
-          },
-          {
-            "item": "magichem:admixture_dust",
-            "count": 5
-          },
-          {
-            "item": "magichem:admixture_bone",
-            "count": 3
-          },
-          {
-            "item": "magichem:admixture_bargain",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_nigredo",
-            "count": 2
-          }
+          { "item": "magichem:admixture_bargain", "count": 5 },
+          { "item": "magichem:admixture_dust", "count": 4 },
+          { "item": "magichem:admixture_fey", "count": 3 },
+          { "item": "magichem:admixture_whimsy", "count": 2 },
+          { "item": "magichem:essentia_albedo", "count": 1 }
         ]
       }
     }

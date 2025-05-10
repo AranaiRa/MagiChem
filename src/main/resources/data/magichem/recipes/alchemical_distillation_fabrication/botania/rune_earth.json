@@ -10,30 +10,19 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "required_advancement": "botania:main/rune_pickup",
+        "object": {
           "item": "botania:rune_earth"
         },
         "components": [
-          {
-            "item": "magichem:essentia_earth",
-            "count": 36
-          },
-          {
-            "item": "magichem:admixture_mana",
-            "count": 4
-          },
-          {
-            "item": "magichem:admixture_stone",
-            "count": 3
-          },
-          {
-            "item": "magichem:essentia_verdant",
-            "count": 2
-          }
+          { "item": "magichem:essentia_earth", "count": 36 },
+          { "item": "magichem:admixture_mana", "count": 4 },
+          { "item": "magichem:admixture_stone", "count": 1 },
+          { "item": "magichem:essentia_verdant", "count": 2 }
         ]
       }
     }

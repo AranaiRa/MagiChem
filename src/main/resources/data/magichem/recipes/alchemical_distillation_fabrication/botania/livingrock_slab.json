@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.0625,
+        "batch_size": 8,
+        "object": {
+          "item": "botania:livingrock_slab"
+        },
+        "components": [
+          { "item": "magichem:admixture_stone", "count": 3 },
+          { "item": "magichem:admixture_mana", "count": 1 },
+          { "item": "magichem:essentia_verdant", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

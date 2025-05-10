@@ -10,26 +10,17 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "required_advancement": "botania:main/mana_pool_pickup",
+        "object": {
           "item": "botania:mana_string"
         },
         "components": [
-          {
-            "item": "magichem:admixture_mana",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_trap",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_fleshy",
-            "count": 1
-          }
+          { "item": "magichem:admixture_mana", "count": 1 },
+          { "item": "magichem:admixture_trap", "count": 1 }
         ]
       }
     }

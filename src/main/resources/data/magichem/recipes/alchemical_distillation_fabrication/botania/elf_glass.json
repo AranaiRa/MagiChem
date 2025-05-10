@@ -10,30 +10,18 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 2,
+        "categories": 1.0,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "required_advancement": "botania:recipes/misc/elf_glass_pane",
+        "object": {
           "item": "botania:elf_glass"
         },
         "components": [
-          {
-            "item": "magichem:admixture_crystal",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_light",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_bargain",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_mana",
-            "count": 1
-          }
+          { "item": "magichem:admixture_crystal", "count": 2 },
+          { "item": "magichem:admixture_bargain", "count": 1 },
+          { "item": "magichem:admixture_light", "count": 1 }
         ]
       }
     }

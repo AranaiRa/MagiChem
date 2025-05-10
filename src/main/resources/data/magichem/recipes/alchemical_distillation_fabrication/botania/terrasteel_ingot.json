@@ -10,34 +10,22 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 4,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "required_advancement": "botania:main/terrasteel_pickup",
+        "object": {
           "item": "botania:terrasteel_ingot"
         },
         "components": [
-          {
-            "item": "magichem:admixture_mana",
-            "count": 64
-          },
-          {
-            "item": "magichem:admixture_metal",
-            "count": 8
-          },
-          {
-            "item": "magichem:essentia_precious",
-            "count": 2
-          },
-          {
-            "item": "magichem:essentia_albedo",
-            "count": 2
-          }
+          { "item": "magichem:admixture_mana", "count": 96 },
+          { "item": "magichem:admixture_metal", "count": 8 },
+          { "item": "magichem:essentia_verdant", "count": 12 },
+          { "item": "magichem:essentia_precious", "count": 4 },
+          { "item": "magichem:essentia_albedo", "count": 2 }
         ]
       }
     }
   ]
 }
-
-

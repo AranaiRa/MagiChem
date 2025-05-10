@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 11,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
+          "item": "botania:yellow_double_flower"
+        },
+        "components": [
+          { "item": "magichem:admixture_odors", "count": 3 },
+          { "item": "magichem:admixture_plant", "count": 3 },
+          { "item": "magichem:admixture_color", "count": 2 },
+          { "item": "magichem:admixture_mana", "count": 2 },
+          { "item": "magichem:essentia_verdant", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

@@ -10,34 +10,19 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "botania:brewery"
         },
         "components": [
-          {
-            "item": "magichem:admixture_mana",
-            "count": 40
-          },
-          {
-            "item": "magichem:admixture_stone",
-            "count": 18
-          },
-          {
-            "item": "magichem:admixture_sorcery",
-            "count": 4
-          },
-          {
-            "item": "magichem:admixture_instrument",
-            "count": 3
-          },
-          {
-            "item": "magichem:essentia_verdant",
-            "count": 2
-          }
+          { "item": "magichem:admixture_mana", "count": 67 },
+          { "item": "magichem:admixture_witchcraft", "count": 8 },
+          { "item": "magichem:admixture_sorcery", "count": 6 },
+          { "item": "magichem:admixture_change", "count": 2 },
+          { "item": "magichem:essentia_nigredo", "count": 2 }
         ]
       }
     }

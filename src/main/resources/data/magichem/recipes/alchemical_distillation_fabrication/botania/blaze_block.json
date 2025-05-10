@@ -11,33 +11,19 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "required_advancement": "minecraft:story/enter_the_nether",
+        "object": {
           "item": "botania:blaze_block"
         },
         "components": [
-          {
-            "item": "magichem:essentia_fire",
-            "count": 64
-          },
-          {
-            "item": "magichem:admixture_demon",
-            "count": 36
-          },
-          {
-            "item": "magichem:admixture_metal",
-            "count": 18
-          },
-          {
-            "item": "magichem:essentia_verdant",
-            "count": 36
-          },
-          {
-            "item": "magichem:essentia_nigredo",
-            "count": 18
-          }
+          { "item": "magichem:essentia_fire", "count": 216 },
+          { "item": "magichem:admixture_metal", "count": 27 },
+          { "item": "magichem:admixture_sorcery", "count": 18 },
+          { "item": "magichem:admixture_monster", "count": 9 },
+          { "item": "magichem:essentia_nigredo", "count": 18 }
         ]
       }
     }
