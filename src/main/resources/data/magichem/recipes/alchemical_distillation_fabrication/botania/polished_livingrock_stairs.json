@@ -11,17 +11,16 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 2,
-        "categories": 1,
-        "output_rate": 0.0625,
-        "batch_size": 4,
-        "requires_advancement": "botania:recipes/building_blocks/metamorphic_forest_bricks",
+        "categories": 8,
+        "output_rate": 0.25,
+        "batch_size": 8,
         "object": {
-          "item": "botania:metamorphic_forest_bricks"
+          "item": "botania:polished_livingrock_stairs"
         },
         "components": [
           { "item": "magichem:admixture_stone", "count": 3 },
-          { "item": "magichem:admixture_forests", "count": 2 },
-          { "item": "magichem:admixture_change", "count": 1 }
+          { "item": "magichem:admixture_mana", "count": 1 },
+          { "item": "magichem:essentia_verdant", "count": 1 }
         ]
       }
     }

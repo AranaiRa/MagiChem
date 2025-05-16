@@ -19,7 +19,7 @@
           "item": "botania:mana_pylon"
         },
         "components": [
-          { "item": "magichem:admixture_mana", "count": 16 },
+          { "item": "magichem:admixture_mana", "count": 46 },
           { "item": "magichem:admixture_crystal", "count": 12 },
           { "item": "magichem:admixture_sorcery", "count": 5 },
           { "item": "magichem:essentia_precious", "count": 14 },

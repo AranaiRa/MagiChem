@@ -14,13 +14,13 @@
         "categories": 1,
         "output_rate": 0.0625,
         "batch_size": 4,
-        "requires_advancement": "botania:recipes/building_blocks/metamorphic_mountain_bricks",
+        "requires_advancement": "botania:recipes/building_blocks/metamorphic_swamp_bricks",
         "object": {
-          "item": "botania:metamorphic_mountain_bricks"
+          "item": "botania:chiseled_metamorphic_swamp_bricks"
         },
         "components": [
           { "item": "magichem:admixture_stone", "count": 3 },
-          { "item": "magichem:admixture_mountains", "count": 2 },
+          { "item": "magichem:admixture_swamps", "count": 2 },
           { "item": "magichem:admixture_change", "count": 1 }
         ]
       }

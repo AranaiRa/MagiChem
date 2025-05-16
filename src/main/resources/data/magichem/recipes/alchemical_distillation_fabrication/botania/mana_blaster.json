@@ -14,16 +14,15 @@
         "categories": 1,
         "output_rate": 1.0,
         "batch_size": 1,
-        "required_advancement": "botania:main/rune_pickup",
         "object": {
-          "item": "botania:rainbow_rod"
+          "item": "botania:mana_blaster"
         },
         "components": [
-          { "item": "magichem:admixture_color", "count": 36 },
-          { "item": "magichem:admixture_storm", "count": 16 },
-          { "item": "magichem:admixture_bargain", "count": 11 },
-          { "item": "magichem:admixture_metal", "count": 10 },
-          { "item": "magichem:essentia_albedo", "count": 2 }
+          { "item": "magichem:admixture_mana", "count": 88 },
+          { "item": "magichem:admixture_instrument", "count": 5 },
+          { "item": "magichem:admixture_signals", "count": 2 },
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:essentia_nigredo", "count": 2 }
         ]
       }
     }

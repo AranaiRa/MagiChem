@@ -19,7 +19,7 @@
           "item": "botania:natura_pylon"
         },
         "components": [
-          { "item": "magichem:admixture_mana", "count": 50 },
+          { "item": "magichem:admixture_mana", "count": 80 },
           { "item": "magichem:admixture_crystal", "count": 11 },
           { "item": "magichem:admixture_potential", "count": 5 },
           { "item": "magichem:admixture_vessel", "count": 3 },

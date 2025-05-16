@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 4,
         "object": {
-          "item": "botania:glimmering_livingwood"
+          "item": "botania:glimmering_stripped_dreamwood_log"
         },
         "components": [
           { "item": "magichem:admixture_light", "count": 10 },

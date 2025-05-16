@@ -20,7 +20,7 @@
         "components": [
           { "item": "magichem:essentia_earth", "count": 2 },
           { "item": "magichem:admixture_plant", "count": 1 },
-          { "item": "magichem:admixture_plains", "count": 1 },
+          { "item": "magichem:admixture_hells", "count": 1 },
           { "item": "magichem:essentia_verdant", "count": 1 },
           { "item": "magichem:essentia_rotten", "count": 1 }
         ]

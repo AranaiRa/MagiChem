@@ -16,7 +16,7 @@
         "batch_size": 1,
         "required_advancement": "botania:main/elf_portal_open",
         "object": {
-          "item": "botania:drum_canopy"
+          "item": "botania:drum_gathering"
         },
         "components": [
           { "item": "magichem:admixture_sound", "count": 6 },

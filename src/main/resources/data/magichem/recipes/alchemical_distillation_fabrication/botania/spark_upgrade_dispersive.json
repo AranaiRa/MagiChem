@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 3,
+        "required_advancement": "botania:main/elf_portal_open",
+        "object": {
+          "item": "botania:spark_upgrade_dispersive"
+        },
+        "components": [
+          { "item": "magichem:essentia_water", "count": 20 },
+          { "item": "magichem:admixture_change", "count": 5 },
+          { "item": "magichem:admixture_motion", "count": 4 },
+          { "item": "magichem:admixture_bargain", "count": 3 },
+          { "item": "magichem:essentia_albedo", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "botania:cyan_shiny_flower"
+          "item": "botania:gray_shiny_flower"
         },
         "components": [
           { "item": "magichem:admixture_light", "count": 20 },

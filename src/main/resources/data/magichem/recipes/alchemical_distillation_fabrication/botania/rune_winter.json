@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "botania:rune_spring"
+          "item": "botania:rune_winter"
         },
         "components": [
           { "item": "magichem:admixture_cold", "count": 15 },

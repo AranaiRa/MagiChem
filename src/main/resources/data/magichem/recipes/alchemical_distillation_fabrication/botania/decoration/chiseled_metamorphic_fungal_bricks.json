@@ -16,7 +16,7 @@
         "batch_size": 4,
         "requires_advancement": "botania:recipes/building_blocks/metamorphic_fungal_bricks",
         "object": {
-          "item": "botania:metamorphic_fungal_bricks"
+          "item": "botania:chiseled_metamorphic_fungal_bricks"
         },
         "components": [
           { "item": "magichem:admixture_stone", "count": 3 },

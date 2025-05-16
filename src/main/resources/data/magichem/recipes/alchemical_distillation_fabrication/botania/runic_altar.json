@@ -19,8 +19,8 @@
           "item": "botania:runic_altar"
         },
         "components": [
+          { "item": "magichem:admixture_mana", "count": 29 },
           { "item": "magichem:admixture_change", "count": 12 },
-          { "item": "magichem:admixture_mana", "count": 10 },
           { "item": "magichem:admixture_instrument", "count": 4 },
           { "item": "magichem:admixture_stone", "count": 2 },
           { "item": "magichem:essentia_nigredo", "count": 2 }

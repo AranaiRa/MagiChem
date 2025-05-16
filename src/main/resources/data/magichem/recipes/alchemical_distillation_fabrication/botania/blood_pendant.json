@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "botania:main/terrasteel_pickup",
+        "object": {
+          "item": "botania:blood_pendant"
+        },
+        "components": [
+          { "item": "magichem:admixture_mana", "count": 40 },
+          { "item": "magichem:admixture_crystal", "count": 38 },
+          { "item": "magichem:admixture_witchcraft", "count": 6 },
+          { "item": "magichem:admixture_healing", "count": 4 },
+          { "item": "magichem:essentia_albedo", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

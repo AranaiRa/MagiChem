@@ -12,7 +12,7 @@
         "type": "magichem:distillation_fabrication",
         "wisdom": 2,
         "categories": 1,
-        "output_rate": 0.125,
+        "output_rate": 0.25,
         "batch_size": 8,
         "object": {
           "item": "botania:livingrock_bricks_stairs"

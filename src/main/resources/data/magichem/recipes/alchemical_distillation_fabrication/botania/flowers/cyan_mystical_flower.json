@@ -10,18 +10,18 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 3,
-        "categories": 1,
+        "wisdom": 1,
+        "categories": 7,
         "output_rate": 1.0,
-        "batch_size": 1,
+        "batch_size": 4,
         "object": {
-          "item": "botania:cyan_floating_flower"
+          "item": "botania:cyan_mystical_flower"
         },
         "components": [
-          { "item": "magichem:admixture_light", "count": 20 },
-          { "item": "magichem:admixture_plant", "count": 2 },
-          { "item": "magichem:admixture_flight", "count": 1 },
+          { "item": "magichem:admixture_color", "count": 1 },
           { "item": "magichem:admixture_mana", "count": 1 },
+          { "item": "magichem:admixture_odors", "count": 1 },
+          { "item": "magichem:admixture_plant", "count": 1 },
           { "item": "magichem:essentia_verdant", "count": 2 }
         ]
       }

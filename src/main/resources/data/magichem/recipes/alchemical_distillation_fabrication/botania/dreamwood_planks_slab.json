@@ -16,7 +16,7 @@
         "batch_size": 8,
         "required_advancement": "botania:main/elf_portal_open",
         "object": {
-          "item": "botania:dreamwood_slab"
+          "item": "botania:dreamwood_planks_slab"
         },
         "components": [
           { "item": "magichem:admixture_wood", "count": 3 },
