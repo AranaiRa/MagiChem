@@ -290,6 +290,9 @@
   "item.magichem.essentia_wrought.short": "Wrought",
   "item.magichem.essentia_wrought.truncated": "Wrought",
 
+  "item.magichem.admixture_adornment": "Admixture of Adornment",
+  "item.magichem.admixture_adornment.short": "Adornment",
+  "item.magichem.admixture_adornment.truncated": "Adorn.",
   "item.magichem.admixture_alcohol": "Admixture of Alcohol",
   "item.magichem.admixture_alcohol.short": "Alcohol",
   "item.magichem.admixture_alcohol.truncated": "Alcohol",

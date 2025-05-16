@@ -149,7 +149,7 @@ dependencies {
     implementation fg.deobf("curse.maven:mana-and-artifice-406360:6376257")
     implementation fg.deobf("curse.maven:ctm-267602:5983309")
     implementation fg.deobf("curse.maven:building-gadgets-298187:5144161")
-    implementation fg.deobf("curse.maven:occultism-361026:5553847")
+    implementation fg.deobf("curse.maven:occultism-361026:6325698")
     implementation fg.deobf("curse.maven:modonomicon-538392:5551799")
     implementation fg.deobf("curse.maven:smartbrainlib-661293:5513411")
     implementation fg.deobf("curse.maven:selene-499980:5619074")

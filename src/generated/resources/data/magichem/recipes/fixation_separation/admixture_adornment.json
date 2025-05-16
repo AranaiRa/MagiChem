@@ -1,0 +1,20 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_alcohol"
+  },
+  "components": [
+    {
+      "item": "magichem:admixture_comfort",
+      "count": 2
+    },
+    {
+      "item": "magichem:essentia_wrought",
+      "count": 1
+    },
+    {
+      "item": "magichem:essentia_precious",
+      "count": 5
+    }
+  ]
+}

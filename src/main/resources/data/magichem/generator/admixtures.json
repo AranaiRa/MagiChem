@@ -1,6 +1,16 @@
 {
   "admixtures": [
     {
+      "name": "adornment",
+      "color": "f1924c",
+      "depth": 2,
+      "components": [
+        { "admixture": "comfort", "count": 2 },
+        { "essentia": "wrought", "count": 1 },
+        { "essentia": "precious", "count": 5 }
+      ]
+    },
+    {
       "name": "alcohol",
       "color": "859c9b",
       "depth": 2,
