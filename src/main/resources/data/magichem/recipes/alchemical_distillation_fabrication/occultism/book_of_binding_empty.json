@@ -10,19 +10,19 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
+        "wisdom": 4,
         "categories": 1,
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "occultism:infused_lenses"
+          "item": "occultism:book_of_binding_empty"
         },
         "components": [
-          { "item": "magichem:admixture_sight", "count": 16 },
-          { "item": "magichem:admixture_spirit", "count": 11 },
-          { "item": "magichem:admixture_crystal", "count": 7 },
-          { "item": "magichem:admixture_permanence", "count": 4 },
-          { "item": "magichem:essentia_nigredo", "count": 2 }
+          { "item": "magichem:admixture_spirit", "count": 13 },
+          { "item": "magichem:admixture_trap", "count": 11 },
+          { "item": "magichem:admixture_bargain", "count": 9 },
+          { "item": "magichem:admixture_potential", "count": 6 },
+          { "item": "magichem:admixture_permanence", "count": 3 }
         ]
       }
     }

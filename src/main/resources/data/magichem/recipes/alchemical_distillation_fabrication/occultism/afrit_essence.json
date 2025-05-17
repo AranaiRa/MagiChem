@@ -10,34 +10,20 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 2,
+        "categories": 16,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "required_advancement": "magichem:occultism/kill_afrit",
+        "object": {
           "item": "occultism:afrit_essence"
         },
         "components": [
-          {
-            "item": "magichem:essentia_fire",
-            "count": 58
-          },
-          {
-            "item": "magichem:admixture_spirit",
-            "count": 17
-          },
-          {
-            "item": "magichem:admixture_violence",
-            "count": 13
-          },
-          {
-            "item": "magichem:admixture_death",
-            "count": 4
-          },
-          {
-            "item": "magichem:essentia_precious",
-            "count": 4
-          }
+          { "item": "magichem:essentia_fire", "count": 58 },
+          { "item": "magichem:admixture_spirit", "count": 17 },
+          { "item": "magichem:admixture_violence", "count": 13 },
+          { "item": "magichem:essentia_precious", "count": 4 },
+          { "item": "magichem:essentia_albedo", "count": 3 }
         ]
       }
     }

@@ -11,33 +11,19 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "required_advancement": "occultism:recipes/spirit_fire/spirit_fire/chalk_red",
+        "object": {
           "item": "occultism:chalk_red_impure"
         },
         "components": [
-          {
-            "item": "magichem:essentia_fire",
-            "count": 58
-          },
-          {
-            "item": "magichem:admixture_spirit",
-            "count": 23
-          },
-          {
-            "item": "magichem:admixture_violence",
-            "count": 13
-          },
-          {
-            "item": "magichem:admixture_instrument",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_mineral",
-            "count": 2
-          }
+          { "item": "magichem:essentia_fire", "count": 58 },
+          { "item": "magichem:admixture_spirit", "count": 23 },
+          { "item": "magichem:admixture_violence", "count": 13 },
+          { "item": "magichem:admixture_instrument", "count": 1 },
+          { "item": "magichem:essentia_albedo", "count": 3 }
         ]
       }
     }

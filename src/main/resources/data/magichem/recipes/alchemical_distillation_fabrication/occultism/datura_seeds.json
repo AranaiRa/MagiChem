@@ -11,10 +11,10 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 0,
-        "categories": 0,
-  "output_rate": 0.5,
+        "categories": 2,
+        "output_rate": 0.5,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "occultism:datura_seeds"
         },
         "components": [

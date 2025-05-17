@@ -11,33 +11,18 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "occultism:book_of_binding_djinni"
         },
         "components": [
-          {
-            "item": "magichem:admixture_spirit",
-            "count": 13
-          },
-          {
-            "item": "magichem:admixture_trap",
-            "count": 11
-          },
-          {
-            "item": "magichem:admixture_bargain",
-            "count": 9
-          },
-          {
-            "item": "magichem:admixture_permanence",
-            "count": 3
-          },
-          {
-            "item": "magichem:admixture_instrument",
-            "count": 1
-          }
+          { "item": "magichem:admixture_spirit", "count": 13 },
+          { "item": "magichem:admixture_color", "count": 12 },
+          { "item": "magichem:admixture_trap", "count": 11 },
+          { "item": "magichem:admixture_bargain", "count": 9 },
+          { "item": "magichem:admixture_permanence", "count": 3 }
         ]
       }
     }

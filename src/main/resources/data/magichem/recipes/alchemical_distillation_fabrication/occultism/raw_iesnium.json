@@ -11,29 +11,19 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "categories": 2,
+        "output_rate": 0.5,
         "batch_size": 1,
-  "object": {
+        "required_advancement": "occultism:recipes/building_blocks/crafting/iesnium_block",
+        "object": {
           "item": "occultism:raw_iesnium"
         },
         "components": [
-          {
-            "item": "magichem:admixture_spirit",
-            "count": 4
-          },
-          {
-            "item": "magichem:admixture_metal",
-            "count": 2
-          },
-          {
-            "item": "magichem:admixture_luck",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_precious",
-            "count": 6
-          }
+          { "item": "magichem:admixture_spirit", "count": 4 },
+          { "item": "magichem:admixture_metal", "count": 2 },
+          { "item": "magichem:admixture_luck", "count": 1 },
+          { "item": "magichem:essentia_precious", "count": 6 },
+          { "item": "magichem:essentia_albedo", "count": 2 }
         ]
       }
     }

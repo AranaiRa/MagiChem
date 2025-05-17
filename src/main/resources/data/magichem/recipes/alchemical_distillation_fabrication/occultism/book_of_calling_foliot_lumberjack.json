@@ -11,20 +11,15 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "occultism:book_of_calling_foliot_lumberjack"
         },
         "components": [
-          {
-            "item": "magichem:admixture_spirit",
-            "count": 13
-          },
-          {
-            "item": "magichem:admixture_trap",
-            "count": 11
+          { "item": "magichem:admixture_spirit", "count": 13 },
+          { "item": "magichem:admixture_trap", "count": 11
           },
           {
             "item": "magichem:admixture_plant",

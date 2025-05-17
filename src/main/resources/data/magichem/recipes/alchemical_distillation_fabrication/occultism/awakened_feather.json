@@ -10,26 +10,17 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
           "item": "occultism:awakened_feather"
         },
         "components": [
-          {
-            "item": "magichem:admixture_spirit",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_air",
-            "count": 2
-          },
-          {
-            "item": "magichem:essentia_fleshy",
-            "count": 2
-          }
+          { "item": "magichem:admixture_spirit", "count": 1 },
+          { "item": "magichem:essentia_air", "count": 2 },
+          { "item": "magichem:essentia_fleshy", "count": 2 }
         ]
       }
     }

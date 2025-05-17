@@ -11,33 +11,18 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "occultism:storage_remote"
         },
         "components": [
-          {
-            "item": "magichem:admixture_spirit",
-            "count": 44
-          },
-          {
-            "item": "magichem:admixture_motion",
-            "count": 35
-          },
-          {
-            "item": "magichem:admixture_memory",
-            "count": 20
-          },
-          {
-            "item": "magichem:admixture_stone",
-            "count": 12
-          },
-          {
-            "item": "magichem:admixture_instrument",
-            "count": 4
-          }
+          { "item": "magichem:admixture_spirit", "count": 44 },
+          { "item": "magichem:admixture_motion", "count": 35 },
+          { "item": "magichem:admixture_memory", "count": 20 },
+          { "item": "magichem:admixture_instrument", "count": 14 },
+          { "item": "magichem:admixture_potential", "count": 11 }
         ]
       }
     }

@@ -1,0 +1,49 @@
+{
+  "parent": "magichem:root",
+  "display": {
+    "icon": {
+      "item": "occultism:afrit_essence"
+    },
+    "title": {
+      "translate": "advancements.magichem.kill_afrit.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.kill_afrit.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "occultism_loaded": {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ]
+    },
+    "kill_mob": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "occultism:afrit_wild"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "requirements": [
+    [
+      "occultism_loaded",
+      "kill_mob"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
