@@ -7,7 +7,7 @@
   "object": { "item": "mna:mage_hood" },
   "components": [
     { "item": "magichem:admixture_comfort", "count": 10 },
-    { "item": "magichem:admixture_protection", "count": 10 },
+    { "item": "magichem:admixture_adornment", "count": 10 },
     { "item": "magichem:admixture_mana", "count": 5 }
   ]
 }

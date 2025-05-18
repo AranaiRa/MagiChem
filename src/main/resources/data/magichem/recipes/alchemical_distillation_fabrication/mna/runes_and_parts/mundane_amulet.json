@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:admixture_metal", "count": 4 },
     { "item": "magichem:admixture_mana", "count": 3 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_adornment", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

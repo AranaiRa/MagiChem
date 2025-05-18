@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_bone", "count": 21 },
     { "item": "magichem:admixture_mana", "count": 7 },
     { "item": "magichem:admixture_exanimate", "count": 5 },
-    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_adornment", "count": 3 },
     { "item": "magichem:essentia_citrinitas", "count": 2 }
   ]
 }

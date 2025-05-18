@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:admixture_flight", "count": 172 },
     { "item": "magichem:admixture_fey", "count": 38 },
-    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_adornment", "count": 9 },
     { "item": "magichem:essentia_rubedo", "count": 6 }
   ]
 }

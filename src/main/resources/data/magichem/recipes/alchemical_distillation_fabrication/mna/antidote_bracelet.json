@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_poison", "count": 7 },
     { "item": "magichem:admixture_protection", "count": 7 },
     { "item": "magichem:admixture_healing", "count": 5 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_adornment", "count": 4 },
     { "item": "magichem:essentia_nigredo", "count": 2 }
   ]
 }

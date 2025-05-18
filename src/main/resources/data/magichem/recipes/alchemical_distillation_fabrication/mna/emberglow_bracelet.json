@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_demon", "count": 15 },
     { "item": "magichem:admixture_hells", "count": 7 },
     { "item": "magichem:admixture_protection", "count": 7 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_adornment", "count": 4 },
     { "item": "magichem:essentia_albedo", "count": 4 }
   ]
 }

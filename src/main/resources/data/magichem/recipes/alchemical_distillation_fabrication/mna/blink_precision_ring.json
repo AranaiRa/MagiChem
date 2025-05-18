@@ -6,10 +6,10 @@
   "batch_size": 1,
   "object": { "item": "mna:blink_precision_ring" },
   "components": [
-    { "item": "magichem:admixture_luck", "count": 21 },
-    { "item": "magichem:admixture_instrument", "count": 2 },
-    { "item": "magichem:essentia_precious", "count": 22 },
-    { "item": "magichem:essentia_wrought", "count": 2 },
+    { "item": "magichem:admixture_alien", "count": 81 },
+    { "item": "magichem:admixture_travel", "count": 36 },
+    { "item": "magichem:admixture_sorcery", "count": 5 },
+    { "item": "magichem:admixture_adornment", "count": 3 },
     { "item": "magichem:essentia_albedo", "count": 4 }
   ]
 }

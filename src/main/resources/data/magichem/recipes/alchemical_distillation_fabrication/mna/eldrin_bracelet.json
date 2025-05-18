@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_wizard", "count": 15 },
     { "item": "magichem:admixture_mana", "count": 7 },
     { "item": "magichem:admixture_travel", "count": 7 },
-    { "item": "magichem:admixture_instrument", "count": 1 },
+    { "item": "magichem:admixture_adornment", "count": 4 },
     { "item": "magichem:essentia_albedo", "count": 4 }
   ]
 }

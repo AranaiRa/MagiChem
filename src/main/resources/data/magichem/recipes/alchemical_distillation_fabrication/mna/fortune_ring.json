@@ -7,7 +7,7 @@
   "object": { "item": "mna:fortune_ring" },
   "components": [
     { "item": "magichem:admixture_luck", "count": 21 },
-    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_adornment", "count": 4 },
     { "item": "magichem:essentia_precious", "count": 22 },
     { "item": "magichem:essentia_wrought", "count": 2 },
     { "item": "magichem:essentia_albedo", "count": 5 }

@@ -7,7 +7,7 @@
   "object": { "item": "mna:mage_leggings" },
   "components": [
     { "item": "magichem:admixture_comfort", "count": 14 },
-    { "item": "magichem:admixture_protection", "count": 14 },
+    { "item": "magichem:admixture_adornment", "count": 14 },
     { "item": "magichem:admixture_mana", "count": 7 }
   ]
 }

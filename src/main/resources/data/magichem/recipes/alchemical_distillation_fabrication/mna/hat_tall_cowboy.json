@@ -6,6 +6,7 @@
   "batch_size": 1,
   "object": { "item": "mna:hat_tall_cowboy" },
   "components": [
-    { "item": "magichem:admixture_whimsy", "count": 27 }
+    { "item": "magichem:admixture_whimsy", "count": 27 },
+    { "item": "magichem:admixture_adornment", "count": 5 }
   ]
 }

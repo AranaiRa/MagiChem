@@ -8,7 +8,7 @@
   "components": [
     { "item": "magichem:essentia_air", "count": 26 },
     { "item": "magichem:admixture_flight", "count": 17 },
-    { "item": "magichem:admixture_instrument", "count": 2 },
+    { "item": "magichem:admixture_adornment", "count": 3 },
     { "item": "magichem:essentia_wrought", "count": 2 },
     { "item": "magichem:essentia_albedo", "count": 2 }
   ]
