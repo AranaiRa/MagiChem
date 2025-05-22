@@ -22,7 +22,7 @@
           { "item": "magichem:admixture_metal", "count": 23 },
           { "item": "magichem:admixture_trap", "count": 18 },
           { "item": "magichem:admixture_metal", "count": 10 },
-          { "item": "magichem:admixture_nigredo", "count": 2 }
+          { "item": "magichem:essentia_nigredo", "count": 2 }
         ]
       }
     }

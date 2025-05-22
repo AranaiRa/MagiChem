@@ -22,7 +22,7 @@
           { "item": "magichem:admixture_adornment", "count": 31 },
           { "item": "magichem:admixture_trap", "count": 18 },
           { "item": "magichem:admixture_metal", "count": 10 },
-          { "item": "magichem:admixture_albedo", "count": 3 }
+          { "item": "magichem:essentia_albedo", "count": 3 }
         ]
       }
     }

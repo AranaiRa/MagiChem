@@ -22,7 +22,7 @@
           { "item": "magichem:admixture_adornment", "count": 72 },
           { "item": "magichem:admixture_breath", "count": 21 },
           { "item": "magichem:admixture_bargain", "count": 14 },
-          { "item": "magichem:admixture_citrinitas", "count": 20 }
+          { "item": "magichem:essentia_citrinitas", "count": 20 }
         ]
       }
     }

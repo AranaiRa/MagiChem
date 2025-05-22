@@ -21,7 +21,7 @@
           { "item": "magichem:admixture_adornment", "count": 25 },
           { "item": "magichem:admixture_motion", "count": 16 },
           { "item": "magichem:admixture_bargain", "count": 14 },
-          { "item": "magichem:admixture_albedo", "count": 4 }
+          { "item": "magichem:essentia_albedo", "count": 4 }
         ]
       }
     }

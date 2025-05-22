@@ -21,7 +21,7 @@
           { "item": "magichem:admixture_adornment", "count": 23 },
           { "item": "magichem:admixture_motion", "count": 16 },
           { "item": "magichem:admixture_mana", "count": 12 },
-          { "item": "magichem:admixture_nigredo", "count": 1 }
+          { "item": "magichem:essentia_nigredo", "count": 1 }
         ]
       }
     }

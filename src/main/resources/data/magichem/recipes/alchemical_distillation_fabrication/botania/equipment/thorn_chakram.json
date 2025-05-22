@@ -19,7 +19,7 @@
         },
         "components": [
           { "item": "magichem:admixture_mana", "count": 48 },
-          { "item": "magichem:admixture_swamp", "count": 10 },
+          { "item": "magichem:admixture_swamps", "count": 10 },
           { "item": "magichem:admixture_violence", "count": 7 },
           { "item": "magichem:admixture_motion", "count": 4 },
           { "item": "magichem:essentia_albedo", "count": 2 }
