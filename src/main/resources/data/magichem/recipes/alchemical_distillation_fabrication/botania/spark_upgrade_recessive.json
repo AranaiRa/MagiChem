@@ -16,7 +16,7 @@
         "batch_size": 3,
         "required_advancement": "botania:main/elf_portal_open",
         "object": {
-          "item": "botania:spark_upgrade_dominant"
+          "item": "botania:spark_upgrade_recessive"
         },
         "components": [
           { "item": "magichem:essentia_earth", "count": 20 },

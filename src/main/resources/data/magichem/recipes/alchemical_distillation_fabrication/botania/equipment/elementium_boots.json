@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "botania:elementium_boots"
+        },
+        "components": [
+          { "item": "magichem:admixture_metal", "count": 20 },
+          { "item": "magichem:admixture_protection", "count": 20 },
+          { "item": "magichem:admixture_bargain", "count": 12 },
+          { "item": "magichem:essentia_verdant", "count": 8 },
+          { "item": "magichem:essentia_nigredo", "count": 8 }
+        ]
+      }
+    }
+  ]
+}

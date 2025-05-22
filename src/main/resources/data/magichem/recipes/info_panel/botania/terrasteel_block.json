@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "botania:terrasteel_block",
+  "tier": 0,
+  "info": "jei.general.info_panel.storage_block_no_recipe"
+}

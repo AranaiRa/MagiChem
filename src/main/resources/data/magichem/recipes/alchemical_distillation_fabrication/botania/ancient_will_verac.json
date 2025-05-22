@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 48,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
+          "item": "botania:ancient_will_verac"
+        },
+        "components": [
+          { "item": "magichem:admixture_violence", "count": 48 },
+          { "item": "magichem:admixture_destruction", "count": 18 },
+          { "item": "magichem:admixture_change", "count": 7 },
+          { "item": "magichem:admixture_history", "count": 8 },
+          { "item": "magichem:admixture_thought", "count": 9 }
+        ]
+      }
+    }
+  ]
+}

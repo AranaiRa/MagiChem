@@ -15,14 +15,13 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "botania:mana_blaster"
+          "item": "botania:correction_ring"
         },
         "components": [
-          { "item": "magichem:admixture_mana", "count": 88 },
-          { "item": "magichem:admixture_instrument", "count": 5 },
-          { "item": "magichem:admixture_signals", "count": 2 },
-          { "item": "magichem:admixture_wood", "count": 2 },
-          { "item": "magichem:essentia_nigredo", "count": 2 }
+          { "item": "magichem:admixture_adornment", "count": 23 },
+          { "item": "magichem:admixture_mana", "count": 12 },
+          { "item": "magichem:admixture_instrument", "count": 10 },
+          { "item": "magichem:admixture_nigredo", "count": 1 }
         ]
       }
     }

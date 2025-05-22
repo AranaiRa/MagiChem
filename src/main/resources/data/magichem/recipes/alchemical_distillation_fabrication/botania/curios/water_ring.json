@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "botania:water_ring"
+        },
+        "components": [
+          { "item": "magichem:admixture_depths", "count": 46 },
+          { "item": "magichem:admixture_breath", "count": 35 },
+          { "item": "magichem:admixture_adornment", "count": 23 },
+          { "item": "magichem:admixture_mana", "count": 6 },
+          { "item": "magichem:admixture_nigredo", "count": 24 }
+        ]
+      }
+    }
+  ]
+}

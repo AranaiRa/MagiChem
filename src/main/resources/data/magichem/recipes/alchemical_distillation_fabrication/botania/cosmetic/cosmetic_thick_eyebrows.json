@@ -15,11 +15,11 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "botania:cosmetic_alien_antenna"
+          "item": "botania:cosmetic_thick_eyebrows"
         },
         "components": [
           { "item": "magichem:admixture_whimsy", "count": 3 },
-          { "item": "magichem:admixture_comfort", "count": 1 },
+          { "item": "magichem:admixture_adornment", "count": 1 },
           { "item": "magichem:essentia_wrought", "count": 2 }
         ]
       }

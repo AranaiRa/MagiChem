@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "botania:crystal_bow"
+        },
+        "components": [
+          { "item": "magichem:admixture_crystal", "count": 12 },
+          { "item": "magichem:admixture_violence", "count": 7 },
+          { "item": "magichem:admixture_lies", "count": 4 },
+          { "item": "magichem:admixture_healing", "count": 1 },
+          { "item": "magichem:essentia_albedo", "count": 5 }
+        ]
+      }
+    }
+  ]
+}

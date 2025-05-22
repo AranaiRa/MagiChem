@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "botania:black_hole_talisman"
+        },
+        "components": [
+          { "item": "magichem:essentia_ender", "count": 82 },
+          { "item": "magichem:admixture_vessel", "count": 256 },
+          { "item": "magichem:admixture_realm", "count": 16 },
+          { "item": "magichem:admixture_bargain", "count": 7 },
+          { "item": "magichem:essentia_rubedo", "count": 3 }
+        ]
+      }
+    }
+  ]
+}

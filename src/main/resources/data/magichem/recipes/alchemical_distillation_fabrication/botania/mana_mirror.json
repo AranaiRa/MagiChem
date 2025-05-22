@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "botania:main/mana_pool_pickup",
+        "object": {
+          "item": "botania:mana_mirror"
+        },
+        "components": [
+          { "item": "magichem:essentia_ender", "count": 53 },
+          { "item": "magichem:admixture_mana", "count": 126 },
+          { "item": "magichem:admixture_travel", "count": 37 },
+          { "item": "magichem:admixture_crystal", "count": 9 },
+          { "item": "magichem:essentia_nigredo", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

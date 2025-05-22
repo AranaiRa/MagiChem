@@ -16,7 +16,7 @@
         "batch_size": 1,
         "required_advancement": "botania:main/gaia_guardian_kill",
         "object": {
-          "item": "botania:spawner_claw"
+          "item": "botania:spawner_mover"
         },
         "components": [
           { "item": "magichem:admixture_realm", "count": 64 },

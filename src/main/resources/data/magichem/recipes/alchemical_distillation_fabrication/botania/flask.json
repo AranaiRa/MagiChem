@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1.0,
+        "output_rate": 0.333,
+        "batch_size": 16,
+        "required_advancement": "botania:recipes/misc/elf_glass_pane",
+        "object": {
+          "item": "botania:flask"
+        },
+        "components": [
+          { "item": "magichem:admixture_witchcraft", "count": 4 },
+          { "item": "magichem:admixture_crystal", "count": 2 },
+          { "item": "magichem:admixture_vessel", "count": 2 },
+          { "item": "magichem:admixture_bargain", "count": 1 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

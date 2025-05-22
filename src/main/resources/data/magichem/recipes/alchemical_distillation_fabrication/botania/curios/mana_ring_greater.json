@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "botania:mana_ring_greater"
+        },
+        "components": [
+          { "item": "magichem:admixture_vessel", "count": 140 },
+          { "item": "magichem:admixture_mana", "count": 138 },
+          { "item": "magichem:admixture_adornment", "count": 28 },
+          { "item": "magichem:essentia_albedo", "count": 3 }
+        ]
+      }
+    }
+  ]
+}

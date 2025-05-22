@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "botania:super_lava_pendant"
+        },
+        "components": [
+          { "item": "magichem:admixture_hells", "count": 66 },
+          { "item": "magichem:admixture_adornment", "count": 38 },
+          { "item": "magichem:admixture_protection", "count": 16 },
+          { "item": "magichem:admixture_realm", "count": 16 },
+          { "item": "magichem:essentia_citrinitas", "count": 6 }
+        ]
+      }
+    }
+  ]
+}

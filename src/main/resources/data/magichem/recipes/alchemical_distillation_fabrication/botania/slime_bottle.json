@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "botania:slime_bottle"
+        },
+        "components": [
+          { "item": "magichem:admixture_blood", "count": 6 },
+          { "item": "magichem:admixture_filth", "count": 6 },
+          { "item": "magichem:admixture_domestication", "count": 4 },
+          { "item": "magichem:admixture_realm", "count": 2 },
+          { "item": "magichem:essentia_verdant", "count": 2 }
+        ]
+      }
+    }
+  ]
+}
