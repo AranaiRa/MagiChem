@@ -109,6 +109,25 @@ public class CirclePowerRouterBlock extends BaseEntityBlock implements INoCreati
         return new ItemStack(BlockRegistry.CIRCLE_POWER.get());
     }
 
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof CirclePowerRouterBlockEntity router) {
+            BlockPos masterPos = router.getMasterPos();
+            if(masterPos != null) {
+                BlockState masterState = pLevel.getBlockState(masterPos);
+                return masterState.getBlock().getAnalogOutputSignal(masterState, pLevel, masterPos);
+            }
+        }
+
+        return 0;
+    }
+
     static {
         VOXEL_SHAPE_BASE_NORTH = Block.box(0, 0,  1, 16, 3, 16);
         VOXEL_SHAPE_BODY_NORTH = Block.box(0, 3, 2, 16, 8, 16);

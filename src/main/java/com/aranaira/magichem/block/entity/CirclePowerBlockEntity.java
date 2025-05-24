@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.CirclePowerBlock;
 import com.aranaira.magichem.block.entity.renderer.CirclePowerBlockEntityRenderer;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.gui.CirclePowerMenu;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
@@ -13,6 +14,7 @@ import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.particles.types.movers.ParticleVelocityMover;
 import com.mna.tools.math.Vector3;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -585,6 +587,12 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
     public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+        for (Pair<BlockPos, Integer> routerOffset : CirclePowerBlock.getRouterOffsets()) {
+            BlockPos posQuery = this.getBlockPos().offset(routerOffset.getFirst());
+            this.level.updateNeighborsAt(posQuery, BlockRegistry.CIRCLE_POWER_ROUTER.get());
+        }
+
+        this.level.updateNeighborsAt(this.getBlockPos(), this.getBlockState().getBlock());
     }
 
     @Nullable
