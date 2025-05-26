@@ -158,7 +158,7 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> MATERIA_JAR = registerBlock("materia_jar",
             () -> new MateriaJarBlock(BlockBehaviour.Properties.of()
-                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
     );
 
     public static final RegistryObject<Block> MATERIA_JAR_QUAD = registerBlock("materia_jar_quad",
