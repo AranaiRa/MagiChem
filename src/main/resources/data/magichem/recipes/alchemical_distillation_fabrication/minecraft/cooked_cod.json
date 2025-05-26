@@ -7,8 +7,8 @@
   "object": { "item": "minecraft:cooked_cod" },
   "components": [
     { "item": "magichem:essentia_water", "count": 4 },
+    { "item": "magichem:admixture_satiety", "count": 3 },
     { "item": "magichem:essentia_fleshy", "count": 8 },
-    { "item": "magichem:essentia_nourishing", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

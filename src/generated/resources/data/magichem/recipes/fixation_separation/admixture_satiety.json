@@ -1,0 +1,20 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_satiety"
+  },
+  "components": [
+    {
+      "item": "magichem:essentia_earth",
+      "count": 2
+    },
+    {
+      "item": "magichem:essentia_nourishing",
+      "count": 4
+    },
+    {
+      "item": "magichem:essentia_wrought",
+      "count": 1
+    }
+  ]
+}

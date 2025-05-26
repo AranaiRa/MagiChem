@@ -316,6 +316,17 @@
       ]
     },
     {
+      "name": "gourmet",
+      "color": "3a0ed9",
+      "depth": 3,
+      "components": [
+        { "admixture": "delight", "count": 2 },
+        { "admixture": "satiety", "count": 3 },
+        { "essentia": "nourishing", "count": 8 },
+        { "essentia": "wrought", "count": 1 }
+      ]
+    },
+    {
       "name": "healing",
       "color": "f54c4c",
       "depth": 2,
@@ -557,13 +568,13 @@
       ]
     },
     {
-      "name": "sleep",
-      "color": "494257",
-      "depth": 3,
+      "name": "satiety",
+      "color": "147544",
+      "depth": 1,
       "components": [
-        { "admixture": "creature", "count": 1 },
-        { "admixture": "comfort", "count": 1 },
-        { "essentia": "conceptual", "count": 2 }
+        { "essentia": "earth", "count": 2 },
+        { "essentia": "nourishing", "count": 4 },
+        { "essentia": "wrought", "count": 1 }
       ]
     },
     {
@@ -584,6 +595,16 @@
       "components": [
         { "admixture": "thought", "count": 1 },
         { "essentia": "mineral", "count": 2 }
+      ]
+    },
+    {
+      "name": "sleep",
+      "color": "494257",
+      "depth": 3,
+      "components": [
+        { "admixture": "creature", "count": 1 },
+        { "admixture": "comfort", "count": 1 },
+        { "essentia": "conceptual", "count": 2 }
       ]
     },
     {

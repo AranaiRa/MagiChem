@@ -9,7 +9,7 @@
     { "item": "magichem:essentia_ender", "count": 4 },
     { "item": "magichem:admixture_vessel", "count": 1 },
     { "item": "magichem:essentia_fleshy", "count": 8 },
-    { "item": "magichem:essentia_nourishing", "count": 8 },
+    { "item": "magichem:admixture_satiety", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

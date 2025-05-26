@@ -8,8 +8,8 @@
   "components": [
     { "item": "magichem:admixture_delight", "count": 8 },
     { "item": "magichem:admixture_nectar", "count": 4 },
-    { "item": "magichem:admixture_lies", "count": 2 },
-    { "item": "magichem:essentia_nourishing", "count": 4 },
+    { "item": "magichem:admixture_lies", "count": 3 },
+    { "item": "magichem:admixture_gourmet", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 8 }
   ]
 }

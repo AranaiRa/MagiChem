@@ -7,9 +7,9 @@
   "object": { "item": "minecraft:cooked_porkchop" },
   "components": [
     { "item": "magichem:essentia_earth", "count": 4 },
-    { "item": "magichem:essentia_fleshy", "count": 6 },
     { "item": "magichem:admixture_blood", "count": 2 },
-    { "item": "magichem:essentia_nourishing", "count": 2 },
+    { "item": "magichem:admixture_satiety", "count": 4 },
+    { "item": "magichem:essentia_fleshy", "count": 6 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

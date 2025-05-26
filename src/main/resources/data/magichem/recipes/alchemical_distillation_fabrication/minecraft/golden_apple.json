@@ -7,9 +7,9 @@
   "object": { "item": "minecraft:golden_apple" },
   "components": [
     { "item": "magichem:admixture_metal", "count": 16 },
+    { "item": "magichem:admixture_protection", "count": 14 },
     { "item": "magichem:admixture_healing", "count": 12 },
-    { "item": "magichem:essentia_nourishing", "count": 64 },
-    { "item": "magichem:essentia_precious", "count": 32 },
-    { "item": "magichem:essentia_wrought", "count": 2 }
+    { "item": "magichem:admixture_satiety", "count": 3 },
+    { "item": "magichem:essentia_precious", "count": 32 }
   ]
 }

@@ -19,8 +19,9 @@
         },
         "components": [
           { "item": "magichem:admixture_mana", "count": 110 },
-          { "item": "magichem:admixture_odors", "count": 1 },
+          { "item": "magichem:admixture_satiety", "count": 8 },
           { "item": "magichem:admixture_delight", "count": 2 },
+          { "item": "magichem:admixture_odors", "count": 1 },
           { "item": "magichem:essentia_nigredo", "count": 2 }
         ]
       }

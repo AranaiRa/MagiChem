@@ -7,7 +7,7 @@
   "object": { "item": "minecraft:baked_potato" },
   "components": [
     { "item": "magichem:essentia_earth", "count": 2 },
-    { "item": "magichem:essentia_nourishing", "count": 2 },
+    { "item": "magichem:admixture_satiety", "count": 2 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }

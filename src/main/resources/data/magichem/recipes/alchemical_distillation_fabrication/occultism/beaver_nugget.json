@@ -19,7 +19,7 @@
         },
         "components": [
           { "item": "magichem:admixture_spirit", "count": 2 },
-          { "item": "magichem:admixture_delight", "count": 1 },
+          { "item": "magichem:admixture_satiety", "count": 1 },
           { "item": "magichem:admixture_whimsy", "count": 1 },
           { "item": "magichem:essentia_fleshy", "count": 7 }
         ]

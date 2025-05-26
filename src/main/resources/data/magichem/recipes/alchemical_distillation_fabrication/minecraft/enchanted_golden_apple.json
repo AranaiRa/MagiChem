@@ -6,10 +6,10 @@
   "batch_size": 1,
   "object": { "item": "minecraft:enchanted_golden_apple" },
   "components": [
-    { "item": "magichem:admixture_metal", "count": 16 },
-    { "item": "magichem:admixture_luck", "count": 27 },
     { "item": "magichem:admixture_healing", "count": 32 },
-    { "item": "magichem:essentia_nourishing", "count": 64 },
+    { "item": "magichem:admixture_luck", "count": 27 },
+    { "item": "magichem:admixture_metal", "count": 16 },
+    { "item": "magichem:admixture_gourmet", "count": 5 },
     { "item": "magichem:essentia_precious", "count": 188 }
   ]
 }

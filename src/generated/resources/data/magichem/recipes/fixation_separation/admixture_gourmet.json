@@ -1,0 +1,24 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_gourmet"
+  },
+  "components": [
+    {
+      "item": "magichem:admixture_delight",
+      "count": 2
+    },
+    {
+      "item": "magichem:admixture_satiety",
+      "count": 3
+    },
+    {
+      "item": "magichem:essentia_nourishing",
+      "count": 8
+    },
+    {
+      "item": "magichem:essentia_wrought",
+      "count": 1
+    }
+  ]
+}

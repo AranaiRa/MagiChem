@@ -7,7 +7,7 @@
   "object": { "item": "minecraft:pumpkin_pie" },
   "components": [
     { "item": "magichem:admixture_delight", "count": 1 },
-    { "item": "magichem:essentia_nourishing", "count": 16 },
+    { "item": "magichem:admixture_satiety", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }
