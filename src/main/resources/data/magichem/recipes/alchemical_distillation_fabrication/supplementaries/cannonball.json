@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "object": {
+          "item": "supplementaries:cannonball"
+        },
+        "components": [
+          { "item": "magichem:admixture_metal", "count": 135 },
+          { "item": "magichem:admixture_violence", "count": 48 },
+          { "item": "magichem:admixture_destruction", "count": 25 },
+          { "item": "magichem:essentia_wrought", "count": 8 }
+        ]
+      }
+    }
+  ]
+}

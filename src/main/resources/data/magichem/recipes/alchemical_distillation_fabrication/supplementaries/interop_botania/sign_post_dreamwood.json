@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries"
+        },
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.166,
+        "batch_size": 1,
+        "object": {
+          "item": "supplementaries:botania/sign_post_dreamwood"
+        },
+        "components": [
+          { "item": "magichem:admixture_wood", "count": 3 },
+          { "item": "magichem:admixture_bargain", "count": 1 },
+          { "item": "magichem:admixture_instrument", "count": 1 },
+          { "item": "magichem:essentia_verdant", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

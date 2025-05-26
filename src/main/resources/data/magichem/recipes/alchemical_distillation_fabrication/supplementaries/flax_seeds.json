@@ -11,17 +11,14 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 0,
-        "categories": 0,
-  "output_rate": 0.5,
-        "batch_size": 1,
-  "object": {
+        "categories": 6,
+        "output_rate": 0.5,
+        "batch_size": 16,
+        "object": {
           "item": "supplementaries:flax_seeds"
         },
         "components": [
-          {
-            "item": "magichem:admixture_nectar",
-            "count": 1
-          }
+          { "item": "magichem:admixture_nectar", "count": 1 }
         ]
       }
     }

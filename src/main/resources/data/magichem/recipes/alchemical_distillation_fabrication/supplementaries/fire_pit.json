@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "supplementaries:fire_pit"
+        },
+        "components": [
+          { "item": "magichem:essentia_fire", "count": 9 },
+          { "item": "magichem:admixture_metal", "count": 10 },
+          { "item": "magichem:admixture_energy", "count": 5 },
+          { "item": "magichem:admixture_light", "count": 4 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

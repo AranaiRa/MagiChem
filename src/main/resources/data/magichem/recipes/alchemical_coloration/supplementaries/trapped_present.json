@@ -5,7 +5,7 @@
       "conditions": [
         {
           "type": "forge:mod_loaded",
-          "modid": "supplementaries:trapped_present"
+          "modid": "supplementaries"
         }
       ],
       "recipe": {

@@ -10,30 +10,18 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
           "item": "supplementaries:ash_bricks_stairs"
         },
         "components": [
-          {
-            "item": "magichem:essentia_fire",
-            "count": 16
-          },
-          {
-            "item": "magichem:admixture_erosion",
-            "count": 4
-          },
-          {
-            "item": "magichem:admixture_death",
-            "count": 4
-          },
-          {
-            "item": "magichem:essentia_wrought",
-            "count": 8
-          }
+          { "item": "magichem:essentia_fire", "count": 16 },
+          { "item": "magichem:admixture_erosion", "count": 4 },
+          { "item": "magichem:admixture_stone", "count": 4 },
+          { "item": "magichem:essentia_wrought", "count": 3 }
         ]
       }
     }

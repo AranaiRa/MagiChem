@@ -10,30 +10,19 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "supplementaries:speaker_block"
         },
         "components": [
-          {
-            "item": "magichem:admixture_plant",
-            "count": 2
-          },
-          {
-            "item": "magichem:admixture_sound",
-            "count": 3
-          },
-          {
-            "item": "magichem:admixture_industry",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_wrought",
-            "count": 2
-          }
+          { "item": "magichem:admixture_sound", "count": 4 },
+          { "item": "magichem:admixture_industry", "count": 2 },
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:admixture_signals", "count": 1 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
         ]
       }
     }

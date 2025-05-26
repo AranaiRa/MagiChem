@@ -1,0 +1,89 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "valid_on_cauldron": true,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "supplementaries:awning_white"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "supplementaries:awning_red"
+          },
+          {
+            "color": "orange",
+            "item": "supplementaries:awning_orange"
+          },
+          {
+            "color": "yellow",
+            "item": "supplementaries:awning_yellow"
+          },
+          {
+            "color": "lime",
+            "item": "supplementaries:awning_lime"
+          },
+          {
+            "color": "green",
+            "item": "supplementaries:awning_green"
+          },
+          {
+            "color": "cyan",
+            "item": "supplementaries:awning_cyan"
+          },
+          {
+            "color": "light_blue",
+            "item": "supplementaries:awning_light_blue"
+          },
+          {
+            "color": "blue",
+            "item": "supplementaries:awning_blue"
+          },
+          {
+            "color": "purple",
+            "item": "supplementaries:awning_purple"
+          },
+          {
+            "color": "magenta",
+            "item": "supplementaries:awning_magenta"
+          },
+          {
+            "color": "pink",
+            "item": "supplementaries:awning_pink"
+          },
+          {
+            "color": "brown",
+            "item": "supplementaries:awning_brown"
+          },
+          {
+            "color": "black",
+            "item": "supplementaries:awning_black"
+          },
+          {
+            "color": "gray",
+            "item": "supplementaries:awning_gray"
+          },
+          {
+            "color": "light_gray",
+            "item": "supplementaries:awning_light_gray"
+          },
+          {
+            "color": "white",
+            "item": "supplementaries:awning_white"
+          }
+        ]
+      }
+    }
+  ]
+}

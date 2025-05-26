@@ -10,26 +10,17 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 1,
+        "categories": 32,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "supplementaries:antique_ink"
         },
         "components": [
-          {
-            "item": "magichem:admixture_history",
-            "count": 21
-          },
-          {
-            "item": "magichem:admixture_change",
-            "count": 5
-          },
-          {
-            "item": "magichem:admixture_filth",
-            "count": 1
-          }
+          { "item": "magichem:admixture_history", "count": 21 },
+          { "item": "magichem:admixture_change", "count": 6 },
+          { "item": "magichem:admixture_filth", "count": 4 }
         ]
       }
     }

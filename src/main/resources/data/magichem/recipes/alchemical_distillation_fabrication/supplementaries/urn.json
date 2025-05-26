@@ -10,26 +10,18 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
           "item": "supplementaries:urn"
         },
         "components": [
-          {
-            "item": "magichem:admixture_stone",
-            "count": 3
-          },
-          {
-            "item": "magichem:admixture_vessel",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_darkness",
-            "count": 1
-          }
+          { "item": "magichem:admixture_stone", "count": 3 },
+          { "item": "magichem:admixture_vessel", "count": 1 },
+          { "item": "magichem:admixture_darkness", "count": 1 },
+          { "item": "magichem:essentia_precious", "count": 1 }
         ]
       }
     }
