@@ -18,8 +18,8 @@
           "item": "botania:quartz_lavender"
         },
         "components": [
-          { "item": "magichem:admixture_crystal", "count": 12 },
-          { "item": "magichem:admixture_forests", "count": 8 },
+          { "item": "magichem:admixture_crystal", "count": 2 },
+          { "item": "magichem:admixture_forests", "count": 1 },
           { "item": "magichem:admixture_color", "count": 1 }
         ]
       }

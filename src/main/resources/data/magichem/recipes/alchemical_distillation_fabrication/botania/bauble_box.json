@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "botania:manasteel_ingot"
+          "item": "botania:bauble_box"
         },
         "components": [
           { "item": "magichem:admixture_metal", "count": 15 },

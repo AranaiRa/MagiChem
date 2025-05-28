@@ -19,9 +19,10 @@
           "item": "botania:metamorphic_desert_cobblestone"
         },
         "components": [
-          { "item": "magichem:admixture_stone", "count": 3 },
+          { "item": "magichem:admixture_stone", "count": 2 },
           { "item": "magichem:admixture_wastes", "count": 2 },
-          { "item": "magichem:admixture_change", "count": 1 }
+          { "item": "magichem:admixture_change", "count": 1 },
+          { "item": "magichem:admixture_erosion", "count": 1 }
         ]
       }
     }

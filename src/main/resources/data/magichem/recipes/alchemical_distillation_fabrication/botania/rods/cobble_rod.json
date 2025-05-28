@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "botania:dirt_rod"
+          "item": "botania:cobble_rod"
         },
         "components": [
           { "item": "magichem:essentia_earth", "count": 40 },

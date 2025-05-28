@@ -18,8 +18,8 @@
           "item": "botania:quartz_mana"
         },
         "components": [
-          { "item": "magichem:admixture_crystal", "count": 12 },
-          { "item": "magichem:admixture_mana", "count": 8 },
+          { "item": "magichem:admixture_crystal", "count": 2 },
+          { "item": "magichem:admixture_mana", "count": 1 },
           { "item": "magichem:admixture_color", "count": 1 }
         ]
       }

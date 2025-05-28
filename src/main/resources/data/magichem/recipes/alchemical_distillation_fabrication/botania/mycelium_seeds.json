@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "botania:golden_seeds"
+          "item": "botania:mycelium_seeds"
         },
         "components": [
           { "item": "magichem:admixture_fungus", "count": 1 },

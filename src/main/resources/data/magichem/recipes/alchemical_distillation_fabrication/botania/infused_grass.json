@@ -15,7 +15,7 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "botania:dry_grass"
+          "item": "botania:infused_grass"
         },
         "components": [
           { "item": "magichem:essentia_earth", "count": 2 },

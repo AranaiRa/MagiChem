@@ -18,9 +18,9 @@
           "item": "botania:mana_quartz_slab"
         },
         "components": [
-          { "item": "magichem:admixture_crystal", "count": 48 },
-          { "item": "magichem:admixture_mana", "count": 32 },
-          { "item": "magichem:admixture_color", "count": 8 }
+          { "item": "magichem:admixture_crystal", "count": 8 },
+          { "item": "magichem:admixture_mana", "count": 4 },
+          { "item": "magichem:admixture_color", "count": 4 }
         ]
       }
     }

@@ -13,14 +13,16 @@
         "wisdom": 6,
         "categories": 1,
         "output_rate": 1.0,
-        "batch_size": 4,
+        "batch_size": 1,
         "object": {
-          "item": "botania:quartz_blaze"
+          "item": "botania:mining_ring"
         },
         "components": [
-          { "item": "magichem:admixture_vessel", "count": 14 },
-          { "item": "magichem:admixture_color", "count": 12 },
-          { "item": "magichem:essentia_wrought", "count": 2 }
+          { "item": "magichem:admixture_adornment", "count": 23 },
+          { "item": "magichem:admixture_mountains", "count": 16 },
+          { "item": "magichem:admixture_mana", "count": 12 },
+          { "item": "magichem:admixture_destruction", "count": 6 },
+          { "item": "magichem:essentia_nigredo", "count": 1 }
         ]
       }
     }

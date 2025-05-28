@@ -20,8 +20,8 @@
         "components": [
           { "item": "magichem:essentia_water", "count": 27 },
           { "item": "magichem:admixture_mana", "count": 21 },
-          { "item": "magichem:admixture_metal", "count": 3 },
           { "item": "magichem:admixture_violence", "count": 16 },
+          { "item": "magichem:admixture_metal", "count": 3 },
           { "item": "magichem:essentia_nigredo", "count": 2 }
         ]
       }

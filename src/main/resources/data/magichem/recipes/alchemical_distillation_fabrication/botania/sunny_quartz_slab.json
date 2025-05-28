@@ -18,9 +18,9 @@
           "item": "botania:sunny_quartz_slab"
         },
         "components": [
-          { "item": "magichem:admixture_crystal", "count": 48 },
-          { "item": "magichem:admixture_light", "count": 32 },
-          { "item": "magichem:admixture_color", "count": 8 }
+          { "item": "magichem:admixture_crystal", "count": 8 },
+          { "item": "magichem:admixture_light", "count": 4 },
+          { "item": "magichem:admixture_color", "count": 4 }
         ]
       }
     }

@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "supplementaries"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.166,
+        "batch_size": 1,
+        "object": {
+          "item": "supplementaries:sign_post_acacia"
+        },
+        "components": [
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:admixture_instrument", "count": 1 },
+          { "item": "magichem:admixture_plant", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

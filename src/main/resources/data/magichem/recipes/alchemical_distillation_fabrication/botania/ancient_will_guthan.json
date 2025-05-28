@@ -20,9 +20,9 @@
         "components": [
           { "item": "magichem:admixture_violence", "count": 48 },
           { "item": "magichem:admixture_healing", "count": 18 },
-          { "item": "magichem:admixture_change", "count": 7 },
+          { "item": "magichem:admixture_thought", "count": 9 },
           { "item": "magichem:admixture_history", "count": 8 },
-          { "item": "magichem:admixture_thought", "count": 9 }
+          { "item": "magichem:admixture_change", "count": 7 }
         ]
       }
     }

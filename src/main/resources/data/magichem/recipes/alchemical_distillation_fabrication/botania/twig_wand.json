@@ -20,6 +20,7 @@
         "components": [
           { "item": "magichem:admixture_mana", "count": 3 },
           { "item": "magichem:admixture_color", "count": 2 },
+          { "item": "magichem:admixture_instrument", "count": 2 },
           { "item": "magichem:admixture_wood", "count": 2 },
           { "item": "magichem:essentia_verdant", "count": 7 }
         ]

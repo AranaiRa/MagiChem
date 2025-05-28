@@ -18,9 +18,9 @@
           "item": "botania:phantom_ink"
         },
         "components": [
-          { "item": "magichem:admixture_color", "count": 3 },
           { "item": "magichem:admixture_mana", "count": 18 },
           { "item": "magichem:admixture_lies", "count": 15 },
+          { "item": "magichem:admixture_color", "count": 3 },
           { "item": "magichem:admixture_adornment", "count": 2 },
           { "item": "magichem:admixture_filth", "count": 2 }
         ]

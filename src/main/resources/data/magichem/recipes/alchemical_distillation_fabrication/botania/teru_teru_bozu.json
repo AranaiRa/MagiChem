@@ -22,6 +22,7 @@
           { "item": "magichem:admixture_storm", "count": 5 },
           { "item": "magichem:admixture_protection", "count": 2 },
           { "item": "magichem:admixture_instrument", "count": 1 },
+          { "item": "magichem:admixture_whimsy", "count": 1 },
           { "item": "magichem:essentia_wrought", "count": 2 }
         ]
       }

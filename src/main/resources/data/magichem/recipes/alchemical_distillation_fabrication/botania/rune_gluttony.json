@@ -18,7 +18,7 @@
           "item": "botania:rune_gluttony"
         },
         "components": [
-          { "item": "magichem:admixture_delight", "count": 21 },
+          { "item": "magichem:admixture_gourmet", "count": 21 },
           { "item": "magichem:admixture_mana", "count": 12 },
           { "item": "magichem:admixture_stone", "count": 3 },
           { "item": "magichem:essentia_albedo", "count": 4 }

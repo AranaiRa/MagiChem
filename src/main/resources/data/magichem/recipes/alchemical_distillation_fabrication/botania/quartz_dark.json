@@ -18,8 +18,8 @@
           "item": "botania:quartz_dark"
         },
         "components": [
-          { "item": "magichem:admixture_crystal", "count": 12 },
-          { "item": "magichem:admixture_darkness", "count": 8 },
+          { "item": "magichem:admixture_crystal", "count": 2 },
+          { "item": "magichem:admixture_darkness", "count": 1 },
           { "item": "magichem:admixture_color", "count": 1 }
         ]
       }

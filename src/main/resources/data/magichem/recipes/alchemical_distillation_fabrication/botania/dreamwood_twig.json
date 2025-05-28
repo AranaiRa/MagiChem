@@ -21,7 +21,8 @@
         "components": [
           { "item": "magichem:admixture_wood", "count": 3 },
           { "item": "magichem:admixture_bargain", "count": 1 },
-          { "item": "magichem:essentia_verdant", "count": 1 }
+          { "item": "magichem:essentia_verdant", "count": 1 },
+          { "item": "magichem:essentia_wrought", "count": 1 }
         ]
       }
     }

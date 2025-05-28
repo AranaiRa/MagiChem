@@ -16,7 +16,7 @@
         "batch_size": 1,
         "required_advancement": "botania:main/mana_pool_pickup",
         "object": {
-          "item": "botania:manaweave_cloth"
+          "item": "botania:spell_cloth"
         },
         "components": [
           { "item": "magichem:admixture_mana", "count": 30 },

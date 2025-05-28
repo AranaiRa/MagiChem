@@ -19,7 +19,7 @@
           "item": "botania:dreamwood_fence_gate"
         },
         "components": [
-          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:admixture_wood", "count": 3 },
           { "item": "magichem:admixture_bargain", "count": 1 },
           { "item": "magichem:admixture_motion", "count": 1 },
           { "item": "magichem:essentia_verdant", "count": 1 }

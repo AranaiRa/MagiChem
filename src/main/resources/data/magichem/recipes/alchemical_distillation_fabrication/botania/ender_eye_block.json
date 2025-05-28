@@ -19,8 +19,8 @@
           { "item": "magichem:admixture_alien", "count": 176 },
           { "item": "magichem:admixture_signals", "count": 28 },
           { "item": "magichem:admixture_sight", "count": 24 },
-          { "item": "magichem:admixture_crystal", "count": 8 },
-          { "item": "magichem:admixture_signals", "count": 14 }
+          { "item": "magichem:admixture_thought", "count": 13 },
+          { "item": "magichem:admixture_crystal", "count": 8 }
         ]
       }
     }

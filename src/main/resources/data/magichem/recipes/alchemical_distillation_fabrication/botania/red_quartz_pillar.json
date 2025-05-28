@@ -18,9 +18,9 @@
           "item": "botania:red_quartz_pillar"
         },
         "components": [
-          { "item": "magichem:admixture_crystal", "count": 48 },
-          { "item": "magichem:admixture_signals", "count": 32 },
-          { "item": "magichem:admixture_color", "count": 8 }
+          { "item": "magichem:admixture_crystal", "count": 8 },
+          { "item": "magichem:admixture_signals", "count": 4 },
+          { "item": "magichem:admixture_color", "count": 4 }
         ]
       }
     }
