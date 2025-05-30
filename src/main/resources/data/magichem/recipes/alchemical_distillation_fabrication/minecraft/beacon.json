@@ -9,7 +9,7 @@
   "components": [
     { "item": "magichem:admixture_light", "count": 164 },
     { "item": "magichem:admixture_protection", "count": 78 },
-    { "item": "magichem:admixture_realm", "count": 38 },
+    { "item": "magichem:admixture_firmament", "count": 38 },
     { "item": "magichem:essentia_precious", "count": 121 },
     { "item": "magichem:essentia_rubedo", "count": 8 }
   ]

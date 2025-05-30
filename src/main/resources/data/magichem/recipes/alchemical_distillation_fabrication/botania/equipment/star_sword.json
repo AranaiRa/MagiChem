@@ -20,7 +20,7 @@
         "components": [
           { "item": "magichem:admixture_mana", "count": 192 },
           { "item": "magichem:admixture_dust", "count": 20 },
-          { "item": "magichem:admixture_light", "count": 20 },
+          { "item": "magichem:admixture_firmament", "count": 20 },
           { "item": "magichem:admixture_violence", "count": 16 },
           { "item": "magichem:essentia_citrinitas", "count": 2 }
         ]

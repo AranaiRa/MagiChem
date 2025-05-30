@@ -9,7 +9,7 @@
     { "item": "magichem:admixture_sight", "count": 13 },
     { "item": "magichem:admixture_travel", "count": 7 },
     { "item": "magichem:admixture_metal", "count": 4 },
-    { "item": "magichem:admixture_crystal", "count": 1 },
-    { "item": "magichem:essentia_precious", "count": 2 }
+    { "item": "magichem:admixture_crystal", "count": 3 },
+    { "item": "magichem:admixture_firmament", "count": 2 }
   ]
 }

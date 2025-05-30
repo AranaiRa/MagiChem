@@ -287,6 +287,17 @@
       ]
     },
     {
+      "name": "firmament",
+      "color": "4b5bf2",
+      "depth": 3,
+      "components": [
+        { "essentia": "ender", "count": 7 },
+        { "essentia": "air", "count": 4 },
+        { "admixture": "darkness", "count": 1 },
+        { "admixture": "realm", "count": 1 }
+      ]
+    },
+    {
       "name": "flight",
       "color": "c3d5b5",
       "depth": 3,

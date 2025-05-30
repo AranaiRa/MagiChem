@@ -7,7 +7,7 @@
   "required_advancement": "magichem:vanilla/kill_wither",
   "object": { "item": "minecraft:nether_star" },
   "components": [
-    { "item": "magichem:admixture_light", "count": 50 },
+    { "item": "magichem:admixture_firmament", "count": 25 },
     { "item": "magichem:admixture_curse", "count": 19 },
     { "item": "magichem:admixture_protection", "count": 13 },
     { "item": "magichem:admixture_potential", "count": 8 },

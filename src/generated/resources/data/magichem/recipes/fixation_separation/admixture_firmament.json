@@ -1,0 +1,24 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_firmament"
+  },
+  "components": [
+    {
+      "item": "magichem:essentia_ender",
+      "count": 7
+    },
+    {
+      "item": "magichem:essentia_air",
+      "count": 4
+    },
+    {
+      "item": "magichem:admixture_darkness",
+      "count": 1
+    },
+    {
+      "item": "magichem:admixture_realm",
+      "count": 1
+    }
+  ]
+}

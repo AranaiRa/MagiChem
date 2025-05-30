@@ -6,7 +6,7 @@
   "batch_size": 1,
   "object": { "item": "minecraft:clock" },
   "components": [
-    { "item": "magichem:admixture_realm", "count": 3 },
+    { "item": "magichem:admixture_firmament", "count": 3 },
     { "item": "magichem:admixture_instrument", "count": 2 },
     { "item": "magichem:admixture_sound", "count": 2 },
     { "item": "magichem:essentia_precious", "count": 32 },
