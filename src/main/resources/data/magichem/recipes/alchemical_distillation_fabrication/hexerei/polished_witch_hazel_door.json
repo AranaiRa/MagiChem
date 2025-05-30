@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "object": { "item": "hexerei:polished_witch_hazel_door" },
+        "components": [
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:admixture_motion", "count": 1 },
+          { "item": "magichem:admixture_forests", "count": 1 },
+          { "item": "magichem:essentia_wrought", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

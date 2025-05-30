@@ -1,0 +1,20 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "mna:crushing",
+        "tier": 1,
+        "input": "hexerei:selenite_block",
+        "output": "hexerei:selenite_shard",
+        "output_quantity": 1
+      }
+    }
+  ]
+}

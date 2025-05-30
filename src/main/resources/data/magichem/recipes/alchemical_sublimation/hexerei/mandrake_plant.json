@@ -1,0 +1,39 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:sublimation",
+        "tier": 2,
+        "wisdom": 0,
+        "object": {
+          "item": "hexerei:mandrake_plant"
+        },
+        "stages": [
+          {
+            "experience": 0,
+            "components": [
+              { "item": "minecraft:hanging_roots" },
+              { "item": "mna:tarma_root" },
+              { "item": "mna:bone_ash" },
+              { "item": "minecraft:purple_dye" }
+            ],
+            "materia": [
+              { "item": "magichem:admixture_plant", "count": 72 },
+              { "item": "magichem:admixture_nectar", "count": 27 },
+              { "item": "magichem:admixture_odors", "count": 21 },
+              { "item": "magichem:admixture_poison", "count": 18 },
+              { "item": "magichem:admixture_change", "count": 10 }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

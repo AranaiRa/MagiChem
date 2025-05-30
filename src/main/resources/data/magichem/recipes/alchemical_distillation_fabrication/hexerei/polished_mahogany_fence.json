@@ -1,0 +1,25 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "object": { "item": "hexerei:polished_mahogany_fence" },
+        "components": [
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:admixture_swamps", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

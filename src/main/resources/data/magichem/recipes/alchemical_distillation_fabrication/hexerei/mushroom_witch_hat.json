@@ -11,33 +11,18 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "hexerei:mushroom_witch_hat"
         },
         "components": [
-          {
-            "item": "magichem:admixture_witchcraft",
-            "count": 30
-          },
-          {
-            "item": "magichem:admixture_protection",
-            "count": 16
-          },
-          {
-            "item": "magichem:admixture_fungus",
-            "count": 16
-          },
-          {
-            "item": "magichem:essentia_fleshy",
-            "count": 16
-          },
-          {
-            "item": "magichem:essentia_wrought",
-            "count": 16
-          }
+          { "item": "magichem:admixture_protection", "count": 35 },
+          { "item": "magichem:admixture_witchcraft", "count": 35 },
+          { "item": "magichem:admixture_fungus", "count": 14 },
+          { "item": "magichem:admixture_adornment", "count": 10 },
+          { "item": "magichem:essentia_nigredo", "count": 5 }
         ]
       }
     }

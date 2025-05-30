@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "hexerei:courier_package"
+        },
+        "components": [
+          { "item": "magichem:admixture_travel", "count": 6 },
+          { "item": "magichem:admixture_vessel", "count": 3 },
+          { "item": "magichem:admixture_protection", "count": 1 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:sublimation",
+        "tier": 2,
+        "wisdom": 0,
+        "object": {
+          "item": "hexerei:yellow_dock_bush"
+        },
+        "stages": [
+          {
+            "experience": 0,
+            "components": [
+              { "item": "minecraft:lily_of_the_valley" },
+              { "item": "mna:desert_nova" },
+              { "item": "mna:bone_ash" },
+              { "item": "minecraft:brown_dye" }
+            ],
+            "materia": [
+              { "item": "magichem:admixture_plant", "count": 72 },
+              { "item": "magichem:admixture_nectar", "count": 27 },
+              { "item": "magichem:admixture_odors", "count": 21 },
+              { "item": "magichem:admixture_poison", "count": 18 },
+              { "item": "magichem:admixture_change", "count": 10 }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

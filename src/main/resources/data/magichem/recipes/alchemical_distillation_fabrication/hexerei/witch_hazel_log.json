@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "hexerei:witch_hazel_log"
+        },
+        "components": [
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:admixture_forests", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

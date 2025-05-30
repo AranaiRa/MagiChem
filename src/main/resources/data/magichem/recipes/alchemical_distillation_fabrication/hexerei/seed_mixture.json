@@ -10,30 +10,18 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
           "item": "hexerei:seed_mixture"
         },
         "components": [
-          {
-            "item": "magichem:admixture_domestication",
-            "count": 8
-          },
-          {
-            "item": "magichem:admixture_witchcraft",
-            "count": 6
-          },
-          {
-            "item": "magichem:admixture_plant",
-            "count": 4
-          },
-          {
-            "item": "magichem:essentia_nourishing",
-            "count": 2
-          }
+          { "item": "magichem:admixture_domestication", "count": 3 },
+          { "item": "magichem:admixture_nectar", "count": 3 },
+          { "item": "magichem:admixture_witchcraft", "count": 2 },
+          { "item": "magichem:essentia_nourishing", "count": 2 }
         ]
       }
     }

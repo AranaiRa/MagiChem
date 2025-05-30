@@ -10,26 +10,18 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "hexerei:herb_drying_rack_full"
         },
         "components": [
-          {
-            "item": "magichem:admixture_plant",
-            "count": 10
-          },
-          {
-            "item": "magichem:admixture_witchcraft",
-            "count": 8
-          },
-          {
-            "item": "magichem:essentia_wrought",
-            "count": 4
-          }
+          { "item": "magichem:admixture_plant", "count": 10 },
+          { "item": "magichem:admixture_adornment", "count": 3 },
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:essentia_wrought", "count": 4 }
         ]
       }
     }

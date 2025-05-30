@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "hexerei:small_satchel"
+        },
+        "components": [
+          { "item": "magichem:admixture_vessel", "count": 4 },
+          { "item": "magichem:essentia_fleshy", "count": 32 },
+          { "item": "magichem:essentia_wrought", "count": 4 }
+        ]
+      }
+    }
+  ]
+}

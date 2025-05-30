@@ -1,0 +1,40 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:sublimation",
+        "tier": 3,
+        "wisdom": 2,
+        "object": {
+          "item": "hexerei:broom_thruster_brush"
+        },
+        "stages": [
+          {
+            "experience": 0,
+            "components": [
+              { "item": "minecraft:blast_furnace" },
+              { "item": "magichem:catalytic_carbon" },
+              { "item": "hexerei:herb_enhanced_broom_brush" },
+              { "item": "magichem:catalytic_carbon" },
+              { "item": "minecraft:blast_furnace" }
+            ],
+            "materia": [
+              { "item": "magichem:admixture_flight", "count": 40 },
+              { "item": "magichem:admixture_travel", "count": 40 },
+              { "item": "magichem:admixture_hells", "count": 29 },
+              { "item": "magichem:admixture_industry", "count": 18 },
+              { "item": "magichem:essentia_wrought", "count": 75 }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

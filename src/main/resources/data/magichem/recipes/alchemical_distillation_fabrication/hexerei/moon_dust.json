@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "hexerei:moon_dust"
+        },
+        "components": [
+          { "item": "magichem:admixture_witchcraft", "count": 27 },
+          { "item": "magichem:admixture_firmament", "count": 7 },
+          { "item": "magichem:admixture_dust", "count": 3 },
+          { "item": "magichem:admixture_change", "count": 2 },
+          { "item": "magichem:essentia_wrought", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

@@ -11,33 +11,18 @@
       "recipe": {
         "type": "magichem:distillation_fabrication",
         "wisdom": 6,
-        "categories": 0,
-  "output_rate": 1.0,
+        "categories": 1,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "hexerei:blood_sigil"
         },
         "components": [
-          {
-            "item": "magichem:admixture_blood",
-            "count": 6
-          },
-          {
-            "item": "magichem:admixture_demon",
-            "count": 4
-          },
-          {
-            "item": "magichem:admixture_darkness",
-            "count": 2
-          },
-          {
-            "item": "magichem:admixture_witchcraft",
-            "count": 1
-          },
-          {
-            "item": "magichem:essentia_wrought",
-            "count": 6
-          }
+          { "item": "magichem:admixture_blood", "count": 19 },
+          { "item": "magichem:admixture_witchcraft", "count": 4 },
+          { "item": "magichem:admixture_stone", "count": 3 },
+          { "item": "magichem:admixture_hells", "count": 2 },
+          { "item": "magichem:admixture_darkness", "count": 1 }
         ]
       }
     }

@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": { "item": "hexerei:mahogany_broom_stand" },
+        "components": [
+          { "item": "magichem:admixture_metal", "count": 6 },
+          { "item": "magichem:admixture_wood", "count": 4 },
+          { "item": "magichem:admixture_vessel", "count": 3 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

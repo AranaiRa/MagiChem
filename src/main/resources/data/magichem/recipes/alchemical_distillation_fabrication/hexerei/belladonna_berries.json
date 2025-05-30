@@ -10,26 +10,18 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 1,
+        "categories": 4,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
           "item": "hexerei:belladonna_berries"
         },
         "components": [
-          {
-            "item": "magichem:admixture_plant",
-            "count": 2
-          },
-          {
-            "item": "magichem:admixture_flight",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_poison",
-            "count": 1
-          }
+          { "item": "magichem:admixture_nectar", "count": 2 },
+          { "item": "magichem:admixture_poison", "count": 2 },
+          { "item": "magichem:admixture_color", "count": 1 },
+          { "item": "magichem:admixture_flight", "count": 1 }
         ]
       }
     }

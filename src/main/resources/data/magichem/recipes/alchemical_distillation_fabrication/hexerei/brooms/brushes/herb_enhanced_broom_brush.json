@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "hexerei:herb_enhanced_broom_brush"
+        },
+        "components": [
+          { "item": "magichem:admixture_flight", "count": 10 },
+          { "item": "magichem:admixture_witchcraft", "count": 8 },
+          { "item": "magichem:admixture_plant", "count": 4 },
+          { "item": "magichem:admixture_odors", "count": 4 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

@@ -10,26 +10,17 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
-        "categories": 0,
-  "output_rate": 1.0,
+        "wisdom": 1,
+        "categories": 4,
+        "output_rate": 1.0,
         "batch_size": 1,
-  "object": {
+        "object": {
           "item": "hexerei:mugwort_flowers"
         },
         "components": [
-          {
-            "item": "magichem:admixture_plant",
-            "count": 2
-          },
-          {
-            "item": "magichem:admixture_sleep",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_protection",
-            "count": 1
-          }
+          { "item": "magichem:admixture_plant", "count": 2 },
+          { "item": "magichem:admixture_sleep", "count": 1 },
+          { "item": "magichem:admixture_odors", "count": 1 }
         ]
       }
     }

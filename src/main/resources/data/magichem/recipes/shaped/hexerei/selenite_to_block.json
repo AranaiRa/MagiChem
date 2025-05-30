@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "SS",
+          "SS"
+        ],
+        "key": {
+          "S": {
+            "item": "hexerei:selenite_shard"
+          }
+        },
+        "result": {
+          "item": "hexerei:selenite_block"
+        }
+      }
+    }
+  ]
+}

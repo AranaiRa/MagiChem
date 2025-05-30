@@ -10,26 +10,15 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
-        "categories": 0,
-  "output_rate": 0.25,
-        "batch_size": 1,
-  "object": {
+        "wisdom": 0,
+        "categories": 2,
+        "output_rate": 0.5,
+        "batch_size": 8,
+        "object": {
           "item": "hexerei:sage_seed"
         },
         "components": [
-          {
-            "item": "magichem:admixture_plant",
-            "count": 2
-          },
-          {
-            "item": "magichem:admixture_healing",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_protection",
-            "count": 1
-          }
+          { "item": "magichem:admixture_nectar", "count": 2 }
         ]
       }
     }
