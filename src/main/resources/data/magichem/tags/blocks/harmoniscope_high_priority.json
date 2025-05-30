@@ -12,6 +12,10 @@
     "magichem:cluster_vinteum_small",
     "magichem:cluster_vinteum_medium",
     "magichem:cluster_vinteum_large",
-    "magichem:cluster_vinteum"
+    "magichem:cluster_vinteum",
+    { "id": "hexerei:small_selenite_bud", "required": false },
+    { "id": "hexerei:medium_selenite_bud", "required": false },
+    { "id": "hexerei:large_selenite_bud", "required": false },
+    { "id": "hexerei:selenite_cluster", "required": false }
   ]
 }

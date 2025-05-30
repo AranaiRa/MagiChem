@@ -24,6 +24,8 @@
     "minecraft:blue_ice",
     "minecraft:sea_lantern",
     "#forge:glass",
-    "#forge:glass_panes"
+    "#forge:glass_panes",
+    { "id": "hexerei:selenite_block", "required": false },
+    { "id": "hexerei:budding_selenite", "required": false }
   ]
 }
