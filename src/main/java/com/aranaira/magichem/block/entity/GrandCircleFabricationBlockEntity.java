@@ -220,6 +220,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
+        nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
@@ -234,6 +235,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         powerUsageSetting = nbt.getInt("powerUsageSetting");
+        batchSize = nbt.getInt("batchSize");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
         redstonePaused = nbt.getBoolean("redstonePaused");
         isFESatisfied = nbt.getBoolean("isFESatisfied");
@@ -603,6 +605,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.put("inventory", this.itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
+        nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
@@ -717,6 +720,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
         if(!level.isClientSide()) {
             getCurrentRecipe();
+            batchSize = recipe.getBatchSize();
 
             if (recipe != null) {
                 ItemStack[] componentMateria = new ItemStack[5];
@@ -1008,6 +1012,15 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
         return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
+    }
+
+    public void setBatchSize(int pNewBatchSize) {
+        this.batchSize = pNewBatchSize;
+        this.syncAndSave();
+    }
+
+    public int getBatchSize() {
+        return this.batchSize;
     }
 
     public ItemStack getStoneItem() {

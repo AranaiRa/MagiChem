@@ -24,6 +24,8 @@ import java.util.Objects;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
+    public static RecipeType<FulminationRecipe> FULMINATION_TYPE =
+            new RecipeType<>(FulminationRecipeCategory.UID, FulminationRecipe.class);
     public static RecipeType<DistillationFabricationRecipe> DISTILLATION_TYPE =
             new RecipeType<>(DistillationRecipeCategory.UID, DistillationFabricationRecipe.class);
     public static RecipeType<DistillationFabricationRecipe> FABRICATION_TYPE =
@@ -53,6 +55,8 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new
+                FulminationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
                 DistillationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 FabricationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -77,6 +81,9 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
+
+        List<FulminationRecipe> recipesFulmination = rm.getAllRecipesFor(FulminationRecipe.Type.INSTANCE);
+        registration.addRecipes(FULMINATION_TYPE, recipesFulmination);
 
         List<DistillationFabricationRecipe> recipesDistillation = rm.getAllRecipesFor(DistillationFabricationRecipe.Type.INSTANCE);
         registration.addRecipes(DISTILLATION_TYPE, recipesDistillation);
@@ -112,6 +119,8 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.SKYWRATH_ALTAR.get(), 1), FULMINATION_TYPE);
+
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ALEMBIC.get(), 1), DISTILLATION_TYPE);
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.DISTILLERY.get(), 1), DISTILLATION_TYPE);
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_DISTILLERY.get(), 1), DISTILLATION_TYPE);

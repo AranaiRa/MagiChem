@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:dead_fire_coral_block",
+  "input_count": 1,
+  "result": "minecraft:fire_coral_block",
+  "result_count": 1
+}

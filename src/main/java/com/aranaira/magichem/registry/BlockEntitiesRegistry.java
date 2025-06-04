@@ -18,6 +18,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(AlembicBlockEntity::new, BlockRegistry.ALEMBIC.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<SkywrathAltarBlockEntity>> SKYWRATH_ALTAR_BE = BLOCK_ENTITIES.register("skywrath_altar", () ->
+            BlockEntityType.Builder.of(SkywrathAltarBlockEntity::new, BlockRegistry.SKYWRATH_ALTAR.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<DistilleryBlockEntity>> DISTILLERY_BE = BLOCK_ENTITIES.register("distillery", () ->
             BlockEntityType.Builder.of(DistilleryBlockEntity::new, BlockRegistry.DISTILLERY.get()).build(null)
     );

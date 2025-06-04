@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:diamond_block",
+  "input_count": 1,
+  "result": "magichem:inert_wisdom_stone",
+  "result_count": 1
+}

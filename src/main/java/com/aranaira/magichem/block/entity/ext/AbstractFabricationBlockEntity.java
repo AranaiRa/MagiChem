@@ -39,7 +39,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
     protected int
-            progress = 0, operationTicks = 0, pluginLinkageCountdown = 3;
+            progress = 0, operationTicks = 0, pluginLinkageCountdown = 3, batchSize = 1;
     protected boolean
             isFESatisfied = false;
 

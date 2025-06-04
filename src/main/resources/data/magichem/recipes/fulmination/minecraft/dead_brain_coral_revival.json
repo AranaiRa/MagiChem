@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:dead_brain_coral",
+  "input_count": 1,
+  "result": "minecraft:brain_coral",
+  "result_count": 1
+}

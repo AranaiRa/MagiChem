@@ -32,6 +32,10 @@ public class ItemRegistry {
     // MAGICHEM ITEMS
     ///////////////
 
+    public static final RegistryObject<Item> INERT_WISDOM_STONE = ITEMS.register("inert_wisdom_stone",
+            () -> new Item(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<PhilosophersStoneItem> ASHEN_WISDOM_STONE = ITEMS.register("wisdom_stone_nigredo",
             () -> new PhilosophersStoneItem(new Item.Properties().stacksTo(1), 1)
     );
@@ -300,6 +304,14 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(12))
     );
 
+    public static final RegistryObject<TooltipLoreItem> SCORCHED_THEOREM = ITEMS.register("scorched_theorem",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SCORCHED_PROFUNDITY = ITEMS.register("scorched_profundity",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     ///////////////
     // MAGICHEM FLUID BUCKETS
     ///////////////
@@ -323,6 +335,10 @@ public class ItemRegistry {
     ///////////////
     // MAGICHEM DUMMIES AND HIDDEN ITEMS
     ///////////////
+
+    public static final RegistryObject<Item> DUMMY_PROCESS_FULMINATION = ITEMS.register("dummy/process_fulmination",
+            () -> new Item(new Item.Properties())
+    );
 
     public static final RegistryObject<Item> DUMMY_PROCESS_FIXATION = ITEMS.register("dummy/process_fixation",
             () -> new Item(new Item.Properties())
@@ -399,7 +415,7 @@ public class ItemRegistry {
     public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
             SUBLIMATION_IN_PROGRESS,
             DUMMY_ANOINTING,DUMMY_INFO_PANEL,
-            DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL, DUMMY_PROCESS_COLORATION, DUMMY_PROCESS_CONJURATION,
+            DUMMY_PROCESS_FULMINATION, DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL, DUMMY_PROCESS_COLORATION, DUMMY_PROCESS_CONJURATION,
             ESSENTIA_DROPLETS_ENDER, ESSENTIA_DROPLETS_EARTH, ESSENTIA_DROPLETS_WATER, ESSENTIA_DROPLETS_AIR, ESSENTIA_DROPLETS_FIRE, ESSENTIA_DROPLETS_ARCANE
     );
 

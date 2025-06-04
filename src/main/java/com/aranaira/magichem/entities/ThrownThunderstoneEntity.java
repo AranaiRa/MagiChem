@@ -1,5 +1,6 @@
 package com.aranaira.magichem.entities;
 
+import com.aranaira.magichem.block.entity.SkywrathAltarBlockEntity;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -62,8 +64,21 @@ public class ThrownThunderstoneEntity extends ThrowableItemProjectile {
             BlockPos tPos = pResult.getBlockPos().above();
 
             if (level().getBlockState(tPos).isAir()) {
+                boolean isAltarInRange = false;
+                for(int y=-1;y<=1;y++) {
+                    for (int x = -1; x <= 1; x++) {
+                        for (int z = -1; z <= 1; z++) {
+                            isAltarInRange = level().getBlockEntity(tPos.offset(x, y, z)) instanceof SkywrathAltarBlockEntity;
+                            if(isAltarInRange) break;
+                        }
+                        if(isAltarInRange) break;
+                    }
+                    if(isAltarInRange) break;
+                }
+
                 LightningBolt lb = new LightningBolt(EntityType.LIGHTNING_BOLT, level());
-                lb.setPos(tPos.getX(), tPos.getY(), tPos.getZ());
+                lb.setVisualOnly(isAltarInRange);
+                lb.setPos(tPos.getX()+0.5, tPos.getY(), tPos.getZ()+0.5);
                 level().addFreshEntity(lb);
             } else {
                 Vector3 pos = new Vector3(pResult.getBlockPos().getX(), pResult.getBlockPos().getY(), pResult.getBlockPos().getZ()).add(new Vector3(0.5f, 0.5f, 0.5f));

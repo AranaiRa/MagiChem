@@ -229,6 +229,57 @@
     ],
     "related_recipes": []
   },
+  "Process: Fulmination": {
+    "index": "1101",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Fulmination"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/process_fulmination",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To "
+          },
+          {
+            "text": "Fulminate",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is to transform an object using the inherent magic of a "
+          },
+          {
+            "text": "lightning strike",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nFulmination is performed at a "
+          },
+          {
+            "text": "Skywrath Altar",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/skywrath_altar"
+      }
+    ]
+  },
   "Process: Distillation": {
     "index": "1106",
     "category": "magichem",
@@ -236,6 +287,11 @@
       {
         "type": "title",
         "value": "Process: Distillation"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/process_distillation",
+        "scale": 2
       },
       {
         "type": "text",
@@ -299,6 +355,11 @@
         "value": "Process: Coloration"
       },
       {
+        "type": "item",
+        "location": "magichem:dummy/process_coloration",
+        "scale": 2
+      },
+      {
         "type": "text",
         "value": "",
         "json": [
@@ -342,6 +403,11 @@
         "value": "Process: Fabrication"
       },
       {
+        "type": "item",
+        "location": "magichem:dummy/process_fabrication",
+        "scale": 2
+      },
+      {
         "type": "text",
         "value": "",
         "json": [
@@ -383,6 +449,11 @@
       {
         "type": "title",
         "value": "Process: Anointing"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/dummy_anointing",
+        "scale": 2
       },
       {
         "type": "text",
@@ -432,6 +503,11 @@
       {
         "type": "title",
         "value": "Process: Conjuration"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/process_conjuration",
+        "scale": 2
       },
       {
         "type": "text",
@@ -533,6 +609,67 @@
       {
         "type": "crafting",
         "location": "magichem:shaped/alembic"
+      }
+    ]
+  },
+  "Skywrath Altar": {
+    "index": "1200",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Skywrath Altar"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "When struck by a "
+          },
+          {
+            "text": "bolt of lightning",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a "
+          },
+          {
+            "text": "Skywrath Altar",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can transform certain items or bring life back to some dead objects (like Coral). Alchemists call this process "
+          },
+          {
+            "text": "Fulmination",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe necessary lightning strike can be provided the natural way by setting up a Lightning Rod nearby and waiting for a thunderstorm, but it can also be forced with a "
+          },
+          {
+            "text": "Thunderstone",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/skywrath_altar"
+      },
+      {
+        "type": "sublimation_ritual",
+        "location": "magichem:alchemical_sublimation_ritual/magichem/thunderstone"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/thunderstone"
       }
     ]
   },
@@ -1853,6 +1990,11 @@
         "value": "Process: Fixation"
       },
       {
+        "type": "item",
+        "location": "magichem:dummy/process_fixation",
+        "scale": 2
+      },
+      {
         "type": "text",
         "value": "",
         "json": [
@@ -1891,6 +2033,11 @@
       {
         "type": "title",
         "value": "Process: Separation"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/process_separation",
+        "scale": 2
       },
       {
         "type": "text",
@@ -4676,6 +4823,11 @@
         "value": "Process: Sublimation"
       },
       {
+        "type": "item",
+        "location": "magichem:dummy/process_sublimation",
+        "scale": 2
+      },
+      {
         "type": "text",
         "value": "",
         "json": [
@@ -5007,7 +5159,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " to smite your foes.\n\nIf for whatever reason the thunderstone cannot call a lightning strike, it won't be consumed and will drop on the ground instead."
+            "text": " to smite your foes.\n\nIf for whatever reason the thunderstone cannot call a lightning strike, it won't be consumed and will drop on the ground instead.\n\nA Thunderstone can summon a lightning bolt even if the block it targets "
+          },
+          {
+            "text": "cannot see the sky",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nA Thunderstone that strikes within one block of a "
+          },
+          {
+            "text": "Skywrath Altar",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will not damage entities or cause fires."
           }
         ]
       }

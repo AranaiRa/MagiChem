@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "WEW",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "mna:decoration/arcane_sandstone"
+    },
+    "W": {
+      "tag": "minecraft:logs"
+    },
+    "E": {
+      "item": "magichem:perfected_electrum"
+    }
+  },
+  "result": {
+    "item": "magichem:skywrath_altar"
+  }
+}

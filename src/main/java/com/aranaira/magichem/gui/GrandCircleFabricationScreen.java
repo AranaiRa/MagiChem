@@ -483,7 +483,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
     }
 
     @Override
-    protected void renderLabels(GuiGraphics gui, int x, int y) {
+    protected void renderLabels(GuiGraphics gui, int pMouseX, int pMouseY) {
         int powerDraw = menu.blockEntity.getPowerDraw();
         int secWhole = menu.blockEntity.getOperationTicks() / 20;
         int secPartial = (menu.blockEntity.getOperationTicks() % 20) * 5;
@@ -516,6 +516,14 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
         int offset = 0;
         if(recipe != null) {
+            if(recipe.getBatchSize() > 1) {
+                int currentBatchSize = menu.blockEntity.getBatchSize();
+                String str = currentBatchSize + " / " + recipe.getBatchSize();
+                int width = font.width(str);
+
+                gui.drawString(font, str, -46 - width / 2, 141, 0xff000000, false);
+            }
+
             for (DistillationSourceCategory dsc : recipe.getSourceCategories()) {
                 gui.drawString(font, dsc.name(), -160, offset, 0xffffff, true);
                 offset += 12;

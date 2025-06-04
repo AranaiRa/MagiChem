@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:torchflower",
+  "input_count": 3,
+  "result": "minecraft:wither_rose",
+  "result_count": 1
+}

@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "mna:arcane_ash",
+  "input_count": 1,
+  "result": "mna:animus_dust",
+  "result_count": 2
+}

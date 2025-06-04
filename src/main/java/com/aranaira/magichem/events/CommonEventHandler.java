@@ -30,6 +30,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -48,6 +50,7 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -275,6 +278,24 @@ public class CommonEventHandler {
 
         Block block = state.getBlock();
         block.getName();
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoin(EntityJoinLevelEvent event) {
+        if(event.getEntity() instanceof LightningBolt bolt) {
+            BlockPos onPos = bolt.getOnPos();
+
+            for(int y=-1;y<=1;y++) {
+                for(int x=-1;x<=1;x++) {
+                    for(int z=-1;z<=1;z++) {
+                        BlockEntity entityQuery = event.getLevel().getBlockEntity(onPos.offset(x, y, z));
+                        if(entityQuery instanceof SkywrathAltarBlockEntity sabe) {
+                            sabe.tryCraftItem();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @OnlyIn(Dist.CLIENT)

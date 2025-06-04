@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:dead_tube_coral_fan",
+  "input_count": 1,
+  "result": "minecraft:tube_coral_fan",
+  "result_count": 1
+}
