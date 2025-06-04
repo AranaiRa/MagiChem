@@ -51,6 +51,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -557,6 +559,15 @@ public class CommonEventHandler {
     public static void onAttachCapability(AttachCapabilitiesEvent<?> event) {
         if(event.getObject() instanceof AbstractBlockEntityWithEfficiency) {
             event.addCapability(IGrimeCapability.GRIME, new GrimeProvider());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityStruckByLightning(EntityStruckByLightningEvent event) {
+        if(event.getEntity() instanceof ItemEntity ie) {
+            if(ie.getItem().getItem() == ItemRegistry.THUNDERSTONE.get()) {
+                event.setCanceled(true);
+            }
         }
     }
 

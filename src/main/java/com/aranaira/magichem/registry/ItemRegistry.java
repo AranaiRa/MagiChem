@@ -145,7 +145,7 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<ThunderstoneItem> THUNDERSTONE = ITEMS.register("thunderstone",
-            () -> new ThunderstoneItem(new Item.Properties())
+            () -> new ThunderstoneItem(new Item.Properties().fireResistant())
     );
 
     public static final RegistryObject<WinterChargeItem> WINTER_CHARGE = ITEMS.register("winter_charge",
