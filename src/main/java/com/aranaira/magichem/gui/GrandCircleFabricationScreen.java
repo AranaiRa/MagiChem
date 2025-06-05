@@ -11,17 +11,22 @@ import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.AdvancementList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.multiplayer.ClientAdvancements;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -44,9 +49,11 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
     private DistillationFabricationRecipe lastClickedRecipe = null;
     private boolean recipesChanged = true;
+    private Player player;
 
     public GrandCircleFabricationScreen(GrandCircleFabricationMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        player = inventory.player;
     }
 
     @Override
@@ -168,7 +175,21 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
         for(DistillationFabricationRecipe acr : fabricationRecipeOutputs) {
             String display = acr.getAlchemyObject().getDisplayName().getString();
-            if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase())) && !acr.getIsDistillOnly()) {
+            boolean nameMatchesFilter = (Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()));
+            boolean wisdomValidForCurrentStone = acr.getWisdom() <= menu.blockEntity.getCurrentWisdom(GrandCircleFabricationBlockEntity::getVar);
+            boolean requiredAdvancementCompliant = true;
+            boolean forbiddenAdvancementCompliant = true;
+
+            if(acr.getRequiredAdvancement() != null && player instanceof LocalPlayer lp) {
+                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
+                requiredAdvancementCompliant = advancements.get(acr.getRequiredAdvancement()) != null;
+            }
+            if(acr.getForbiddenAdvancement() != null && player instanceof LocalPlayer lp) {
+                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
+                forbiddenAdvancementCompliant = advancements.get(acr.getForbiddenAdvancement()) != null;
+            }
+
+            if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
                 filteredRecipes.add(acr);
             }
         }
@@ -176,6 +197,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
 
         recipesChanged = false;
+        menu.blockEntity.forceDisplayedRecipeUpdate = false;
     }
 
     private List<DistillationFabricationRecipe> allRecipes = new ArrayList<>();
@@ -244,7 +266,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         renderBackground(gui);
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
-        if(recipesChanged)
+        if(recipesChanged || menu.blockEntity.forceDisplayedRecipeUpdate)
             updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(gui);
         updateFilterBoxContents();

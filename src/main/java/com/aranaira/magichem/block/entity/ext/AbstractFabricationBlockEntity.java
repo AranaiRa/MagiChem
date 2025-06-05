@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.util.InventoryHelper;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -178,6 +180,17 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         }
     }
 
+    public int getCurrentWisdom(Function<IDs, Integer> pVarFunc) {
+        int slot = pVarFunc.apply(IDs.SLOT_STONE);
+        if(slot >= 0) {
+            final Item itemQuery = itemHandler.getStackInSlot(slot).getItem();
+            if (itemQuery instanceof PhilosophersStoneItem stone) {
+                return stone.getWisdom();
+            }
+        }
+        return 0;
+    }
+
     protected void resetProgress() {
         progress = 0;
     }
@@ -335,6 +348,6 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     }
 
     public enum IDs {
-        SLOT_RECIPE, SLOT_BOTTLES, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT
+        SLOT_RECIPE, SLOT_BOTTLES, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT, SLOT_STONE
     }
 }

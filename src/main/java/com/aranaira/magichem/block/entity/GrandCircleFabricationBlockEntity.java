@@ -96,6 +96,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     public float
             particlePercent = 0, daisCirclePercent = 0, projectorPercent = 0, mainCirclePercent = 0, itemLerp = 0;
+    public boolean
+            forceDisplayedRecipeUpdate = false;
 
     public GrandCircleFabricationBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_BE.get(), pos, state);
@@ -152,6 +154,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                 DistillationFabricationRecipe recipePre = recipe;
                 if(slot == SLOT_RECIPE) {
                     getCurrentRecipe();
+                }
+                if(slot == SLOT_STONE) {
+                    forceDisplayedRecipeUpdate = true;
                 }
                 if(recipe != recipePre)
                     syncAndSave();
@@ -813,6 +818,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
             case SLOT_RECIPE -> SLOT_RECIPE;
+            case SLOT_STONE -> SLOT_STONE;
 
             default -> -1;
         };
