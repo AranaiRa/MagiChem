@@ -787,7 +787,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     }
 
     @Override
-    public byte setRecipe(ItemStack pStack) {
+    public byte setRecipe(ItemStack pStack, Player player) {
         DistillationFabricationRecipe distillationFabricationRecipeQuery = DistillationFabricationRecipe.getFabricatingRecipe(getLevel(), pStack);
         if(distillationFabricationRecipeQuery == null)
             return ERROR_CODE_NO_SUCH_RECIPE;

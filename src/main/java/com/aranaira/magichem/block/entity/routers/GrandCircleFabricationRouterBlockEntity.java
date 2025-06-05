@@ -215,11 +215,11 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
     }
 
     @Override
-    public byte setRecipe(ItemStack pStack) {
+    public byte setRecipe(ItemStack pStack, Player player) {
         if(masterPos == null)
             return ERROR_CODE_NO_BLOCK_ENTITY;
 
-        return getMaster().setRecipe(pStack);
+        return getMaster().setRecipe(pStack, player);
     }
 
     @Override

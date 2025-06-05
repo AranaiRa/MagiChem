@@ -1404,7 +1404,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     @Override
-    public byte setRecipe(ItemStack pStack) {
+    public byte setRecipe(ItemStack pStack, Player player) {
         final SublimationRecipe sublimationRecipeQuery = SublimationRecipe.getSublimationRecipe(getLevel(), pStack);
         if(sublimationRecipeQuery == null)
             return ERROR_CODE_NO_SUCH_RECIPE;

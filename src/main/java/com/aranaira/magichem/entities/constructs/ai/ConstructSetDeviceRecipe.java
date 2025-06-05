@@ -67,7 +67,7 @@ public class ConstructSetDeviceRecipe extends ConstructAITask<ConstructSetDevice
                                         swingHandWithCapability(ConstructCapability.CARRY);
 
                                         if (!oldRecipe.equals(newRecipe, true)) {
-                                            byte result = ihdrs.setRecipe(newRecipe);
+                                            byte result = ihdrs.setRecipe(newRecipe, construct.getOwner());
                                             if (newRecipe.isEmpty())
                                                 this.pushDiagnosticMessage("I cleared the device's recipe, boss.", false);
                                             else {
@@ -79,6 +79,12 @@ public class ConstructSetDeviceRecipe extends ConstructAITask<ConstructSetDevice
                                                     this.pushDiagnosticMessage("The device needs an Admixture as a recipe item. Sorry, boss!", false);
                                                 else if(result == ERROR_CODE_NO_SUCH_RECIPE)
                                                     this.pushDiagnosticMessage("The device doesn't have a recipe that results in that item. Sorry, boss!", false);
+                                                else if(result == ERROR_CODE_INSUFFICIENT_WISDOM)
+                                                    this.pushDiagnosticMessage("The device doesn't have the wisdom stone that recipe requires. Sorry, boss!", false);
+                                                else if(result == ERROR_CODE_REQUIRED_ADVANCEMENT_MISSING)
+                                                    this.pushDiagnosticMessage("You don't have the Advancement needed by that recipe. Sorry, boss!", false);
+                                                else if(result == ERROR_CODE_FORBIDDEN_ADVANCEMENT_PRESENT)
+                                                    this.pushDiagnosticMessage("You have the Advancement forbidden by that recipe. Sorry, boss!", false);
                                             }
                                         }
                                     });
@@ -91,7 +97,7 @@ public class ConstructSetDeviceRecipe extends ConstructAITask<ConstructSetDevice
                                 ItemStack oldRecipe = ihdrs.getRecipeItem();
 
                                 if (!oldRecipe.equals(recipeStack, true)) {
-                                    byte result = ihdrs.setRecipe(recipeStack);
+                                    byte result = ihdrs.setRecipe(recipeStack, construct.getOwner());
                                     swingHandWithCapability(ConstructCapability.CARRY);
                                     if (recipeStack.isEmpty())
                                         this.pushDiagnosticMessage("I cleared the device's recipe, boss.", false);
@@ -104,6 +110,12 @@ public class ConstructSetDeviceRecipe extends ConstructAITask<ConstructSetDevice
                                             this.pushDiagnosticMessage("The device needs an Admixture as a recipe item. Sorry, boss!", false);
                                         else if(result == ERROR_CODE_NO_SUCH_RECIPE)
                                             this.pushDiagnosticMessage("The device doesn't have a recipe that results in that item. Sorry, boss!", false);
+                                        else if(result == ERROR_CODE_INSUFFICIENT_WISDOM)
+                                            this.pushDiagnosticMessage("The device doesn't have the wisdom stone that recipe requires. Sorry, boss!", false);
+                                        else if(result == ERROR_CODE_REQUIRED_ADVANCEMENT_MISSING)
+                                            this.pushDiagnosticMessage("You don't have the Advancement needed by that recipe. Sorry, boss!", false);
+                                        else if(result == ERROR_CODE_FORBIDDEN_ADVANCEMENT_PRESENT)
+                                            this.pushDiagnosticMessage("You have the Advancement forbidden by that recipe. Sorry, boss!", false);
                                     }
                                 }
                             }

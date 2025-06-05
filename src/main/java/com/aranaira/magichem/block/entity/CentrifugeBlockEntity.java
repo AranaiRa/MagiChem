@@ -512,7 +512,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     }
 
     @Override
-    public byte setRecipe(ItemStack pStack) {
+    public byte setRecipe(ItemStack pStack, Player player) {
         if(pStack.getItem() instanceof AdmixtureItem) {
             itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(pStack.getItem()));
             getCurrentRecipe();

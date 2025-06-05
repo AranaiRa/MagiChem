@@ -745,7 +745,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     }
 
     @Override
-    public byte setRecipe(ItemStack pStack) {
+    public byte setRecipe(ItemStack pStack, Player player) {
         if(pStack.getItem() instanceof AdmixtureItem) {
             itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(pStack.getItem()));
             getCurrentRecipe();

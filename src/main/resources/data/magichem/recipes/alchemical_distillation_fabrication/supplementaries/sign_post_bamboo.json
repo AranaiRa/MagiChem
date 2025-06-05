@@ -15,7 +15,7 @@
         "output_rate": 0.166,
         "batch_size": 1,
         "object": {
-          "item": "supplementaries:sign_post_acacia"
+          "item": "supplementaries:sign_post_bamboo"
         },
         "components": [
           { "item": "magichem:admixture_wood", "count": 2 },

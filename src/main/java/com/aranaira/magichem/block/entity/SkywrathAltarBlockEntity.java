@@ -98,7 +98,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
                 final CompoundTag thisEntry = nbt.getCompound(i);
                 int lvlCapped = Math.min(10, thisEntry.getInt("lvl"));
 
-                highestLevel += lvlCapped;
+                highestLevel = Math.max(highestLevel, lvlCapped);
                 totalLevelsExpo += ((lvlCapped*3) * (lvlCapped*3));
             }
 

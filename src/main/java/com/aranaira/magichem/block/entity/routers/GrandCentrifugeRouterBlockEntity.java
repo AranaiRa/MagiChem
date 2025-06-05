@@ -290,8 +290,8 @@ public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEff
     }
 
     @Override
-    public byte setRecipe(ItemStack pStack) {
-        return getMaster().setRecipe(pStack);
+    public byte setRecipe(ItemStack pStack, Player player) {
+        return getMaster().setRecipe(pStack, player);
     }
 
     @Override

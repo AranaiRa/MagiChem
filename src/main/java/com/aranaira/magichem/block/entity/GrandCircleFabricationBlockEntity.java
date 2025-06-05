@@ -25,6 +25,8 @@ import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -37,6 +39,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -1001,10 +1006,30 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     @Override
-    public byte setRecipe(ItemStack pStack) {
+    public byte setRecipe(ItemStack pStack, Player player) {
         final DistillationFabricationRecipe distillationRecipeQuery = DistillationFabricationRecipe.getDistillingRecipe(getLevel(), pStack);
-        if(distillationRecipeQuery == null)
+        if(distillationRecipeQuery == null || distillationRecipeQuery.getWisdom() == 6)
             return ERROR_CODE_NO_SUCH_RECIPE;
+
+        if(distillationRecipeQuery.getWisdom() > getCurrentWisdom(GrandCircleFabricationBlockEntity::getVar))
+            return ERROR_CODE_INSUFFICIENT_WISDOM;
+
+        if(distillationRecipeQuery.isAdvancementRequired() || distillationRecipeQuery.isForbiddenByAdvancement()) {
+            if(player instanceof ServerPlayer sp) {
+                final PlayerAdvancements playerAdvancements = sp.getAdvancements();
+                final ServerAdvancementManager serverAdvancementManager = sp.getServer().getAdvancements();
+
+                final Advancement requiredAdvancement = serverAdvancementManager.getAdvancement(distillationRecipeQuery.getRequiredAdvancement());
+                final Advancement forbiddenAdvancement = serverAdvancementManager.getAdvancement(distillationRecipeQuery.getForbiddenAdvancement());
+
+                if(distillationRecipeQuery.isAdvancementRequired() && requiredAdvancement != null) {
+                    if(!playerAdvancements.getOrStartProgress(requiredAdvancement).isDone()) return ERROR_CODE_REQUIRED_ADVANCEMENT_MISSING;
+                }
+                if(distillationRecipeQuery.isForbiddenByAdvancement() && forbiddenAdvancement != null) {
+                    if(playerAdvancements.getOrStartProgress(forbiddenAdvancement).isDone()) return ERROR_CODE_FORBIDDEN_ADVANCEMENT_PRESENT;
+                }
+            }
+        }
 
         setCurrentRecipe(pStack);
         return ERROR_CODE_SUCCESS;
