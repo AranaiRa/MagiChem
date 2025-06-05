@@ -1,22 +1,28 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.recipe.FulminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Random;
@@ -34,13 +40,17 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
     public void tryCraftItem() {
         final FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(getLevel(), heldItem.getItem());
-        if(recipe != null) {
+        boolean hasValidRecipe = recipe != null;
+        boolean canStoreRF = heldItem.getCapability(ForgeCapabilities.ENERGY).isPresent();
+        boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
+
+        if(hasValidRecipe || canStoreRF || isEnchantedBook) {
             craftCountdown = CRAFT_COUNTDOWN_LENGTH;
             syncAndSave();
         }
     }
 
-    private void craftItem() {
+    private boolean craftItem() {
         final FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(getLevel(), heldItem.getItem());
         if(recipe != null) {
             int minRequired = recipe.getResult().getCount();
@@ -57,8 +67,53 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
                 }
 
                 heldItem = recipe.getResult().copy();
+                return true;
             }
         }
+        return false;
+    }
+
+    private boolean chargeItem() {
+        final LazyOptional<IEnergyStorage> energyCapHolder = heldItem.getCapability(ForgeCapabilities.ENERGY);
+        if(energyCapHolder.isPresent()) {
+            final IEnergyStorage cap = energyCapHolder.resolve().get();
+            int max = cap.getMaxEnergyStored();
+
+            int chargeUncapped = Math.round((float)max * (float)ServerConfig.skywrathAltarFERechargePercentage / 100f);
+            cap.receiveEnergy(Math.min(chargeUncapped, ServerConfig.skywrathAltarFERechargeLimit), false);
+
+            return true;
+        }
+        return false;
+    }
+
+    private boolean scrapEnchantedBook() {
+        if(heldItem.getItem() == Items.ENCHANTED_BOOK && heldItem.hasTag() && heldItem.getTag().contains("StoredEnchantments")) {
+            final ListTag nbt = heldItem.getTag().getList("StoredEnchantments", ListTag.TAG_COMPOUND);
+
+            int highestLevel = 0;
+            int totalLevelsExpo = 0;
+
+            for(int i=0; i<nbt.size(); i++) {
+                final CompoundTag thisEntry = nbt.getCompound(i);
+                int lvlCapped = Math.min(10, thisEntry.getInt("lvl"));
+
+                highestLevel += lvlCapped;
+                totalLevelsExpo += ((lvlCapped*3) * (lvlCapped*3));
+            }
+
+            float divisor = Math.max(1, 10 - highestLevel);
+            float chance = (totalLevelsExpo / divisor);
+            if(r.nextFloat(100) <= chance) {
+                heldItem = new ItemStack(ItemRegistry.SCORCHED_PROFUNDITY.get(), 1);
+            } else {
+                heldItem = new ItemStack(ItemRegistry.SCORCHED_THEOREM.get(), Math.round(totalLevelsExpo / 10f));
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public ItemStack getHeldItem() {
@@ -119,7 +174,9 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         if(t instanceof SkywrathAltarBlockEntity entity)
         if(entity.craftCountdown >= 0) {
             if(entity.craftCountdown == 0) {
-                entity.craftItem();
+                if(!entity.chargeItem())
+                    if(!entity.craftItem())
+                        entity.scrapEnchantedBook();
             }
 
             //Particle work
@@ -182,7 +239,11 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
                 }
             }
 
-            entity.craftCountdown--;
+            if(entity.heldItem.isEmpty()) {
+                entity.craftCountdown = -1;
+            } else {
+                entity.craftCountdown--;
+            }
         }
     }
 }

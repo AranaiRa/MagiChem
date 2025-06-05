@@ -383,6 +383,16 @@ public class ServerConfig
             .comment("The number of points that a single dram of materia adds to the materia gauge.")
             .defineInRange("conjurerPointsPerDram", 4, 1, Integer.MAX_VALUE);
 
+    //----------------SKYWRATH ALTAR
+
+    private static final ForgeConfigSpec.IntValue SKYWRATH_ALTAR_FE_RECHARGE_PERCENTAGE = BUILDER
+            .comment("What percentage a Skywrath Altar will recharge an object's FE gauge to. Only used if this value would be less than the recharge limit below.")
+            .defineInRange("skywrathAltarFEChargePercentage", 50, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue SKYWRATH_ALTAR_FE_RECHARGE_LIMIT = BUILDER
+            .comment("The maximum amount of FE a Skywrath Altar will recharge an object's FE gauge by. Only used if this value would be greater than the recharge percentage above.")
+            .defineInRange("skywrathAltarFEChargeLimit", 30000, 1, Integer.MAX_VALUE);
+
     //----------------MATERIA MANIFEST
 
     private static final ForgeConfigSpec.IntValue MATERIA_MANIFEST_SIZE_CONSTRAINT = BUILDER
@@ -480,6 +490,8 @@ public class ServerConfig
         variegatorAdmixturePerItem,
         conjurerMateriaCapacity,
         conjurerPointsPerDram,
+        skywrathAltarFERechargePercentage,
+        skywrathAltarFERechargeLimit,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
         materiaManifestDefaultRange;
@@ -572,6 +584,8 @@ public class ServerConfig
         variegatorAdmixturePerItem = VARIEGATOR_ADMIXTURE_PER_ITEM.get();
         conjurerMateriaCapacity = CONJURER_MATERIA_CAPACITY.get();
         conjurerPointsPerDram = CONJURER_POINTS_PER_DRAM.get();
+        skywrathAltarFERechargePercentage = SKYWRATH_ALTAR_FE_RECHARGE_PERCENTAGE.get();
+        skywrathAltarFERechargeLimit = SKYWRATH_ALTAR_FE_RECHARGE_LIMIT.get();
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
         materiaManifestDefaultRange = MATERIA_MANIFEST_DEFAULT_RANGE.get();

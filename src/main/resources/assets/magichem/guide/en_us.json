@@ -653,7 +653,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ".\n\nThe Skywrath Altar will also use a lightning strike to "
+          },
+          {
+            "text": "refill some charge",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of items that can store FE if that item isn't used in a Fulmination recipe."
           }
         ]
       }
