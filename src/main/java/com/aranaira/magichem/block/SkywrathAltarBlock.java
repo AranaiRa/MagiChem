@@ -49,6 +49,17 @@ public class SkywrathAltarBlock extends BaseEntityBlock {
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
 
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if(blockEntity instanceof SkywrathAltarBlockEntity sabe) {
+                sabe.dropInventory();
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {

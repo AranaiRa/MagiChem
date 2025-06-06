@@ -246,4 +246,9 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
             }
         }
     }
+
+    public void dropInventory() {
+        ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), heldItem);
+        getLevel().addFreshEntity(ie);
+    }
 }

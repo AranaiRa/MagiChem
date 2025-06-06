@@ -679,7 +679,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     public int getOperationTicks() {
-        return OPERATION_TICKS[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
+        float batchModifier = 1f;
+        if(getCurrentRecipe() != null && getCurrentRecipe().getBatchSize() > 0) {
+            batchModifier = (float)batchSize / (float)getCurrentRecipe().getBatchSize();
+        }
+        return Math.max(1,Math.round((float)OPERATION_TICKS[MathUtils.clamp(powerUsageSetting, 1, 30)-1] * batchModifier));
     }
 
     public int setPowerUsageSetting(int pPowerUsageSetting) {
@@ -857,7 +861,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                 if(activeProvisionRequests.contains((MateriaItem)recipeMateria.getItem()))
                     continue;
 
-                int amountToAdd = recipeMateria.getCount();
+                int amountToAdd = recipeMateria.getCount() * batchSize;
                 for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
                     ItemStack stackInSlot = itemHandler.getStackInSlot(i);
                     if(stackInSlot.getItem() == recipeMateria.getItem()) {
@@ -1043,15 +1047,6 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
         return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
-    }
-
-    public void setBatchSize(int pNewBatchSize) {
-        this.batchSize = pNewBatchSize;
-        this.syncAndSave();
-    }
-
-    public int getBatchSize() {
-        return this.batchSize;
     }
 
     public ItemStack getStoneItem() {

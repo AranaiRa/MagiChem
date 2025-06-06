@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
+import com.aranaira.magichem.networking.FabricationBatchSizeC2SPacket;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -259,6 +260,13 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
         //Batch Size Selector
         gui.blit(TEXTURE_EXT, x - 85, y + 142, 0, 168, 81, 45);
+
+        //Scroll Nubbin for Batch Size
+        if(menu.blockEntity.getCurrentRecipe() != null && menu.blockEntity.getCurrentRecipe().getBatchSize() > 1) {
+            float percent = (float)(menu.blockEntity.getBatchSize() - 1) / (float)(menu.blockEntity.getCurrentRecipe().getBatchSize() - 1);
+            int nubbinShift = (int)Math.floor(percent * 57);
+            gui.blit(TEXTURE, x - 77 + nubbinShift, y + 171, 28, 230, 8, 8);
+        }
     }
 
     @Override
@@ -489,6 +497,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
+        //Recipe Selector Scroll Bar
         if(recipeFilterRowTotal > 5 && pButton == 0) {
             int x = (width - PANEL_MAIN_W) / 2;
             int y = (height - PANEL_MAIN_H) / 2;
@@ -499,6 +508,29 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                 double percent = point / 80d;
 
                 recipeFilterRow = Math.max(0, Math.min(recipeFilterRowTotal - 5, (int) Math.round(percent * recipeFilterRowTotal)));
+            }
+        }
+
+        //Batch Size Scroll Bar
+        if(menu.blockEntity.getCurrentRecipe() != null){
+            int maxBatch = menu.blockEntity.getCurrentRecipe().getBatchSize();
+            if (maxBatch > 1) {
+                int x = (width - PANEL_MAIN_W) / 2;
+                int y = (height - PANEL_MAIN_H) / 2;
+
+                if (pMouseX >= x - 77 && pMouseX <= x - 15 &&
+                        pMouseY >= y + 171 && pMouseY <= y + 179) {
+                    double point = pMouseX - (x - 81);
+                    double percent = point / 65d;
+
+                    int newBatchSize = (int)Math.min(menu.blockEntity.getCurrentRecipe().getBatchSize(),
+                            Math.max(1,Math.round(percent * maxBatch)));
+                    menu.blockEntity.setBatchSize(newBatchSize);
+                    PacketRegistry.sendToServer(new FabricationBatchSizeC2SPacket(
+                            menu.blockEntity.getBlockPos(),
+                            newBatchSize
+                    ));
+                }
             }
         }
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
@@ -517,7 +549,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         DistillationFabricationRecipe recipe = menu.blockEntity.getCurrentRecipe();
         if(recipe != null) {
             for (int i = 0; i < recipe.getComponentMateria().size(); i++) {
-                Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + "");
+                Component text = Component.literal((recipe.getComponentMateria().get(i).getCount() * menu.blockEntity.getBatchSize()) + "");
                 int rightAlignShift = 17 - font.width(text.getString());
 
                 gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
@@ -536,7 +568,6 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             gui.drawString(font, warningText, 89 - width/2, -33, 0xff000000, false);
         }
 
-        int offset = 0;
         if(recipe != null) {
             if(recipe.getBatchSize() > 1) {
                 int currentBatchSize = menu.blockEntity.getBatchSize();
@@ -544,34 +575,6 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                 int width = font.width(str);
 
                 gui.drawString(font, str, -46 - width / 2, 141, 0xff000000, false);
-            }
-
-            for (DistillationSourceCategory dsc : recipe.getSourceCategories()) {
-                gui.drawString(font, dsc.name(), -160, offset, 0xffffff, true);
-                offset += 12;
-            }
-
-            if (recipe.getWisdom() < 6 && recipe.getWisdom() > 0) {
-                int xLabel = 226;
-                int yLabel = 100;
-                if (recipe.getWisdom() == 1) gui.drawString(font, "ASHEN (Lv1)", xLabel, yLabel, 0xffffff, true);
-                if (recipe.getWisdom() == 2) gui.drawString(font, "BLEACHED (Lv2)", xLabel, yLabel, 0xffffff, true);
-                if (recipe.getWisdom() == 3) gui.drawString(font, "YELLOWED (Lv3)", xLabel, yLabel, 0xffffff, true);
-                if (recipe.getWisdom() == 4) gui.drawString(font, "FLUSHED (Lv4)", xLabel, yLabel, 0xffffff, true);
-                if (recipe.getWisdom() == 5)
-                    gui.drawString(font, "PHILOSOPHER'S STONE (LvMax)", xLabel, yLabel, 0xffffff, true);
-
-                gui.drawString(font, "Is Required", xLabel, yLabel + 12, 0xffffff, true);
-            }
-
-            if (recipe.isAdvancementRequired()) {
-                gui.drawString(font, "Needs Advancement:", 186, 130, 0xffffff, true);
-                gui.drawString(font, recipe.getRequiredAdvancement().getNamespace() + ":" + recipe.getRequiredAdvancement().getPath(), 186, 142, 0xffffff, true);
-            }
-
-            if (recipe.isForbiddenByAdvancement()) {
-                gui.drawString(font, "Removed by Advancement:", 186, 130, 0xffffff, true);
-                gui.drawString(font, recipe.getForbiddenAdvancement().getNamespace() + ":" + recipe.getForbiddenAdvancement().getPath(), 186, 142, 0xffffff, true);
             }
         }
     }

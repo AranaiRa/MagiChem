@@ -101,6 +101,12 @@ public class PacketRegistry {
                 .consumerMainThread(MirrorLabyrinthSyncDataC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(FabricationBatchSizeC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(FabricationBatchSizeC2SPacket::new)
+                .encoder(FabricationBatchSizeC2SPacket::toBytes)
+                .consumerMainThread(FabricationBatchSizeC2SPacket::handle)
+                .add();
+
         //Server to Clients
 
         MagiChemMod.CHANNEL.registerMessage(ID(), ParticleSpawnAnointingS2CPacket.class,

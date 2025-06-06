@@ -203,6 +203,15 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         progress = Math.max(0, progress - 1);
     }
 
+    public void setBatchSize(int pNewBatchSize) {
+        this.batchSize = pNewBatchSize;
+        this.syncAndSave();
+    }
+
+    public int getBatchSize() {
+        return this.batchSize;
+    }
+
     ////////////////////
     // RECIPE HANDLING
     ////////////////////
@@ -215,7 +224,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         }
 
         for(ItemStack query : pRecipe.getComponentMateria()) {
-            int remaining = query.getCount();
+            int remaining = query.getCount() * pEntity.batchSize;
             for(int i=0; i<inputSlots.getContainerSize(); i++) {
                 ItemStack stackInSlot = inputSlots.getItem(i);
                 if(stackInSlot.getItem() == query.getItem())
@@ -232,7 +241,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             cont.setItem(i-pVarFunc.apply(IDs.SLOT_OUTPUT_START), pEntity.itemHandler.getStackInSlot(i).copy());
         }
 
-        return cont.canAddItem(pRecipe.getAlchemyObject().copy());
+        return cont.canAddItem(new ItemStack(pRecipe.getAlchemyObject().getItem(), pRecipe.getAlchemyObject().getCount() * pEntity.batchSize));
     }
 
     protected static void craftItem(AbstractFabricationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
@@ -249,7 +258,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         int bottlesGenerated = 0;
         int materiaCreated = 0;
         for (ItemStack item : pRecipe.getComponentMateria()) {
-            int totalThisIngredient = item.getCount();
+            int totalThisIngredient = item.getCount() * pEntity.batchSize;
             materiaCreated += totalThisIngredient;
 
             //tally up bottles
@@ -264,10 +273,10 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
                 }
             }
 
-            inputSlots.removeItemType(item.getItem(), item.getCount());
+            inputSlots.removeItemType(item.getItem(), item.getCount() * pEntity.batchSize);
         }
 
-        outputSlots.addItem(pRecipe.getAlchemyObject().copy());
+        outputSlots.addItem(new ItemStack(pRecipe.getAlchemyObject().getItem(), pRecipe.getAlchemyObject().getCount() * pEntity.batchSize));
 
         for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
             pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
