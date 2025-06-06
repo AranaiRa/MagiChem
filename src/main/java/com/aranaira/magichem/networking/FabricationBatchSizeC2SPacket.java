@@ -38,7 +38,6 @@ public class FabricationBatchSizeC2SPacket {
         context.enqueueWork(() -> {
             if(entity instanceof AbstractFabricationBlockEntity afbe) {
                 afbe.setBatchSize(newBatchSize);
-                afbe.syncAndSave();
             }
         });
 

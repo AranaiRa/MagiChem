@@ -16,6 +16,7 @@ import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.particles.types.movers.ParticleVelocityMover;
+import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -558,7 +559,11 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     }
 
     public int getOperationTicks() {
-        return 1800;
+        float batchModifier = 1f;
+        if(getCurrentRecipe() != null && getCurrentRecipe().getBatchSize() > 0) {
+            batchModifier = (float)batchSize / (float)getCurrentRecipe().getBatchSize();
+        }
+        return Math.max(1,Math.round(1800f * batchModifier));
     }
 
     private static final AABB validVentingParticleZone = new AABB(0.375, 0.0625, 0.375, 0.625, 0.0625, 0.625);
@@ -689,7 +694,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 if(activeProvisionRequests.contains((MateriaItem)recipeMateria.getItem()))
                     continue;
 
-                int amountToAdd = recipeMateria.getCount();
+                int amountToAdd = recipeMateria.getCount() * batchSize;
                 for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
                     ItemStack stackInSlot = itemHandler.getStackInSlot(i);
                     if(stackInSlot.getItem() == recipeMateria.getItem()) {

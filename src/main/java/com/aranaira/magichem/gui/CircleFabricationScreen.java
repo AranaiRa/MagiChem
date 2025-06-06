@@ -2,25 +2,30 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
+import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
+import com.aranaira.magichem.networking.FabricationBatchSizeC2SPacket;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.AdvancementList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -42,9 +47,11 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             PANEL_POWER_U = 190, PANEL_POWER_V = 0, PANEL_POWER_W = 66, PANEL_POWER_H = 66;
     private DistillationFabricationRecipe lastClickedRecipe = null;
     private boolean recipesChanged = true;
+    private Player player;
 
     public CircleFabricationScreen(CircleFabricationMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
+        player = inventory.player;
     }
 
     @Override
@@ -138,7 +145,21 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
         for(DistillationFabricationRecipe acr : fabricationRecipeOutputs) {
             String display = acr.getAlchemyObject().getDisplayName().getString();
-            if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase())) && !acr.getIsDistillOnly()) {
+            boolean nameMatchesFilter = (Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()));
+            boolean wisdomValidForCurrentStone = acr.getWisdom() == 0;
+            boolean requiredAdvancementCompliant = true;
+            boolean forbiddenAdvancementCompliant = true;
+
+            if(acr.getRequiredAdvancement() != null && player instanceof LocalPlayer lp) {
+                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
+                requiredAdvancementCompliant = advancements.get(acr.getRequiredAdvancement()) != null;
+            }
+            if(acr.getForbiddenAdvancement() != null && player instanceof LocalPlayer lp) {
+                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
+                forbiddenAdvancementCompliant = advancements.get(acr.getForbiddenAdvancement()) != null;
+            }
+
+            if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
                 filteredRecipes.add(acr);
             }
         }
@@ -196,6 +217,16 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             float percent = (float)recipeFilterRow / (float)(recipeFilterRowTotal - 5);
             int nubbinShift = (int)Math.floor(percent * 80);
             gui.blit(TEXTURE, x - 20, y + 40 + nubbinShift, 28, 230, 8, 8);
+        }
+
+        //Batch Size Selector
+        gui.blit(TEXTURE_EXT, x - 85, y + 142, 0, 168, 81, 45);
+
+        //Scroll Nubbin for Batch Size
+        if(menu.blockEntity.getCurrentRecipe() != null && menu.blockEntity.getCurrentRecipe().getBatchSize() > 1) {
+            float percent = (float)(menu.blockEntity.getBatchSize() - 1) / (float)(menu.blockEntity.getCurrentRecipe().getBatchSize() - 1);
+            int nubbinShift = (int)Math.floor(percent * 57);
+            gui.blit(TEXTURE, x - 77 + nubbinShift, y + 171, 28, 230, 8, 8);
         }
     }
 
@@ -414,6 +445,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
+        //Recipe Selector Scroll Bar
         if(recipeFilterRowTotal > 5 && pButton == 0) {
             int x = (width - PANEL_MAIN_W) / 2;
             int y = (height - PANEL_MAIN_H) / 2;
@@ -424,6 +456,29 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                 double percent = point / 80d;
 
                 recipeFilterRow = Math.max(0, Math.min(recipeFilterRowTotal - 5, (int) Math.round(percent * recipeFilterRowTotal)));
+            }
+        }
+
+        //Batch Size Scroll Bar
+        if(menu.blockEntity.getCurrentRecipe() != null){
+            int maxBatch = menu.blockEntity.getCurrentRecipe().getBatchSize();
+            if (maxBatch > 1) {
+                int x = (width - PANEL_MAIN_W) / 2;
+                int y = (height - PANEL_MAIN_H) / 2;
+
+                if (pMouseX >= x - 77 && pMouseX <= x - 15 &&
+                        pMouseY >= y + 171 && pMouseY <= y + 179) {
+                    double point = pMouseX - (x - 81);
+                    double percent = point / 65d;
+
+                    int newBatchSize = (int)Math.min(menu.blockEntity.getCurrentRecipe().getBatchSize(),
+                            Math.max(1,Math.round(percent * maxBatch)));
+                    menu.blockEntity.setBatchSize(newBatchSize);
+                    PacketRegistry.sendToServer(new FabricationBatchSizeC2SPacket(
+                            menu.blockEntity.getBlockPos(),
+                            newBatchSize
+                    ));
+                }
             }
         }
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
@@ -442,7 +497,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         DistillationFabricationRecipe recipe = menu.blockEntity.getCurrentRecipe();
         if(recipe != null) {
             for (int i = 0; i < recipe.getComponentMateria().size(); i++) {
-                Component text = Component.literal(recipe.getComponentMateria().get(i).getCount() + "");
+                Component text = Component.literal((recipe.getComponentMateria().get(i).getCount() * menu.blockEntity.getBatchSize()) + "");
                 int rightAlignShift = 17 - font.width(text.getString());
 
                 gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
@@ -453,6 +508,16 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width/2, -33, 0xff000000, false);
+        }
+
+        if(recipe != null) {
+            if(recipe.getBatchSize() > 1) {
+                int currentBatchSize = menu.blockEntity.getBatchSize();
+                String str = currentBatchSize + " / " + recipe.getBatchSize();
+                int width = font.width(str);
+
+                gui.drawString(font, str, -46 - width / 2, 141, 0xff000000, false);
+            }
         }
     }
 }

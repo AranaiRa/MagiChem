@@ -205,6 +205,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
     public void setBatchSize(int pNewBatchSize) {
         this.batchSize = pNewBatchSize;
+        this.resetProgress();
         this.syncAndSave();
     }
 
