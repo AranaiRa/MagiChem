@@ -1,0 +1,15 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "wisdom": 6,
+  "categories": 1,
+  "output_rate": 0.333,
+  "batch_size": 1,
+  "object": { "item": "magichem:mote_achromatic" },
+  "components": [
+    { "item": "magichem:admixture_mana", "count": 36 },
+    { "item": "magichem:admixture_energy", "count": 19 },
+    { "item": "magichem:admixture_sorcery", "count": 13 },
+    { "item": "magichem:admixture_potential", "count": 12 },
+    { "item": "magichem:essentia_nigredo", "count": 3 }
+  ]
+}

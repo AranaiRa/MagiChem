@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "mna:mote_earth",
+  "input_count": 1,
+  "result": "magichem:mote_achromatic",
+  "result_count": 3
+}

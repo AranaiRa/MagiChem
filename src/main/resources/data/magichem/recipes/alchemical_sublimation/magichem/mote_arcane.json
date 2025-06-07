@@ -1,0 +1,19 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "mna:mote_arcane"
+  },
+  "stages": [
+    {
+      "experience": 7,
+      "components": [
+        { "item": "magichem:mote_achromatic" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_arcane", "count": 105 }
+      ]
+    }
+  ]
+}
