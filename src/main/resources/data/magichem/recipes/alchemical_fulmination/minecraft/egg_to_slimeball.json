@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:egg",
+  "input_count": 16,
+  "result": "minecraft:slime_ball",
+  "result_count": 1
+}
