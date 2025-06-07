@@ -312,6 +312,38 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> COLLATED_THEORIES = ITEMS.register("collated_theories",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> PROFOUND_MANUSCRIPT = ITEMS.register("profound_manuscript",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> DAUNTING_ESOTERICA = ITEMS.register("daunting_esoterica",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> ACHROMATIC_MOTE = ITEMS.register("mote_achromatic",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SALT_OF_SOOT = ITEMS.register("salt_of_soot",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SALT_OF_BONE = ITEMS.register("salt_of_bone",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> GRAY_RESIN = ITEMS.register("resin_gray",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> CHIAROSCURO = ITEMS.register("chiaroscuro",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     ///////////////
     // MAGICHEM FLUID BUCKETS
     ///////////////
