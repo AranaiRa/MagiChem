@@ -1,0 +1,52 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:wisdom_stone_nigredo"
+  },
+  "stages": [
+    {
+      "experience": 45,
+      "components": [
+        { "item": "magichem:collated_theories" },
+        { "item": "magichem:inert_wisdom_stone" },
+        { "item": "magichem:collated_theories" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_potential", "count": 120 },
+        { "item": "magichem:admixture_dust", "count": 40 },
+        { "item": "magichem:essentia_conceptual", "count": 80 },
+        { "item": "magichem:essentia_nigredo", "count": 100 }
+      ]
+    },
+    {
+      "experience": 60,
+      "components": [
+        { "item": "magichem:salt_of_soot" },
+        { "item": "magichem:mote_achromatic" },
+        { "item": "magichem:salt_of_bone" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_death", "count": 40 },
+        { "item": "magichem:admixture_destruction", "count": 40 },
+        { "item": "magichem:admixture_disaster", "count": 40 },
+        { "item": "magichem:admixture_violence", "count": 40 }
+      ]
+    },
+    {
+      "experience": 75,
+      "components": [
+        { "item": "magichem:collated_theories" },
+        { "item": "magichem:chiaroscuro" },
+        { "item": "magichem:collated_theories" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_change", "count": 80 },
+        { "item": "magichem:admixture_erosion", "count": 40 },
+        { "item": "magichem:admixture_realm", "count": 40 },
+        { "item": "magichem:essentia_nigredo", "count": 150 }
+      ]
+    }
+  ]
+}
