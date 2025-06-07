@@ -145,8 +145,10 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         //Itemstack
         ResourceLocation key = ForgeRegistries.ITEMS.getKey(this.stackInTransit.getItem());
-        pCompound.putString("materiaType",key.getPath());
-        pCompound.putInt("materiaCount",stackInTransit.getCount());
+        if(key != null) {
+            pCompound.putString("materiaType",key.getPath());
+            pCompound.putInt("materiaCount",stackInTransit.getCount());
+        }
 
         //Vectors
         pCompound.putDouble("startPosX",startLocation.x);
