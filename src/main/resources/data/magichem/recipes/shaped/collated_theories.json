@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSL",
+    "SSL",
+    "SSL"
+  ],
+  "key": {
+    "S": {
+      "item": "magichem:scorched_theorem"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "item": "magichem:collated_theories"
+  }
+}

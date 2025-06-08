@@ -1,0 +1,7 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 1,
+  "input": { "item": "minecraft:charcoal", "count": 7 },
+  "resultItem": { "item": "magichem:daunting_esoterica", "count": 1 },
+  "resultFluid": { "fluid": "magichem:daunting_esoterica", "mB": 100 }
+}

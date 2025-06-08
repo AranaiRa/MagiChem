@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "magichem:scorched_profundity"
+    },
+    {
+      "item": "magichem:scorched_profundity"
+    },
+    {
+      "item": "magichem:scorched_profundity"
+    },
+    {
+      "item": "magichem:profound_manuscript"
+    },
+    {
+      "item": "magichem:profound_manuscript"
+    },
+    {
+      "item": "magichem:profound_manuscript"
+    },
+    {
+      "item": "magichem:scorched_profundity"
+    },
+    {
+      "item": "magichem:scorched_profundity"
+    },
+    {
+      "item": "magichem:scorched_profundity"
+    }
+  ],
+  "result": {
+    "item": "magichem:daunting_esoterica"
+  }
+}
