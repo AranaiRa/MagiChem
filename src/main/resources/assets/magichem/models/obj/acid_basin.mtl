@@ -1,0 +1,5 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 1
+
+newmtl ACID_BASIN
+map_Kd magichem:block/acid_basin

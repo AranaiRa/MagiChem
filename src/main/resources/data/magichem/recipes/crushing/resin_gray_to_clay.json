@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "magichem:resin_gray",
+  "output": "minecraft:clay_ball",
+  "output_quantity": 8
+}

@@ -108,7 +108,6 @@ public class FulminationRecipe implements Recipe<SimpleContainer> {
     public static class Serializer implements RecipeSerializer<FulminationRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID = new ResourceLocation(MagiChemMod.MODID, "fulmination");
-        private static final HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(true, true);
 
         @Override
         public FulminationRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {

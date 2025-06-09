@@ -36,6 +36,9 @@ public class RecipeRegistry {
     public static final RegistryObject<RecipeSerializer<FulminationRecipe>> FULMINATION_SERIALIZER =
             SERIALIZERS.register("fulmination", () -> FulminationRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<VitriolationRecipe>> VITRIOLATION_SERIALIZER =
+            SERIALIZERS.register("vitriolation", () -> VitriolationRecipe.Serializer.INSTANCE);
+
     public static final RegistryObject<RecipeSerializer<InfoPanelRecipe>> INFO_PANEL_SERIALIZER =
             SERIALIZERS.register("info_panel", () -> InfoPanelRecipe.Serializer.INSTANCE);
 

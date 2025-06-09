@@ -89,6 +89,7 @@
 
   "item.magichem.dummy.dummy_anointing": "Materia Anointing",
   "item.magichem.dummy.dummy_info_panel": "Non-Recipe Information",
+  "item.magichem.dummy.dummy_vitriolation": "Alchemical Vitriolation",
   "item.magichem.dummy.process_coloration": "Alchemical Coloration",
   "item.magichem.dummy.process_conjuration": "Alchemical Conjuration",
   "item.magichem.dummy.process_fixation": "Alchemical Fixation",
@@ -98,6 +99,7 @@
 
   "item.magichem.occult_ritual_talisman": "Occult Ritual Talisman",
 
+  "block.magichem.acid_basin": "Acid Basin",
   "block.magichem.actuator_air": "Gale Pressurizer",
   "block.magichem.actuator_air_router": "Gale Pressurizer",
   "block.magichem.actuator_arcane": "Occult Matrix",
@@ -1170,6 +1172,7 @@
   "jei.magichem.separation": "Alchemical Separation",
   "jei.magichem.sublimation": "Alchemical Sublimation",
   "jei.magichem.sublimation_ritual": "Alchemical Sublimation (Ritual)",
+  "jei.magichem.vitriolation": "Alchemical Vitriolation",
 
   "jei.magichem.info_panel.academic_slurry": "Created by extracting Experience from a Crystal of Memories with an Experience Exchanger or an Occult Matrix. \n Some alchemical devices, like the Fusery, consume Academic Slurry.",
   "jei.magichem.info_panel.alchemical_waste": "Created by cleaning an alchemical device. Grime inside the device is removed and becomes Alchemical Waste. \n Devices can be cleaned with a Cleaning Brush, with a Splash spell, or through Construct automation.",

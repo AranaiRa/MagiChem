@@ -26,11 +26,6 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
-    public static final RegistryObject<SkywrathAltarBlock> SKYWRATH_ALTAR = registerBlock("skywrath_altar",
-            () -> new SkywrathAltarBlock(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
-    );
-
     public static final RegistryObject<Block> MAGICHEMICAL_MECHANISM = registerBlock("magichemical_mechanism",
             () -> new SimpleRotationalBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f))
@@ -74,6 +69,16 @@ public class BlockRegistry {
     public static final RegistryObject<Block> ALCHEMICAL_NEXUS_ROUTER = registerBlock("alchemical_nexus_router",
             () -> new AlchemicalNexusRouterBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
+    );
+
+    public static final RegistryObject<SkywrathAltarBlock> SKYWRATH_ALTAR = registerBlock("skywrath_altar",
+            () -> new SkywrathAltarBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<AcidBasinBlock> ACID_BASIN = registerBlock("acid_basin",
+            () -> new AcidBasinBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
     public static final RegistryObject<Block> GRAND_DISTILLERY = registerBlock("grand_distillery",

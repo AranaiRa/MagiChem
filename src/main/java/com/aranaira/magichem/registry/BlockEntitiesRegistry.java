@@ -214,6 +214,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(StandingRetortBlockEntity::new, BlockRegistry.STANDING_RETORT.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<AcidBasinBlockEntity>> ACID_BASIN_BE = BLOCK_ENTITIES.register("acid_basin", () ->
+            BlockEntityType.Builder.of(AcidBasinBlockEntity::new, BlockRegistry.ACID_BASIN.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_BE = BLOCK_ENTITIES.register("signalite", () ->
             BlockEntityType.Builder.of(SignaliteBlockEntity::new,
                 BlockRegistry.SIGNALITE.get(),

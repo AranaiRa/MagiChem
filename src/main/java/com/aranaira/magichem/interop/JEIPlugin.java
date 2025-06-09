@@ -44,6 +44,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(ConjurationRecipeCategory.UID, ConjurationRecipe.class);
     public static RecipeType<AnointingRecipe> ANOINTING_TYPE =
             new RecipeType<>(AnointingRecipeCategory.UID, AnointingRecipe.class);
+    public static RecipeType<VitriolationRecipe> VITRIOLATION_TYPE =
+            new RecipeType<>(VitriolationRecipeCategory.UID, VitriolationRecipe.class);
     public static RecipeType<InfoPanelRecipe> INFO_PANEL_TYPE =
             new RecipeType<>(InfoPanelRecipeCategory.UID, InfoPanelRecipe.class);
 
@@ -76,6 +78,8 @@ public class JEIPlugin implements IModPlugin {
                 AnointingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 InfoPanelRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                VitriolationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -115,6 +119,9 @@ public class JEIPlugin implements IModPlugin {
 
         List<InfoPanelRecipe> recipesInfoPanel = rm.getAllRecipesFor(InfoPanelRecipe.Type.INSTANCE);
         registration.addRecipes(INFO_PANEL_TYPE, recipesInfoPanel);
+
+        List<VitriolationRecipe> recipesVitriolation = rm.getAllRecipesFor(VitriolationRecipe.Type.INSTANCE);
+        registration.addRecipes(VITRIOLATION_TYPE, recipesVitriolation);
     }
 
     @Override
@@ -143,6 +150,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CONJURER.get(), 1), CONJURATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(ItemRegistry.DUMMY_INFO_PANEL.get(), 1), INFO_PANEL_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ACID_BASIN.get(), 1), VITRIOLATION_TYPE);
 
         IModPlugin.super.registerRecipeCatalysts(registration);
     }
