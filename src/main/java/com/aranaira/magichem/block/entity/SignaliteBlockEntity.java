@@ -6,9 +6,11 @@ import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -185,7 +187,7 @@ public class SignaliteBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("connectionFlags", packConnectionsToInt());
-        nbt.putByte("signalTarget", (byte)(specialSignalTarget & 0x11111111));
+        nbt.putByte("signalTarget", (byte)specialSignalTarget);
         nbt.putBoolean("locked", locked);
         nbt.putBoolean("hidden", hidden);
         return nbt;
