@@ -13,11 +13,20 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.spongepowered.asm.mixin.Mutable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "vitriolation");
@@ -71,5 +80,40 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
         if (mc.font != null) {
             gui.drawString(mc.font, ""+recipe.getMinimumAcidStrength(), 20, 8, 0xff000000, false);
         }
+    }
+
+    @Override
+    public List<Component> getTooltipStrings(VitriolationRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        List<Component> in = IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+        ArrayList<Component> out = new ArrayList<>();
+
+        boolean xCoord = mouseX >= 4 && mouseX <= 30;
+        boolean yCoord = mouseY >= 4 && mouseY <= 20;
+        if(in.size() > 0) {
+            for (Object o : in.stream().toArray()) {
+                if (o instanceof Component c) {
+                    out.add(c);
+                }
+            }
+        }
+
+        if(xCoord && yCoord) {
+            out.add(Component.translatable("tooltip.magichem.jei.vitriolation.acid"));
+            out.add(Component.empty());
+
+            MutableComponent formatted = Component.literal("[").withStyle(ChatFormatting.DARK_GRAY);
+            boolean first = true;
+            for(FluidType ft : VitriolationRecipe.getAllFluidTypesOfAcidStrength(recipe.getMinimumAcidStrength())) {
+                if(!first) formatted.append(", ");
+                ResourceLocation key = ForgeRegistries.FLUID_TYPES.get().getKey(ft);
+                formatted.append(Component.translatable(key.getPath()).withStyle(first ? ChatFormatting.GOLD : ChatFormatting.WHITE));
+                if(first) formatted.append(Component.literal("]").withStyle(ChatFormatting.DARK_GRAY));
+                first = false;
+            }
+
+            out.add(formatted);
+        }
+
+        return out.stream().toList();
     }
 }

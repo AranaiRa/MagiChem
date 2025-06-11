@@ -1,6 +1,7 @@
 package com.aranaira.magichem.recipe;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.fluid.AcidFluidType;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonObject;
@@ -17,10 +18,13 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +33,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
     private final ItemStack inputItem, resultItem;
     private final FluidStack resultFluid;
     private final int craftTicks, minimumAcidStrength, mBConsumed;
+    private static final HashMap<Integer, ArrayList<FluidType>> allAcids = new HashMap();
 
     public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pcraftTicks, int pMinimumAcidStrength, int pMBConsumed) {
         this.id = pID;
@@ -38,6 +43,28 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
         this.craftTicks = pcraftTicks;
         this.minimumAcidStrength = pMinimumAcidStrength;
         this.mBConsumed = pMBConsumed;
+
+        ArrayList<FluidType>[] acidLists = new ArrayList[]{
+                new ArrayList<FluidType>(),
+                new ArrayList<FluidType>(),
+                new ArrayList<FluidType>(),
+                new ArrayList<FluidType>(),
+                new ArrayList<FluidType>(),
+                new ArrayList<FluidType>(),
+        };
+        acidLists[0].add(Fluids.WATER.getFluidType());
+
+        if(allAcids.size() == 0) {
+            for (FluidType ft : ForgeRegistries.FLUID_TYPES.get().getValues()) {
+                if (ft instanceof AcidFluidType aft) {
+                    acidLists[aft.getAcidStrength()].add(ft);
+                }
+            }
+
+            for (int i = 0; i <= 5; i++) {
+                allAcids.put(i, acidLists[i]);
+            }
+        }
     }
 
     @Override
@@ -139,6 +166,27 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
 
     public static List<VitriolationRecipe> getAllVitriolationRecipes(Level level) {
         return level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+    }
+
+    public static ArrayList<FluidType> getAllFluidTypesOfAcidStrength(int pStrength) {
+        return allAcids.get(pStrength);
+    }
+
+    public static boolean isFluidOfAcidStrength(Fluid pFluid, int pStrength) {
+        return allAcids.get(pStrength).contains(pFluid.getFluidType());
+    }
+
+    public static int getFluidAcidStrengthDifference(Fluid pFluid, int pTargetStrength) {
+        int myStrength = -1;
+        for(int i=0; i<=5; i++) {
+            if(allAcids.get(i).contains(pFluid.getFluidType()) && pFluid.getFluidType() instanceof AcidFluidType aft) {
+                myStrength = aft.getAcidStrength();
+                break;
+            }
+        }
+        if(myStrength == -1) return -1;
+
+        return pTargetStrength - myStrength;
     }
 
     public static class Type implements RecipeType<VitriolationRecipe> {

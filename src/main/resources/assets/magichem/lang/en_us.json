@@ -939,6 +939,7 @@
   "tooltip.magichem.jei.coloration.cauldron.part2": " be crafted in a Coloring Cauldron",
   "tooltip.magichem.jei.coloration.variegator.part1": "This recipe ",
   "tooltip.magichem.jei.coloration.variegator.part2": " be crafted in a Variegator",
+  "tooltip.magichem.jei.vitriolation.acid": "This recipe requires one of the following fluids in the main tank of the Acid Basin:",
 
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
   "log.magichem.powerspike.bindpower": "Power Spike bound to this Circle of Power.",
