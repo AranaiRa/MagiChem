@@ -168,7 +168,7 @@ public class SignaliteBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putInt("connectionFlags", packConnectionsToInt());
-        nbt.putByte("signalTarget", (byte)(specialSignalTarget & 0x11111111));
+        nbt.putByte("signalTarget", (byte)specialSignalTarget);
         nbt.putBoolean("locked", locked);
         nbt.putBoolean("hidden", hidden);
         super.saveAdditional(nbt);
