@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:salt_of_bone" },
+    { "item": "magichem:salt_of_bone" },
+    { "item": "magichem:salt_of_bone" },
+    { "item": "magichem:resin_gray" },
+    { "item": "magichem:resin_gray" },
+    { "item": "magichem:resin_gray" },
+    { "item": "magichem:salt_of_soot" },
+    { "item": "magichem:salt_of_soot" },
+    { "item": "magichem:salt_of_soot" }
+  ],
+  "result": {
+    "item": "magichem:chiaroscuro"
+  }
+}

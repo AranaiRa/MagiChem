@@ -1,0 +1,8 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 0,
+  "acidConsumed": 1000,
+  "duration": 1,
+  "inputItem": { "item": "magichem:aristose", "count": 1 },
+  "resultFluid": { "fluid": "magichem:simple_acid", "amount": 1000 }
+}

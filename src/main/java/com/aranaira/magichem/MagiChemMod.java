@@ -15,6 +15,8 @@ import com.mna.api.guidebook.RegisterGuidebooksEvent;
 import com.mna.items.base.INoCreativeTab;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -163,6 +165,17 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.STANDING_RETORT_MENU.get(), StandingRetortScreen::new);
                 MenuScreens.register(MenuRegistry.MIRROR_LABYRINTH_MENU.get(), MirrorLabyrinthScreen::new);
                 MenuScreens.register(MenuRegistry.MATERIA_REFLECTOR_MENU.get(), MateriaReflectorScreen::new);
+
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID_FLOWING.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.AQUA_FORTIS.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.AQUA_FORTIS_FLOWING.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.AQUA_REGIA.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.AQUA_REGIA_FLOWING.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.OIL_OF_VITRIOL.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.OIL_OF_VITRIOL_FLOWING.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.AZOTH.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.AZOTH_FLOWING.get(), RenderType.translucent());
             });
         }
 

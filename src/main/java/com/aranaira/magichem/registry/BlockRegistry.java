@@ -81,6 +81,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<AcidBasinRouterBlock> ACID_BASIN_ROUTER = registerBlock("acid_basin_router",
+            () -> new AcidBasinRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> GRAND_DISTILLERY = registerBlock("grand_distillery",
             () -> new GrandDistilleryBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())

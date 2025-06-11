@@ -1,0 +1,23 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:acid_basin",
+  "tier": 2,
+  "items": [
+    "magichem:perfected_electrum",
+    "magichem:perfected_electrum",
+    "magichem:perfected_electrum",
+    "minecraft:cauldron",
+    "minecraft:cauldron",
+    "minecraft:cauldron",
+    "magichem:magichemical_mechanism",
+    "magichem:alembic",
+    "magichem:magichemical_mechanism"
+  ],
+  "patterns": [
+    "mna:backslash",
+    "mna:circle",
+    "mna:circle",
+    "mna:square",
+    "mna:slash"
+  ]
+}

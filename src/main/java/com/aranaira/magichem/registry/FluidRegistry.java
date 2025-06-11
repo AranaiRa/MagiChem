@@ -1,7 +1,9 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.fluid.AcidFluidBlock;
 import com.aranaira.magichem.block.fluid.LiquidLightFluidBlock;
+import com.aranaira.magichem.fluid.AcidFluidType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
@@ -170,6 +172,180 @@ public class FluidRegistry {
 
     public static ForgeFlowingFluid.Properties getLiquidLightProperties() {
         return new ForgeFlowingFluid.Properties(LIQUID_LIGHT_FLUID_TYPE, LIQUID_LIGHT, LIQUID_LIGHT_FLOWING).block(LIQUID_LIGHT_BLOCK).bucket(ItemRegistry.LIQUID_LIGHT_BUCKET);
+    }
+
+    //////////////////////
+    //-----ACIDS
+    //////////////////////
+
+    //Simple Acid
+    public static final RegistryObject<AcidFluidType> SIMPLE_ACID_FLUID_TYPE = FLUID_TYPES.register("simple_acid_fluid_type", () ->
+            new AcidFluidType(FluidType.Properties.create().descriptionId("simple_acid_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH), 1) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> SIMPLE_ACID = FLUIDS.register("simple_acid", () -> new ForgeFlowingFluid.Source(getSimpleAcidProperties()));
+    public static final RegistryObject<FlowingFluid> SIMPLE_ACID_FLOWING = FLUIDS.register("simple_acid_flowing", () -> new ForgeFlowingFluid.Flowing(getSimpleAcidProperties()));
+    public static final RegistryObject<LiquidBlock> SIMPLE_ACID_BLOCK = BlockRegistry.BLOCKS.register("simple_acid_block", () -> new AcidFluidBlock(SIMPLE_ACID_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.WATER)));
+
+    public static ForgeFlowingFluid.Properties getSimpleAcidProperties() {
+        return new ForgeFlowingFluid.Properties(SIMPLE_ACID_FLUID_TYPE, SIMPLE_ACID, SIMPLE_ACID_FLOWING).block(SIMPLE_ACID_BLOCK).bucket(ItemRegistry.SIMPLE_ACID_BUCKET);
+    }
+
+    //Aqua Fortis
+    public static final RegistryObject<AcidFluidType> AQUA_FORTIS_FLUID_TYPE = FLUID_TYPES.register("aqua_fortis_fluid_type", () ->
+            new AcidFluidType(FluidType.Properties.create().descriptionId("aqua_fortis_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH), 2) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_aqua_fortis");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_aqua_fortis");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> AQUA_FORTIS = FLUIDS.register("aqua_fortis", () -> new ForgeFlowingFluid.Source(getAquaFortisProperties()));
+    public static final RegistryObject<FlowingFluid> AQUA_FORTIS_FLOWING = FLUIDS.register("aqua_fortis_flowing", () -> new ForgeFlowingFluid.Flowing(getAquaFortisProperties()));
+    public static final RegistryObject<LiquidBlock> AQUA_FORTIS_BLOCK = BlockRegistry.BLOCKS.register("aqua_fortis_block", () -> new AcidFluidBlock(AQUA_FORTIS_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.WATER)));
+
+    public static ForgeFlowingFluid.Properties getAquaFortisProperties() {
+        return new ForgeFlowingFluid.Properties(AQUA_FORTIS_FLUID_TYPE, AQUA_FORTIS, AQUA_FORTIS_FLOWING).block(AQUA_FORTIS_BLOCK).bucket(ItemRegistry.AQUA_FORTIS_BUCKET);
+    }
+
+    //Aqua Regia
+    public static final RegistryObject<AcidFluidType> AQUA_REGIA_FLUID_TYPE = FLUID_TYPES.register("aqua_regia_fluid_type", () ->
+            new AcidFluidType(FluidType.Properties.create().descriptionId("aqua_regia_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH), 2) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_aqua_regia");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_aqua_regia");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> AQUA_REGIA = FLUIDS.register("aqua_regia", () -> new ForgeFlowingFluid.Source(getAquaRegiaProperties()));
+    public static final RegistryObject<FlowingFluid> AQUA_REGIA_FLOWING = FLUIDS.register("aqua_regia_flowing", () -> new ForgeFlowingFluid.Flowing(getAquaRegiaProperties()));
+    public static final RegistryObject<LiquidBlock> AQUA_REGIA_BLOCK = BlockRegistry.BLOCKS.register("aqua_regia_block", () -> new AcidFluidBlock(AQUA_REGIA_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.WATER)));
+
+    public static ForgeFlowingFluid.Properties getAquaRegiaProperties() {
+        return new ForgeFlowingFluid.Properties(AQUA_REGIA_FLUID_TYPE, AQUA_REGIA, AQUA_REGIA_FLOWING).block(AQUA_REGIA_BLOCK).bucket(ItemRegistry.AQUA_REGIA_BUCKET);
+    }
+
+    //Oil of Vitriol
+    public static final RegistryObject<AcidFluidType> OIL_OF_VITRIOL_FLUID_TYPE = FLUID_TYPES.register("oil_of_vitriol_fluid_type", () ->
+            new AcidFluidType(FluidType.Properties.create().descriptionId("oil_of_vitriol_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH), 2) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_oil_of_vitriol");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_oil_of_vitriol");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> OIL_OF_VITRIOL = FLUIDS.register("oil_of_vitriol", () -> new ForgeFlowingFluid.Source(getOilOfVitriolProperties()));
+    public static final RegistryObject<FlowingFluid> OIL_OF_VITRIOL_FLOWING = FLUIDS.register("oil_of_vitriol_flowing", () -> new ForgeFlowingFluid.Flowing(getOilOfVitriolProperties()));
+    public static final RegistryObject<LiquidBlock> OIL_OF_VITRIOL_BLOCK = BlockRegistry.BLOCKS.register("oil_of_vitriol_block", () -> new AcidFluidBlock(OIL_OF_VITRIOL_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.WATER)));
+
+    public static ForgeFlowingFluid.Properties getOilOfVitriolProperties() {
+        return new ForgeFlowingFluid.Properties(OIL_OF_VITRIOL_FLUID_TYPE, OIL_OF_VITRIOL, OIL_OF_VITRIOL_FLOWING).block(OIL_OF_VITRIOL_BLOCK).bucket(ItemRegistry.OIL_OF_VITRIOL_BUCKET);
+    }
+
+    //Azoth
+    public static final RegistryObject<AcidFluidType> AZOTH_FLUID_TYPE = FLUID_TYPES.register("azoth_fluid_type", () ->
+            new AcidFluidType(FluidType.Properties.create().descriptionId("azoth_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH), 2) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_azoth");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_azoth");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> AZOTH = FLUIDS.register("azoth", () -> new ForgeFlowingFluid.Source(getAzothProperties()));
+    public static final RegistryObject<FlowingFluid> AZOTH_FLOWING = FLUIDS.register("azoth_flowing", () -> new ForgeFlowingFluid.Flowing(getAzothProperties()));
+    public static final RegistryObject<LiquidBlock> AZOTH_BLOCK = BlockRegistry.BLOCKS.register("azoth_block", () -> new AcidFluidBlock(AZOTH_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.WATER)));
+
+    public static ForgeFlowingFluid.Properties getAzothProperties() {
+        return new ForgeFlowingFluid.Properties(AZOTH_FLUID_TYPE, AZOTH, AZOTH_FLOWING).block(AZOTH_BLOCK).bucket(ItemRegistry.AZOTH_BUCKET);
     }
 
     //////////////////////

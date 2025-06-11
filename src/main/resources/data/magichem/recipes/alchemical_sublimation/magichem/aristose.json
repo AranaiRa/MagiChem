@@ -1,0 +1,27 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:aristose",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:blue_orchid" },
+        { "item": "minecraft:sugar" },
+        { "item": "minecraft:raw_copper" },
+        { "item": "minecraft:sugar" },
+        { "item": "minecraft:dandelion" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_earth", "count": 9 },
+        { "item": "magichem:admixture_change", "count": 4 },
+        { "item": "magichem:admixture_destruction", "count": 11 },
+        { "item": "magichem:essentia_mineral", "count": 16 }
+      ]
+    }
+  ]
+}

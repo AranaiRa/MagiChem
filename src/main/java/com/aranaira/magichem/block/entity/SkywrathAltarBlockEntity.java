@@ -40,7 +40,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
     public void tryCraftItem() {
         final FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(getLevel(), heldItem.getItem());
-        boolean hasValidRecipe = recipe != null;
+        boolean hasValidRecipe = recipe != null && heldItem.getCount() >= recipe.getInput().getCount();
         boolean canStoreRF = heldItem.getCapability(ForgeCapabilities.ENERGY).isPresent();
         boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
 
@@ -53,7 +53,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
     private boolean craftItem() {
         final FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(getLevel(), heldItem.getItem());
         if(recipe != null) {
-            int minRequired = recipe.getResult().getCount();
+            int minRequired = recipe.getInput().getCount();
             if(heldItem.getCount() >= minRequired) {
                 int remainder = heldItem.getCount() - minRequired;
 

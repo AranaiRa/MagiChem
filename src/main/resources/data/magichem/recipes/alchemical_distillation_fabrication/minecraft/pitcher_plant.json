@@ -7,6 +7,7 @@
   "required_advancement": "husbandry/plant_any_sniffer_seed",
   "object": { "item": "minecraft:pitcher_plant" },
   "components": [
+    { "item": "magichem:admixture_acid", "count": 2 },
     { "item": "magichem:admixture_plant", "count": 2 },
     { "item": "magichem:admixture_trap", "count": 2 },
     { "item": "magichem:admixture_history", "count": 1 },

@@ -1,6 +1,16 @@
 {
   "admixtures": [
     {
+      "name": "acid",
+      "color": "dbf815",
+      "depth": 2,
+      "components": [
+        { "essentia": "water", "count": 4 },
+        { "admixture": "destruction", "count": 1 },
+        { "essentia": "mineral", "count": 3 }
+      ]
+    },
+    {
       "name": "adornment",
       "color": "f1924c",
       "depth": 2,

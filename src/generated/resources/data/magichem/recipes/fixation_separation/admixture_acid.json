@@ -1,0 +1,20 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_acid"
+  },
+  "components": [
+    {
+      "item": "magichem:essentia_water",
+      "count": 4
+    },
+    {
+      "item": "magichem:admixture_destruction",
+      "count": 1
+    },
+    {
+      "item": "magichem:essentia_mineral",
+      "count": 3
+    }
+  ]
+}

@@ -328,6 +328,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<FluidConvertingItem> ARISTOSE = ITEMS.register("aristose",
+            () -> new FluidConvertingItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> SALT_OF_SOOT = ITEMS.register("salt_of_soot",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -362,6 +366,26 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> LIQUID_LIGHT_BUCKET = ITEMS.register("liquid_light_bucket",
             () -> new BucketItem(FluidRegistry.LIQUID_LIGHT, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> SIMPLE_ACID_BUCKET = ITEMS.register("simple_acid_bucket",
+            () -> new BucketItem(FluidRegistry.SIMPLE_ACID, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> AQUA_FORTIS_BUCKET = ITEMS.register("aqua_fortis_bucket",
+            () -> new BucketItem(FluidRegistry.AQUA_FORTIS, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> AQUA_REGIA_BUCKET = ITEMS.register("aqua_regia_bucket",
+            () -> new BucketItem(FluidRegistry.AQUA_REGIA, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> OIL_OF_VITRIOL_BUCKET = ITEMS.register("oil_of_vitriol_bucket",
+            () -> new BucketItem(FluidRegistry.OIL_OF_VITRIOL, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> AZOTH_BUCKET = ITEMS.register("azoth_bucket",
+            () -> new BucketItem(FluidRegistry.AZOTH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
 
     ///////////////
