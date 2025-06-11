@@ -15,7 +15,7 @@
         { "item": "mna:decoration/transmuted_silver_block" }
       ],
       "materia": [
-        { "item": "magichem:admixture_change", "count": 16 },
+        { "item": "magichem:admixture_color", "count": 16 },
         { "item": "magichem:admixture_mana", "count": 16 }
       ]
     }
