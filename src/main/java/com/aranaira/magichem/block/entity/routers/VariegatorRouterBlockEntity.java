@@ -99,7 +99,8 @@ public class VariegatorRouterBlockEntity extends BlockEntity implements MenuProv
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        masterPos = BlockPos.of(nbt.getLong("masterPos"));
+        if(nbt.contains("masterPos"))
+            masterPos = BlockPos.of(nbt.getLong("masterPos"));
     }
 
     @Nullable
@@ -112,7 +113,8 @@ public class VariegatorRouterBlockEntity extends BlockEntity implements MenuProv
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
 
-        nbt.putLong("masterPos", masterPos.asLong());
+        if(masterPos != null)
+            nbt.putLong("masterPos", masterPos.asLong());
 
         return nbt;
     }
