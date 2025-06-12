@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.AcidBasinBlock;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.recipe.VitriolationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,6 +14,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,6 +36,9 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
             SLOT_INPUT = 0, SLOT_OUTPUT = 1,
             TANK_COUNT = 2,
             TANK_INPUT = 0, TANK_OUTPUT = 1;
+    private int
+        progress = 0;
+    private VitriolationRecipe recipe;
 
     public AcidBasinBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.ACID_BASIN_BE.get(), pPos, pBlockState);
@@ -49,6 +54,17 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
 
         @Override
         protected void onContentsChanged(int slot) {
+            if(slot == SLOT_INPUT && level != null && !level.isClientSide()) {
+                VitriolationRecipe recipeQuery = VitriolationRecipe.getVitriolationRecipe(level, getStackInSlot(SLOT_INPUT).getItem());
+                if(getStackInSlot(SLOT_INPUT).getCount() >= recipeQuery.getInputItem().getCount()) {
+                    recipe = recipeQuery;
+                    progress = recipe.getCraftTicks();
+                } else {
+                    recipe = null;
+                    progress = -1;
+                }
+            }
+
             syncAndSave();
         }
     };
@@ -95,6 +111,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     protected void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
         nbt.put("inventory",itemHandler.serializeNBT());
+        nbt.putInt("progress",progress);
         if(!inputTank.isEmpty()) {
             CompoundTag inputTankTag = new CompoundTag();
             inputTankTag.putString("fluid",ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
@@ -113,6 +130,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        progress = nbt.getInt("progress");
         if(nbt.contains("inputTank")) {
             CompoundTag inputTankTag = nbt.getCompound("inputTank");
             Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
@@ -137,6 +155,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory",itemHandler.serializeNBT());
+        nbt.putInt("progress",progress);
         if(!inputTank.isEmpty()) {
             CompoundTag inputTankTag = new CompoundTag();
             inputTankTag.putString("fluid",ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
@@ -242,5 +261,67 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         }
 
         return FluidStack.EMPTY;
+    }
+
+    public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, E e) {
+        if(e instanceof AcidBasinBlockEntity entity) {
+            if(entity.recipe != null && entity.canCraftItem()) {
+                entity.progress--;
+
+                if(entity.progress <= 0) {
+                    entity.craftItem();
+                }
+            }
+        }
+    }
+
+    private boolean canCraftItem() {
+        boolean hasSpaceForOutputFluid = true;
+        if(recipe.hasResultFluid()) {
+            int tankCapacity = ServerConfig.acidBasinTankCapacity - outputTank.getAmount();
+            boolean fluidMatches = outputTank.isEmpty() || (outputTank.getFluid() == recipe.getResultFluid().getFluid());
+
+            hasSpaceForOutputFluid = (fluidMatches && tankCapacity >= recipe.getResultFluid().getAmount());
+        }
+
+        boolean hasSpaceForOutputItem = true;
+        if(recipe.hasResultItem()) {
+            int itemCapacity = recipe.getResultItem().getMaxStackSize() - getInputItem().getCount();
+            boolean itemMatches = getInputItem().getItem() == recipe.getResultItem().getItem();
+
+            hasSpaceForOutputItem =
+                    getInputItem().isEmpty() ||
+                    (itemMatches && itemCapacity >= recipe.getResultItem().getCount());
+        }
+
+        return hasSpaceForOutputFluid && hasSpaceForOutputItem;
+    }
+
+    private void craftItem() {
+        if(recipe.hasResultFluid()) {
+            if(outputTank.isEmpty()) {
+                outputTank = recipe.getResultFluid().copy();
+            } else {
+                outputTank.grow(recipe.getResultFluid().getAmount());
+            }
+        }
+
+        if(recipe.hasResultItem()) {
+            if(getInputItem().isEmpty()) {
+                itemHandler.setStackInSlot(SLOT_OUTPUT, recipe.getResultItem().copy());
+            } else {
+                getOutputItem().grow(recipe.getResultItem().getCount());
+            }
+        }
+
+        inputTank.shrink(recipe.getBaseFluidConsumed());
+        getInputItem().shrink(recipe.getInputItem().getCount());
+
+        if(getInputItem().getCount() < recipe.getInputItem().getCount()) {
+            recipe = null;
+            progress = -1;
+        }
+
+        syncAndSave();
     }
 }

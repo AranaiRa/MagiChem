@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.AcidBasinBlockEntity;
 import com.aranaira.magichem.block.entity.routers.AcidBasinRouterBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.AcidBasinRouterType;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -18,6 +19,8 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
@@ -121,5 +124,12 @@ public class AcidBasinBlock extends BaseEntityBlock {
         for(Pair<BlockPos, AcidBasinRouterType> posAndType : getRouterOffsets(pFacing)) {
             pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
         }
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return createTickerHelper(pBlockEntityType, BlockEntitiesRegistry.ACID_BASIN_BE.get(),
+                AcidBasinBlockEntity::tick);
     }
 }

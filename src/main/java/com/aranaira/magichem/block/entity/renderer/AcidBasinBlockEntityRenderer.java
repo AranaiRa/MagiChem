@@ -25,6 +25,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 
 import static com.aranaira.magichem.block.entity.AcidBasinBlockEntity.TANK_INPUT;
+import static com.aranaira.magichem.block.entity.AcidBasinBlockEntity.TANK_OUTPUT;
 
 public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBasinBlockEntity> {
 
@@ -40,7 +41,7 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
             this.renderMainTankFluid(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         }
 
-        if(!pBlockEntity.getFluidInTank(AcidBasinBlockEntity.TANK_OUTPUT).isEmpty()) {
+        if(!pBlockEntity.getFluidInTank(TANK_OUTPUT).isEmpty()) {
             this.renderOutputTankFluid(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         }
     }
@@ -194,42 +195,32 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
 
         switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case NORTH -> {
-                pPoseStack.translate(0.34375f, 0.34375f, 0.53125f);
+                pPoseStack.translate(0f, 0f, 1f);
             }
             case EAST -> {
-                pPoseStack.translate(0.15625f, 0.34375f, 0.34375f);
+                pPoseStack.translate(-1f, 0f, 0f);
             }
             case SOUTH -> {
-                pPoseStack.translate(0.34375f, 0.34375f, 0.15625f);
+                pPoseStack.translate(0f, 0f, -1f);
             }
             case WEST -> {
-                pPoseStack.translate(0.53125f, 0.34375f, 0.34375f);
+                pPoseStack.translate(1f, 0f, 0f);
             }
         }
 
         IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(
-                pBlockEntity.getFluidInTank(AcidBasinBlockEntity.TANK_OUTPUT).getFluid()
+                pBlockEntity.getFluidInTank(TANK_OUTPUT).getFluid()
         );
         TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(extension.getStillTexture());
 
-        float width = 0.3125f;
-        float height = 0.875f;
+        float width = 0.25f;
+        float height = 0.28125f * ((float)pBlockEntity.getFluidInTank(TANK_OUTPUT).getAmount() / (float)ServerConfig.acidBasinTankCapacity);
 
         pPoseStack.pushPose();
         RenderUtils.renderFace(Direction.UP, last.pose(), last.normal(), buffer, texture,
-                0, 0, 0 + height, width, width,  0xff2a76d1, pPackedLight);
-
-        RenderUtils.renderFace(Direction.NORTH, last.pose(), last.normal(), buffer, texture,
-                0, 0, 0, width, height, 0xff2a76d1, pPackedLight);
-
-        RenderUtils.renderFace(Direction.EAST, last.pose(), last.normal(), buffer, texture,
-                0, 0, 0, width, height, 0xff2a76d1, pPackedLight);
-
-        RenderUtils.renderFace(Direction.SOUTH, last.pose(), last.normal(), buffer, texture,
-                0, 0, 1-width, width, height, 0xff2a76d1, pPackedLight);
-
-        RenderUtils.renderFace(Direction.WEST, last.pose(), last.normal(), buffer, texture,
-                0, 0, 1-width, width, height, 0xff2a76d1, pPackedLight);
+                0.375f, 0.375f, 0.75f + height, width, width,
+                pBlockEntity.getFluidInTank(TANK_OUTPUT).getFluid() == Fluids.WATER ? 0xff2a76d1 : 0xffffffff,
+                pPackedLight);
         pPoseStack.popPose();
     }
 }
