@@ -11,18 +11,13 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class AcidBasinRouterBlockEntity extends BlockEntity {
-    public static final int
-        SLOT_COUNT = 2,
-        SLOT_INPUT = 0, SLOT_OUTPUT = 1;
-
-    private ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return slot != SLOT_OUTPUT;
-        }
-    };
+    private BlockPos masterPos = null;
 
     public AcidBasinRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.ACID_BASIN_ROUTER_BE.get(), pPos, pBlockState);
+    }
+
+    public void configure(BlockPos pPos) {
+        masterPos = pPos;
     }
 }

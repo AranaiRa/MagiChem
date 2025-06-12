@@ -30,7 +30,7 @@ public class MagiChemBlockStateProperties {
     public static final IntegerProperty ROUTER_TYPE_CIRCLE_FABRICATION = IntegerProperty.create("circle_power_router_type", 0, 8);
     public static final IntegerProperty ROUTER_TYPE_GRAND_CIRCLE_FABRICATION = IntegerProperty.create("grand_circle_fabrication_router_type", 0, 8);
     public static final IntegerProperty ROUTER_TYPE_MIRROR_LABYRINTH = IntegerProperty.create("mirror_labyrinth_router_type", 0, 13);
-    public static final IntegerProperty ROUTER_TYPE_ACID_BASIN = IntegerProperty.create("acid_basin_router_type", 0, 3);
+    public static final IntegerProperty ROUTER_TYPE_ACID_BASIN = IntegerProperty.create("acid_basin_router_type", 0, 4);
     public static final IntegerProperty USER_TIER_TYPE = IntegerProperty.create("user_tier_type", 0, 5);
     public static final IntegerProperty VERTICAL_CRYSTAL_SHAPE_TYPE = IntegerProperty.create("vertical_crystal_shape_type", 0, 5);
 
