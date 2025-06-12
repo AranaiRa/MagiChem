@@ -98,8 +98,10 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
         }
 
         if(xCoord && yCoord) {
-            out.add(Component.translatable("tooltip.magichem.jei.vitriolation.acid"));
-            out.add(Component.empty());
+            out.add(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line1.part1")
+                            .append(Component.literal(recipe.getFluidConsumed(recipe.getMinimumAcidStrength())+"mB").withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line1.part2"))
+            );
 
             MutableComponent formatted = Component.literal("[").withStyle(ChatFormatting.DARK_GRAY);
             boolean first = true;
@@ -112,6 +114,9 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
             }
 
             out.add(formatted);
+            if(recipe.getMinimumAcidStrength() > 0) {
+                out.add(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line2"));
+            }
         }
 
         return out.stream().toList();

@@ -13,6 +13,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -114,5 +115,11 @@ public class AcidBasinBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    public static void destroyRouters(LevelAccessor pLevel, BlockPos pPos, Direction pFacing) {
+        for(Pair<BlockPos, AcidBasinRouterType> posAndType : getRouterOffsets(pFacing)) {
+            pLevel.destroyBlock(pPos.offset(posAndType.getFirst()), true);
+        }
     }
 }

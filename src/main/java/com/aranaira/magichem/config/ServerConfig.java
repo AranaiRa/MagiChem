@@ -393,6 +393,12 @@ public class ServerConfig
             .comment("The maximum amount of FE a Skywrath Altar will recharge an object's FE gauge by. Only used if this value would be greater than the recharge percentage above.")
             .defineInRange("skywrathAltarFEChargeLimit", 30000, 1, Integer.MAX_VALUE);
 
+    //----------------ACID BASIN
+
+    private static final ForgeConfigSpec.IntValue ACID_BASIN_TANK_CAPACITY = BUILDER
+            .comment("The amount of Water and Steam, in mB, both of the Acid Basin's internal tanks can hold.")
+            .defineInRange("acidBasinTankCapacity", 5000, 1, Integer.MAX_VALUE);
+
     //----------------MATERIA MANIFEST
 
     private static final ForgeConfigSpec.IntValue MATERIA_MANIFEST_SIZE_CONSTRAINT = BUILDER
@@ -492,6 +498,7 @@ public class ServerConfig
         conjurerPointsPerDram,
         skywrathAltarFERechargePercentage,
         skywrathAltarFERechargeLimit,
+        acidBasinTankCapacity,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
         materiaManifestDefaultRange;
@@ -586,6 +593,7 @@ public class ServerConfig
         conjurerPointsPerDram = CONJURER_POINTS_PER_DRAM.get();
         skywrathAltarFERechargePercentage = SKYWRATH_ALTAR_FE_RECHARGE_PERCENTAGE.get();
         skywrathAltarFERechargeLimit = SKYWRATH_ALTAR_FE_RECHARGE_LIMIT.get();
+        acidBasinTankCapacity = ACID_BASIN_TANK_CAPACITY.get();
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
         materiaManifestDefaultRange = MATERIA_MANIFEST_DEFAULT_RANGE.get();
