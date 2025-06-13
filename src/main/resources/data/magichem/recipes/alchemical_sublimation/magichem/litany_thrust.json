@@ -1,0 +1,24 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:litany_thrust",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:purified_vinteum_ingot" },
+        { "item": "minecraft:blast_furnace" },
+        { "item": "magichem:mote_achromatic" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_fire", "count": 40 },
+        { "item": "magichem:admixture_flight", "count": 15 },
+        { "item": "magichem:admixture_construct", "count": 3 }
+      ]
+    }
+  ]
+}

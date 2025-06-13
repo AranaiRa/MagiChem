@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:litany_thrust" },
+    { "item": "mna:constructs/construct_basic_legs_bone" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_rocket_legs_bone",
+    "count": 1
+  }
+}

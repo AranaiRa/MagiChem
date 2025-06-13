@@ -1,0 +1,23 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:litany_bearing",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:purified_vinteum_ingot" },
+        { "item": "minecraft:saddle" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_wrought", "count": 20 },
+        { "item": "magichem:admixture_travel", "count": 15 },
+        { "item": "magichem:admixture_construct", "count": 3 }
+      ]
+    }
+  ]
+}

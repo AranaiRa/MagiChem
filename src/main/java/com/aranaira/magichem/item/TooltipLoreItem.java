@@ -289,6 +289,12 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.LITANY_BEARING.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.litanybearing")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == ItemRegistry.LITANY_INTELLIGENCE.get()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.litanyintelligence")
@@ -322,6 +328,18 @@ public class TooltipLoreItem extends Item {
         else if(pStack.getItem() == ItemRegistry.LITANY_SORCERY.get()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.litanysorcery")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.LITANY_TELEPORTATION.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.litanyteleportation")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.LITANY_THRUST.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.litanythrust")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }

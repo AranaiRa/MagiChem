@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:litany_bearing" },
+    { "item": "mna:constructs/construct_basic_legs_wood" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_reinforced_legs_wood",
+    "count": 1
+  }
+}

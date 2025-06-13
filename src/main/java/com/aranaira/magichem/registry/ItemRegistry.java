@@ -156,6 +156,10 @@ public class ItemRegistry {
             () -> new ChargingTalismanItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<TooltipLoreItem> LITANY_BEARING = ITEMS.register("litany_bearing",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> LITANY_INTELLIGENCE = ITEMS.register("litany_intelligence",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -177,6 +181,14 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<TooltipLoreItem> LITANY_SORCERY = ITEMS.register("litany_sorcery",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LITANY_TELEPORTATION = ITEMS.register("litany_teleportation",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LITANY_THRUST = ITEMS.register("litany_thrust",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 

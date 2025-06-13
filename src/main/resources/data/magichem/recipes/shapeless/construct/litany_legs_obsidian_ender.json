@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:litany_teleportation" },
+    { "item": "mna:constructs/construct_basic_legs_obsidian" }
+  ],
+  "result": {
+    "item": "mna:constructs/construct_ender_legs_obsidian",
+    "count": 1
+  }
+}
