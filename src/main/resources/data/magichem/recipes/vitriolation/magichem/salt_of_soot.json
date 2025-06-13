@@ -3,7 +3,6 @@
   "minimumAcidStrength": 1,
   "acidConsumed": 200,
   "duration": 60,
-  "inputItem": { "item": "minecraft:charcoal", "count": 7 },
-  "resultItem": { "item": "magichem:salt_of_soot", "count": 1 },
-  "resultFluid": { "fluid": "minecraft:water", "amount": 100 }
+  "inputItem": { "item": "minecraft:charcoal", "count": 24 },
+  "resultItem": { "item": "magichem:salt_of_soot", "count": 1 }
 }

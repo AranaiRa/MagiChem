@@ -442,8 +442,59 @@
       }
     ]
   },
-  "Process: Anointing": {
+  "Process: Vitriolation": {
     "index": "1113",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Vitriolation"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/dummy_vitriolation",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Certain items can be transformed into a different form by being "
+          },
+          {
+            "text": "submerged in acid",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for a time. Alchemists call this process "
+          },
+          {
+            "text": "Vitriolation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nVitriolation is performed in an "
+          },
+          {
+            "text": "Acid Basin",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAll Vitriolation recipes require an acid with a minimum strength. As long as the recipe requires something other than water, using an Acid one level stronger will quarter the amount of acid consumed in the process and quadruple the speed of the craft. Using an acid two levels or more stronger will prevent the craft from consuming any acid at all and will make the process instant."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/acid_basin"
+      }
+    ]
+  },
+  "Process: Anointing": {
+    "index": "1114",
     "category": "magichem",
     "sections": [
       {
