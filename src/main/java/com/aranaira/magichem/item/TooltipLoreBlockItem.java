@@ -183,6 +183,18 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.SKYWRATH_ALTAR.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.skywrathaltar")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == BlockRegistry.ACID_BASIN.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.acidbasin")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.SIGNALITE.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.signalite")

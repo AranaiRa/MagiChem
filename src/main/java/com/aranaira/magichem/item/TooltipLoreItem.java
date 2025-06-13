@@ -349,6 +349,66 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.ACHROMATIC_MOTE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.achromaticmote")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.SCORCHED_THEOREM.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.scorchedtheorem")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.SCORCHED_PROFUNDITY.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.scorchedprofundity")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.COLLATED_THEORIES.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.collatedtheories")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.PROFOUND_MANUSCRIPT.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.profoundmanuscript")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.DAUNTING_ESOTERICA.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.dauntingesoterica")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.CHIAROSCURO.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.chiaroscuro")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.GRAY_RESIN.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.resingray")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.SALT_OF_BONE.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.saltofbone")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(pStack.getItem() == ItemRegistry.SALT_OF_SOOT.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.saltofsoot")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == ItemRegistry.AUXILIARY_CIRCLE_ARRAY.get()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.aca")
