@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "mna:constructs/construct_armor_torso_gold",
+  "input_count": 1,
+  "result": "mna:constructs/construct_basic_torso_gold",
+  "result_count": 1
+}

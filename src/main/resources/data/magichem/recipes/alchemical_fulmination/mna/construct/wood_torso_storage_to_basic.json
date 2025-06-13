@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "mna:constructs/construct_storage_torso_wood",
+  "input_count": 1,
+  "result": "mna:constructs/construct_basic_torso_wood",
+  "result_count": 1
+}

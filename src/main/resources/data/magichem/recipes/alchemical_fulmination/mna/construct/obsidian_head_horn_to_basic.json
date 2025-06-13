@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "mna:constructs/construct_horn_head_obsidian",
+  "input_count": 1,
+  "result": "mna:constructs/construct_basic_head_obsidian",
+  "result_count": 1
+}
