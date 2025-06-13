@@ -1,8 +1,10 @@
 package com.aranaira.magichem.util;
 
+import com.aranaira.magichem.block.entity.MagicMirrorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeStaticBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
+import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
@@ -309,6 +311,7 @@ public class InventoryHelper {
 
     public static HashMap<MateriaItem, List<BlockEntity>> getAllMateriaStorageInZone(Level pLevel, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
         HashMap<MateriaItem, List<BlockEntity>> out = new HashMap<>();
+        ArrayList<BlockEntity> existingBlockEntities = new ArrayList<>();
 
         for(int y=minY; y<=maxY; y++) {
             for (int z = minZ; z <= maxZ; z++) {
@@ -325,29 +328,42 @@ public class InventoryHelper {
                             List<BlockEntity> listQuery = new ArrayList<>();
                             listQuery.add(be);
                             out.put(typeQuery, listQuery);
+                            if(!existingBlockEntities.contains(be))
+                                existingBlockEntities.add(be);
                         }
                     }
                     else if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
-                        Collection<MateriaItem> materiaTypes = multi.getMateriaTypes();
+                        if(multi instanceof MirrorLabyrinthRouterBlockEntity router && router.getMaster() != null)
+                            be = router.getMaster();
+                        else if(multi instanceof MagicMirrorBlockEntity mirror && mirror.getMaster() != null)
+                            be = mirror.getMaster();
 
-                        for(MateriaItem typeQuery : materiaTypes) {
-                            if (out.containsKey(typeQuery)) {
-                                List<BlockEntity> listQuery = out.get(typeQuery);
-                                if (!listQuery.contains(be)) listQuery.add(be);
-                            } else {
-                                List<BlockEntity> listQuery = new ArrayList<>();
-                                listQuery.add(be);
-                                out.put(typeQuery, listQuery);
+                        if(!existingBlockEntities.contains(be)) {
+                            Collection<MateriaItem> materiaTypes = multi.getMateriaTypes();
+
+                            for (MateriaItem typeQuery : materiaTypes) {
+                                if (out.containsKey(typeQuery)) {
+                                    List<BlockEntity> listQuery = out.get(typeQuery);
+                                    if (!listQuery.contains(be)) listQuery.add(be);
+                                } else {
+                                    List<BlockEntity> listQuery = new ArrayList<>();
+                                    listQuery.add(be);
+                                    out.put(typeQuery, listQuery);
+                                    if(!existingBlockEntities.contains(be))
+                                        existingBlockEntities.add(be);
+                                }
                             }
-                        }
 
-                        if(multi.isBelowTypeLimit()) {
-                            if (out.containsKey(null)) {
-                                out.get(null).add(be);
-                            } else {
-                                ArrayList<BlockEntity> outList = new ArrayList<>();
-                                outList.add(be);
-                                out.put(null, outList);
+                            if (multi.isBelowTypeLimit()) {
+                                if (out.containsKey(null)) {
+                                    out.get(null).add(be);
+                                } else {
+                                    ArrayList<BlockEntity> outList = new ArrayList<>();
+                                    outList.add(be);
+                                    out.put(null, outList);
+                                    if(!existingBlockEntities.contains(be))
+                                        existingBlockEntities.add(be);
+                                }
                             }
                         }
                     }
