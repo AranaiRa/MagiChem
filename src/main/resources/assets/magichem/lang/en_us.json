@@ -213,6 +213,9 @@
   "block.magichem.vinteum_crystal_block": "Vinteum Crystal Block",
   "block.magichem.vinteum_crystal_block_budding": "Budding Vinteum Crystal",
 
+  "entity.magichem.shlorp": "Materia Shlorp",
+  "entity.magichem.destructive_harmonics": "Destructive Harmonics",
+
   "effect.magichem.sixfold_path": "Sixfold Path",
 
   "academic_slurry_fluid_type": "Academic Slurry",
