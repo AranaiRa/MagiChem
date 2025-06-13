@@ -63,6 +63,7 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
 
         VertexConsumer buffer = pBuffer.getBuffer(RenderType.armorCutoutNoCull(InventoryMenu.BLOCK_ATLAS));
         ItemStack input = pBlockEntity.getInputItem();
+        ItemStack output = pBlockEntity.getOutputItem();
 
         if(!input.isEmpty()){
             pPoseStack.pushPose();
@@ -92,6 +93,17 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
             pPoseStack.scale(0.25f, 0.25f, 0.25f);
             pPoseStack.mulPose(Axis.YP.rotationDegrees(rot));
             Minecraft.getInstance().getItemRenderer().renderStatic(input, ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, pBlockEntity.getLevel(), 0);
+
+            pPoseStack.popPose();
+        }
+        if(!output.isEmpty()){
+            pPoseStack.pushPose();
+            PoseStack.Pose last = pPoseStack.last();
+
+            pPoseStack.translate(0.5, 0.875f + posBob, 0.5);
+            pPoseStack.scale(0.25f, 0.25f, 0.25f);
+            pPoseStack.mulPose(Axis.YP.rotationDegrees(rot));
+            Minecraft.getInstance().getItemRenderer().renderStatic(output, ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, pBlockEntity.getLevel(), 0);
 
             pPoseStack.popPose();
         }
@@ -186,6 +198,21 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                 pPackedLight);
 
         pPoseStack.popPose();
+
+        switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            case NORTH -> {
+                pPoseStack.translate(1.0f, 0, 0);
+            }
+            case EAST -> {
+                pPoseStack.translate(0, 0, 1.0f);
+            }
+            case SOUTH -> {
+                pPoseStack.translate(-1.0f, 0, 0);
+            }
+            case WEST -> {
+                pPoseStack.translate(0, 0, -1.0f);
+            }
+        }
     }
 
     private void renderOutputTankFluid(AcidBasinBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
@@ -195,16 +222,16 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
 
         switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case NORTH -> {
-                pPoseStack.translate(0f, 0f, 1f);
+                pPoseStack.translate(-1f, 0f, 1f);
             }
             case EAST -> {
-                pPoseStack.translate(-1f, 0f, 0f);
+                pPoseStack.translate(-1f, 0f, -1f);
             }
             case SOUTH -> {
-                pPoseStack.translate(0f, 0f, -1f);
+                pPoseStack.translate(1f, 0f, -1f);
             }
             case WEST -> {
-                pPoseStack.translate(1f, 0f, 0f);
+                pPoseStack.translate(1f, 0f, 1f);
             }
         }
 
@@ -222,5 +249,7 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                 pBlockEntity.getFluidInTank(TANK_OUTPUT).getFluid() == Fluids.WATER ? 0xff2a76d1 : 0xffffffff,
                 pPackedLight);
         pPoseStack.popPose();
+
+
     }
 }

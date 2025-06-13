@@ -39,6 +39,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     private int
         progress = 0;
     private VitriolationRecipe recipe;
+    private boolean reCheckRecipe = false;
 
     public AcidBasinBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.ACID_BASIN_BE.get(), pPos, pBlockState);
@@ -55,14 +56,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         @Override
         protected void onContentsChanged(int slot) {
             if(slot == SLOT_INPUT && level != null && !level.isClientSide()) {
-                VitriolationRecipe recipeQuery = VitriolationRecipe.getVitriolationRecipe(level, getStackInSlot(SLOT_INPUT).getItem());
-                if(getStackInSlot(SLOT_INPUT).getCount() >= recipeQuery.getInputItem().getCount()) {
-                    recipe = recipeQuery;
-                    progress = recipe.getCraftTicks();
-                } else {
-                    recipe = null;
-                    progress = -1;
-                }
+                reCheckRecipe = true;
             }
 
             syncAndSave();
@@ -97,7 +91,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     }
 
     public ItemStack getOutputItem() {
-        return itemHandler.getStackInSlot(SLOT_INPUT);
+        return itemHandler.getStackInSlot(SLOT_OUTPUT);
     }
 
     @Override
@@ -136,12 +130,20 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
             Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
             if(fluid != null)
                 inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+        } else {
+            inputTank = FluidStack.EMPTY;
         }
         if(nbt.contains("outputTank")) {
             CompoundTag outputTankTag = nbt.getCompound("outputTank");
             Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(outputTankTag.getString("fluid")));
             if(fluid != null)
                 outputTank = new FluidStack(fluid, outputTankTag.getInt("amount"));
+        } else {
+            outputTank = FluidStack.EMPTY;
+        }
+
+        if(progress > -1 && level != null) {
+            reCheckRecipe = true;
         }
     }
 
@@ -244,7 +246,8 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     public @NotNull FluidStack drainFromTank(int tank, int maxDrain, FluidAction action) {
         if(tank == TANK_INPUT && !inputTank.isEmpty()) {
             int extracted = Math.min(maxDrain, inputTank.getAmount());
-            FluidStack output = new FluidStack(inputTank.getFluid(), extracted);
+            FluidStack output = inputTank.copy();
+            output.setAmount(extracted);
             if(action == FluidAction.EXECUTE) {
                 inputTank.shrink(extracted);
                 syncAndSave();
@@ -265,6 +268,11 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
 
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, E e) {
         if(e instanceof AcidBasinBlockEntity entity) {
+            if(pLevel != null && entity.reCheckRecipe) {
+                entity.getRecipe();
+                entity.reCheckRecipe = false;
+            }
+
             if(entity.recipe != null && entity.canCraftItem()) {
                 entity.progress--;
 
@@ -276,6 +284,18 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     }
 
     private boolean canCraftItem() {
+        boolean hasInputFluid = !inputTank.isEmpty();
+        if(hasInputFluid) {
+            int dAcid = VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipe.getMinimumAcidStrength());
+            if(dAcid == 0) {
+                return inputTank.getAmount() >= recipe.getBaseFluidConsumed();
+            } else if(dAcid == 1) {
+                return inputTank.getAmount() >= recipe.getBaseFluidConsumed() / 4;
+            } else if(dAcid >= 2) {
+                return true;
+            }
+        }
+
         boolean hasSpaceForOutputFluid = true;
         if(recipe.hasResultFluid()) {
             int tankCapacity = ServerConfig.acidBasinTankCapacity - outputTank.getAmount();
@@ -286,15 +306,13 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
 
         boolean hasSpaceForOutputItem = true;
         if(recipe.hasResultItem()) {
-            int itemCapacity = recipe.getResultItem().getMaxStackSize() - getInputItem().getCount();
-            boolean itemMatches = getInputItem().getItem() == recipe.getResultItem().getItem();
+            int itemCapacity = recipe.getResultItem().getMaxStackSize() - getOutputItem().getCount();
+            boolean itemMatches = getOutputItem().isEmpty() || (getOutputItem().getItem() == recipe.getResultItem().getItem());
 
-            hasSpaceForOutputItem =
-                    getInputItem().isEmpty() ||
-                    (itemMatches && itemCapacity >= recipe.getResultItem().getCount());
+            hasSpaceForOutputItem = (itemMatches && itemCapacity >= recipe.getResultItem().getCount());
         }
 
-        return hasSpaceForOutputFluid && hasSpaceForOutputItem;
+        return hasInputFluid && hasSpaceForOutputFluid && hasSpaceForOutputItem;
     }
 
     private void craftItem() {
@@ -307,7 +325,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         }
 
         if(recipe.hasResultItem()) {
-            if(getInputItem().isEmpty()) {
+            if(getOutputItem().isEmpty()) {
                 itemHandler.setStackInSlot(SLOT_OUTPUT, recipe.getResultItem().copy());
             } else {
                 getOutputItem().grow(recipe.getResultItem().getCount());
@@ -320,8 +338,23 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         if(getInputItem().getCount() < recipe.getInputItem().getCount()) {
             recipe = null;
             progress = -1;
+        } else {
+            progress = recipe.getCraftTicks();
         }
 
         syncAndSave();
+    }
+
+    private void getRecipe() {
+        VitriolationRecipe recipeQuery = VitriolationRecipe.getVitriolationRecipe(level, itemHandler.getStackInSlot(SLOT_INPUT).getItem());
+        if(recipeQuery != null) {
+            if (itemHandler.getStackInSlot(SLOT_INPUT).getCount() >= recipeQuery.getInputItem().getCount()) {
+                recipe = recipeQuery;
+                progress = recipe.getCraftTicks();
+            } else {
+                recipe = null;
+                progress = -1;
+            }
+        }
     }
 }
