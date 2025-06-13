@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.AcidBasinRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.util.MathHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +15,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -25,6 +27,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
@@ -38,6 +43,10 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACI
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_ACID_BASIN;
 
 public class AcidBasinBlock extends BaseEntityBlock {
+    public static final VoxelShape
+        VOXEL_SHAPE_BASE_NORTH, VOXEL_SHAPE_BODY_NORTH, VOXEL_SHAPE_TRAY_NORTH,
+        VOXEL_SHAPE_AGGREGATE_NORTH, VOXEL_SHAPE_AGGREGATE_EAST, VOXEL_SHAPE_AGGREGATE_SOUTH, VOXEL_SHAPE_AGGREGATE_WEST;
+
     public AcidBasinBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -152,5 +161,47 @@ public class AcidBasinBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return createTickerHelper(pBlockEntityType, BlockEntitiesRegistry.ACID_BASIN_BE.get(),
                 AcidBasinBlockEntity::tick);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        final Direction dir = pState.getValue(FACING);
+
+        if(dir == Direction.NORTH) return VOXEL_SHAPE_AGGREGATE_NORTH;
+        else if(dir == Direction.EAST) return VOXEL_SHAPE_AGGREGATE_EAST;
+        else if(dir == Direction.SOUTH) return VOXEL_SHAPE_AGGREGATE_SOUTH;
+        else if(dir == Direction.WEST) return VOXEL_SHAPE_AGGREGATE_WEST;
+
+        return Block.box(0,0,0,1,1,1);
+    }
+
+    static {
+        VOXEL_SHAPE_BASE_NORTH = Block.box(0, 0, 0, 16, 3, 16);
+        VOXEL_SHAPE_BODY_NORTH = Block.box(0, 3, 1, 15, 8, 15);
+        VOXEL_SHAPE_TRAY_NORTH = Block.box(0, 8, 3, 13, 14, 13);
+
+        VOXEL_SHAPE_AGGREGATE_NORTH = Shapes.or(
+                VOXEL_SHAPE_BASE_NORTH,
+                VOXEL_SHAPE_BODY_NORTH,
+                VOXEL_SHAPE_TRAY_NORTH
+        );
+
+        VOXEL_SHAPE_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_TRAY_NORTH, 1)
+        );
+
+        VOXEL_SHAPE_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_TRAY_NORTH, 2)
+        );
+
+        VOXEL_SHAPE_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_TRAY_NORTH, 3)
+        );
     }
 }

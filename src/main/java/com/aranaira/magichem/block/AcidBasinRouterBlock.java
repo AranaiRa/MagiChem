@@ -4,13 +4,16 @@ import com.aranaira.magichem.block.entity.AcidBasinBlockEntity;
 import com.aranaira.magichem.block.entity.routers.AcidBasinRouterBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.AcidBasinRouterType;
+import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -19,6 +22,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,6 +41,15 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUT
 public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreativeTab {
     public static final int
             ROUTER_TYPE_MAIN_TANK = 1, ROUTER_TYPE_MAIN_TANK_ABOVE = 2, ROUTER_TYPE_OUTPUT_TANK = 3, ROUTER_TYPE_OUTPUT_TANK_ABOVE = 4;
+    public static final VoxelShape
+            VOXEL_SHAPE_MAIN_BASE_NORTH, VOXEL_SHAPE_MAIN_BODY_NORTH, VOXEL_SHAPE_MAIN_TANK_NORTH, VOXEL_SHAPE_MAIN_CONNECTOR_NORTH,
+            VOXEL_SHAPE_OUTPUT_BASE_NORTH, VOXEL_SHAPE_OUTPUT_BODY_NORTH, VOXEL_SHAPE_OUTPUT_TANK_NORTH, VOXEL_SHAPE_OUTPUT_RIM_NORTH,
+            VOXEL_SHAPE_MAIN_ABOVE_TANK, VOXEL_SHAPE_MAIN_ABOVE_RIM,
+            VOXEL_SHAPE_OUTPUT_ABOVE,
+
+            VOXEL_SHAPE_AGGREGATE_MAIN_NORTH, VOXEL_SHAPE_AGGREGATE_MAIN_EAST, VOXEL_SHAPE_AGGREGATE_MAIN_SOUTH, VOXEL_SHAPE_AGGREGATE_MAIN_WEST,
+            VOXEL_SHAPE_AGGREGATE_OUTPUT_NORTH, VOXEL_SHAPE_AGGREGATE_OUTPUT_EAST, VOXEL_SHAPE_AGGREGATE_OUTPUT_SOUTH, VOXEL_SHAPE_AGGREGATE_OUTPUT_WEST,
+            VOXEL_SHAPE_AGGREGATE_MAIN_ABOVE;
 
     public AcidBasinRouterBlock(Properties pProperties) {
         super(pProperties);
@@ -177,5 +192,122 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
         }
 
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        final Direction dir = pState.getValue(FACING);
+        int routerType = pState.getValue(ROUTER_TYPE_ACID_BASIN);
+
+        if(routerType == ROUTER_TYPE_MAIN_TANK) {
+            if(dir == Direction.NORTH) return VOXEL_SHAPE_AGGREGATE_MAIN_NORTH;
+            if(dir == Direction.EAST) return VOXEL_SHAPE_AGGREGATE_MAIN_EAST;
+            if(dir == Direction.SOUTH) return VOXEL_SHAPE_AGGREGATE_MAIN_SOUTH;
+            if(dir == Direction.WEST) return VOXEL_SHAPE_AGGREGATE_MAIN_WEST;
+        }
+        else if(routerType == ROUTER_TYPE_OUTPUT_TANK) {
+            if(dir == Direction.NORTH) return VOXEL_SHAPE_AGGREGATE_OUTPUT_NORTH;
+            if(dir == Direction.EAST) return VOXEL_SHAPE_AGGREGATE_OUTPUT_EAST;
+            if(dir == Direction.SOUTH) return VOXEL_SHAPE_AGGREGATE_OUTPUT_SOUTH;
+            if(dir == Direction.WEST) return VOXEL_SHAPE_AGGREGATE_OUTPUT_WEST;
+        }
+        else if(routerType == ROUTER_TYPE_MAIN_TANK_ABOVE) {
+            return VOXEL_SHAPE_AGGREGATE_MAIN_ABOVE;
+        }
+        else if(routerType == ROUTER_TYPE_OUTPUT_TANK_ABOVE) {
+            return VOXEL_SHAPE_OUTPUT_ABOVE;
+        }
+
+        return Block.box(0,0,0,1,1,1);
+    }
+
+    static {
+        //MAIN TANK
+        {
+            VOXEL_SHAPE_MAIN_BASE_NORTH = Block.box(0, 0, 0, 16, 3, 16);
+            VOXEL_SHAPE_MAIN_BODY_NORTH = Block.box(1, 3, 1, 16, 8, 16);
+            VOXEL_SHAPE_MAIN_TANK_NORTH = Block.box(2, 8, 2, 14, 16, 14);
+            VOXEL_SHAPE_MAIN_CONNECTOR_NORTH = Block.box(2, 8, 3, 16, 14, 13);
+
+            VOXEL_SHAPE_AGGREGATE_MAIN_NORTH = Shapes.or(
+                    VOXEL_SHAPE_MAIN_BASE_NORTH,
+                    VOXEL_SHAPE_MAIN_BODY_NORTH,
+                    VOXEL_SHAPE_MAIN_TANK_NORTH,
+                    VOXEL_SHAPE_MAIN_CONNECTOR_NORTH
+            );
+
+            VOXEL_SHAPE_AGGREGATE_MAIN_EAST = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_BASE_NORTH, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_BODY_NORTH, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_TANK_NORTH, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_CONNECTOR_NORTH, 1)
+            );
+
+            VOXEL_SHAPE_AGGREGATE_MAIN_SOUTH = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_BASE_NORTH, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_BODY_NORTH, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_TANK_NORTH, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_CONNECTOR_NORTH, 2)
+            );
+
+            VOXEL_SHAPE_AGGREGATE_MAIN_WEST = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_BASE_NORTH, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_BODY_NORTH, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_TANK_NORTH, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_MAIN_CONNECTOR_NORTH, 3)
+            );
+        }
+
+        //OUTPUT TANK
+        {
+            VOXEL_SHAPE_OUTPUT_BASE_NORTH = Block.box(0, 0, 0, 16, 3, 16);
+            VOXEL_SHAPE_OUTPUT_BODY_NORTH = Block.box(2, 3, 0, 14, 8, 16);
+            VOXEL_SHAPE_OUTPUT_TANK_NORTH = Block.box(3, 8, 3, 13, 14, 13);
+            VOXEL_SHAPE_OUTPUT_RIM_NORTH = Block.box(4, 14, 4, 12, 16, 12);
+
+            VOXEL_SHAPE_AGGREGATE_OUTPUT_NORTH = Shapes.or(
+                    VOXEL_SHAPE_OUTPUT_BASE_NORTH,
+                    VOXEL_SHAPE_OUTPUT_BODY_NORTH,
+                    VOXEL_SHAPE_OUTPUT_TANK_NORTH,
+                    VOXEL_SHAPE_OUTPUT_RIM_NORTH
+            );
+
+            VOXEL_SHAPE_AGGREGATE_OUTPUT_EAST = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_BASE_NORTH, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_BODY_NORTH, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_TANK_NORTH, 1),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_RIM_NORTH, 1)
+            );
+
+            VOXEL_SHAPE_AGGREGATE_OUTPUT_SOUTH = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_BASE_NORTH, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_BODY_NORTH, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_TANK_NORTH, 2),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_RIM_NORTH, 2)
+            );
+
+            VOXEL_SHAPE_AGGREGATE_OUTPUT_WEST = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_BASE_NORTH, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_BODY_NORTH, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_TANK_NORTH, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_OUTPUT_RIM_NORTH, 3)
+            );
+        }
+
+        //MAIN TANK ABOVE
+        {
+            VOXEL_SHAPE_MAIN_ABOVE_TANK = Block.box(2, 0, 2, 14, 2, 14);
+            VOXEL_SHAPE_MAIN_ABOVE_RIM = Block.box(3, 2, 3, 13, 5, 13);
+
+            VOXEL_SHAPE_AGGREGATE_MAIN_ABOVE = Shapes.or(
+                    VOXEL_SHAPE_MAIN_ABOVE_TANK,
+                    VOXEL_SHAPE_MAIN_ABOVE_RIM
+            );
+        }
+
+        //MAIN TANK ABOVE
+        {
+            VOXEL_SHAPE_OUTPUT_ABOVE = Block.box(4, 0, 4, 12, 1, 12);
+        }
     }
 }
