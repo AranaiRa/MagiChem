@@ -3943,6 +3943,47 @@
     ],
     "related_recipes": []
   },
+  "Condition: Is Item Distillable": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Is Item Distillable"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will check whether the item held in one of the construct's hands "
+          },
+          {
+            "text": "can be distilled",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in an Alembic, Distillery, or Grand Distillery, returning "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if the object can be distilled, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it can't be distilled."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Materia Jar": {
     "index": "1212",
     "category": "magichem",

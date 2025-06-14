@@ -1029,6 +1029,7 @@
   "construct.magichem:set_device_recipe": "Set Device Recipe",
   "construct.magichem:query_has_eldrin_in_buffer": "Condition: Has Eldrin Power in Buffer",
   "construct.magichem:query_device_recipe_matches": "Condition: Device Recipe Matches",
+  "construct.magichem:query_is_item_distillable": "Condition: Is Item Distillable",
 
   "gui.mna.codex_search.recipe.anointing": "Alchemical Anointing > ",
   "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
@@ -1069,6 +1070,8 @@
 
   "gui.mna.parameter.query_has_eldrin_in_buffer.int.selector": "What eldrin affinity should the construct check?\n\n 0: Average of all Affinities\n 1: Ender\n 2: Earth\n 3: Water\n 4: Air\n 5: Fire\n 6: Arcane",
   "gui.mna.parameter.query_has_eldrin_in_buffer.int.amount": "What percent full should your Eldrin power buffer for the chosen affinity be?",
+
+  "gui.mna.parameter.query_device_needs_provisioning.boolean": "Should the construct check the item in its left hand?",
 
   "hud.magichem.coloring_cauldron.current_item.processing": "Coloring ",
   "hud.magichem.coloring_cauldron.current_item.waiting": " Complete",

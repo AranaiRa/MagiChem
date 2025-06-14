@@ -30,6 +30,7 @@ public class ConstructTasksRegistry {
     public static final ConstructTask QUERY_DEVICE_NEEDS_SORTING = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_device_needs_sorting.png"), ConstructDeviceNeedsSorting.class, true, false, true);
     public static final ConstructTask QUERY_DEVICE_RECIPE_MATCHES = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_device_recipe_matches.png"), ConstructDeviceRecipeMatches.class, true, false, true);
     public static final ConstructTask QUERY_HAS_ELDRIN_IN_BUFFER = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_has_eldrin_power.png"), ConstructHasEldrinInBuffer.class, true, false, true);
+    public static final ConstructTask QUERY_IS_ITEM_DISTILLABLE = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/is_item_distillable.png"), ConstructIsItemDistillable.class, true, false, true);
 
     @SubscribeEvent
     public static void registerTasks(RegisterEvent event) {
@@ -47,6 +48,7 @@ public class ConstructTasksRegistry {
             helper.register(new ResourceLocation(MagiChemMod.MODID, "query_device_needs_sorting"), QUERY_DEVICE_NEEDS_SORTING);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "query_device_recipe_matches"), QUERY_DEVICE_RECIPE_MATCHES);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "query_has_eldrin_in_buffer"), QUERY_HAS_ELDRIN_IN_BUFFER);
+            helper.register(new ResourceLocation(MagiChemMod.MODID, "query_is_item_distillable"), QUERY_IS_ITEM_DISTILLABLE);
         });
     }
 }
