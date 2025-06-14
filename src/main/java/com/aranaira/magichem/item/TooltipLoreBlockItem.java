@@ -548,6 +548,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                             mlbe.unpackMateriaStorageFromTag(nbt.getCompound("materiaStorage"));
                         }
                     }
+                } else if (cachedItem == BlockRegistry.ACID_BASIN.get().asItem()) {
+                    AcidBasinBlockEntity abbe = (AcidBasinBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (abbe != null) {
+                        if(nbt.contains("inventory"))
+                            abbe.load(nbt);
+                    }
                 }
             }
             return result;

@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.recipe.VitriolationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +14,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -356,5 +358,29 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
                 progress = -1;
             }
         }
+    }
+
+    public void packInventoryToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.ACID_BASIN.get());
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("progress", -1);
+        if(!inputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid",ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",inputTank.getAmount());
+            nbt.put("inputTank",inputTankTag);
+        }
+        if(!outputTank.isEmpty()) {
+            CompoundTag outputTankTag = new CompoundTag();
+            outputTankTag.putString("fluid",ForgeRegistries.FLUIDS.getKey(outputTank.getFluid()).toString());
+            outputTankTag.putInt("amount",outputTank.getAmount());
+            nbt.put("outputTank",outputTankTag);
+        }
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 }
