@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
@@ -102,7 +103,14 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
                         if(extractionQuery.getAmount() == 1000) {
                             if(!pPlayer.isCreative()) {
                                 ItemStack bucket = FluidUtil.getFilledBucket(extractionQuery);
-                                pPlayer.setItemInHand(pHand, bucket);
+                                if(itemInHand.getCount() == 1) {
+                                    pPlayer.setItemInHand(pHand, bucket);
+                                }
+                                else {
+                                    pPlayer.getItemInHand(pHand).shrink(1);
+                                    ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), bucket);
+                                    pLevel.addFreshEntity(ie);
+                                }
                             }
                             basin.drainFromTank(TANK_INPUT, 1000, IFluidHandler.FluidAction.EXECUTE);
                         }
@@ -176,7 +184,14 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
                         if (extractionQuery.getAmount() == 1000) {
                             if (!pPlayer.isCreative()) {
                                 ItemStack bucket = FluidUtil.getFilledBucket(extractionQuery);
-                                pPlayer.setItemInHand(pHand, bucket);
+                                if(itemInHand.getCount() == 1) {
+                                    pPlayer.setItemInHand(pHand, bucket);
+                                }
+                                else {
+                                    pPlayer.getItemInHand(pHand).shrink(1);
+                                    ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), bucket);
+                                    pLevel.addFreshEntity(ie);
+                                }
                             }
                             basin.drainFromTank(TANK_OUTPUT, 1000, IFluidHandler.FluidAction.EXECUTE);
                         }
