@@ -221,8 +221,8 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
             }
             return inserted;
         } else if(resource.getFluid() == inputTank.getFluid()) {
-            int inserted = inputTank.getAmount() >= ServerConfig.acidBasinTankCapacity ?
-                    0 : ServerConfig.acidBasinTankCapacity - resource.getAmount();
+            int capacity = ServerConfig.acidBasinTankCapacity - inputTank.getAmount();
+            int inserted = Math.min(resource.getAmount(), capacity);
             if(action == FluidAction.EXECUTE) {
                 inputTank.grow(inserted);
                 syncAndSave();
