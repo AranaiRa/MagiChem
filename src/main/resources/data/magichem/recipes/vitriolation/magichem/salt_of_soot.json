@@ -2,7 +2,7 @@
   "type": "magichem:vitriolation",
   "minimumAcidStrength": 1,
   "acidConsumed": 200,
-  "duration": 60,
+  "duration": 300,
   "inputItem": { "item": "minecraft:charcoal", "count": 24 },
   "resultItem": { "item": "magichem:salt_of_soot", "count": 1 }
 }
