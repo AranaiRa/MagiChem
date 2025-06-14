@@ -7,6 +7,10 @@ import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.recipe.VitriolationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleVelocityMover;
+import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,6 +35,10 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+import team.chisel.ctm.client.util.Dir;
+
+import java.util.Random;
 
 public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, IRequiresRouterCleanupOnDestruction {
     public static final int
@@ -42,6 +50,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         progress = 0;
     private VitriolationRecipe recipe;
     private boolean reCheckRecipe = false;
+    private static final Random r = new Random();
 
     public AcidBasinBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.ACID_BASIN_BE.get(), pPos, pBlockState);
@@ -57,8 +66,12 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
 
         @Override
         protected void onContentsChanged(int slot) {
-            if(slot == SLOT_INPUT && level != null && !level.isClientSide()) {
-                reCheckRecipe = true;
+            if(slot == SLOT_INPUT) {
+                if(level != null && !level.isClientSide()) {
+                    getRecipe();
+                } else {
+                    reCheckRecipe = true;
+                }
             }
 
             syncAndSave();
@@ -276,6 +289,37 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
             }
 
             if(entity.recipe != null && entity.canCraftItem()) {
+                //Particle work
+                if(pLevel.isClientSide() && pLevel.getGameTime() % 2 == 0) {
+                    Vector3f mid = new Vector3f(0.5f, 0.75f, 0.5f);
+
+                    int dX = 0, dZ = 0;
+                    Direction dir = pBlockState.getValue(MagiChemBlockStateProperties.FACING);
+                    if(dir == Direction.NORTH) {
+                        dX = -1;
+                    } else if(dir == Direction.EAST) {
+                        dZ = -1;
+                    } else if(dir == Direction.SOUTH) {
+                        dX = 1;
+                    } else if(dir == Direction.WEST) {
+                        dZ = 1;
+                    }
+
+                    Vector3f offset = new Vector3f((r.nextFloat() - 0.5f) * 0.125f + dX, 0.0f, (r.nextFloat() - 0.5f) * 0.125f + dZ);
+
+                    Vector3 pos = new Vector3(entity.getBlockPos().getX() + mid.x + offset.x,
+                            entity.getBlockPos().getY() + mid.y + offset.y,
+                            entity.getBlockPos().getZ() + mid.z + offset.z);
+                    Vector3 speed = new Vector3(0, 0.05, 0);
+
+                    pLevel.addParticle(new MAParticleType(ParticleInit.DUST.get())
+                                    .setScale(0.10f).setMaxAge(30).setGravity(0)
+                                    .setMover(new ParticleVelocityMover(speed.x, speed.y, speed.z, true))
+                                    .setColor(128, 134, 144, 48),
+                            pos.x, pos.y+0.375, pos.z,
+                            0, 0, 0);
+                }
+
                 entity.progress--;
 
                 if(entity.progress <= 0) {
