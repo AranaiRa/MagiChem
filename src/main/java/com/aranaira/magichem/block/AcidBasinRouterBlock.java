@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
@@ -129,6 +130,9 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
                         if (insertionQuery > 0) {
                             fluidHandler.fill(fluidInItem, IFluidHandler.FluidAction.EXECUTE);
                             iCap.drain(insertionQuery, IFluidHandler.FluidAction.EXECUTE);
+                            if(iCap.getFluidInTank(0).isEmpty() && itemInHand.getItem() instanceof BucketItem bi) {
+                                pPlayer.setItemInHand(pHand, new ItemStack(Items.BUCKET));
+                            }
                         }
                         //Try to extract fluid from the main tank
                         else if (fluidHandler instanceof AcidBasinBlockEntity basin) {
