@@ -1901,11 +1901,11 @@
             "text": "The "
           },
           {
-            "text": "Centrifuge ",
+            "text": "Centrifuge",
             "color": "dark_purple"
           },
           {
-            "text": "is an advanced device capable of performing "
+            "text": " is an advanced device capable of performing "
           },
           {
             "text": "Separation",
@@ -2035,6 +2035,91 @@
       {
         "type": "manaweaving_altar",
         "location": "magichem:manaweaving/centrifuge"
+      }
+    ]
+  },
+  "Acid Basin": {
+    "index": "1204",
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Acid Basin"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "2 Wide, 2 Tall, 2 Deep",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Acid Basin",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an advanced device capable of performing "
+          },
+          {
+            "text": "Vitriolation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe larger of the device's two tanks takes "
+          },
+          {
+            "text": "input fluids",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "input items",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". "
+          },
+          {
+            "text": "Output items",
+            "color": "dark_purple"
+          },
+          {
+            "text": " end up on the tray to its right, and "
+          },
+          {
+            "text": "output fluids",
+            "color": "dark_purple"
+          },
+          {
+            "text": " end up in the smaller tank to its left.\n\nThe main tank will "
+          },
+          {
+            "text": "emit steam",
+            "color": "dark_purple"
+          },
+          {
+            "text": " while the device is performing a valid Vitriolation recipe.\n\nThough the device is most commonly used to submerge items in acids, it can also be used to dissolve certain items with water (or other fluids)."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/acid_basin"
       }
     ]
   },
