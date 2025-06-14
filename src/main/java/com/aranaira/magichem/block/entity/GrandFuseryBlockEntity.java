@@ -359,7 +359,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                 player.displayClientMessage(msg, false);
             }
         }
-        getCurrentRecipe();
+        doDeferredRecipeCheck = true;
     }
 
     @Override
@@ -678,6 +678,11 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     }
                 }
             }
+        }
+
+        if(pEntity.doDeferredRecipeCheck) {
+            pEntity.getCurrentRecipe();
+            pEntity.doDeferredRecipeCheck = false;
         }
 
         if(!pEntity.redstonePaused)

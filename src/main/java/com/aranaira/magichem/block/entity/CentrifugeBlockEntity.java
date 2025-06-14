@@ -278,7 +278,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                 player.displayClientMessage(msg, false);
             }
         }
-        getCurrentRecipe();
+        doDeferredRecipeCheck = true;
     }
 
     ////////////////////
@@ -339,6 +339,12 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         if(pLevel.isClientSide()) {
             pEntity.handleAnimationDrivers();
         }
+
+        if(pEntity.doDeferredRecipeCheck) {
+            pEntity.getCurrentRecipe();
+            pEntity.doDeferredRecipeCheck = false;
+        }
+
         AbstractSeparationBlockEntity.tick(pLevel, pPos, pState, pEntity, CentrifugeBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
 

@@ -50,6 +50,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     protected int
             progress = 0, batchSize = 1, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3, reductionRate = 0;
     public boolean clearRecipeAfterNextProcess = false;
+    public boolean doDeferredRecipeCheck = false;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();

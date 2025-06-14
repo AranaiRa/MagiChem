@@ -45,6 +45,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected int
             progress = 0, batchSize = 4, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3;
     public boolean clearRecipeAfterNextProcess = false;
+    public boolean doDeferredRecipeCheck = false;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();

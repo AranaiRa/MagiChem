@@ -324,7 +324,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 player.displayClientMessage(msg, false);
             }
         }
-        getCurrentRecipe();
+        doDeferredRecipeCheck = true;
     }
 
     ////////////////////
@@ -408,6 +408,11 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, FuseryBlockEntity pEntity) {
         if(pLevel.isClientSide()) {
             pEntity.handleAnimationDrivers();
+        }
+
+        if(pEntity.doDeferredRecipeCheck) {
+            pEntity.getCurrentRecipe();
+            pEntity.doDeferredRecipeCheck = false;
         }
 
         //Particles
