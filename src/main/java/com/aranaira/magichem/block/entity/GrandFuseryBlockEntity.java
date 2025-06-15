@@ -464,7 +464,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     public void setPaused(boolean pNewPauseState) {
         redstonePaused = pNewPauseState;
         for (AbstractDirectionalPluginBlockEntity pluginDevice : pluginDevices) {
-            pluginDevice.setPaused(pNewPauseState);
+            pluginDevice.setDevicePaused(pNewPauseState);
         }
         syncAndSave();
     }

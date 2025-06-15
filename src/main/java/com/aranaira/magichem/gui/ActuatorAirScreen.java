@@ -95,8 +95,8 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
         int steamH = ActuatorAirBlockEntity.getScaledSteam(menu.blockEntity.getSteamInTank());
         gui.blit(TEXTURE_GAS, x + STEAM_X, y + GAS_Y, 11, 0, GAS_W, steamH, 16, 16);
 
-        boolean sufficientSmoke = menu.blockEntity.getSmokeInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel());
-        boolean sufficientSteam = menu.blockEntity.getSteamInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel());
+        boolean sufficientSmoke = menu.blockEntity.getSmokeInTank() >= menu.blockEntity.getGasPerProcess();
+        boolean sufficientSteam = menu.blockEntity.getSteamInTank() >= menu.blockEntity.getGasPerProcess();
         //Insufficient input warnings
         if(menu.blockEntity.getPowerLevel() == 2 && !(sufficientSmoke || sufficientSteam)) {
             renderPowerWarning(gui, x, y);
@@ -303,17 +303,17 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
             gui.drawString(font, Component.literal("1"), 112, 12, 0xffaa0000, false);
 
         //Operation time
-        float penaltyRate = ActuatorAirBlockEntity.getPenaltyRate(menu.blockEntity.getPowerLevel());
+        float penaltyRate = menu.blockEntity.getPenaltyRate();
         gui.drawString(font, Component.literal("x" + String.format("%.1f", penaltyRate)), 112, 26, 0xff000000, false);
 
         //Gas usage
-        gui.drawString(font, Component.literal(ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel()) + "mB"), 112, 40, 0xff000000, false);
+        gui.drawString(font, Component.literal(menu.blockEntity.getGasPerProcess() + "mB"), 112, 40, 0xff000000, false);
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorAirBlockEntity.getEldrinPowerUsage(menu.blockEntity.getPowerLevel())), 112, 54, 0xff000000, false);
 
-        boolean sufficientSmoke = menu.blockEntity.getSmokeInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel());
-        boolean sufficientSteam = menu.blockEntity.getSteamInTank() >= ActuatorAirBlockEntity.getGasPerProcess(menu.blockEntity.getPowerLevel());
+        boolean sufficientSmoke = menu.blockEntity.getSmokeInTank() >= menu.blockEntity.getGasPerProcess();
+        boolean sufficientSteam = menu.blockEntity.getSteamInTank() >= menu.blockEntity.getGasPerProcess();
         //power warning
         if((menu.blockEntity.getPowerLevel() == 2 && !(sufficientSmoke || sufficientSteam)) || (menu.blockEntity.getPowerLevel() == 3 && !(sufficientSmoke && sufficientSteam))) {
             MutableComponent warningText;

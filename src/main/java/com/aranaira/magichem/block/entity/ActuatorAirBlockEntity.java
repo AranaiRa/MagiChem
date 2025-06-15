@@ -150,7 +150,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public int getBatchSize() {
-        int gpp = getGasPerProcess(powerLevel);
+        int gpp = getGasPerProcess();
 
         if(powerLevel == 2) {
             if(containedSteam.getAmount() < gpp && containedSmoke.getAmount() < gpp)
@@ -163,13 +163,9 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public float getPenaltyRate() {
-        if(powerLevel > 1 && !isGasSatisfied)
+        if((powerLevel > 1 && !isGasSatisfied) || getPaused())
             return 1;
         return POWER_PENALTY[this.powerLevel];
-    }
-
-    public static float getPenaltyRate(int pPowerLevel) {
-        return POWER_PENALTY[pPowerLevel];
     }
 
     public static float getPenaltyRateFromBatchSize(int pBatchSize) {
@@ -189,11 +185,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
     }
 
     public int getGasPerProcess() {
-        return GAS_PER_PROCESS[this.powerLevel];
-    }
-
-    public static int getGasPerProcess(int pPowerLevel) {
-        return GAS_PER_PROCESS[pPowerLevel];
+        return getPaused() ? 0 : GAS_PER_PROCESS[this.powerLevel];
     }
 
     public int getPowerLevel() {
@@ -235,6 +227,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("isGasSatisfied", isGasSatisfied);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -266,6 +259,8 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             this.doEldrinPowerConsumption = nbt.getBoolean("doEldrinPowerConsumption");
         this.flags = nbt.getInt("flags");
         this.isPaused = nbt.getBoolean("isPaused");
+        if(nbt.contains("isDevicePaused"))
+            this.isDevicePaused = nbt.getBoolean("isDevicePaused");
 
         int nbtSmoke = nbt.getInt("tankSmoke");
         if(nbtSmoke > 0)
@@ -302,6 +297,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("isGasSatisfied", isGasSatisfied);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -319,7 +315,8 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
 
     @Override
     public void processCompletedOperation(int pCyclesCompleted) {
-        consumeGasses();
+        if(!getPaused())
+            consumeGasses();
     }
 
     private boolean consumeGasses() {

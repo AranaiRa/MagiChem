@@ -156,27 +156,17 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         return (this.flags & FLAG_FUEL_NORMAL) == FLAG_FUEL_NORMAL;
     }
 
-    public static boolean getIsFuelled(int pFlags) {
-        return (pFlags & FLAG_FUEL_NORMAL) == FLAG_FUEL_NORMAL;
-    }
-
     public boolean getIsSuperFuelled() {
         return (this.flags & FLAG_FUEL_SUPER) == FLAG_FUEL_SUPER;
-    }
-
-    public static boolean getIsSuperFuelled(int pFlags) {
-        return (pFlags & FLAG_FUEL_SUPER) == FLAG_FUEL_SUPER;
     }
 
     public boolean getIsPowerReductionMode() {
         return (this.flags & FLAG_REDUCTION_TYPE_POWER) == FLAG_REDUCTION_TYPE_POWER;
     }
 
-    public static boolean getIsPowerReductionMode(int pFlags) {
-        return (pFlags & FLAG_REDUCTION_TYPE_POWER) == FLAG_REDUCTION_TYPE_POWER;
-    }
-
     public float getReductionRate() {
+        if(getPaused()) return 0;
+
         boolean fuelSuper = this.getIsSuperFuelled();
         boolean fuelNormal = this.getIsFuelled();
         if(fuelSuper)
@@ -185,17 +175,6 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
             return POWER_REDUCTION_FUEL_NORMAL[this.powerLevel];
         else
             return POWER_REDUCTION_BASE[this.powerLevel];
-    }
-
-    public static float getReductionRate(int pPowerLevel, int pFlags) {
-        boolean fuelSuper = getIsSuperFuelled(pFlags);
-        boolean fuelNormal = getIsFuelled(pFlags);
-        if(fuelSuper)
-            return POWER_REDUCTION_FUEL_SUPER[pPowerLevel];
-        else if(fuelNormal)
-            return POWER_REDUCTION_FUEL_NORMAL[pPowerLevel];
-        else
-            return POWER_REDUCTION_BASE[pPowerLevel];
     }
 
     public int getEldrinPowerUsage() {
@@ -207,11 +186,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     }
 
     public int getSmokePerProcess() {
-        return SMOKE_PER_PROCESS[this.powerLevel];
-    }
-
-    public static int getSmokePerProcess(int pPowerLevel) {
-        return SMOKE_PER_PROCESS[pPowerLevel];
+        return getPaused() ? 0 : SMOKE_PER_PROCESS[this.powerLevel];
     }
 
     public int getFlags() {
@@ -242,6 +217,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("fuelDuration", fuelDuration);
         nbt.putInt("remainingFuelTime", remainingFuelTime);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());
@@ -275,6 +251,8 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         this.remainingFuelTime = nbt.getInt("remainingFuelTime");
         this.flags = nbt.getInt("flags");
         this.isPaused = nbt.getBoolean("isPaused");
+        if(nbt.contains("isDevicePaused"))
+            this.isDevicePaused = nbt.getBoolean("isDevicePaused");
 
         int nbtSmoke = nbt.getInt("tankSmoke");
         if(nbtSmoke > 0)
@@ -302,6 +280,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("fuelDuration", fuelDuration);
         nbt.putInt("remainingFuelTime", remainingFuelTime);
         nbt.putInt("tankSmoke", this.containedSmoke.getAmount());

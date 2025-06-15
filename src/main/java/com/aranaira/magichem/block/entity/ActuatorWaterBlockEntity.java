@@ -144,11 +144,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public int getEfficiencyIncrease() {
-        return EFFICIENCY_INCREASE[this.powerLevel];
-    }
-
-    public static int getEfficiencyIncrease(int pPowerLevel) {
-        return EFFICIENCY_INCREASE[pPowerLevel];
+        return getPaused() ? 0 : EFFICIENCY_INCREASE[this.powerLevel];
     }
 
     public int getEldrinPowerUsage() {
@@ -164,11 +160,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public int getWaterPerOperation() {
-        return WATER_PER_OPERATION[this.powerLevel];
-    }
-
-    public static int getWaterPerOperation(int pPowerLevel) {
-        return WATER_PER_OPERATION[pPowerLevel];
+        return getPaused() ? 0 : WATER_PER_OPERATION[this.powerLevel];
     }
 
     public int getSteamInTank() {
@@ -176,11 +168,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public int getSteamPerProcess() {
-        return STEAM_PER_PROCESS[this.powerLevel];
-    }
-
-    public static int getSteamPerProcess(int pPowerLevel) {
-        return STEAM_PER_PROCESS[pPowerLevel];
+        return getPaused() ? 0 : STEAM_PER_PROCESS[this.powerLevel];
     }
 
     @Override
@@ -192,6 +180,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("tankWater", this.containedWater.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);
@@ -222,6 +211,8 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
             this.doEldrinPowerConsumption = nbt.getBoolean("doEldrinPowerConsumption");
         this.flags = nbt.getInt("flags");
         this.isPaused = nbt.getBoolean("isPaused");
+        if(nbt.contains("isDevicePaused"))
+            this.isDevicePaused = nbt.getBoolean("isDevicePaused");
 
         int nbtWater = nbt.getInt("tankWater");
         if(nbtWater > 0)
@@ -255,6 +246,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("tankWater", this.containedWater.getAmount());
         nbt.putInt("tankSteam", this.containedSteam.getAmount());
         nbt.putInt("flags", this.flags);

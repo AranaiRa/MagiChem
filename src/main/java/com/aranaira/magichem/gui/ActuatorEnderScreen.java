@@ -230,7 +230,7 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
         Font font = Minecraft.getInstance().font;
 
         //Materia import rate
-        if(!menu.blockEntity.getIsSatisfied())
+        if(!menu.blockEntity.getIsSatisfied() || menu.blockEntity.getPaused())
             gui.drawString(font, Component.literal("-"), 124, 17, 0xffaa0000, false);
         else if(menu.blockEntity.getPowerLevel() == 1)
             gui.drawString(font, Component.translatable("tooltip.magichem.gui.actuator.ender.speed.fast"), 124, 17, 0xff000000, false);
@@ -238,7 +238,7 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
             gui.drawString(font, Component.translatable("tooltip.magichem.gui.actuator.ender.speed.instant.import"), 124, 17, 0xff000000, false);
 
         //Materia export rate
-        if(!menu.blockEntity.getIsSatisfied())
+        if(!menu.blockEntity.getIsSatisfied() || menu.blockEntity.getPaused())
             gui.drawString(font, Component.literal("-"), 124, 32, 0xffaa0000, false);
         else if(menu.blockEntity.getPowerLevel() <= 2)
             gui.drawString(font, Component.translatable("tooltip.magichem.gui.actuator.ender.speed.fast"), 124, 32, 0xff000000, false);

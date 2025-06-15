@@ -36,7 +36,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
     protected float
         remainingEldrinForSatisfaction = 1;
     protected ItemStackHandler itemHandler;
-    public boolean doEldrinPowerConsumption = true;
+    public boolean doEldrinPowerConsumption = true, isDevicePaused = false;
 
     public AbstractDirectionalPluginBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -90,7 +90,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
     }
 
     public boolean getPaused() {
-        return isPaused;
+        return isPaused || isDevicePaused;
     }
 
     public boolean isAuxiliaryRequirementSatisfied() {
@@ -103,6 +103,12 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
 
     public void setPaused(boolean pNewPauseState) {
         isPaused = pNewPauseState;
+        syncAndSave();
+    }
+
+    public void setDevicePaused(boolean pNewPauseState) {
+        isDevicePaused = pNewPauseState;
+        checkPaused();
         syncAndSave();
     }
 
@@ -119,6 +125,11 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
             new Pair(new Vec3i(0,2,0), Direction.UP)
     };
     public void checkPaused() {
+        if(isDevicePaused) {
+            setPaused(true);
+            return;
+        }
+
         boolean shouldPause = false;
 
         for (Pair<Vec3i, Direction> query : ACTUATOR_REDSTONE_CHECK_LOCATIONS) {
@@ -188,7 +199,7 @@ public abstract class AbstractDirectionalPluginBlockEntity extends BlockEntity i
                     }
                 }
             } else {
-                if(!entity.isPaused) {
+                if(!entity.isPaused && !entity.isDevicePaused) {
                     //Tick down the cycle time for GUI reasons
                     entity.remainingCycleTime = Math.max(-1, entity.remainingCycleTime - 1);
                 }

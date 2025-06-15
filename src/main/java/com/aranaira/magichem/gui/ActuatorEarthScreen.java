@@ -105,7 +105,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
         RenderSystem.setShaderTexture(1, TEXTURE_SAND);
         gui.blit(TEXTURE_SAND, x + SAND_X, y + SAND_Y + FLUID_GAUGE_H - sandH, 0, 0, SAND_W, sandH, 16, 16);
 
-        if(menu.blockEntity.getSandInTank() < ActuatorEarthBlockEntity.getSandPerOperation(menu.blockEntity.getPowerLevel())) {
+        if(menu.blockEntity.getSandInTank() < menu.blockEntity.getSandPerOperation()) {
             renderPowerWarning(gui, x, y);
         }
 
@@ -205,7 +205,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSandPerOperation() + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.earth.tank2.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
@@ -213,7 +213,7 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
                     .append(Component.literal(menu.blockEntity.getSandInTank() + " / " + ServerConfig.quakeRefinerySandCapacity).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("  ")
                             .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(Component.literal(String.format("%.1f", ActuatorEarthBlockEntity.getSandPercent(menu.blockEntity.getSandInTank()))+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                            .append(Component.literal(String.format("%.1f", menu.blockEntity.getSandPercent())+"%")).withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
@@ -316,18 +316,18 @@ public class ActuatorEarthScreen extends AbstractContainerScreen<ActuatorEarthMe
 
         //Grime Reduction
         if(menu.blockEntity.getIsSatisfied())
-            gui.drawString(font, Component.literal("-"+ActuatorEarthBlockEntity.getGrimeReductionRate(menu.blockEntity.getPowerLevel())+"%"), 128, 17, 0xff000000, false);
+            gui.drawString(font, Component.literal("-"+menu.blockEntity.getGrimeReductionRate()+"%"), 128, 17, 0xff000000, false);
         else
             gui.drawString(font, Component.literal("-"), 128, 17, 0xffaa0000, false);
 
         //Sand per Operation
-        gui.drawString(font, Component.literal(ActuatorEarthBlockEntity.getSandPerOperation(menu.blockEntity.getPowerLevel())+"mB"), 128, 32, 0xff000000, false);
+        gui.drawString(font, Component.literal(menu.blockEntity.getSandPerOperation()+"mB"), 128, 32, 0xff000000, false);
 
         //Eldrin power usage
         gui.drawString(font, Component.literal(""+ActuatorEarthBlockEntity.getEldrinPowerUsage(menu.blockEntity.getPowerLevel())), 128, 47, 0xff000000, false);
 
         //Warning label
-        if(menu.blockEntity.getSandInTank() < ActuatorEarthBlockEntity.getSandPerOperation(menu.blockEntity.getPowerLevel())) {
+        if(menu.blockEntity.getSandInTank() < menu.blockEntity.getSandPerOperation()) {
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientsand");
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);

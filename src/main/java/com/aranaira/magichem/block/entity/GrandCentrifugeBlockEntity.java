@@ -361,7 +361,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     public void setPaused(boolean pNewPauseState) {
         redstonePaused = pNewPauseState;
         for (AbstractDirectionalPluginBlockEntity pluginDevice : pluginDevices) {
-            pluginDevice.setPaused(pNewPauseState);
+            pluginDevice.setDevicePaused(pNewPauseState);
         }
         syncAndSave();
     }

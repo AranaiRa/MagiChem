@@ -248,10 +248,10 @@ public class ActuatorArcaneScreen extends AbstractContainerScreen<ActuatorArcane
 
         if(menu.blockEntity.getIsReductionMode()) {
             //Reduction rate
-            gui.drawString(font, Component.literal("-" + ActuatorArcaneBlockEntity.getSlurryReductionRate(menu.blockEntity.getPowerLevel())+"%"), 120, 21, 0xff000000, false);
+            gui.drawString(font, Component.literal("-" + menu.blockEntity.getSlurryReductionRate()+"%"), 120, 21, 0xff000000, false);
         } else {
             //Generation rate
-            gui.drawString(font, Component.literal("" + ActuatorArcaneBlockEntity.getSlurryGeneratedPerOperation(menu.blockEntity.getPowerLevel())+" mB"), 120, 21, 0xff000000, false);
+            gui.drawString(font, Component.literal("" + menu.blockEntity.getSlurryGeneratedPerOperation()+" mB"), 120, 21, 0xff000000, false);
         }
 
         //Eldrin power usage

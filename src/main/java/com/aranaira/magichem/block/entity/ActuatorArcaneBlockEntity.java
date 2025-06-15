@@ -143,19 +143,11 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
     }
 
     public int getSlurryGeneratedPerOperation() {
-        return SLURRY_PER_OPERATION[this.powerLevel];
-    }
-
-    public static int getSlurryGeneratedPerOperation(int pPowerLevel) {
-        return SLURRY_PER_OPERATION[pPowerLevel];
+        return getPaused() ? 0 : SLURRY_PER_OPERATION[this.powerLevel];
     }
 
     public int getSlurryReductionRate() {
-        return SLURRY_REDUCTION[getPaused() ? 0 : this.powerLevel];
-    }
-
-    public static int getSlurryReductionRate(int pPowerLevel) {
-        return SLURRY_REDUCTION[pPowerLevel];
+        return getPaused() ? 0 : SLURRY_REDUCTION[this.powerLevel];
     }
 
     public static float getSlurryPercent(int pSlurryAmount) {
@@ -187,6 +179,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
         nbt.putBoolean("isPaused", isPaused);
@@ -220,6 +213,8 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
             this.containedSlurry.setAmount(nbt.getInt("containedSlurry"));
         this.flags = nbt.getInt("flags");
         this.isPaused = nbt.getBoolean("isPaused");
+        if(nbt.contains("isDevicePaused"))
+            this.isDevicePaused = nbt.getBoolean("isDevicePaused");
 
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
@@ -242,6 +237,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("containedSlurry", containedSlurry.getAmount());
         nbt.putInt("flags", flags);
         nbt.putBoolean("isPaused", isPaused);

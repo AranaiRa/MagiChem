@@ -1,24 +1,16 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.FuseryRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.GrandFuseryRouterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
-import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.entities.ShlorpEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
-import com.aranaira.magichem.gui.ActuatorArcaneMenu;
-import com.aranaira.magichem.gui.ActuatorArcaneScreen;
 import com.aranaira.magichem.gui.ActuatorEnderMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.EntitiesRegistry;
-import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
@@ -45,14 +37,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -148,6 +136,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);
@@ -174,6 +163,8 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
         if(nbt.contains("doEldrinPowerConsumption"))
             this.doEldrinPowerConsumption = nbt.getBoolean("doEldrinPowerConsumption");
         this.isPaused = nbt.getBoolean("isPaused");
+        if(nbt.contains("isDevicePaused"))
+            this.isDevicePaused = nbt.getBoolean("isDevicePaused");
 
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
@@ -195,6 +186,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putBoolean("isPaused", isPaused);
         if(ownerUUID != null)
             nbt.putUUID("owner", ownerUUID);

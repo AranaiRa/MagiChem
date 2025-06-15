@@ -143,19 +143,11 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public int getSandPerOperation() {
-        return SAND_PER_OPERATION[this.powerLevel];
-    }
-
-    public static int getSandPerOperation(int pPowerLevel) {
-        return SAND_PER_OPERATION[pPowerLevel];
+        return getPaused() ? 0 : SAND_PER_OPERATION[this.powerLevel];
     }
 
     public int getGrimeReductionRate() {
-        return GRIME_REDUCTION[this.powerLevel];
-    }
-
-    public static int getGrimeReductionRate(int pPowerLevel) {
-        return GRIME_REDUCTION[pPowerLevel];
+        return getPaused() ? 0 : GRIME_REDUCTION[this.powerLevel];
     }
 
     @Override
@@ -167,6 +159,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
@@ -201,6 +194,8 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         this.currentRarefiedGrime = nbt.getInt("currentRarefiedGrime");
         this.flags = nbt.getInt("flags");
         this.isPaused = nbt.getBoolean("isPaused");
+        if(nbt.contains("isDevicePaused"))
+            this.isDevicePaused = nbt.getBoolean("isDevicePaused");
 
         if(nbt.contains("owner"))
             ownerUUID = nbt.getUUID("owner");
@@ -222,6 +217,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
         nbt.putBoolean("doEldrinPowerConsumption", doEldrinPowerConsumption);
+        nbt.putBoolean("isDevicePaused", isDevicePaused);
         nbt.putInt("remainingSand", remainingSand);
         nbt.putInt("currentGrime", currentGrime);
         nbt.putInt("currentRarefiedGrime", currentRarefiedGrime);
@@ -326,7 +322,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
     }
 
     public void handleAnimationDrivers() {
-        if(isPaused)
+        if(getPaused())
             return;
 
         boolean doDriverUpdate = true;
@@ -441,12 +437,8 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
         return remainingSand;
     }
 
-    public static float getSandPercent(int pSandAmount) {
-        return (float)pSandAmount * 100f / ServerConfig.quakeRefinerySandCapacity;
-    }
-
     public float getSandPercent() {
-        return (float)remainingSand * 100f / ServerConfig.quakeRefinerySandCapacity;
+        return getPaused() ? 0 : (float)remainingSand * 100f / ServerConfig.quakeRefinerySandCapacity;
     }
 
     public static int getScaledSand(int pSandAmount) {

@@ -100,7 +100,7 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         int steamH = ActuatorWaterBlockEntity.getScaledSteam(menu.blockEntity.getSteamInTank());
         gui.blit(TEXTURE_WATER, x + STEAM_X, y + STEAM_Y, 11, 0, STEAM_W, steamH, 16, 16);
 
-        if(menu.blockEntity.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel())) {
+        if(menu.blockEntity.getWaterInTank() < menu.blockEntity.getWaterPerOperation()) {
             renderPowerWarning(gui, x, y);
         }
 
@@ -160,7 +160,7 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getWaterPerOperation() + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank1.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
@@ -183,7 +183,7 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line1")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
-                    .append(Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.blockEntity.getPowerLevel()) + " mB ").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(menu.blockEntity.getSteamPerProcess() + " mB ").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.translatable("tooltip.magichem.gui.actuator.water.tank2.line2")));
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
@@ -303,21 +303,21 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
 
         //Efficiency increase
         if(menu.blockEntity.getIsSatisfied())
-            gui.drawString(font, Component.literal("+"+ActuatorWaterBlockEntity.getEfficiencyIncrease(menu.blockEntity.getPowerLevel())+"%"), 109, 12, 0xff000000, false);
+            gui.drawString(font, Component.literal("+"+menu.blockEntity.getEfficiencyIncrease()+"%"), 109, 12, 0xff000000, false);
         else
             gui.drawString(font, Component.literal("   0%"), 109, 12, 0xffaa0000, false);
 
         //Water consumption rate
-        gui.drawString(font, Component.literal(ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel())+"mB"), 109, 26, 0xff000000, false);
+        gui.drawString(font, Component.literal(menu.blockEntity.getWaterPerOperation()+"mB"), 109, 26, 0xff000000, false);
 
         //Steam production rate
-        gui.drawString(font, Component.literal(ActuatorWaterBlockEntity.getSteamPerProcess(menu.blockEntity.getPowerLevel())+"mB"), 109, 40, 0xff000000, false);
+        gui.drawString(font, Component.literal(menu.blockEntity.getSteamPerProcess()+"mB"), 109, 40, 0xff000000, false);
 
         //Eldrin power usage
-        gui.drawString(font, Component.literal(""+ActuatorWaterBlockEntity.getEldrinPowerUsage(menu.blockEntity.getPowerLevel())), 109, 54, 0xff000000, false);
+        gui.drawString(font, Component.literal(""+menu.blockEntity.getEldrinPowerUsage()), 109, 54, 0xff000000, false);
 
         //Warning label
-        if(menu.blockEntity.getWaterInTank() < ActuatorWaterBlockEntity.getWaterPerOperation(menu.blockEntity.getPowerLevel())) {
+        if(menu.blockEntity.getWaterInTank() < menu.blockEntity.getWaterPerOperation()) {
             MutableComponent warningText = Component.translatable("gui.magichem.insufficientwater");
             int width = Minecraft.getInstance().font.width(warningText.getString());
             gui.drawString(font, warningText, 89 - width / 2, -17, 0xff000000, false);
