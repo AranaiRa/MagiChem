@@ -127,6 +127,9 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     @Nullable
     public DistillationFabricationRecipe getCurrentRecipe() {
+        if(itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty())
+            recipe = null;
+
         if(recipe == null) {
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
@@ -187,6 +190,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         super.saveAdditional(nbt);
     }
 
@@ -199,6 +203,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         progress = nbt.getInt("craftingProgress");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
         isFESatisfied = nbt.getBoolean("isFESatisfied");
+        clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
     }
 
     @Nullable
@@ -221,6 +226,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         return nbt;
     }
 

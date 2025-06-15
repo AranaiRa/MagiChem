@@ -5,6 +5,8 @@ import com.aranaira.magichem.block.entity.CircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
+import com.aranaira.magichem.gui.element.GrandCentrifugeButtonRecipeSelector;
+import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.FabricationBatchSizeC2SPacket;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
@@ -21,11 +23,13 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -122,6 +126,15 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             }
         }
 
+        int x = this.leftPos + 71;
+        int y = this.topPos + 66;
+        new ButtonData(this.addRenderableWidget(new FabricationButtonRecipeSelector(
+                this, c, x, y, 9, 9, 72, 238, TEXTURE, button -> {
+
+            CircleFabricationScreen query = (CircleFabricationScreen) ((FabricationButtonRecipeSelector) button).getScreen();
+            query.clearActiveRecipe();
+        })), x, y);
+
         renderButtons();
     }
 
@@ -135,6 +148,13 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             ));
             lastClickedRecipe = filteredRecipes.get(trueIndex);
         }
+    }
+
+    public void clearActiveRecipe() {
+        menu.blockEntity.clearRecipeAfterNextProcess = true;
+        PacketRegistry.sendToServer(new DeviceRecipeClearC2SPacket(
+                menu.blockEntity.getBlockPos()
+        ));
     }
 
     private List<DistillationFabricationRecipe> filteredRecipes = new ArrayList<>();
@@ -258,7 +278,15 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             gui.blit(TEXTURE, x, y, 28, 238, 18, 18);
         }
         else {
-            gui.renderItem(menu.blockEntity.getCurrentRecipe().getAlchemyObject(), x+1, y+1);
+            if(menu.blockEntity.getCurrentRecipe().getAlchemyObject().getItem() instanceof BlockItem) {
+                gui.renderItem(menu.blockEntity.getCurrentRecipe().getAlchemyObject(), x + 1, y + 1);
+                if(menu.blockEntity.clearRecipeAfterNextProcess) gui.fill(RenderType.guiGhostRecipeOverlay(), x, y, x + 18, y + 18, 0x40ffffff);
+            } else {
+                float alpha = menu.blockEntity.clearRecipeAfterNextProcess ? 0.5f : 1.0f;
+                gui.setColor(1, 1, 1, alpha);
+                gui.renderItem(menu.blockEntity.getCurrentRecipe().getAlchemyObject(), x + 1, y + 1);
+                gui.setColor(1, 1, 1, 1);
+            }
         }
     }
 

@@ -171,6 +171,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     @Nullable
     public DistillationFabricationRecipe getCurrentRecipe() {
+        if(itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty())
+            recipe = null;
+
         if(recipe == null) {
             ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
             if(!stackInSlot.isEmpty()) {
@@ -234,6 +237,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         super.saveAdditional(nbt);
     }
 
@@ -249,6 +253,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
         redstonePaused = nbt.getBoolean("redstonePaused");
         isFESatisfied = nbt.getBoolean("isFESatisfied");
+        clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
 
         if(getLevel() != null)
             getCurrentRecipe();
@@ -619,6 +624,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
+        nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
         return nbt;
     }
 

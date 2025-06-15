@@ -49,6 +49,8 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected DistillationFabricationRecipe recipe;
 
+    public boolean clearRecipeAfterNextProcess = false;
+
     ////////////////////
     // CONSTRUCTOR
     ////////////////////
@@ -284,6 +286,11 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         }
 
         resolveActuators(pEntity, materiaCreated);
+        if(pEntity.clearRecipeAfterNextProcess) {
+            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE), ItemStack.EMPTY);
+            pEntity.clearRecipeAfterNextProcess = false;
+            pEntity.syncAndSave();
+        }
 
         //Put bottles into output slot, eject the rest
         ItemStack bottleStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES));

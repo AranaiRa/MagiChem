@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
+import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -43,6 +44,9 @@ public class DeviceRecipeClearC2SPacket {
             }
             else if(entity instanceof AbstractSeparationBlockEntity separation) {
                 separation.clearRecipeAfterNextProcess = true;
+            }
+            else if(entity instanceof AbstractFabricationBlockEntity fabrication) {
+                fabrication.clearRecipeAfterNextProcess = true;
             }
         });
 

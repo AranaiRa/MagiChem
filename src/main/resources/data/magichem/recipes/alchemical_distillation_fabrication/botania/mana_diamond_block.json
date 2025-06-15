@@ -16,7 +16,7 @@
         "batch_size": 1,
         "required_advancement": "botania:main/mana_pool_pickup",
         "object": {
-          "item": "botania:mana_diamond"
+          "item": "botania:mana_diamond_block"
         },
         "components": [
           { "item": "magichem:admixture_mana", "count": 40 },
