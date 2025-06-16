@@ -1,0 +1,43 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 1,
+  "object": {
+    "item": "magichem:wisdom_stone_albedo"
+  },
+  "stages": [
+    {
+      "experience": 90,
+      "components": [
+        { "item": "magichem:collated_theories" },
+        { "item": "magichem:wisdom_stone_nigredo" },
+        { "item": "magichem:collated_theories" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_albedo", "count": 1 }
+      ]
+    },
+    {
+      "experience": 120,
+      "components": [
+        { "item": "magichem:radiant_rose" },
+        { "item": "magichem:abjuration_necrotic" },
+        { "item": "magichem:slumbering_idol" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_whimsy", "count": 1 }
+      ]
+    },
+    {
+      "experience": 150,
+      "components": [
+        { "item": "magichem:profound_manuscript" },
+        { "item": "magichem:chiaroscuro" },
+        { "item": "magichem:profound_manuscript" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_albedo", "count": 1 }
+      ]
+    }
+  ]
+}

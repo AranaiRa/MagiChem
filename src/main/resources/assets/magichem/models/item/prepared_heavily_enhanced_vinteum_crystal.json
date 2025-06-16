@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "magichem:item/prepared_heavily_enhanced_vinteum_crystal"
+  }
+}

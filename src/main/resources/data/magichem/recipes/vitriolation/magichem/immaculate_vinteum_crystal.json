@@ -1,0 +1,8 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 2,
+  "acidConsumed": 2000,
+  "duration": 1600,
+  "inputItem": { "item": "magichem:laden_heavily_enhanced_vinteum_crystal", "count": 1 },
+  "resultItem": { "item": "magichem:immaculate_vinteum_crystal", "count": 1 }
+}

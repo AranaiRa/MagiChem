@@ -409,6 +409,12 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == ItemRegistry.INERT_IDOL.get()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.inertidol")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == ItemRegistry.AUXILIARY_CIRCLE_ARRAY.get()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.aca")

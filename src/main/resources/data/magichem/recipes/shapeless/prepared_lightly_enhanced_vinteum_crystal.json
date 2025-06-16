@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "magichem:lightly_enhanced_vinteum_crystal"
+    },
+    {
+      "item": "magichem:resin_amarantine"
+    },
+    {
+      "item": "magichem:chiaroscuro"
+    }
+  ],
+  "result": {
+    "item": "magichem:prepared_lightly_enhanced_vinteum_crystal"
+  }
+}

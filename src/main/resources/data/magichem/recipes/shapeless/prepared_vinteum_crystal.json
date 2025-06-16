@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "magichem:vinteum_crystal_shard"
+    },
+    {
+      "item": "magichem:resin_amarantine"
+    },
+    {
+      "item": "magichem:chiaroscuro"
+    }
+  ],
+  "result": {
+    "item": "magichem:prepared_vinteum_crystal"
+  }
+}

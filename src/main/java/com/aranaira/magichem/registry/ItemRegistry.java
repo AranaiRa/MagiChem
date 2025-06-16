@@ -204,6 +204,22 @@ public class ItemRegistry {
             () -> new SlumberingIdolItem(new Item.Properties())
     );
 
+    public static final RegistryObject<AbjurationItem> ABJURATION = ITEMS.register("abjuration",
+            () -> new AbjurationItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> DENDRITIC_ABJURATION = ITEMS.register("abjuration_dendritic",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<NecroticAbjurationItem> NECROTIC_ABJURATION = ITEMS.register("abjuration_necrotic",
+            () -> new NecroticAbjurationItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> RADIANT_ROSE = ITEMS.register("radiant_rose",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
             () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
     );
@@ -364,11 +380,51 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> AMARANTINE_RESIN = ITEMS.register("resin_amarantine",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> GRAY_RESIN = ITEMS.register("resin_gray",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> CHIAROSCURO = ITEMS.register("chiaroscuro",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> PREPARED_VINTEUM_CRYSTAL = ITEMS.register("prepared_vinteum_crystal",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LADEN_VINTEUM_CRYSTAL = ITEMS.register("laden_vinteum_crystal",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LIGHTLY_ENHANCED_VINTEUM_CRYSTAL = ITEMS.register("lightly_enhanced_vinteum_crystal",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> PREPARED_LIGHTLY_ENHANCED_VINTEUM_CRYSTAL = ITEMS.register("prepared_lightly_enhanced_vinteum_crystal",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LADEN_LIGHTLY_ENHANCED_VINTEUM_CRYSTAL = ITEMS.register("laden_lightly_enhanced_vinteum_crystal",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> HEAVILY_ENHANCED_VINTEUM_CRYSTAL = ITEMS.register("heavily_enhanced_vinteum_crystal",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> PREPARED_HEAVILY_ENHANCED_VINTEUM_CRYSTAL = ITEMS.register("prepared_heavily_enhanced_vinteum_crystal",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LADEN_HEAVILY_ENHANCED_VINTEUM_CRYSTAL = ITEMS.register("laden_heavily_enhanced_vinteum_crystal",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> IMMACULATE_VINTEUM_CRYSTAL = ITEMS.register("immaculate_vinteum_crystal",
             () -> new TooltipLoreItem(new Item.Properties())
     );
 

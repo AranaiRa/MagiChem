@@ -416,7 +416,7 @@ public class ServerConfig
     //ITEMS
     private static final ForgeConfigSpec.IntValue SLUMBERING_IDOL_RANGE = BUILDER
             .comment("The default cuboid range that a Slumbering Idol will slaughter Phantoms in.")
-            .defineInRange("slumberingIdolRange", 96, 16, 1024);
+            .defineInRange("slumberingIdolRange", 64, 16, 1024);
 
     public static final ForgeConfigSpec SPEC = BUILDER.build();
 

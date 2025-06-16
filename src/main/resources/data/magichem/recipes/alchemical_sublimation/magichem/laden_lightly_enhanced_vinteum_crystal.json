@@ -1,0 +1,23 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 1,
+  "object": {
+    "item": "magichem:laden_lightly_enhanced_vinteum_crystal"
+  },
+  "stages": [
+    {
+      "experience": 60,
+      "components": [
+        { "item": "magichem:prepared_lightly_enhanced_vinteum_crystal" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_crystal", "count": 84 },
+        { "item": "magichem:admixture_sorcery", "count": 70 },
+        { "item": "magichem:admixture_color", "count": 46 },
+        { "item": "magichem:admixture_satiety", "count": 46 },
+        { "item": "magichem:essentia_albedo", "count": 14 }
+      ]
+    }
+  ]
+}

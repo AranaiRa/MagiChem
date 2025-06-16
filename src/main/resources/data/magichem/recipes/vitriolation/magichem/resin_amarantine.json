@@ -1,0 +1,8 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 2,
+  "acidConsumed": 200,
+  "duration": 1200,
+  "inputItem": { "item": "mna:purified_vinteum_dust", "count": 36 },
+  "resultItem": { "item": "magichem:resin_amarantine", "count": 1 }
+}
