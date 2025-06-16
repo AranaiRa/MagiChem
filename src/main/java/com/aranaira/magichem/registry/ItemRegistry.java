@@ -196,6 +196,14 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> INERT_IDOL = ITEMS.register("inert_idol",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<SlumberingIdolItem> SLUMBERING_IDOL = ITEMS.register("slumbering_idol",
+            () -> new SlumberingIdolItem(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
             () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
     );

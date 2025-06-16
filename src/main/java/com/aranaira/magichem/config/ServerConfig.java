@@ -413,6 +413,11 @@ public class ServerConfig
             .comment("The default cuboid range that a Materia Manifest searches for containers in. The center block is not counted as part of this squadius.")
             .defineInRange("materiaManifestDefaultRange", 8, 1, Integer.MAX_VALUE);
 
+    //ITEMS
+    private static final ForgeConfigSpec.IntValue SLUMBERING_IDOL_RANGE = BUILDER
+            .comment("The default cuboid range that a Slumbering Idol will slaughter Phantoms in.")
+            .defineInRange("slumberingIdolRange", 96, 16, 1024);
+
     public static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -501,7 +506,8 @@ public class ServerConfig
         acidBasinTankCapacity,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
-        materiaManifestDefaultRange;
+        materiaManifestDefaultRange,
+        slumberingIdolRange;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -597,5 +603,6 @@ public class ServerConfig
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
         materiaManifestDefaultRange = MATERIA_MANIFEST_DEFAULT_RANGE.get();
+        slumberingIdolRange = SLUMBERING_IDOL_RANGE.get();
     }
 }

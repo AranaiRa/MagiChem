@@ -1,0 +1,27 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 2,
+  "object": {
+    "item": "minecraft:totem_of_undying"
+  },
+  "stages": [
+    {
+      "experience": 70,
+      "components": [
+        { "item": "minecraft:gold_ingot" },
+        { "item": "minecraft:emerald" },
+        { "item": "magichem:slumbering_idol" },
+        { "item": "minecraft:emerald" },
+        { "item": "minecraft:gold_ingot" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_luck", "count": 42 },
+        { "item": "magichem:admixture_healing", "count": 36 },
+        { "item": "magichem:admixture_protection", "count": 14 },
+        { "item": "magichem:admixture_witchcraft", "count": 14 },
+        { "item": "magichem:essentia_albedo", "count": 14 }
+      ]
+    }
+  ]
+}

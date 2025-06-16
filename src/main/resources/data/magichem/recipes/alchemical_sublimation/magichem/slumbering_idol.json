@@ -1,0 +1,27 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 1,
+  "object": {
+    "item": "magichem:slumbering_idol"
+  },
+  "stages": [
+    {
+      "experience": 45,
+      "components": [
+        { "item": "magichem:verdigris" },
+        { "item": "minecraft:amethyst_shard" },
+        { "item": "magichem:inert_idol" },
+        { "item": "minecraft:amethyst_shard" },
+        { "item": "magichem:verdigris" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_sleep", "count": 52 },
+        { "item": "magichem:admixture_protection", "count": 34 },
+        { "item": "magichem:admixture_instrument", "count": 21 },
+        { "item": "magichem:admixture_witchcraft", "count": 14 },
+        { "item": "magichem:essentia_wrought", "count": 30 }
+      ]
+    }
+  ]
+}
