@@ -28,11 +28,15 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -64,6 +68,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
@@ -73,6 +78,14 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
         bus = Mod.EventBusSubscriber.Bus.FORGE
 )
 public class CommonEventHandler {
+    private static final TagKey<Item>
+            TAG_MINECRAFT_AXES = ItemTags.create(new ResourceLocation("minecraft", "axes"));
+    private static final TagKey<Block>
+            TAG_MAGICHEM_COPPER_EXPOSED = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "copper_exposed")),
+            TAG_MAGICHEM_COPPER_WEATHERED = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "copper_weathered")),
+            TAG_MAGICHEM_COPPER_OXIDIZED = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "copper_oxidized"));
+    private static final Random r = new Random();
+
     public CommonEventHandler() {}
 
     @SubscribeEvent
@@ -262,6 +275,28 @@ public class CommonEventHandler {
                         }
                     }
                 }
+            }
+        }
+        else if(stack.is(TAG_MINECRAFT_AXES)) {
+            int chance = 0, additional = 0;
+            if(targetState.is(TAG_MAGICHEM_COPPER_OXIDIZED)) {
+                chance = 45;
+                additional = r.nextInt(3);
+            }
+            else if(targetState.is(TAG_MAGICHEM_COPPER_WEATHERED)) {
+                chance = 25;
+                additional = r.nextInt(2);
+            }
+            else if(targetState.is(TAG_MAGICHEM_COPPER_EXPOSED)) {
+                chance = 10;
+            }
+
+            if(r.nextInt(100) < chance) {
+                ItemStack verdigris = new ItemStack(ItemRegistry.VERDIGRIS.get(), 1 + additional);
+                ItemEntity ie = new ItemEntity(event.getLevel(),
+                        event.getHitVec().getLocation().x, event.getHitVec().getLocation().y, event.getHitVec().getLocation().z,
+                        verdigris);
+                event.getLevel().addFreshEntity(ie);
             }
         }
     }

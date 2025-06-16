@@ -1,0 +1,8 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 1,
+  "acidConsumed": 60,
+  "duration": 120,
+  "inputItem": { "item": "minecraft:exposed_copper", "count": 1 },
+  "resultItem": { "item": "magichem:verdigris", "count": 1 }
+}
