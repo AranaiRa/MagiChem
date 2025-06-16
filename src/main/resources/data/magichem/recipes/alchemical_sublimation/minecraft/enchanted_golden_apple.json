@@ -1,0 +1,25 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 3,
+  "object": {
+    "item": "minecraft:enchanted_golden_apple"
+  },
+  "stages": [
+    {
+      "experience": 120,
+      "components": [
+        { "item": "minecraft:golden_apple" },
+        { "item": "minecraft:collated_theories" },
+        { "item": "minecraft:salt_of_bone" },
+        { "item": "minecraft:gold_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_healing", "count": 43 },
+        { "item": "magichem:admixture_satiety", "count": 29 },
+        { "item": "magichem:admixture_gourmet", "count": 10 },
+        { "item": "magichem:essentia_precious", "count": 95 }
+      ]
+    }
+  ]
+}
