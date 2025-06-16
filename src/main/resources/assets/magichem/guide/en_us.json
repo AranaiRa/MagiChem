@@ -490,6 +490,10 @@
       {
         "type": "manaweaving-altar",
         "location": "magichem:manaweaving/acid_basin"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/simple_acid"
       }
     ]
   },

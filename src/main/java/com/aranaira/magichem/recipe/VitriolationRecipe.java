@@ -25,6 +25,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
     private final FluidStack resultFluid;
     private final int craftTicks, minimumAcidStrength, mBConsumed;
     private static final HashMap<Integer, ArrayList<FluidType>> allAcids = new HashMap();
+    private static final HashMap<Integer, ArrayList<Fluid>> allAcidsAsFluids = new HashMap();
 
     public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pcraftTicks, int pMinimumAcidStrength, int pMBConsumed) {
         this.id = pID;
@@ -170,6 +172,25 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
 
     public static ArrayList<FluidType> getAllFluidTypesOfAcidStrength(int pStrength) {
         return allAcids.get(pStrength);
+    }
+
+    public static ArrayList<Fluid> getAllFluidsOfAcidStrength(int pStrength) {
+        if(allAcidsAsFluids.size() > 0) return allAcidsAsFluids.get(pStrength);
+
+        final Collection<Fluid> allFluids = ForgeRegistries.FLUIDS.getValues();
+        for(int i=1; i<=5; i++) {
+            ArrayList<Fluid> out = new ArrayList<>();
+            for (FluidType ft : allAcids.get(i)) {
+                for (Fluid f : allFluids) {
+                    if (f.getFluidType() == ft) {
+                        out.add(f);
+                    }
+                }
+            }
+            allAcidsAsFluids.put(i, out);
+        }
+
+        return allAcidsAsFluids.get(pStrength);
     }
 
     public static boolean isFluidOfAcidStrength(Fluid pFluid, int pStrength) {
