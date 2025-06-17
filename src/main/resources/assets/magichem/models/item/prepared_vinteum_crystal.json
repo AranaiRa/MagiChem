@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "magichem:item/prepared_vinteum_crystal"
+    "layer0": "magichem:item/vinteum_crystal_shard",
+    "layer1": "magichem:item/overlays/immaculate_vinteum_layer_preparation"
   }
 }
