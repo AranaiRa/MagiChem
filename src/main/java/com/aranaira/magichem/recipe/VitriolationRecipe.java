@@ -33,11 +33,12 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final ItemStack inputItem, resultItem;
     private final FluidStack resultFluid;
+    private final Fluid inputFluidOverride;
     private final int craftTicks, minimumAcidStrength, mBConsumed;
     private static final HashMap<Integer, ArrayList<FluidType>> allAcids = new HashMap();
     private static final HashMap<Integer, ArrayList<Fluid>> allAcidsAsFluids = new HashMap();
 
-    public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pcraftTicks, int pMinimumAcidStrength, int pMBConsumed) {
+    public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pcraftTicks, int pMinimumAcidStrength, int pMBConsumed, Fluid pInputFluidOverride) {
         this.id = pID;
         this.inputItem = pInputItem;
         this.resultItem = pResultItem;
@@ -45,6 +46,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
         this.craftTicks = pcraftTicks;
         this.minimumAcidStrength = pMinimumAcidStrength;
         this.mBConsumed = pMBConsumed;
+        this.inputFluidOverride = pInputFluidOverride;
 
         ArrayList<FluidType>[] acidLists = new ArrayList[]{
                 new ArrayList<FluidType>(),
@@ -97,6 +99,14 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
 
     public FluidStack getResultFluid() {
         return resultFluid;
+    }
+
+    public boolean hasInputFluidOverride() {
+        return inputFluidOverride != null;
+    }
+
+    public Fluid getInputFluidOverride() {
+        return inputFluidOverride;
     }
 
     public int getMinimumAcidStrength() {
@@ -197,6 +207,20 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
         return allAcids.get(pStrength).contains(pFluid.getFluidType());
     }
 
+    public static boolean isFluidAcid(Fluid fluid) {
+        boolean isAcid = false;
+
+        for(ArrayList<FluidType> listByStrength : allAcids.values()) {
+            for(FluidType ft : listByStrength) {
+                isAcid = fluid.getFluidType() == ft;
+                if(isAcid) break;
+            }
+            if(isAcid) break;
+        }
+
+        return isAcid;
+    }
+
     public static int getFluidAcidStrengthDifference(Fluid pFluid, int pTargetStrength) {
         int myStrength = -1;
         for(int i=0; i<=5; i++) {
@@ -230,6 +254,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
             JsonObject inputItemObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "inputItem");
             JsonObject resultItemObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "resultItem", null);
             JsonObject resultFluidObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "resultFluid", null);
+            String inputFluidOverrideString = GsonHelper.getAsString(pSerializedRecipe, "inputFluidOverride", null);
 
             String inputItemRL = GsonHelper.getAsString(inputItemObject, "item");
             int inputItemCount = GsonHelper.getAsInt(inputItemObject, "count");
@@ -253,11 +278,17 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
                 resultFluidAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(resultFluidRL));
             }
 
+            Fluid inputFluidOverrideAsFluid = null;
+            if(inputFluidOverrideString != null) {
+                inputFluidOverrideAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputFluidOverrideString));
+            }
+
             return new VitriolationRecipe(pRecipeId,
                     new ItemStack(inputItemAsItem, inputItemCount),
                     resultItemAsItem == null ? ItemStack.EMPTY : new ItemStack(resultItemAsItem, resultItemCount),
                     resultFluidAsFluid == null ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
-                    craftTicks, minimumAcidStrength, mBConsumed
+                    craftTicks, minimumAcidStrength, mBConsumed,
+                    inputFluidOverrideAsFluid
             );
         }
 
@@ -285,17 +316,24 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
             boolean hasResultFluid = nbt.contains("resultFluid");
             Fluid resultFluidAsFluid = null;
             int resultFluidCount = 0;
-            if(hasResultItem) {
+            if(hasResultFluid) {
                 CompoundTag resultItemTag = nbt.getCompound("resultItem");
                 resultFluidAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(resultItemTag.getString("item")));
                 resultFluidCount = resultItemTag.getInt("count");
+            }
+
+            boolean hasInputFluidOverride = nbt.contains("inputFluidOverride");
+            Fluid inputFluidOverrideAsFluid = null;
+            if(hasInputFluidOverride) {
+                inputFluidOverrideAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(nbt.getString("inputFluidOverride")));
             }
 
             return new VitriolationRecipe(pRecipeId,
                     inputAsItem == null ? ItemStack.EMPTY : new ItemStack(inputAsItem, inputCount),
                     !hasResultItem ? ItemStack.EMPTY : new ItemStack(resultItemAsItem, resultItemCount),
                     !hasResultFluid ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
-                    craftTicks, minimumAcidStrength, mBConsumed
+                    craftTicks, minimumAcidStrength, mBConsumed,
+                    inputFluidOverrideAsFluid
             );
         }
 
@@ -320,6 +358,10 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
                 inputItemTag.putString("fluid", ForgeRegistries.FLUIDS.getKey(pRecipe.resultFluid.getFluid()).toString());
                 inputItemTag.putInt("count", pRecipe.resultFluid.getAmount());
                 nbt.put("resultFluid", resultItemTag);
+            }
+
+            if(pRecipe.hasInputFluidOverride()) {
+                inputItemTag.putString("inputFluidOverride", ForgeRegistries.FLUIDS.getKey(pRecipe.inputFluidOverride).toString());
             }
 
             nbt.putInt("craftTicks", pRecipe.craftTicks);

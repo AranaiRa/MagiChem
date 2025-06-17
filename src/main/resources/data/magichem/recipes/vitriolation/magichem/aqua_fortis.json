@@ -1,0 +1,9 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 0,
+  "inputFluidOverride": "magichem:aqua_vitae",
+  "acidConsumed": 1000,
+  "duration": 1,
+  "inputItem": { "item": "magichem:aristose", "count": 5 },
+  "resultFluid": { "fluid": "magichem:aqua_fortis", "amount": 500 }
+}

@@ -39,6 +39,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import team.chisel.ctm.client.util.Dir;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, IRequiresRouterCleanupOnDestruction {
@@ -241,6 +243,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
                 inputTank.grow(inserted);
                 syncAndSave();
             }
+            reCheckRecipe = true;
             return inserted;
         }
         return 0;
@@ -276,6 +279,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
                 outputTank.shrink(extracted);
                 syncAndSave();
             }
+            reCheckRecipe = true;
             return output;
         }
 
@@ -333,13 +337,17 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     private boolean canCraftItem() {
         boolean hasInputFluid = !inputTank.isEmpty();
         if(hasInputFluid) {
-            int dAcid = VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipe.getMinimumAcidStrength());
-            if(dAcid == 0) {
-                return inputTank.getAmount() >= recipe.getBaseFluidConsumed();
-            } else if(dAcid == 1) {
-                return inputTank.getAmount() >= recipe.getBaseFluidConsumed() / 4;
-            } else if(dAcid >= 2) {
-                return true;
+            if(recipe.hasInputFluidOverride()) {
+
+            } else {
+                int dAcid = VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipe.getMinimumAcidStrength());
+                if (dAcid == 0) {
+                    return inputTank.getAmount() >= recipe.getBaseFluidConsumed();
+                } else if (dAcid == 1) {
+                    return inputTank.getAmount() >= recipe.getBaseFluidConsumed() / 4;
+                } else if (dAcid >= 2) {
+                    return true;
+                }
             }
         }
 
@@ -393,15 +401,31 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     }
 
     private void getRecipe() {
-        VitriolationRecipe recipeQuery = VitriolationRecipe.getVitriolationRecipe(level, itemHandler.getStackInSlot(SLOT_INPUT).getItem());
-        if(recipeQuery != null) {
-            if (itemHandler.getStackInSlot(SLOT_INPUT).getCount() >= recipeQuery.getInputItem().getCount()) {
-                recipe = recipeQuery;
-                progress = recipe.getCraftTicks();
-            } else {
-                recipe = null;
-                progress = -1;
+        ArrayList<VitriolationRecipe> validRecipes = new ArrayList<>();
+        for(VitriolationRecipe vr : VitriolationRecipe.getAllVitriolationRecipes(level)) {
+            if(vr.getInputItem().getItem() == itemHandler.getStackInSlot(SLOT_INPUT).getItem()) {
+                validRecipes.add(vr);
             }
+        }
+
+        if(validRecipes.size() == 0 || inputTank.isEmpty()) return;
+
+        boolean foundRecipe = false;
+        for(VitriolationRecipe recipeQuery : validRecipes) {
+            if (recipeQuery.hasInputFluidOverride()) {
+                if (recipeQuery.getInputFluidOverride() == inputTank.getFluid()) {
+                    recipe = recipeQuery;
+                    progress = recipeQuery.getCraftTicks();
+                    foundRecipe = true;
+                }
+            } else if (VitriolationRecipe.isFluidAcid(inputTank.getFluid())) {
+                if (VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipeQuery.getMinimumAcidStrength()) >= 0) {
+                    recipe = recipeQuery;
+                    progress = recipeQuery.getCraftTicks();
+                    foundRecipe = true;
+                }
+            }
+            if (foundRecipe) break;
         }
     }
 

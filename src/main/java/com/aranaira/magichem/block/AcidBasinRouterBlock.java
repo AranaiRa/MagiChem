@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.AcidBasinBlockEntity;
 import com.aranaira.magichem.block.entity.routers.AcidBasinRouterBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.AcidBasinRouterType;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -137,9 +138,11 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
 
                         if (insertionQuery > 0) {
                             fluidHandler.fill(fluidInItem, IFluidHandler.FluidAction.EXECUTE);
-                            iCap.drain(insertionQuery, IFluidHandler.FluidAction.EXECUTE);
-                            if(iCap.getFluidInTank(0).isEmpty() && itemInHand.getItem() instanceof BucketItem bi) {
-                                pPlayer.setItemInHand(pHand, new ItemStack(Items.BUCKET));
+                            if(!pPlayer.isCreative()) {
+                                iCap.drain(insertionQuery, IFluidHandler.FluidAction.EXECUTE);
+                                if (iCap.getFluidInTank(0).isEmpty() && itemInHand.getItem() instanceof BucketItem bi) {
+                                    pPlayer.setItemInHand(pHand, new ItemStack(Items.BUCKET));
+                                }
                             }
                         }
                         //Try to extract fluid from the main tank
@@ -211,6 +214,11 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
         }
 
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+        return new ItemStack(BlockRegistry.ACID_BASIN.get());
     }
 
     @Override

@@ -38,6 +38,7 @@ public class AcidBasinRouterBlockEntity extends BlockEntity implements IRouterBl
 
     public void configure(BlockPos pPos) {
         masterPos = pPos;
+        syncAndSave();
     }
 
     public BlockPos getMasterPos() {
@@ -104,14 +105,16 @@ public class AcidBasinRouterBlockEntity extends BlockEntity implements IRouterBl
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.putLong("masterPos", masterPos.asLong());
+        if(masterPos != null)
+            nbt.putLong("masterPos", masterPos.asLong());
         super.saveAdditional(nbt);
     }
 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        masterPos = BlockPos.of(nbt.getLong("masterPos"));
+        if(nbt.contains("masterPos"))
+            masterPos = BlockPos.of(nbt.getLong("masterPos"));
     }
 
     @Nullable
@@ -123,7 +126,8 @@ public class AcidBasinRouterBlockEntity extends BlockEntity implements IRouterBl
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putLong("masterPos", masterPos.asLong());
+        if(masterPos != null)
+            nbt.putLong("masterPos", masterPos.asLong());
         return nbt;
     }
 

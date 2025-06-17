@@ -20,6 +20,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.Mutable;
@@ -64,6 +66,8 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, VitriolationRecipe recipe, IFocusGroup group) {
         builder.addSlot(RecipeIngredientRole.INPUT, 40, 4).addItemStack(recipe.getInputItem());
+        if(recipe.hasInputFluidOverride())
+            builder.addSlot(RecipeIngredientRole.INPUT, 73, 4).addFluidStack(recipe.getInputFluidOverride(), recipe.getBaseFluidConsumed());
         builder.addSlot(RecipeIngredientRole.OUTPUT,74,88).addItemStack(recipe.getResultItem());
         builder.addSlot(RecipeIngredientRole.OUTPUT,6,88).addFluidStack(recipe.getResultFluid().getFluid(), recipe.getResultFluid().getAmount());
     }
@@ -76,9 +80,11 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
             gui.blit(TEXTURE, 0, 82, 192, 0, 48, 28);
         if(recipe.hasResultItem())
             gui.blit(TEXTURE, 48, 82, 192, 28, 48, 28);
+        if(recipe.hasInputFluidOverride())
+            gui.blit(TEXTURE, 72, 3, 135, 3, 18, 18);
 
         if (mc.font != null) {
-            gui.drawString(mc.font, ""+recipe.getMinimumAcidStrength(), 20, 8, 0xff000000, false);
+            gui.drawString(mc.font, recipe.hasInputFluidOverride() ? "-" : ""+recipe.getMinimumAcidStrength(), 20, 8, 0xff000000, false);
         }
     }
 
@@ -98,24 +104,33 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
         }
 
         if(xCoord && yCoord) {
-            out.add(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line1.part1")
-                            .append(Component.literal(recipe.getFluidConsumed(recipe.getMinimumAcidStrength())+"mB").withStyle(ChatFormatting.DARK_AQUA))
-                            .append(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line1.part2"))
-            );
+            if(recipe.hasInputFluidOverride()) {
+                ResourceLocation key = ForgeRegistries.FLUIDS.getKey(recipe.getInputFluidOverride());
+                out.add(Component.translatable("tooltip.magichem.jei.vitriolation.override.part1")
+                        .append(Component.literal(recipe.getFluidConsumed(recipe.getMinimumAcidStrength()) + "mB").withStyle(ChatFormatting.DARK_AQUA))
+                        .append(Component.translatable("tooltip.magichem.jei.vitriolation.override.part2"))
+                        .append(Component.translatable(key.toString()).withStyle(ChatFormatting.GOLD))
+                );
+            } else {
+                out.add(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line1.part1")
+                        .append(Component.literal(recipe.getFluidConsumed(recipe.getMinimumAcidStrength()) + "mB").withStyle(ChatFormatting.DARK_AQUA))
+                        .append(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line1.part2"))
+                );
 
-            MutableComponent formatted = Component.literal("[").withStyle(ChatFormatting.DARK_GRAY);
-            boolean first = true;
-            for(FluidType ft : VitriolationRecipe.getAllFluidTypesOfAcidStrength(recipe.getMinimumAcidStrength())) {
-                if(!first) formatted.append(", ");
-                ResourceLocation key = ForgeRegistries.FLUID_TYPES.get().getKey(ft);
-                formatted.append(Component.translatable(key.getPath()).withStyle(first ? ChatFormatting.GOLD : ChatFormatting.WHITE));
-                if(first) formatted.append(Component.literal("]").withStyle(ChatFormatting.DARK_GRAY));
-                first = false;
-            }
+                MutableComponent formatted = Component.literal("[").withStyle(ChatFormatting.DARK_GRAY);
+                boolean first = true;
+                for(FluidType ft : VitriolationRecipe.getAllFluidTypesOfAcidStrength(recipe.getMinimumAcidStrength())) {
+                    if(!first) formatted.append(", ");
+                    ResourceLocation key = ForgeRegistries.FLUID_TYPES.get().getKey(ft);
+                    formatted.append(Component.translatable(key.getPath()).withStyle(first ? ChatFormatting.GOLD : ChatFormatting.WHITE));
+                    if(first) formatted.append(Component.literal("]").withStyle(ChatFormatting.DARK_GRAY));
+                    first = false;
+                }
 
-            out.add(formatted);
-            if(recipe.getMinimumAcidStrength() > 0) {
-                out.add(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line2"));
+                out.add(formatted);
+                if (recipe.getMinimumAcidStrength() > 0) {
+                    out.add(Component.translatable("tooltip.magichem.jei.vitriolation.acid.line2"));
+                }
             }
         }
 

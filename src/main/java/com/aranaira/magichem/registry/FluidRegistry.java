@@ -175,6 +175,43 @@ public class FluidRegistry {
     }
 
     //////////////////////
+    //-----AQUA VITAE
+    //////////////////////
+
+    public static final RegistryObject<FluidType> AQUA_VITAE_FLUID_TYPE = FLUID_TYPES.register("aqua_vitae_fluid_type", () ->
+            new FluidType(FluidType.Properties.create().descriptionId("aqua_vitae_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(1).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/aqua_vitae_still");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/aqua_vitae_flow");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<FlowingFluid> AQUA_VITAE = FLUIDS.register("aqua_vitae", () -> new ForgeFlowingFluid.Source(getAquaVitaeProperties()));
+    public static final RegistryObject<Fluid> AQUA_VITAE_FLOWING = FLUIDS.register("aqua_vitae_flowing", () -> new ForgeFlowingFluid.Flowing(getAquaVitaeProperties()));
+    public static final RegistryObject<LiquidBlock> AQUA_VITAE_BLOCK = BlockRegistry.BLOCKS.register("aqua_vitae_block", () -> new LiquidBlock(AQUA_VITAE, BlockBehaviour.Properties.copy(Blocks.WATER)));
+
+    public static ForgeFlowingFluid.Properties getAquaVitaeProperties() {
+        return new ForgeFlowingFluid.Properties(AQUA_VITAE_FLUID_TYPE, AQUA_VITAE, AQUA_VITAE_FLOWING).block(AQUA_VITAE_BLOCK).bucket(ItemRegistry.AQUA_VITAE_BUCKET);
+    }
+
+    //////////////////////
     //-----ACIDS
     //////////////////////
 

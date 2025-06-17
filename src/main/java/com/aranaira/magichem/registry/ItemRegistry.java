@@ -448,6 +448,10 @@ public class ItemRegistry {
             () -> new BucketItem(FluidRegistry.LIQUID_LIGHT, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
 
+    public static final RegistryObject<Item> AQUA_VITAE_BUCKET = ITEMS.register("aqua_vitae_bucket",
+            () -> new BucketItem(FluidRegistry.AQUA_VITAE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
     public static final RegistryObject<Item> SIMPLE_ACID_BUCKET = ITEMS.register("simple_acid_bucket",
             () -> new BucketItem(FluidRegistry.SIMPLE_ACID, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
