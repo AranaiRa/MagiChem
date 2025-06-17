@@ -85,6 +85,11 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
 
         if (mc.font != null) {
             gui.drawString(mc.font, recipe.hasInputFluidOverride() ? "-" : ""+recipe.getMinimumAcidStrength(), 20, 8, 0xff000000, false);
+
+            int opTicks = recipe.getCraftTicks();
+            int secWhole = opTicks / 20;
+            int secPartial = (opTicks % 20) * 5;
+            gui.drawString(mc.font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+"s", 7, 23, 0xff000000, false);
         }
     }
 
