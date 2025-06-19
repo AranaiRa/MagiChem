@@ -1,0 +1,21 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:illuminink",
+  "tier": 2,
+  "items": [
+    "minecraft:glow_berries",
+    "mna:arcanist_ink",
+    "minecraft:glow_berries",
+    "minecraft:glow_berries",
+    "magichem:mote_achromatic",
+    "minecraft:glow_berries",
+    "minecraft:glow_berries",
+    "mna:bone_ash",
+    "minecraft:glow_berries"
+  ],
+  "patterns": [
+    "mna:inverted_triangle",
+    "mna:diamond",
+    "mna:triangle"
+  ]
+}

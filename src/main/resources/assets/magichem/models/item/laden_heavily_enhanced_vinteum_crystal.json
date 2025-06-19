@@ -2,6 +2,6 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "magichem:item/immaculate_vinteum_heavily_enhanced",
-    "layer1": "magichem:item/overlays/immaculate_vinteum_layer_preparation"
+    "layer1": "magichem:item/overlays/immaculate_vinteum_layer_laden"
   }
 }

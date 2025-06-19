@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:scorched_theorem" },
+    { "item": "magichem:scorched_theorem" },
+    { "item": "magichem:illuminink" },
+    { "item": "minecraft:string" },
+    { "item": "minecraft:lapis_lazuli" },
+    { "item": "magichem:sealing_wax" }
+  ],
+  "result": {
+    "item": "magichem:abjuration"
+  }
+}

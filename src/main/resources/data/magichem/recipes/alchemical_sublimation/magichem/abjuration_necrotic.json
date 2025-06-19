@@ -1,0 +1,40 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 1,
+  "object": {
+    "item": "magichem:abjuration_necrotic"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:scorched_theorem" },
+        { "item": "magichem:abjuration" },
+        { "item": "magichem:scorched_theorem" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_fleshy", "count": 96 },
+        { "item": "magichem:admixture_thought", "count": 113 },
+        { "item": "magichem:admixture_healing", "count": 34 },
+        { "item": "magichem:admixture_exanimate", "count": 13 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:golden_apple" },
+        { "item": "minecraft:fermented_spider_eye" },
+        { "item": "magichem:illuminink" },
+        { "item": "minecraft:gunpowder" },
+        { "item": "mna:bone_ash" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_odors", "count": 58 },
+        { "item": "magichem:admixture_change", "count": 34 },
+        { "item": "magichem:admixture_permanence", "count": 27 },
+        { "item": "magichem:admixture_potential", "count": 27 }
+      ]
+    }
+  ]
+}

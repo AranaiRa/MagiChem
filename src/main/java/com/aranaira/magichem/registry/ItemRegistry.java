@@ -124,6 +124,14 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> ILLUMININK = ITEMS.register("illuminink",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SEALING_WAX = ITEMS.register("sealing_wax",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<HarmoniscopeItem> HARMONISCOPE = ITEMS.register("harmoniscope",
             () -> new HarmoniscopeItem(new Item.Properties().stacksTo(1))
     );

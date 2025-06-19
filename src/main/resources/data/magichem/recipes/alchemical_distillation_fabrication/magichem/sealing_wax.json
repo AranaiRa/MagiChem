@@ -1,0 +1,14 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "wisdom": 3,
+  "categories": 1,
+  "output_rate": 1.0,
+  "batch_size": 1,
+  "object": { "item": "magichem:sealing_wax" },
+  "components": [
+    { "item": "magichem:admixture_nectar", "count": 27 },
+    { "item": "magichem:admixture_change", "count": 4 },
+    { "item": "magichem:admixture_filth", "count": 3 },
+    { "item": "magichem:admixture_protection", "count": 2 }
+  ]
+}

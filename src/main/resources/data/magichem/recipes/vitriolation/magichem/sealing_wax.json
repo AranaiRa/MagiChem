@@ -1,0 +1,8 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 1,
+  "acidConsumed": 40,
+  "duration": 100,
+  "inputItem": { "item": "minecraft:honeycomb", "count": 9 },
+  "resultItem": { "item": "magichem:sealing_wax", "count": 1 }
+}
