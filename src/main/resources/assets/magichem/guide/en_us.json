@@ -5347,7 +5347,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " to smite your foes.\n\nIf for whatever reason the thunderstone cannot call a lightning strike, it won't be consumed and will drop on the ground instead.\n\nA Thunderstone can summon a lightning bolt even if the block it targets "
+            "text": " to smite your foes.\n\nLightning strikes called down by a thunderstone are "
+          },
+          {
+            "text": "significantly more dangerous",
+            "color": "dark_purple"
+          },
+          {
+            "text": " than a natural lightning strike (unless the thrower is sneaking at the time the thunderstone hits). These lightning strikes grow in power with the thrower's "
+          },
+          {
+            "text": "Tier",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and the total damage is "
+          },
+          {
+            "text": "doubled",
+            "color": "dark_purple"
+          },
+          {
+            "text": " if the thrower is aligned with the Demons of the Nether.\n\nIf for whatever reason the thunderstone cannot call a lightning strike, it won't be consumed and will drop on the ground instead.\n\nA Thunderstone can summon a lightning bolt even if the block it targets "
           },
           {
             "text": "cannot see the sky",

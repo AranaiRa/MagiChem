@@ -42,6 +42,7 @@ public class ThunderstoneItem extends Item {
             tte.setItem(itemstack);
             tte.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, 1.5F, 1.0F);
             tte.setPos(pPlayer.getX(), pPlayer.getEyeY(), pPlayer.getZ());
+            tte.setSourcePlayer(pPlayer);
             pLevel.addFreshEntity(tte);
         }
 

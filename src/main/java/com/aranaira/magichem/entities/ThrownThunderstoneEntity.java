@@ -2,14 +2,22 @@ package com.aranaira.magichem.entities;
 
 import com.aranaira.magichem.block.entity.SkywrathAltarBlockEntity;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.api.capabilities.IPlayerMagic;
+import com.mna.api.capabilities.IPlayerProgression;
+import com.mna.api.faction.FactionIDs;
+import com.mna.api.faction.IFaction;
+import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
+import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,12 +27,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class ThrownThunderstoneEntity extends ThrowableItemProjectile {
     public static final ItemStack DISPLAY_STACK = new ItemStack(ItemRegistry.THUNDERSTONE.get());
+    private Player sourcePlayer = null;
 
     public ThrownThunderstoneEntity(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+    }
+
+    public void setSourcePlayer(Player pPlayer) {
+        sourcePlayer = pPlayer;
     }
 
     @Override
@@ -38,14 +52,35 @@ public class ThrownThunderstoneEntity extends ThrowableItemProjectile {
         kill();
     }
 
+    private int getTierAndFactionDamage() {
+        int damage = 0;
+        if(sourcePlayer != null && !sourcePlayer.isCrouching()) {
+            final LazyOptional<IPlayerProgression> lazyProg = sourcePlayer.getCapability(PlayerProgressionProvider.PROGRESSION);
+            if(lazyProg.isPresent()) {
+                final IPlayerProgression cap = lazyProg.resolve().get();
+                damage = 5 + (cap.getTier() * 5);
+                final IFaction alliedFaction = cap.getAlliedFaction();
+
+                if(alliedFaction != null && alliedFaction.getCastingResources()[0].equals(new ResourceLocation("mna:brimstone"))) {
+                    damage *= 2;
+                }
+            }
+        }
+        return damage;
+    }
+
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         if(!level().isClientSide()) {
             BlockPos tPos = new BlockPos(pResult.getEntity().getBlockX(), pResult.getEntity().getBlockY(), pResult.getEntity().getBlockZ());
 
+            int damage = getTierAndFactionDamage();
+
             if (level().getBlockState(tPos).isAir()) {
                 LightningBolt lb = new LightningBolt(EntityType.LIGHTNING_BOLT, level());
                 lb.setPos(tPos.getX(), tPos.getY(), tPos.getZ());
+                if(damage > 0)
+                    lb.setDamage(damage);
                 level().addFreshEntity(lb);
             } else {
                 Vector3 pos = new Vector3(pResult.getEntity().getX(), pResult.getEntity().getY(), pResult.getEntity().getZ());
@@ -77,7 +112,11 @@ public class ThrownThunderstoneEntity extends ThrowableItemProjectile {
                 }
 
                 LightningBolt lb = new LightningBolt(EntityType.LIGHTNING_BOLT, level());
-                lb.setVisualOnly(isAltarInRange);
+                if(!isAltarInRange) {
+                    lb.setVisualOnly(true);
+                    int damage = getTierAndFactionDamage();
+                    if(damage > 0) lb.setDamage(damage);
+                }
                 lb.setPos(tPos.getX()+0.5, tPos.getY(), tPos.getZ()+0.5);
                 level().addFreshEntity(lb);
             } else {
