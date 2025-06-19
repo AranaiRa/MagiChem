@@ -3,6 +3,7 @@ package com.aranaira.magichem.recipe;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.fluid.AcidFluidType;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
@@ -318,8 +319,9 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
             int resultFluidCount = 0;
             if(hasResultFluid) {
                 CompoundTag resultFluidTag = nbt.getCompound("resultFluid");
-                resultFluidAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(resultFluidTag.getString("item")));
+                resultFluidAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(resultFluidTag.getString("fluid")));
                 resultFluidCount = resultFluidTag.getInt("count");
+                new FluidStack(resultFluidAsFluid, 1000);
             }
 
             boolean hasInputFluidOverride = nbt.contains("inputFluidOverride");

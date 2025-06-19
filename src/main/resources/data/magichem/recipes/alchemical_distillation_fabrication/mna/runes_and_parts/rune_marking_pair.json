@@ -4,7 +4,7 @@
   "categories": 1,
   "output_rate": 0.5,
   "batch_size": 1,
-  "object": { "item": "mna:rune_marking" },
+  "object": { "item": "mna:rune_marking_pair" },
   "components": [
     { "item": "magichem:admixture_metal", "count": 4 },
     { "item": "magichem:admixture_mana", "count": 2 },
