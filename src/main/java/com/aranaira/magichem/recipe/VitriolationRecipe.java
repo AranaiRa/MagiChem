@@ -317,9 +317,9 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
             Fluid resultFluidAsFluid = null;
             int resultFluidCount = 0;
             if(hasResultFluid) {
-                CompoundTag resultItemTag = nbt.getCompound("resultItem");
-                resultFluidAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(resultItemTag.getString("item")));
-                resultFluidCount = resultItemTag.getInt("count");
+                CompoundTag resultFluidTag = nbt.getCompound("resultFluid");
+                resultFluidAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(resultFluidTag.getString("item")));
+                resultFluidCount = resultFluidTag.getInt("count");
             }
 
             boolean hasInputFluidOverride = nbt.contains("inputFluidOverride");
@@ -348,20 +348,20 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
 
             if(pRecipe.hasResultItem()) {
                 CompoundTag resultItemTag = new CompoundTag();
-                inputItemTag.putString("item", ForgeRegistries.ITEMS.getKey(pRecipe.resultItem.getItem()).toString());
-                inputItemTag.putInt("count", pRecipe.resultItem.getCount());
+                resultItemTag.putString("item", ForgeRegistries.ITEMS.getKey(pRecipe.resultItem.getItem()).toString());
+                resultItemTag.putInt("count", pRecipe.resultItem.getCount());
                 nbt.put("resultItem", resultItemTag);
             }
 
             if(pRecipe.hasResultFluid()) {
-                CompoundTag resultItemTag = new CompoundTag();
-                inputItemTag.putString("fluid", ForgeRegistries.FLUIDS.getKey(pRecipe.resultFluid.getFluid()).toString());
-                inputItemTag.putInt("count", pRecipe.resultFluid.getAmount());
-                nbt.put("resultFluid", resultItemTag);
+                CompoundTag resultFluidTag = new CompoundTag();
+                resultFluidTag.putString("fluid", ForgeRegistries.FLUIDS.getKey(pRecipe.resultFluid.getFluid()).toString());
+                resultFluidTag.putInt("count", pRecipe.resultFluid.getAmount());
+                nbt.put("resultFluid", resultFluidTag);
             }
 
             if(pRecipe.hasInputFluidOverride()) {
-                inputItemTag.putString("inputFluidOverride", ForgeRegistries.FLUIDS.getKey(pRecipe.inputFluidOverride).toString());
+                nbt.putString("inputFluidOverride", ForgeRegistries.FLUIDS.getKey(pRecipe.inputFluidOverride).toString());
             }
 
             nbt.putInt("craftTicks", pRecipe.craftTicks);

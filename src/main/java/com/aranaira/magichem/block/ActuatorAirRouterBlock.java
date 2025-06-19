@@ -1,7 +1,6 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.routers.ActuatorAirRouterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.ActuatorEarthRouterBlockEntity;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
@@ -35,7 +34,7 @@ public class ActuatorAirRouterBlock extends BaseActuatorRouterBlock implements I
     @Override
     protected void spawnDestroyParticles(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
-        if(be instanceof ActuatorEarthRouterBlockEntity router) {
+        if(be instanceof ActuatorAirRouterBlockEntity router) {
             BlockState masterState = router.getMaster().getBlockState();
             pLevel.levelEvent(pPlayer, 2001, pPos, getId(masterState));
         }
