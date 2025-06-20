@@ -50,5 +50,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.MATERIA_REFLECTOR_BE.get(), MateriaReflectorBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.SKYWRATH_ALTAR_BE.get(), SkywrathAltarBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACID_BASIN_BE.get(), AcidBasinBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.RADIANT_ROSE_BE.get(), RadiantRoseBlockEntityRenderer::new);
     }
 }

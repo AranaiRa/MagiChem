@@ -15,6 +15,7 @@ import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.mna.items.ItemInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -32,8 +33,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -57,6 +60,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -649,6 +653,20 @@ public class CommonEventHandler {
                         event.getEntity().getPersistentData().putLong("lastNetherPortal", safePos.asLong());
                     }
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityMobEffect(MobEffectEvent event) {
+        if(event.isCancelable()) {
+            final LivingEntity entity = event.getEntity();
+            boolean hasRadiantResolve = entity.getActiveEffectsMap().keySet().contains(MobEffectsRegistry.RADIANT_RESOLVE.get());
+            boolean incomingEffectNegative = event.getEffectInstance().getEffect().getCategory() == MobEffectCategory.HARMFUL;
+            boolean hasEffectAlready = entity.getActiveEffectsMap().keySet().contains(event.getEffectInstance().getEffect());
+
+            if (hasRadiantResolve && incomingEffectNegative && !hasEffectAlready) {
+                event.setCanceled(true);
             }
         }
     }

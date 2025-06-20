@@ -21,6 +21,11 @@ import java.util.function.Supplier;
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MagiChemMod.MODID);
 
+    public static final RegistryObject<Block> RADIANT_ROSE = registerBlock("radiant_rose",
+            () -> new RadiantRoseBlock(BlockBehaviour.Properties.of()
+                    .instabreak().noCollission().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> ALEMBIC = registerBlock("alembic",
             () -> new AlembicBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

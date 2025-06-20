@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "magichem:item/radiant_rose"
+    "layer0": "magichem:block/radiant_rose",
+    "layer1": "magichem:block/radiant_rose_halo"
   }
 }

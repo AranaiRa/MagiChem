@@ -195,6 +195,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.RADIANT_ROSE.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.radiantrose")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.SIGNALITE.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.signalite")

@@ -224,10 +224,6 @@ public class ItemRegistry {
             () -> new NecroticAbjurationItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> RADIANT_ROSE = ITEMS.register("radiant_rose",
-            () -> new TooltipLoreItem(new Item.Properties())
-    );
-
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
             () -> new DebugOrbItem(new Item.Properties().stacksTo(1))
     );
@@ -478,6 +474,14 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> AZOTH_BUCKET = ITEMS.register("azoth_bucket",
             () -> new BucketItem(FluidRegistry.AZOTH, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    ///////////////
+    // RADIANT ROSE PETAL (SO IT APPEARS NEXT TO THE ROSE)
+    ///////////////
+
+    public static final RegistryObject<RadiantRosePetalItem> RADIANT_ROSE_PETAL = ITEMS.register("radiant_rose_petal",
+            () -> new RadiantRosePetalItem(new Item.Properties())
     );
 
     ///////////////

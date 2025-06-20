@@ -222,6 +222,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(AcidBasinRouterBlockEntity::new, BlockRegistry.ACID_BASIN.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<RadiantRoseBlockEntity>> RADIANT_ROSE_BE = BLOCK_ENTITIES.register("radiant_rose", () ->
+            BlockEntityType.Builder.of(RadiantRoseBlockEntity::new, BlockRegistry.RADIANT_ROSE.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<SignaliteBlockEntity>> SIGNALITE_BE = BLOCK_ENTITIES.register("signalite", () ->
             BlockEntityType.Builder.of(SignaliteBlockEntity::new,
                 BlockRegistry.SIGNALITE.get(),

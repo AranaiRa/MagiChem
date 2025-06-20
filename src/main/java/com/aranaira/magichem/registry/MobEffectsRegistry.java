@@ -1,6 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.effects.RadiantResolveEffect;
 import com.aranaira.magichem.effects.SixfoldPathEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -12,6 +13,7 @@ public class MobEffectsRegistry {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, MagiChemMod.MODID);
 
     public static final RegistryObject<MobEffect> SIXFOLD_PATH = EFFECTS.register("sixfold_path", SixfoldPathEffect::new);
+    public static final RegistryObject<MobEffect> RADIANT_RESOLVE = EFFECTS.register("radiant_resolve", RadiantResolveEffect::new);
 
     public static void register(IEventBus eventBus) {
         EFFECTS.register(eventBus);
