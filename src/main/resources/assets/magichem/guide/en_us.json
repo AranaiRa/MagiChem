@@ -5115,6 +5115,143 @@
       }
     ]
   },
+  "Ritual of the Reborn Rose": {
+    "index": "0",
+    "tier": 3,
+    "category": "rituals",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Ritual of the Reborn Rose"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This ritual uses a "
+          },
+          {
+            "text": "Dendritic Abjuration",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to lift the curse that befouls a "
+          },
+          {
+            "text": "Wither Rose",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", transforming it into a "
+          },
+          {
+            "text": "Radiant Rose",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe ritual's magic causes damage to the Dendritic Abjuration. It can only be used "
+          },
+          {
+            "text": "three times",
+            "color": "dark_purple"
+          },
+          {
+            "text": " before it crumbles to dust."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/reborn_rose"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/abjuration_dendritic"
+      }
+    ]
+  },
+  "Radiant Rose": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Radiant Rose"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A Wither Rose that has been freed from its curse using a "
+          },
+          {
+            "text": "Dendritic Abjuration",
+            "color": "dark_purple"
+          },
+          {
+            "text": " as part of the "
+          },
+          {
+            "text": "Ritual of the Reborn Rose",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhen touched, the Radiant Rose will "
+          },
+          {
+            "text": "cleanse negative effects",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and grant "
+          },
+          {
+            "text": "immunity",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to negative effects for twelve seconds (or thirty-six seconds, if the toucher is allied with the "
+          },
+          {
+            "text": "Fey Courts",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nRadiant Roses can also be torn apart into nine "
+          },
+          {
+            "text": "Radiant Rose Petals",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that can be consumed for a similar, but shorter-lasting, effect. Fey-aligned petal-eaters do not gain enhanced duration."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/radiant_rose"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/radiant_rose_petal"
+      },
+      {
+        "type": "ritual",
+        "location": "magichem:rituals/reborn_rose"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/abjuration_dendritic"
+      }
+    ]
+  },
   "Occulted Cinder": {
     "index": 0,
     "category": "magichem_wonders",

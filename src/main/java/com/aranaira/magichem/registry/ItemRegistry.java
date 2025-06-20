@@ -216,8 +216,8 @@ public class ItemRegistry {
             () -> new AbjurationItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> DENDRITIC_ABJURATION = ITEMS.register("abjuration_dendritic",
-            () -> new TooltipLoreItem(new Item.Properties())
+    public static final RegistryObject<AbjurationDendriticItem> DENDRITIC_ABJURATION = ITEMS.register("abjuration_dendritic",
+            () -> new AbjurationDendriticItem(new Item.Properties())
     );
 
     public static final RegistryObject<NecroticAbjurationItem> NECROTIC_ABJURATION = ITEMS.register("abjuration_necrotic",

@@ -274,8 +274,8 @@
   "itemGroup.magichemtab" : "MagiChem - Blocks and Items",
   "itemGroup.magichemtab.substances" : "MagiChem - Essentia and Admixtures",
 
-  "magichem:rituals/reagent_2_crafting" : "Ritual of the Rod and Circle",
   "magichem:rituals/balanced_scales" : "Ritual of the Balanced Scales",
+  "magichem:rituals/reborn_rose" : "Ritual of the Reborn Rose",
 
   "essentia.house.elements": "House of Elements",
   "essentia.house.qualities": "House of Qualities",
@@ -607,6 +607,7 @@
   "feedback.ritual.sublimation.insufficient.and": " and ",
   "feedback.ritual.sublimation.insufficient.more": " more ",
   "feedback.ritual.sublimation.materia_in_ingredient": "One of the supplied ingredients is a Materia Jar or Materia Vessel that contains materia. Please empty the container out before using it as an ingredient.",
+  "feedback.ritual.rebornrose.abjuration": "The Abjuration crumbles to dust.",
   "feedback.block.magicmirror.link": "This Magic Mirror is now linked to ",
   "feedback.block.materiamanifest.accepted": "The Materia Manifest will now monitor Jars and Vessels in the Rune of Marking Pair's designated area.",
   "feedback.block.materiamanifest.toofar": "The designated area is too far from the Materia Manifest.",
@@ -627,6 +628,9 @@
   "tooltip.magichem.admixturegeneral": "A distilled alchemical concoction.",
   "tooltip.magichem.admixtureformula": "Formula:",
 
+  "tooltip.magichem.abjurationdendritic.line1": "A complex removal spell that breaks curses on plants.",
+  "tooltip.magichem.abjurationdendritic.line2.part1": "Can be used ",
+  "tooltip.magichem.abjurationdendritic.line2.part2": " more times before crumbling to dust.",
   "tooltip.magichem.acidbasin": "Combines acids and items to create new fluids, items, or both.",
   "tooltip.magichem.actuator.water": "A Water-aspected Elemental Actuator. Increases the Efficiency of a connected device. Consumes water.",
   "tooltip.magichem.actuator.fire": "A Fire-aspected Elemental Actuator. Continuously operates a connected device. Reduces FE requirement of powered devices, reduces operation time of non-powered devices.",

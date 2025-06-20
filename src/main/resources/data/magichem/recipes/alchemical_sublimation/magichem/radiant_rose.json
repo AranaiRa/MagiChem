@@ -1,0 +1,25 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:radiant_rose",
+    "count": 3
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:abjuration_dendritic" },
+        { "item": "minecraft:wither_rose" },
+        { "item": "minecraft:wither_rose" },
+        { "item": "minecraft:wither_rose" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_healing", "count": 10 },
+        { "item": "magichem:admixture_light", "count": 10 },
+        { "item": "magichem:admixture_protection", "count": 10 }
+      ]
+    }
+  ]
+}

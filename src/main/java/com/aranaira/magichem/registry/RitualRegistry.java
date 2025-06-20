@@ -1,7 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.ritual.RitualEffectAlchemicalSublimation;
+import com.aranaira.magichem.ritual.*;
 import com.mna.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +22,12 @@ public class RitualRegistry {
                     helper.register(
                             new ResourceLocation(MagiChemMod.MODID, "ritual-effect-balanced_scales"),
                             new RitualEffectAlchemicalSublimation(new ResourceLocation(MagiChemMod.MODID, "rituals/balanced_scales"))
+                    );
+
+                    //Ritual of the Reborn Rose
+                    helper.register(
+                            new ResourceLocation(MagiChemMod.MODID, "ritual-effect-reborn_rose"),
+                            new RitualEffectRebornRose(new ResourceLocation(MagiChemMod.MODID, "rituals/reborn_rose"))
                     );
                 });
     }
