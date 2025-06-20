@@ -33,6 +33,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LightningBolt;
@@ -73,6 +74,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
@@ -661,12 +663,17 @@ public class CommonEventHandler {
     public static void onEntityMobEffect(MobEffectEvent event) {
         if(event.isCancelable()) {
             final LivingEntity entity = event.getEntity();
-            boolean hasRadiantResolve = entity.getActiveEffectsMap().keySet().contains(MobEffectsRegistry.RADIANT_RESOLVE.get());
-            boolean incomingEffectNegative = event.getEffectInstance().getEffect().getCategory() == MobEffectCategory.HARMFUL;
-            boolean hasEffectAlready = entity.getActiveEffectsMap().keySet().contains(event.getEffectInstance().getEffect());
+            if(entity != null) {
+                Set<MobEffect> keys = entity.getActiveEffectsMap().keySet();
+                if(keys.size() > 0 && event.getEffectInstance() != null) {
+                    boolean hasRadiantResolve = keys.contains(MobEffectsRegistry.RADIANT_RESOLVE.get());
+                    boolean incomingEffectNegative = event.getEffectInstance().getEffect().getCategory() == MobEffectCategory.HARMFUL;
+                    boolean hasEffectAlready = keys.contains(event.getEffectInstance().getEffect());
 
-            if (hasRadiantResolve && incomingEffectNegative && !hasEffectAlready) {
-                event.setCanceled(true);
+                    if (hasRadiantResolve && incomingEffectNegative && !hasEffectAlready) {
+                        event.setCanceled(true);
+                    }
+                }
             }
         }
     }
