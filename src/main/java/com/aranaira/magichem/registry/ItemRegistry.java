@@ -213,15 +213,15 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<AbjurationItem> ABJURATION = ITEMS.register("abjuration",
-            () -> new AbjurationItem(new Item.Properties())
+            () -> new AbjurationItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<AbjurationDendriticItem> DENDRITIC_ABJURATION = ITEMS.register("abjuration_dendritic",
-            () -> new AbjurationDendriticItem(new Item.Properties())
+            () -> new AbjurationDendriticItem(new Item.Properties().stacksTo(1))
     );
 
-    public static final RegistryObject<NecroticAbjurationItem> NECROTIC_ABJURATION = ITEMS.register("abjuration_necrotic",
-            () -> new NecroticAbjurationItem(new Item.Properties())
+    public static final RegistryObject<AbjurationNecroticItem> NECROTIC_ABJURATION = ITEMS.register("abjuration_necrotic",
+            () -> new AbjurationNecroticItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
