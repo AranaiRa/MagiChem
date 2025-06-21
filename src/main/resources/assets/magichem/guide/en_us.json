@@ -7723,6 +7723,182 @@
       }
     ]
   },
+  "Abjurations": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Abjurations"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Curses are vile, odious things woven from spite itself. Even the act of removing a curse inflicts the caster with unmendable damage.\n\nAn "
+          },
+          {
+            "text": "Abjuration",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a loophole that gets around this issue: By weaving the cursebreaking spell into a scroll, the damage can be inflicted on it, and not the spellcaster."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Abjuration",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:abjuration",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The simplest type of Abjuration, craftable at Tier 2.\n\nWhen used, a basic Abjuration will "
+          },
+          {
+            "text": "remove one cursed enchantment",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from an "
+          },
+          {
+            "text": "equipped piece of armor",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or from the item held "
+          },
+          {
+            "text": "in the offhand",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAfter removing "
+          },
+          {
+            "text": "three",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curses, the Abjuration will crumble to dust."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Dendritic Abjuration",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:abjuration_dendritic",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An advanced Abjuration, craftable at Tier 3.\n\nA Dendritic Abjuration is used in the "
+          },
+          {
+            "text": "Ritual of the Reborn Rose",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to remove the curse on a "
+          },
+          {
+            "text": "Wither Rose",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", creating a "
+          },
+          {
+            "text": "Radiant Rose",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAfter removing "
+          },
+          {
+            "text": "three",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curses, the Dendritic Abjuration will crumble to dust."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Necrotic Abjuration",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:abjuration_necrotic",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An advanced Abjuration, craftable at Tier 3.\n\nA Necrotic Abjuration is used to remove curses of undeath, such as the curse that plagues "
+          },
+          {
+            "text": "Zombie Villagers",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAfter removing "
+          },
+          {
+            "text": "nine",
+            "color": "dark_purple"
+          },
+          {
+            "text": " curses, the Necrotic Abjuration will crumble to dust."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/illuminink"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/sealing_wax"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/abjuration"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/abjuration_dendritic"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/abjuration_necrotic"
+      }
+    ]
+  },
   "Alchemically Treated Glass": {
     "index": "0",
     "category": "magichem_wonders",

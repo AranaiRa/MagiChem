@@ -41,7 +41,8 @@ public class AbjurationNecroticItem extends Item {
         if(!pPlayer.getCooldowns().isOnCooldown(ItemRegistry.NECROTIC_ABJURATION.get())) {
             if (pInteractionTarget instanceof ZombieVillager zv) {
                 if(!pPlayer.level().isClientSide()) {
-                    zv.startConverting(pPlayer.getUUID(), 1);
+                    zv.startConverting(pPlayer.getUUID(), 60);
+
                     //Lock the villager in place for a little bit to make the VFX work right
                     MobEffectInstance mei = new MobEffectInstance(EffectInit.ENTANGLE.get(), 120, 0, false, false);
                     zv.addEffect(mei);
@@ -53,18 +54,20 @@ public class AbjurationNecroticItem extends Item {
                     nbt = pStack.getTag();
                     if (nbt.contains("uses")) {
                         uses = nbt.getInt("uses") + 1;
-                        if (uses >= 3) {
-                            pPlayer.sendSystemMessage(Component.translatable("feedback.ritual.rebornrose.abjuration"));
+                        if (uses >= 9) {
+                            if(!pPlayer.level().isClientSide()) pPlayer.sendSystemMessage(Component.translatable("feedback.ritual.rebornrose.abjuration"));
+                            pStack.shrink(1);
                         }
                     }
                 }
-                if (uses >= 3) {
-                    pStack.shrink(1);
+                if (uses >= 9) {
+                    pPlayer.setItemInHand(pUsedHand, ItemStack.EMPTY);
                     pPlayer.level().playSound((Player) null, pPlayer.blockPosition(), SoundEvents.ITEM_BREAK, SoundSource.PLAYERS, 2.0F, 1.0f);
                 } else {
                     if (nbt == null) nbt = new CompoundTag();
                     nbt.putInt("uses", uses);
                     pStack.setTag(nbt);
+                    pPlayer.setItemInHand(pUsedHand, pStack);
                 }
 
                 pPlayer.swing(pUsedHand);
@@ -76,7 +79,7 @@ public class AbjurationNecroticItem extends Item {
                                     .setPhysics(false).setScale(0.0625f).setMaxAge(80)
                                     .setColor(TRAIL_PARTICLE_COLORS[colorIndex][0], TRAIL_PARTICLE_COLORS[colorIndex][1], TRAIL_PARTICLE_COLORS[colorIndex][2]),
                             zv.getX(), zv.getY(), zv.getZ(),
-                            r.nextDouble(0.125) + 0.025, 0.02 + r.nextDouble(0.04), 0.2 + r.nextDouble(0.4));
+                            r.nextDouble()*0.125 + 0.025, 0.02 + r.nextDouble()*0.04, 0.2 + r.nextDouble()*0.4);
                 }
 
                 for (int i = 0; i < 21; i++) {
@@ -84,7 +87,7 @@ public class AbjurationNecroticItem extends Item {
                                     .setPhysics(false).setScale(0.25f).setMaxAge(120).setGravity(0)
                                     .setColor(58, 55, 44, 128),
                             zv.getX(), zv.getY(), zv.getZ(),
-                            r.nextDouble(0.0625) - 0.03125, 0.02 + r.nextDouble(0.04), r.nextDouble(0.0625) - 0.03125);
+                            r.nextDouble()*0.0625 - 0.03125, 0.02 + r.nextDouble()*0.04, r.nextDouble()*0.0625 - 0.03125);
                 }
             }
         }
