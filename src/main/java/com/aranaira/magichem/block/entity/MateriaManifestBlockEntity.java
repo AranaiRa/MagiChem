@@ -38,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction {
 
@@ -100,9 +101,15 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
             Set<MateriaItem> keySet = materiaStorageInZone.keySet();
             keySet.remove(null);
             materiaTypesSorted.clear();
-            materiaTypesSorted.addAll(keySet);
 
-            materiaTypesSorted.sort(Comparator.comparing(MateriaItem::getMateriaSortingName));
+            HashMap<String, MateriaItem> sortingMap = new HashMap<>();
+            for(MateriaItem mi : keySet) {
+                sortingMap.put(mi.getMateriaSortingName(), mi);
+            }
+            sortingMap.keySet().stream().sorted().forEachOrdered(s -> {
+                materiaTypesSorted.add(sortingMap.get(s));
+            });
+
         }
     }
 

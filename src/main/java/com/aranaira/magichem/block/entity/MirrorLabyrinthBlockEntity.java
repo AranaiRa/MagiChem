@@ -763,9 +763,14 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         Set<MateriaItem> keySet = materiaStorage.keySet();
         keySet.remove(null);
         materiaTypesSorted.clear();
-        materiaTypesSorted.addAll(keySet);
 
-        materiaTypesSorted.sort(Comparator.comparing(MateriaItem::getMateriaSortingName));
+        HashMap<String, MateriaItem> sortingMap = new HashMap<>();
+        for(MateriaItem mi : keySet) {
+            sortingMap.put(mi.getMateriaSortingName(), mi);
+        }
+        sortingMap.keySet().stream().sorted().forEachOrdered(s -> {
+            materiaTypesSorted.add(sortingMap.get(s));
+        });
 
         needsGuiStorageUpdate = true;
     }
