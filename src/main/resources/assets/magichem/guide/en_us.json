@@ -7899,6 +7899,372 @@
       }
     ]
   },
+  "Acids": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Acids"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Acids",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are liquids with transformatively destructive properties. Free-flowing acids will "
+          },
+          {
+            "text": "destroy",
+            "color": "dark_purple"
+          },
+          {
+            "text": " many types of blocks and items and will cause "
+          },
+          {
+            "text": "damage over time",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "reduce the armor rating",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of entities.\n\nWhen contained in an Acid Basin, an acid will react with certain items to produce different items, different fluids, or both. This process is called "
+          },
+          {
+            "text": "Vitriolation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAcids have a "
+          },
+          {
+            "text": "strength",
+            "color": "dark_purple"
+          },
+          {
+            "text": " between 1 and 5. Stronger free-flowing acids will dissolve blocks and items more quickly (and may dissolve more types of blocks) and will cause more drastic effects to entities. Stronger acids in an Acid Basin will perform "
+          },
+          {
+            "text": "Vitriolation recipes",
+            "color": "dark_purple"
+          },
+          {
+            "text": " faster and "
+          },
+          {
+            "text": "less acid fluid will be consumed",
+            "color": "dark_purple"
+          },
+          {
+            "text": " each operation."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Simple Acid",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:simple_acid_bucket",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An acid with a strength of "
+          },
+          {
+            "text": "1",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", crafted by dissolving "
+          },
+          {
+            "text": "Aristose",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "water",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Aqua Fortis",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:aqua_fortis_bucket",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An acid with a strength of "
+          },
+          {
+            "text": "2",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", crafted by dissolving "
+          },
+          {
+            "text": "Aristose",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "Aqua Vitae",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/aristose"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/simple_acid"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/aqua_fortis"
+      }
+    ]
+  },
+  "Aqua Vitae": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Aqua Vitae"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Aqua Vitae",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (\"Water of Life\") is alcohol in its most pure state. It can be "
+          },
+          {
+            "text": "fabricated",
+            "color": "dark_purple"
+          },
+          {
+            "text": " using "
+          },
+          {
+            "text": "Admixture of Alcohol",
+            "color": "dark_purple"
+          },
+          {
+            "text": " if an Ashen Wisdom Stone or greater is present.\n\nDrinking Aqua Vitae would be a uniquely unpleasant (and probably fatal) experience. Though useless from a culinary standpoint, it has various alchemical applications like being an integral part of creating "
+          },
+          {
+            "text": "Aqua Fortis",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", an acid of moderate strength."
+          },
+          {
+            "text": "\n\nCreator's note: Until MagiChem 0.5.1 introduces fluid fabrication, Aqua Vitae must be fabricated in buckets. Apologies for the inconvenience.",
+            "italic": true
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+    ]
+  },
+  "Alchemical Salts": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Alchemical Salts"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Alchemical Salts",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are a category of reagent usually created by "
+          },
+          {
+            "text": "Vitriolating",
+            "color": "dark_purple"
+          },
+          {
+            "text": " materials down into an essential, fine grit.\n\nAlchemical Salts have properties that are integral to crafting other items, but they rarely have a function as a stand-alone item."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/salt_of_bone"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/salt_of_soot"
+      }
+    ]
+  },
+  "Alchemical Resins": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Alchemical Resins"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Alchemical Salts",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are a category of reagent usually created by "
+          },
+          {
+            "text": "Vitriolating",
+            "color": "dark_purple"
+          },
+          {
+            "text": " materials down until they have become a thick, spreadable paste with sealing properties.\n\nAlchemical Resins have properties that are integral to crafting other items, but they rarely have a function as a stand-alone item."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/resin_amarantine"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/resin_gray"
+      }
+    ]
+  },
+  "Sealing Wax": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Sealing Wax"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A more refined form of simple beeswax, "
+          },
+          {
+            "text": "Sealing Wax",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is used to create wax seals on scrolls (and official correspondences, if one is feeling ostentatious enough)."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/sealing_wax"
+      }
+    ]
+  },
+  "Chiaroscuro": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Chiaroscuro"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A bizarre, clay-like substance with a surface that reflects either exceptional amounts of light or none at all.\n\nA component material for alchemical devices that interact with light, as well as a component used in the path to the "
+          },
+          {
+            "text": "Philosopher's Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:vitriolation/magichem/sealing_wax"
+      }
+    ]
+  },
   "Alchemically Treated Glass": {
     "index": "0",
     "category": "magichem_wonders",
@@ -7925,11 +8291,7 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:shapeless/alchemically_treated_glass"
-      },
-      {
-        "type": "crafting",
-        "location": "magichem:shaped/alchemically_treated_glass_pane"
+        "location": "magichem:shapeless/chiaroscuro"
       }
     ]
   },
