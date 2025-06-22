@@ -8261,7 +8261,7 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:vitriolation/magichem/sealing_wax"
+        "location": "magichem:shapeless/chiaroscuro"
       }
     ]
   },
@@ -8291,7 +8291,11 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:shapeless/chiaroscuro"
+        "location": "magichem:shapeless/alchemically_treated_glass"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/alchemically_treated_glass_pane"
       }
     ]
   },
