@@ -32,14 +32,14 @@ import java.util.List;
 
 public class VitriolationRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
-    private final ItemStack inputItem, resultItem;
+    private final ItemStack inputItem, resultItem, outputForCodex;
     private final FluidStack resultFluid;
     private final Fluid inputFluidOverride;
     private final int craftTicks, minimumAcidStrength, mBConsumed;
     private static final HashMap<Integer, ArrayList<FluidType>> allAcids = new HashMap();
     private static final HashMap<Integer, ArrayList<Fluid>> allAcidsAsFluids = new HashMap();
 
-    public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pcraftTicks, int pMinimumAcidStrength, int pMBConsumed, Fluid pInputFluidOverride) {
+    public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pcraftTicks, int pMinimumAcidStrength, int pMBConsumed, Fluid pInputFluidOverride, ItemStack pOutputForCodex) {
         this.id = pID;
         this.inputItem = pInputItem;
         this.resultItem = pResultItem;
@@ -48,6 +48,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
         this.minimumAcidStrength = pMinimumAcidStrength;
         this.mBConsumed = pMBConsumed;
         this.inputFluidOverride = pInputFluidOverride;
+        this.outputForCodex = pOutputForCodex;
 
         ArrayList<FluidType>[] acidLists = new ArrayList[]{
                 new ArrayList<FluidType>(),
@@ -135,7 +136,10 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {
-        return resultItem.copy();
+        if(outputForCodex == null || outputForCodex.isEmpty())
+            return resultItem.copy();
+        else
+            return outputForCodex;
     }
 
     @Override
@@ -145,7 +149,10 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return resultItem.copy();
+        if(outputForCodex == null || outputForCodex.isEmpty())
+            return resultItem.copy();
+        else
+            return outputForCodex;
     }
 
     @Override
@@ -255,6 +262,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
             JsonObject inputItemObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "inputItem");
             JsonObject resultItemObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "resultItem", null);
             JsonObject resultFluidObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "resultFluid", null);
+            String outputForCodexString = GsonHelper.getAsString(pSerializedRecipe, "outputForCodex", null);
             String inputFluidOverrideString = GsonHelper.getAsString(pSerializedRecipe, "inputFluidOverride", null);
 
             String inputItemRL = GsonHelper.getAsString(inputItemObject, "item");
@@ -284,12 +292,18 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
                 inputFluidOverrideAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputFluidOverrideString));
             }
 
+            Item outputForCodexAsItem = null;
+            if(outputForCodexString != null) {
+                outputForCodexAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(outputForCodexString));
+            }
+
             return new VitriolationRecipe(pRecipeId,
                     new ItemStack(inputItemAsItem, inputItemCount),
                     resultItemAsItem == null ? ItemStack.EMPTY : new ItemStack(resultItemAsItem, resultItemCount),
                     resultFluidAsFluid == null ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
                     craftTicks, minimumAcidStrength, mBConsumed,
-                    inputFluidOverrideAsFluid
+                    inputFluidOverrideAsFluid,
+                    outputForCodexAsItem == null ? ItemStack.EMPTY : new ItemStack(outputForCodexAsItem)
             );
         }
 
@@ -330,12 +344,19 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
                 inputFluidOverrideAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(nbt.getString("inputFluidOverride")));
             }
 
+            boolean hasOutputForCodex = nbt.contains("outputForCodex");
+            Item outputForCodexAsItem = null;
+            if(hasOutputForCodex) {
+                outputForCodexAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("outputForCodex")));
+            }
+
             return new VitriolationRecipe(pRecipeId,
                     inputAsItem == null ? ItemStack.EMPTY : new ItemStack(inputAsItem, inputCount),
                     !hasResultItem ? ItemStack.EMPTY : new ItemStack(resultItemAsItem, resultItemCount),
                     !hasResultFluid ? FluidStack.EMPTY : new FluidStack(resultFluidAsFluid, resultFluidCount),
                     craftTicks, minimumAcidStrength, mBConsumed,
-                    inputFluidOverrideAsFluid
+                    inputFluidOverrideAsFluid,
+                    !hasOutputForCodex ? ItemStack.EMPTY : new ItemStack(outputForCodexAsItem)
             );
         }
 
@@ -369,6 +390,10 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
             nbt.putInt("craftTicks", pRecipe.craftTicks);
             nbt.putInt("mBConsumed", pRecipe.mBConsumed);
             nbt.putInt("minimumAcidStrength", pRecipe.minimumAcidStrength);
+
+            if(pRecipe.outputForCodex != null && !pRecipe.outputForCodex.isEmpty()) {
+                nbt.putString("outputForCodex", ForgeRegistries.ITEMS.getKey(pRecipe.outputForCodex.getItem()).toString());
+            }
 
             pBuffer.writeNbt(nbt);
         }

@@ -12,7 +12,7 @@
       "components": [
         { "item": "minecraft:blue_orchid" },
         { "item": "minecraft:sugar" },
-        { "item": "minecraft:verdigris" },
+        { "item": "magichem:verdigris" },
         { "item": "minecraft:sugar" },
         { "item": "minecraft:dandelion" }
       ],
