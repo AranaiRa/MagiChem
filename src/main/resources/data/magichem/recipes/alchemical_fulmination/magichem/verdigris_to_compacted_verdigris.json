@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "magichem:verdigris",
+  "input_count": 30,
+  "result": "magichem:compacted_verdigris",
+  "result_count": 1
+}

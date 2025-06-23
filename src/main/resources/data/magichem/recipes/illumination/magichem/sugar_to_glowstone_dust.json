@@ -1,0 +1,12 @@
+{
+  "type": "magichem:illumination",
+  "input": "minecraft:sugar",
+  "lumins": {
+    "type": 1,
+    "minutes": 72
+  },
+  "result": {
+    "item": "minecraft:glowstone_dust",
+    "count": 1
+  }
+}

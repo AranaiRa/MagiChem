@@ -39,12 +39,12 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
     private static final HashMap<Integer, ArrayList<FluidType>> allAcids = new HashMap();
     private static final HashMap<Integer, ArrayList<Fluid>> allAcidsAsFluids = new HashMap();
 
-    public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pcraftTicks, int pMinimumAcidStrength, int pMBConsumed, Fluid pInputFluidOverride, ItemStack pOutputForCodex) {
+    public VitriolationRecipe(ResourceLocation pID, ItemStack pInputItem, ItemStack pResultItem, FluidStack pResultFluid, int pCraftTicks, int pMinimumAcidStrength, int pMBConsumed, Fluid pInputFluidOverride, ItemStack pOutputForCodex) {
         this.id = pID;
         this.inputItem = pInputItem;
         this.resultItem = pResultItem;
         this.resultFluid = pResultFluid;
-        this.craftTicks = pcraftTicks;
+        this.craftTicks = pCraftTicks;
         this.minimumAcidStrength = pMinimumAcidStrength;
         this.mBConsumed = pMBConsumed;
         this.inputFluidOverride = pInputFluidOverride;
