@@ -62,6 +62,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -674,6 +675,24 @@ public class CommonEventHandler {
                         event.setCanceled(true);
                     }
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRenderItemTooltip(ItemTooltipEvent event) {
+        if(event.getItemStack().hasTag()) {
+            final CompoundTag nbt = event.getItemStack().getTag();
+            if(nbt != null && nbt.contains("magichemLumins")) {
+                CompoundTag luminsTag = nbt.getCompound("magichemLumins");
+                int type = luminsTag.getInt("type");
+                int current = luminsTag.getInt("current");
+                int needed = luminsTag.getInt("needed");
+
+                event.getToolTip().add(1,
+                        LuminType.luminComponentFromOrdinal(type).withStyle(LuminType.luminComponentFormattingFromOrdinal(type))
+                                .append(" ["+current+"/"+needed+"]")
+                );
             }
         }
     }

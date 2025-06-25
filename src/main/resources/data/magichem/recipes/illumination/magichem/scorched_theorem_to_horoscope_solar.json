@@ -1,0 +1,12 @@
+{
+  "type": "magichem:illumination",
+  "input": "magichem:scorched_theorem",
+  "lumins": {
+    "type": 1,
+    "minutes": 15
+  },
+  "result": {
+    "item": "magichem:horoscope_solar",
+    "count": 1
+  }
+}

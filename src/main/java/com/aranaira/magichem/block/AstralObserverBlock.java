@@ -7,6 +7,7 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -20,6 +21,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class AstralObserverBlock extends BaseEntityBlock {
@@ -40,15 +44,29 @@ public class AstralObserverBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-//        if(pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() != ItemRegistry.THUNDERSTONE.get()) {
-//            if (pLevel.getBlockEntity(pPos) instanceof SkywrathAltarBlockEntity sabe && pHand == InteractionHand.MAIN_HAND) {
-//                ItemStack stackQuery = pPlayer.getItemInHand(pHand);
-//                sabe.setHeldItem(pPlayer, stackQuery);
-//                pPlayer.setItemInHand(pHand, ItemStack.EMPTY);
-//
-//                return InteractionResult.CONSUME;
-//            }
-//        }
+        if (!pLevel.isClientSide() && pLevel.getBlockEntity(pPos) instanceof AstralObserverBlockEntity astral && pHand == InteractionHand.MAIN_HAND) {
+            ItemStack stackQuery = pPlayer.getItemInHand(pHand);
+
+            final LazyOptional<IItemHandler> capQuery = astral.getCapability(ForgeCapabilities.ITEM_HANDLER);
+            if(capQuery.isPresent()) {
+                final IItemHandler cap = capQuery.resolve().get();
+
+                if(stackQuery.isEmpty()) {
+                    final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);
+                    pPlayer.setItemInHand(pHand, extractQuery);
+                } else {
+                    if (!cap.getStackInSlot(0).isEmpty()) {
+                        final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);
+                        ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), extractQuery);
+                        pLevel.addFreshEntity(ie);
+                    }
+                    cap.insertItem(0, pPlayer.getItemInHand(pHand), false);
+                    pPlayer.getItemInHand(pHand).shrink(cap.getSlotLimit(0));
+                }
+            }
+
+            return InteractionResult.CONSUME;
+        }
 
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }

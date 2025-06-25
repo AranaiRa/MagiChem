@@ -128,6 +128,18 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> SOLAR_ORB = ITEMS.register("solar_orb",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LUNAR_ORB = ITEMS.register("lunar_orb",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SIDEREAL_ORB = ITEMS.register("sidereal_orb",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> ILLUMININK = ITEMS.register("illuminink",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -226,6 +238,22 @@ public class ItemRegistry {
 
     public static final RegistryObject<AbjurationNecroticItem> NECROTIC_ABJURATION = ITEMS.register("abjuration_necrotic",
             () -> new AbjurationNecroticItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> HOROSCOPE_SOLAR = ITEMS.register("horoscope_solar",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> HOROSCOPE_SOLAR_FOREBODING = ITEMS.register("horoscope_solar_foreboding",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> HOROSCOPE_LUNAR = ITEMS.register("horoscope_lunar",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> HOROSCOPE_LUNAR_FOREBODING = ITEMS.register("horoscope_lunar_foreboding",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",

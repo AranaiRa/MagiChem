@@ -90,12 +90,12 @@ public class IlluminationRecipe implements Recipe<SimpleContainer> {
         return Type.INSTANCE;
     }
 
-    public static IlluminationRecipe getIlluminationRecipe(Level level, Item query) {
+    public static IlluminationRecipe getIlluminationRecipe(Level level, Item query, LuminType luminType) {
         IlluminationRecipe recipeResult = null;
         List<IlluminationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 
         for(IlluminationRecipe ar : allRecipes) {
-            if(ar.inputItem.getItem() == query) {
+            if(ar.inputItem.getItem() == query && ar.luminType == luminType) {
                 recipeResult = ar;
                 break;
             }

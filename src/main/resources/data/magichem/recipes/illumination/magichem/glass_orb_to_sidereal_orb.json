@@ -1,0 +1,12 @@
+{
+  "type": "magichem:illumination",
+  "input": "magichem:glass_orb",
+  "lumins": {
+    "type": 3,
+    "minutes": 24
+  },
+  "result": {
+    "item": "magichem:sidereal_orb",
+    "count": 1
+  }
+}

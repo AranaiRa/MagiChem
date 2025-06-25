@@ -1,0 +1,12 @@
+{
+  "type": "magichem:illumination",
+  "input": "minecraft:bucket",
+  "lumins": {
+    "type": 1,
+    "minutes": 3
+  },
+  "result": {
+    "item": "magichem:liquid_light_bucket",
+    "count": 1
+  }
+}

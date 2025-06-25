@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "magichem:horoscope_lunar",
+  "input_count": 1,
+  "result": "magichem:horoscope_lunar_foreboding",
+  "result_count": 1
+}

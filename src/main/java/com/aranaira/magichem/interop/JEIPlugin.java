@@ -160,6 +160,8 @@ public class JEIPlugin implements IModPlugin {
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ACID_BASIN.get(), 1), VITRIOLATION_TYPE);
 
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ASTRAL_OBSERVER.get(), 1), ILLUMINATION_TYPE);
+
         IModPlugin.super.registerRecipeCatalysts(registration);
     }
 }

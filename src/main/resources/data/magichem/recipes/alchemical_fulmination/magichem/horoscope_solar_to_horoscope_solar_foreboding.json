@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "magichem:horoscope_solar",
+  "input_count": 1,
+  "result": "magichem:horoscope_solar_foreboding",
+  "result_count": 1
+}
