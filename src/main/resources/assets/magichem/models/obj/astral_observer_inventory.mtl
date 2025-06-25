@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl DELUGE_PURIFIER
+map_Kd magichem:block/actuator_water
+
+newmtl GALE_PRESSURIZER
+map_Kd magichem:block/actuator_air
+
+newmtl SKYWRATH_ALTAR
+map_Kd magichem:block/skywrath_altar

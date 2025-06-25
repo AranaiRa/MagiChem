@@ -274,6 +274,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(MateriaReflectorBlockEntity::new, BlockRegistry.MATERIA_REFLECTOR.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<AstralObserverBlockEntity>> ASTRAL_OBSERVER_BE = BLOCK_ENTITIES.register("astral_observer", () ->
+            BlockEntityType.Builder.of(AstralObserverBlockEntity::new, BlockRegistry.ASTRAL_OBSERVER.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

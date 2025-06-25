@@ -261,6 +261,8 @@ public class MagiChemMod
 
             event.register(MateriaReflectorBlockEntityRenderer.RENDERER_MODEL_EYE);
             event.register(MateriaReflectorBlockEntityRenderer.RENDERER_MODEL_IRIS);
+
+            event.register(AstralObserverBlockEntityRenderer.RENDERER_MODEL_TELESCOPE);
         }
     }
 }

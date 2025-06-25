@@ -81,6 +81,11 @@ public class BlockRegistry {
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<AstralObserverBlock> ASTRAL_OBSERVER = registerBlock("astral_observer",
+            () -> new AstralObserverBlock(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<AcidBasinBlock> ACID_BASIN = registerBlock("acid_basin",
             () -> new AcidBasinBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

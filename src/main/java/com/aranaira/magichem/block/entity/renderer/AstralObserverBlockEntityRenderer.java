@@ -1,0 +1,91 @@
+package com.aranaira.magichem.block.entity.renderer;
+
+import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.AstralObserverBlockEntity;
+import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.MathHelper;
+import com.mna.tools.render.ModelUtils;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.joml.Vector2d;
+
+public class AstralObserverBlockEntityRenderer implements BlockEntityRenderer<AstralObserverBlockEntity> {
+    public static final ResourceLocation RENDERER_MODEL_TELESCOPE = new ResourceLocation(MagiChemMod.MODID, "obj/special/astral_observer_telescope");
+    public static final ItemStack ITEMSTACK_CRYSTAL = new ItemStack(ItemRegistry.IMMACULATE_VINTEUM_CRYSTAL.get());
+
+    public AstralObserverBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+
+    }
+
+    @Override
+    public void render(AstralObserverBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        Level world = pBlockEntity.getLevel();
+        BlockPos pos = pBlockEntity.getBlockPos();
+        BlockState state = pBlockEntity.getBlockState();
+
+        float time = (world.getTimeOfDay(pPartialTick) + 0.75f) % 1f;
+        float angle = 0;
+
+        //0.995..1.0 == reset
+        if(time > 0.995f) {
+            float lerp = MathHelper.doubleExponentialSeat((time - 0.995f) / 0.005f, 2f);
+            angle = (1 - lerp) * 180;
+        }
+        //0.5-0.995 == day
+        else if(time > 0.5f) {
+            float lerp = (time - 0.5f) / 0.5f;
+            angle = lerp * 180;
+        }
+        //0.495..0.5 == reset
+        else if(time > 0.495f) {
+            float lerp = MathHelper.doubleExponentialSeat((time - 0.495f) / 0.005f, 2f);
+            angle = (1 - lerp) * 180;
+        }
+        //0..0.495 == night
+        else {
+            float lerp = time / 0.5f;
+            angle = lerp * 180;
+        }
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 1.5625, 0.5);
+        pPoseStack.mulPose(Axis.ZP.rotationDegrees(angle));
+        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_TELESCOPE, pPoseStack, pPackedLight, pPackedOverlay);
+        pPoseStack.popPose();
+
+        double period = 227;
+        double gt = (int)(world.getGameTime() % (int)(period * 2));
+        double bob = Math.sin(Math.toRadians(((double)(gt + pPartialTick) % period) / period) * 360d) * 0.03125d;
+
+        double pX = Minecraft.getInstance().player.getX();
+        double pZ = Minecraft.getInstance().player.getZ();
+
+        double eX = pBlockEntity.getBlockPos().getX() + 0.5625;
+        double eZ = pBlockEntity.getBlockPos().getZ() + 0.5;
+
+        Vector2d dVec = new Vector2d(pX - eX, pZ - eZ);
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5, 1.5625 + bob, 0.5);
+        pPoseStack.mulPose(Axis.YN.rotation((float)Math.atan2(dVec.y, dVec.x) + (float)(Math.PI * 0.5)));
+        pPoseStack.mulPose(Axis.ZP.rotationDegrees(135));
+        pPoseStack.translate(0, 0, -0.0625);
+        pPoseStack.scale(0.375f, 0.375f, 0.375f);
+        Minecraft.getInstance().getItemRenderer().renderStatic(ITEMSTACK_CRYSTAL, ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, pBlockEntity.getLevel(), 0);
+        pPoseStack.popPose();
+    }
+}
