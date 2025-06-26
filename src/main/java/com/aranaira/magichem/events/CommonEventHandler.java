@@ -27,6 +27,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -35,9 +36,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -62,10 +61,12 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -693,6 +694,31 @@ public class CommonEventHandler {
                         LuminType.luminComponentFromOrdinal(type).withStyle(LuminType.luminComponentFormattingFromOrdinal(type))
                                 .append(" ["+current+"/"+needed+"]")
                 );
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onMobSpawnPositionCheck(MobSpawnEvent.PositionCheck event) {
+        if(event.getSpawnType() == MobSpawnType.NATURAL) {
+            for (Player player : event.getLevel().players()) {
+                if (player.hasEffect(MobEffectsRegistry.SUNS_GRACE.get())) {
+                    if (event.getEntity().getPosition(0).distanceTo(player.getPosition(0)) <= 128)
+                        event.setResult(Event.Result.DENY);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onMobSpawnFinalize(MobSpawnEvent.FinalizeSpawn event) {
+        if(event.getEntity().canAttackType(EntityType.PLAYER)) {
+            for (Player player : event.getLevel().players()) {
+                if (player.hasEffect(MobEffectsRegistry.SUNS_SCORN.get())) {
+                    for (int i = 0; i < r.nextInt(4) + 2; i++) {
+                        event.getLevel().addFreshEntity(event.getEntity());
+                    }
+                }
             }
         }
     }

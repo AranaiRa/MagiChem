@@ -4,10 +4,12 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -19,19 +21,30 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RadiantRosePetalItem extends Item {
-    public RadiantRosePetalItem(Properties pProperties) {
+public class StatusGrantingConsumableItem extends Item {
+    private final boolean doParticles;
+    private final int cooldownTime, statusDuration, levelBoost;
+    private final MobEffect effect;
+    private final SoundEvent sound;
+
+    public StatusGrantingConsumableItem(Properties pProperties, MobEffect pEffect, int pStatusDuration, int pCooldownTime, SoundEvent pSound, int pLevelBoost, boolean pDoParticles) {
         super(pProperties);
+        this.effect = pEffect;
+        this.statusDuration = pStatusDuration;
+        this.cooldownTime = pCooldownTime;
+        this.sound = pSound;
+        this.levelBoost = pLevelBoost;
+        this.doParticles = pDoParticles;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         final ItemCooldowns cooldowns = pPlayer.getCooldowns();
-        if(!cooldowns.isOnCooldown(ItemRegistry.RADIANT_ROSE_PETAL.get())) {
-            pPlayer.addEffect(new MobEffectInstance(MobEffectsRegistry.RADIANT_RESOLVE.get(), 120));
-            cooldowns.addCooldown(ItemRegistry.RADIANT_ROSE_PETAL.get(), 900);
+        if(!cooldowns.isOnCooldown(this)) {
+            pPlayer.addEffect(new MobEffectInstance(effect, statusDuration, levelBoost, false, doParticles));
+            cooldowns.addCooldown(this, cooldownTime);
             pPlayer.getItemInHand(pUsedHand).shrink(1);
-            pLevel.playSound((Player)null, pPlayer.blockPosition(), SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 2.0F, 1.0f);
+            pLevel.playSound((Player)null, pPlayer.blockPosition(), sound, SoundSource.PLAYERS, 2.0F, 1.0f);
         }
 
         return super.use(pLevel, pPlayer, pUsedHand);
@@ -40,7 +53,7 @@ public class RadiantRosePetalItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.radiantrosepetal")
+                Component.translatable("tooltip.magichem."+this.toString())
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 
