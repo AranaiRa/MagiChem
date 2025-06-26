@@ -61,7 +61,6 @@ public class AstralObserverBlock extends BaseEntityBlock {
                         pLevel.addFreshEntity(ie);
                     }
                     cap.insertItem(0, pPlayer.getItemInHand(pHand), false);
-                    pPlayer.getItemInHand(pHand).shrink(cap.getSlotLimit(0));
                 }
             }
 

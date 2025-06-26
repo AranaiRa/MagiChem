@@ -103,9 +103,16 @@ public class AstralObserverBlockEntity extends BlockEntity {
                     }
                     if(!simulate) {
                         heldItem = stack.copy();
+                        heldItem.setCount(1);
                         syncAndSave();
                     }
-                    return ItemStack.EMPTY;
+
+                    if(stack.getCount() == 1)
+                        return ItemStack.EMPTY;
+                    else {
+                        stack.shrink(1);
+                        return stack;
+                    }
                 }
             }
 
@@ -134,6 +141,11 @@ public class AstralObserverBlockEntity extends BlockEntity {
         @Override
         public @NotNull ItemStack getStackInSlot(int slot) {
             return heldItem;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
         }
 
         @Override
