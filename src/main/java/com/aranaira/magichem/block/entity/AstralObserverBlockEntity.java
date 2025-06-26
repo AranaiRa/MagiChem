@@ -69,7 +69,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
                         }
                         if (currentLumins > 0) {
                             CompoundTag luminsTag = new CompoundTag();
-                            luminsTag.putInt("type", luminType.ordinal());
+                            luminsTag.putInt("type", recipe.getLuminType().ordinal());
                             luminsTag.putInt("current", currentLumins);
                             luminsTag.putInt("needed", luminsNeeded);
                             nbt.put("magichemLumins", luminsTag);
@@ -227,77 +227,69 @@ public class AstralObserverBlockEntity extends BlockEntity {
         if(t instanceof AstralObserverBlockEntity entity) {
             entity.luminType = entity.getLuminPhase(true);
 
-            //we should have a recipe if there's an item present
-            boolean needsNewRecipe = entity.recipe == null && !entity.heldItem.isEmpty();
+            if (level.canSeeSkyFromBelowWater(pos)) {
+                //we should have a recipe if there's an item present
+                boolean needsNewRecipe = entity.recipe == null && !entity.heldItem.isEmpty();
 
-            if(needsNewRecipe) {
-                entity.recipe = IlluminationRecipe.getIlluminationRecipe(level, entity.heldItem.getItem(), entity.luminType);
-                if(entity.recipe != null) {
-                    entity.luminsNeeded = entity.recipe.getCraftTime() * 1200;
-                }
-            } else if(entity.recipe != null) {
-                //If we have the wrong type of lumins we need to start draining them
-                if (entity.luminType != entity.recipe.getLuminType()) {
-                    entity.currentLumins = Math.max(0, entity.currentLumins - 2);
-                    //reset the recipe once the lumins are empty
-                    if (entity.currentLumins <= 0) entity.recipe = null;
-                }
-                else {
-                    if (entity.currentLumins < entity.luminsNeeded) {
-                        entity.currentLumins++;
+                if (needsNewRecipe) {
+                    entity.recipe = IlluminationRecipe.getIlluminationRecipe(level, entity.heldItem.getItem(), entity.luminType);
+                    if (entity.recipe != null) {
+                        entity.luminsNeeded = entity.recipe.getCraftTime() * 1200;
+                    }
+                } else if (entity.recipe != null) {
+                    //If we have the wrong type of lumins we need to start draining them
+                    if (entity.luminType != entity.recipe.getLuminType()) {
+                        entity.currentLumins = Math.max(0, entity.currentLumins - 2);
+                        //reset the recipe once the lumins are empty
+                        if (entity.currentLumins <= 0) entity.recipe = null;
                     } else {
-                        entity.heldItem = entity.recipe.getResultItem().copy();
+                        if (entity.currentLumins < entity.luminsNeeded) {
+                            entity.currentLumins++;
+                        } else {
+                            entity.heldItem = entity.recipe.getResultItem().copy();
+                        }
                     }
                 }
-            }
 
-            //VFX and animation drivers
-            if(level.isClientSide() && entity.recipe != null) {
-                if((entity.luminType == entity.recipe.getLuminType()) && (entity.currentLumins < entity.luminsNeeded)) {
-                    int[] primaryColor = LuminType.getParticleColor(entity.luminType);
-                    int[] bleachedColor = new int[3];
-                    bleachedColor[0] = (int)MathUtils.lerpf(primaryColor[0], 255, 0.425f);
-                    bleachedColor[1] = (int)MathUtils.lerpf(primaryColor[1], 255, 0.425f);
-                    bleachedColor[2] = (int)MathUtils.lerpf(primaryColor[2], 255, 0.425f);
-                    int[] dimmedColor = new int[3];
-                    dimmedColor[0] = (int)MathUtils.lerpf(primaryColor[0], 0, 0.75f);
-                    dimmedColor[1] = (int)MathUtils.lerpf(primaryColor[1], 0, 0.75f);
-                    dimmedColor[2] = (int)MathUtils.lerpf(primaryColor[2], 0, 0.75f);
+                //VFX and animation drivers
+                if (level.isClientSide() && entity.recipe != null) {
+                    if ((entity.luminType == entity.recipe.getLuminType()) && (entity.currentLumins < entity.luminsNeeded)) {
+                        int[] primaryColor = LuminType.getParticleColor(entity.luminType);
+                        int[] bleachedColor = new int[3];
+                        bleachedColor[0] = (int) MathUtils.lerpf(primaryColor[0], 255, 0.425f);
+                        bleachedColor[1] = (int) MathUtils.lerpf(primaryColor[1], 255, 0.425f);
+                        bleachedColor[2] = (int) MathUtils.lerpf(primaryColor[2], 255, 0.425f);
+                        int[] dimmedColor = new int[3];
+                        dimmedColor[0] = (int) MathUtils.lerpf(primaryColor[0], 0, 0.75f);
+                        dimmedColor[1] = (int) MathUtils.lerpf(primaryColor[1], 0, 0.75f);
+                        dimmedColor[2] = (int) MathUtils.lerpf(primaryColor[2], 0, 0.75f);
 
-                    Vector3 center = new Vector3(entity.getBlockPos().getX() + 0.5, entity.getBlockPos().getY() + 1.0625, entity.getBlockPos().getZ() + 0.5);
+                        Vector3 center = new Vector3(entity.getBlockPos().getX() + 0.5, entity.getBlockPos().getY() + 1.0625, entity.getBlockPos().getZ() + 0.5);
 
-                    //sparks
-                    level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                    .setPhysics(false).setScale(0.0625f).setMaxAge(45).setPhysics(true).setGravity(0.02f)
-                                    .setColor(bleachedColor[0], bleachedColor[1], bleachedColor[2], 196),
-                            center.x, center.y, center.z,
-                            r.nextDouble(0.1) - 0.05, 0.04 + r.nextDouble(0.12), r.nextDouble(0.1) - 0.05);
-
-                    if(level.getGameTime() % 2 == 0) {
+                        //sparks
                         level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                        .setPhysics(false).setScale(0.0625f).setMaxAge(65).setPhysics(true)
-                                        .setColor(primaryColor[0], primaryColor[1], primaryColor[2], 196),
+                                        .setPhysics(false).setScale(0.0625f).setMaxAge(45).setPhysics(true).setGravity(0.02f)
+                                        .setColor(bleachedColor[0], bleachedColor[1], bleachedColor[2], 196),
                                 center.x, center.y, center.z,
-                                r.nextDouble(0.035) - 0.0175, 0.005 + r.nextDouble(0.02), r.nextDouble(0.035) - 0.0175);
+                                r.nextDouble(0.1) - 0.05, 0.04 + r.nextDouble(0.12), r.nextDouble(0.1) - 0.05);
+
+                        if (level.getGameTime() % 2 == 0) {
+                            level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                            .setPhysics(false).setScale(0.0625f).setMaxAge(65).setPhysics(true)
+                                            .setColor(primaryColor[0], primaryColor[1], primaryColor[2], 196),
+                                    center.x, center.y, center.z,
+                                    r.nextDouble(0.035) - 0.0175, 0.005 + r.nextDouble(0.02), r.nextDouble(0.035) - 0.0175);
+                        }
+
+                        //glow
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                        level.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(dimmedColor[0], dimmedColor[1], dimmedColor[2], 96)
+                                        .setScale(0.18f).setMaxAge(24)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
                     }
-
-                    //glow
-                    Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
-                    level.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
-                                    .setColor(dimmedColor[0], dimmedColor[1], dimmedColor[2], 96)
-                                    .setScale(0.18f).setMaxAge(24)
-                                    .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
-                            center.x + offset.x, center.y + offset.y, center.z + offset.z,
-                            0, 0, 0);
-//                    }
-                } else {
-
-                }
-            }
-
-            if(level instanceof ServerLevel sl) {
-                for(ServerPlayer sp : sl.players()) {
-                    sp.displayClientMessage(Component.literal("p:"+entity.currentLumins+"/" + entity.luminsNeeded+" : " + entity.luminType.toString()), true);
                 }
             }
         }

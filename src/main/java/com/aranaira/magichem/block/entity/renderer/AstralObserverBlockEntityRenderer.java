@@ -106,7 +106,7 @@ public class AstralObserverBlockEntityRenderer implements BlockEntityRenderer<As
         }
 
         //Beams
-        {
+        if(world.canSeeSkyFromBelowWater(pos)){
             LuminType phase = pBlockEntity.getLuminPhase(true);
             int[] color = LuminType.getParticleColor(pBlockEntity.getLuminPhase(true));
             if(pBlockEntity.doColorLerp) {
