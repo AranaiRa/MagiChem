@@ -1,5 +1,6 @@
 {
   "parent": "magichem:block/ctm/ctm_pane_side",
+  "render_type": "translucent",
   "textures": {
     "cap":  "magichem:block/alchemically_treated_glass_gold",
     "side": "magichem:block/alchemically_treated_glass_gold"

@@ -1,5 +1,6 @@
 {
   "parent": "magichem:block/ctm/ctm_pane_noside",
+  "render_type": "translucent",
   "textures": {
     "cap":  "magichem:block/alchemically_treated_glass_electrum",
     "side": "magichem:block/alchemically_treated_glass_electrum"
