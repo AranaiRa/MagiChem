@@ -31,4 +31,12 @@ public enum LuminType {
         else if(pOrdinal == 3) return ChatFormatting.BLUE;
         return ChatFormatting.RESET;
     }
+
+    public static int[] getParticleColor(LuminType pType) {
+        if(pType == SOLAR) return new int[]{240,170,15};
+        else if(pType == LUNAR) return new int[]{150,150,170};
+        else if(pType == SIDEREAL) return new int[]{85,100,240};
+
+        return new int[]{0,0,0};
+    }
 }

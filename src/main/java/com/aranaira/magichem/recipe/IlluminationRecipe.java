@@ -91,6 +91,8 @@ public class IlluminationRecipe implements Recipe<SimpleContainer> {
     }
 
     public static IlluminationRecipe getIlluminationRecipe(Level level, Item query, LuminType luminType) {
+        if(luminType == LuminType.NONE) return null;
+
         IlluminationRecipe recipeResult = null;
         List<IlluminationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 

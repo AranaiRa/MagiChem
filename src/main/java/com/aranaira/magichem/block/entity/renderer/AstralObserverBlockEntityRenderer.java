@@ -3,8 +3,11 @@ package com.aranaira.magichem.block.entity.renderer;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AstralObserverBlockEntity;
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import com.aranaira.magichem.util.render.RenderUtils;
+import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import com.mna.tools.render.MARenderTypes;
 import com.mna.tools.render.ModelUtils;
@@ -15,20 +18,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2d;
 
 public class AstralObserverBlockEntityRenderer implements BlockEntityRenderer<AstralObserverBlockEntity> {
     public static final ResourceLocation RENDERER_MODEL_TELESCOPE = new ResourceLocation(MagiChemMod.MODID, "obj/special/astral_observer_telescope");
+    public static final ResourceLocation CIRCLE_TEXTURE = new ResourceLocation(MagiChemMod.MODID, "block/actuator_water");
     public static final ItemStack ITEMSTACK_CRYSTAL = new ItemStack(ItemRegistry.IMMACULATE_VINTEUM_CRYSTAL.get());
 
     public AstralObserverBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
@@ -100,15 +107,28 @@ public class AstralObserverBlockEntityRenderer implements BlockEntityRenderer<As
 
         //Beams
         {
+            LuminType phase = pBlockEntity.getLuminPhase(true);
+            int[] color = LuminType.getParticleColor(pBlockEntity.getLuminPhase(true));
+            if(pBlockEntity.doColorLerp) {
+                int[] colorFrom = LuminType.getParticleColor(pBlockEntity.getInverseLuminPhase(false));
+                color[0] = (int)MathUtils.lerpf(MathUtils.lerpf(colorFrom[0], color[0], pBlockEntity.colorLerp), 255, 0.425f);
+                color[1] = (int)MathUtils.lerpf(MathUtils.lerpf(colorFrom[1], color[1], pBlockEntity.colorLerp), 255, 0.425f);
+                color[2] = (int)MathUtils.lerpf(MathUtils.lerpf(colorFrom[2], color[2], pBlockEntity.colorLerp), 255, 0.425f);
+            } else {
+                color[0] = (int)MathUtils.lerpf(color[0], 255, 0.425f);
+                color[1] = (int)MathUtils.lerpf(color[1], 255, 0.425f);
+                color[2] = (int)MathUtils.lerpf(color[2], 255, 0.425f);
+            }
+
             double radius = 0.375;
             double theta = (angle / 180d) * Math.PI;
             Vec3 start = new Vec3(0.5 + Math.cos(theta)*radius, 1.5625 + Math.sin(theta)*radius, 0.5);
-            Vec3 end = new Vec3(0.5, 1.5625+bob, 0.5);
+            Vec3 end = new Vec3(0.5, 1.5625, 0.5);
 
             pPoseStack.pushPose();
             pPoseStack.translate(start.x, start.y, start.z);
             WorldRenderUtils.renderBeam(world, pPartialTick, pPoseStack, pBuffer, pPackedLight,
-                    start, end, 1.0f, new int[]{255, 255, 255}, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+                    start, end, 1.0f, color, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
             pPoseStack.popPose();
 
             start = end;
@@ -117,18 +137,37 @@ public class AstralObserverBlockEntityRenderer implements BlockEntityRenderer<As
             pPoseStack.pushPose();
             pPoseStack.translate(start.x, start.y, start.z);
             WorldRenderUtils.renderBeam(world, pPartialTick, pPoseStack, pBuffer, pPackedLight,
-                    start, end, 1.0f, new int[]{255, 255, 255}, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
+                    start, end, 1.0f, color, 255, 0.0625f, MARenderTypes.RITUAL_BEAM_RENDER_TYPE);
             pPoseStack.popPose();
         }
 
         //Item
         {
+            period = 500;
+            gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+            float rot = ((float)((gt + pPartialTick) % period) / (float)period) * 360f;
+
             pPoseStack.pushPose();
             pPoseStack.translate(0.5, 1.125, 0.5);
-            pPoseStack.mulPose(Axis.YN.rotation( + (float) (Math.PI * 0.5)));
+            pPoseStack.mulPose(Axis.YN.rotationDegrees(rot));
             pPoseStack.scale(0.375f, 0.375f, 0.375f);
             Minecraft.getInstance().getItemRenderer().renderStatic(pBlockEntity.getItem(), ItemDisplayContext.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, pBlockEntity.getLevel(), 0);
             pPoseStack.popPose();
+        }
+
+        //Charging Magic Circle
+        {
+            final TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(CIRCLE_TEXTURE);
+            Vector3 center = new Vector3(0.5, 1.0625, 0.5);
+
+            period = 370;
+            gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+            float rot = ((float)((gt + pPartialTick) % period) / (float)period) * (float)Math.PI * 2;
+
+            RenderUtils.generateMagicCircleRing(center,
+                    7, 0.75f, 0.375f, -rot, texture,
+                    new Vec2(0, 0), new Vec2(12, 3f), 0.75f,
+                    pBlockEntity.getProgressPercent(), pPoseStack, pBuffer, pPackedLight);
         }
     }
 }
