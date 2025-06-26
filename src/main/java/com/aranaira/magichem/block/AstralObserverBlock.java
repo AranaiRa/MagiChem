@@ -59,8 +59,11 @@ public class AstralObserverBlock extends BaseEntityBlock {
                         final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);
                         ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), extractQuery);
                         pLevel.addFreshEntity(ie);
+                        cap.insertItem(0, pPlayer.getItemInHand(pHand), false);
+                    } else {
+                        cap.insertItem(0, pPlayer.getItemInHand(pHand).copy(), false);
+                        pPlayer.getItemInHand(pHand).shrink(1);
                     }
-                    cap.insertItem(0, pPlayer.getItemInHand(pHand), false);
                 }
             }
 
