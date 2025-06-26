@@ -1,0 +1,49 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 2,
+  "object": {
+    "item": "magichem:astral_observer"
+  },
+  "stages": [
+    {
+      "experience": 60,
+      "components": [
+        { "item": "magichem:magic_circle" },
+        { "item": "magichem:immaculate_vinteum_crystal" },
+        { "item": "minecraft:spyglass" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_firmament", "count": 91 },
+        { "item": "magichem:admixture_change", "count": 37 },
+        { "item": "magichem:admixture_industry", "count": 22 }
+      ]
+    },
+    {
+      "experience": 35,
+      "components": [
+        { "item": "magichem:cog_components" },
+        { "item": "magichem:skywrath_altar" },
+        { "item": "magichem:cog_components" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_light", "count": 62 },
+        { "item": "magichem:admixture_realm", "count": 55 },
+        { "item": "magichem:admixture_cold", "count": 48 }
+      ]
+    },
+    {
+      "experience": 20,
+      "components": [
+        { "item": "magichem:cog_components" },
+        { "item": "mna:slipstream_generator" },
+        { "item": "magichem:cog_components" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_sight", "count": 41 },
+        { "item": "magichem:admixture_sleep", "count": 32 },
+        { "item": "magichem:essentia_albedo", "count": 48 }
+      ]
+    }
+  ]
+}
