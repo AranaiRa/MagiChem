@@ -497,6 +497,120 @@
       }
     ]
   },
+  "Process: Illumination": {
+    "index": "1113",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Process: Illumination"
+      },
+      {
+        "type": "item",
+        "location": "magichem:dummy/dummy_illumination",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "There are transformative energies in the distant skies. These energies can be harnessed by "
+          },
+          {
+            "text": "focusing celestial light",
+            "color": "dark_purple"
+          },
+          {
+            "text": " into an object for an extended period of time. Alchemists call this process "
+          },
+          {
+            "text": "Illumination",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nVitriolation is performed in an "
+          },
+          {
+            "text": "Astral Observer",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nOver time, valid objects will be infused with "
+          },
+          {
+            "text": "Lumins",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", units of celestial light. Once an object has absorbed enough lumins, it will transform."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Celestial Phases",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "There are three distinct "
+          },
+          {
+            "text": "Celestial Phases",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", each of which provides a different type of Lumins.\n\nThe "
+          },
+          {
+            "text": "Solar Phase",
+            "color": "dark_purple"
+          },
+          {
+            "text": " occurs during the day.\n\nThe "
+          },
+          {
+            "text": "Lunar Phase",
+            "color": "dark_purple"
+          },
+          {
+            "text": " occurs during the night when the moon is "
+          },
+          {
+            "text": "at least half full",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Waxing Half, Waxing Gibbous, Full Moon, Waning Gibbous, and Waning Half are all part of the Lunar Phase.\n\nThe "
+          },
+          {
+            "text": "Sidereal Phase",
+            "color": "dark_purple"
+          },
+          {
+            "text": " occurs during the night when the moon is "
+          },
+          {
+            "text": "less than half full",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Waning Crescent, New Moon, and Waxing Crescent are all part of the Sidereal Phase."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/astral_observer"
+      }
+    ]
+  },
   "Process: Anointing": {
     "index": "1114",
     "category": "magichem",
@@ -763,7 +877,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ", an alchemical alloy of quicksilver, chimerite, and some Admixtures made on the Manaweaving Altar."
+            "text": ", an alchemical alloy of quicksilver, chimerite, and some Admixtures."
           }
         ]
       }
@@ -3309,7 +3423,7 @@
     ]
   },
   "Grime": {
-    "index": "1217",
+    "index": "1219",
     "category": "magichem",
     "sections": [
       {
@@ -4074,7 +4188,7 @@
     "related_recipes": []
   },
   "Materia Jar": {
-    "index": "1212",
+    "index": "1213",
     "category": "magichem",
     "sections": [
       {
@@ -4188,7 +4302,7 @@
     ]
   },
   "Materia Vessel": {
-    "index": "1213",
+    "index": "1214",
     "category": "magichem",
     "tier": 2,
     "sections": [
@@ -4512,7 +4626,7 @@
     ]
   },
   "Alchemical Waste": {
-    "index": "1218",
+    "index": "1220",
     "category": "magichem",
     "sections": [
       {
@@ -4549,7 +4663,7 @@
     ]
   },
   "Rarefied Waste": {
-    "index": "1219",
+    "index": "1221",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -4594,7 +4708,7 @@
     ]
   },
   "Materia Manifest": {
-    "index": "1214",
+    "index": "1215",
     "category": "magichem",
     "tier": 1,
     "sections": [
@@ -4641,7 +4755,7 @@
     ]
   },
   "Mirror Labyrinth": {
-    "index": "1215",
+    "index": "1217",
     "category": "magichem",
     "tier": 4,
     "sections": [
@@ -4832,7 +4946,7 @@
     ]
   },
   "Materia Reflector": {
-    "index": "1216",
+    "index": "1218",
     "category": "magichem",
     "tier": 4,
     "sections": [
@@ -6615,6 +6729,91 @@
       }
     ]
   },
+  "Astral Observer": {
+    "index": "1212",
+    "category": "magichem",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Astral Observer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3 East-West, 3 Tall, 1 North-South",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Astral Observer",
+            "color": "dark_purple"
+          },
+          {
+            "text": " draws  "
+          },
+          {
+            "text": "lumins",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from the heavens, infusing them into an object in order to cause a celestial transformation. Alchemists call this process "
+          },
+          {
+            "text": "Illumination",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAn item must be placed on the Astral Observer during the correct "
+          },
+          {
+            "text": "Celestial Phase",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for its recipe in order to receive Lumins. You can read more about Celestial Phases in the \"Process\": Illumination\" entry.\n\nIf an item is placed on the Astral Observer during an incorrect Celestial Phase, it will "
+          },
+          {
+            "text": "lose lumins",
+            "color": "dark_purple"
+          },
+          {
+            "text": "instead.\n\nA magic circle will slowly form around an object being infused with Lumins, giving an alchemist a rough idea of what percent complete the transformation is. Exact Lumin values can be checked by removing the item from the Astral Observer and looking at its tooltip. Items gain "
+          },
+          {
+            "text": "ten lumins",
+            "color": "dark_purple"
+          },
+          {
+            "text": " per minute.\n\nThe Astral Observer "
+          },
+          {
+            "text": "cannot be rotated",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; it must always be aligned in order to track the motion of the sun and moon."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/astral_observer"
+      }
+    ]
+  },
   "Laboratory Charm": {
     "index": "1299",
     "category": "magichem",
@@ -7899,6 +8098,277 @@
       }
     ]
   },
+  "Horoscopes": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Horoscopes"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Potential futures have always been written in the heavens. By infusing a "
+          },
+          {
+            "text": "Scorched Theorem",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with "
+          },
+          {
+            "text": "Lumins",
+            "color": "dark_purple"
+          },
+          {
+            "text": " these potential futures can be drawn into a usable object called a "
+          },
+          {
+            "text": "Horoscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Horoscopes are consumed on use and reading their prophetic text grant varying effects depending on what type of "
+          },
+          {
+            "text": "Lumins",
+            "color": "dark_purple"
+          },
+          {
+            "text": " were infused into the Theorem.\n\nHoroscopes can be "
+          },
+          {
+            "text": "Fulminated",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to invert the intent of the written prophecy."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Solar Horoscope",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:horoscope_solar",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Solar Horoscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " ensures that you will encounter "
+          },
+          {
+            "text": "no naturally-spawning hostile mobs",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for five minutes, as though you were protected by sunlight or by a "
+          },
+          {
+            "text": "Warding Candle",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Horoscope will not despawn existing hostile mobs, it will only ensure that new ones will not spawn."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Lunar Horoscope",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:horoscope_lunar",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Lunar Horoscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " confers "
+          },
+          {
+            "text": "uncanny amounts of good fortune",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", granting you a Luck status effect with a very high magnitude."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Foreboding Solar Horoscope",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:horoscope_solar_foreboding",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Foreboding Solar Horoscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " hides your spirit from the sun's graces, causing "
+          },
+          {
+            "text": "hostile mobs",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to spawn in "
+          },
+          {
+            "text": "drastically increased numbers",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe prophecy only places you in increased danger of naturally spawning mobs, forced spawns (such as those by a mob spawner, summoning rituals, or spells) are unaffected."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Foreboding Lunar Horoscope",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:horoscope_lunar_foreboding",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Foreboding Lunar Horoscope",
+            "color": "dark_purple"
+          },
+          {
+            "text": " foretells that "
+          },
+          {
+            "text": "great misfortune",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will befall you next time you enter a village, giving you the "
+          },
+          {
+            "text": "Bad Omen",
+            "color": "dark_purple"
+          },
+          {
+            "text": " effect indefinitely."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/astral_observer"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/scorched_theorem_to_horoscope_solar"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/scorched_theorem_to_horoscope_solar"
+      },
+      {
+        "type": "fulmination",
+        "location": "magichem:alchemical_fulmination/magichem/horoscope_solar_to_horoscope_solar_foreboding"
+      },
+      {
+        "type": "fulmination",
+        "location": "magichem:alchemical_fulmination/magichem/horoscope_lunar_to_horoscope_lunar_foreboding"
+      }
+    ]
+  },
+  "Celestial Orbs": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Celestial Orbs"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Glass orbs infused with one of the three energies of the cosmos on an "
+          },
+          {
+            "text": "Astral Observer",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nCelestial Orbs don't have any individual functionality, but are critical components of celestially resonant items and blocks."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/glass_orb_to_solar_orb"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/glass_orb_to_lunar_orb"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/glass_orb_to_sidereal_orb"
+      }
+    ]
+  },
   "Acids": {
     "index": "0",
     "category": "magichem_wonders",
@@ -8326,6 +8796,158 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/mirror_glass"
+      }
+    ]
+  },
+  "Verdigris": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Verdigris"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Verdigris",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is the alchemist's name for the seafoam-green patina that forms on copper as it is exposed to the environment.\n\nVerdigris is sometimes produced by scraping the edges of exposed, weathered, or oxidized copper blocks "
+          },
+          {
+            "text": "with an axe",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". It can also be created much more reliably through "
+          },
+          {
+            "text": "Vitriolation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n"
+          },
+          {
+            "text": "Compacted Verdigris",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a material used in some advanced alchemical items, is created by "
+          },
+          {
+            "text": "Fulminating",
+            "color": "dark_purple"
+          },
+          {
+            "text": " a large amount of Verdigris.\n\n"
+          },
+          {
+            "text": "Designer's Note: Until fluid distillation is added in MagiChem 0.5.1, Vitriolating copper blocks to get Verdigris will void the copper.",
+            "italic": true
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/verdigris_oxidized_copper"
+      },
+      {
+        "type": "fulmination",
+        "location": "magichem:alchemical_fulmination/magichem/verdigris_to_compacted_verdigris"
+      }
+    ]
+  },
+  "Immaculate Vinteum Crystal": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Immaculate Vinteum Crystal"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An "
+          },
+          {
+            "text": "Immaculate Vinteum Crystal",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a prismatic lattice perfectly attuned to some applications of alchemy and spellcraft.\n\nCreating one is quite the undertaking and requires three cycles of processing: "
+          },
+          {
+            "text": "Crafting",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with chiaroscuro and amaranthine resin, "
+          },
+          {
+            "text": "Sublimation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with several types of materia, and "
+          },
+          {
+            "text": "Vitriolation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to burn away impurities.\n\nThe Immaculate Vinteum Crystal has no useful properties on its own, but it's a critical component of certain powerful alchemical creations."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/prepared_vinteum_crystal"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/laden_vinteum_crystal"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/lightly_enhanced_vinteum_crystal"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/prepared_lightly_enhanced_vinteum_crystal"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/laden_lightly_enhanced_vinteum_crystal"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/heavily_enhanced_vinteum_crystal"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/prepared_heavily_enhanced_vinteum_crystal"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/laden_heavily_enhanced_vinteum_crystal"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/immaculate_vinteum_crystal"
       }
     ]
   },
