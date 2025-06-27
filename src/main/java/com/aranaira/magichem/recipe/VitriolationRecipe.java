@@ -6,6 +6,8 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonObject;
+import com.klikli_dev.modonomicon.fluid.ForgeFluidHelper;
+import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -30,7 +32,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-public class VitriolationRecipe implements Recipe<SimpleContainer> {
+public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final ItemStack inputItem, resultItem, outputForCodex;
     private final FluidStack resultFluid;
@@ -87,8 +89,24 @@ public class VitriolationRecipe implements Recipe<SimpleContainer> {
         return inputItem;
     }
 
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
+    @Override
     public ItemStack getResultItem() {
-        return resultItem;
+        return hasResultItem() ? resultItem : new ItemStack(resultFluid.getFluid().getBucket());
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return hasResultItem() ? resultItem : new ItemStack(resultFluid.getFluid().getBucket());
+    }
+
+    @Override
+    public int getTier() {
+        return hasInputFluidOverride() ? 1 : minimumAcidStrength;
     }
 
     public boolean hasResultItem() {

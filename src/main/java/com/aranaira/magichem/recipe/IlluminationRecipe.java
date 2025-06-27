@@ -3,6 +3,7 @@ package com.aranaira.magichem.recipe;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.google.gson.JsonObject;
+import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class IlluminationRecipe implements Recipe<SimpleContainer> {
+public class IlluminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final ItemStack inputItem, resultItem;
     private final LuminType luminType;
@@ -48,8 +49,23 @@ public class IlluminationRecipe implements Recipe<SimpleContainer> {
         return inputItem;
     }
 
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
     public ItemStack getResultItem() {
         return resultItem;
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return resultItem;
+    }
+
+    @Override
+    public int getTier() {
+        return 3;
     }
 
     public LuminType getLuminType() {

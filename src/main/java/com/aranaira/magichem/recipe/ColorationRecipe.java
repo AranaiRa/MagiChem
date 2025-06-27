@@ -5,6 +5,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * This recipe type is used by the Coloring Cauldron and the Variegator.
  */
-public class ColorationRecipe implements Recipe<SimpleContainer> {
+public class ColorationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final int chargeUsage;
     private final float craftingTimeMultiplier;
@@ -179,6 +180,26 @@ public class ColorationRecipe implements Recipe<SimpleContainer> {
         }
 
         return result;
+    }
+
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return getColorlessDefault();
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return getColorlessDefault();
+    }
+
+    @Override
+    public int getTier() {
+        return validOnCauldron ? 1 : 3;
     }
 
     public static class Type implements RecipeType<ColorationRecipe> {

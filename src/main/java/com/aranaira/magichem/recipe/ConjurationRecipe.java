@@ -6,6 +6,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mna.api.recipes.IMARecipe;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -31,7 +32,7 @@ import java.util.List;
 /**
  * This recipe type is used by the Conjurer
  */
-public class ConjurationRecipe implements Recipe<SimpleContainer> {
+public class ConjurationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final int craftingPeriodPassive, craftingPeriodSupplied, chargeUsageSupplied;
     private final Item catalyst;
@@ -128,6 +129,26 @@ public class ConjurationRecipe implements Recipe<SimpleContainer> {
         }
 
         return result;
+    }
+
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return resultPassive;
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return resultPassive;
+    }
+
+    @Override
+    public int getTier() {
+        return 2;
     }
 
     public static class Type implements RecipeType<ConjurationRecipe> {

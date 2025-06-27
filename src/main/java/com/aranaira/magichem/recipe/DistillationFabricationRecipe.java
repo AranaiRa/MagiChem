@@ -6,6 +6,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * This recipe type is used by both the Circle of Fabrication in a straightforward manner and the Alembic/Distillery in reverse.
  */
-public class DistillationFabricationRecipe implements Recipe<SimpleContainer> {
+public class DistillationFabricationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final ItemStack alchemyObject;
     private final NonNullList<ItemStack> componentMateria;
@@ -191,6 +192,26 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer> {
         if((categories & FLAG_RARE) == FLAG_RARE) out.add(DistillationSourceCategory.RARE);
 
         return out;
+    }
+
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return alchemyObject;
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return alchemyObject;
+    }
+
+    @Override
+    public int getTier() {
+        return Math.max(5, wisdom + 1);
     }
 
     public static class Type implements RecipeType<DistillationFabricationRecipe> {

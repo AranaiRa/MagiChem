@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonObject;
+import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public class FulminationRecipe implements Recipe<SimpleContainer> {
+public class FulminationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final ItemStack input, result;
 
@@ -97,6 +98,26 @@ public class FulminationRecipe implements Recipe<SimpleContainer> {
 
     public static List<FulminationRecipe> getAllFulminationRecipes(Level level) {
         return level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+    }
+
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return result;
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return result;
+    }
+
+    @Override
+    public int getTier() {
+        return 1;
     }
 
     public static class Type implements RecipeType<FulminationRecipe> {

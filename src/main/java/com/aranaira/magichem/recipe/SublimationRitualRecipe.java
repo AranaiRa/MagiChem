@@ -5,6 +5,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mna.api.recipes.IMARecipe;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * This recipe type is used by the Ritual of the Balanced Scales.
  */
-public class SublimationRitualRecipe implements Recipe<SimpleContainer> {
+public class SublimationRitualRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final ItemStack alchemyObject;
     private final ItemStack componentMateriaOne, componentMateriaTwo;
@@ -126,6 +127,26 @@ public class SublimationRitualRecipe implements Recipe<SimpleContainer> {
         }
 
         return allPossibleOutputs;
+    }
+
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return alchemyObject;
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return alchemyObject;
+    }
+
+    @Override
+    public int getTier() {
+        return 1;
     }
 
     public static class Type implements RecipeType<SublimationRitualRecipe> {

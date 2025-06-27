@@ -7,6 +7,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mna.api.recipes.IMARecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * This recipe type is used by the Admixer/Fusion Crucible in a straightforward manner and the Centrifuge/Excision Engine in reverse.
  */
-public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
+public class FixationSeparationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final ItemStack resultAdmixture;
     private final NonNullList<ItemStack> componentMateria;
@@ -116,6 +117,26 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer> {
         }
 
         return result;
+    }
+
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return resultAdmixture;
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return resultAdmixture;
+    }
+
+    @Override
+    public int getTier() {
+        return 2;
     }
 
     public static class Type implements RecipeType<FixationSeparationRecipe> {

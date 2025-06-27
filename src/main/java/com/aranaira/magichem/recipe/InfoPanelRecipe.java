@@ -5,6 +5,7 @@ import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.google.gson.JsonObject;
+import com.mna.api.recipes.IMARecipe;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * This recipe type isn't used to craft anything, it's just an intermediary for information panels when you look up items that don't have a traditional recipe in JEI.
  */
-public class InfoPanelRecipe implements Recipe<SimpleContainer> {
+public class InfoPanelRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ResourceLocation id;
     private final ItemStack item;
     private final String info;
@@ -91,6 +92,26 @@ public class InfoPanelRecipe implements Recipe<SimpleContainer> {
     @Override
     public RecipeType<?> getType() {
         return Type.INSTANCE;
+    }
+
+    @Override
+    public ResourceLocation getRegistryId() {
+        return this.id;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return item;
+    }
+
+    @Override
+    public ItemStack getGuiRepresentationStack() {
+        return item;
+    }
+
+    @Override
+    public int getTier() {
+        return 1;
     }
 
     public static class Type implements RecipeType<InfoPanelRecipe> {
