@@ -6,6 +6,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBl
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.render.ColorUtils;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
@@ -301,6 +302,13 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                 pGuiGraphics.renderItem(is, itemX, itemY);
 
                 int colorInt = mi.getMateriaColor();
+                if(mi.getMateriaName().equals("color")) {
+                    int period = 200;
+                    int gt = (int)(menu.blockEntity.getLevel().getGameTime() % (period * 2));
+                    float pScaledTime = ((float)((gt) % period)) / (float)period;
+
+                    colorInt = ColorUtils.getLerpedRainbowColor(pScaledTime);
+                }
                 int intR = (colorInt & 0x00ff0000) >> 16;
                 int intG = (colorInt & 0x0000ff00) >> 8;
                 int intB = (colorInt & 0x000000ff);
@@ -355,7 +363,8 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
                         "item.magichem.admixture_" + orderedMateriaStorageFiltered.get(i).getFirst().getMateriaName() + ".truncated";
             }
 
-            pGuiGraphics.drawString(font, ""+mLimit, counterX, counterY, 0x00000000, false);
+            String mLimitFormatted = mLimit > 9999 ? ""+mLimit / 1000 + "K" : ""+mLimit;
+            pGuiGraphics.drawString(font, mLimitFormatted, counterX, counterY, 0x00000000, false);
             if(!menu.blockEntity.isCompactMode) {
 
                 pGuiGraphics.drawString(font, Component.translatable(type), counterX + 28, counterY, 0x00000000, false);
