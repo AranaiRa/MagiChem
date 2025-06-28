@@ -264,7 +264,7 @@ public class CircleToilBlockEntity extends BlockEntity implements ICanAbsorbCons
         int genRate = Math.round(ServerConfig.circleToilGen * (entity.rotSpeed / MAXIMUM_ROTATION_SPEED));
 
         cap = genRate * ServerConfig.circleToilBuffer;
-        entity.ENERGY_STORAGE.receiveEnergy(genRate, false);
+        entity.ENERGY_STORAGE.generateEnergy(genRate, false);
         if (currentEnergy + genRate > cap) entity.ENERGY_STORAGE.setEnergy(cap);
     }
 

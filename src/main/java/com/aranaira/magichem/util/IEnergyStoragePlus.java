@@ -7,6 +7,14 @@ public abstract class IEnergyStoragePlus extends EnergyStorage {
         super(capacity, maxTransfer);
     }
 
+    public int generateEnergy(int maxReceive, boolean simulate) {
+        int receivedEnergy = super.receiveEnergy(maxReceive, simulate);
+        if (receivedEnergy != 0)
+            onEnergyChanged();
+
+        return receivedEnergy;
+    }
+
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         int receivedEnergy = super.receiveEnergy(maxReceive, simulate);
