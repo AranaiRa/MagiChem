@@ -301,15 +301,9 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
         if(output.isEmpty()) return true;
         else if(pEntity.currentRecipe == null) {
-            ItemStack stackInProcessingSlot = ItemStack.EMPTY;
+            ItemStack stackInProcessingSlot = getProcessingItem(pEntity, pVarFunc).getSecond();
 
-            for(int i=pVarFunc.apply(IDs.SLOT_INPUT_START) + pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i>=pVarFunc.apply(IDs.SLOT_INPUT_START); i--) {
-                ItemStack query = pEntity.itemHandler.getStackInSlot(i);
-                if(!query.isEmpty()) {
-                    stackInProcessingSlot = query;
-                    break;
-                }
-            }
+            if(stackInProcessingSlot.isEmpty()) return false;
 
             boolean usedTemporaryRecipe = false;
             //set a temporary recipe if there's no active recipe but stuff in the input slots
