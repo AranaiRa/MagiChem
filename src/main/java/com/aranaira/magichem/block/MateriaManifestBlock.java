@@ -125,6 +125,8 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                 if (entity instanceof MateriaManifestBlockEntity mmbe) {
                     if (player.getInventory().getSelected().getItem() instanceof MateriaItem mi) {
                         if(mmbe.tetherTarget == null || mmbe.tetherType != mi) {
+                            mmbe.scanMateriaInZone();
+
                             final HashMap<MateriaItem, List<BlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
                             final List<MateriaItem> materiaTypesSorted = mmbe.getMateriaTypesSorted();
                             for (MateriaItem type : materiaTypesSorted) {
