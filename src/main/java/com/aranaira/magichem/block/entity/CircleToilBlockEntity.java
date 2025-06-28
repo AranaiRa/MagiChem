@@ -250,6 +250,11 @@ public class CircleToilBlockEntity extends BlockEntity implements ICanAbsorbCons
         public void onEnergyChanged() {
             setChanged();
         }
+
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            return 0;
+        }
     };
 
     private static void generatePower(CircleToilBlockEntity entity) {

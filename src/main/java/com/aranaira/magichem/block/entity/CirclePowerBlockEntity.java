@@ -650,6 +650,11 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         public void onEnergyChanged() {
             setChanged();
         }
+
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            return 0;
+        }
     };
 
     private static void generatePower(CirclePowerBlockEntity entity) {
