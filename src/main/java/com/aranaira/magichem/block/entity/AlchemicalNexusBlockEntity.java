@@ -379,21 +379,23 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     }
                     else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                         ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pBlockState, ender);
-                        //importing
-                        final Map<MateriaItem, Integer> provisioningNeeds = anbe.getProvisioningNeeds();
-                        if(provisioningNeeds != null && provisioningNeeds.size() > 0){
-                            if(ender.getMirrorTarget() instanceof AbstractMateriaStorageMultiTypeDynamicBlockEntity multi) {
-                                for (MateriaItem mi : provisioningNeeds.keySet()) {
-                                    int requested = provisioningNeeds.get(mi);
-                                    int inStorage = multi.getCurrentStock(mi);
-                                    boolean instant = ender.getPowerLevel() == 3;
+                        if (ender.getIsSatisfied()) {
+                            //importing
+                            final Map<MateriaItem, Integer> provisioningNeeds = anbe.getProvisioningNeeds();
+                            if (provisioningNeeds != null && provisioningNeeds.size() > 0) {
+                                if (ender.getMirrorTarget() instanceof AbstractMateriaStorageMultiTypeDynamicBlockEntity multi) {
+                                    for (MateriaItem mi : provisioningNeeds.keySet()) {
+                                        int requested = provisioningNeeds.get(mi);
+                                        int inStorage = multi.getCurrentStock(mi);
+                                        boolean instant = ender.getPowerLevel() == 3;
 
-                                    int actualDrain = Math.min(requested, inStorage);
-                                    if(actualDrain > 0) {
-                                        multi.drain(mi, actualDrain, false);
-                                        ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
+                                        int actualDrain = Math.min(requested, inStorage);
+                                        if (actualDrain > 0) {
+                                            multi.drain(mi, actualDrain, false);
+                                            ender.createShlorpFromTarget(new ItemStack(mi, actualDrain), instant);
 
-                                        anbe.setProvisioningInProgress(mi);
+                                            anbe.setProvisioningInProgress(mi);
+                                        }
                                     }
                                 }
                             }
