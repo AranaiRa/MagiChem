@@ -109,11 +109,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                 if(slot == SLOT_BOTTLES_OUTPUT)
                     return false;
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    if(currentRecipe != null) {
-                        return stack.getItem() == currentRecipe.getResultAdmixture().getItem();
-                    } else {
-                        return stack.getItem() instanceof AdmixtureItem;
-                    }
+                    return stack.getItem() instanceof AdmixtureItem;
                 }
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
                     return false;

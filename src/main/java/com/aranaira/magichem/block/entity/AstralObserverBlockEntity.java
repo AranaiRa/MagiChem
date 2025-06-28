@@ -239,7 +239,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
         if(t instanceof AstralObserverBlockEntity entity) {
             entity.luminType = entity.getLuminPhase(true);
 
-            if (level.canSeeSkyFromBelowWater(pos)) {
+            if (true) { //sky check later
                 //we should have a recipe if there's an item present
                 boolean needsNewRecipe = entity.recipe == null && !entity.heldItem.isEmpty();
 

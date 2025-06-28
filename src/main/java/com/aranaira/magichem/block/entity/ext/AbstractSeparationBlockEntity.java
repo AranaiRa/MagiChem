@@ -209,7 +209,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                         }
                     }
                 }
-            } else if (processingItem == ItemStack.EMPTY)
+            } else if (processingItem.isEmpty())
                 pEntity.resetProgress();
         }
 
@@ -235,9 +235,16 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
             if(processingItem.isEmpty())  processingSlot--;
             else {
-                outputSlot = processingSlot;
-                outputItem = processingItem.copy();
-                break;
+                if(pEntity.currentRecipe == null) {
+                    outputSlot = processingSlot;
+                    outputItem = processingItem.copy();
+                    break;
+                } else if(processingItem.getItem() == pEntity.currentRecipe.getResultAdmixture().getItem()) {
+                    outputSlot = processingSlot;
+                    outputItem = processingItem.copy();
+                    break;
+                }
+                processingSlot--;
             }
         }
 
