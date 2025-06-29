@@ -492,16 +492,16 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
                 mouseY >= y+TOOLTIP_SELECTED_RECIPE_Y && mouseY <= y+TOOLTIP_SELECTED_RECIPE_Y+TOOLTIP_SELECTED_RECIPE_S) {
             ItemStack recipeItem = menu.getRecipeItem();
             if(recipeItem == ItemStack.EMPTY) {
-                tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             } else {
                 int slurryCost = Math.round(menu.getCurrentRecipe().getSlurryCost() * ((100f - menu.getReductionRate()) / 100f));
 
                 tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.fixationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.gui.fixation_cost.part1").withStyle(ChatFormatting.DARK_GRAY))
                         .append(Component.literal(slurryCost+"mB").withStyle(ChatFormatting.DARK_AQUA))
-                        .append(Component.translatable("tooltip.magichem.gui.fixationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.gui.fixation_cost.part2").withStyle(ChatFormatting.DARK_GRAY))
                 );
             }
         }
@@ -557,11 +557,11 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
                 mouseY >= y+TOOLTIP_POWERUSAGE_Y && mouseY <= y+TOOLTIP_POWERUSAGE_Y+TOOLTIP_POWERUSAGE_H) {
 
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.powerusage").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.power_usage").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.powerusage.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.power_usage.line1")));
             tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.translatable("tooltip.magichem.gui.powerusage.line2"));
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.power_usage.line2"));
         }
 
         //Operation Time
@@ -570,9 +570,9 @@ public class GrandFuseryScreen extends AbstractContainerScreen<GrandFuseryMenu> 
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time.line1")));
         }
 
         //Grime Bar

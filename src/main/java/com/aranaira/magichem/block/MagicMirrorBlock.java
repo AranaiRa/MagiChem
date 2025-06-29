@@ -117,7 +117,7 @@ public class MagicMirrorBlock extends BaseEntityBlock {
                     CompoundTag nbt = stackInHand.getTag().getCompound("mark");
 
                     if(pLevel.isClientSide()) {
-                        final MutableComponent feedback = Component.translatable("feedback.block.magicmirror.link")
+                        final MutableComponent feedback = Component.translatable("feedback.block.magic_mirror.link")
                                 .append(Component.literal("(" +
                                         nbt.getInt("x") + ", " +
                                         nbt.getInt("y") + ", " +
@@ -139,7 +139,7 @@ public class MagicMirrorBlock extends BaseEntityBlock {
 
                     if(nbt != null && nbt.contains("world_key_value")) {
                         if (pLevel.isClientSide()) {
-                            final MutableComponent feedback = Component.translatable("feedback.block.magicmirror.link")
+                            final MutableComponent feedback = Component.translatable("feedback.block.magic_mirror.link")
                                     .append(Component.literal("\"" +
                                             nbt.getString("world_key_value") + "\"."));
                             pPlayer.sendSystemMessage(feedback);

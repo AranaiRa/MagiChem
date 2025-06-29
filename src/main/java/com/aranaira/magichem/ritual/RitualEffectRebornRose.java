@@ -109,7 +109,7 @@ public class RitualEffectRebornRose extends RitualEffect {
                         uses = nbt.getInt("uses") + 1;
                         if(uses >= 3) {
                             doAbjurationDrop = false;
-                            context.getCaster().sendSystemMessage(Component.translatable("feedback.ritual.rebornrose.abjuration"));
+                            context.getCaster().sendSystemMessage(Component.translatable("feedback.ritual.reborn_rose.abjuration"));
                         }
                     }
                 }

@@ -36,7 +36,7 @@ public class StandingRetortBlockItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.standingretort")
+                Component.translatable("tooltip.magichem.standing_retort")
                 .withStyle(ChatFormatting.DARK_GRAY)
         );
 

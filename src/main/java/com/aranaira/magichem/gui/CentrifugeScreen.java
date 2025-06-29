@@ -374,7 +374,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
                 mouseY >= y+TOOLTIP_SELECTED_RECIPE_Y && mouseY <= y+TOOLTIP_SELECTED_RECIPE_Y+TOOLTIP_SELECTED_RECIPE_S) {
             ItemStack recipeItem = menu.getRecipeItem();
             if(recipeItem == ItemStack.EMPTY) {
-                tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             } else {
                 tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
             }
@@ -416,9 +416,9 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time.line1")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 

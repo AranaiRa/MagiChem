@@ -27,73 +27,7 @@ public class TooltipLoreBlockItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        if(pStack.getItem() == BlockRegistry.CIRCLE_POWER.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.circlepower")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.CIRCLE_TOIL.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.circletoil")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.GRAND_CIRCLE_FABRICATION.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.grandcirclefabrication")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ALEMBIC.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.alembic")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.DISTILLERY.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.distillery")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.CENTRIFUGE.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.centrifuge")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.FUSERY.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.fusery")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ALCHEMICAL_NEXUS.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.alchemicalnexus")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.GRAND_DISTILLERY.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.granddistillery")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.GRAND_CENTRIFUGE.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.grandcentrifuge")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.GRAND_FUSERY.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.grandfusery")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ACTUATOR_WATER.get().asItem()) {
+        if(pStack.getItem() == BlockRegistry.ACTUATOR_WATER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.actuator.water")
                     .withStyle(ChatFormatting.DARK_GRAY)
@@ -126,78 +60,6 @@ public class TooltipLoreBlockItem extends BlockItem {
         else if(pStack.getItem() == BlockRegistry.ACTUATOR_ENDER.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.actuator.ender")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.COLORING_CAULDRON.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.coloringcauldron")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.VARIEGATOR.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.variegator")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.CONJURER.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.conjurer")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.EXPERIENCE_EXCHANGER.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.experienceexchanger")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.OCCULTED_CINDER.get().asItem() ||
-                pStack.getItem() == BlockRegistry.OCCULTED_SPARK.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.occultedcinder")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.MAGICHEMICAL_MECHANISM.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.magichemicalmechanism")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(Component.empty());
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.magichemicalmechanism.ext")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.CRYSTAL_CANDLE.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.crystalcandle")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.STANDING_RETORT.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.standingretort")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SKYWRATH_ALTAR.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.skywrathaltar")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ACID_BASIN.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.acidbasin")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.RADIANT_ROSE.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.radiantrose")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -343,67 +205,60 @@ public class TooltipLoreBlockItem extends BlockItem {
             if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_WOOD.get().asItem() ||
                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_WOOD.get().asItem()) {
                 pTooltipComponents.add(
-                        Component.translatable("tooltip.magichem.alchemicallytreatedglass.wood")
+                        Component.translatable("tooltip.magichem.alchemically_treated_glass.wood")
                                 .withStyle(ChatFormatting.DARK_AQUA)
                 );
             }
             else if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_SILVER.get().asItem() ||
                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_SILVER.get().asItem()) {
                 pTooltipComponents.add(
-                        Component.translatable("tooltip.magichem.alchemicallytreatedglass.silver")
+                        Component.translatable("tooltip.magichem.alchemically_treated_glass.silver")
                                 .withStyle(ChatFormatting.DARK_AQUA)
                 );
             }
             else if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_ELECTRUM.get().asItem() ||
                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_ELECTRUM.get().asItem()) {
                 pTooltipComponents.add(
-                        Component.translatable("tooltip.magichem.alchemicallytreatedglass.electrum")
+                        Component.translatable("tooltip.magichem.alchemically_treated_glass.electrum")
                                 .withStyle(ChatFormatting.DARK_AQUA)
                 );
             }
             else if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_TRIM_GOLD.get().asItem() ||
                pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE_TRIM_GOLD.get().asItem()) {
                 pTooltipComponents.add(
-                        Component.translatable("tooltip.magichem.alchemicallytreatedglass.gold")
+                        Component.translatable("tooltip.magichem.alchemically_treated_glass.gold")
                                 .withStyle(ChatFormatting.DARK_AQUA)
                 );
             }
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.alchemicallytreatedglass")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.MIRROR_GLASS_BLOCK.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.mirrorglass")
+                    Component.translatable("tooltip.magichem.alchemically_treated_glass")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == BlockRegistry.MAGIC_MIRROR.get().asItem()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.magicmirror.line1")
+                    Component.translatable("tooltip.magichem.magic_mirror.line1")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.magicmirror.line2")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.PRISMATIC_CONDUIT.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.prismaticconduit")
+                    Component.translatable("tooltip.magichem.magic_mirror.line2")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == BlockRegistry.PRISMATIC_CONDUIT_LESSER.get().asItem()) {
+        else if(pStack.getItem() == BlockRegistry.MAGICHEMICAL_MECHANISM.get().asItem()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.prismaticconduit.lesser")
+                    Component.translatable("tooltip.magichem.magichemical_mechanism")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(Component.empty());
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.magichemical_mechanism.ext")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
-        else if(pStack.getItem() == BlockRegistry.MATERIA_REFLECTOR.get().asItem()) {
+        else {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.materiareflector")
+                    Component.translatable("tooltip.magichem."+this.toString())
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }

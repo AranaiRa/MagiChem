@@ -353,9 +353,9 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         } else if(getLevel() != null && getLevel().isClientSide()) {
             final LocalPlayer player = Minecraft.getInstance().player;
             if(player != null) {
-                MutableComponent msg = Component.translatable("feedback.warning.inventorysizemismatch.part1")
+                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
                         .append(Component.translatable("block.magichem.grand_fusery").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("feedback.warning.inventorysizemismatch.part2"));
+                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
                 player.displayClientMessage(msg, false);
             }
         }

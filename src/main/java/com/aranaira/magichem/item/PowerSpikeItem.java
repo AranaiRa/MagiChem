@@ -36,14 +36,14 @@ public class PowerSpikeItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag tooltipFlag) {
         components.add(
-                Component.translatable("tooltip.magichem.powerspike")
+                Component.translatable("tooltip.magichem.power_spike")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
         if(stack.hasTag()) {
             if (stack.getTag().contains("magichem.powerspike.targetpos")) {
                 BlockPos pos = BlockPos.of(stack.getTag().getLong("magichem.powerspike.targetpos"));
                 components.add(
-                        Component.translatable("tooltip.magichem.powerspike.target")
+                        Component.translatable("tooltip.magichem.power_spike.target")
                         .append (" (" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + ")")
                         .withStyle(ChatFormatting.DARK_GRAY)
                 );

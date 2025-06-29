@@ -55,7 +55,7 @@ public class AbjurationNecroticItem extends Item {
                     if (nbt.contains("uses")) {
                         uses = nbt.getInt("uses") + 1;
                         if (uses >= 9) {
-                            if(!pPlayer.level().isClientSide()) pPlayer.sendSystemMessage(Component.translatable("feedback.ritual.rebornrose.abjuration"));
+                            if(!pPlayer.level().isClientSide()) pPlayer.sendSystemMessage(Component.translatable("feedback.ritual.reborn_rose.abjuration"));
                             pStack.shrink(1);
                         }
                     }
@@ -103,13 +103,13 @@ public class AbjurationNecroticItem extends Item {
         }
         pTooltipComponents.add(
                 Component.empty()
-                        .append(Component.translatable("tooltip.magichem.abjurationnecrotic.line1").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.abjuration_necrotic.line1").withStyle(ChatFormatting.DARK_GRAY))
         );
         pTooltipComponents.add(
                 Component.empty()
-                        .append(Component.translatable("tooltip.magichem.abjurationnecrotic.line2.part1").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.abjuration_necrotic.line2.part1").withStyle(ChatFormatting.DARK_GRAY))
                         .append(Component.literal(""+(9 - uses)).withStyle(ChatFormatting.DARK_AQUA))
-                        .append(Component.translatable("tooltip.magichem.abjurationnecrotic.line2.part2").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.abjuration_necrotic.line2.part2").withStyle(ChatFormatting.DARK_GRAY))
         );
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);

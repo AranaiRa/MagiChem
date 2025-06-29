@@ -107,9 +107,9 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time.line1")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 

@@ -40,10 +40,10 @@ public class AdmixtureItem extends MateriaItem {
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         tooltipComponents.add(MutableComponent.create(
-                new TranslatableContents("tooltip.magichem.admixturegeneral", "?", new Object[]{})).withStyle(ChatFormatting.DARK_GRAY)
+                new TranslatableContents("tooltip.magichem.admixture_general", "?", new Object[]{})).withStyle(ChatFormatting.DARK_GRAY)
         );
         tooltipComponents.add(MutableComponent.create(
-                new TranslatableContents("tooltip.magichem.admixtureformula", "?", new Object[]{})).withStyle(ChatFormatting.DARK_GRAY)
+                new TranslatableContents("tooltip.magichem.admixture_formula", "?", new Object[]{})).withStyle(ChatFormatting.DARK_GRAY)
                 .append(" [ ")
                 .append(Component.literal(getDisplayFormula()).withStyle(ChatFormatting.DARK_AQUA))
                 .append(" ]")

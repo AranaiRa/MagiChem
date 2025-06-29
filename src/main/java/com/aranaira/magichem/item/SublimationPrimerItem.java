@@ -62,7 +62,7 @@ public class SublimationPrimerItem extends Item implements IRadialInventorySelec
 
         //My tooltip
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.sublimationprimer")
+                Component.translatable("tooltip.magichem.sublimation_primer")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 
@@ -75,7 +75,7 @@ public class SublimationPrimerItem extends Item implements IRadialInventorySelec
 
         if(!recipeName.equals(Component.empty())) {
             pTooltipComponents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.sublimationprimer.currentrecipe").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.translatable("tooltip.magichem.sublimation_primer.current_recipe").withStyle(ChatFormatting.DARK_GRAY))
                     .append(recipeName.withStyle(ChatFormatting.DARK_AQUA))
             );
         }

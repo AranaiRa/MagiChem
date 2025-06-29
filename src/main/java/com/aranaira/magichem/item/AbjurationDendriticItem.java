@@ -23,13 +23,13 @@ public class AbjurationDendriticItem extends Item {
         }
         pTooltipComponents.add(
                 Component.empty()
-                        .append(Component.translatable("tooltip.magichem.abjurationdendritic.line1").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.abjuration_dendritic.line1").withStyle(ChatFormatting.DARK_GRAY))
         );
         pTooltipComponents.add(
                 Component.empty()
-                        .append(Component.translatable("tooltip.magichem.abjurationdendritic.line2.part1").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.abjuration_dendritic.line2.part1").withStyle(ChatFormatting.DARK_GRAY))
                         .append(Component.literal(""+(3 - uses)).withStyle(ChatFormatting.DARK_AQUA))
-                        .append(Component.translatable("tooltip.magichem.abjurationdendritic.line2.part2").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable("tooltip.magichem.abjuration_dendritic.line2.part2").withStyle(ChatFormatting.DARK_GRAY))
         );
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);

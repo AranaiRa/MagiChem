@@ -55,11 +55,11 @@ public class TravellersCompassScreen extends AbstractContainerScreen<TravellersC
         if(pX >= x + 93 && pX < x + 93 + 18 && pY >= y + 22 && pY < y + 22 + 18) {
             if(menu.itemHandler.getStackInSlot(ChargingTalismanMenu.SLOT_SPIKE) == ItemStack.EMPTY) {
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.chargingtalisman.spike.line1"))
+                        .append(Component.translatable("tooltip.magichem.gui.charging_talisman.spike.line1"))
                 );
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.chargingtalisman.spike.line2"))
+                        .append(Component.translatable("tooltip.magichem.gui.charging_talisman.spike.line2"))
                 );
                 pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
             }
@@ -68,11 +68,11 @@ public class TravellersCompassScreen extends AbstractContainerScreen<TravellersC
         if(pX >= x + 65 && pX < x + 65 + 18 && pY >= y + 50 && pY < y + 50 + 18) {
             if(menu.itemHandler.getStackInSlot(ChargingTalismanMenu.SLOT_CHARGEABLE_ITEM) == ItemStack.EMPTY) {
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.chargingtalisman.chargee.line1"))
+                        .append(Component.translatable("tooltip.magichem.gui.charging_talisman.chargee.line1"))
                 );
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.chargingtalisman.chargee.line2"))
+                        .append(Component.translatable("tooltip.magichem.gui.charging_talisman.chargee.line2"))
                 );
                 pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
             }

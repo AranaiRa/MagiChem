@@ -149,7 +149,7 @@ public class SignaliteBlock extends BaseEntityBlock {
 
                         if(!pPlayer.level().isClientSide()) {
                             MutableComponent text = Component.empty()
-                                    .append(Component.translatable(sbe.specialSignalTarget == 0 ? "feedback.block.signalite.nobittarget" : "feedback.block.signalite.bittarget"))
+                                    .append(Component.translatable(sbe.specialSignalTarget == 0 ? "feedback.block.signalite.no_bit_target" : "feedback.block.signalite.bit_target"))
                                     .append(Component.literal("" + (sbe.specialSignalTarget == 0 ? "" : sbe.specialSignalTarget)).withStyle(ChatFormatting.BOLD, ChatFormatting.RED))
                                     .append(".");
                             pPlayer.sendSystemMessage(text);

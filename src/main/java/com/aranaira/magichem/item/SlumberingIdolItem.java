@@ -70,7 +70,7 @@ public class SlumberingIdolItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.slumberingidol")
+                Component.translatable("tooltip.magichem.slumbering_idol")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 

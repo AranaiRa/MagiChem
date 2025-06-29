@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
 import com.aranaira.magichem.item.*;
 import com.mna.blocks.decoration.SimpleRotationalBlock;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IronBarsBlock;
@@ -580,6 +581,10 @@ public class BlockRegistry {
             case "materia_vessel" -> ItemRegistry.ITEMS.register(name, () -> new MateriaVesselItem(block.get(), new Item.Properties()));
             case "power_spike" -> ItemRegistry.ITEMS.register(name, () -> new PowerSpikeItem(block.get(), new Item.Properties()));
             case "standing_retort" -> ItemRegistry.ITEMS.register(name, () -> new StandingRetortBlockItem(block.get(), new Item.Properties()));
+            case "bleached_amethyst_block", "signalite_block", "signalite_block_budding", "cluster_signalite", "cluster_signalite_large",
+                    "cluster_signalite_medium", "cluster_signalite_small", "vinteum_crystal_block", "vinteum_crystal_block_budding", "cluster_vinteum",
+                    "cluster_vinteum_large", "cluster_vinteum_medium", "cluster_vinteum_small" ->
+                    ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
             default -> ItemRegistry.ITEMS.register(name, () -> new TooltipLoreBlockItem(block.get(), new Item.Properties()));
         };
     }

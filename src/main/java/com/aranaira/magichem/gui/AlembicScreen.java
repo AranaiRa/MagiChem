@@ -110,9 +110,9 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time.line1")));
 
             boolean hasPassiveHeat = menu.blockEntity.getBlockState().getValue(MagiChemBlockStateProperties.HAS_PASSIVE_HEAT) && (menu.blockEntity.getRemainingHeat() <= 0);
             BlockState below = menu.blockEntity.getLevel().getBlockState(menu.blockEntity.getBlockPos().below());
@@ -120,11 +120,11 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
             if(hasPassiveHeat) {
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.operationtime.alembic.line2.passive")));
+                        .append(Component.translatable("tooltip.magichem.gui.operation_time.alembic.line2.passive")));
             } else if(fastHeaterBlocks) {
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.operationtime.alembic.line2.fast")));
+                        .append(Component.translatable("tooltip.magichem.gui.operation_time.alembic.line2.fast")));
             }
 
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);

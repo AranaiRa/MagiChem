@@ -143,7 +143,7 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
                 mouseY >= y+ TOOLTIP_FUEL_Y && mouseY <= y+ TOOLTIP_FUEL_Y + TOOLTIP_FUEL_H) {
 
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.fuelburn").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.fuel_burn").withStyle(ChatFormatting.GOLD))
                     .append(": ")
                     .append(Component.translatable("tooltip.magichem.gui.actuator.fuelburn.line1")));
             tooltipContents.add(Component.empty());
@@ -182,13 +182,13 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
 
             if(powerReductionMode) {
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.energyusage").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.energy_usage").withStyle(ChatFormatting.GOLD))
                         .append(": ")
                         .append(Component.translatable("tooltip.magichem.gui.actuator.energyusage")));
             }
             else {
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.operation_time").withStyle(ChatFormatting.GOLD))
                         .append(": ")
                         .append(Component.translatable("tooltip.magichem.gui.actuator.operationtime")));
             }
@@ -267,9 +267,9 @@ public class ActuatorFireScreen extends AbstractContainerScreen<ActuatorFireMenu
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.eldrinmode").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_mode").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable(menu.blockEntity.doEldrinPowerConsumption ? "tooltip.magichem.gui.eldrinmode.both" : "tooltip.magichem.gui.eldrinmode.single")));
+                    .append(Component.translatable(menu.blockEntity.doEldrinPowerConsumption ? "tooltip.magichem.gui.eldrin_mode.both" : "tooltip.magichem.gui.eldrin_mode.single")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }

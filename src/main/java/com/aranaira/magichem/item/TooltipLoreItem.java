@@ -21,397 +21,241 @@ public class TooltipLoreItem extends Item {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if(pStack.getItem() == ItemRegistry.SILVER_DUST.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.silvergrains")
+                    Component.translatable("tooltip.magichem.silver_grains")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.powerreagent")
+                    Component.translatable("tooltip.magichem.power_reagent")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.TARNISHED_SILVER_LUMP.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct")
+                    Component.translatable("tooltip.magichem.waste_product")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.FOCUSING_CATALYST.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.focusingcatalyst")
+                    Component.translatable("tooltip.magichem.focusing_catalyst")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.powerreagent")
+                    Component.translatable("tooltip.magichem.power_reagent")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.CATALYST_CORE.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.catalystcore")
+                    Component.translatable("tooltip.magichem.catalyst_core")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.DEPLETED_CATALYST_CORE.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.catalystcore")
+                    Component.translatable("tooltip.magichem.catalyst_core")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.catalystcore.damaged")
+                    Component.translatable("tooltip.magichem.catalyst_core.damaged")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.CATALYST_CASING.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.catalystcasing")
+                    Component.translatable("tooltip.magichem.catalyst_casing")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.catalystcasing.reprocess")
+                    Component.translatable("tooltip.magichem.catalyst_casing.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.WARPED_FOCUSING_CATALYST.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct")
+                    Component.translatable("tooltip.magichem.waste_product")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.IRIS_ARGENTI.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.irisargenti")
+                    Component.translatable("tooltip.magichem.iris_argenti")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.irisargenti.ext")
+                    Component.translatable("tooltip.magichem.iris_argenti.ext")
                             .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.MAGIC_CIRCLE.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.magiccircle")
-                    .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.ALCHEMICAL_WASTE.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.alchemicalwaste")
+                    Component.translatable("tooltip.magichem.alchemical_waste")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.alchemicalwaste.ext")
+                    Component.translatable("tooltip.magichem.alchemical_waste.ext")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.RAREFIED_WASTE.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.rarefiedwaste")
+                    Component.translatable("tooltip.magichem.rarefied_waste")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.rarefiedwaste.ext")
+                    Component.translatable("tooltip.magichem.rarefied_waste.ext")
                             .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.CLEANING_BRUSH.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.cleaningbrush")
-                    .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.COG_COMPONENTS.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.cogcomponents")
+                    Component.translatable("tooltip.magichem.cog_components")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.SUBLIME_COG_COMPONENTS.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.cogcomponents")
+                    Component.translatable("tooltip.magichem.cog_components")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(Component.empty());
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.sublimecomponents.ext")
+                    Component.translatable("tooltip.magichem.sublime_components.ext")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.TUBE_COMPONENTS.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.tubecomponents")
+                    Component.translatable("tooltip.magichem.tube_components")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.SUBLIME_TUBE_COMPONENTS.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.tubecomponents")
+                    Component.translatable("tooltip.magichem.tube_components")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(Component.empty());
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.sublimecomponents.ext")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.CATALYTIC_CARBON.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.catalyticcarbon")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LABORATORY_CHARM.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.laboratorycharm")
+                    Component.translatable("tooltip.magichem.sublime_components.ext")
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_RED.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.brindlegrit_red")
+                    Component.translatable("tooltip.magichem.brindle_grit_red")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_YELLOW.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.brindlegrit_yellow")
+                    Component.translatable("tooltip.magichem.brindle_grit_yellow")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_GREEN.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.brindlegrit_green")
+                    Component.translatable("tooltip.magichem.brindle_grit_green")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_CYAN.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.brindlegrit_cyan")
+                    Component.translatable("tooltip.magichem.brindle_grit_cyan")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_BLUE.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.brindlegrit_blue")
+                    Component.translatable("tooltip.magichem.brindle_grit_blue")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.BRINDLE_GRIT_MAGENTA.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.brindlegrit_magenta")
+                    Component.translatable("tooltip.magichem.brindle_grit_magenta")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.REFRACTIVE_CRYSTAL_GRIT.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.refractivecrystalgrit")
+                    Component.translatable("tooltip.magichem.refractive_crystal_grit")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.REFRACTIVE_CRYSTAL_SAND.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.refractivecrystalsand")
+                    Component.translatable("tooltip.magichem.refractive_crystal_sand")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.REFRACTIVE_CRYSTAL_GLASS.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.refractivecrystalglass")
+                    Component.translatable("tooltip.magichem.refractive_crystal_glass")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.AMPLIFYING_PRISM.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.amplifyingprism")
+                    Component.translatable("tooltip.magichem.amplifying_prism")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.powerreagent")
+                    Component.translatable("tooltip.magichem.power_reagent")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
         else if(pStack.getItem() == ItemRegistry.MALFORMED_BRINDLE_GLASS.get()) {
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct")
+                    Component.translatable("tooltip.magichem.waste_product")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.GLASS_CUTTING_TOOLS.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.glasscuttingtools")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_BEARING.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanybearing")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_INTELLIGENCE.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanyintelligence")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_RESONANCE.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanyresonance")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_EMPTINESS.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanyemptiness")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_RESILIENCE.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanyresilience")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_SATURATION.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanysaturation")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_SORCERY.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanysorcery")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_TELEPORTATION.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanyteleportation")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.LITANY_THRUST.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.litanythrust")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.BLEACHED_AMETHYST_SHARD.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.bleachedamethystshard")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.ACHROMATIC_MOTE.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.achromaticmote")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.SCORCHED_THEOREM.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.scorchedtheorem")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.SCORCHED_PROFUNDITY.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.scorchedprofundity")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.COLLATED_THEORIES.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.collatedtheories")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.PROFOUND_MANUSCRIPT.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.profoundmanuscript")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.DAUNTING_ESOTERICA.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.dauntingesoterica")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.CHIAROSCURO.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.chiaroscuro")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.GRAY_RESIN.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.resingray")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.SALT_OF_BONE.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.saltofbone")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.SALT_OF_SOOT.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.saltofsoot")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == ItemRegistry.INERT_IDOL.get()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.inertidol")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -421,7 +265,7 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.powerreagent")
+                    Component.translatable("tooltip.magichem.power_reagent")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -431,7 +275,7 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct")
+                    Component.translatable("tooltip.magichem.waste_product")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -447,7 +291,7 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -457,7 +301,7 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -467,7 +311,7 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -477,7 +321,7 @@ public class TooltipLoreItem extends Item {
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
             pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.wasteproduct.reprocess")
+                    Component.translatable("tooltip.magichem.waste_product.reprocess")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
@@ -518,6 +362,12 @@ public class TooltipLoreItem extends Item {
             );
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.aca.part")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem."+this.toString())
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }

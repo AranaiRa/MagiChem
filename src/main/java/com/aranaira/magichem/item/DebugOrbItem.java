@@ -100,7 +100,7 @@ public class DebugOrbItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.debugorb")
+                Component.translatable("tooltip.magichem.debug_orb")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 

@@ -129,7 +129,7 @@ public class SignalitePairBlock extends BaseEntityBlock {
                             int z = mark.getInt("z");
 
                             spbe.setMonitoringTarget(new BlockPos(x, y, z));
-                            MutableComponent out = Component.translatable("feedback.block.signalitepair.target").append("(" + x + ", " + y + ", " + z + ")");
+                            MutableComponent out = Component.translatable("feedback.block.signalite_pair.target").append("(" + x + ", " + y + ", " + z + ")");
                             pPlayer.displayClientMessage(out, false);
                         }
                     }

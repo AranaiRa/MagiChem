@@ -251,7 +251,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
             menu.blockEntity.tetherType = orderedMateriaStorageFiltered.get(index).getFirst();
 
             Minecraft.getInstance().player.displayClientMessage(Component.empty()
-                            .append(Component.translatable("feedback.block.materiamanifest.trackfrombottle").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.translatable("feedback.block.materia_manifest.track_from_bottle").withStyle(ChatFormatting.DARK_GRAY))
                             .append(Component.translatable("item."+mi.getCreatorModId(new ItemStack(mi))+"."+mi.toString())),
                     true);
         }

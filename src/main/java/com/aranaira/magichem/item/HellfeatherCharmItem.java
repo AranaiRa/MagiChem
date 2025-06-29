@@ -45,10 +45,10 @@ public class HellfeatherCharmItem extends Item {
             }
 
             if(!pLevel.dimension().location().equals(new ResourceLocation("minecraft:the_nether"))) {
-                pPlayer.sendSystemMessage(Component.translatable("feedback.item.hellfeathercharm.wrongdim"));
+                pPlayer.sendSystemMessage(Component.translatable("feedback.item.hellfeather_charm.wrong_dim"));
                 return InteractionResultHolder.fail(stack);
             } else if(portalPos == null) {
-                pPlayer.sendSystemMessage(Component.translatable("feedback.item.hellfeathercharm.noportalpos"));
+                pPlayer.sendSystemMessage(Component.translatable("feedback.item.hellfeather_charm.no_portal_pos"));
                 return InteractionResultHolder.fail(stack);
             } else {
                 EnderfeatherCharmUsedEvent event = new EnderfeatherCharmUsedEvent(serverPlayer);
@@ -76,7 +76,7 @@ public class HellfeatherCharmItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.hellfeathercharm")
+                Component.translatable("tooltip.magichem.hellfeather_charm")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 

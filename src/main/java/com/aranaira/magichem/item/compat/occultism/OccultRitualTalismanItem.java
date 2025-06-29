@@ -33,14 +33,14 @@ public class OccultRitualTalismanItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.occultritualtalisman")
+                Component.translatable("tooltip.magichem.occult_ritual_talisman")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 
         CompoundTag nbt = pStack.getOrCreateTag();
         if(nbt.contains("pentacleID")) {
             pTooltipComponents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.occultritualtalisman.storedpentacle").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.translatable("tooltip.magichem.occult_ritual_talisman.stored_pentacle").withStyle(ChatFormatting.DARK_GRAY))
                     .append(Component.translatable("multiblock.occultism."+nbt.getString("pentacleID")).withStyle(ChatFormatting.DARK_AQUA))
             );
         }

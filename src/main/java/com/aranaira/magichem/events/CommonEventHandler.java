@@ -251,14 +251,14 @@ public class CommonEventHandler {
                     exitCode = ((MateriaManifestRouterBlockEntity)target).getMaster().setMarkingPair(stack);
                 }
                 if(exitCode == 0) {
-                    event.getEntity().sendSystemMessage(Component.translatable("feedback.block.materiamanifest.accepted"));
+                    event.getEntity().sendSystemMessage(Component.translatable("feedback.block.materia_manifest.accepted"));
                 } else if(exitCode == 1) {
-                    event.getEntity().sendSystemMessage(Component.translatable("feedback.block.materiamanifest.toofar"));
+                    event.getEntity().sendSystemMessage(Component.translatable("feedback.block.materia_manifest.too_far"));
                 } else if(exitCode == 2) {
                     event.getEntity().sendSystemMessage(Component.empty()
-                            .append(Component.translatable("feedback.block.materiamanifest.toobig.part1"))
+                            .append(Component.translatable("feedback.block.materia_manifest.too_big.part1"))
                             .append("" + ServerConfig.materiaManifestSizeConstraint)
-                            .append(Component.translatable("feedback.block.materiamanifest.toobig.part2"))
+                            .append(Component.translatable("feedback.block.materia_manifest.too_big.part2"))
                     );
                 }
                 event.setCanceled(true);

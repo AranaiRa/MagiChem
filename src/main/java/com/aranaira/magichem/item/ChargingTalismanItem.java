@@ -65,7 +65,7 @@ public class ChargingTalismanItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.chargingtalisman")
+                Component.translatable("tooltip.magichem.charging_talisman")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 

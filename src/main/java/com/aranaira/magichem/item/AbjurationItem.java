@@ -53,7 +53,7 @@ public class AbjurationItem extends Item {
                             if(nbt.contains("uses")) {
                                 uses = nbt.getInt("uses") + 1;
                                 if(uses >= 3) {
-                                    pPlayer.sendSystemMessage(Component.translatable("feedback.ritual.rebornrose.abjuration"));
+                                    pPlayer.sendSystemMessage(Component.translatable("feedback.ritual.reborn_rose.abjuration"));
                                 }
                             }
                         }

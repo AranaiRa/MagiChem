@@ -444,11 +444,11 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                     mouseY >= y + TOOLTIP_INSERT_Y && mouseY <= y + TOOLTIP_INSERT_Y + TOOLTIP_INSERT_S) {
 
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.insertion").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.mirror_labyrinth.insertion").withStyle(ChatFormatting.GOLD))
                         .append(": ")
-                        .append(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.insertion.part1")));
+                        .append(Component.translatable("tooltip.magichem.gui.mirror_labyrinth.insertion.part1")));
                 tooltipContents.add(Component.empty());
-                tooltipContents.add(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.insertion.part2"));
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.mirror_labyrinth.insertion.part2"));
                 gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
             }
         }
@@ -459,11 +459,11 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
                     mouseY >= y + TOOLTIP_EXTRACT_Y && mouseY <= y + TOOLTIP_EXTRACT_Y + TOOLTIP_EXTRACT_S) {
 
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.extraction").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.mirror_labyrinth.extraction").withStyle(ChatFormatting.GOLD))
                         .append(": ")
-                        .append(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.extraction.part1")));
+                        .append(Component.translatable("tooltip.magichem.gui.mirror_labyrinth.extraction.part1")));
                 tooltipContents.add(Component.empty());
-                tooltipContents.add(Component.translatable("tooltip.magichem.gui.mirrorlabyrinth.extraction.part2"));
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.mirror_labyrinth.extraction.part2"));
                 gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
             }
         }
@@ -473,11 +473,11 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             mouseY >= y+TOOLTIP_POWER_USAGE_Y && mouseY <= y+TOOLTIP_POWER_USAGE_Y+TOOLTIP_POWER_USAGE_H) {
 
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.powerusage").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.power_usage").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.powerusage.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.power_usage.line1")));
             tooltipContents.add(Component.empty());
-            tooltipContents.add(Component.translatable("tooltip.magichem.gui.powerusage.labyrinth"));
+            tooltipContents.add(Component.translatable("tooltip.magichem.gui.power_usage.labyrinth"));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
@@ -486,9 +486,9 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
             mouseY >= y+TOOLTIP_ESSENTIA_Y && mouseY <= y+TOOLTIP_ESSENTIA_Y+TOOLTIP_ESSENTIA_H) {
 
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.essentialimit").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.essentia_limit").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.essentialimit.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.essentia_limit.line1")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 
@@ -497,9 +497,9 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
            mouseY >= y+TOOLTIP_ADMIXTURE_Y && mouseY <= y+TOOLTIP_ADMIXTURE_Y+TOOLTIP_ADMIXTURE_H) {
 
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.admixturelimit").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.admixture_limit").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.admixturelimit.line1")));
+                    .append(Component.translatable("tooltip.magichem.gui.admixture_limit.line1")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
 

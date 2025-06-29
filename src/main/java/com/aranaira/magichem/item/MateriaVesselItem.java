@@ -308,7 +308,7 @@ public class MateriaVesselItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         pTooltip.add(
-                Component.translatable("tooltip.magichem.materiavessel")
+                Component.translatable("tooltip.magichem.materia_vessel")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 

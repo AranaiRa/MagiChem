@@ -206,7 +206,7 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.operation_time").withStyle(ChatFormatting.GOLD))
                     .append(": ")
                     .append(Component.translatable("tooltip.magichem.gui.actuator.operationtime")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
@@ -285,9 +285,9 @@ public class ActuatorAirScreen extends AbstractContainerScreen<ActuatorAirMenu> 
 
             tooltipContents.clear();
             tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.eldrinmode").withStyle(ChatFormatting.GOLD))
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_mode").withStyle(ChatFormatting.GOLD))
                     .append(": ")
-                    .append(Component.translatable(menu.blockEntity.doEldrinPowerConsumption ? "tooltip.magichem.gui.eldrinmode.both" : "tooltip.magichem.gui.eldrinmode.single")));
+                    .append(Component.translatable(menu.blockEntity.doEldrinPowerConsumption ? "tooltip.magichem.gui.eldrin_mode.both" : "tooltip.magichem.gui.eldrin_mode.single")));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
         }
     }

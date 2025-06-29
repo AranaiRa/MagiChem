@@ -426,11 +426,11 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         if(pX >= x+79 && pX <= x+97 &&
                 pY >= y+79 && pY <= y+97) {
             if(menu.blockEntity.getCurrentRecipe() == null) {
-                tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             } else {
                 ItemStack recipeItem = menu.blockEntity.getCurrentRecipe().getAlchemyObject();
                 if (recipeItem == ItemStack.EMPTY) {
-                    tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                    tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
                 } else {
                     tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                 }

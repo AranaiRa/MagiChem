@@ -193,7 +193,7 @@ public class TravellersCompassItem extends ThaumaturgicCompass implements IRadia
     @Override
     public void appendHoverText(ItemStack stack, Level worldIn, List<Component> pTooltipComponents, TooltipFlag flagIn) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.travellerscompass")
+                Component.translatable("tooltip.magichem.travellers_compass")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 

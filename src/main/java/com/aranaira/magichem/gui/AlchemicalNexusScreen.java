@@ -418,7 +418,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             } else {
                 ItemStack recipeItem = menu.getCurrentRecipe().getAlchemyObject();
                 if (recipeItem == ItemStack.EMPTY) {
-                    tooltipContents.add(Component.translatable("tooltip.magichem.gui.noselectedrecipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                    tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
                 } else {
                     int totalCost = 0;
                     for (InfusionStage is : menu.getCurrentRecipe().getStages(false)) {
@@ -430,11 +430,11 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                     tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                     tooltipContents.add(Component.empty());
                     tooltipContents.add(Component.empty()
-                            .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part1").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.translatable("tooltip.magichem.gui.sublimation_cost.part1").withStyle(ChatFormatting.DARK_GRAY))
                             .append(Component.literal(totalCost + "mB").withStyle(ChatFormatting.DARK_AQUA))
-                            .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part2").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.translatable("tooltip.magichem.gui.sublimation_cost.part2").withStyle(ChatFormatting.DARK_GRAY))
                             .append(Component.literal(menu.getCurrentRecipe().getStages(false).size() + "").withStyle(ChatFormatting.DARK_AQUA))
-                            .append(Component.translatable("tooltip.magichem.gui.sublimationcost.part3").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.translatable("tooltip.magichem.gui.sublimation_cost.part3").withStyle(ChatFormatting.DARK_GRAY))
                     );
                 }
             }
@@ -507,12 +507,12 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
                 tooltipContents.clear();
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.operationtime").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.operation_time").withStyle(ChatFormatting.GOLD))
                         .append(": ")
-                        .append(Component.translatable("tooltip.magichem.gui.operationtime.line1")));
+                        .append(Component.translatable("tooltip.magichem.gui.operation_time.line1")));
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.operationtime.nexus.line2")));
+                        .append(Component.translatable("tooltip.magichem.gui.operation_time.nexus.line2")));
             }
 
             //Siphon Mode
@@ -521,24 +521,24 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
                 tooltipContents.clear();
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.siphonmode").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("tooltip.magichem.gui.siphon_mode").withStyle(ChatFormatting.GOLD))
                         .append(": ")
-                        .append(Component.translatable("tooltip.magichem.gui.siphonmode.line1")));
+                        .append(Component.translatable("tooltip.magichem.gui.siphon_mode.line1")));
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.siphonmode.line2")));
+                        .append(Component.translatable("tooltip.magichem.gui.siphon_mode.line2")));
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.siphonmode.line3")));
+                        .append(Component.translatable("tooltip.magichem.gui.siphon_mode.line3")));
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.siphonmode.line4")));
+                        .append(Component.translatable("tooltip.magichem.gui.siphon_mode.line4")));
             }
         } else {
             if (pX >= x + PANEL_STATS_X && pX <= x + PANEL_STATS_X + PANEL_STATS_W &&
                     pY >= y + PANEL_STATS_Y && pY <= y + PANEL_STATS_Y + PANEL_STATS_H) {
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.sublimationconfiglocked")));
+                        .append(Component.translatable("tooltip.magichem.gui.sublimation_config_locked")));
             }
         }
 

@@ -309,7 +309,7 @@ public class MateriaJarItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         pTooltip.add(
-                Component.translatable("tooltip.magichem.materiajar")
+                Component.translatable("tooltip.magichem.materia_jar")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
 
