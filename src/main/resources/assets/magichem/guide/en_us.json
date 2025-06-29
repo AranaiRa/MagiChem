@@ -8951,5 +8951,253 @@
       }
     ]
   },
+  "Winemaking": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Winemaking"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Aqua Vitae",
+            "color": "dark_purple"
+          },
+          {
+            "text": " has several alchemical applications, one of which is the creation of mulled wines with "
+          },
+          {
+            "text": "special",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (and sometimes "
+          },
+          {
+            "text": "concerning",
+            "color": "dark_purple"
+          },
+          {
+            "text": ") properties.\n\nMulled wines are made in an "
+          },
+          {
+            "text": "Acid Basin",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Sweetberry Wine",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:sweetberry_wine_bottle",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The simplest of the alchemical wines. "
+          },
+          {
+            "text": "Sweetberry Wine",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be created by mulling "
+          },
+          {
+            "text": "Sweetberry Mash",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "Aqua Vitae",
+            "color": "dark_purple"
+          },
+          {
+            "text": " inside of an "
+          },
+          {
+            "text": "Acid Basin",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhen consumed, Sweetberry Wine grants "
+          },
+          {
+            "text": "six temporary hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", but leaves its drinker craving more food.\n\nPairs well with meats and cheeses!"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Shimmering Wine",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:shimmering_wine_bottle",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A wine with significant magical properties. "
+          },
+          {
+            "text": "Shimmering Wine",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be created by mulling "
+          },
+          {
+            "text": "Glowberry Mash",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "Sweetberry Wine",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhen consumed, Shimmering Wine increases its drinker's maximum health by "
+          },
+          {
+            "text": "ten full hearts",
+            "color": "dark_purple"
+          },
+          {
+            "text": "for 30 minutes.\n\nUnfortunately, the wine is no longer fit for human consumption and wracks its drinker's body with horrible, potent "
+          },
+          {
+            "text": "negative side effects",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that far outlast the benefits of the wine. A method to "
+          },
+          {
+            "text": "remove negative status effects",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is absolutely necessary to consume the wine unless one wants to suffer."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Vintage Shimmering Wine",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:shimmering_vintage_wine_bottle",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An form of "
+          },
+          {
+            "text": "Shimmering Wine",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that has been artificially aged for centuries through "
+          },
+          {
+            "text": "Sublimation",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhen consumed, Vintage Shimmering Wine "
+          },
+          {
+            "text": "doubles the maximum health",
+            "color": "dark_purple"
+          },
+          {
+            "text": "of its drinker, but afflicts them with "
+          },
+          {
+            "text": "negative side effects",
+            "color": "dark_purple"
+          },
+          {
+            "text": " so hideous and long-lasting that all but the strongest of wills would wish death in place of continuing on.\n\nIf Shimmering Wine was unfit for human consumption, its aged form has become worse than an implement of torture. A method to "
+          },
+          {
+            "text": "remove negative status effects",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is absolutely necessary to consume the wine unless one wants to suffer more than one has ever suffered before."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/acid_basin"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/sweet_berries_to_sweetberry_mash"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/sweetberry_wine"
+      },
+      {
+        "type": "crushing",
+        "location": "magichem:crushing/glow_berries_to_glowberry_mash"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/shimmering_wine"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/sweetberry_wine_bottle"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/shimmering_wine_bottle"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/shimmering_vintage_wine_bottle"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

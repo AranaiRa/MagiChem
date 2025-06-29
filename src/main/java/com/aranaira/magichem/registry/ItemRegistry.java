@@ -152,16 +152,16 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> SWEETBERRY_WINE_BOTTLE = ITEMS.register("sweetberry_wine_bottle",
-            () -> new TooltipLoreItem(new Item.Properties())
+    public static final RegistryObject<DrinkableItem> SWEETBERRY_WINE_BOTTLE = ITEMS.register("sweetberry_wine_bottle",
+            () -> new DrinkableItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> SHIMMERING_WINE_BOTTLE = ITEMS.register("shimmering_wine_bottle",
-            () -> new TooltipLoreItem(new Item.Properties())
+    public static final RegistryObject<DrinkableItem> SHIMMERING_WINE_BOTTLE = ITEMS.register("shimmering_wine_bottle",
+            () -> new DrinkableItem(new Item.Properties())
     );
 
-    public static final RegistryObject<TooltipLoreItem> SHIMMERING_VINTAGE_WINE_BOTTLE = ITEMS.register("shimmering_vintage_wine_bottle",
-            () -> new TooltipLoreItem(new Item.Properties())
+    public static final RegistryObject<DrinkableItem> SHIMMERING_VINTAGE_WINE_BOTTLE = ITEMS.register("shimmering_vintage_wine_bottle",
+            () -> new DrinkableItem(new Item.Properties())
     );
 
     public static final RegistryObject<HarmoniscopeItem> HARMONISCOPE = ITEMS.register("harmoniscope",

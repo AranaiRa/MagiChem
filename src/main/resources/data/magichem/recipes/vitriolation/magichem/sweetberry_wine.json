@@ -5,5 +5,6 @@
   "acidConsumed": 100,
   "duration": 600,
   "inputItem": { "item": "magichem:sweetberry_mash", "count": 5 },
-  "resultFluid": { "fluid": "magichem:sweetberry_wine", "amount": 50 }
+  "resultFluid": { "fluid": "magichem:sweetberry_wine", "amount": 50 },
+  "outputForCodex": "magichem:sweetberry_wine_bucket"
 }
