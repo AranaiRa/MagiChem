@@ -19,6 +19,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -66,10 +67,14 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, VitriolationRecipe recipe, IFocusGroup group) {
         builder.addSlot(RecipeIngredientRole.INPUT, 40, 4).addItemStack(recipe.getInputItem());
-        if(recipe.hasInputFluidOverride())
+        if(recipe.hasInputFluidOverride()) {
             builder.addSlot(RecipeIngredientRole.INPUT, 73, 4).addFluidStack(recipe.getInputFluidOverride(), recipe.getBaseFluidConsumed());
-        builder.addSlot(RecipeIngredientRole.OUTPUT,74,88).addItemStack(recipe.getResultItem());
-        builder.addSlot(RecipeIngredientRole.OUTPUT,6,88).addFluidStack(recipe.getResultFluid().getFluid(), recipe.getResultFluid().getAmount());
+        }
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 74, 88).addItemStack(recipe.getResultItem());
+        if(recipe.hasResultFluid()) {
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 6, 88).addFluidStack(recipe.getResultFluid().getFluid(), recipe.getResultFluid().getAmount());
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 6, 4096).addItemStack(new ItemStack(recipe.getResultFluid().getFluid().getBucket()));
+        }
     }
 
     public void draw(VitriolationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
@@ -89,7 +94,23 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
             int opTicks = recipe.getCraftTicks();
             int secWhole = opTicks / 20;
             int secPartial = (opTicks % 20) * 5;
-            gui.drawString(mc.font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+"s", 7, 23, 0xff000000, false);
+            String out = "?";
+            if(secWhole >= 60) {
+                int minWhole = secWhole / 60;
+                if(minWhole >= 60) {
+                    int hourWhole = minWhole / 60;
+                    out = hourWhole+"h" + (minWhole % 60 > 0 ? " "+(minWhole % 60)+"m" : "");
+                } else {
+                    out = minWhole+"m" + (secWhole % 60 > 0 ? " "+(secWhole % 60)+"s" : "");
+                }
+            } else {
+                if(secPartial > 0) {
+                    out = secWhole + "." + (secPartial < 10 ? "0" + secPartial : secPartial) + "s";
+                } else {
+                    out = secWhole + "s";
+                }
+            }
+            gui.drawString(mc.font ,out, 7, 23, 0xff000000, false);
         }
     }
 
