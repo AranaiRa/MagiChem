@@ -1,0 +1,7 @@
+{
+  "type": "mna:crushing",
+  "tier": 2,
+  "input": "minecraft:sweet_berries",
+  "output": "magichem:sweetberry_mash",
+  "output_quantity": 1
+}

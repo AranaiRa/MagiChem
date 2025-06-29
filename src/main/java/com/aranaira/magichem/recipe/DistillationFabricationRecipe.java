@@ -211,7 +211,7 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer>, I
 
     @Override
     public int getTier() {
-        return Math.max(5, wisdom + 1);
+        return Math.min(5, wisdom + 1);
     }
 
     public static class Type implements RecipeType<DistillationFabricationRecipe> {

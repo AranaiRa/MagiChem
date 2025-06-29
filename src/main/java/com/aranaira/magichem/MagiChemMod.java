@@ -176,6 +176,10 @@ public class MagiChemMod
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.OIL_OF_VITRIOL_FLOWING.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.AZOTH.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.AZOTH_FLOWING.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SWEETBERRY_WINE.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SWEETBERRY_WINE_FLOWING.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SHIMMERING_WINE.get(), RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SHIMMERING_WINE_FLOWING.get(), RenderType.translucent());
             });
         }
 

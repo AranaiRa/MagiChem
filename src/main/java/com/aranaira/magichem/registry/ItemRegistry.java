@@ -144,6 +144,26 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> SWEETBERRY_MASH = ITEMS.register("sweetberry_mash",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> GLOWBERRY_MASH = ITEMS.register("glowberry_mash",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SWEETBERRY_WINE_BOTTLE = ITEMS.register("sweetberry_wine_bottle",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SHIMMERING_WINE_BOTTLE = ITEMS.register("shimmering_wine_bottle",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SHIMMERING_VINTAGE_WINE_BOTTLE = ITEMS.register("shimmering_vintage_wine_bottle",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<HarmoniscopeItem> HARMONISCOPE = ITEMS.register("harmoniscope",
             () -> new HarmoniscopeItem(new Item.Properties().stacksTo(1))
     );
@@ -482,6 +502,14 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> AQUA_VITAE_BUCKET = ITEMS.register("aqua_vitae_bucket",
             () -> new BucketItem(FluidRegistry.AQUA_VITAE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> SWEETBERRY_WINE_BUCKET = ITEMS.register("sweetberry_wine_bucket",
+            () -> new BucketItem(FluidRegistry.SWEETBERRY_WINE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> SHIMMERING_WINE_BUCKET = ITEMS.register("shimmering_wine_bucket",
+            () -> new BucketItem(FluidRegistry.SHIMMERING_WINE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
 
     public static final RegistryObject<Item> SIMPLE_ACID_BUCKET = ITEMS.register("simple_acid_bucket",

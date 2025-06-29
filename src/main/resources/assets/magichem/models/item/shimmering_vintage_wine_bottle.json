@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "magichem:item/shimmering_vintage_wine_bottle",
+    "layer1": "magichem:item/shimmering_wine_bottle_sparkles"
+  }
+}

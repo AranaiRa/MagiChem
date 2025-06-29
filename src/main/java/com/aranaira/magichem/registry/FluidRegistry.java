@@ -212,6 +212,76 @@ public class FluidRegistry {
     }
 
     //////////////////////
+    //-----WINE COMPONENTS
+    //////////////////////
+
+    public static final RegistryObject<FluidType> SWEETBERRY_WINE_FLUID_TYPE = FLUID_TYPES.register("sweetberry_wine_fluid_type", () ->
+            new FluidType(FluidType.Properties.create().descriptionId("sweetberry_wine_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(1).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/sweetberry_wine_still");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/sweetberry_wine_flow");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<FlowingFluid> SWEETBERRY_WINE = FLUIDS.register("sweetberry_wine", () -> new ForgeFlowingFluid.Source(getSweetberryWineProperties()));
+    public static final RegistryObject<Fluid> SWEETBERRY_WINE_FLOWING = FLUIDS.register("sweetberry_wine_flowing", () -> new ForgeFlowingFluid.Flowing(getSweetberryWineProperties()));
+    public static final RegistryObject<LiquidBlock> SWEETBERRY_WINE_BLOCK = BlockRegistry.BLOCKS.register("sweetberry_wine_block", () -> new LiquidBlock(SWEETBERRY_WINE, BlockBehaviour.Properties.copy(Blocks.WATER)));
+
+    public static ForgeFlowingFluid.Properties getSweetberryWineProperties() {
+        return new ForgeFlowingFluid.Properties(SWEETBERRY_WINE_FLUID_TYPE, SWEETBERRY_WINE, SWEETBERRY_WINE_FLOWING).block(SWEETBERRY_WINE_BLOCK).bucket(ItemRegistry.SWEETBERRY_WINE_BUCKET);
+    }
+
+    public static final RegistryObject<FluidType> SHIMMERING_WINE_FLUID_TYPE = FLUID_TYPES.register("shimmering_wine_fluid_type", () ->
+            new FluidType(FluidType.Properties.create().descriptionId("shimmering_wine_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(1).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/shimmering_wine_still");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/shimmering_wine_flow");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<FlowingFluid> SHIMMERING_WINE = FLUIDS.register("shimmering_wine", () -> new ForgeFlowingFluid.Source(getShimmeringWineProperties()));
+    public static final RegistryObject<Fluid> SHIMMERING_WINE_FLOWING = FLUIDS.register("shimmering_wine_flowing", () -> new ForgeFlowingFluid.Flowing(getShimmeringWineProperties()));
+    public static final RegistryObject<LiquidBlock> SHIMMERING_WINE_BLOCK = BlockRegistry.BLOCKS.register("shimmering_wine_block", () -> new LiquidBlock(SHIMMERING_WINE, BlockBehaviour.Properties.copy(Blocks.WATER)));
+
+    public static ForgeFlowingFluid.Properties getShimmeringWineProperties() {
+        return new ForgeFlowingFluid.Properties(SHIMMERING_WINE_FLUID_TYPE, SHIMMERING_WINE, SHIMMERING_WINE_FLOWING).block(SHIMMERING_WINE_BLOCK).bucket(ItemRegistry.SHIMMERING_WINE_BUCKET);
+    }
+
+    //////////////////////
     //-----ACIDS
     //////////////////////
 

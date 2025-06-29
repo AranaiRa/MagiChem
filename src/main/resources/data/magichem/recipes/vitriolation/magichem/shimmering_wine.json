@@ -1,0 +1,9 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 0,
+  "inputFluidOverride": "magichem:sweetberry_wine",
+  "acidConsumed": 50,
+  "duration": 1800,
+  "inputItem": { "item": "magichem:glowberry_mash", "count": 3 },
+  "resultFluid": { "fluid": "magichem:shimmering_wine", "amount": 50 }
+}

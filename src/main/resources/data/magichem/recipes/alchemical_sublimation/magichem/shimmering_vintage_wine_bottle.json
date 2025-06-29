@@ -1,0 +1,25 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 2,
+  "object": {
+    "item": "magichem:shimmering_vintage_wine_bottle"
+  },
+  "stages": [
+    {
+      "experience": 36,
+      "components": [
+        { "item": "magichem:verdigris" },
+        { "item": "magichem:shimmering_wine_bottle" },
+        { "item": "magichem:verdigris" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_history", "count": 54 },
+        { "item": "magichem:admixture_delight", "count": 35 },
+        { "item": "magichem:admixture_erosion", "count": 21 },
+        { "item": "magichem:essentia_rotten", "count": 104 },
+        { "item": "magichem:essentia_albedo", "count": 18 }
+      ]
+    }
+  ]
+}

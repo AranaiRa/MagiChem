@@ -1,0 +1,9 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 0,
+  "inputFluidOverride": "magichem:aqua_vitae",
+  "acidConsumed": 100,
+  "duration": 600,
+  "inputItem": { "item": "magichem:sweetberry_mash", "count": 5 },
+  "resultFluid": { "fluid": "magichem:sweetberry_wine", "amount": 50 }
+}
