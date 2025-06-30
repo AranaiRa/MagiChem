@@ -9199,5 +9199,170 @@
       }
     ]
   },
+  "Gnostic Orb": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Gnostic Orb"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "When anointed with certain Admixtures, a "
+          },
+          {
+            "text": "Gnostic Orb",
+            "color": "dark_purple"
+          },
+          {
+            "text": " has the power to create a "
+          },
+          {
+            "text": "Prophecy",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; a great magical event foretold to occur in the future.\n\nAnointing a Gnostic Orb takes "
+          },
+          {
+            "text": "fifty drams",
+            "color": "dark_purple"
+          },
+          {
+            "text": "of materia.\n\nAfter being anointed with an appropriate admixture, the Gnostic Orb will start drawing in power and "
+          },
+          {
+            "text": "forming a magic circle",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Once the circle is complete, the prophecy is ready to be "
+          },
+          {
+            "text": "fulfilled",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nActivating the Orb will fulfill the prophecy. The Gnostic Orb is destroyed in the process."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Delight",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_delight",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "variety of cakes",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will be conjured on top of any table in a large space.\n\nTables without space on top will not receive a cake."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Disaster",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_disaster",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Do not do this."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Metal",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_metal",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Up to "
+          },
+          {
+            "text": "one hundred",
+            "color": "dark_purple"
+          },
+          {
+            "text": " ores are created in nearby stone."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Thought",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_thought",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A nearby bookcase is "
+          },
+          {
+            "text": "destroyed",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; its contents are used to create a compilation of "
+          },
+          {
+            "text": "Obscure Prognostications",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/gnostic_orb"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

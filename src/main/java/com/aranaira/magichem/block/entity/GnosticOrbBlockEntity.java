@@ -7,6 +7,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.EntitiesRegistry;
 import com.aranaira.magichem.util.render.ColorUtils;
+import com.machinezoo.noexception.throwing.ThrowingConsumer;
 import com.machinezoo.noexception.throwing.ThrowingRunnable;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
@@ -18,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -32,12 +34,13 @@ import java.util.function.Function;
 
 import static com.aranaira.magichem.block.entity.MirrorLabyrinthBlockEntity.TRAIL_PARTICLE_COLORS;
 import static com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity.materiaMap;
+import static com.aranaira.magichem.entities.GnosticOrbExecutorEntity.TAG_BOOKSHELVES;
 
 public class GnosticOrbBlockEntity extends BlockEntity {
     //Integer (first) is the number of minutes for a full charge
     //First ThrowingRunnable is a boolean-returning precondition to allow the prophecy to discharge. If this is false, the Orb won't discharge and will send a system message to the player.
     //Second ThrowingRunnable is the actual effect caused by the orb.
-    private static final HashMap<String, Pair<Integer, ThrowingRunnable>> PROPHECY_DATA = new HashMap<>();
+    private static final HashMap<String, Pair<Integer, ThrowingConsumer<GnosticOrbBlockEntity>>> PROPHECY_DATA = new HashMap<>();
     private static final Random r = new Random();
     private static final ItemStack PARTICLE_STACK = new ItemStack(Blocks.OXIDIZED_COPPER.asItem());
 
@@ -52,24 +55,22 @@ public class GnosticOrbBlockEntity extends BlockEntity {
             PROPHECY_DATA.put("creature", new Pair<>(10, null));
             PROPHECY_DATA.put("delight", new Pair<>(15, null));
             PROPHECY_DATA.put("disaster", new Pair<>(3, null));
-            PROPHECY_DATA.put("exanimate", new Pair<>(15, this::prophecyConditionExanimate));
+            PROPHECY_DATA.put("exanimate", new Pair<>(15, GnosticOrbBlockEntity::prophecyConditionExanimate));
             PROPHECY_DATA.put("metal", new Pair<>(30, null));
-            PROPHECY_DATA.put("thought", new Pair<>(60, this::prophecyConditionThought));
+            PROPHECY_DATA.put("thought", new Pair<>(60, GnosticOrbBlockEntity::prophecyConditionThought));
         }
     }
 
     public boolean tryStart(ItemStack pStack) {
-        if(pStack.getItem() instanceof MateriaItem mi) {
+        if(pStack.getItem() instanceof MateriaItem mi && pStack.getCount() >= 50) {
 
             if (!materiaType.equals("")) return false;
 
             if (PROPHECY_DATA.keySet().contains(mi.getMateriaName())) {
                 materiaType = mi.getMateriaName();
-                progressTarget = PROPHECY_DATA.get(materiaType).getFirst() * 20;
+                progressTarget = PROPHECY_DATA.get(materiaType).getFirst() * 20 * 60;
                 materiaColor = mi.getMateriaColor();
                 syncAndSave();
-
-                pStack.shrink(1);
 
                 return true;
             }
@@ -173,11 +174,11 @@ public class GnosticOrbBlockEntity extends BlockEntity {
     }
 
     public void finalizeProphecy() {
-        final ThrowingRunnable condition = PROPHECY_DATA.get(materiaType).getSecond();
+        ThrowingConsumer<GnosticOrbBlockEntity> condition = PROPHECY_DATA.get(materiaType).getSecond();
 
         if(condition != null) {
             try {
-                condition.run();
+                condition.accept(this);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
@@ -193,17 +194,28 @@ public class GnosticOrbBlockEntity extends BlockEntity {
             executor.setPos(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
 
             //Destroy the orb
-            for(int i=0; i<40; i++) {
+            level.destroyBlock(getBlockPos(), false);
+            for(int i=0; i<10; i++) {
                 Vector3 start = new Vector3(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
-                Vector3 speed = new Vector3(r.nextDouble()-0.5, r.nextDouble(), r.nextDouble()-0.5).normalize().scale(0.08f + r.nextFloat(0.2f));
+                Vector3 speed = new Vector3(r.nextDouble()-0.5, 0, r.nextDouble()-0.5).normalize().scale(0.16f + r.nextFloat(1.2f));
 
                 level.addParticle(new MAParticleType(ParticleInit.ITEM.get())
                                 .setScale(0.05f).setMaxAge(10 + r.nextInt(10))
-                                .setStack(PARTICLE_STACK).setGravity(-0.05f),
+                                .setStack(PARTICLE_STACK).setGravity(-0.05f).setPhysics(false),
                         start.x, start.y, start.z,
-                        speed.x, speed.y + 0.5, speed.z);
+                        speed.x, speed.y + 1.5, speed.z);
             }
-            level.destroyBlock(getBlockPos(), false);
+            int[] color = ColorUtils.getRGBAIntTintFromPackedInt(materiaColor);
+            for(int i=0; i<36; i++) {
+                Vector3 start = new Vector3(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
+                Vector3 speed = new Vector3(r.nextDouble()-0.5, r.nextDouble()-0.5, r.nextDouble()-0.5).normalize().scale(0.66f + r.nextFloat(1.2f));
+
+                level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                .setMaxAge(20 + r.nextInt(20))
+                                .setColor(color[0], color[1], color[2]).setGravity(0).setPhysics(false),
+                        start.x, start.y, start.z,
+                        speed.x, speed.y, speed.z);
+            }
         }
     }
 
@@ -228,11 +240,31 @@ public class GnosticOrbBlockEntity extends BlockEntity {
     // PROPHECY CONDITIONS
     /////////////////////
 
-    private void prophecyConditionExanimate() {
-        preconditionValidated = true;
+    private static void prophecyConditionExanimate(GnosticOrbBlockEntity pEntity) {
+        boolean foundBookshelf = false;
+
+        int range = 6;
+        for(int y = pEntity.getBlockPos().getY()-(range/2); y<=pEntity.getBlockPos().getX()+(range/2); y++) {
+            for (int x = pEntity.getBlockPos().getX()-range; x<=pEntity.getBlockPos().getX()+range; x++) {
+                for (int z = pEntity.getBlockPos().getZ()-range; z<=pEntity.getBlockPos().getZ()+range; z++) {
+                    BlockPos posQuery = new BlockPos(x, y, z);
+                    BlockState stateQuery = pEntity.level.getBlockState(posQuery);
+
+                    boolean isBookshelf = stateQuery.is(TAG_BOOKSHELVES);
+
+                    if(isBookshelf) {
+                        foundBookshelf = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(foundBookshelf)
+            pEntity.preconditionValidated = true;
     }
 
-    private void prophecyConditionThought() {
-        preconditionValidated = true;
+    private static void prophecyConditionThought(GnosticOrbBlockEntity pEntity) {
+        pEntity.preconditionValidated = true;
     }
 }
