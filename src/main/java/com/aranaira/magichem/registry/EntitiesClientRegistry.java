@@ -1,6 +1,7 @@
 package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.entities.renderers.DestructiveHarmonicsEntityRenderer;
+import com.aranaira.magichem.entities.renderers.GnosticOrbExecutorEntityRenderer;
 import com.aranaira.magichem.entities.renderers.SublimationRitualVFXEntityRenderer;
 import com.aranaira.magichem.entities.renderers.ShlorpEntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -16,9 +17,10 @@ public class EntitiesClientRegistry {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void registerEntityRenderers(FMLClientSetupEvent event) {
-        EntityRenderers.register((EntityType)EntitiesRegistry.SHLORP_ENTITY.get(), ShlorpEntityRenderer::new);
-        EntityRenderers.register((EntityType)EntitiesRegistry.SUBLIMATION_RITUAL_VFX_ENTITY.get(), SublimationRitualVFXEntityRenderer::new);
+        EntityRenderers.register(EntitiesRegistry.SHLORP_ENTITY.get(), ShlorpEntityRenderer::new);
+        EntityRenderers.register(EntitiesRegistry.SUBLIMATION_RITUAL_VFX_ENTITY.get(), SublimationRitualVFXEntityRenderer::new);
         EntityRenderers.register(EntitiesRegistry.THROWN_THUNDERSTONE_ENTITY.get(), ThrownItemRenderer::new);
         EntityRenderers.register(EntitiesRegistry.DESTRUCTIVE_HARMONICS_ENTITY.get(), DestructiveHarmonicsEntityRenderer::new);
+        EntityRenderers.register(EntitiesRegistry.GNOSTIC_ORB_EXECUTOR_ENTITY.get(), GnosticOrbExecutorEntityRenderer::new);
     }
 }

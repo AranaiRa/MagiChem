@@ -14,6 +14,7 @@ public class MagiChemBlockStateProperties {
     public static final BooleanProperty HAS_PASSIVE_HEAT = BooleanProperty.create("has_passive_heat");
     public static final BooleanProperty IS_EMITTING_LIGHT = BooleanProperty.create("is_emitting_light");
     public static final BooleanProperty STACKED = BooleanProperty.create("stacked");
+    public static final BooleanProperty READY_FOR_COLLECTION = BooleanProperty.create("ready_for_collection");
 
     public static final IntegerProperty ACTUATOR_ELEMENT = IntegerProperty.create("element", 0, 6);
     public static final IntegerProperty CANDLE_COUNT = IntegerProperty.create("candle_count", 1, 6);

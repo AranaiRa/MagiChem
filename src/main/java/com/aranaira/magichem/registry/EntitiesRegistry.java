@@ -21,6 +21,7 @@ public class EntitiesRegistry {
     public static final RegistryObject<EntityType<SublimationRitualVFXEntity>> SUBLIMATION_RITUAL_VFX_ENTITY;
     public static final RegistryObject<EntityType<ThrownThunderstoneEntity>> THROWN_THUNDERSTONE_ENTITY;
     public static final RegistryObject<EntityType<DestructiveHarmonicsEntity>> DESTRUCTIVE_HARMONICS_ENTITY;
+    public static final RegistryObject<EntityType<GnosticOrbExecutorEntity>> GNOSTIC_ORB_EXECUTOR_ENTITY;
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
@@ -51,6 +52,12 @@ public class EntitiesRegistry {
                 Builder.of(DestructiveHarmonicsEntity::new, MobCategory.MISC)
                 .sized(0.2f, 0.2f)
                 .build(MagiChemMod.MODID+":destructive_harmonics")
+        );
+
+        GNOSTIC_ORB_EXECUTOR_ENTITY = ENTITY_TYPES.register("gnostic_orb_executor", () ->
+                Builder.of(GnosticOrbExecutorEntity::new, MobCategory.MISC)
+                .sized(0.2f, 0.2f)
+                .build(MagiChemMod.MODID+":gnostic_orb_executor")
         );
     }
 }

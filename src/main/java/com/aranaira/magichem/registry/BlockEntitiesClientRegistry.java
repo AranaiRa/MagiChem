@@ -52,5 +52,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ACID_BASIN_BE.get(), AcidBasinBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.RADIANT_ROSE_BE.get(), RadiantRoseBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ASTRAL_OBSERVER_BE.get(), AstralObserverBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.GNOSTIC_ORB_BE.get(), GnosticOrbBlockEntityRenderer::new);
     }
 }

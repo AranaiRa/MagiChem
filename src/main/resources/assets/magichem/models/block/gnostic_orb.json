@@ -1,0 +1,23 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "textures": {
+    "particle": "minecraft:block/oxidized_copper"
+  },
+  "children": {
+    "part1": {
+      "loader": "forge:obj",
+      "automatic_culling": false,
+      "shade_quads": true,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "magichem:models/obj/gnostic_orb_body.obj"
+    }
+  },
+  "display": {
+    "gui": {
+      "scale": [1.5, 1.5, 1.5],
+      "translation": [12, 0, 0]
+    }
+  }
+}

@@ -18,9 +18,9 @@
           "item": "botania:cyan_petal_block"
         },
         "components": [
-          { "item": "magichem:admixture_color", "count": 1 },
-          { "item": "magichem:admixture_odors", "count": 1 },
-          { "item": "magichem:admixture_mana", "count": 1 }
+          { "item": "magichem:admixture_color", "count": 9 },
+          { "item": "magichem:admixture_odors", "count": 9 },
+          { "item": "magichem:admixture_mana", "count": 9 }
         ]
       }
     }

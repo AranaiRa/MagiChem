@@ -278,6 +278,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(AstralObserverBlockEntity::new, BlockRegistry.ASTRAL_OBSERVER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<GnosticOrbBlockEntity>> GNOSTIC_ORB_BE = BLOCK_ENTITIES.register("gnostic_orb", () ->
+            BlockEntityType.Builder.of(GnosticOrbBlockEntity::new, BlockRegistry.GNOSTIC_ORB.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

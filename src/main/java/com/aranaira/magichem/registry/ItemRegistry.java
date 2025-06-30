@@ -416,6 +416,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> OBSCURE_PROGNOSTICATIONS = ITEMS.register("obscure_prognostications",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> ACHROMATIC_MOTE = ITEMS.register("mote_achromatic",
             () -> new TooltipLoreItem(new Item.Properties())
     );

@@ -1,0 +1,28 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 2,
+  "object": {
+    "item": "magichem:gnostic_orb",
+    "count": 3
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:compacted_verdigris" },
+        { "item": "magichem:mote_achromatic" },
+        { "item": "magichem:glass_orb" },
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "magichem:sealing_wax" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_change", "count": 23 },
+        { "item": "magichem:admixture_potential", "count": 19 },
+        { "item": "magichem:admixture_sorcery", "count": 17 },
+        { "item": "magichem:admixture_realm", "count": 13 },
+        { "item": "magichem:essentia_nigredo", "count": 9 }
+      ]
+    }
+  ]
+}
