@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.GnosticOrbBlock;
 import com.aranaira.magichem.entities.GnosticOrbExecutorEntity;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -19,13 +20,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,12 +58,13 @@ public class GnosticOrbBlockEntity extends BlockEntity {
         super(BlockEntitiesRegistry.GNOSTIC_ORB_BE.get(), pPos, pBlockState);
 
         if(PROPHECY_DATA.size() == 0) {
-            PROPHECY_DATA.put("construct", new Pair<>(12, null));
+            PROPHECY_DATA.put("construct", new Pair<>(12, GnosticOrbBlockEntity::prophecyConditionConstruct));
             PROPHECY_DATA.put("creature", new Pair<>(10, null));
             PROPHECY_DATA.put("delight", new Pair<>(15, null));
             PROPHECY_DATA.put("disaster", new Pair<>(3, null));
             PROPHECY_DATA.put("exanimate", new Pair<>(15, GnosticOrbBlockEntity::prophecyConditionExanimate));
             PROPHECY_DATA.put("metal", new Pair<>(30, null));
+            PROPHECY_DATA.put("odors", new Pair<>(3, GnosticOrbBlockEntity::prophecyConditionOdors));
             PROPHECY_DATA.put("thought", new Pair<>(60, GnosticOrbBlockEntity::prophecyConditionThought));
         }
     }
@@ -84,7 +89,11 @@ public class GnosticOrbBlockEntity extends BlockEntity {
     public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, E e) {
         if(e instanceof GnosticOrbBlockEntity entity) {
             if(entity.hasProphecyCooking()) {
+                int pre = entity.progress;
                 entity.progress = Math.min(entity.progressTarget, entity.progress + 1);
+                if(!level.isClientSide()) entity.setChanged();
+                if((pre != entity.progress) && (entity.progress >= entity.progressTarget))
+                    level.setBlock(pos, blockState.setValue(MagiChemBlockStateProperties.READY_FOR_COLLECTION, true), 3);
 
                 //Particle work
                 if(level.isClientSide()) {
@@ -134,13 +143,12 @@ public class GnosticOrbBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
         nbt.putInt("progress", progress);
         nbt.putInt("progressTarget", progressTarget);
         nbt.putInt("materiaColor", materiaColor);
         if(!materiaType.equals(""))
             nbt.putString("materiaType", materiaType);
-
-        super.saveAdditional(nbt);
     }
 
     @Override
@@ -272,6 +280,25 @@ public class GnosticOrbBlockEntity extends BlockEntity {
     }
 
     private static void prophecyConditionExanimate(GnosticOrbBlockEntity pEntity) {
+        if(pEntity.getLevel() == null) return;
+
+        boolean foundVillager = false;
+        int range = 30;
+        AABB bounds = new AABB(
+                pEntity.getBlockPos().getX() - range, pEntity.getBlockPos().getY() - (range / 3f), pEntity.getBlockPos().getZ() - range,
+                pEntity.getBlockPos().getX() + range, pEntity.getBlockPos().getY() + (range / 3f), pEntity.getBlockPos().getZ() + range
+        );
+        for(Entity e : pEntity.getLevel().getEntities(null, bounds)) {
+            if(e instanceof Villager v) {
+                foundVillager = true;
+                break;
+            }
+        }
+
+        pEntity.preconditionValidated = foundVillager;
+    }
+
+    private static void prophecyConditionOdors(GnosticOrbBlockEntity pEntity) {
         pEntity.preconditionValidated = true;
     }
 

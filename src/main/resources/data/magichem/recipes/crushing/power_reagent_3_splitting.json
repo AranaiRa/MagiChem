@@ -6,7 +6,7 @@
   "output_quantity": 1,
   "byproducts": [
     {
-      "tag": "minecraft:magichem_brindle_grit",
+      "tag": "magichem:brindle_grit",
       "chance": 1,
       "rolls": 6
     }

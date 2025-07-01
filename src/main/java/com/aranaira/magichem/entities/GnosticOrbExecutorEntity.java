@@ -26,8 +26,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TallFlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec2;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -44,6 +49,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
 
     public static final TagKey<Block> TAG_BOOKSHELVES = BlockTags.create(new ResourceLocation("forge", "bookshelves"));
     public static final TagKey<Block> TAG_CAKES = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "cakes"));
+    public static final TagKey<Block> TAG_FLOWER_GENERATING_BLACKLIST = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "flower_spawning_blacklist"));
     public static final TagKey<Block> TAG_ORES = BlockTags.create(new ResourceLocation("forge", "ores_in_ground/stone"));
     public static final TagKey<Block> TAG_TABLES = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "tables"));
 
@@ -66,6 +72,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
             PROPHECY_DATA.put("disaster",  new Quadlet<>(4, 75, GnosticOrbExecutorEntity::preCacheDisaster, GnosticOrbExecutorEntity::prophecyEffectDisaster));
             PROPHECY_DATA.put("exanimate", new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheExanimate, GnosticOrbExecutorEntity::prophecyEffectExanimate));
             PROPHECY_DATA.put("metal",     new Quadlet<>(2, 160, GnosticOrbExecutorEntity::preCacheMetal, GnosticOrbExecutorEntity::prophecyEffectMetal));
+            PROPHECY_DATA.put("odors",     new Quadlet<>(1, 240, GnosticOrbExecutorEntity::preCacheOdors, GnosticOrbExecutorEntity::prophecyEffectOdors));
             PROPHECY_DATA.put("thought",   new Quadlet<>(1, 1, GnosticOrbExecutorEntity::preCacheThought, GnosticOrbExecutorEntity::prophecyEffectThought));
         }
     }
@@ -202,7 +209,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
     public static void preCacheDelight(GnosticOrbExecutorEntity pEntity) {
         //Precalculate cake destinations
         int range = 20;
-        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getX()+(range/2); y++) {
+        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getY()+(range/2); y++) {
             for (int x = pEntity.blockPosition().getX()-range; x<=pEntity.blockPosition().getX()+range; x++) {
                 for (int z = pEntity.blockPosition().getZ()-range; z<=pEntity.blockPosition().getZ()+range; z++) {
                     BlockPos posQuery = new BlockPos(x, y, z);
@@ -303,7 +310,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
     public static void preCacheMetal(GnosticOrbExecutorEntity pEntity) {
         //Precalculate places that could be ore
         int range = 10;
-        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getX()+(range/2); y++) {
+        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getY()+(range/2); y++) {
             for (int x = pEntity.blockPosition().getX()-range; x<=pEntity.blockPosition().getX()+range; x++) {
                 for (int z = pEntity.blockPosition().getZ()-range; z<=pEntity.blockPosition().getZ()+range; z++) {
                     BlockPos posQuery = new BlockPos(x, y, z);
@@ -344,10 +351,72 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         pEntity.iterator++;
     }
 
+    public static void preCacheOdors(GnosticOrbExecutorEntity pEntity) {
+        //Precalculate places that are plantable
+        int range = 20;
+        int height = 5;
+
+        for (int x = pEntity.blockPosition().getX()-range; x<=pEntity.blockPosition().getX()+range; x++) {
+            for (int z = pEntity.blockPosition().getZ()-range; z<=pEntity.blockPosition().getZ()+range; z++) {
+                float xQ = x - pEntity.blockPosition().getX();
+                float zQ = z - pEntity.blockPosition().getZ();
+                Vec2 v = new Vec2(xQ, zQ).normalized().scale(range);
+                if(Math.abs(xQ) > Math.abs(v.x) && Math.abs(zQ) > Math.abs(v.y)) continue;
+
+                for(int y = pEntity.blockPosition().getY()-(height/2); y<=pEntity.blockPosition().getY()+(height/2); y++) {
+                    BlockPos posQuery = new BlockPos(x, y, z);
+                    BlockState stateQuery = pEntity.level().getBlockState(posQuery);
+                    BlockState stateAboveQuery = pEntity.level().getBlockState(posQuery.above());
+
+                    boolean isDirt = stateQuery.is(BlockTags.DIRT);
+                    boolean isOpenAbove = stateAboveQuery.isAir();
+
+                    if(isDirt && isOpenAbove) {
+                        pEntity.validBlockTargets.add(posQuery.above());
+                    }
+                }
+            }
+        }
+        Collections.shuffle(pEntity.validBlockTargets);
+        pEntity.iteratorLimit = Math.min(pEntity.validBlockTargets.size(), pEntity.iteratorLimit);
+
+        //Precalculate list of flowers
+        for (Holder<Block> blockHolder : BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.FLOWERS)) {
+            if(!blockHolder.value().defaultBlockState().is(TAG_FLOWER_GENERATING_BLACKLIST))
+            pEntity.validBlockStates.add(blockHolder.value().defaultBlockState());
+        }
+
+        pEntity.hasPreCached = true;
+    }
+
+    public static void prophecyEffectOdors(GnosticOrbExecutorEntity pEntity) {
+        BlockPos posQuery = pEntity.validBlockTargets.get(pEntity.iterator);
+        BlockState stateQuery;
+        if(pEntity.validBlockStates.size() == 1)
+            stateQuery = pEntity.validBlockStates.get(0);
+        else
+            stateQuery = pEntity.validBlockStates.get(r.nextInt(pEntity.validBlockStates.size()));
+
+        pEntity.level().setBlock(posQuery, stateQuery, 3);
+        if(stateQuery.is(BlockTags.TALL_FLOWERS)) {
+            BlockState bottom = stateQuery.getBlock().defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER);
+            BlockState top = stateQuery.getBlock().defaultBlockState().setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER);
+            pEntity.level().setBlock(posQuery.above(), top, 3);
+            pEntity.level().setBlock(posQuery, bottom, 3);
+        } else {
+            pEntity.level().setBlock(posQuery, stateQuery, 3);
+        }
+        MagiChemMod.CHANNEL.send(
+                PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 20f, pEntity.level().dimension())),
+                new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), pEntity.materiaColor, true));
+
+        pEntity.iterator++;
+    }
+
     public static void preCacheThought(GnosticOrbExecutorEntity pEntity) {
         //Precalculate places that could be ore
         int range = 6;
-        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getX()+(range/2); y++) {
+        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getY()+(range/2); y++) {
             for (int x = pEntity.blockPosition().getX()-range; x<=pEntity.blockPosition().getX()+range; x++) {
                 for (int z = pEntity.blockPosition().getZ()-range; z<=pEntity.blockPosition().getZ()+range; z++) {
                     BlockPos posQuery = new BlockPos(x, y, z);

@@ -9391,6 +9391,32 @@
       },
       {
         "type": "title",
+        "value": "Odors",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_odors",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "large field of flowers",
+            "color": "dark_purple"
+          },
+          {
+            "text": " will bloom on nearby dirt and grass."
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Thought",
         "newPage": true
       },
@@ -9419,6 +9445,46 @@
           },
           {
             "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Gnostic Orb supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": ". It outputs a signal strength of "
+          },
+          {
+            "text": "15",
+            "color": "dark_red"
+          },
+          {
+            "text": " when a prophecy is ready to fulfill, and a strength of "
+          },
+          {
+            "text": "0",
+            "color": "dark_red"
+          },
+          {
+            "text": " otherwise."
           }
         ]
       }

@@ -31,11 +31,15 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.READY_FOR_COLLECTION;
+
 public class GnosticOrbBlock extends BaseEntityBlock {
     public static final VoxelShape VOXEL_SHAPE = Block.box(4,4,4,12,12,12);
 
     public GnosticOrbBlock(Properties pProperties) {
         super(pProperties);
+        registerDefaultState(this.defaultBlockState()
+                .setValue(READY_FOR_COLLECTION, false));
     }
 
     @Nullable
@@ -46,7 +50,7 @@ public class GnosticOrbBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(MagiChemBlockStateProperties.READY_FOR_COLLECTION);
+        pBuilder.add(READY_FOR_COLLECTION);
     }
 
     @Nullable
@@ -114,5 +118,15 @@ public class GnosticOrbBlock extends BaseEntityBlock {
         }
 
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState pState) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
+        return pState.getValue(READY_FOR_COLLECTION) ? 15 : 0;
     }
 }
