@@ -4,7 +4,10 @@ import com.aranaira.magichem.block.entity.GnosticOrbBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -12,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -47,6 +51,27 @@ public class GnosticOrbBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        int range = 12;
+        final BlockPos pos = pContext.getClickedPos();
+        for(int y=pos.getY()-range;y<=pos.getY()+range;y++) {
+            for(int x=pos.getX()-range;x<=pos.getX()+range;x++) {
+                for(int z=pos.getZ()-range;z<=pos.getZ()+range;z++) {
+                    if(pContext.getLevel().getBlockState(new BlockPos(x,y,z)).getBlock() == BlockRegistry.GNOSTIC_ORB.get()) {
+                        if(!pContext.getLevel().isClientSide())
+                            pContext.getPlayer().sendSystemMessage(Component.translatable("feedback.block.gnostic_orb.too_close_to_orb"));
+
+                        return null;
+                    }
+                }
+            }
+        }
+
+        return super.getStateForPlacement(pContext);
+    }
+
+    @Nullable
+    @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BlockEntitiesRegistry.GNOSTIC_ORB_BE.get(),
                 GnosticOrbBlockEntity::tick);
@@ -64,22 +89,27 @@ public class GnosticOrbBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(!pLevel.isClientSide() && pLevel.getBlockEntity(pPos) instanceof GnosticOrbBlockEntity orb) {
-            if(!orb.hasProphecyCooking()) {
-                final ItemStack stack = pPlayer.getItemInHand(pHand);
+        final ItemStack stack = pPlayer.getItemInHand(pHand);
+        if(pLevel.getBlockEntity(pPos) instanceof GnosticOrbBlockEntity orb) {
+            if(stack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                if(orb.hasProphecyCooking()) orb.skipToFullCharge();
+            }
+            else if (!pLevel.isClientSide()) {
+                if (!orb.hasProphecyCooking()) {
 
-                if(stack.getItem() instanceof MateriaItem) {
-                    if(orb.tryStart(stack) && !pPlayer.isCreative()) {
-                        stack.shrink(50);
-                        ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), new ItemStack(Items.GLASS_BOTTLE, 50));
-                        pLevel.addFreshEntity(ie);
+                    if (stack.getItem() instanceof MateriaItem) {
+                        if (orb.tryStart(stack) && !pPlayer.isCreative()) {
+                            stack.shrink(50);
+                            ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), new ItemStack(Items.GLASS_BOTTLE, 50));
+                            pLevel.addFreshEntity(ie);
+                        }
+
+                        return InteractionResult.CONSUME;
                     }
-
+                } else if (orb.isProphecyReady()) {
+                    orb.finalizeProphecy(pPlayer);
                     return InteractionResult.CONSUME;
                 }
-            } else if(orb.isProphecyReady()) {
-                orb.finalizeProphecy();
-                return InteractionResult.CONSUME;
             }
         }
 

@@ -2,11 +2,9 @@ package com.aranaira.magichem.entities;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.Quadlet;
-import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.networking.ParticleSpawnAnointingS2CPacket;
 import com.aranaira.magichem.registry.ItemRegistry;
-import com.machinezoo.noexception.throwing.ThrowingConsumer;
-import com.machinezoo.noexception.throwing.ThrowingRunnable;
+import com.mna.tools.SummonUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -20,29 +18,28 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import javax.annotation.Nullable;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditionalSpawnData {
     //First int is the activation tick modulus
     //Second int is the iterator limit
     //Third ThrowingRunnable is the function that precaches the correct arraylist
     //Fourth ThrowingRunnable is the function that executes on tick
-    private static final HashMap<String, Quadlet<Integer, Integer, ThrowingConsumer<GnosticOrbExecutorEntity>, ThrowingConsumer<GnosticOrbExecutorEntity>>> PROPHECY_DATA = new HashMap<>();
+    private static final HashMap<String, Quadlet<Integer, Integer, Consumer<GnosticOrbExecutorEntity>, Consumer<GnosticOrbExecutorEntity>>> PROPHECY_DATA = new HashMap<>();
     private static final Random r = new Random();
 
     public static final TagKey<Block> TAG_BOOKSHELVES = BlockTags.create(new ResourceLocation("forge", "bookshelves"));
@@ -57,25 +54,28 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
     private String materiaType = "";
     private int materiaColor = 0, iterator = 0, iteratorLimit = 0, activationTickModulus = 0;
     private Boolean hasPreCached = false;
+    private Player activatingPlayer = null;
 
     public GnosticOrbExecutorEntity(EntityType<?> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
 
         if(PROPHECY_DATA.size() == 0) {
+            PROPHECY_DATA.put("construct", new Quadlet<>(12, 8, GnosticOrbExecutorEntity::preCacheConstruct, GnosticOrbExecutorEntity::prophecyEffectConstruct));
 //            PROPHECY_DATA.put("creature",  new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheCreature, GnosticOrbExecutorEntity::prophecyEffectCreature));
             PROPHECY_DATA.put("delight",   new Quadlet<>(7, 40, GnosticOrbExecutorEntity::preCacheDelight, GnosticOrbExecutorEntity::prophecyEffectDelight));
             PROPHECY_DATA.put("disaster",  new Quadlet<>(4, 75, GnosticOrbExecutorEntity::preCacheDisaster, GnosticOrbExecutorEntity::prophecyEffectDisaster));
-//            PROPHECY_DATA.put("exanimate", new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheExanimate, GnosticOrbExecutorEntity::prophecyEffectExanimate));
-            PROPHECY_DATA.put("metal",     new Quadlet<>(3, 120, GnosticOrbExecutorEntity::preCacheMetal, GnosticOrbExecutorEntity::prophecyEffectMetal));
+            PROPHECY_DATA.put("exanimate", new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheExanimate, GnosticOrbExecutorEntity::prophecyEffectExanimate));
+            PROPHECY_DATA.put("metal",     new Quadlet<>(2, 160, GnosticOrbExecutorEntity::preCacheMetal, GnosticOrbExecutorEntity::prophecyEffectMetal));
             PROPHECY_DATA.put("thought",   new Quadlet<>(1, 1, GnosticOrbExecutorEntity::preCacheThought, GnosticOrbExecutorEntity::prophecyEffectThought));
         }
     }
 
-    public void configure(String pMateriaType, int pMateriaColor) {
+    public void configure(String pMateriaType, int pMateriaColor, Player pActivatingPlayer) {
         materiaType = pMateriaType;
         materiaColor = pMateriaColor;
         activationTickModulus = PROPHECY_DATA.get(materiaType).getFirst();
         iteratorLimit = PROPHECY_DATA.get(materiaType).getSecond();
+        activatingPlayer = pActivatingPlayer;
     }
 
     @Override
@@ -90,6 +90,10 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         iterator = pCompound.getInt("iterator");
         iteratorLimit = pCompound.getInt("iteratorLimit");
         activationTickModulus = pCompound.getInt("activationTickModulus");
+        if(level() != null && !level().isClientSide()) {
+            final UUID uuidQuery = UUID.fromString(pCompound.getString("activatingPlayer"));
+            activatingPlayer = level().getServer().getPlayerList().getPlayer(uuidQuery);
+        }
     }
 
     @Override
@@ -99,6 +103,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         pCompound.putInt("iterator",iterator);
         pCompound.putInt("iteratorLimit",iteratorLimit);
         pCompound.putInt("activationTickModulus",activationTickModulus);
+        pCompound.putString("activatingPlayer",activatingPlayer.getStringUUID());
     }
 
     @Override
@@ -117,7 +122,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
             if(materiaType.equals(""))
                 kill();
 
-            final Quadlet<Integer, Integer, ThrowingConsumer<GnosticOrbExecutorEntity>, ThrowingConsumer<GnosticOrbExecutorEntity>> data = PROPHECY_DATA.get(materiaType);
+            final Quadlet<Integer, Integer, Consumer<GnosticOrbExecutorEntity>, Consumer<GnosticOrbExecutorEntity>> data = PROPHECY_DATA.get(materiaType);
 
             if(hasPreCached) {
                 if (level().getGameTime() % data.getFirst() == 0) {
@@ -144,11 +149,53 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
     // PROPHECY EFFECTS
     /////////////////////
 
+    public static void preCacheConstruct(GnosticOrbExecutorEntity pEntity) {
+        //Precalculate places that are iron blocks
+        int range = 8;
+        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getX()+(range/2); y++) {
+            for (int x = pEntity.blockPosition().getX()-range; x<=pEntity.blockPosition().getX()+range; x++) {
+                for (int z = pEntity.blockPosition().getZ()-range; z<=pEntity.blockPosition().getZ()+range; z++) {
+                    BlockPos posQuery = new BlockPos(x, y, z);
+                    BlockState stateQuery = pEntity.level().getBlockState(posQuery);
+
+                    boolean isIronBlock = stateQuery.getBlock() == Blocks.IRON_BLOCK;
+
+                    if(isIronBlock) {
+                        pEntity.validBlockTargets.add(posQuery);
+                    }
+                }
+            }
+        }
+        Collections.shuffle(pEntity.validBlockTargets);
+        pEntity.iteratorLimit = Math.min(pEntity.iteratorLimit, pEntity.validBlockTargets.size());
+
+        pEntity.hasPreCached = true;
+    }
+
+    public static void prophecyEffectConstruct(GnosticOrbExecutorEntity pEntity) {
+        BlockPos posQuery = pEntity.validBlockTargets.get(pEntity.iterator);
+
+        MagiChemMod.CHANNEL.send(
+                PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 20f, pEntity.level().dimension())),
+                new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), pEntity.materiaColor, true));
+
+        pEntity.level().destroyBlock(posQuery, false);
+
+        IronGolem ig = new IronGolem(EntityType.IRON_GOLEM, pEntity.level());
+        SummonUtils.setSummon(ig, pEntity.activatingPlayer, Integer.MAX_VALUE);
+        pEntity.level().addFreshEntity(ig);
+        ig.setPos(posQuery.getX()+0.5, posQuery.getY()+1, posQuery.getZ()+0.5);
+
+        pEntity.iterator++;
+    }
+
     public static void preCacheCreature(GnosticOrbExecutorEntity pEntity) {
         pEntity.hasPreCached = true;
     }
 
-    public static void prophecyEffectCreature(GnosticOrbExecutorEntity pEntity) {
+    public static void prophecyEffectCreature(Pair<GnosticOrbExecutorEntity, Player> data) {
+        GnosticOrbExecutorEntity pEntity = data.getFirst();
+        Player pActivatingPlayer = data.getSecond();
         pEntity.iterator = pEntity.iteratorLimit;
     }
 
@@ -220,17 +267,37 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
     public static void prophecyEffectDisaster(GnosticOrbExecutorEntity pEntity) {
         BlockPos pos = pEntity.validBlockTargets.get(pEntity.iterator);
 
-        pEntity.level().explode(null, pos.getX(), pos.getY(), pos.getZ(), r.nextInt(12) + 8, true, Level.ExplosionInteraction.BLOCK);
+        pEntity.level().explode(pEntity.activatingPlayer, pos.getX(), pos.getY(), pos.getZ(), r.nextInt(12) + 8, true, Level.ExplosionInteraction.BLOCK);
 
         pEntity.iterator++;
     }
 
     public static void preCacheExanimate(GnosticOrbExecutorEntity pEntity) {
+        int range = 30;
+        AABB bounds = new AABB(
+                pEntity.getX() - range, pEntity.getY() - (range / 3f), pEntity.getZ() - range,
+                pEntity.getX() + range, pEntity.getY() + (range / 3f), pEntity.getZ() + range
+        );
+        for(Entity e : pEntity.level().getEntities(null, bounds)) {
+            if(e instanceof Villager v) {
+                pEntity.validEntityTargets.add(v);
+            }
+        }
+        pEntity.iteratorLimit = Math.min(pEntity.iteratorLimit, pEntity.validEntityTargets.size());
+
         pEntity.hasPreCached = true;
     }
 
     public static void prophecyEffectExanimate(GnosticOrbExecutorEntity pEntity) {
-        pEntity.iterator = pEntity.iteratorLimit;
+        Entity e = pEntity.validEntityTargets.get(pEntity.iterator);
+        if(e instanceof Villager v) {
+            v.convertTo(EntityType.ZOMBIE_VILLAGER, true);
+            MagiChemMod.CHANNEL.send(
+                    PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(v.getX(), v.getY(), v.getZ(), 20f, pEntity.level().dimension())),
+                    new ParticleSpawnAnointingS2CPacket((int)v.getX(), (int)v.getY(), (int)v.getZ(), pEntity.materiaColor, true));
+        }
+
+        pEntity.iterator++;
     }
 
     public static void preCacheMetal(GnosticOrbExecutorEntity pEntity) {

@@ -8,6 +8,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
 // An example config class. This is not required, but it's a good idea to have one to keep your config organized.
 // Demonstrates how to use Forge's config APIs
 @Mod.EventBusSubscriber(modid = MagiChemMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -418,6 +423,14 @@ public class ServerConfig
             .comment("The default cuboid range that a Slumbering Idol will slaughter Phantoms in.")
             .defineInRange("slumberingIdolRange", 64, 16, 1024);
 
+    //GNOSTIC ORB
+    private static final ForgeConfigSpec.ConfigValue<List<?>> GNOSTIC_ORB_PROPHECY_BLACKLIST = BUILDER
+            .comment("A comma separated list of English admixture names. Disables Prophecies of that type of materia from being started. Use the name alone without a prefix, e.g. disaster instead of admixture_disaster.")
+            .defineList("gnosticOrbProphecyBlacklist", Arrays.asList(), (e) -> {
+                return true;
+            });
+
+
     public static final ForgeConfigSpec SPEC = BUILDER.build();
 
     public static int
@@ -508,6 +521,8 @@ public class ServerConfig
         materiaManifestDistanceLimit,
         materiaManifestDefaultRange,
         slumberingIdolRange;
+    public static HashSet<? extends String>
+        gnosticOrbProphecyBlacklist;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -517,6 +532,8 @@ public class ServerConfig
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
+        gnosticOrbProphecyBlacklist = new HashSet(GNOSTIC_ORB_PROPHECY_BLACKLIST.get());
+
         grimePerWaste = GRIME_PER_WASTE.get();
         grimePenaltyPoint = GRIME_PENALTY_POINT.get();
         fluidPerXPPoint = FLUID_PER_XP_POINT.get();

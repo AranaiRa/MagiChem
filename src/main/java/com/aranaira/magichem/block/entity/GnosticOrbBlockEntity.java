@@ -20,6 +20,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.aranaira.magichem.block.entity.MirrorLabyrinthBlockEntity.TRAIL_PARTICLE_COLORS;
@@ -40,7 +42,7 @@ public class GnosticOrbBlockEntity extends BlockEntity {
     //Integer (first) is the number of minutes for a full charge
     //First ThrowingRunnable is a boolean-returning precondition to allow the prophecy to discharge. If this is false, the Orb won't discharge and will send a system message to the player.
     //Second ThrowingRunnable is the actual effect caused by the orb.
-    private static final HashMap<String, Pair<Integer, ThrowingConsumer<GnosticOrbBlockEntity>>> PROPHECY_DATA = new HashMap<>();
+    private static final HashMap<String, Pair<Integer, Consumer<GnosticOrbBlockEntity>>> PROPHECY_DATA = new HashMap<>();
     private static final Random r = new Random();
     private static final ItemStack PARTICLE_STACK = new ItemStack(Blocks.OXIDIZED_COPPER.asItem());
 
@@ -52,6 +54,7 @@ public class GnosticOrbBlockEntity extends BlockEntity {
         super(BlockEntitiesRegistry.GNOSTIC_ORB_BE.get(), pPos, pBlockState);
 
         if(PROPHECY_DATA.size() == 0) {
+            PROPHECY_DATA.put("construct", new Pair<>(12, null));
             PROPHECY_DATA.put("creature", new Pair<>(10, null));
             PROPHECY_DATA.put("delight", new Pair<>(15, null));
             PROPHECY_DATA.put("disaster", new Pair<>(3, null));
@@ -173,8 +176,12 @@ public class GnosticOrbBlockEntity extends BlockEntity {
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
-    public void finalizeProphecy() {
-        ThrowingConsumer<GnosticOrbBlockEntity> condition = PROPHECY_DATA.get(materiaType).getSecond();
+    public void skipToFullCharge() {
+        this.progress = progressTarget - 5;
+    }
+
+    public void finalizeProphecy(Player pActivatingPlayer) {
+        Consumer<GnosticOrbBlockEntity> condition = PROPHECY_DATA.get(materiaType).getSecond();
 
         if(condition != null) {
             try {
@@ -188,7 +195,7 @@ public class GnosticOrbBlockEntity extends BlockEntity {
         if(preconditionValidated) {
             //Spawn and configure an executor
             GnosticOrbExecutorEntity executor = new GnosticOrbExecutorEntity(EntitiesRegistry.GNOSTIC_ORB_EXECUTOR_ENTITY.get(), level);
-            executor.configure(materiaType, materiaColor);
+            executor.configure(materiaType, materiaColor, pActivatingPlayer);
             executor.setPos(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
             level.addFreshEntity(executor);
             executor.setPos(getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ());
@@ -240,7 +247,35 @@ public class GnosticOrbBlockEntity extends BlockEntity {
     // PROPHECY CONDITIONS
     /////////////////////
 
+    private static void prophecyConditionConstruct(GnosticOrbBlockEntity pEntity) {
+        boolean foundIronBlock = false;
+
+        int range = 8;
+        for(int y = pEntity.getBlockPos().getY()-(range/2); y<=pEntity.getBlockPos().getX()+(range/2); y++) {
+            for (int x = pEntity.getBlockPos().getX()-range; x<=pEntity.getBlockPos().getX()+range; x++) {
+                for (int z = pEntity.getBlockPos().getZ()-range; z<=pEntity.getBlockPos().getZ()+range; z++) {
+                    BlockPos posQuery = new BlockPos(x, y, z);
+                    BlockState stateQuery = pEntity.level.getBlockState(posQuery);
+
+                    boolean isIronBlock = stateQuery.getBlock() == Blocks.IRON_BLOCK;
+
+                    if(isIronBlock) {
+                        foundIronBlock = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(foundIronBlock)
+            pEntity.preconditionValidated = true;
+    }
+
     private static void prophecyConditionExanimate(GnosticOrbBlockEntity pEntity) {
+        pEntity.preconditionValidated = true;
+    }
+
+    private static void prophecyConditionThought(GnosticOrbBlockEntity pEntity) {
         boolean foundBookshelf = false;
 
         int range = 6;
@@ -262,9 +297,5 @@ public class GnosticOrbBlockEntity extends BlockEntity {
 
         if(foundBookshelf)
             pEntity.preconditionValidated = true;
-    }
-
-    private static void prophecyConditionThought(GnosticOrbBlockEntity pEntity) {
-        pEntity.preconditionValidated = true;
     }
 }

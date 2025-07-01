@@ -637,6 +637,7 @@
   "feedback.ritual.sublimation.insufficient.more": " more ",
   "feedback.ritual.sublimation.materia_in_ingredient": "One of the supplied ingredients is a Materia Jar or Materia Vessel that contains materia. Please empty the container out before using it as an ingredient.",
   "feedback.ritual.reborn_rose.abjuration": "The Abjuration crumbles to dust.",
+  "feedback.block.gnostic_orb.too_close_to_orb": "Another Gnostic Orb nearby is interfering. You cannot place another Gnostic Orb at this location.",
   "feedback.block.magic_mirror.link": "This Magic Mirror is now linked to ",
   "feedback.block.materia_manifest.accepted": "The Materia Manifest will now monitor Jars and Vessels in the Rune of Marking Pair's designated area.",
   "feedback.block.materia_manifest.too_far": "The designated area is too far from the Materia Manifest.",

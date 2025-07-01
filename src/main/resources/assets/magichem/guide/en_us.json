@@ -9254,6 +9254,39 @@
       },
       {
         "type": "title",
+        "value": "Construct",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_construct",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Up to eight nearby "
+          },
+          {
+            "text": "blocks of iron",
+            "color": "dark_purple"
+          },
+          {
+            "text": " are transformed into "
+          },
+          {
+            "text": "Iron Golems",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nUnlike a normal Iron Golem, these Iron Golems treat you as their master and will follow you around."
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Delight",
         "newPage": true
       },
@@ -9299,6 +9332,39 @@
       },
       {
         "type": "title",
+        "value": "Exanimate",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_exanimate",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Up to twenty "
+          },
+          {
+            "text": "Villagers",
+            "color": "dark_purple"
+          },
+          {
+            "text": " near the orb are "
+          },
+          {
+            "text": "cursed with undeath",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", as though they had been killed by a zombie."
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Metal",
         "newPage": true
       },
@@ -9312,14 +9378,14 @@
         "value": "",
         "json": [
           {
-            "text": "Up to "
+            "text": "A "
           },
           {
-            "text": "one hundred",
+            "text": "large number",
             "color": "dark_purple"
           },
           {
-            "text": " ores are created in nearby stone."
+            "text": " of ores are created in nearby stone."
           }
         ]
       },
