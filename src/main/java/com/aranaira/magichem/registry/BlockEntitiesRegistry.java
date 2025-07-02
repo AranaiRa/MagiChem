@@ -282,6 +282,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(GnosticOrbBlockEntity::new, BlockRegistry.GNOSTIC_ORB.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<EldrinOrreryBlockEntity>> ELDRIN_ORRERY_BE = BLOCK_ENTITIES.register("eldrin_orrery", () ->
+            BlockEntityType.Builder.of(EldrinOrreryBlockEntity::new, BlockRegistry.ELDRIN_ORRERY.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

@@ -90,6 +90,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<MateriaReflectorMenu>> MATERIA_REFLECTOR_MENU =
             registerMenuType(MateriaReflectorMenu::new, "materia_reflector");
 
+    public static final RegistryObject<MenuType<EldrinOrreryMenu>> ELDRIN_ORRERY_MENU =
+            registerMenuType(EldrinOrreryMenu::new, "eldrin_orrery");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
