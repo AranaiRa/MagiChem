@@ -1,0 +1,66 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 2,
+  "object": {
+    "item": "magichem:wisdom_stone_citrinitas"
+  },
+  "stages": [
+    {
+      "experience": 135,
+      "components": [
+        { "item": "magichem:profound_manuscript" },
+        { "item": "magichem:wisdom_stone_albedo" },
+        { "item": "magichem:profound_manuscript" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_potential", "count": 180 },
+        { "item": "magichem:admixture_history", "count": 120 },
+        { "item": "magichem:admixture_permanence", "count": 120 },
+        { "item": "magichem:essentia_citrinitas", "count": 100 }
+      ]
+    },
+    {
+      "experience": 180,
+      "components": [
+        { "item": "magichem:gnostic_orb" },
+        { "item": "magichem:shimmering_vintage_wine_bottle" },
+        { "item": "magichem:gnostic_orb" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_cold", "count": 120 },
+        { "item": "magichem:admixture_depths", "count": 120 },
+        { "item": "magichem:admixture_forests", "count": 120 },
+        { "item": "magichem:admixture_mountains", "count": 120 }
+      ]
+    },
+    {
+      "experience": 225,
+      "components": [
+        { "item": "magichem:immaculate_vinteum_crystal" },
+        { "item": "magichem:obscure_prognostications" },
+        { "item": "magichem:immaculate_vinteum_crystal" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_hells", "count": 120 },
+        { "item": "magichem:admixture_plains", "count": 120 },
+        { "item": "magichem:admixture_swamps", "count": 120 },
+        { "item": "magichem:admixture_wastes", "count": 120 }
+      ]
+    },
+    {
+      "experience": 270,
+      "components": [
+        { "item": "magichem:daunting_esoterica" },
+        { "item": "magichem:celestial_mechanism" },
+        { "item": "magichem:daunting_esoterica" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_change", "count": 180 },
+        { "item": "magichem:admixture_curse", "count": 120 },
+        { "item": "magichem:admixture_sleep", "count": 120 },
+        { "item": "magichem:essentia_citrinitas", "count": 150 }
+      ]
+    }
+  ]
+}
