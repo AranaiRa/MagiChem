@@ -1,0 +1,11 @@
+{
+  "type": "magichem:prophecy_erosion",
+  "targetBlock": "minecraft:stone_bricks",
+  "resultOptions": [
+    "minecraft:cracked_stone_bricks",
+    "minecraft:cracked_stone_bricks",
+    "minecraft:mossy_stone_bricks",
+    "minecraft:cobblestone",
+    "minecraft:gravel"
+  ]
+}

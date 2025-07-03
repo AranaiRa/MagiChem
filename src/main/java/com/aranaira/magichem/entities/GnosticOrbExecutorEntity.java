@@ -3,6 +3,7 @@ package com.aranaira.magichem.entities;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.Quadlet;
 import com.aranaira.magichem.networking.ParticleSpawnAnointingS2CPacket;
+import com.aranaira.magichem.recipe.ProphecyErosionRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.tools.SummonUtils;
 import com.mna.tools.math.Vector3;
@@ -70,6 +71,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
 //            PROPHECY_DATA.put("creature",  new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheCreature, GnosticOrbExecutorEntity::prophecyEffectCreature));
             PROPHECY_DATA.put("delight",   new Quadlet<>(7, 40, GnosticOrbExecutorEntity::preCacheDelight, GnosticOrbExecutorEntity::prophecyEffectDelight));
             PROPHECY_DATA.put("disaster",  new Quadlet<>(4, 75, GnosticOrbExecutorEntity::preCacheDisaster, GnosticOrbExecutorEntity::prophecyEffectDisaster));
+            PROPHECY_DATA.put("erosion",   new Quadlet<>(3, 120, GnosticOrbExecutorEntity::preCacheErosion, GnosticOrbExecutorEntity::prophecyEffectErosion));
             PROPHECY_DATA.put("exanimate", new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheExanimate, GnosticOrbExecutorEntity::prophecyEffectExanimate));
             PROPHECY_DATA.put("metal",     new Quadlet<>(2, 160, GnosticOrbExecutorEntity::preCacheMetal, GnosticOrbExecutorEntity::prophecyEffectMetal));
             PROPHECY_DATA.put("odors",     new Quadlet<>(1, 240, GnosticOrbExecutorEntity::preCacheOdors, GnosticOrbExecutorEntity::prophecyEffectOdors));
@@ -275,6 +277,42 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         BlockPos pos = pEntity.validBlockTargets.get(pEntity.iterator);
 
         pEntity.level().explode(pEntity.activatingPlayer, pos.getX(), pos.getY(), pos.getZ(), r.nextInt(12) + 8, true, Level.ExplosionInteraction.BLOCK);
+
+        pEntity.iterator++;
+    }
+
+    public static void preCacheErosion(GnosticOrbExecutorEntity pEntity) {
+        //Precalculate places that could be eroded
+        int range = 12;
+        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getY()+(range/2); y++) {
+            for (int x = pEntity.blockPosition().getX()-range; x<=pEntity.blockPosition().getX()+range; x++) {
+                for (int z = pEntity.blockPosition().getZ()-range; z<=pEntity.blockPosition().getZ()+range; z++) {
+                    BlockPos posQuery = new BlockPos(x, y, z);
+                    BlockState stateQuery = pEntity.level().getBlockState(posQuery);
+
+                    boolean hasRecipe = ProphecyErosionRecipe.getProphecyErosionRecipe(pEntity.level(), stateQuery.getBlock()) != null;
+
+                    if(hasRecipe) {
+                        pEntity.validBlockTargets.add(posQuery);
+                    }
+                }
+            }
+        }
+        Collections.shuffle(pEntity.validBlockTargets);
+        pEntity.iteratorLimit = Math.min(pEntity.validBlockTargets.size(), pEntity.iteratorLimit);
+
+        pEntity.hasPreCached = true;
+    }
+
+    public static void prophecyEffectErosion(GnosticOrbExecutorEntity pEntity) {
+        BlockPos posQuery = pEntity.validBlockTargets.get(pEntity.iterator);
+        BlockState stateQuery = pEntity.level().getBlockState(posQuery);
+        ProphecyErosionRecipe recipe = ProphecyErosionRecipe.getProphecyErosionRecipe(pEntity.level(), stateQuery.getBlock());
+
+        pEntity.level().setBlock(posQuery, recipe.pickResult().defaultBlockState(), 3);
+        MagiChemMod.CHANNEL.send(
+                PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 20f, pEntity.level().dimension())),
+                new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), pEntity.materiaColor, true));
 
         pEntity.iterator++;
     }

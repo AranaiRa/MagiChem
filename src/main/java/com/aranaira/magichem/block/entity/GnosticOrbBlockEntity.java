@@ -62,6 +62,7 @@ public class GnosticOrbBlockEntity extends BlockEntity {
             PROPHECY_DATA.put("creature", new Pair<>(10, null));
             PROPHECY_DATA.put("delight", new Pair<>(15, null));
             PROPHECY_DATA.put("disaster", new Pair<>(3, null));
+            PROPHECY_DATA.put("erosion", new Pair<>(3, null));
             PROPHECY_DATA.put("exanimate", new Pair<>(15, GnosticOrbBlockEntity::prophecyConditionExanimate));
             PROPHECY_DATA.put("metal", new Pair<>(30, null));
             PROPHECY_DATA.put("odors", new Pair<>(3, GnosticOrbBlockEntity::prophecyConditionOdors));

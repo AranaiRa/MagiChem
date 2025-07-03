@@ -9357,6 +9357,32 @@
       },
       {
         "type": "title",
+        "value": "Erosion",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:admixture_erosion",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A large number of structural blocks nearby will be "
+          },
+          {
+            "text": "broken down into a more worn state",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", as though the area had weathered hundreds of years of time."
+          }
+        ]
+      },
+      {
+        "type": "title",
         "value": "Exanimate",
         "newPage": true
       },

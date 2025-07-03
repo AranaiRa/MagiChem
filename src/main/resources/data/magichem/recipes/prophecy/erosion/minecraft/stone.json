@@ -1,0 +1,8 @@
+{
+  "type": "magichem:prophecy_erosion",
+  "targetBlock": "minecraft:stone",
+  "resultOptions": [
+    "minecraft:cobblestone",
+    "minecraft:gravel"
+  ]
+}
