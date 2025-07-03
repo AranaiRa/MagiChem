@@ -5905,7 +5905,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " of Sand."
+            "text": " of Sand.\n\nAfter anointing a Gnostic Orb with an appropriate Admixture, you can right click it with the orb to "
+          },
+          {
+            "text": "instantly charge the prophecy",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
           }
         ]
       }
@@ -9252,7 +9259,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "of materia.\n\nAfter being anointed with an appropriate admixture, the Gnostic Orb will start drawing in power and "
+            "text": " of materia.\n\nAfter being anointed with an appropriate admixture, the Gnostic Orb will start drawing in power and "
           },
           {
             "text": "forming a magic circle",

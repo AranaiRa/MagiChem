@@ -319,7 +319,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
                     boolean isStoneOreReplaceable = stateQuery.is(BlockTags.STONE_ORE_REPLACEABLES);
 
                     if(isStoneOreReplaceable) {
-                        pEntity.validBlockTargets.add(posQuery.above());
+                        pEntity.validBlockTargets.add(posQuery);
                     }
                 }
             }
