@@ -2,16 +2,27 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.saveddata.EldrinOrreryLimiterSD;
 import com.aranaira.magichem.gui.EldrinOrreryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
+import com.mna.api.capabilities.IWellspringNodeRegistry;
 import com.mna.capabilities.worlddata.WorldMagicProvider;
 import com.mna.items.ItemInit;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +31,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,21 +41,32 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider {
+public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester {
     public static final int
         SLOT_COUNT = 10, SLOT_INPUT_START = 0, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT = 5,
         SLOT_SOLAR_INPUT = 0, SLOT_LUNAR_INPUT = 1, SLOT_SIDEREAL_INPUT = 2, SLOT_FIRMAMENT_INPUT = 3, SLOT_REALM_INPUT = 4,
         SLOT_SOLAR_OUTPUT = 5, SLOT_LUNAR_OUTPUT = 6, SLOT_SIDEREAL_OUTPUT = 7, SLOT_FIRMAMENT_OUTPUT = 8, SLOT_REALM_OUTPUT = 9,
         DATA_COUNT = 5,
-        DATA_SOLAR = 0, DATA_LUNAR = 1, DATA_SIDEREAL = 2, DATA_FIRMAMENT = 3, DATA_REALM = 4;
+        DATA_SOLAR = 0, DATA_LUNAR = 1, DATA_SIDEREAL = 2, DATA_FIRMAMENT = 3, DATA_REALM = 4,
+        CHARGE_SOLAR = 120000, CHARGE_LUNAR = 192000, CHARGE_SIDEREAL = 288000, CHARGE_ADMIXTURES = 200,
+        CHARGE_CAP_MULT_ORBS = 2, CHARGE_CAP_MULT_ADMIXTURES = 10;
+    public static final float
+        GEN_RATE_NONE = 0.01f, GEN_RATE_SOLAR = 0.03f, GEN_RATE_LUNAR = 0.04f, GEN_RATE_SIDEREAL = 0.05f,
+        X_MULT_REALM = 1.5f, X_MULT_FIRMAMENT = 2.0f;
+    public static final MateriaItem ADMIXTURE_FIRMAMENT = ItemRegistry.getMateriaMap(false, false).get("firmament");
+    public static final MateriaItem ADMIXTURE_REALM = ItemRegistry.getMateriaMap(false, false).get("realm");
 
     private UUID placedBy;
+    private Player playerRef;
     private int solar, lunar, sidereal, firmament, realm;
 
     private ContainerData data = new ContainerData() {
@@ -110,9 +133,9 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
             else if (slot == SLOT_SIDEREAL_INPUT)
                 return stack.getItem() == ItemRegistry.SIDEREAL_ORB.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
             else if (slot == SLOT_FIRMAMENT_INPUT)
-                return (stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("firmament"));
+                return (stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("firmament")) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
             else if (slot == SLOT_REALM_INPUT)
-                return (stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("realm"));
+                return (stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("realm")) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
 
             return false;
         }
@@ -126,6 +149,11 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public Component getDisplayName() {
         return Component.empty();
+    }
+
+    public void setPlacedBy(Player player) {
+        playerRef = player;
+        placedBy = player.getUUID();
     }
 
     @Nullable
@@ -148,12 +176,66 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
+    private boolean canInjectPower() {
+        MutableBoolean hasSpaceForGenTick = new MutableBoolean(false);
+        if (!this.getLevel().isClientSide()) {
+            if (placedBy == null) return false;
+            if (playerRef == null) {
+                playerRef = getLevel().getPlayerByUUID(placedBy);
+            }
+        }
+
+        this.getLevel().getCapability(WorldMagicProvider.MAGIC).ifPresent((m) -> {
+            IWellspringNodeRegistry wsRegistry = m.getWellspringRegistry();
+            HashMap<Affinity, Float> nodeAmounts = wsRegistry.getNodeNetworkAmountFor(playerRef);
+
+            if(nodeAmounts != null) {
+                for (Affinity aff : AFFINITIES) {
+                    for (int i = 0; i < AFFINITIES.length; i++) {
+                        Float amountInNetwork = nodeAmounts.get(aff);
+                        if(amountInNetwork != null) {
+                            float spaceInNetwork = 1000 - amountInNetwork;
+
+                            float mult = wsRegistry.getEldrinGenerationMultiplierFor(playerRef, aff);
+
+                            float genThisTick = getBaseGenerationRate() * mult * getXMultRate();
+                            if (spaceInNetwork >= genThisTick) {
+                                hasSpaceForGenTick.setValue(true);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        return hasSpaceForGenTick.booleanValue();
+    }
+
+    public float getBaseGenerationRate() {
+        float out = GEN_RATE_NONE;
+        out += solar > 0 ? GEN_RATE_SOLAR : 0;
+        out += lunar > 0 ? GEN_RATE_LUNAR : 0;
+        out += sidereal > 0 ? GEN_RATE_SIDEREAL : 0;
+        return out;
+    }
+
+    public float getXMultRate() {
+        float out = 1.0f;
+        out *= realm > 0 ? X_MULT_REALM : 1.0f;
+        out *= firmament > 0 ? X_MULT_FIRMAMENT : 1.0f;
+        return out;
+    }
+
     public float getPowerPerTick(Affinity aff) {
         MutableFloat powerPerTick = new MutableFloat(0.0F);
         this.getLevel().getCapability(WorldMagicProvider.MAGIC).ifPresent((m) -> {
-            float amount = 0.02F;
-            float multiplier = m.getWellspringRegistry().getEldrinGenerationMultiplierFor(this.placedBy, this.level, aff);
-            powerPerTick.setValue(amount * multiplier);
+            IWellspringNodeRegistry wsRegistry = m.getWellspringRegistry();
+
+            float mult = wsRegistry.getEldrinGenerationMultiplierFor(playerRef, aff);
+            float genThisTick = getBaseGenerationRate() * mult * getXMultRate();
+
+            powerPerTick.setValue(genThisTick);
         });
         return powerPerTick.floatValue();
     }
@@ -165,9 +247,304 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         return super.getCapability(cap, side);
     }
 
+    public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, E e) {
+        if(e instanceof EldrinOrreryBlockEntity entity) {
+            if(!level.isClientSide()) {
+                boolean changed = false;
+                if(entity.solar < CHARGE_SOLAR * CHARGE_CAP_MULT_ORBS - CHARGE_SOLAR) {
+                    ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_SOLAR_INPUT);
+                    ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_SOLAR_OUTPUT);
+                    if(!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
+                        entity.solar += CHARGE_SOLAR;
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) {
+                            if (outStack.isEmpty()) {
+                                entity.itemHandler.setStackInSlot(SLOT_SOLAR_OUTPUT, new ItemStack(ItemRegistry.GLASS_ORB.get()));
+                            } else {
+                                outStack.grow(1);
+                            }
+                        }
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
+                        changed = true;
+                    }
+                }
+                if(entity.lunar < CHARGE_LUNAR * CHARGE_CAP_MULT_ORBS - CHARGE_LUNAR) {
+                    if(entity.solar < CHARGE_LUNAR * CHARGE_CAP_MULT_ORBS - CHARGE_LUNAR) {
+                        ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_LUNAR_INPUT);
+                        ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_LUNAR_OUTPUT);
+                        if (!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
+                            entity.lunar += CHARGE_LUNAR;
+                            if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) {
+                                if (outStack.isEmpty()) {
+                                    entity.itemHandler.setStackInSlot(SLOT_LUNAR_OUTPUT, new ItemStack(ItemRegistry.GLASS_ORB.get()));
+                                } else {
+                                    outStack.grow(1);
+                                }
+                            }
+                            if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
+                            changed = true;
+                        }
+                    }
+                }
+                if(entity.sidereal < CHARGE_SIDEREAL * CHARGE_CAP_MULT_ORBS - CHARGE_SIDEREAL) {
+                    if(entity.solar < CHARGE_SIDEREAL * CHARGE_CAP_MULT_ORBS - CHARGE_SIDEREAL) {
+                        ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_SIDEREAL_INPUT);
+                        ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_SIDEREAL_OUTPUT);
+                        if (!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
+                            entity.sidereal += CHARGE_SIDEREAL;
+                            if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) {
+                                if (outStack.isEmpty()) {
+                                    entity.itemHandler.setStackInSlot(SLOT_SIDEREAL_OUTPUT, new ItemStack(ItemRegistry.GLASS_ORB.get()));
+                                } else {
+                                    outStack.grow(1);
+                                }
+                            }
+                            if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
+                            changed = true;
+                        }
+                    }
+                }
+                if(entity.realm < CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES - CHARGE_ADMIXTURES) {
+                    ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_REALM_INPUT);
+                    ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_REALM_OUTPUT);
+                    if(!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
+                        entity.realm += CHARGE_ADMIXTURES;
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get() && !InventoryHelper.isMateriaUnbottled(inStack)) {
+                            if (outStack.isEmpty()) {
+                                entity.itemHandler.setStackInSlot(SLOT_REALM_OUTPUT, new ItemStack(Items.GLASS_BOTTLE));
+                            } else {
+                                outStack.grow(1);
+                            }
+                        }
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
+                        changed = true;
+                    }
+                }
+                if(entity.firmament < CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES - CHARGE_ADMIXTURES) {
+                    ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
+                    ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_FIRMAMENT_OUTPUT);
+                    if(!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
+                        entity.firmament += CHARGE_ADMIXTURES;
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get() && !InventoryHelper.isMateriaUnbottled(inStack)) {
+                            if (outStack.isEmpty()) {
+                                entity.itemHandler.setStackInSlot(SLOT_FIRMAMENT_OUTPUT, new ItemStack(Items.GLASS_BOTTLE));
+                            } else {
+                                outStack.grow(1);
+                            }
+                        }
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
+                        changed = true;
+                    }
+                }
+
+                if(changed) entity.syncAndSave();
+            }
+
+            if(entity.canInjectPower()) {
+                entity.solar = Math.max(0, entity.solar-1);
+                entity.lunar = Math.max(0, entity.lunar-1);
+                entity.sidereal = Math.max(0, entity.sidereal-1);
+                entity.realm = Math.max(0, entity.realm-1);
+                entity.firmament = Math.max(0, entity.firmament-1);
+
+                entity.injectPower();
+            }
+        }
+    }
+
     @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag nbt) {
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putString("uuid", placedBy.toString());
+        nbt.putLong("solar", solar);
+        nbt.putLong("lunar", lunar);
+        nbt.putLong("sidereal", sidereal);
+        nbt.putInt("firmament", firmament);
+        nbt.putInt("realm", realm);
+
+        super.saveAdditional(nbt);
+    }
+
+    @Override
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
+        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        placedBy = UUID.fromString(nbt.getString("uuid"));
+        solar = (int)nbt.getLong("solar");
+        lunar = (int)nbt.getLong("lunar");
+        sidereal = (int)nbt.getLong("sidereal");
+        firmament = nbt.getInt("firmament");
+        realm = nbt.getInt("realm");
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putString("uuid", placedBy.toString());
+        nbt.putLong("solar", solar);
+        nbt.putLong("lunar", lunar);
+        nbt.putLong("sidereal", sidereal);
+        nbt.putInt("firmament", firmament);
+        nbt.putInt("realm", realm);
+        return nbt;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public void syncAndSave() {
+        this.setChanged();
+        this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public float getSolarFillPercent(){
+        return (float)solar / (float)(CHARGE_SOLAR * CHARGE_CAP_MULT_ORBS);
+    }
+
+    public float getLunarFillPercent(){
+        return (float)lunar / (float)(CHARGE_LUNAR * CHARGE_CAP_MULT_ORBS);
+    }
+
+    public float getSiderealFillPercent(){
+        return (float)sidereal / (float)(CHARGE_SIDEREAL * CHARGE_CAP_MULT_ORBS);
+    }
+
+    public float getRealmFillPercent(){
+        return (float)realm / (float)(CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES);
+    }
+
+    public float getFirmamentFillPercent(){
+        return (float)firmament / (float)(CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES);
+    }
+
+    public UUID getPlacedBy() {
+        return placedBy;
+    }
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(activeProvisionRequests.size() >= 2)
+            return false;
+
+        ItemStack firmamentStack = itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
+        boolean needsFirmament = false;
+        if(firmamentStack.isEmpty() || InventoryHelper.isMateriaUnbottled(firmamentStack)) {
+            needsFirmament = firmamentStack.getCount() < itemHandler.getSlotLimit(SLOT_FIRMAMENT_INPUT) / 2;
+        }
+
+        ItemStack realmStack = itemHandler.getStackInSlot(SLOT_REALM_INPUT);
+        boolean needsRealm = false;
+        if(realmStack.isEmpty() || InventoryHelper.isMateriaUnbottled(realmStack)) {
+            needsRealm = realmStack.getCount() < itemHandler.getSlotLimit(SLOT_REALM_INPUT) / 2;
+        }
+
+        return needsFirmament || needsRealm;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        ItemStack firmamentStack = itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
+        if(firmamentStack.isEmpty()) {
+            result.put(ADMIXTURE_FIRMAMENT, itemHandler.getSlotLimit(SLOT_FIRMAMENT_INPUT) - firmamentStack.getCount());
+        }
+        else if(!InventoryHelper.isMateriaUnbottled(firmamentStack)) {
+            if (firmamentStack.getCount() < itemHandler.getSlotLimit(SLOT_FIRMAMENT_INPUT) / 2) {
+                result.put(ADMIXTURE_FIRMAMENT, itemHandler.getSlotLimit(SLOT_FIRMAMENT_INPUT) - firmamentStack.getCount());
+            }
+        }
+
+        ItemStack realmStack = itemHandler.getStackInSlot(SLOT_REALM_INPUT);
+        if(realmStack.isEmpty()) {
+            result.put(ADMIXTURE_REALM, itemHandler.getSlotLimit(SLOT_REALM_INPUT) - realmStack.getCount());
+        }
+        else if(!InventoryHelper.isMateriaUnbottled(realmStack)) {
+            if (realmStack.getCount() < itemHandler.getSlotLimit(SLOT_REALM_INPUT) / 2) {
+                result.put(ADMIXTURE_REALM, itemHandler.getSlotLimit(SLOT_REALM_INPUT) - realmStack.getCount());
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(pMateriaItem == ADMIXTURE_FIRMAMENT || pMateriaItem == ADMIXTURE_REALM) {
+            activeProvisionRequests.add(pMateriaItem);
+        }
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(pStack.getItem() == ADMIXTURE_FIRMAMENT) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
+
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+            } else {
+                insertionStack.grow(pStack.getCount());
+            }
+            itemHandler.setStackInSlot(SLOT_FIRMAMENT_INPUT, insertionStack);
+
+            syncAndSave();
+
+            activeProvisionRequests.remove((MateriaItem)pStack.getItem());
+        }
+        else if(pStack.getItem() == ADMIXTURE_REALM) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_REALM_INPUT);
+
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+            } else {
+                insertionStack.grow(pStack.getCount());
+            }
+            itemHandler.setStackInSlot(SLOT_REALM_INPUT, insertionStack);
+
+            syncAndSave();
+
+            activeProvisionRequests.remove((MateriaItem)pStack.getItem());
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() == ADMIXTURE_FIRMAMENT || pStack.getItem() == ADMIXTURE_REALM) {
+            return 0;
+        }
+        return pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+        return 0;
     }
 }

@@ -8349,7 +8349,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nCelestial Orbs don't have any individual functionality, but are critical components of celestially resonant items and blocks."
+            "text": ".\n\nCelestial Orbs are used as components of "
+          },
+          {
+            "text": "Celestial Mechanisms",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and can optionally be used as fuel to boost the effectiveness of the "
+          },
+          {
+            "text": "Eldrin Orrery",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
           }
         ]
       }
@@ -8366,6 +8380,10 @@
       {
         "type": "illumination",
         "location": "magichem:illumination/magichem/glass_orb_to_sidereal_orb"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/celestial_mechanism"
       }
     ]
   },

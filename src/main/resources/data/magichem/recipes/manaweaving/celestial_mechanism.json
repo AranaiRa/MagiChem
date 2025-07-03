@@ -1,0 +1,22 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:celestial_mechanism",
+  "tier": 4,
+  "items": [
+    "magichem:cog_components",
+    "magichem:solar_orb",
+    "magichem:cog_components",
+    "minecraft:stick",
+    "magichem:magic_circle",
+    "minecraft:stick",
+    "magichem:lunar_orb",
+    "magichem:cog_components",
+    "magichem:sidereal_orb"
+  ],
+  "patterns": [
+    "mna:circle",
+    "mna:star",
+    "mna:star",
+    "mna:hourglass"
+  ]
+}

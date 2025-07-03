@@ -96,7 +96,7 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
             IWellspringNodeRegistry wsRegistry = m.getWellspringRegistry();
             HashMap<Affinity, Float> nodeAmounts = wsRegistry.getNodeNetworkAmountFor(this.minecraft.player);
 
-            gui.setColor(Affinity.WIND.getColor()[0]/255f, Affinity.WIND.getColor()[1]/255f, Affinity.WIND.getColor()[2]/255f, 1f);
+//            gui.setColor(Affinity.WIND.getColor()[0]/255f, Affinity.WIND.getColor()[1]/255f, Affinity.WIND.getColor()[2]/255f, 1f);
             int air = Math.round(nodeAmounts.get(Affinity.WIND) / 1000f * 44);
             gui.blit(TEXTURE, x+111-air, y+32, 212, 254, air, 2);
 
@@ -120,8 +120,31 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
             int water = Math.round(nodeAmounts.get(Affinity.WATER) / 1000f * 44);
             gui.blit(TEXTURE, x+119, y+102, 212, 252, water, 2);
 
-            gui.setColor(1,1,1,1);
+            gui.setColor(1f,1,1,1);
         });
+
+        int barFill;
+        gui.setColor(0.933f,0.714f,0.052f,1);
+        barFill = Math.round(menu.blockEntity.getSolarFillPercent() * 45);
+        gui.blit(TEXTURE, x+15, y+9 + 45-barFill, 254, 207, 2, barFill);
+
+        gui.setColor(0.851f,0.918f,0.933f,1);
+        barFill = Math.round(menu.blockEntity.getLunarFillPercent() * 45);
+        gui.blit(TEXTURE, x+33, y+9 + 45-barFill, 254, 207, 2, barFill);
+
+        gui.setColor(0.282f,0.435f,0.933f,1);
+        barFill = Math.round(menu.blockEntity.getSiderealFillPercent() * 45);
+        gui.blit(TEXTURE, x+51, y+9 + 45-barFill, 254, 207, 2, barFill);
+
+        gui.setColor(0.294f,0.356f,0.949f,1);
+        barFill = Math.round(menu.blockEntity.getFirmamentFillPercent() * 45);
+        gui.blit(TEXTURE, x+177, y+9 + 45-barFill, 254, 207, 2, barFill);
+
+        gui.setColor(0.220f,0.447f,0.576f,1);
+        barFill = Math.round(menu.blockEntity.getRealmFillPercent() * 45);
+        gui.blit(TEXTURE, x+195, y+9 + 45-barFill, 254, 207, 2, barFill);
+
+        gui.setColor(1,1,1,1);
     }
 
     @Override
@@ -151,27 +174,27 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
             IWellspringNodeRegistry wsRegistry = m.getWellspringRegistry();
             HashMap<Affinity, Float> nodeAmounts = wsRegistry.getNodeNetworkAmountFor(this.minecraft.player);
 
-            float air = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.WIND);
+            float air = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.WIND) * menu.blockEntity.getXMultRate();
             gui.drawString(font, "x"+(air >= 10 ? Math.round(air) : String.format("%.1f", air)), 49, -11, 0x000000, false);
             gui.drawString(font, nodeAmounts.get(Affinity.WIND).intValue()+"", 49, 0, 0x000000, false);
 
-            float ender = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.ENDER);
+            float ender = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.ENDER) * menu.blockEntity.getXMultRate();
             gui.drawString(font, "x"+(ender >= 10 ? Math.round(ender) : String.format("%.1f", ender)), 49, 24, 0x000000, false);
             gui.drawString(font, nodeAmounts.get(Affinity.ENDER).intValue()+"", 49, 35, 0x000000, false);
 
-            float earth = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.EARTH);
+            float earth = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.EARTH) * menu.blockEntity.getXMultRate();
             gui.drawString(font, "x"+(earth >= 10 ? Math.round(earth) : String.format("%.1f", earth)), 49, 59, 0x000000, false);
             gui.drawString(font, nodeAmounts.get(Affinity.EARTH).intValue()+"", 49, 70, 0x000000, false);
 
-            float fire = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.FIRE);
+            float fire = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.FIRE) * menu.blockEntity.getXMultRate();
             gui.drawString(font, "x"+(fire >= 10 ? Math.round(fire) : String.format("%.1f", fire)), 122, -11, 0x000000, false);
             gui.drawString(font, nodeAmounts.get(Affinity.FIRE).intValue()+"", 122, 0, 0x000000, false);
 
-            float arcane = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.ARCANE);
+            float arcane = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.ARCANE) * menu.blockEntity.getXMultRate();
             gui.drawString(font, "x"+(arcane >= 10 ? Math.round(arcane) : String.format("%.1f", arcane)), 122, 24, 0x000000, false);
             gui.drawString(font, nodeAmounts.get(Affinity.ARCANE).intValue()+"", 122, 35, 0x000000, false);
 
-            float water = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.WATER);
+            float water = wsRegistry.getEldrinGenerationMultiplierFor(this.minecraft.player, Affinity.WATER) * menu.blockEntity.getXMultRate();
             gui.drawString(font, "x"+(water >= 10 ? Math.round(water) : String.format("%.1f", water)), 122, 59, 0x000000, false);
             gui.drawString(font, nodeAmounts.get(Affinity.WATER).intValue()+"", 122, 70, 0x000000, false);
         });

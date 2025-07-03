@@ -136,6 +136,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> CELESTIAL_MECHANISM = ITEMS.register("celestial_mechanism",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> ILLUMININK = ITEMS.register("illuminink",
             () -> new TooltipLoreItem(new Item.Properties())
     );
