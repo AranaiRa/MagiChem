@@ -335,8 +335,6 @@ public class InventoryHelper {
                     else if(be instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
                         if(multi instanceof MirrorLabyrinthRouterBlockEntity router && router.getMaster() != null)
                             be = router.getMaster();
-                        else if(multi instanceof MagicMirrorBlockEntity mirror && mirror.getMaster() != null)
-                            be = mirror.getMaster();
 
                         if(!existingBlockEntities.contains(be)) {
                             Collection<MateriaItem> materiaTypes = multi.getMateriaTypes();
