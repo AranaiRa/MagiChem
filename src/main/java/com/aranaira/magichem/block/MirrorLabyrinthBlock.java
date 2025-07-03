@@ -43,7 +43,7 @@ import static com.aranaira.magichem.foundation.enums.MirrorLabyrinthRouterType.*
 public class MirrorLabyrinthBlock extends BaseEntityBlock {
     public static final VoxelShape
             VOXEL_SHAPE_BASE, VOXEL_SHAPE_BODY, VOXEL_SHAPE_DAIS_CONNECTOR,
-            VOXEL_SHAPE_AGGREGATE_NS, VOXEL_SHAPE_AGGREGATE_EW;
+            VOXEL_SHAPE_AGGREGATE_N, VOXEL_SHAPE_AGGREGATE_S, VOXEL_SHAPE_AGGREGATE_E, VOXEL_SHAPE_AGGREGATE_W;
 
     public MirrorLabyrinthBlock(Properties pProperties) {
         super(pProperties);
@@ -119,6 +119,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
         BlockPos origin = new BlockPos(0,0,0);
         if(pFacing == Direction.NORTH) {
             offsets.add(new Pair<>(origin.south(), DAIS));
+            offsets.add(new Pair<>(origin.north(), CENTER));
             offsets.add(new Pair<>(origin.west(), LEFT_FRONT));
             offsets.add(new Pair<>(origin.east(), RIGHT_FRONT));
             offsets.add(new Pair<>(origin.north().west(), LEFT));
@@ -132,6 +133,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             offsets.add(new Pair<>(origin.north().offset(0,4,0), MATRIX_UPPER));
         } else if(pFacing == Direction.SOUTH) {
             offsets.add(new Pair<>(origin.north(), DAIS));
+            offsets.add(new Pair<>(origin.south(), CENTER));
             offsets.add(new Pair<>(origin.east(), LEFT_FRONT));
             offsets.add(new Pair<>(origin.west(), RIGHT_FRONT));
             offsets.add(new Pair<>(origin.south().east(), LEFT));
@@ -145,6 +147,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             offsets.add(new Pair<>(origin.south().offset(0,4,0), MATRIX_UPPER));
         } else if(pFacing == Direction.EAST) {
             offsets.add(new Pair<>(origin.west(), DAIS));
+            offsets.add(new Pair<>(origin.east(), CENTER));
             offsets.add(new Pair<>(origin.north(), LEFT_FRONT));
             offsets.add(new Pair<>(origin.south(), RIGHT_FRONT));
             offsets.add(new Pair<>(origin.east().north(), LEFT));
@@ -158,6 +161,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             offsets.add(new Pair<>(origin.east().offset(0,4,0), MATRIX_UPPER));
         } else if(pFacing == Direction.WEST) {
             offsets.add(new Pair<>(origin.east(), DAIS));
+            offsets.add(new Pair<>(origin.west(), CENTER));
             offsets.add(new Pair<>(origin.south(), LEFT_FRONT));
             offsets.add(new Pair<>(origin.north(), RIGHT_FRONT));
             offsets.add(new Pair<>(origin.west().south(), LEFT));
@@ -214,11 +218,17 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
             //Again, switch statements always default here and I have no idea why
-            if (facing == Direction.NORTH || facing == Direction.SOUTH) {
-                return VOXEL_SHAPE_AGGREGATE_NS;
+            if (facing == Direction.NORTH) {
+                return VOXEL_SHAPE_AGGREGATE_N;
             }
-            else if (facing == Direction.EAST || facing == Direction.WEST) {
-                return VOXEL_SHAPE_AGGREGATE_EW;
+            else if (facing == Direction.EAST) {
+                return VOXEL_SHAPE_AGGREGATE_E;
+            }
+            else if (facing == Direction.SOUTH) {
+                return VOXEL_SHAPE_AGGREGATE_S;
+            }
+            else if (facing == Direction.WEST) {
+                return VOXEL_SHAPE_AGGREGATE_W;
             }
         }
 
@@ -227,19 +237,31 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
 
     static {
         VOXEL_SHAPE_BASE = Block.box(0, 0, 0, 16, 7, 16);
-        VOXEL_SHAPE_BODY = Block.box(0, 7, 7.1, 16, 16, 16);
+        VOXEL_SHAPE_BODY = Block.box(0, 7, 0, 16, 16, 8.9);
         VOXEL_SHAPE_DAIS_CONNECTOR = Block.box(5, 7, 0, 11, 14, 16);
 
-        VOXEL_SHAPE_AGGREGATE_NS = Shapes.or(
+        VOXEL_SHAPE_AGGREGATE_N = Shapes.or(
                 VOXEL_SHAPE_BASE,
                 VOXEL_SHAPE_BODY,
                 VOXEL_SHAPE_DAIS_CONNECTOR
         );
 
-        VOXEL_SHAPE_AGGREGATE_EW = Shapes.or(
+        VOXEL_SHAPE_AGGREGATE_E = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_CONNECTOR, 1)
+        );
+
+        VOXEL_SHAPE_AGGREGATE_S = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE, 2),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY, 2),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_CONNECTOR, 2)
+        );
+
+        VOXEL_SHAPE_AGGREGATE_W = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASE, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_DAIS_CONNECTOR, 3)
         );
     }
 }

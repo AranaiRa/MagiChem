@@ -34,7 +34,7 @@ import static com.aranaira.magichem.foundation.enums.MirrorLabyrinthRouterType.*
 
 public class MirrorLabyrinthRouterBlock extends BaseEntityBlock implements INoCreativeTab {
     public static final VoxelShape
-        VOXEL_SHAPE_DEFAULT, VOXEL_SHAPE_TOP_HALF,
+        VOXEL_SHAPE_DEFAULT, VOXEL_SHAPE_TOP_HALF, VOXEL_SHAPE_BOTTOM_HALF,
 
         VOXEL_SHAPE_FRONT_LEFT_BASE_NORTH, VOXEL_SHAPE_FRONT_LEFT_BODY_NORTH,
         VOXEL_SHAPE_FRONT_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_FRONT_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_FRONT_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_FRONT_LEFT_AGGREGATE_WEST,
@@ -121,20 +121,20 @@ public class MirrorLabyrinthRouterBlock extends BaseEntityBlock implements INoCr
 
     public static MirrorLabyrinthRouterType unmapRouterTypeFromInt(int pBitpack) {
         return switch(pBitpack) {
-            case 1 -> MirrorLabyrinthRouterType.DAIS;
-            case 2 -> MirrorLabyrinthRouterType.CENTER;
+            case 1 -> DAIS;
+            case 2 -> CENTER;
             case 3 -> LEFT_FRONT;
-            case 4 -> MirrorLabyrinthRouterType.LEFT;
-            case 5 -> MirrorLabyrinthRouterType.LEFT_BACK;
-            case 6 -> MirrorLabyrinthRouterType.CENTER_BACK;
-            case 7 -> MirrorLabyrinthRouterType.RIGHT_BACK;
-            case 8 -> MirrorLabyrinthRouterType.RIGHT;
+            case 4 -> LEFT;
+            case 5 -> LEFT_BACK;
+            case 6 -> CENTER_BACK;
+            case 7 -> RIGHT_BACK;
+            case 8 -> RIGHT;
             case 9 -> RIGHT_FRONT;
-            case 10 -> MirrorLabyrinthRouterType.CONSTRUCT_LOWER;
-            case 11 -> MirrorLabyrinthRouterType.CONSTRUCT_UPPER;
-            case 12 -> MirrorLabyrinthRouterType.MATRIX_LOWER;
-            case 13 -> MirrorLabyrinthRouterType.MATRIX_UPPER;
-            default -> MirrorLabyrinthRouterType.NONE;
+            case 10 -> CONSTRUCT_LOWER;
+            case 11 -> CONSTRUCT_UPPER;
+            case 12 -> MATRIX_LOWER;
+            case 13 -> MATRIX_UPPER;
+            default -> NONE;
         };
     }
 
@@ -192,6 +192,9 @@ public class MirrorLabyrinthRouterBlock extends BaseEntityBlock implements INoCr
             else if (routerType == CONSTRUCT_LOWER || routerType == MATRIX_LOWER) {
                 return VOXEL_SHAPE_TOP_HALF;
             }
+            else if (routerType == CENTER) {
+                return VOXEL_SHAPE_BOTTOM_HALF;
+            }
         }
 
         return VOXEL_SHAPE_DEFAULT;
@@ -205,6 +208,7 @@ public class MirrorLabyrinthRouterBlock extends BaseEntityBlock implements INoCr
     static {
         VOXEL_SHAPE_DEFAULT = Block.box(0,0,0,16,16,16);
         VOXEL_SHAPE_TOP_HALF = Block.box(0,8,0,16,16,16);
+        VOXEL_SHAPE_BOTTOM_HALF = Block.box(0,0,0,16,8,16);
 
         //FRONT LEFT
         {
@@ -353,23 +357,23 @@ public class MirrorLabyrinthRouterBlock extends BaseEntityBlock implements INoCr
         //BACK
         {
             VOXEL_SHAPE_BACK_AGGREGATE_NORTH = Shapes.or(
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 3),
-                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BODY_NORTH, 3)
-            );
-
-            VOXEL_SHAPE_BACK_AGGREGATE_EAST = Shapes.or(
-                    VOXEL_SHAPE_LEFT_BASE_NORTH,
-                    VOXEL_SHAPE_LEFT_BODY_NORTH
-            );
-
-            VOXEL_SHAPE_BACK_AGGREGATE_SOUTH = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 1),
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BODY_NORTH, 1)
             );
 
-            VOXEL_SHAPE_BACK_AGGREGATE_WEST = Shapes.or(
+            VOXEL_SHAPE_BACK_AGGREGATE_EAST = Shapes.or(
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 2),
                     MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BODY_NORTH, 2)
+            );
+
+            VOXEL_SHAPE_BACK_AGGREGATE_SOUTH = Shapes.or(
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BASE_NORTH, 3),
+                    MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BODY_NORTH, 3)
+            );
+
+            VOXEL_SHAPE_BACK_AGGREGATE_WEST = Shapes.or(
+                    VOXEL_SHAPE_LEFT_BASE_NORTH,
+                    VOXEL_SHAPE_LEFT_BODY_NORTH
             );
         }
     }
