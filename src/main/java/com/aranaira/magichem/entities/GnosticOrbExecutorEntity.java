@@ -27,11 +27,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.TallFlowerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
@@ -73,7 +71,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
             PROPHECY_DATA.put("disaster",  new Quadlet<>(4, 75, GnosticOrbExecutorEntity::preCacheDisaster, GnosticOrbExecutorEntity::prophecyEffectDisaster));
             PROPHECY_DATA.put("erosion",   new Quadlet<>(3, 120, GnosticOrbExecutorEntity::preCacheErosion, GnosticOrbExecutorEntity::prophecyEffectErosion));
             PROPHECY_DATA.put("exanimate", new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheExanimate, GnosticOrbExecutorEntity::prophecyEffectExanimate));
-            PROPHECY_DATA.put("metal",     new Quadlet<>(2, 160, GnosticOrbExecutorEntity::preCacheMetal, GnosticOrbExecutorEntity::prophecyEffectMetal));
+            PROPHECY_DATA.put("luck",     new Quadlet<>(2, 160, GnosticOrbExecutorEntity::preCacheLuck, GnosticOrbExecutorEntity::prophecyEffectLuck));
             PROPHECY_DATA.put("odors",     new Quadlet<>(1, 240, GnosticOrbExecutorEntity::preCacheOdors, GnosticOrbExecutorEntity::prophecyEffectOdors));
             PROPHECY_DATA.put("thought",   new Quadlet<>(1, 1, GnosticOrbExecutorEntity::preCacheThought, GnosticOrbExecutorEntity::prophecyEffectThought));
         }
@@ -345,7 +343,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         pEntity.iterator++;
     }
 
-    public static void preCacheMetal(GnosticOrbExecutorEntity pEntity) {
+    public static void preCacheLuck(GnosticOrbExecutorEntity pEntity) {
         //Precalculate places that could be ore
         int range = 10;
         for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getY()+(range/2); y++) {
@@ -373,7 +371,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         pEntity.hasPreCached = true;
     }
 
-    public static void prophecyEffectMetal(GnosticOrbExecutorEntity pEntity) {
+    public static void prophecyEffectLuck(GnosticOrbExecutorEntity pEntity) {
         BlockPos posQuery = pEntity.validBlockTargets.get(pEntity.iterator);
         BlockState stateQuery;
         if(pEntity.validBlockStates.size() == 1)

@@ -101,9 +101,11 @@ public class GnosticOrbBlock extends BaseEntityBlock {
             else if (!pLevel.isClientSide()) {
                 if (!orb.hasProphecyCooking()) {
 
-                    if (stack.getItem() instanceof MateriaItem) {
+                    if (stack.getItem() instanceof MateriaItem mi) {
+                        boolean isLuck = mi.getMateriaName().equals("luck");
+
                         if (orb.tryStart(stack) && !pPlayer.isCreative()) {
-                            stack.shrink(50);
+                            stack.shrink(isLuck ? 20 : 50);
                             ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), new ItemStack(Items.GLASS_BOTTLE, 50));
                             pLevel.addFreshEntity(ie);
                         }

@@ -64,14 +64,14 @@ public class GnosticOrbBlockEntity extends BlockEntity {
             PROPHECY_DATA.put("disaster", new Pair<>(3, null));
             PROPHECY_DATA.put("erosion", new Pair<>(3, null));
             PROPHECY_DATA.put("exanimate", new Pair<>(15, GnosticOrbBlockEntity::prophecyConditionExanimate));
-            PROPHECY_DATA.put("metal", new Pair<>(30, null));
+            PROPHECY_DATA.put("luck", new Pair<>(20, null));
             PROPHECY_DATA.put("odors", new Pair<>(3, GnosticOrbBlockEntity::prophecyConditionOdors));
             PROPHECY_DATA.put("thought", new Pair<>(60, GnosticOrbBlockEntity::prophecyConditionThought));
         }
     }
 
     public boolean tryStart(ItemStack pStack) {
-        if(pStack.getItem() instanceof MateriaItem mi && pStack.getCount() >= 50) {
+        if(pStack.getItem() instanceof MateriaItem mi && pStack.getCount() >= (mi.getMateriaName().equals("luck") ? 20 : 50)) {
 
             if (!materiaType.equals("")) return false;
 

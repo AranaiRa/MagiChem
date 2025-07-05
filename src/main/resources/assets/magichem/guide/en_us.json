@@ -9292,6 +9292,16 @@
         "value": "",
         "json": [
           {
+            "text": "12 Minutes",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "Up to eight nearby "
           },
           {
@@ -9306,7 +9316,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nUnlike a normal Iron Golem, these Iron Golems treat you as their master and will follow you around."
+            "text": ".\n\nThese Iron Golems follow you as their master, but drop no loot."
           }
         ]
       },
@@ -9319,6 +9329,16 @@
         "type": "item",
         "location": "magichem:admixture_delight",
         "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "15 Minutes",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
@@ -9351,6 +9371,16 @@
         "value": "",
         "json": [
           {
+            "text": "3 Minutes",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "Do not do this."
           }
         ]
@@ -9364,6 +9394,16 @@
         "type": "item",
         "location": "magichem:admixture_erosion",
         "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3 Minutes",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
@@ -9396,6 +9436,16 @@
         "value": "",
         "json": [
           {
+            "text": "15 Minutes",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "Up to twenty "
           },
           {
@@ -9416,13 +9466,23 @@
       },
       {
         "type": "title",
-        "value": "Metal",
+        "value": "Luck",
         "newPage": true
       },
       {
         "type": "item",
-        "location": "magichem:admixture_metal",
+        "location": "magichem:admixture_luck",
         "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "20 Minutes",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
@@ -9436,7 +9496,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " of ores are created in nearby stone."
+            "text": " of ores are created in nearby stone.\n\nUnlike other prophecies, a Prophecy of Luck only requires "
+          },
+          {
+            "text": "twenty drams",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of materia."
           }
         ]
       },
@@ -9455,10 +9522,20 @@
         "value": "",
         "json": [
           {
+            "text": "3 Minutes",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
             "text": "A "
           },
           {
-            "text": "large field of flowers",
+            "text": "large field of mundane flowers",
             "color": "dark_purple"
           },
           {
@@ -9475,6 +9552,16 @@
         "type": "item",
         "location": "magichem:admixture_thought",
         "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "60 Minutes",
+            "italic": true
+          }
+        ]
       },
       {
         "type": "text",
