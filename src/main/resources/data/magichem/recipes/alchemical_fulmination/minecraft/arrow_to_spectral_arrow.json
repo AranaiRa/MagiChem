@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:arrow",
+  "input_count": 6,
+  "result": "minecraft:spectral_arrow",
+  "result_count": 6
+}
