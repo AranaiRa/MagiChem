@@ -1,0 +1,58 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 3,
+  "object": {
+    "item": "magichem:eldrin_orrery"
+  },
+  "stages": [
+    {
+      "experience": 75,
+      "components": [
+        { "item": "mna:greater_mote_fire" },
+        { "item": "magichem:chiaroscuro" },
+        { "item": "magichem:celestial_mechanism" },
+        { "item": "magichem:chiaroscuro" },
+        { "item": "mna:greater_mote_water" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_realm", "count": 51 },
+        { "item": "magichem:admixture_industry", "count": 34 },
+        { "item": "magichem:admixture_construct", "count": 23 },
+        { "item": "magichem:essentia_nigredo", "count": 48 }
+      ]
+    },
+    {
+      "experience": 125,
+      "components": [
+        { "item": "mna:greater_mote_air" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "magichem:obscure_prognostications" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "mna:greater_mote_earth" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_firmament", "count": 51 },
+        { "item": "magichem:admixture_energy", "count": 34 },
+        { "item": "magichem:admixture_domestication", "count": 23 },
+        { "item": "magichem:essentia_albedo", "count": 24 }
+      ]
+    },
+    {
+      "experience": 150,
+      "components": [
+        { "item": "mna:greater_mote_arcane" },
+        { "item": "mna:fume_prism" },
+        { "item": "mna:eldrin_fume" },
+        { "item": "mna:fume_bellows" },
+        { "item": "mna:greater_mote_ender" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_mana", "count": 51 },
+        { "item": "magichem:admixture_sorcery", "count": 34 },
+        { "item": "magichem:admixture_adornment", "count": 23 },
+        { "item": "magichem:essentia_citrinitas", "count": 12 }
+      ]
+    }
+  ]
+}

@@ -286,6 +286,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(EldrinOrreryBlockEntity::new, BlockRegistry.ELDRIN_ORRERY.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<EldrinOrreryRouterBlockEntity>> ELDRIN_ORRERY_ROUTER_BE = BLOCK_ENTITIES.register("eldrin_orrery_router", () ->
+            BlockEntityType.Builder.of(EldrinOrreryRouterBlockEntity::new, BlockRegistry.ELDRIN_ORRERY_ROUTER.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

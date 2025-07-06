@@ -1,0 +1,214 @@
+package com.aranaira.magichem.block;
+
+import com.aranaira.magichem.block.entity.EldrinOrreryBlockEntity;
+import com.aranaira.magichem.block.entity.routers.EldrinOrreryRouterBlockEntity;
+import com.aranaira.magichem.events.CommonEventHelper;
+import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.util.MathHelper;
+import com.mna.api.blocks.ISpellInteractibleBlock;
+import com.mna.api.spells.attributes.Attribute;
+import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.base.ISpellDefinition;
+import com.mna.api.spells.collections.Components;
+import com.mna.items.base.INoCreativeTab;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_ELDRIN_ORRERY;
+
+public class EldrinOrreryRouterBlock extends BaseEntityBlock implements INoCreativeTab {
+    public EldrinOrreryRouterBlock(Properties pProperties) {
+        super(pProperties);
+    }
+
+    public static VoxelShape
+            VOXEL_SHAPE_LEFT_PLUG_NORTH, VOXEL_SHAPE_LEFT_BODY_NORTH, VOXEL_SHAPE_LEFT_MOUNT_NORTH, VOXEL_SHAPE_LEFT_FURNACE_NORTH,
+            VOXEL_SHAPE_LEFT_TANK_NORTH, VOXEL_SHAPE_LEFT_PIPE_NORTH,
+
+            VOXEL_SHAPE_ABOVE_PIPE_LEFT_NORTH, VOXEL_SHAPE_ABOVE_PIPE_RIGHT_NORTH, VOXEL_SHAPE_ABOVE_PIPE_TOP_NORTH,
+            VOXEL_SHAPE_ABOVE_TANK_NORTH,
+
+            VOXEL_SHAPE_ABOVE_LEFT_TANK_NORTH, VOXEL_SHAPE_ABOVE_LEFT_PIPE_FRONT_NORTH, VOXEL_SHAPE_ABOVE_LEFT_PIPE_BACK_NORTH,
+            VOXEL_SHAPE_ABOVE_LEFT_PIPE_TOP_NORTH,
+
+            VOXEL_SHAPE_LEFT_AGGREGATE_NORTH, VOXEL_SHAPE_ABOVE_AGGREGATE_NORTH, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_NORTH,
+            VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH, VOXEL_SHAPE_ABOVE_AGGREGATE_SOUTH, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_SOUTH,
+            VOXEL_SHAPE_LEFT_AGGREGATE_EAST, VOXEL_SHAPE_ABOVE_AGGREGATE_EAST, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_EAST,
+            VOXEL_SHAPE_LEFT_AGGREGATE_WEST, VOXEL_SHAPE_ABOVE_AGGREGATE_WEST, VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_WEST;
+    public static final int
+            ROUTER_TYPE_NONE = 0, ROUTER_TYPE_PLUG_LEFT = 1, ROUTER_TYPE_ABOVE = 2, ROUTER_TYPE_ABOVE_LEFT = 3;
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new EldrinOrreryRouterBlockEntity(pPos, pState);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+
+        return super.getShape(pState, pLevel, pPos, pContext);
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+        BlockEntity be = pLevel.getBlockEntity(pPos);
+        if(be instanceof EldrinOrreryRouterBlockEntity orrery) {
+            EldrinOrreryBlockEntity master = orrery.getMaster();
+            pPlayer.swing(InteractionHand.MAIN_HAND);
+            return master.getBlockState().getBlock().use(master.getBlockState(), pLevel, master.getBlockPos(), pPlayer, pHand, pHit);
+        }
+        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
+        return false;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        pBuilder.add(ROUTER_TYPE_ELDRIN_ORRERY);
+        pBuilder.add(FACING);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.INVISIBLE;
+    }
+
+    static {
+        VOXEL_SHAPE_LEFT_BODY_NORTH = Block.box(0, 0, 2, 16, 8, 14);
+        VOXEL_SHAPE_LEFT_PLUG_NORTH = Block.box(0, 0, 0, 4, 16, 16);
+        VOXEL_SHAPE_LEFT_TANK_NORTH = Block.box(5, 13, 4, 13, 16, 12);
+        VOXEL_SHAPE_LEFT_MOUNT_NORTH = Block.box(4, 8, 5, 14, 12, 11);
+        VOXEL_SHAPE_LEFT_FURNACE_NORTH = Block.box(10, 0, 1, 16, 10, 15);
+        VOXEL_SHAPE_LEFT_PIPE_NORTH = Block.box(14, 10, 9, 16, 16, 11);
+
+        VOXEL_SHAPE_LEFT_AGGREGATE_NORTH = Shapes.or(
+                VOXEL_SHAPE_LEFT_BODY_NORTH,
+                VOXEL_SHAPE_LEFT_PLUG_NORTH,
+                VOXEL_SHAPE_LEFT_TANK_NORTH,
+                VOXEL_SHAPE_LEFT_MOUNT_NORTH,
+                VOXEL_SHAPE_LEFT_FURNACE_NORTH,
+                VOXEL_SHAPE_LEFT_PIPE_NORTH
+        );
+
+        VOXEL_SHAPE_LEFT_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BODY_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_TANK_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_MOUNT_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_FURNACE_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PIPE_NORTH, 1)
+        );
+
+        VOXEL_SHAPE_LEFT_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BODY_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_TANK_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_MOUNT_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_FURNACE_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PIPE_NORTH, 2)
+        );
+
+        VOXEL_SHAPE_LEFT_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_BODY_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PLUG_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_TANK_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_MOUNT_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_FURNACE_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_LEFT_PIPE_NORTH, 3)
+        );
+
+        VOXEL_SHAPE_ABOVE_TANK_NORTH = Block.box(3, 0, 6, 7, 6, 10);
+        VOXEL_SHAPE_ABOVE_PIPE_TOP_NORTH = Block.box(4, 6, 7, 6, 8, 9);
+        VOXEL_SHAPE_ABOVE_PIPE_LEFT_NORTH = Block.box(0, 0, 5, 2, 6, 7);
+        VOXEL_SHAPE_ABOVE_PIPE_RIGHT_NORTH = Block.box(7, 0, 7, 10, 4, 9);
+
+        VOXEL_SHAPE_ABOVE_AGGREGATE_NORTH = Shapes.or(
+                VOXEL_SHAPE_ABOVE_TANK_NORTH,
+                VOXEL_SHAPE_ABOVE_PIPE_TOP_NORTH,
+                VOXEL_SHAPE_ABOVE_PIPE_LEFT_NORTH,
+                VOXEL_SHAPE_ABOVE_PIPE_RIGHT_NORTH
+        );
+
+        VOXEL_SHAPE_ABOVE_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_TANK_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_TOP_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_LEFT_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_RIGHT_NORTH, 1)
+        );
+
+        VOXEL_SHAPE_ABOVE_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_TANK_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_TOP_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_LEFT_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_RIGHT_NORTH, 2)
+        );
+
+        VOXEL_SHAPE_ABOVE_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_TANK_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_TOP_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_LEFT_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_PIPE_RIGHT_NORTH, 3)
+        );
+
+        VOXEL_SHAPE_ABOVE_LEFT_TANK_NORTH = Block.box(5,0,4,13,11,12);
+        VOXEL_SHAPE_ABOVE_LEFT_PIPE_TOP_NORTH = Block.box(8,11,7,10,14,9);
+        VOXEL_SHAPE_ABOVE_LEFT_PIPE_BACK_NORTH = Block.box(12,4,5,16,6,7);
+        VOXEL_SHAPE_ABOVE_LEFT_PIPE_FRONT_NORTH = Block.box(12,0,9,16,2,11);
+
+        VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_NORTH = Shapes.or(
+                VOXEL_SHAPE_ABOVE_LEFT_TANK_NORTH,
+                VOXEL_SHAPE_ABOVE_LEFT_PIPE_TOP_NORTH,
+                VOXEL_SHAPE_ABOVE_LEFT_PIPE_BACK_NORTH,
+                VOXEL_SHAPE_ABOVE_LEFT_PIPE_FRONT_NORTH
+        );
+
+        VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_EAST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_TANK_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_TOP_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_BACK_NORTH, 1),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_FRONT_NORTH, 1)
+        );
+
+        VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_SOUTH = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_TANK_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_TOP_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_BACK_NORTH, 2),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_FRONT_NORTH, 2)
+        );
+
+        VOXEL_SHAPE_ABOVE_LEFT_AGGREGATE_WEST = Shapes.or(
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_TANK_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_TOP_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_BACK_NORTH, 3),
+                MathHelper.rotateVoxelShape(VOXEL_SHAPE_ABOVE_LEFT_PIPE_FRONT_NORTH, 3)
+        );
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+        return new ItemStack(BlockRegistry.ELDRIN_ORRERY.get());
+    }
+}
