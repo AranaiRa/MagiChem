@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
@@ -12,6 +13,8 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.capabilities.IWellspringNodeRegistry;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
 import com.mna.capabilities.worlddata.WorldMagicProvider;
 import com.mna.items.ItemInit;
 import net.minecraft.client.Minecraft;
@@ -35,6 +38,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -48,7 +53,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
+
+import static com.aranaira.magichem.block.entity.MirrorLabyrinthBlockEntity.TRAIL_PARTICLE_COLORS;
+import static com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer.WELLSPRING_COLORS;
+import static com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer.WELLSPRING_STARTS;
 
 public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester {
     public static final int
@@ -68,6 +78,13 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     private UUID placedBy;
     private Player playerRef;
     private int solar, lunar, sidereal, firmament, realm;
+    private static final Random r = new Random();
+
+    //animation drivers
+    public float
+        sunPercent = 0, moonPercent = 0,
+        innerRingActivation = 0, outerRingActivation = 0,
+        wellspringPercent = 0;
 
     private ContainerData data = new ContainerData() {
         @Override
@@ -338,6 +355,54 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
 
                 if(changed) entity.syncAndSave();
             }
+            else {
+                //animation drivers
+                {
+                    entity.wellspringPercent = Math.min(1, entity.wellspringPercent + 0.0075f);
+
+                    entity.sunPercent = Math.max(0,Math.min(1, entity.sunPercent + 0.0125f * (entity.solar > 0 ? 1 : -1)));
+                    entity.moonPercent = Math.max(0,Math.min(1, entity.moonPercent + 0.0125f * (entity.lunar > 0 ? 1 : -1)));
+
+                    entity.innerRingActivation = Math.max(0,Math.min(1, entity.innerRingActivation + 0.0125f * ((entity.solar > 0 || entity.lunar > 0) ? 1 : -1)));
+                    entity.outerRingActivation = Math.max(0,Math.min(1, entity.outerRingActivation + 0.0125f * ((entity.sidereal > 0) ? 1 : -1)));
+                }
+
+                //particle work
+                {
+                    //stars
+                    if(entity.outerRingActivation > 0.95f) {
+                        final float STAR_RADIUS_SCALAR = 0.669441f;
+
+                        for(int i=0; i<6; i++) {
+                            Vec3 point = new Vec3(r.nextDouble(10)-5, r.nextDouble(10)-5, r.nextDouble(10)-5)
+                                    .normalize()
+                                    .scale(STAR_RADIUS_SCALAR)
+                                    .add(entity.getBlockPos().getX()+0.5, entity.getBlockPos().getY()+2.0, entity.getBlockPos().getZ()+0.5);
+
+                            level.addParticle(new MAParticleType(ParticleInit.SPARKLE_STATIONARY.get())
+                                            .setScale(0.03f).setMaxAge(48 + r.nextInt(48)),
+                                    point.x, point.y, point.z,
+                                    0, 0, 0);
+                        }
+                    }
+
+                    //wellspring spirals
+                    if(entity.wellspringPercent > 0.375f) {
+                        Vec3 origin = new Vec3(entity.getBlockPos().getX(), entity.getBlockPos().getY()+0.5, entity.getBlockPos().getZ());
+
+                        int spawnPeriod = 9;
+                        int timeSlice = (int) (level.getGameTime() % (spawnPeriod * 6));
+                        if(timeSlice % spawnPeriod == 0) {
+                            int i = timeSlice / spawnPeriod;
+                            level.addParticle(new MAParticleType(ParticleInit.TRAIL_ORBIT.get())
+                                            .setPhysics(false).setScale(0.015f).setMaxAge(80)
+                                            .setColor(WELLSPRING_COLORS[i][0], WELLSPRING_COLORS[i][1], WELLSPRING_COLORS[i][2]),
+                                    origin.x + WELLSPRING_STARTS[i].x, origin.y, origin.z + WELLSPRING_STARTS[i].y,
+                                    -0.125, 0.02 + r.nextDouble() * 0.01, -0.1250);
+                        }
+                    }
+                }
+            }
 
             if(entity.canInjectPower()) {
                 entity.solar = Math.max(0, entity.solar-1);
@@ -546,5 +611,10 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     public int insertStackFromShlorp(ItemStack pStack) {
         provide(pStack);
         return 0;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,6,3));
     }
 }

@@ -5,8 +5,6 @@
     "minecraft:torchflower",
     "minecraft:pitcher_plant",
     "minecraft:flowering_azalea",
-    "minecraft:flowering_azalea_leaves",
-    "minecraft:cherry_leaves",
     "minecraft:mangrove_propagule",
     "mna:wakebloom",
     "mna:aum",
@@ -44,6 +42,23 @@
     { "id": "botania:black_double_flower", "required": false },
     { "id": "botania:gray_double_flower", "required": false },
     { "id": "botania:light_gray_double_flower", "required": false },
-    { "id": "botania:white_double_flower", "required": false }
+    { "id": "botania:white_double_flower", "required": false },
+    { "id": "spectrum:resonant_lily", "required": false },
+    { "id": "spectrum:nephrite_blossom_leaves", "required": false },
+    { "id": "spectrum:jadeite_lotus_flower", "required": false },
+    { "id": "spectrum:humming_bell", "required": false },
+    { "id": "spectrum:apricotti", "required": false },
+    { "id": "spectrum:sweet_pea", "required": false },
+    { "id": "spectrum:doombloom_seed", "required": false },
+    { "id": "spectrum:blood_orchid", "required": false },
+    { "id": "spectrum:amaranth_bushel", "required": false },
+    { "id": "farmersdelight:wild_rice", "required": false },
+    { "id": "farmersdelight:wild_carrots", "required": false },
+    { "id": "farmersdelight:wild_potatoes", "required": false },
+    { "id": "farmersdelight:wild_beetroots", "required": false },
+    { "id": "farmersdelight:wild_cabbages", "required": false },
+    { "id": "farmersdelight:wild_onions", "required": false },
+    { "id": "farmersdelight:wild_tomatoes", "required": false },
+    { "id": "supplementaries:wild_flax", "required": false }
   ]
 }

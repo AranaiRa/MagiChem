@@ -272,6 +272,12 @@ public class MagiChemMod
             event.register(GnosticOrbBlockEntityRenderer.RENDERER_MODEL_BODY);
             event.register(GnosticOrbBlockEntityRenderer.RENDERER_MODEL_ACTIVE);
             event.register(GnosticOrbBlockEntityRenderer.RENDERER_MODEL_INACTIVE);
+
+            event.register(EldrinOrreryBlockEntityRenderer.RENDERER_MODEL_ORB_PLANET);
+            event.register(EldrinOrreryBlockEntityRenderer.RENDERER_MODEL_ORB_MOON);
+            event.register(EldrinOrreryBlockEntityRenderer.RENDERER_MODEL_ORB_SUN);
+            event.register(EldrinOrreryBlockEntityRenderer.RENDERER_MODEL_RING_SMALL);
+            event.register(EldrinOrreryBlockEntityRenderer.RENDERER_MODEL_RING_LARGE);
         }
     }
 }

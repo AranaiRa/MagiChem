@@ -1,0 +1,5 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 1
+
+newmtl ELDRIN_ORRERY
+map_Kd magichem:block/eldrin_orrery

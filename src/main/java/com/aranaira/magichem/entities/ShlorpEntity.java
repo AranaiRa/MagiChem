@@ -213,7 +213,10 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
         buffer.writeFloat(speed);
         buffer.writeFloat(distanceBetweenClusters);
         buffer.writeInt(vertClusterCount);
-        buffer.writeInt(((MateriaItem)stackInTransit.getItem()).getMateriaColor());
+        if(stackInTransit.getItem() instanceof MateriaItem mi)
+            buffer.writeInt(mi.getMateriaColor());
+        else
+            buffer.writeInt(0xff000000);
         buffer.writeInt(particleMode.ordinal());
         buffer.writeBoolean(doInstantPayload);
 

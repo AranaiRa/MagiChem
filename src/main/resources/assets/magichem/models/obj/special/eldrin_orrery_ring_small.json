@@ -1,9 +1,6 @@
 {
   "parent": "forge:item/default",
   "loader": "forge:composite",
-  "textures": {
-    "particle": "magichem:block/mirror_glass"
-  },
   "children": {
     "part1": {
       "loader": "forge:obj",
@@ -11,7 +8,7 @@
       "shade_quads": true,
       "flip_v": true,
       "emissive_ambient": false,
-      "model": "magichem:models/obj/eldrin_orrery_body.obj"
+      "model": "magichem:models/obj/eldrin_orrery_ring_small.obj"
     }
   }
 }

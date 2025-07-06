@@ -9634,5 +9634,116 @@
       }
     ]
   },
+  "Eldrin Orrery": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Eldrin Orrery"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "3 Wide, 3 Tall, 3 Deep\n\nVisuals:\n3 Wide, 4 Tall, 3 Deep\n",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Eldrin Orrery",
+            "color": "dark_purple"
+          },
+          {
+            "text": " uses a false planet encircled by mysterious celestial mechanisms to "
+          },
+          {
+            "text": "generate Eldrin power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " using artificial fumes and wellsprings.\n\nThe device will passively (but slowly) generate Eldrin power of "
+          },
+          {
+            "text": "all six elements",
+            "color": "dark_purple"
+          },
+          {
+            "text": " over time, each element amplified by your personal "
+          },
+          {
+            "text": "Wellspring bonus",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nProviding "
+          },
+          {
+            "text": "Celestial Orbs",
+            "color": "dark_purple"
+          },
+          {
+            "text": " as fuel will significantly increase the base rate at which Eldrin power is generated. The effects of all three types of orbs stack, and each orb will provide fuel for several days. Sidereal Orbs burn longer than Lunar Orbs, which themselves burn longer than Solar Orbs. After being inserted, an empty Glass Orb will be returned as a byproduct.\n\nProviding "
+          },
+          {
+            "text": "Admixture of the Realm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and/or "
+          },
+          {
+            "text": "Admixture of the Firmament",
+            "color": "dark_purple"
+          },
+          {
+            "text": " boosts your current Wellspring multiplier for each element by 1.5x and 2.0x, respectively. Providing both types of materia stacks for a boost rate of 3.0x.\n\nUnlike an Eldrin Fume Filter, the Eldrin Orrery does not shut off once it cannot create any more Eldrin power. It will simply lie dormant until your network can absorb more power generation. Solar/Lunar/Sidereal Lumins and droplets of Admixtures of the Realm and Firmament "
+          },
+          {
+            "text": "are not consumed",
+            "color": "dark_purple"
+          },
+          {
+            "text": " unless Eldrin power is actively being generated.\n\n"
+          },
+          {
+            "text": "Each player is limited to a single Eldrin Orrery",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". If the Eldrin Orrery alone is insufficient for your Eldrin power needs, consider capturing more Wellsprings, using constructs to automate Eldrin Fume Filters, or both."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/eldrin_orrery"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/glass_orb_to_solar_orb"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/glass_orb_to_lunar_orb"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/glass_orb_to_sidereal_orb"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

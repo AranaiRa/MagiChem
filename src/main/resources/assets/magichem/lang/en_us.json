@@ -685,6 +685,7 @@
   "tooltip.magichem.construct_pressure_plate": "A pressure plate that can only be activated by constructs.",
   "tooltip.magichem.crystal_candle": "A colorless crystal that defies gravity. Can be used as a light source.",
   "tooltip.magichem.distillery": "Breaks down blocks and items into their component Materia.",
+  "tooltip.magichem.eldrin_orrery": "Slowly generates Eldrin Power of all six elements. Generation speed can be enhanced with celestial orbs and Admixtures of the Firmament and Realm. ",
   "tooltip.magichem.experience_exchanger": "Place on top of a Brimming Urn. Transfers Academic Slurry to and from a Crystal of Memories.",
   "tooltip.magichem.fusery": "Combines component Materia into Admixtures. Requires Academic Slurry.",
   "tooltip.magichem.gnostic_orb": "Foretells a magical event to occur some time in the future when anointed with certain Admixtures. Activate the Orb when the magic circle is full to fulfill the prophecy.",

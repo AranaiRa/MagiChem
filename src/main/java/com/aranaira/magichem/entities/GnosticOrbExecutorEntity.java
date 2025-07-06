@@ -418,7 +418,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
 
         //Precalculate list of flowers
         for (Holder<Block> blockHolder : BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.FLOWERS)) {
-            if(!blockHolder.value().defaultBlockState().is(TAG_FLOWER_GENERATING_BLACKLIST))
+            if(!blockHolder.value().defaultBlockState().is(TAG_FLOWER_GENERATING_BLACKLIST) && !blockHolder.value().defaultBlockState().is(BlockTags.LEAVES))
             pEntity.validBlockStates.add(blockHolder.value().defaultBlockState());
         }
 
