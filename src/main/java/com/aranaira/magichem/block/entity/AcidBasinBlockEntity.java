@@ -325,7 +325,16 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
                             0, 0, 0);
                 }
 
-                entity.progress--;
+                if(VitriolationRecipe.isFluidAcid(entity.inputTank.getFluid())) {
+                    int dAcid = VitriolationRecipe.getFluidAcidStrengthDifference(entity.inputTank.getFluid(), entity.recipe.getMinimumAcidStrength());
+                    int decrement = 1;
+                    if (dAcid == 1) decrement = 4;
+                    if (dAcid >= 2) decrement = 2000;
+                    entity.progress -= decrement;
+                }
+                else {
+                    entity.progress--;
+                }
 
                 if(entity.progress <= 0) {
                     entity.craftItem();
@@ -387,7 +396,14 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
             }
         }
 
-        inputTank.shrink(recipe.getBaseFluidConsumed());
+        int consumption = recipe.getBaseFluidConsumed();
+        if(VitriolationRecipe.isFluidAcid(inputTank.getFluid())) {
+            int dAcid = VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipe.getMinimumAcidStrength());
+            if(dAcid == 1) consumption /= 4;
+            else if(dAcid >= 2) consumption = 0;
+        }
+
+        inputTank.shrink(consumption);
         getInputItem().shrink(recipe.getInputItem().getCount());
 
         if(getInputItem().getCount() < recipe.getInputItem().getCount()) {
@@ -419,7 +435,8 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
                     foundRecipe = true;
                 }
             } else if (VitriolationRecipe.isFluidAcid(inputTank.getFluid())) {
-                if (VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipeQuery.getMinimumAcidStrength()) >= 0) {
+                int dAcid = VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipeQuery.getMinimumAcidStrength());
+                if (dAcid >= 0) {
                     recipe = recipeQuery;
                     progress = recipeQuery.getCraftTicks();
                     foundRecipe = true;

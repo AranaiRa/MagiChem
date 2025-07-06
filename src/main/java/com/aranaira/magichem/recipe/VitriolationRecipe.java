@@ -257,7 +257,7 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         }
         if(myStrength == -1) return -1;
 
-        return pTargetStrength - myStrength;
+        return myStrength - pTargetStrength;
     }
 
     public static class Type implements RecipeType<VitriolationRecipe> {
