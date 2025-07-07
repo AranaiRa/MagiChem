@@ -570,7 +570,7 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
 
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
-        if(pStack.getItem() == recipe.getMateria()) {
+        if(recipe != null && pStack.getItem() == recipe.getMateria()) {
             final CompoundTag tag = new CompoundTag();
             tag.putInt("CustomModelData", 1);
             pStack.setTag(tag);
