@@ -1,6 +1,7 @@
 package com.aranaira.magichem.entities;
 
 import com.aranaira.magichem.block.entity.SkywrathAltarBlockEntity;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.api.capabilities.IPlayerProgression;
@@ -100,10 +101,10 @@ public class ThrownThunderstoneEntity extends ThrowableItemProjectile {
 
             if (level().getBlockState(tPos).isAir()) {
                 boolean isAltarInRange = false;
-                for(int y=-1;y<=1;y++) {
-                    for (int x = -1; x <= 1; x++) {
-                        for (int z = -1; z <= 1; z++) {
-                            isAltarInRange = level().getBlockEntity(tPos.offset(x, y, z)) instanceof SkywrathAltarBlockEntity;
+                for(int y=-2;y<=2;y++) {
+                    for (int x=-2;x<=2;x++) {
+                        for (int z=-2;z<=2;z++) {
+                            isAltarInRange = level().getBlockState(tPos.offset(x, y, z)).getBlock() == BlockRegistry.SKYWRATH_ALTAR.get();
                             if(isAltarInRange) break;
                         }
                         if(isAltarInRange) break;
