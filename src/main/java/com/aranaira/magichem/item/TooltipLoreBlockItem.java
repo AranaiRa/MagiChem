@@ -415,6 +415,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                         if(nbt.contains("inventory"))
                             abbe.load(nbt);
                     }
+                } else if (cachedItem == BlockRegistry.ELDRIN_ORRERY.get().asItem()) {
+                    EldrinOrreryBlockEntity eobe = (EldrinOrreryBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (eobe != null) {
+                        if(nbt.contains("inventory"))
+                            eobe.unpackInventoryFromNBT(nbt);
+                    }
                 }
             }
             return result;

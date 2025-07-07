@@ -9,6 +9,7 @@ import com.aranaira.magichem.foundation.saveddata.EldrinOrreryLimiterSD;
 import com.aranaira.magichem.gui.EldrinOrreryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
@@ -26,6 +27,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -469,6 +471,31 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    }
+
+    public void packInventoryToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.ELDRIN_ORRERY.get());
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("solar", solar);
+        nbt.putInt("lunar", lunar);
+        nbt.putInt("sidereal", sidereal);
+        nbt.putInt("realm", realm);
+        nbt.putInt("firmament", firmament);
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
+        itemHandler.deserializeNBT(pInventoryTag.getCompound("inventory"));
+        solar = pInventoryTag.getInt("solar");
+        lunar = pInventoryTag.getInt("lunar");
+        sidereal = pInventoryTag.getInt("sidereal");
+        realm = pInventoryTag.getInt("realm");
+        firmament = pInventoryTag.getInt("firmament");
     }
 
     public float getSolarFillPercent(){
