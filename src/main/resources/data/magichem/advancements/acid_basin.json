@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:acid_basin"
+    },
+    "title": {
+      "translate": "advancements.magichem.acid_basin.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.acid_basin.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:alchemical_nexus",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:acid_basin"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

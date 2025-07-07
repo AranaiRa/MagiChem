@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:eldrin_orrery"
+    },
+    "title": {
+      "translate": "advancements.magichem.eldrin_orrery.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.eldrin_orrery.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:celestial_mechanism",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:eldrin_orrery"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

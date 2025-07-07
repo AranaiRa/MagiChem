@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:shimmering_vintage_wine_bottle"
+    },
+    "title": {
+      "translate": "advancements.magichem.vintage_shimmering_wine.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.vintage_shimmering_wine.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:shimmering_wine",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:shimmering_vintage_wine_bottle"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:celestial_mechanism"
+    },
+    "title": {
+      "translate": "advancements.magichem.celestial_mechanism.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.celestial_mechanism.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:astral_observer",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:celestial_mechanism"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

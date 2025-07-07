@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:immaculate_vinteum_crystal"
+    },
+    "title": {
+      "translate": "advancements.magichem.immaculate_vinteum_crystal.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.immaculate_vinteum_crystal.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:acid_basin",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:immaculate_vinteum_crystal"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

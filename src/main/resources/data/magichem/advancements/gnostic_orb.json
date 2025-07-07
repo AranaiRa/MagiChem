@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:gnostic_orb"
+    },
+    "title": {
+      "translate": "advancements.magichem.gnostic_orb.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.gnostic_orb.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:alchemical_nexus",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:gnostic_orb"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:horoscope_solar",
+    "magichem:horoscope_lunar"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:thunderstone"
+    },
+    "title": {
+      "translate": "advancements.magichem.thunderstone.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.thunderstone.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:sublimation_primer",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:thunderstone"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

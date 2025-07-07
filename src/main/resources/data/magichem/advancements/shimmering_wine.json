@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:shimmering_wine_bottle"
+    },
+    "title": {
+      "translate": "advancements.magichem.shimmering_wine.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.shimmering_wine.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:sweetberry_wine",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:shimmering_wine_bottle"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

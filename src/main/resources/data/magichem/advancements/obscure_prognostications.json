@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:obscure_prognostications"
+    },
+    "title": {
+      "translate": "advancements.magichem.obscure_prognostications.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.obscure_prognostications.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:gnostic_orb",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:obscure_prognostications"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
