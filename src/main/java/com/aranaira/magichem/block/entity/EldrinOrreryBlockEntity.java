@@ -58,7 +58,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import static com.aranaira.magichem.block.entity.MirrorLabyrinthBlockEntity.TRAIL_PARTICLE_COLORS;
 import static com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer.WELLSPRING_COLORS;
 import static com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer.WELLSPRING_STARTS;
 
@@ -392,7 +391,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
                     if(entity.wellspringPercent > 0.375f) {
                         Vec3 origin = new Vec3(entity.getBlockPos().getX(), entity.getBlockPos().getY()+0.5, entity.getBlockPos().getZ());
 
-                        int spawnPeriod = 9;
+                        int spawnPeriod = 6;
                         int timeSlice = (int) (level.getGameTime() % (spawnPeriod * 6));
                         if(timeSlice % spawnPeriod == 0) {
                             int i = timeSlice / spawnPeriod;
@@ -400,7 +399,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
                                             .setPhysics(false).setScale(0.015f).setMaxAge(80)
                                             .setColor(WELLSPRING_COLORS[i][0], WELLSPRING_COLORS[i][1], WELLSPRING_COLORS[i][2]),
                                     origin.x + WELLSPRING_STARTS[i].x, origin.y, origin.z + WELLSPRING_STARTS[i].y,
-                                    -0.125, 0.02 + r.nextDouble() * 0.01, -0.1250);
+                                    (0.025 + r.nextDouble(0.1)) * (r.nextBoolean() ? 1 : -1), 0.02 + r.nextDouble() * 0.01, -0.1250);
                         }
                     }
                 }
