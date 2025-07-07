@@ -90,7 +90,7 @@ public class AcidBasinRouterBlockEntity extends BlockEntity implements IRouterBl
     @Override
     public void destroyMaster() {
         getLevel().destroyBlock(getMasterPos(), true);
-        AcidBasinBlock.destroyRouters(getLevel(), getMasterPos(), null);
+        AcidBasinBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
     }
 
     @Override
