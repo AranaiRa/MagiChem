@@ -530,6 +530,12 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
 
                 gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
             }
+
+            if(recipe.getOutputRate() < 1f) {
+                int amt = (int)Math.round(1f / recipe.getOutputRate());
+
+                gui.drawString(font, amt < 9 ? "x"+amt : ""+amt, 101, 72, 0xff000000, false);
+            }
         }
 
         if(!menu.blockEntity.hasSufficientPower()) {
