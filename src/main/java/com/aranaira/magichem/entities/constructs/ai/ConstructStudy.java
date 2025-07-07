@@ -1,5 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
@@ -32,9 +33,9 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
     private Optional<InteractionHand>  learningItemHand;
     private static final Random random = new Random();
     private static final TagKey<Item>
-        studyMaterialSimple = ItemTags.create(new ResourceLocation("minecraft", "construct_study_materials_simple")),
-        studyMaterialAdvanced = ItemTags.create(new ResourceLocation("minecraft", "construct_study_materials_advanced")),
-        studyMaterialMaster = ItemTags.create(new ResourceLocation("minecraft", "construct_study_materials_master"));
+        studyMaterialSimple = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "construct_study_materials_simple")),
+        studyMaterialAdvanced = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "construct_study_materials_advanced")),
+        studyMaterialMaster = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "construct_study_materials_master"));
 
     public ConstructStudy(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
