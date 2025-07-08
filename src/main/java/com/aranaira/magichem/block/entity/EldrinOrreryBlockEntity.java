@@ -1,9 +1,11 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.EldrinOrreryBlock;
 import com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.saveddata.EldrinOrreryLimiterSD;
 import com.aranaira.magichem.gui.EldrinOrreryMenu;
@@ -61,7 +63,7 @@ import java.util.UUID;
 import static com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer.WELLSPRING_COLORS;
 import static com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer.WELLSPRING_STARTS;
 
-public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester {
+public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction {
     public static final int
         SLOT_COUNT = 10, SLOT_INPUT_START = 0, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT = 5,
         SLOT_SOLAR_INPUT = 0, SLOT_LUNAR_INPUT = 1, SLOT_SIDEREAL_INPUT = 2, SLOT_FIRMAMENT_INPUT = 3, SLOT_REALM_INPUT = 4,
@@ -156,6 +158,16 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
                 return (stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("realm")) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
 
             return false;
+        }
+
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if(slot == SLOT_FIRMAMENT_INPUT || slot == SLOT_REALM_INPUT) {
+                if(InventoryHelper.isMateriaUnbottled(getStackInSlot(slot)))
+                    return ItemStack.EMPTY;
+            }
+
+            return super.extractItem(slot, amount, simulate);
         }
     };
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -660,5 +672,10 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,6,3));
+    }
+
+    @Override
+    public void destroyRouters() {
+        EldrinOrreryBlock.destroyRouters(getLevel(), getBlockPos());
     }
 }
