@@ -269,7 +269,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         if(e instanceof EldrinOrreryBlockEntity entity) {
             if(!level.isClientSide()) {
                 boolean changed = false;
-                if(entity.solar < CHARGE_SOLAR * CHARGE_CAP_MULT_ORBS - CHARGE_SOLAR) {
+                if(entity.solar <= CHARGE_SOLAR * CHARGE_CAP_MULT_ORBS - CHARGE_SOLAR) {
                     ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_SOLAR_INPUT);
                     ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_SOLAR_OUTPUT);
                     if(!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
@@ -285,43 +285,39 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
                         changed = true;
                     }
                 }
-                if(entity.lunar < CHARGE_LUNAR * CHARGE_CAP_MULT_ORBS - CHARGE_LUNAR) {
-                    if(entity.solar < CHARGE_LUNAR * CHARGE_CAP_MULT_ORBS - CHARGE_LUNAR) {
-                        ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_LUNAR_INPUT);
-                        ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_LUNAR_OUTPUT);
-                        if (!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
-                            entity.lunar += CHARGE_LUNAR;
-                            if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) {
-                                if (outStack.isEmpty()) {
-                                    entity.itemHandler.setStackInSlot(SLOT_LUNAR_OUTPUT, new ItemStack(ItemRegistry.GLASS_ORB.get()));
-                                } else {
-                                    outStack.grow(1);
-                                }
+                if(entity.lunar <= CHARGE_LUNAR * CHARGE_CAP_MULT_ORBS - CHARGE_LUNAR) {
+                    ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_LUNAR_INPUT);
+                    ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_LUNAR_OUTPUT);
+                    if (!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
+                        entity.lunar += CHARGE_LUNAR;
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) {
+                            if (outStack.isEmpty()) {
+                                entity.itemHandler.setStackInSlot(SLOT_LUNAR_OUTPUT, new ItemStack(ItemRegistry.GLASS_ORB.get()));
+                            } else {
+                                outStack.grow(1);
                             }
-                            if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
-                            changed = true;
                         }
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
+                        changed = true;
                     }
                 }
-                if(entity.sidereal < CHARGE_SIDEREAL * CHARGE_CAP_MULT_ORBS - CHARGE_SIDEREAL) {
-                    if(entity.solar < CHARGE_SIDEREAL * CHARGE_CAP_MULT_ORBS - CHARGE_SIDEREAL) {
-                        ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_SIDEREAL_INPUT);
-                        ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_SIDEREAL_OUTPUT);
-                        if (!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
-                            entity.sidereal += CHARGE_SIDEREAL;
-                            if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) {
-                                if (outStack.isEmpty()) {
-                                    entity.itemHandler.setStackInSlot(SLOT_SIDEREAL_OUTPUT, new ItemStack(ItemRegistry.GLASS_ORB.get()));
-                                } else {
-                                    outStack.grow(1);
-                                }
+                if(entity.sidereal <= CHARGE_SIDEREAL * CHARGE_CAP_MULT_ORBS - CHARGE_SIDEREAL) {
+                    ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_SIDEREAL_INPUT);
+                    ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_SIDEREAL_OUTPUT);
+                    if (!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
+                        entity.sidereal += CHARGE_SIDEREAL;
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) {
+                            if (outStack.isEmpty()) {
+                                entity.itemHandler.setStackInSlot(SLOT_SIDEREAL_OUTPUT, new ItemStack(ItemRegistry.GLASS_ORB.get()));
+                            } else {
+                                outStack.grow(1);
                             }
-                            if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
-                            changed = true;
                         }
+                        if(inStack.getItem() != ItemRegistry.DEBUG_ORB.get()) inStack.shrink(1);
+                        changed = true;
                     }
                 }
-                if(entity.realm < CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES - CHARGE_ADMIXTURES) {
+                if(entity.realm <= CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES - CHARGE_ADMIXTURES) {
                     ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_REALM_INPUT);
                     ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_REALM_OUTPUT);
                     if(!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
@@ -337,7 +333,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
                         changed = true;
                     }
                 }
-                if(entity.firmament < CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES - CHARGE_ADMIXTURES) {
+                if(entity.firmament <= CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES - CHARGE_ADMIXTURES) {
                     ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
                     ItemStack outStack = entity.itemHandler.getStackInSlot(SLOT_FIRMAMENT_OUTPUT);
                     if(!inStack.isEmpty() && outStack.getCount() < outStack.getMaxStackSize()) {
