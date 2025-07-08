@@ -4419,7 +4419,7 @@
         "location": "magichem:alchemical_sublimation_ritual/magichem/materia_vessel"
       },
       {
-        "type": "sublimation_ritual",
+        "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/materia_vessel"
       }
     ]

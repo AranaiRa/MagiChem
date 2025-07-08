@@ -2,6 +2,7 @@ package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.entity.renderer.*;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.data.DamageTypeProvider;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
@@ -17,12 +18,14 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -182,6 +185,12 @@ public class MagiChemMod
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SHIMMERING_WINE.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SHIMMERING_WINE_FLOWING.get(), RenderType.translucent());
             });
+        }
+
+        @SubscribeEvent
+        public static void onGatherData(final GatherDataEvent event) {
+            RegistrySetBuilder rsb = new RegistrySetBuilder();
+            DamageTypeProvider.register(rsb);
         }
 
         @SubscribeEvent

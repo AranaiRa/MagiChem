@@ -1,4 +1,4 @@
-package com.aranaira.magichem.datagen;
+package com.aranaira.magichem.data.datagen;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.NameCountPair;
@@ -12,7 +12,6 @@ import com.google.gson.*;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonBuilderFactory;
-import javax.json.JsonObjectBuilder;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;

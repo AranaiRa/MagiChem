@@ -1,7 +1,6 @@
-package com.aranaira.magichem.datagen;
+package com.aranaira.magichem.data.datagen;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;

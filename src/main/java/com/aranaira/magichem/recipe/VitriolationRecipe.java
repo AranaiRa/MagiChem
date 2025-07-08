@@ -260,6 +260,17 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         return myStrength - pTargetStrength;
     }
 
+    public static int getFluidAcidStrength(Fluid pFluid) {
+        int myStrength = -1;
+        for(int i=0; i<=5; i++) {
+            if(allAcids.get(i).contains(pFluid.getFluidType()) && pFluid.getFluidType() instanceof AcidFluidType aft) {
+                myStrength = aft.getAcidStrength();
+                break;
+            }
+        }
+        return myStrength;
+    }
+
     public static class Type implements RecipeType<VitriolationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();

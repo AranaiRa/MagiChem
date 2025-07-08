@@ -1,10 +1,8 @@
-package com.aranaira.magichem.datagen;
+package com.aranaira.magichem.data.datagen;
 
-import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.registry.ItemRegistry;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;

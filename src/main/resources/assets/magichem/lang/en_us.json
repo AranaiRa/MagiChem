@@ -265,6 +265,7 @@
   "effect.magichem.suns_scorn": "Sun's Scorn",
   "effect.magichem.gigantic_vigor": "Gigantic Vigor",
   "effect.magichem.terantic_might": "Terantic Might",
+  "effect.magichem.dissolution": "Dissolution",
 
   "magichem:academic_slurry": "Academic Slurry",
   "academic_slurry_fluid_type": "Academic Slurry",
@@ -1400,6 +1401,8 @@
   "mechanic.lumins.lunar": "Lunar Lumins",
   "mechanic.lumins.sidereal": "Sidereal Lumins",
   "mechanic.lumins.solar": "Solar Lumins",
+
+  "death.attack.magichem_acid": "%s dissolved away",
 
   "jei.magichem.anointing": "Materia Anointing",
   "jei.magichem.coloration": "Alchemical Coloration",
