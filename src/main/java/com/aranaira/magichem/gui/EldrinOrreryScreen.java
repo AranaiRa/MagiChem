@@ -38,7 +38,8 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_orrery.png");
     private static final int
-            PANEL_MAIN_W = 212, PANEL_MAIN_H = 207;
+            PANEL_MAIN_W = 212, PANEL_MAIN_H = 207,
+            TOOLTIP_LUMIN_DIVISOR = 1000, TOOLTIP_DROPLET_DIVISOR = 5;
     private static final ItemStack
             MOTE_ENDER = new ItemStack(ItemInit.GREATER_MOTE_ENDER.get()),
             MOTE_EARTH = new ItemStack(ItemInit.GREATER_MOTE_EARTH.get()),
@@ -158,10 +159,161 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
     protected void renderTooltip(GuiGraphics gui, int mouseX, int mouseY) {
         super.renderTooltip(gui, mouseX, mouseY);
 
-        Font font = Minecraft.getInstance().font;
         List<Component> tooltipContents = new ArrayList<>();
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
+
+        //Solar
+        if(mouseX >= x+13 && mouseX <= x+19 &&
+                mouseY >= y+7 && mouseY <= y+56) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.jei.illumination.lumins.solar").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line1.solar")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line2.part1"))
+                    .append(Component.literal(""+(CHARGE_SOLAR / TOOLTIP_LUMIN_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line2.part2"))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line3"))
+                    .append(Component.literal("+200%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("."))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line4").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal((menu.blockEntity.getSolarFill() / TOOLTIP_LUMIN_DIVISOR) + " / " + (CHARGE_SOLAR * CHARGE_CAP_MULT_ORBS / TOOLTIP_LUMIN_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, menu.blockEntity.getSolarFillPercent()) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+        }
+
+        //Lunar
+        if(mouseX >= x+31 && mouseX <= x+37 &&
+                mouseY >= y+7 && mouseY <= y+56) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.jei.illumination.lumins.lunar").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line1.lunar")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line2.part1"))
+                    .append(Component.literal(""+(CHARGE_LUNAR / TOOLTIP_LUMIN_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line2.part2"))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line3"))
+                    .append(Component.literal("+300%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("."))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line4").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal((menu.blockEntity.getLunarFill() / TOOLTIP_LUMIN_DIVISOR) + " / " + (CHARGE_LUNAR * CHARGE_CAP_MULT_ORBS / TOOLTIP_LUMIN_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, menu.blockEntity.getLunarFillPercent()) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+        }
+
+        //Sidereal
+        if(mouseX >= x+49 && mouseX <= x+55 &&
+                mouseY >= y+7 && mouseY <= y+56) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.jei.illumination.lumins.sidereal").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line1.sidereal")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line2.part1"))
+                    .append(Component.literal(""+(CHARGE_SIDEREAL / TOOLTIP_LUMIN_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line2.part2"))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line3"))
+                    .append(Component.literal("+400%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("."))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line4").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal((menu.blockEntity.getSiderealFill() / TOOLTIP_LUMIN_DIVISOR) + " / " + (CHARGE_SIDEREAL * CHARGE_CAP_MULT_ORBS / TOOLTIP_LUMIN_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, menu.blockEntity.getSiderealFillPercent()) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+        }
+
+        //Firmament
+        if(mouseX >= x+175 && mouseX <= x+181 &&
+                mouseY >= y+7 && mouseY <= y+56) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("item.magichem.admixture_firmament").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line1.firmament")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line2.part1"))
+                    .append(Component.literal(""+(CHARGE_ADMIXTURES / TOOLTIP_DROPLET_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line2.part2"))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line3"))
+                    .append(Component.literal("x2.0").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("."))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line4").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal((menu.blockEntity.getFirmamentFill() / TOOLTIP_DROPLET_DIVISOR) + " / " + (CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES / TOOLTIP_DROPLET_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, menu.blockEntity.getFirmamentFillPercent()) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+        }
+
+        //Realm
+        if(mouseX >= x+193 && mouseX <= x+199 &&
+                mouseY >= y+7 && mouseY <= y+56) {
+
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("item.magichem.admixture_realm").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line1.realm")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line2.part1"))
+                    .append(Component.literal(""+(CHARGE_ADMIXTURES / TOOLTIP_DROPLET_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line2.part2"))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line3"))
+                    .append(Component.literal("x1.5").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("."))
+            );
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.admixture.line4").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal((menu.blockEntity.getRealmFill() / TOOLTIP_DROPLET_DIVISOR) + " / " + (CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES / TOOLTIP_DROPLET_DIVISOR)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, menu.blockEntity.getRealmFillPercent()) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+        }
+
+        gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
     }
 
     @Override

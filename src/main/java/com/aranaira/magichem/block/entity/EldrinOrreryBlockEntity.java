@@ -517,6 +517,26 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         return (float)firmament / (float)(CHARGE_ADMIXTURES * CHARGE_CAP_MULT_ADMIXTURES);
     }
 
+    public int getSolarFill(){
+        return solar;
+    }
+
+    public int getLunarFill(){
+        return lunar;
+    }
+
+    public float getSiderealFill(){
+        return sidereal;
+    }
+
+    public float getRealmFill(){
+        return realm;
+    }
+
+    public float getFirmamentFill(){
+        return firmament;
+    }
+
     public UUID getPlacedBy() {
         return placedBy;
     }
