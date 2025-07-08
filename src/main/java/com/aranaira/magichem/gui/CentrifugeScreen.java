@@ -64,10 +64,12 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
                 lastRecipeComponentMateria = NonNullList.create();
             } else {
                 lastRecipe = menu.getCurrentRecipe();
-                lastRecipeResultAdmixture = menu.getCurrentRecipe().getResultAdmixture().copy();
-                lastRecipeComponentMateria = NonNullList.create();
-                for (ItemStack is : menu.getCurrentRecipe().getComponentMateria()) {
-                    lastRecipeComponentMateria.add(is.copy());
+                if(lastRecipe != null) {
+                    lastRecipeResultAdmixture = menu.getCurrentRecipe().getResultAdmixture().copy();
+                    lastRecipeComponentMateria = NonNullList.create();
+                    for (ItemStack is : menu.getCurrentRecipe().getComponentMateria()) {
+                        lastRecipeComponentMateria.add(is.copy());
+                    }
                 }
             }
         }
