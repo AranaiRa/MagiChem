@@ -552,13 +552,13 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         ItemStack firmamentStack = itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
         boolean needsFirmament = false;
         if(firmamentStack.isEmpty() || InventoryHelper.isMateriaUnbottled(firmamentStack)) {
-            needsFirmament = firmamentStack.getCount() < itemHandler.getSlotLimit(SLOT_FIRMAMENT_INPUT) / 2;
+            needsFirmament = firmamentStack.getCount() < 32;
         }
 
         ItemStack realmStack = itemHandler.getStackInSlot(SLOT_REALM_INPUT);
         boolean needsRealm = false;
         if(realmStack.isEmpty() || InventoryHelper.isMateriaUnbottled(realmStack)) {
-            needsRealm = realmStack.getCount() < itemHandler.getSlotLimit(SLOT_REALM_INPUT) / 2;
+            needsRealm = realmStack.getCount() < 32;
         }
 
         return needsFirmament || needsRealm;
@@ -568,23 +568,25 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
         Map<MateriaItem, Integer> result = new HashMap<>();
 
-        ItemStack firmamentStack = itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
-        if(firmamentStack.isEmpty()) {
-            result.put(ADMIXTURE_FIRMAMENT, itemHandler.getSlotLimit(SLOT_FIRMAMENT_INPUT) - firmamentStack.getCount());
-        }
-        else if(!InventoryHelper.isMateriaUnbottled(firmamentStack)) {
-            if (firmamentStack.getCount() < itemHandler.getSlotLimit(SLOT_FIRMAMENT_INPUT) / 2) {
-                result.put(ADMIXTURE_FIRMAMENT, itemHandler.getSlotLimit(SLOT_FIRMAMENT_INPUT) - firmamentStack.getCount());
+        if(!activeProvisionRequests.contains(ADMIXTURE_FIRMAMENT)){
+            ItemStack firmamentStack = itemHandler.getStackInSlot(SLOT_FIRMAMENT_INPUT);
+            if (firmamentStack.isEmpty()) {
+                result.put(ADMIXTURE_FIRMAMENT, 32);
+            } else if (InventoryHelper.isMateriaUnbottled(firmamentStack)) {
+                if (firmamentStack.getCount() <= 32) {
+                    result.put(ADMIXTURE_FIRMAMENT, 32);
+                }
             }
         }
 
-        ItemStack realmStack = itemHandler.getStackInSlot(SLOT_REALM_INPUT);
-        if(realmStack.isEmpty()) {
-            result.put(ADMIXTURE_REALM, itemHandler.getSlotLimit(SLOT_REALM_INPUT) - realmStack.getCount());
-        }
-        else if(!InventoryHelper.isMateriaUnbottled(realmStack)) {
-            if (realmStack.getCount() < itemHandler.getSlotLimit(SLOT_REALM_INPUT) / 2) {
-                result.put(ADMIXTURE_REALM, itemHandler.getSlotLimit(SLOT_REALM_INPUT) - realmStack.getCount());
+        if(!activeProvisionRequests.contains(ADMIXTURE_REALM)) {
+            ItemStack realmStack = itemHandler.getStackInSlot(SLOT_REALM_INPUT);
+            if (realmStack.isEmpty()) {
+                result.put(ADMIXTURE_REALM, 32);
+            } else if (InventoryHelper.isMateriaUnbottled(realmStack)) {
+                if (realmStack.getCount() <= 32) {
+                    result.put(ADMIXTURE_REALM, 32);
+                }
             }
         }
 
