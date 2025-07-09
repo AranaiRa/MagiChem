@@ -5912,6 +5912,13 @@
             "color": "dark_purple"
           },
           {
+            "text": ".\n\nIf there is a valid recipe charging in an Astral Observer, you can right click it with the orb to "
+          },
+          {
+            "text": "instantly complete the craft",
+            "color": "dark_purple"
+          },
+          {
             "text": "."
           }
         ]

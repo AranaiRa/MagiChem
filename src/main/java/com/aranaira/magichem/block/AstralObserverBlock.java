@@ -54,6 +54,8 @@ public class AstralObserverBlock extends BaseEntityBlock {
                 if(stackQuery.isEmpty()) {
                     final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);
                     pPlayer.setItemInHand(pHand, extractQuery);
+                } else if(stackQuery.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                    astral.skipToFullCharge();
                 } else {
                     if (!cap.getStackInSlot(0).isEmpty()) {
                         final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);

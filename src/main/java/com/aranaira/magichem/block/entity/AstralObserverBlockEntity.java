@@ -396,4 +396,8 @@ public class AstralObserverBlockEntity extends BlockEntity {
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,3,3));
     }
+
+    public void skipToFullCharge() {
+        currentLumins = luminsNeeded - 5;
+    }
 }
