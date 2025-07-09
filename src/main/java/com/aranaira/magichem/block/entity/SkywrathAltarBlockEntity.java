@@ -167,6 +167,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
                 heldItem = new ItemStack(ItemRegistry.SCORCHED_THEOREM.get(), Math.round(totalLevelsExpo / 10f));
             }
 
+            syncAndSave();
             return true;
         }
 
