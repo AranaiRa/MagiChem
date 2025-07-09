@@ -19,6 +19,7 @@ public class MobEffectsRegistry {
     public static final RegistryObject<MobEffect> GIGANTIC_VIGOR = EFFECTS.register("gigantic_vigor", () -> new GiganticVigorEffect(MobEffectCategory.BENEFICIAL, 0xffbe2049));
     public static final RegistryObject<MobEffect> TERANTIC_MIGHT = EFFECTS.register("terantic_might", () -> new TeranticMightEffect(MobEffectCategory.BENEFICIAL, 0xffe3003b));
     public static final RegistryObject<MobEffect> DISSOLUTION = EFFECTS.register("dissolution", () -> new DissolutionEffect(MobEffectCategory.HARMFUL, 0xffb4e51b));
+    public static final RegistryObject<MobEffect> ACID_WARD = EFFECTS.register("acid_ward", () -> new SimpleEffect(MobEffectCategory.BENEFICIAL, 0xff583481));
 
     public static void register(IEventBus eventBus) {
         EFFECTS.register(eventBus);

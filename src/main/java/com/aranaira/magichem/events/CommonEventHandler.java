@@ -36,6 +36,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -668,12 +669,19 @@ public class CommonEventHandler {
             if(entity != null) {
                 Set<MobEffect> keys = entity.getActiveEffectsMap().keySet();
                 if(keys.size() > 0 && event.getEffectInstance() != null) {
-                    boolean hasRadiantResolve = keys.contains(MobEffectsRegistry.RADIANT_RESOLVE.get());
-                    boolean incomingEffectNegative = event.getEffectInstance().getEffect().getCategory() == MobEffectCategory.HARMFUL;
-                    boolean hasEffectAlready = keys.contains(event.getEffectInstance().getEffect());
+                    //Radiant Resolve cancelling negative status
+                    if(keys.contains(MobEffectsRegistry.RADIANT_RESOLVE.get())) {
+                        boolean incomingEffectNegative = event.getEffectInstance().getEffect().getCategory() == MobEffectCategory.HARMFUL;
+                        boolean hasEffectAlready = keys.contains(event.getEffectInstance().getEffect());
 
-                    if (hasRadiantResolve && incomingEffectNegative && !hasEffectAlready) {
-                        event.setCanceled(true);
+                        if (incomingEffectNegative && !hasEffectAlready) {
+                            event.setCanceled(true);
+                        }
+                    }
+
+                    //Acid Ward reducing incoming Dissolution effects
+                    if(keys.contains(MobEffectsRegistry.ACID_WARD.get()) && event.getEffectInstance().getEffect() == MobEffectsRegistry.DISSOLUTION.get()) {
+
                     }
                 }
             }
