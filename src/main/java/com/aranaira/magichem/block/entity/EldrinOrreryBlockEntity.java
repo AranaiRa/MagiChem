@@ -1,13 +1,9 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.EldrinOrreryBlock;
-import com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer;
-import com.aranaira.magichem.capabilities.grime.GrimeProvider;
-import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.foundation.saveddata.EldrinOrreryLimiterSD;
 import com.aranaira.magichem.gui.EldrinOrreryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -19,8 +15,6 @@ import com.mna.api.capabilities.IWellspringNodeRegistry;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.capabilities.worlddata.WorldMagicProvider;
-import com.mna.items.ItemInit;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -37,14 +31,11 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -73,8 +64,8 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         CHARGE_SOLAR = 120000, CHARGE_LUNAR = 192000, CHARGE_SIDEREAL = 288000, CHARGE_ADMIXTURES = 200,
         CHARGE_CAP_MULT_ORBS = 2, CHARGE_CAP_MULT_ADMIXTURES = 10;
     public static final float
-        GEN_RATE_NONE = 0.01f, GEN_RATE_SOLAR = 0.03f, GEN_RATE_LUNAR = 0.04f, GEN_RATE_SIDEREAL = 0.05f,
-        X_MULT_REALM = 1.5f, X_MULT_FIRMAMENT = 2.0f;
+            GEN_RATE = 0.0025f, GEN_BOOST_SOLAR = 3.0f, GEN_BOOST_LUNAR = 4.0f, GEN_BOOST_SIDEREAL = 5.0f,
+        GEN_XMULT_REALM = 1.5f, GEN_XMULT_FIRMAMENT = 2.0f;
     public static final MateriaItem ADMIXTURE_FIRMAMENT = ItemRegistry.getMateriaMap(false, false).get("firmament");
     public static final MateriaItem ADMIXTURE_REALM = ItemRegistry.getMateriaMap(false, false).get("realm");
 
@@ -243,17 +234,17 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public float getBaseGenerationRate() {
-        float out = GEN_RATE_NONE;
-        out += solar > 0 ? GEN_RATE_SOLAR : 0;
-        out += lunar > 0 ? GEN_RATE_LUNAR : 0;
-        out += sidereal > 0 ? GEN_RATE_SIDEREAL : 0;
+        float out = GEN_RATE;
+        out += solar > 0 ? GEN_RATE * GEN_BOOST_SOLAR : 0;
+        out += lunar > 0 ? GEN_RATE * GEN_BOOST_LUNAR : 0;
+        out += sidereal > 0 ? GEN_RATE * GEN_BOOST_SIDEREAL : 0;
         return out;
     }
 
     public float getXMultRate() {
         float out = 1.0f;
-        out *= realm > 0 ? X_MULT_REALM : 1.0f;
-        out *= firmament > 0 ? X_MULT_FIRMAMENT : 1.0f;
+        out *= realm > 0 ? GEN_XMULT_REALM : 1.0f;
+        out *= firmament > 0 ? GEN_XMULT_FIRMAMENT : 1.0f;
         return out;
     }
 
