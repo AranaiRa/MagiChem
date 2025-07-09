@@ -114,9 +114,10 @@ public class ThrownThunderstoneEntity extends ThrowableItemProjectile {
 
                 LightningBolt lb = new LightningBolt(EntityType.LIGHTNING_BOLT, level());
                 if(!isAltarInRange) {
-                    lb.setVisualOnly(true);
                     int damage = getTierAndFactionDamage();
                     if(damage > 0) lb.setDamage(damage);
+                } else {
+                    lb.setVisualOnly(true);
                 }
                 lb.setPos(tPos.getX()+0.5, tPos.getY(), tPos.getZ()+0.5);
                 level().addFreshEntity(lb);
