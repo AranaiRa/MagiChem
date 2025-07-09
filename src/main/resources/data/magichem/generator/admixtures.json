@@ -248,7 +248,7 @@
       "color": "f6c95f",
       "depth": 2,
       "components": [
-        { "admixture": "storm", "count": 1 },
+        { "admixture": "storm", "count": 3 },
         { "essentia": "wrought", "count": 2 }
       ]
     },
