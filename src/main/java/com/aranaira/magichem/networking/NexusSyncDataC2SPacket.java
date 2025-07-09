@@ -48,6 +48,7 @@ public class NexusSyncDataC2SPacket {
                 anbe.setPowerUsageSetting(powerUsageSetting);
                 anbe.setRecipeFromOutput(anbe.getLevel(), recipeOutput);
                 anbe.preventDrawingLastMateria = preventDrawingLastMateria;
+                anbe.setInitiatingPlayer(player.getUUID());
                 anbe.syncAndSave();
             }
         });

@@ -9,7 +9,7 @@
     {
       "experience": 0,
       "components": [
-        { "item": "magichem:scorched_theorem" },
+        { "item": "magichem:scorched_profundity" },
         { "item": "magichem:abjuration" },
         { "item": "magichem:scorched_theorem" }
       ],

@@ -1,6 +1,8 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
+import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
+import com.aranaira.magichem.block.entity.routers.AlchemicalNexusRouterBlockEntity;
 import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.foundation.IHasDeviceRecipeSlot;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
@@ -56,6 +58,13 @@ public class ConstructSetDeviceRecipe extends ConstructAITask<ConstructSetDevice
                         this.phase = ETaskPhase.WAIT_AT_DEVICE;
                         this.waitTimer = 6;
                         BlockEntity be = construct.asEntity().level().getBlockEntity(deviceTarget);
+                        //Make sure we set the initiating player for the nexus
+                        if(be instanceof AlchemicalNexusRouterBlockEntity router) {
+                            router.getMaster().setInitiatingPlayer(construct.getOwnerId());
+                        } else if(be instanceof AlchemicalNexusBlockEntity nexus) {
+                            nexus.setInitiatingPlayer(construct.getOwnerId());
+                        }
+
                         if (be instanceof IHasDeviceRecipeSlot ihdrs) {
                             if(recipeTemplateTarget != null) {
                                 BlockEntity targetBE = construct.asEntity().level().getBlockEntity(recipeTemplateTarget);
@@ -67,6 +76,7 @@ public class ConstructSetDeviceRecipe extends ConstructAITask<ConstructSetDevice
                                         swingHandWithCapability(ConstructCapability.CARRY);
 
                                         if (!oldRecipe.equals(newRecipe, true)) {
+
                                             byte result = ihdrs.setRecipe(newRecipe, construct.getOwner());
                                             if (newRecipe.isEmpty())
                                                 this.pushDiagnosticMessage("I cleared the device's recipe, boss.", false);

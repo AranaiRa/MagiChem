@@ -11,7 +11,6 @@ import com.aranaira.magichem.gui.GrandCircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
-import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
@@ -26,7 +25,6 @@ import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -49,7 +47,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,7 +69,7 @@ import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COL
 public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
     public static final int
             SLOT_COUNT = 23,
-            SLOT_BOTTLES = 0, SLOT_RECIPE = 21, SLOT_STONE = 22,
+            SLOT_BOTTLES = 0, SLOT_RECIPE = 21, SLOT_WISDOM = 22,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10;
     public static final float
@@ -120,7 +117,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                         return false;
                     }
                 }
-                if(slot == SLOT_STONE) {
+                if(slot == SLOT_WISDOM) {
                     return stack.getItem() instanceof PhilosophersStoneItem;
                 }
 
@@ -145,7 +142,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
             @Override
             public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-                if(slot == SLOT_STONE) {
+                if(slot == SLOT_WISDOM) {
                     setStackInSlot(slot, stack);
                     return ItemStack.EMPTY;
                 }
@@ -160,7 +157,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                 if(slot == SLOT_RECIPE) {
                     getCurrentRecipe();
                 }
-                if(slot == SLOT_STONE) {
+                if(slot == SLOT_WISDOM) {
                     forceDisplayedRecipeUpdate = true;
                 }
                 if(recipe != recipePre)
@@ -833,7 +830,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
             case SLOT_RECIPE -> SLOT_RECIPE;
-            case SLOT_STONE -> SLOT_STONE;
+            case SLOT_STONE -> SLOT_WISDOM;
 
             default -> -1;
         };
@@ -1056,11 +1053,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     public ItemStack getStoneItem() {
-        return itemHandler.getStackInSlot(SLOT_STONE);
+        return itemHandler.getStackInSlot(SLOT_WISDOM);
     }
 
     public ItemStack getStoneItem(boolean pMakeCopy) {
-        return pMakeCopy ? itemHandler.getStackInSlot(SLOT_STONE).copy() : itemHandler.getStackInSlot(SLOT_STONE);
+        return pMakeCopy ? itemHandler.getStackInSlot(SLOT_WISDOM).copy() : itemHandler.getStackInSlot(SLOT_WISDOM);
     }
 
     @Override

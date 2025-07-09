@@ -16,18 +16,21 @@ import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.AdvancementList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -67,6 +70,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
     private ItemStack lastRecipeResult = ItemStack.EMPTY;
     private int recipeTierCap = 1;
+    private Player player;
 
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
@@ -74,6 +78,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
     public AlchemicalNexusScreen(AlchemicalNexusMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        player = pPlayerInventory.player;
         pPlayerInventory.player.getCapability(PlayerProgressionProvider.PROGRESSION).ifPresent(cap -> recipeTierCap = cap.getTier());
         updateDisplayedRecipes("");
     }
@@ -93,17 +98,32 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         List<SublimationRecipe> sublimationRecipeOutputs = getAllRecipes();
         filteredRecipes.clear();
 
-        for(SublimationRecipe iar : sublimationRecipeOutputs) {
-            String display = iar.getAlchemyObject().getDisplayName().getString();
-            if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
-                if(iar.getTier() <= recipeTierCap)
-                    filteredRecipes.add(iar.getAlchemyObject().copy());
+        for(SublimationRecipe sr : sublimationRecipeOutputs) {
+            String display = sr.getAlchemyObject().getDisplayName().getString();
+            boolean nameMatchesFilter = (Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()));
+            boolean wisdomValidForCurrentStone = sr.getWisdom() <= menu.blockEntity.getCurrentWisdom();
+            boolean requiredAdvancementCompliant = true;
+            boolean forbiddenAdvancementCompliant = true;
+
+            if(sr.getRequiredAdvancement() != null && player instanceof LocalPlayer lp) {
+                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
+                requiredAdvancementCompliant = advancements.get(sr.getRequiredAdvancement()) != null;
+            }
+            if(sr.getForbiddenAdvancement() != null && player instanceof LocalPlayer lp) {
+                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
+                forbiddenAdvancementCompliant = advancements.get(sr.getForbiddenAdvancement()) != null;
+            }
+
+            if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
+                if(sr.getTier() <= recipeTierCap)
+                    filteredRecipes.add(sr.getAlchemyObject().copy());
             }
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
 
         recipesChanged = false;
+        menu.blockEntity.forceDisplayedRecipeUpdate = false;
     }
 
     private final List<SublimationRecipe> allRecipes = new ArrayList<>();
@@ -126,7 +146,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
-        if(recipesChanged)
+        if(recipesChanged || menu.blockEntity.forceDisplayedRecipeUpdate)
             updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(pGuiGraphics);
         updateFilterBoxContents();
@@ -273,6 +293,11 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             pGuiGraphics.blit(TEXTURE, x + 196, y + 81, 221, 245, 11, 11);
             pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
+
+        //Philosopher's Stone hole
+        pGuiGraphics.blit(TEXTURE, x + 180, y + 108, 224, 192, 32, 32);
+        if(menu.blockEntity.getStoneItem().isEmpty())
+            pGuiGraphics.blit(TEXTURE, x + 187, y + 115, 238, 224, 18, 18);
     }
 
     private void initializeRecipeSelectorButtons(){

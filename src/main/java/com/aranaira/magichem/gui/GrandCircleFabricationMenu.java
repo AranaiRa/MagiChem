@@ -58,7 +58,7 @@ public class GrandCircleFabricationMenu extends AbstractContainerMenu {
                 this.addSlot(new SlotItemHandler(handler, i, 118 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
             }
 
-            this.addSlot(new SlotItemHandler(handler, SLOT_STONE, 193, 95));
+            this.addSlot(new SlotItemHandler(handler, SLOT_WISDOM, 193, 95));
         });
     }
 

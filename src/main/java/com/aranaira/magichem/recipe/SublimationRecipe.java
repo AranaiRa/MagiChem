@@ -37,14 +37,19 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final ItemStack alchemyObject;
     private final NonNullList<InfusionStage> stages;
     private static final NonNullList<ItemStack> allPossibleOutputs = NonNullList.create();
+    private final ResourceLocation requiredAdvancement, forbiddenAdvancement, grantedAdvancement;
 
     public SublimationRecipe(ResourceLocation pID, int pTier, int pWisdom, ItemStack pAlchemyObject,
-                             NonNullList<InfusionStage> pStages) {
+                             NonNullList<InfusionStage> pStages,
+                             ResourceLocation pRequiredAdvancement, ResourceLocation pForbiddenAdvancement, ResourceLocation pGrantedAdvancement) {
         this.id = pID;
         this.stages = pStages;
         this.tier = pTier;
         this.wisdom = pWisdom;
         this.alchemyObject = pAlchemyObject;
+        this.requiredAdvancement = pRequiredAdvancement;
+        this.forbiddenAdvancement = pForbiddenAdvancement;
+        this.grantedAdvancement = pGrantedAdvancement;
     }
 
     /**
@@ -101,6 +106,30 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
     public ItemStack getAlchemyObject() {
         return alchemyObject;
+    }
+
+    public boolean isAdvancementRequired() {
+        return requiredAdvancement != null;
+    }
+
+    public ResourceLocation getRequiredAdvancement() {
+        return requiredAdvancement;
+    }
+
+    public boolean isForbiddenByAdvancement() {
+        return forbiddenAdvancement != null;
+    }
+
+    public ResourceLocation getForbiddenAdvancement() {
+        return forbiddenAdvancement;
+    }
+
+    public boolean grantsAdvancementOnCraft() {
+        return grantedAdvancement != null;
+    }
+
+    public ResourceLocation getGrantedAdvancement() {
+        return grantedAdvancement;
     }
 
     @Override
@@ -162,14 +191,14 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     public static class Type implements RecipeType<SublimationRecipe> {
         private Type() { }
         public static final Type INSTANCE = new Type();
-        public static final String ID = "sublimation_ritual";
+        public static final String ID = "sublimation";
     }
 
 
     public static class Serializer implements RecipeSerializer<SublimationRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final ResourceLocation ID =
-                new ResourceLocation(MagiChemMod.MODID, "sublimation_ritual");
+                new ResourceLocation(MagiChemMod.MODID, "sublimation");
         private static final HashMap<String, MateriaItem> materiaMap = ItemRegistry.getMateriaMap(true, true);
 
         @Override
@@ -224,7 +253,19 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 extractedStages.add(new InfusionStage(experienceThisStage, items, materia));
             });
 
-            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeObject, extractedStages);
+            ResourceLocation requiredAdvancementRL = null;
+            if(pSerializedRecipe.has("required_advancement"))
+                requiredAdvancementRL = new ResourceLocation(GsonHelper.getAsString(pSerializedRecipe, "required_advancement"));
+
+            ResourceLocation forbiddenAdvancementRL = null;
+            if(pSerializedRecipe.has("forbidden_advancement"))
+                forbiddenAdvancementRL = new ResourceLocation(GsonHelper.getAsString(pSerializedRecipe, "forbidden_advancement"));
+
+            ResourceLocation grantedAdvancementRL = null;
+            if(pSerializedRecipe.has("granted_advancement"))
+                grantedAdvancementRL = new ResourceLocation(GsonHelper.getAsString(pSerializedRecipe, "granted_advancement"));
+
+            return new SublimationRecipe(pRecipeId, tier, wisdom, recipeObject, extractedStages, requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL);
         }
 
         @Override
@@ -291,7 +332,20 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 infusionStages.add(is);
             }
 
-            return new SublimationRecipe(id, tier, wisdom, alchemyObject, infusionStages);
+            //advancements
+            ResourceLocation requiredAdvancementRL = null;
+            if(nbt.contains("required_advancement"))
+                requiredAdvancementRL = new ResourceLocation(nbt.getString("required_advancement"));
+
+            ResourceLocation forbiddenAdvancementRL = null;
+            if(nbt.contains("forbidden_advancement"))
+                forbiddenAdvancementRL = new ResourceLocation(nbt.getString("forbidden_advancement"));
+
+            ResourceLocation grantedAdvancementRL = null;
+            if(nbt.contains("granted_advancement"))
+                grantedAdvancementRL = new ResourceLocation(nbt.getString("granted_advancement"));
+
+            return new SublimationRecipe(id, tier, wisdom, alchemyObject, infusionStages, requiredAdvancementRL, forbiddenAdvancementRL, grantedAdvancementRL);
         }
 
         @Override
@@ -354,6 +408,15 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
 
                 nbtStages.put("stage"+stage, nbtThisStage);
             }
+
+            if(recipe.isAdvancementRequired())
+                nbt.putString("required_advancement", recipe.requiredAdvancement.toString());
+
+            if(recipe.isForbiddenByAdvancement())
+                nbt.putString("forbidden_advancement", recipe.forbiddenAdvancement.toString());
+
+            if(recipe.grantsAdvancementOnCraft())
+                nbt.putString("granted_advancement", recipe.grantedAdvancement.toString());
 
             nbt.put("stages", nbtStages);
 

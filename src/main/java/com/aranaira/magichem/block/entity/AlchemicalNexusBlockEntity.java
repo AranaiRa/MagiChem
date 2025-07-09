@@ -12,6 +12,7 @@ import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.gui.AlchemicalNexusMenu;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.*;
 import com.mna.api.particles.MAParticleType;
@@ -21,6 +22,10 @@ import com.mna.particles.types.movers.ParticleOrbitMover;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -28,10 +33,12 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -77,10 +84,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         isStalled = false, doDeferredRecipeLinkages = false;
     protected Random r = new Random();
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
+    protected UUID initiatingPlayer = null;
 
     public static final int
             FLUID_BAR_HEIGHT = 88,
-            SLOT_COUNT = 17,
+            SLOT_COUNT = 18, SLOT_WISDOM = 17,
             SLOT_MARKS = 0, SLOT_PROGRESS_HOLDER = 1, SLOT_RECIPE = 2,
             SLOT_INPUT_START = 3, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 8, SLOT_OUTPUT_COUNT = 9,
             DATA_COUNT = 5,
@@ -99,7 +107,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             itemAngle = 0f, itemRotSpeed = ITEM_SPEED_MIN, itemScale = 7f,
             reductionRate = 0.0f;
     public boolean
-            preventDrawingLastMateria = false;
+            preventDrawingLastMateria = false, forceDisplayedRecipeUpdate = false;
 
     ////////////////////
     // CONSTRUCTOR
@@ -114,6 +122,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 if(slot == SLOT_RECIPE) {
                     currentRecipe = SublimationRecipe.getSublimationRecipe(level, getStackInSlot(SLOT_RECIPE));
                     setChanged();
+                }
+                if(slot == SLOT_WISDOM) {
+                    forceDisplayedRecipeUpdate = true;
                 }
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
                     isStalled = false;
@@ -163,6 +174,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 }
                 else if(slot == SLOT_RECIPE || slot == SLOT_PROGRESS_HOLDER || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT))
                     return false;
+                else if(slot == SLOT_WISDOM)
+                    return stack.getItem() instanceof PhilosophersStoneItem;
 
                 return super.isItemValid(slot, stack);
             }
@@ -241,6 +254,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         nbt.putFloat("reductionRate", this.reductionRate);
         nbt.putBoolean("preventDrawingLastMateria", this.preventDrawingLastMateria);
 
+        if(initiatingPlayer != null)
+            nbt.putString("initiatingPlayer", initiatingPlayer.toString());
+
         nbt.putInt("numberOfDemands", satisfactionDemands.size());
         for(int i=0; i<satisfactionDemands.size(); i++) {
             nbt.putString("demandType"+i, ForgeRegistries.ITEMS.getKey(satisfactionDemands.get(i).getFirst()).toString());
@@ -254,7 +270,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         animStage = nbt.getInt("animationStage");
         craftingStage = nbt.getInt("craftingStage");
@@ -268,6 +284,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
         else
             containedSlurry = FluidStack.EMPTY;
+
+        if(nbt.contains("initiatingPlayer"))
+            initiatingPlayer = UUID.fromString(nbt.getString("initiatingPlayer"));
 
         satisfactionDemands.clear();
         for(int i=0; i<nbt.getInt("numberOfDemands"); i++) {
@@ -320,6 +339,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
+    public void setInitiatingPlayer(UUID pUUID) {
+        initiatingPlayer = pUUID;
+    }
+
     @Override
     public Component getDisplayName() {
         return Component.translatable("block.magichem.alchemical_nexus");
@@ -345,7 +368,19 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        itemHandler.deserializeNBT(pInventoryTag);
+        int size = pInventoryTag.getInt("Size");
+        if(size == SLOT_COUNT) {
+            itemHandler.deserializeNBT(pInventoryTag);
+        } else if(getLevel() != null && getLevel().isClientSide()) {
+            final LocalPlayer player = Minecraft.getInstance().player;
+            if(player != null) {
+                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
+                        .append(Component.translatable("block.magichem.alchemical_nexus").withStyle(ChatFormatting.GOLD))
+                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
+                player.displayClientMessage(msg, false);
+            }
+        }
+
         if(level != null)
             currentRecipe = SublimationRecipe.getSublimationRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
         else
@@ -649,6 +684,15 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     else{
                         anbe.resetProgress();
                         anbe.craftItem();
+                        if(anbe.initiatingPlayer != null && anbe.currentRecipe.grantsAdvancementOnCraft()) {
+                            if(pLevel.getPlayerByUUID(anbe.initiatingPlayer) instanceof ServerPlayer sp && pLevel.getServer() != null) {
+                                Advancement advancement = pLevel.getServer().getAdvancements().getAdvancement(anbe.currentRecipe.getGrantedAdvancement());
+                                if(advancement != null) {
+                                    sp.getAdvancements().award(advancement, "nexus");
+                                }
+                            }
+                        }
+                        anbe.initiatingPlayer = null;
                         if(anbe.craftingStage > 0)
                             anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_ADVANCED;
                         else
@@ -889,6 +933,19 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         }
 
         return input;
+    }
+
+    public ItemStack getStoneItem() {
+        return itemHandler.getStackInSlot(SLOT_WISDOM);
+    }
+
+    public int getCurrentWisdom() {
+        final Item itemQuery = itemHandler.getStackInSlot(SLOT_WISDOM).getItem();
+        if (itemQuery instanceof PhilosophersStoneItem stone) {
+            return stone.getWisdom();
+        }
+
+        return 0;
     }
 
     private static final int[] SPEC_EXPERIENCE_COST = {-1, 720, 1080, 1620, 2430, 3650};

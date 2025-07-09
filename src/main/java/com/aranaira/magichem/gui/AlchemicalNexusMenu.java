@@ -64,6 +64,9 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
 
                 this.addSlot(new SlotItemHandler(handler, i, 116 + (x) * 18, 31 + (y) * 18));
             }
+
+            //Wisdom Stone slot
+            this.addSlot(new SlotItemHandler(handler, SLOT_WISDOM, 188, 103));
         });
     }
 
