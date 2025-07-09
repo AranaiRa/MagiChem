@@ -88,6 +88,12 @@ public class EldrinOrreryRouterBlock extends BaseEntityBlock implements INoCreat
     }
 
     @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        EldrinOrreryRouterType type = EldrinOrreryBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_ELDRIN_ORRERY));
+        return (type == ABOVE || type == DOUBLE_ABOVE) ? 15 : 0;
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_ELDRIN_ORRERY);
         pBuilder.add(FACING);
