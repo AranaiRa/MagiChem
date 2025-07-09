@@ -8,8 +8,12 @@ import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,10 +24,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
@@ -33,6 +42,54 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
     public static final int CRAFT_COUNTDOWN_LENGTH = 90;
     public static final Random r = new Random();
+
+    protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+        @Override
+        public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if(level != null && !level.isClientSide()) {
+                ItemStack out = heldItem.copy();
+                if(!simulate) {
+                    heldItem = ItemStack.EMPTY;
+                    syncAndSave();
+                }
+                return out;
+            }
+
+            return ItemStack.EMPTY;
+        }
+
+        @Override
+        public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            if(level != null && !level.isClientSide()) {
+                if(heldItem.isEmpty()) {
+                    if(!simulate) {
+                        heldItem = stack;
+                        syncAndSave();
+                    }
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            return stack;
+        }
+
+        @Override
+        public @NotNull ItemStack getStackInSlot(int slot) {
+            return heldItem;
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            return 1;
+        }
+
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            super.onContentsChanged(slot);
+        }
+    };
 
     public SkywrathAltarBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.SKYWRATH_ALTAR_BE.get(), pPos, pBlockState);
@@ -132,8 +189,23 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
     }
 
     @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+
+        lazyItemHandler.invalidate();
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
+
+        return super.getCapability(cap, side);
+    }
+
+    @Override
     public void onLoad() {
         super.onLoad();
+        lazyItemHandler = LazyOptional.of(() -> itemHandler);
     }
 
     @Override
@@ -163,6 +235,12 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         nbt.putInt("heldItemCount", heldItem.getCount());
         nbt.putInt("craftCountdown", craftCountdown);
         return nbt;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     public void syncAndSave() {

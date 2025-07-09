@@ -42,9 +42,6 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.NEED
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
 public class AstralObserverBlockEntity extends BlockEntity {
-    public static final float
-        BEAM_FILL_SPEED = 0.06f;
-
     private LuminType luminType = LuminType.NONE;
     private int
             currentLumins = 0, luminsNeeded = 0, lastComparatorOutput = 0;
