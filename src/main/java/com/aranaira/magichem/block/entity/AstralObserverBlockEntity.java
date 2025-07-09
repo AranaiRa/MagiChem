@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -37,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.NEEDS_HARD_UPDATE;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
 public class AstralObserverBlockEntity extends BlockEntity {
@@ -45,7 +47,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
 
     private LuminType luminType = LuminType.NONE;
     private int
-            currentLumins = 0, luminsNeeded = 0;
+            currentLumins = 0, luminsNeeded = 0, lastComparatorOutput = 0;
     private IlluminationRecipe recipe = null;
     private ItemStack heldItem = ItemStack.EMPTY;
     private static final Random r = new Random();
@@ -59,7 +61,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-            if(!simulate && level != null && !level.isClientSide()) {
+            if(level != null && !level.isClientSide()) {
                 ItemStack stack = heldItem.copy();
                 if(!stack.isEmpty()) {
                     CompoundTag nbt = new CompoundTag();
@@ -76,11 +78,13 @@ public class AstralObserverBlockEntity extends BlockEntity {
                             stack.setTag(nbt);
                         }
                     }
-                    currentLumins = 0;
-                    luminsNeeded = 0;
-                    heldItem = ItemStack.EMPTY;
-                    recipe = null;
-                    syncAndSave();
+                    if(!simulate) {
+                        currentLumins = 0;
+                        luminsNeeded = 0;
+                        heldItem = ItemStack.EMPTY;
+                        recipe = null;
+                        syncAndSave();
+                    }
                     return stack;
                 }
             }
@@ -248,7 +252,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
                     if (entity.recipe != null) {
                         entity.luminsNeeded = entity.recipe.getCraftTime() * 1200;
                     }
-                } else if (entity.recipe != null) {
+                } else if (entity.recipe != null && entity.heldItem.getItem() != entity.recipe.getResultItem().getItem()) {
                     //If we have the wrong type of lumins we need to start draining them
                     if (entity.luminType != entity.recipe.getLuminType()) {
                         entity.currentLumins = Math.max(0, entity.currentLumins - 2);
@@ -259,6 +263,9 @@ public class AstralObserverBlockEntity extends BlockEntity {
                             entity.currentLumins++;
                         } else {
                             entity.heldItem = entity.recipe.getResultItem().copy();
+                            level.setBlock(pos, blockState.setValue(NEEDS_HARD_UPDATE, true), 3);
+                            level.sendBlockUpdated(pos, blockState, blockState.setValue(NEEDS_HARD_UPDATE, true), 3);
+                            entity.syncAndSave();
                         }
                     }
                 }
@@ -302,6 +309,14 @@ public class AstralObserverBlockEntity extends BlockEntity {
                                 center.x + offset.x, center.y + offset.y, center.z + offset.z,
                                 0, 0, 0);
                     }
+                }
+            }
+
+            if(!level.isClientSide()) {
+
+                if(blockState.getValue(NEEDS_HARD_UPDATE)) {
+                    level.setBlock(pos, blockState.setValue(NEEDS_HARD_UPDATE, false), 3);
+                    level.sendBlockUpdated(pos, blockState, blockState.setValue(NEEDS_HARD_UPDATE, false), 3);
                 }
             }
         }
@@ -397,7 +412,31 @@ public class AstralObserverBlockEntity extends BlockEntity {
         return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,3,3));
     }
 
+    public int getComparatorOutput() {
+        int out = 0;
+
+        if(recipe != null && !heldItem.isEmpty()) {
+            //done
+            if(recipe.getResultItem().getItem() == heldItem.getItem()) out = 15;
+
+            //gaining lumins
+            else if(getLuminPhase(false) == recipe.getLuminType()) out = 4;
+
+            //losing lumins
+            else out = 8;
+        }
+
+        if(out != lastComparatorOutput && level != null) {
+            level.setBlock(getBlockPos(), getBlockState().setValue(NEEDS_HARD_UPDATE, true), 3);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState().setValue(NEEDS_HARD_UPDATE, true), 3);
+        }
+
+        lastComparatorOutput = out;
+        return out;
+    }
+
     public void skipToFullCharge() {
         currentLumins = luminsNeeded - 5;
+        syncAndSave();
     }
 }

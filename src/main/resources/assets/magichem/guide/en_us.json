@@ -6819,6 +6819,78 @@
             "text": "; it must always be aligned in order to track the motion of the sun and moon."
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Astral Observer supports measurement with a "
+          },
+          {
+            "text": "Redstone Comparator",
+            "bold": true
+          },
+          {
+            "text": " and outputs a signal value based on its crafting progress."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": ""
+          },
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
+          },
+          {
+            "text": "0",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": The device is idle.\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": The item is gaining lumins.\n"
+          },
+          {
+            "text": "8",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": The item is losing lumins.\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": The item is fully Illuminated and is ready for collection.\n"
+          }
+        ]
       }
     ],
     "related_recipes": [
