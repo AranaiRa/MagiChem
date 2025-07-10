@@ -148,6 +148,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         else if(animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP)
                             animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
 
+                        currentRecipe = null;
+                        setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+
                         syncAndSave();
                     } else {
                         if(stackInSlot.hasTag()) {
