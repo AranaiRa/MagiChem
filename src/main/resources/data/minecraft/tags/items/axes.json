@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "mna:constructs/construct_axe_arm_left_wickerwood",
+    "mna:constructs/construct_axe_arm_right_wickerwood",
+    "mna:constructs/construct_axe_arm_left_wood",
+    "mna:constructs/construct_axe_arm_right_wood",
+    "mna:constructs/construct_axe_arm_left_stone",
+    "mna:constructs/construct_axe_arm_right_stone",
+    "mna:constructs/construct_axe_arm_left_bone",
+    "mna:constructs/construct_axe_arm_right_bone",
+    "mna:constructs/construct_axe_arm_left_iron",
+    "mna:constructs/construct_axe_arm_right_iron",
+    "mna:constructs/construct_axe_arm_left_gold",
+    "mna:constructs/construct_axe_arm_right_gold",
+    "mna:constructs/construct_axe_arm_left_obsidian",
+    "mna:constructs/construct_axe_arm_right_obsidian",
+    "mna:constructs/construct_axe_arm_left_obsidian",
+    "mna:constructs/construct_axe_arm_right_obsidian",
+    "mna:constructs/construct_axe_arm_left_diamond",
+    "mna:constructs/construct_axe_arm_right_diamond",
+    "mna:allfather_axe"
+  ]
+}
