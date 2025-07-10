@@ -15,6 +15,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.*;
+import com.aranaira.magichem.util.AdvancementUtil;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
@@ -361,7 +362,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
         if(currentRecipe != null) {
             nbt.putString("alchemyObject", ForgeRegistries.ITEMS.getKey(currentRecipe.getAlchemyObject().getItem()).toString());
-            nbt.putInt("stage", craftingStage);
+            nbt.putInt("craftingStage", craftingStage);
             nbt.putInt("animStage", animStage);
 
             if(initiatingPlayer != null)
@@ -377,7 +378,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             if(itemQuery != null && level != null) {
                 SublimationRecipe sr = SublimationRecipe.getSublimationRecipe(level, itemQuery);
                 if(sr != null) {
-                    currentRecipe = sr;
+                    itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(itemQuery));
+                    doDeferredRecipeLinkages = true;
                     craftingStage = nbt.getInt("craftingStage");
                     animStage = nbt.getInt("animStage");
 
@@ -498,16 +500,23 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             if(anbe.doDeferredRecipeLinkages) {
                 boolean hasRecipe = anbe.currentRecipe != null;
                 boolean itemInRecipeSlot = !anbe.itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty();
+                SublimationRecipe recipeQuery = anbe.currentRecipe;
 
                 if (itemInRecipeSlot && !hasRecipe) {
-                    anbe.currentRecipe = SublimationRecipe.getSublimationRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
+                    recipeQuery = SublimationRecipe.getSublimationRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
                 } else if(hasRecipe){
                     if(anbe.itemHandler.getStackInSlot(SLOT_RECIPE).getItem() != anbe.currentRecipe.getAlchemyObject().getItem())
-                        anbe.currentRecipe = SublimationRecipe.getSublimationRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
+                        recipeQuery = SublimationRecipe.getSublimationRecipe(pLevel, anbe.itemHandler.getStackInSlot(SLOT_RECIPE));
                 }
 
-                if(anbe.animStage != ANIM_STAGE_IDLE) {
-                    anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
+                if(recipeQuery != null) {
+                    //TODO: check for forbidden advancement and block the attempt to link the recipe if it's present
+
+                    anbe.currentRecipe = recipeQuery;
+
+                    if(anbe.animStage != ANIM_STAGE_IDLE) {
+                        anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
+                    }
                 }
                 anbe.doDeferredRecipeLinkages = false;
                 anbe.syncAndSave();
@@ -870,7 +879,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     private void cacheAnimSpec(boolean doSatisfactionDemandsUpdate) {
         this.cachedSpec = getAnimSpec(this.powerLevel);
 
-        if(doSatisfactionDemandsUpdate) {
+        if(doSatisfactionDemandsUpdate && this.currentRecipe != null) {
             InfusionStage currentStage = this.currentRecipe.getStages(false).get(this.craftingStage);
             setSatisfactionDemands(currentStage.componentMateria);
         }
@@ -965,6 +974,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public boolean hasAllRecipeItemsForCurrentStage() {
+        if(currentRecipe == null) return false;
+
         int i = 0;
         for(ItemStack is : currentRecipe.getStages(false).get(craftingStage).componentItems) {
             if(itemHandler.getStackInSlot(SLOT_INPUT_START + i).getItem() != is.getItem())

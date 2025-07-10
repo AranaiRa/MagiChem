@@ -656,9 +656,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 );
                 tooltipContents.add(Component.empty());
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.sublimation_in_progress.line2.part1").withStyle(ChatFormatting.RED, ChatFormatting.ITALIC))
-                        .append(" ")
-                        .append(Component.translatable("tooltip.magichem.gui.sublimation_in_progress.line2.part2"))
+                        .append(Component.translatable("tooltip.magichem.gui.sublimation_in_progress.line2"))
                 );
             }
         }
