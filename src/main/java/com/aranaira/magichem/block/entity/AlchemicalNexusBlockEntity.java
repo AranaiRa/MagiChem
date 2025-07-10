@@ -149,12 +149,24 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
 
                         syncAndSave();
+                    } else {
+                        if(stackInSlot.hasTag()) {
+                            unpackCraftDataFromTag(stackInSlot.getTag());
+                        }
                     }
                 }
             }
 
             @Override
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if(slot == SLOT_PROGRESS_HOLDER) {
+                    final ItemStack stackInSlot = itemHandler.getStackInSlot(slot).copy();
+                    stackInSlot.setTag(packCraftDataToTag());
+                    if(!simulate)
+                        itemHandler.setStackInSlot(slot, ItemStack.EMPTY);
+                    return stackInSlot;
+                }
+
                 return super.extractItem(slot, amount, simulate);
             }
 
@@ -172,7 +184,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     ItemStack component = stage.componentItems.get(slot - SLOT_INPUT_START);
                     return stack.getItem().equals(component.getItem());
                 }
-                else if(slot == SLOT_RECIPE || slot == SLOT_PROGRESS_HOLDER || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT))
+                else if(slot == SLOT_PROGRESS_HOLDER)
+                    return stack.getItem() == ItemRegistry.SUBLIMATION_IN_PROGRESS.get();
+                else if(slot == SLOT_RECIPE || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT))
                     return false;
                 else if(slot == SLOT_WISDOM)
                     return stack.getItem() instanceof PhilosophersStoneItem;
@@ -288,6 +302,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         if(nbt.contains("initiatingPlayer"))
             initiatingPlayer = UUID.fromString(nbt.getString("initiatingPlayer"));
 
+        if(nbt.contains("forceDisplayedRecipeUpdate")) forceDisplayedRecipeUpdate = true;
+
         satisfactionDemands.clear();
         for(int i=0; i<nbt.getInt("numberOfDemands"); i++) {
             Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("demandType"+i)));
@@ -318,6 +334,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         else
             nbt.putInt("fluidContents", containedSlurry.getAmount());
 
+        if(forceDisplayedRecipeUpdate)
+            nbt.putBoolean("forceDisplayedRecipeUpdate", true);
+
         nbt.putInt("numberOfDemands", satisfactionDemands.size());
         for(int i=0; i<satisfactionDemands.size(); i++) {
             nbt.putString("demandType"+i, ForgeRegistries.ITEMS.getKey(satisfactionDemands.get(i).getFirst()).toString());
@@ -332,6 +351,40 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public CompoundTag packCraftDataToTag() {
+        CompoundTag nbt = new CompoundTag();
+
+        if(currentRecipe != null) {
+            nbt.putString("alchemyObject", ForgeRegistries.ITEMS.getKey(currentRecipe.getAlchemyObject().getItem()).toString());
+            nbt.putInt("stage", craftingStage);
+            nbt.putInt("animStage", animStage);
+
+            if(initiatingPlayer != null)
+                nbt.putString("initiatingPlayer", initiatingPlayer.toString());
+        }
+
+        return nbt;
+    }
+
+    public void unpackCraftDataFromTag(CompoundTag nbt) {
+        if(nbt.contains("alchemyObject")) {
+            Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("alchemyObject")));
+            if(itemQuery != null && level != null) {
+                SublimationRecipe sr = SublimationRecipe.getSublimationRecipe(level, itemQuery);
+                if(sr != null) {
+                    currentRecipe = sr;
+                    craftingStage = nbt.getInt("craftingStage");
+                    animStage = nbt.getInt("animStage");
+
+                    if(nbt.contains("initiatingPlayer"))
+                        initiatingPlayer = UUID.fromString(nbt.getString("initiatingPlayer"));
+
+                    syncAndSave();
+                }
+            }
+        }
     }
 
     public void syncAndSave() {
@@ -689,10 +742,13 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                 Advancement advancement = pLevel.getServer().getAdvancements().getAdvancement(anbe.currentRecipe.getGrantedAdvancement());
                                 if(advancement != null) {
                                     sp.getAdvancements().award(advancement, "nexus");
+                                    //Clear the recipe if we're crafting something that forbids its own recipe
+                                    if(anbe.currentRecipe.isForbiddenByAdvancement() && anbe.currentRecipe.grantsAdvancementOnCraft() && anbe.currentRecipe.getForbiddenAdvancement().equals(anbe.currentRecipe.getGrantedAdvancement()))
+                                        anbe.itemHandler.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+                                    anbe.forceDisplayedRecipeUpdate = true;
                                 }
                             }
                         }
-                        anbe.initiatingPlayer = null;
                         if(anbe.craftingStage > 0)
                             anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_ADVANCED;
                         else

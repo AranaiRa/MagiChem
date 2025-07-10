@@ -25,7 +25,7 @@
       "experience": 25,
       "components": [
         { "item": "mna:chimerite_block" },
-        { "item": "magichem:lunar_orb" },
+        { "item": "magichem:sidereal_orb" },
         { "item": "mna:chimerite_block" }
       ],
       "materia": [

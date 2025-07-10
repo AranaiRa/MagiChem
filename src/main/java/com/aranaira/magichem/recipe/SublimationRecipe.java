@@ -163,11 +163,15 @@ public class SublimationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     }
 
     public static SublimationRecipe getSublimationRecipe(Level level, ItemStack query) {
+        return getSublimationRecipe(level, query.getItem());
+    }
+
+    public static SublimationRecipe getSublimationRecipe(Level level, Item query) {
         SublimationRecipe result = null;
         List<SublimationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 
         for(SublimationRecipe airr : allRecipes) {
-            if(airr.alchemyObject.getItem() == query.getItem()) {
+            if(airr.alchemyObject.getItem() == query) {
                 result = airr;
                 break;
             }

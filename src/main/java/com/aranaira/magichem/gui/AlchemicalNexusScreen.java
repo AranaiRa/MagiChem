@@ -12,10 +12,12 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.aranaira.magichem.util.AdvancementUtil;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -106,12 +108,10 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             boolean forbiddenAdvancementCompliant = true;
 
             if(sr.getRequiredAdvancement() != null && player instanceof LocalPlayer lp) {
-                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
-                requiredAdvancementCompliant = advancements.get(sr.getRequiredAdvancement()) != null;
+                requiredAdvancementCompliant = AdvancementUtil.clientHasAdvancement(lp, sr.getRequiredAdvancement());
             }
             if(sr.getForbiddenAdvancement() != null && player instanceof LocalPlayer lp) {
-                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
-                forbiddenAdvancementCompliant = advancements.get(sr.getForbiddenAdvancement()) != null;
+                forbiddenAdvancementCompliant = !AdvancementUtil.clientHasAdvancement(lp, sr.getForbiddenAdvancement());
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {

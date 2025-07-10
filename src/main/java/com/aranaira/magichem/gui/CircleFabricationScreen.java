@@ -11,9 +11,11 @@ import com.aranaira.magichem.networking.FabricationBatchSizeC2SPacket;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.aranaira.magichem.util.AdvancementUtil;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -171,12 +173,10 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             boolean forbiddenAdvancementCompliant = true;
 
             if(acr.getRequiredAdvancement() != null && player instanceof LocalPlayer lp) {
-                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
-                requiredAdvancementCompliant = advancements.get(acr.getRequiredAdvancement()) != null;
+                requiredAdvancementCompliant = AdvancementUtil.clientHasAdvancement(lp, acr.getRequiredAdvancement());
             }
             if(acr.getForbiddenAdvancement() != null && player instanceof LocalPlayer lp) {
-                final AdvancementList advancements = lp.connection.getAdvancements().getAdvancements();
-                forbiddenAdvancementCompliant = advancements.get(acr.getForbiddenAdvancement()) != null;
+                forbiddenAdvancementCompliant = !AdvancementUtil.clientHasAdvancement(lp, acr.getForbiddenAdvancement());
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
