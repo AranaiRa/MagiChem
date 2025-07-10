@@ -16,7 +16,7 @@
         "batch_size": 1,
         "object": { "item": "botania:ender_eye_block" },
         "components": [
-          { "item": "magichem:admixture_alien", "count": 176 },
+          { "item": "magichem:admixture_alien", "count": 120 },
           { "item": "magichem:admixture_signals", "count": 28 },
           { "item": "magichem:admixture_sight", "count": 24 },
           { "item": "magichem:admixture_thought", "count": 13 },

@@ -18,7 +18,7 @@
           "item": "supplementaries:cannonball"
         },
         "components": [
-          { "item": "magichem:admixture_metal", "count": 135 },
+          { "item": "magichem:admixture_metal", "count": 128 },
           { "item": "magichem:admixture_violence", "count": 48 },
           { "item": "magichem:admixture_destruction", "count": 25 },
           { "item": "magichem:essentia_wrought", "count": 8 }
