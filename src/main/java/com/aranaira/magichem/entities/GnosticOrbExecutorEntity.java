@@ -159,7 +159,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
     public static void preCacheConstruct(GnosticOrbExecutorEntity pEntity) {
         //Precalculate places that are iron blocks
         int range = 8;
-        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getX()+(range/2); y++) {
+        for(int y = pEntity.blockPosition().getY()-(range/2); y<=pEntity.blockPosition().getY()+(range/2); y++) {
             for (int x = pEntity.blockPosition().getX()-range; x<=pEntity.blockPosition().getX()+range; x++) {
                 for (int z = pEntity.blockPosition().getZ()-range; z<=pEntity.blockPosition().getZ()+range; z++) {
                     BlockPos posQuery = new BlockPos(x, y, z);
