@@ -16,6 +16,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
+import com.aranaira.magichem.util.render.InteropUtil;
 import com.mna.items.ItemInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -89,10 +90,6 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 public class CommonEventHandler {
     private static final TagKey<Item>
             TAG_MINECRAFT_AXES = ItemTags.create(new ResourceLocation("minecraft", "axes"));
-    private static final TagKey<Block>
-            TAG_MAGICHEM_COPPER_EXPOSED = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "copper_exposed")),
-            TAG_MAGICHEM_COPPER_WEATHERED = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "copper_weathered")),
-            TAG_MAGICHEM_COPPER_OXIDIZED = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "copper_oxidized"));
     private static final Random r = new Random();
 
     public CommonEventHandler() {}
@@ -287,26 +284,7 @@ public class CommonEventHandler {
             }
         }
         else if(stack.is(TAG_MINECRAFT_AXES)) {
-            int chance = 0, additional = 0;
-            if(targetState.is(TAG_MAGICHEM_COPPER_OXIDIZED)) {
-                chance = 45;
-                additional = r.nextInt(3);
-            }
-            else if(targetState.is(TAG_MAGICHEM_COPPER_WEATHERED)) {
-                chance = 25;
-                additional = r.nextInt(2);
-            }
-            else if(targetState.is(TAG_MAGICHEM_COPPER_EXPOSED)) {
-                chance = 10;
-            }
-
-            if(r.nextInt(100) < chance) {
-                ItemStack verdigris = new ItemStack(ItemRegistry.VERDIGRIS.get(), 1 + additional);
-                ItemEntity ie = new ItemEntity(event.getLevel(),
-                        event.getHitVec().getLocation().x, event.getHitVec().getLocation().y, event.getHitVec().getLocation().z,
-                        verdigris);
-                event.getLevel().addFreshEntity(ie);
-            }
+            InteropUtil.tryGenerateVerdigris(event.getLevel(), event.getPos(), event.getHitVec());
         }
     }
 
