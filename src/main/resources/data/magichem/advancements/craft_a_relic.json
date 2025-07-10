@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:admixture_legend"
+    },
+    "title": {
+      "translate": "advancements.magichem.craft_a_relic.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.craft_a_relic.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:alchemical_nexus",
+  "criteria": {
+    "nexus": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

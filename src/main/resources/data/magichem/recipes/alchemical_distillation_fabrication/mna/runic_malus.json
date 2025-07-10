@@ -1,10 +1,9 @@
 {
   "type": "magichem:distillation_fabrication",
-  "wisdom": 3,
+  "wisdom": 6,
   "categories": 32,
   "output_rate": 1.0,
   "batch_size": 1,
-  "forbidden_advancement": "magichem:craft_a_relic",
   "object": { "item": "mna:runic_malus" },
   "components": [
     { "item": "magichem:admixture_instrument", "count": 118 },

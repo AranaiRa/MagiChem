@@ -1,0 +1,47 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 1,
+  "object": {
+    "item": "mna:icarian_flight",
+    "count": 3
+  },
+  "stages": [
+    {
+      "experience": 8,
+      "components": [
+        { "item": "mna:vellum" },
+        { "item": "magichem:scorched_profundity" },
+        { "item": "mna:vellum" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_flight", "count": 75 },
+        { "item": "magichem:admixture_instrument", "count": 21 }
+      ]
+    },
+    {
+      "experience": 10,
+      "components": [
+        { "item": "minecraft:phantom_membrane" },
+        { "item": "magichem:illuminink" },
+        { "item": "minecraft:phantom_membrane" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_travel", "count": 50 },
+        { "item": "magichem:admixture_dust", "count": 25 }
+      ]
+    },
+    {
+      "experience": 12,
+      "components": [
+        { "item": "minecraft:blue_dye" },
+        { "item": "mna:runic_silk" },
+        { "item": "minecraft:blue_dye" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_thought", "count": 15 },
+        { "item": "magichem:admixture_legend", "count": 4 }
+      ]
+    }
+  ]
+}

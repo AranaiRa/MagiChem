@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:sublimation",
+        "tier": 5,
+        "wisdom": 5,
+        "object": {
+          "item": "botania:overgrowth_seed"
+        },
+        "stages": [
+          {
+            "experience": 0,
+            "components": [
+              { "item": "botania:grass_seeds" },
+              { "item": "botania:rune_spring" }
+            ],
+            "materia": [
+              { "item": "magichem:admixture_mana", "count": 154 },
+              { "item": "magichem:admixture_potential", "count": 13 },
+              { "item": "magichem:admixture_plant", "count": 12 },
+              { "item": "magichem:admixture_legend", "count": 2 },
+              { "item": "magichem:essentia_nourishing", "count": 241 }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
