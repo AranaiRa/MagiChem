@@ -23,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.List;
 
@@ -107,6 +108,14 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
                 guiGraphics.blit(TEXTURE, 114, 200 - verticalShift + padding, 112, 236, 7, 7);
                 guiGraphics.drawString(Minecraft.getInstance().font, Component.literal(totalXP + "xp"), 124, 196 - verticalShift + padding, 0x21761f, false);
                 guiGraphics.drawString(Minecraft.getInstance().font, Component.literal((totalXP * ServerConfig.fluidPerXPPoint) + "mB"), 124, 206 - verticalShift + padding, 0x21761f, false);
+            }
+
+            if(recipe.getWisdom() > 0) {
+                ItemStack stack = FabricationRecipeCategory.getStackForWisdom(recipe.getWisdom());
+                int y = 112;
+                if(stages == 1) y = 156;
+                else if(stages == 2) y = 132;
+                guiGraphics.renderFakeItem(stack, 156 ,y - verticalShift);
             }
         }
 

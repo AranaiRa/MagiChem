@@ -28,8 +28,6 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
     private final IDrawable background;
     private final IDrawable icon;
 
-    private static ItemStack[] WISDOM_STONES = new ItemStack[6];
-
     public FabricationRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 96, 0, 96, 110);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemRegistry.DUMMY_PROCESS_FABRICATION.get()));
@@ -112,7 +110,7 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
             YELLOWED = ItemStack.EMPTY,
             FLUSHED = ItemStack.EMPTY,
             PHILOSOPHERS = ItemStack.EMPTY;
-    private ItemStack getStackForWisdom(int pWisdom) {
+    public static ItemStack getStackForWisdom(int pWisdom) {
         if(pWisdom == 1) {
             if(ASHEN.isEmpty()) {
                 ASHEN = new ItemStack(ItemRegistry.ASHEN_WISDOM_STONE.get());
