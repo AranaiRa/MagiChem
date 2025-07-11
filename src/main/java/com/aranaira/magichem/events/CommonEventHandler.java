@@ -641,25 +641,45 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void onEntityMobEffect(MobEffectEvent event) {
-        if(event.isCancelable()) {
-            final LivingEntity entity = event.getEntity();
-            if(entity != null) {
-                Set<MobEffect> keys = entity.getActiveEffectsMap().keySet();
-                if(keys.size() > 0 && event.getEffectInstance() != null) {
-                    //Radiant Resolve cancelling negative status
-                    if(keys.contains(MobEffectsRegistry.RADIANT_RESOLVE.get())) {
-                        boolean incomingEffectNegative = event.getEffectInstance().getEffect().getCategory() == MobEffectCategory.HARMFUL;
-                        boolean hasEffectAlready = keys.contains(event.getEffectInstance().getEffect());
+    public static void onEntityMobEffect(MobEffectEvent.Applicable event) {
+        final LivingEntity entity = event.getEntity();
+        if(entity != null) {
+            Set<MobEffect> keys = entity.getActiveEffectsMap().keySet();
+            if (keys.size() > 0) {
+                MobEffect incomingEffect = event.getEffectInstance().getEffect();
+                boolean entityHasRadiantResolve = keys.contains(MobEffectsRegistry.RADIANT_RESOLVE.get());
+                boolean entityHasAcidWard = keys.contains(MobEffectsRegistry.ACID_WARD.get());
+                boolean entityHasAbatedDissolution = keys.contains(MobEffectsRegistry.ABATED_DISSOLUTION.get());
 
-                        if (incomingEffectNegative && !hasEffectAlready) {
-                            event.setCanceled(true);
-                        }
+                //Radiant Resolve cancelling negative status
+                if (entityHasRadiantResolve) {
+                    boolean incomingEffectNegative = event.getEffectInstance().getEffect().getCategory() == MobEffectCategory.HARMFUL;
+                    boolean hasEffectAlready = keys.contains(event.getEffectInstance().getEffect());
+
+                    if (incomingEffectNegative && !hasEffectAlready) {
+                        event.setResult(Event.Result.DENY);
                     }
+                }
 
-                    //Acid Ward reducing incoming Dissolution effects
-                    if(keys.contains(MobEffectsRegistry.ACID_WARD.get()) && event.getEffectInstance().getEffect() == MobEffectsRegistry.DISSOLUTION.get()) {
+                //Acid Ward reducing incoming Dissolution effects
+                if (incomingEffect == MobEffectsRegistry.DISSOLUTION.get()) {
+                    if (entityHasAbatedDissolution) {
+                        event.setResult(Event.Result.DENY);
+                    } else if (entityHasAcidWard) {
+                        final MobEffectInstance acidWard = entity.getActiveEffectsMap().get(MobEffectsRegistry.ACID_WARD.get());
+                        int wardPotency = acidWard.getAmplifier() + 1;
+                        int acidPotency = event.getEffectInstance().getAmplifier();
+                        int acidDuration = event.getEffectInstance().getDuration();
+                        boolean acidIsAmbient = event.getEffectInstance().isAmbient();
+                        boolean acidIsVisible = event.getEffectInstance().isVisible();
+                        boolean acidShowIcon = event.getEffectInstance().showIcon();
 
+                        if (acidPotency - wardPotency >= 0) {
+                            MobEffectInstance mei = new MobEffectInstance(MobEffectsRegistry.ABATED_DISSOLUTION.get(), acidDuration, acidPotency - wardPotency, acidIsAmbient, acidIsVisible, acidShowIcon);
+                            entity.addEffect(mei);
+                        }
+
+                        event.setResult(Event.Result.DENY);
                     }
                 }
             }

@@ -107,7 +107,7 @@ public class MagiChemMod
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         event.enqueueWork(() -> {
-
+            CantripRegistry.register();
         });
 
         PacketRegistry.register();
