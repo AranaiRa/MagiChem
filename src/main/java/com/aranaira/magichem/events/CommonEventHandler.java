@@ -17,6 +17,8 @@ import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.aranaira.magichem.util.render.InteropUtil;
+import com.mna.api.events.construct.ConstructSprayEffectEvent;
+import com.mna.api.events.construct.ConstructSprayTargetingEvent;
 import com.mna.items.ItemInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -50,6 +52,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -726,6 +729,32 @@ public class CommonEventHandler {
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onConstructSprayTarget(ConstructSprayTargetingEvent event) {
+        final Fluid fluid = event.getFluid();
+        if(event.isTargetFriendly()) {
+            if (fluid == FluidRegistry.SIMPLE_ACID.get() || fluid == FluidRegistry.AQUA_FORTIS.get() || fluid == FluidRegistry.AQUA_REGIA.get() || fluid == FluidRegistry.OIL_OF_VITRIOL.get() || fluid == FluidRegistry.AZOTH.get()) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onConstructSpray(ConstructSprayEffectEvent event) {
+        final Fluid fluid = event.getFluid();
+        if(fluid == FluidRegistry.SIMPLE_ACID.get()) {
+            event.getTarget().addEffect(new MobEffectInstance(MobEffectsRegistry.DISSOLUTION.get(), 200));
+        } else if(fluid == FluidRegistry.AQUA_FORTIS.get()) {
+            event.getTarget().addEffect(new MobEffectInstance(MobEffectsRegistry.DISSOLUTION.get(), 200, 1));
+        } else if(fluid == FluidRegistry.AQUA_REGIA.get()) {
+            event.getTarget().addEffect(new MobEffectInstance(MobEffectsRegistry.DISSOLUTION.get(), 200, 2));
+        } else if(fluid == FluidRegistry.OIL_OF_VITRIOL.get()) {
+            event.getTarget().addEffect(new MobEffectInstance(MobEffectsRegistry.DISSOLUTION.get(), 200, 3));
+        } else if(fluid == FluidRegistry.AZOTH.get()) {
+            event.getTarget().addEffect(new MobEffectInstance(MobEffectsRegistry.DISSOLUTION.get(), 200, 4));
         }
     }
 }

@@ -108,6 +108,7 @@ public class MagiChemMod
     {
         event.enqueueWork(() -> {
             CantripRegistry.register();
+            ConstructFluidSprayRegistry.register();
         });
 
         PacketRegistry.register();

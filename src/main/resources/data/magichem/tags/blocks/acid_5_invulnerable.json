@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#magichem:alchemically_treated_glass",
+    "minecraft:bedrock"
+  ]
+}

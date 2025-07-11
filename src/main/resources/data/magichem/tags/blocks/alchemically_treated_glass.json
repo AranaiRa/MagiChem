@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:alchemically_treated_glass",
+    "magichem:alchemically_treated_trim_wood",
+    "magichem:alchemically_treated_trim_gold",
+    "magichem:alchemically_treated_trim_electrum",
+    "magichem:alchemically_treated_trim_silver",
+    "magichem:alchemically_treated_glass_pane",
+    "magichem:alchemically_treated_trim_wood_pane",
+    "magichem:alchemically_treated_trim_gold_pane",
+    "magichem:alchemically_treated_trim_electrum_pane",
+    "magichem:alchemically_treated_trim_silver_pane"
+  ]
+}
