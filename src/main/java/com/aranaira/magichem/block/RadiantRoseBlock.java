@@ -4,6 +4,7 @@ import com.aranaira.magichem.block.entity.RadiantRoseBlockEntity;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.mna.api.capabilities.IPlayerProgression;
 import com.mna.api.faction.FactionIDs;
+import com.mna.api.faction.IFaction;
 import com.mna.api.faction.IFactionHelper;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mna.items.ItemInit;
@@ -16,6 +17,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.util.LazyOptional;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -90,12 +93,19 @@ public class RadiantRoseBlock extends BaseEntityBlock {
                 Set<MobEffect> activeEffects = livingentity.getActiveEffectsMap().keySet();
 
                 if(!activeEffects.contains(MobEffectsRegistry.RADIANT_RESOLVE.get())) {
-                    boolean isFey = false;
                     final LazyOptional<IPlayerProgression> capQuery = pEntity.getCapability(PlayerProgressionProvider.PROGRESSION);
-                    if (capQuery.isPresent()) {
-                        isFey = capQuery.resolve().get().getAlliedFaction().getFactionGrimoire().getItem() == ItemInit.GRIMOIRE_FEY.get();
-                    }
-                    livingentity.addEffect(new MobEffectInstance(MobEffectsRegistry.RADIANT_RESOLVE.get(), isFey ? 720 : 240));
+                    MutableInt duration = new MutableInt(240);
+                    capQuery.ifPresent(cap -> {
+                        final IFaction alliedFaction = cap.getAlliedFaction();
+                        if(alliedFaction != null) {
+                            final ItemStack factionGrimoire = alliedFaction.getFactionGrimoire();
+                            if (factionGrimoire != null && factionGrimoire.getItem() == ItemInit.GRIMOIRE_FEY.get()) {
+                                duration.setValue(720);
+                            }
+                        }
+                    });
+
+                    livingentity.addEffect(new MobEffectInstance(MobEffectsRegistry.RADIANT_RESOLVE.get(), duration.getValue()));
                 }
             }
         }
