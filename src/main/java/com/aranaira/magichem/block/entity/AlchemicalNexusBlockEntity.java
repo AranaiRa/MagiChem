@@ -15,7 +15,6 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.*;
-import com.aranaira.magichem.util.AdvancementUtil;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
@@ -82,7 +81,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected int
         progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
     protected boolean
-        isStalled = false, doDeferredRecipeLinkages = false;
+        isStalled = false, doDeferredRecipeLinkages = false, preserveRecipe = false;
     protected Random r = new Random();
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected UUID initiatingPlayer = null;
@@ -149,8 +148,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         else if(animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP)
                             animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
 
-                        currentRecipe = null;
-                        setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+                        if(!preserveRecipe) {
+                            currentRecipe = null;
+                            craftingStage = 0;
+                            setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+                        }
 
                         syncAndSave();
                     } else {
@@ -542,6 +544,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_RAMP_SPEEDUP) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(!anbe.hasAllRecipeItemsForCurrentStage()) {
                     anbe.animStage = ANIM_STAGE_CANCEL_SPEEDUP;
@@ -555,6 +558,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_CANCEL_SPEEDUP) {
                 anbe.decrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(anbe.progress <= 0) {
                     anbe.resetProgress();
@@ -565,6 +569,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_RAMP_CIRCLE) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(!anbe.hasAllRecipeItemsForCurrentStage()) {
                     anbe.animStage = ANIM_STAGE_CANCEL_CIRCLE;
@@ -591,6 +596,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CIRCLE) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
                     anbe.resetProgress();
@@ -600,6 +606,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 }
             }
             else if(anbe.animStage == ANIM_STAGE_SHLORPS && !pLevel.isClientSide()) {
+                if(anbe.needsReset()) return;
+
                 if(anbe.isFullySatisfied()) {
                     anbe.animStage = ANIM_STAGE_RAMP_CRAFTING;
                     anbe.syncAndSave();
@@ -721,6 +729,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampBeam) {
                     anbe.resetProgress();
@@ -730,6 +739,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_CRAFTING) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(anbe.progress > anbe.cachedSpec.ticksToCraft) {
                     //If there's another stage, move to that
@@ -748,7 +758,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     //Otherwise, we're done
                     else{
                         anbe.resetProgress();
+                        int stagePreCraft = anbe.craftingStage;
+                        anbe.preserveRecipe = true;
                         anbe.craftItem();
+                        anbe.preserveRecipe = false;
                         if(anbe.initiatingPlayer != null && anbe.currentRecipe.grantsAdvancementOnCraft()) {
                             if(pLevel.getPlayerByUUID(anbe.initiatingPlayer) instanceof ServerPlayer sp && pLevel.getServer() != null) {
                                 Advancement advancement = pLevel.getServer().getAdvancements().getAdvancement(anbe.currentRecipe.getGrantedAdvancement());
@@ -761,7 +774,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                 }
                             }
                         }
-                        if(anbe.craftingStage > 0)
+                        if(stagePreCraft > 0)
                             anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_ADVANCED;
                         else
                             anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING;
@@ -771,6 +784,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampBeam) {
                     anbe.resetProgress();
@@ -781,6 +795,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_ADVANCED) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampBeam) {
                     anbe.resetProgress();
@@ -789,6 +804,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 }
             }
             else if(anbe.animStage == ANIM_STAGE_CRAFTING_IDLE) {
+                if(anbe.needsReset()) return;
+
                 if(anbe.getProgress() > 0)
                     anbe.decrementProgress();
 
@@ -801,6 +818,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_SPEEDUP) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(!anbe.hasAllRecipeItemsForCurrentStage()) {
                     anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
@@ -814,6 +832,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP) {
                 anbe.decrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(anbe.progress <= 0) {
                     anbe.resetProgress();
@@ -826,6 +845,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(!anbe.hasAllRecipeItemsForCurrentStage()) {
                     anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_CIRCLE;
@@ -850,6 +870,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
             else if(anbe.animStage == ANIM_STAGE_CANCEL_CRAFTING_CIRCLE) {
                 anbe.incrementProgress();
+                if(anbe.needsReset()) return;
 
                 if(anbe.progress > anbe.cachedSpec.ticksInRampCircle) {
                     if(anbe.itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER).isEmpty()) {
@@ -874,6 +895,16 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 }
             }
         }
+    }
+
+    private boolean needsReset() {
+        if(currentRecipe == null) {
+            cachedSpec = null;
+            animStage = ANIM_STAGE_IDLE;
+            syncAndSave();
+            return true;
+        }
+        return false;
     }
 
     private void cacheAnimSpec(boolean doSatisfactionDemandsUpdate) {
@@ -974,7 +1005,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public boolean hasAllRecipeItemsForCurrentStage() {
-        if(currentRecipe == null) return false;
+        if(currentRecipe == null || craftingStage > currentRecipe.getStages(false).size()) return false;
 
         int i = 0;
         for(ItemStack is : currentRecipe.getStages(false).get(craftingStage).componentItems) {
@@ -1124,10 +1155,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public void setRecipeFromOutput(Level pLevel, ItemStack pQuery) {
-        SublimationRecipe air = SublimationRecipe.getSublimationRecipe(pLevel, pQuery);
-        if(air != null) {
-            this.currentRecipe = air;
-            this.itemHandler.setStackInSlot(SLOT_RECIPE, air.getAlchemyObject());
+        SublimationRecipe sr = SublimationRecipe.getSublimationRecipe(pLevel, pQuery);
+        if(sr != null) {
+            this.currentRecipe = sr;
+            this.craftingStage = 0;
+            this.itemHandler.setStackInSlot(SLOT_RECIPE, sr.getAlchemyObject());
             this.syncAndSave();
         }
     }
@@ -1296,6 +1328,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 itemRotSpeed = MathUtils.lerpf(ITEM_SPEED_MIN, ITEM_SPEED_MAX, timeInStage);
                 itemScale = MathUtils.lerpf(ITEM_SCALE_START, ITEM_SCALE_END, timeInStage);
             }
+        } else {
+            crystalRotSpeed = Math.max(CRYSTAL_SPEED_MIN, crystalRotSpeed - (CRYSTAL_SPEED_MAX - CRYSTAL_SPEED_MIN) / (SPEC_PARAM_RAMP_SPEEDUP[powerLevel] * 3));
+            itemRotSpeed = Math.max(ITEM_SPEED_MIN, crystalRotSpeed - (ITEM_SPEED_MAX - ITEM_SPEED_MIN) / (SPEC_PARAM_RAMP_SPEEDUP[powerLevel] * 3));
         }
     }
 

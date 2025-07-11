@@ -307,10 +307,12 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         BlockState stateQuery = pEntity.level().getBlockState(posQuery);
         ProphecyErosionRecipe recipe = ProphecyErosionRecipe.getProphecyErosionRecipe(pEntity.level(), stateQuery.getBlock());
 
-        pEntity.level().setBlock(posQuery, recipe.pickResult().defaultBlockState(), 3);
-        MagiChemMod.CHANNEL.send(
-                PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 20f, pEntity.level().dimension())),
-                new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), pEntity.materiaColor, true));
+        if(recipe != null) {
+            pEntity.level().setBlock(posQuery, recipe.pickResult().defaultBlockState(), 3);
+            MagiChemMod.CHANNEL.send(
+                    PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(posQuery.getX(), posQuery.getY(), posQuery.getZ(), 20f, pEntity.level().dimension())),
+                    new ParticleSpawnAnointingS2CPacket(posQuery.getX(), posQuery.getY(), posQuery.getZ(), pEntity.materiaColor, true));
+        }
 
         pEntity.iterator++;
     }
