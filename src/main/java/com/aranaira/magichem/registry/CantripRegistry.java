@@ -28,7 +28,7 @@ public class CantripRegistry {
     public static void applyAcidWard(Player player, ICantrip cantrip, InteractionHand hand) {
         player.getCapability(PlayerProgressionProvider.PROGRESSION).ifPresent((p) -> {
             int amp = p.getTier() - 2;
-            MobEffectInstance mei = new MobEffectInstance(MobEffectsRegistry.ACID_WARD.get(), 2400, amp, false, false, true);
+            MobEffectInstance mei = new MobEffectInstance(MobEffectsRegistry.ACID_WARD.get(), 6000, amp, false, false, true);
             player.addEffect(mei);
         });
     }

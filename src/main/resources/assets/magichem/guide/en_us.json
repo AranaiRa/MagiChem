@@ -8540,7 +8540,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " each operation."
+            "text": " each operation.\n\nThe "
+          },
+          {
+            "text": "Acid Ward",
+            "color": "dark_purple"
+          },
+          {
+            "text": " cantrip will reduce the severity of harm caused by touching a block of acid placed in the world (or being sprayed by a construct with acid in its tank), though it will do nothing if applied after the acid burn has begun."
           }
         ]
       },
@@ -8580,7 +8587,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ".\n\nSimple Acid will not damage blocks when placed in the world."
           }
         ]
       },
@@ -8617,6 +8624,126 @@
           },
           {
             "text": "Aqua Vitae",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAqua Fortis will destroy wood, plant matter, and dirt when placed in the world."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Aqua Regia",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:aqua_regia_bucket",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An acid with a strength of "
+          },
+          {
+            "text": "3",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", which is "
+          },
+          {
+            "text": "not yet craftable",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAqua Regia will destroy metal, ore-bearing stone, gravels, and sands when placed in the world (as well as anything destroyable by a weaker acid)."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Oil of Vitriol",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:oil_of_vitriol_bucket",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An acid with a strength of "
+          },
+          {
+            "text": "4",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", which is "
+          },
+          {
+            "text": "not yet craftable",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nOil of Vitriol will destroy stone and any non-alchemically treated glass when placed in the world (as well as anything destroyable by a weaker acid)."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Azoth",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:azoth_bucket",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The universal solvent. An acid with a strength of "
+          },
+          {
+            "text": "5",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", which is "
+          },
+          {
+            "text": "not yet craftable",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nAzoth will destroy "
+          },
+          {
+            "text": "almost anything",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that it comes in contact with (even "
+          },
+          {
+            "text": "bedrock",
+            "color": "dark_purple"
+          },
+          {
+            "text": ") with the exception of "
+          },
+          {
+            "text": "alchemically-treated glass",
             "color": "dark_purple"
           },
           {
