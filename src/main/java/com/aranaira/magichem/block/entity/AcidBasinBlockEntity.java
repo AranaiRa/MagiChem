@@ -344,6 +344,8 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     }
 
     private boolean canCraftItem() {
+        if(recipe == null || getInputItem().getCount() < recipe.getInputItem().getCount()) return false;
+
         boolean hasInputFluid = !inputTank.isEmpty();
         if(hasInputFluid) {
             if(recipe.hasInputFluidOverride()) {
