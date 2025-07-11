@@ -162,17 +162,22 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
                     final LazyOptional<IItemHandler> itemHandlerQuery = router.getCapability(ForgeCapabilities.ITEM_HANDLER);
                     if(itemHandlerQuery.isPresent()) {
                         final IItemHandler itemHandler = itemHandlerQuery.resolve().get();
-                        ItemStack insertionQuery = itemHandler.insertItem(SLOT_INPUT, pPlayer.getItemInHand(pHand), true);
+                        ItemStack inputSlotItem = itemHandler.getStackInSlot(SLOT_INPUT);
 
-                        if(insertionQuery.isEmpty()) {
-                            itemHandler.insertItem(SLOT_INPUT, pPlayer.getItemInHand(pHand), false);
+                        if(inputSlotItem.isEmpty()) {
+                            itemHandler.insertItem(SLOT_INPUT, itemInHand, false);
                             pPlayer.setItemInHand(pHand, ItemStack.EMPTY);
-                        } else if(insertionQuery.getCount() < pPlayer.getItemInHand(pHand).getCount()) {
-                            itemHandler.insertItem(SLOT_INPUT, pPlayer.getItemInHand(pHand), false);
-                            ItemStack change = pPlayer.getItemInHand(pHand);
-                            change.shrink(insertionQuery.getCount());
-                            pPlayer.setItemInHand(pHand, change);
+                            pPlayer.swing(pHand);
+                        } else if(inputSlotItem.getItem() == itemInHand.getItem()) {
+                            int capacity = 64 - inputSlotItem.getCount();
+                            int inserted = Math.min(capacity, itemInHand.getCount());
+                            if(inserted > 0) {
+                                itemHandler.insertItem(SLOT_INPUT, itemInHand.copy(), false);
+                                itemInHand.shrink(inserted);
+                                pPlayer.swing(pHand);
+                            }
                         }
+
                         return InteractionResult.CONSUME;
                     }
                 }
