@@ -346,18 +346,18 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     private boolean canCraftItem() {
         if(recipe == null || getInputItem().getCount() < recipe.getInputItem().getCount()) return false;
 
-        boolean hasInputFluid = !inputTank.isEmpty();
-        if(hasInputFluid) {
+        boolean hasInputFluid = false;
+        if(!inputTank.isEmpty()) {
             if(recipe.hasInputFluidOverride()) {
-
+                hasInputFluid = inputTank.getFluid() == recipe.getInputFluidOverride();
             } else {
                 int dAcid = VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipe.getMinimumAcidStrength());
                 if (dAcid == 0) {
-                    return inputTank.getAmount() >= recipe.getBaseFluidConsumed();
+                    hasInputFluid = inputTank.getAmount() >= recipe.getBaseFluidConsumed();
                 } else if (dAcid == 1) {
-                    return inputTank.getAmount() >= recipe.getBaseFluidConsumed() / 4;
+                    hasInputFluid = inputTank.getAmount() >= recipe.getBaseFluidConsumed() / 4;
                 } else if (dAcid >= 2) {
-                    return true;
+                    hasInputFluid = true;
                 }
             }
         }
