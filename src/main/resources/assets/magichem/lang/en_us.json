@@ -1383,6 +1383,10 @@
   "advancements.magichem.mote_water.title" : "Something Saturated",
   "advancements.magichem.mote_water.description" : "Use the Ritual of the Deep Ocean to create a Mote of Water",
 
+  "magichem:__wisdom_0.description" : "[MagiChem] Create an Inert Wisdom Stone on a Skywrath Altar",
+  "magichem:__wisdom_1.description" : "[MagiChem] Upgrade your Inert Wisdom Stone to an Ashen Wisdom Stone on the Alchemical Nexus",
+  "magichem:__wisdom_2.description" : "[MagiChem] Upgrade your Ashen Wisdom Stone to a Bleached Wisdom Stone on the Alchemical Nexus",
+  "magichem:__wisdom_3.description" : "[MagiChem] Upgrade your Bleached Wisdom Stone to a Yellowed Wisdom Stone on the Alchemical Nexus",
   "magichem:_composite_t1_lab.description" : "[MagiChem] Create an Alembic, a Coloring Cauldron, and at least one Materia Jar",
   "magichem:_composite_t1_creation.description" : "[MagiChem] Create a Circle of Fabrication and a Wickerwood Construct to push the wheel on a Circle of Toil",
   "magichem:_composite_t2_lab.description" : "[MagiChem] Replace your Alembic with a Distillery and create a Centrifuge and a Conjurer",
