@@ -92,9 +92,8 @@ public class VariegatorBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof VariegatorBlockEntity variegator) {
-                variegator.packInventoryToBlockItem();
-                level.destroyBlock(pos.above(), false);
+            if(blockEntity instanceof VariegatorBlockEntity) {
+                ((VariegatorBlockEntity) blockEntity).packInventoryToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

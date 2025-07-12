@@ -196,7 +196,6 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof AlchemicalNexusBlockEntity anbe) {
                 anbe.packInventoryToBlockItem();
-                destroyRouters(level, pos, state.getValue(FACING));
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

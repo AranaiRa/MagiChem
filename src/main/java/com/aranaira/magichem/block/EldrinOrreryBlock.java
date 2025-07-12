@@ -34,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.enums.EldrinOrreryRouterType.*;
 
 public class EldrinOrreryBlock extends BaseEntityBlock {
@@ -142,7 +141,6 @@ public class EldrinOrreryBlock extends BaseEntityBlock {
                 if(!level.isClientSide()) {
                     final EldrinOrreryLimiterSD eldrinOrreryData = level.getServer().overworld().getDataStorage().computeIfAbsent(EldrinOrreryLimiterSD::load, EldrinOrreryLimiterSD::create, "eldrinOrreryData");
                     eldrinOrreryData.removeOrrery(orrery.getPlacedBy().toString());
-                    destroyRouters(level, pos);
                 }
 
             }

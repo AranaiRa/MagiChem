@@ -87,13 +87,6 @@ public class MirrorLabyrinthRouterBlock extends BaseEntityBlock implements INoCr
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(pLevel.getBlockEntity(pPos) instanceof MirrorLabyrinthRouterBlockEntity router) {
-            router.destroyMaster();
-        }
-    }
-
-    @Override
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {

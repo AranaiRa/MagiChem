@@ -34,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_CIRCLE_POWER;
 
 public class CirclePowerBlock extends BaseEntityBlock {
@@ -111,9 +110,8 @@ public class CirclePowerBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof CirclePowerBlockEntity circle) {
-                circle.dropInventoryToWorld();
-                destroyRouters(level, pos, state.getValue(FACING));
+            if(blockEntity instanceof CirclePowerBlockEntity) {
+                ((CirclePowerBlockEntity) blockEntity).dropInventoryToWorld();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

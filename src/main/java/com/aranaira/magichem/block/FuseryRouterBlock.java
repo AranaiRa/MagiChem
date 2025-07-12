@@ -124,13 +124,6 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(pLevel.getBlockEntity(pPos) instanceof FuseryRouterBlockEntity router) {
-            router.destroyMaster();
-        }
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_FUSERY);
         pBuilder.add(FACING);

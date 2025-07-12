@@ -86,12 +86,6 @@ public class MateriaManifestBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        level.destroyBlock(pos.above(), false);
-        super.onRemove(state, level, pos, newState, isMoving);
-    }
-
-    @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return VOXEL_SHAPE;
     }

@@ -175,13 +175,6 @@ public class GrandCircleFabricationRouterBlock extends BaseEntityBlock implement
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(pLevel.getBlockEntity(pPos) instanceof GrandCircleFabricationRouterBlockEntity router) {
-            router.destroyMaster();
-        }
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION);
         pBuilder.add(FACING);

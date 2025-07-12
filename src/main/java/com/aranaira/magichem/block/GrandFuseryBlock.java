@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.foundation.enums.GrandFuseryRouterType.*;
 
 public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteractibleBlock<GrandFuseryBlock> {
@@ -243,9 +242,8 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof GrandFuseryBlockEntity fusery) {
-                fusery.packInventoryToBlockItem();
-                destroyRouters(level, pos, state.getValue(FACING));
+            if(blockEntity instanceof GrandFuseryBlockEntity) {
+                ((GrandFuseryBlockEntity) blockEntity).packInventoryToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

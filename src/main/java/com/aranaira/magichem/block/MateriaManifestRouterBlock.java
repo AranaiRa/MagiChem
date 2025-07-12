@@ -76,11 +76,6 @@ public class MateriaManifestRouterBlock extends BaseEntityBlock implements INoCr
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
     }
 
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        pLevel.destroyBlock(pPos.below(), false);
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {

@@ -262,13 +262,6 @@ public class GrandFuseryRouterBlock extends BaseEntityBlock implements INoCreati
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(pLevel.getBlockEntity(pPos) instanceof GrandFuseryRouterBlockEntity router) {
-            router.destroyMaster();
-        }
-    }
-
-    @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.INVISIBLE;
     }

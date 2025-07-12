@@ -93,13 +93,6 @@ public class AlchemicalNexusRouterBlock extends BaseEntityBlock implements INoCr
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(pLevel.getBlockEntity(pPos) instanceof AlchemicalNexusRouterBlockEntity router) {
-            router.destroyMaster();
-        }
-    }
-
-    @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
     }

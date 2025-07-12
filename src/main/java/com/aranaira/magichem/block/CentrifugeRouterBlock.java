@@ -108,13 +108,6 @@ public class CentrifugeRouterBlock extends BaseEntityBlock implements INoCreativ
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(pLevel.getBlockEntity(pPos) instanceof CentrifugeRouterBlockEntity router) {
-            router.destroyMaster();
-        }
-    }
-
-    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_CENTRIFUGE);
         pBuilder.add(FACING);

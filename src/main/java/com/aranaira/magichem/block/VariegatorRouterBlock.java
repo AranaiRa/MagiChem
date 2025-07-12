@@ -78,11 +78,6 @@ public class VariegatorRouterBlock extends BaseEntityBlock implements INoCreativ
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        pLevel.destroyBlock(pPos.below(), false);
-    }
-
-    @Override
     public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
         return new ItemStack(BlockRegistry.VARIEGATOR.get());
     }
