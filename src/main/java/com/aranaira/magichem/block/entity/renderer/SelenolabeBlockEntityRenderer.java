@@ -62,12 +62,12 @@ public class SelenolabeBlockEntityRenderer implements BlockEntityRenderer<Seleno
             double pX = player.getX();
             double pZ = player.getZ();
 
-            double eX = pBlockEntity.getBlockPos().getX();
+            double eX = pBlockEntity.getBlockPos().getX() + 0.5;
             double eZ = pBlockEntity.getBlockPos().getZ() + 0.5;
 
             int period = 1150;
             int gt = (int)(player.level().getGameTime() % (period * 2));
-            double posBob = Math.sin((((gt) % period) / (double)period) * (Math.PI * 2) * Math.PI * 2) * 0.03125;
+            double posBob = Math.sin((((gt + pPartialTick) % period) / (double)period) * (Math.PI * 2) * Math.PI * 2) * 0.03125;
 
             Vector2d dVec = new Vector2d(pX - eX, pZ - eZ);
 
