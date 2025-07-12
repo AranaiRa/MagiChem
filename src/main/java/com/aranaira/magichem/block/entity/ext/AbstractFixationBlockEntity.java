@@ -291,8 +291,16 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         SimpleContainer input = pEntity.getContentsOfInputSlots(pVarFunc);
         boolean hasAllInputItems = true;
         for(ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
-            Predicate<ItemStack> testCase = i -> (i.getItem() == is.getItem() && i.getCount() >= is.getCount());
-            hasAllInputItems = hasAllInputItems & input.hasAnyMatching(testCase);
+            int needed = is.getCount();
+
+            for(int i=0; i<input.getContainerSize(); i++) {
+                ItemStack query = input.getItem(i);
+                if(query.getItem() == is.getItem()) {
+                    needed -= query.getCount();
+                }
+            }
+
+            hasAllInputItems = hasAllInputItems & (needed <= 0);
         }
 
         return outputHasSpace && hasAllInputItems;
@@ -340,6 +348,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             //Remove component items from inputs
             for (ItemStack is : pEntity.currentRecipe.getComponentMateria()) {
                 ItemStack itemsToRemove = is.copy();
+                int remaining = itemsToRemove.getCount();
 
                 for(int i=pVarFunc.apply(IDs.SLOT_INPUT_START) + pVarFunc.apply(IDs.SLOT_INPUT_COUNT) - 1; i>=pVarFunc.apply(IDs.SLOT_INPUT_START); i--) {
                     ItemStack stackInSlot = pEntity.itemHandler.getStackInSlot(i);
@@ -347,17 +356,18 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                         continue;
 
                     if(stackInSlot.getItem() == itemsToRemove.getItem()) {
-                        int removalLimit = Math.min(stackInSlot.getCount(), itemsToRemove.getCount());
+                        int removed = Math.min(remaining, stackInSlot.getCount());
                         if (stackInSlot.hasTag()) {
                             CompoundTag nbt = stackInSlot.getTag();
                             if (nbt.contains("CustomModelData")) {
-                                bottlesToInsert -= removalLimit;
+                                bottlesToInsert -= removed;
                             }
                         }
-                        stackInSlot.shrink(removalLimit);
-                        pEntity.itemHandler.setStackInSlot(i, stackInSlot);
+                        stackInSlot.shrink(removed);
+//                        pEntity.itemHandler.setStackInSlot(i, stackInSlot);
+                        remaining -= removed;
 
-                        if (stackInSlot.isEmpty())
+                        if (remaining == 0)
                             break;
                     }
                 }
