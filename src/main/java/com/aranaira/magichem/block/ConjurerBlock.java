@@ -30,6 +30,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+
 public class ConjurerBlock extends BaseEntityBlock {
 
     private static final VoxelShape
@@ -106,8 +108,10 @@ public class ConjurerBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof ConjurerBlockEntity) {
-                ((ConjurerBlockEntity) blockEntity).packInventoryToBlockItem();
+            if(blockEntity instanceof ConjurerBlockEntity conjurer) {
+                conjurer.packInventoryToBlockItem();
+                level.destroyBlock(pos.above(), false);
+                level.destroyBlock(pos.above().above(), false);
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

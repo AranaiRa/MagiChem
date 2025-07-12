@@ -95,6 +95,13 @@ public class CirclePowerRouterBlock extends BaseEntityBlock implements INoCreati
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if(pLevel.getBlockEntity(pPos) instanceof CirclePowerRouterBlockEntity router) {
+            router.destroyMaster();
+        }
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_CIRCLE_POWER);
     }

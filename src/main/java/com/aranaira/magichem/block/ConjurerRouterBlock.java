@@ -84,6 +84,13 @@ public class ConjurerRouterBlock extends BaseEntityBlock implements INoCreativeT
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if(pLevel.getBlockEntity(pPos) instanceof ConjurerRouterBlockEntity router) {
+            router.destroyMaster();
+        }
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_CONJURER);
     }

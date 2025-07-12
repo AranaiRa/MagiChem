@@ -70,6 +70,13 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if(pLevel.getBlockEntity(pPos) instanceof AcidBasinRouterBlockEntity router) {
+            router.destroyMaster();
+        }
+    }
+
+    @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if(pLevel.isClientSide()) return InteractionResult.CONSUME;
 

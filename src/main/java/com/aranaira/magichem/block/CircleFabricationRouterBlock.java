@@ -159,6 +159,13 @@ public class CircleFabricationRouterBlock extends BaseEntityBlock implements INo
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if(pLevel.getBlockEntity(pPos) instanceof CircleFabricationRouterBlockEntity router) {
+            router.destroyMaster();
+        }
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(ROUTER_TYPE_CIRCLE_FABRICATION);
         pBuilder.add(FACING);

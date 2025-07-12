@@ -43,8 +43,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 import static com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType.*;
 
 public class GrandDistilleryBlock extends BaseEntityBlock implements ISpellInteractibleBlock<GrandDistilleryBlock> {
@@ -236,8 +235,9 @@ public class GrandDistilleryBlock extends BaseEntityBlock implements ISpellInter
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof GrandDistilleryBlockEntity) {
-                ((GrandDistilleryBlockEntity) blockEntity).packInventoryToBlockItem();
+            if(blockEntity instanceof GrandDistilleryBlockEntity distillery) {
+                distillery.packInventoryToBlockItem();
+                destroyRouters(level, pos, state.getValue(FACING));
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

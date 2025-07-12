@@ -174,8 +174,9 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof DistilleryBlockEntity) {
-                ((DistilleryBlockEntity) blockEntity).packInventoryToBlockItem();
+            if(blockEntity instanceof DistilleryBlockEntity distillery) {
+                distillery.packInventoryToBlockItem();
+                destroyRouters(level, pos, state.getValue(FACING));
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

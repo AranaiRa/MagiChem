@@ -250,6 +250,13 @@ public class GrandDistilleryRouterBlock extends BaseEntityBlock implements INoCr
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if(pLevel.getBlockEntity(pPos) instanceof GrandDistilleryRouterBlockEntity router) {
+            router.destroyMaster();
+        }
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.INVISIBLE;
     }

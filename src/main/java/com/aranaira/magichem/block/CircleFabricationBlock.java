@@ -167,8 +167,9 @@ public class CircleFabricationBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof CircleFabricationBlockEntity) {
-                ((CircleFabricationBlockEntity) blockEntity).dropInventoryToWorld();
+            if(blockEntity instanceof CircleFabricationBlockEntity circle) {
+                circle.dropInventoryToWorld();
+                destroyRouters(level, pos, state.getValue(FACING));
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
