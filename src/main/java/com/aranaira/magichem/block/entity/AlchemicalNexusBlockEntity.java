@@ -15,6 +15,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.*;
+import com.aranaira.magichem.util.AdvancementUtil;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.items.ItemInit;
@@ -190,8 +191,26 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     ItemStack component = stage.componentItems.get(slot - SLOT_INPUT_START);
                     return stack.getItem().equals(component.getItem());
                 }
-                else if(slot == SLOT_PROGRESS_HOLDER)
-                    return stack.getItem() == ItemRegistry.SUBLIMATION_IN_PROGRESS.get();
+                else if(slot == SLOT_PROGRESS_HOLDER) {
+                    if(stack.getItem() == ItemRegistry.SUBLIMATION_IN_PROGRESS.get()) {
+                        if(stack.hasTag() && level != null && !level.isClientSide()) {
+                            CompoundTag nbt = stack.getTag();
+                            if(nbt.contains("alchemyObject")) {
+                                Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("alchemyObject")));
+                                SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(level, itemQuery);
+                                if(recipeQuery.isForbiddenByAdvancement()) {
+                                    Player playerQuery = level.getPlayerByUUID(initiatingPlayer);
+                                    if(playerQuery instanceof ServerPlayer sp) {
+                                        return !AdvancementUtil.serverPlayerHasAdvancement(level, sp, recipeQuery.getForbiddenAdvancement());
+                                    }
+                                }
+                            }
+                        }
+
+                        return true;
+                    }
+                    return false;
+                }
                 else if(slot == SLOT_RECIPE || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT))
                     return false;
                 else if(slot == SLOT_WISDOM)

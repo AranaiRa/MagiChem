@@ -9,7 +9,7 @@
   "components": [
     { "item": "magichem:admixture_crystal", "count": 8 },
     { "item": "magichem:admixture_light", "count": 4 },
-    { "item": "magichem:admixture_demon", "count": 4 },
+    { "item": "magichem:admixture_hells", "count": 4 },
     { "item": "magichem:essentia_wrought", "count": 2 }
   ]
 }
