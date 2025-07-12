@@ -38,8 +38,9 @@ public class MagicMirrorBlockEntity extends AbstractMateriaStorageMultiTypeDynam
     }
 
     public MirrorLabyrinthBlockEntity getMaster() {
-        if(master != null)
+        if(master != null) {
             return master;
+        }
 
         if(masterPos != null && level != null) {
             if(masterDimID != null) {

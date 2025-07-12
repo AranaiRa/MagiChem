@@ -245,10 +245,14 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
             if(level.isLoaded(posQuery)) {
                 BlockEntity entityQuery = level.getBlockEntity(posQuery);
 
-                if (entityQuery instanceof MagicMirrorBlockEntity ||
-                        entityQuery instanceof MirrorLabyrinthBlockEntity ||
-                        entityQuery instanceof MirrorLabyrinthRouterBlockEntity) {
-                    return entityQuery;
+                if(entityQuery instanceof MagicMirrorBlockEntity mirror) {
+                    if(mirror.getMaster() != null)
+                        return (mirror.getMaster().isPowered() && !mirror.getMaster().isRedstonePaused()) ? entityQuery : null;
+                } else if(entityQuery instanceof MirrorLabyrinthBlockEntity labyrinth) {
+                    return (labyrinth.isPowered() && !labyrinth.isRedstonePaused()) ? entityQuery : null;
+                } else if(entityQuery instanceof MirrorLabyrinthRouterBlockEntity router) {
+                    if(router.getMaster() != null)
+                        return (router.getMaster().isPowered() && !router.getMaster().isRedstonePaused()) ? entityQuery : null;
                 }
             }
         }

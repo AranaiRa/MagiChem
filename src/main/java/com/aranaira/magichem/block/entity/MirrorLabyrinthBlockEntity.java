@@ -414,6 +414,14 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
             return new CompoundTag();
     }
 
+    public boolean isRedstonePaused() {
+        return redstonePaused;
+    }
+
+    public boolean isPowered() {
+        return hasSufficientPower;
+    }
+
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, MirrorLabyrinthBlockEntity pEntity) {
         if(pLevel.isClientSide()) {
             pEntity.handleAnimationDrivers();
