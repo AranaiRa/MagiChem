@@ -8,7 +8,9 @@ import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.foundation.Triplet;
 import com.aranaira.magichem.gui.element.AlchemicalNexusButtonRecipeSelector;
+import com.aranaira.magichem.gui.element.GrandCentrifugeButtonRecipeSelector;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.NexusSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -234,8 +236,16 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             if(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_RECIPE).isEmpty() || menu.getCurrentRecipe() == null) {
                 pGuiGraphics.blit(TEXTURE, x + 79, y + 79, 28, 238, 18, 18);
             } else {
-                pGuiGraphics.renderItem(menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
-                pGuiGraphics.renderItemDecorations(Minecraft.getInstance().font, menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
+                if(menu.getCurrentRecipe().getAlchemyObject().getItem() instanceof BlockItem) {
+                    pGuiGraphics.renderItem(menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
+                    pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 80, y + 80, x + 98, y + 98, menu.blockEntity.clearRecipeAfterNextProcess ? 0x40ffffff : 0xffffffff);
+                } else {
+                    float alpha = menu.blockEntity.clearRecipeAfterNextProcess ? 0.5f : 1.0f;
+                    pGuiGraphics.setColor(1, 1, 1, alpha);
+                    pGuiGraphics.renderItem(menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
+                    pGuiGraphics.renderItemDecorations(Minecraft.getInstance().font, menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
+                    pGuiGraphics.setColor(1, 1, 1, 1);
+                }
 
                 //ingredients
                 {
@@ -314,6 +324,15 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 c++;
             }
         }
+
+        int x = this.leftPos + 68;
+        int y = this.topPos + 66;
+        new ButtonData(this.addRenderableWidget(new AlchemicalNexusButtonRecipeSelector(
+                this, c, x, y, 9, 9, 28, 220, TEXTURE, button -> {
+
+            AlchemicalNexusScreen query = (AlchemicalNexusScreen) ((AlchemicalNexusButtonRecipeSelector) button).getScreen();
+            query.clearActiveRecipe();
+        })), x, y);
 
         renderButtons();
     }
@@ -800,5 +819,12 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             int width = Minecraft.getInstance().font.width(warningText.getString());
             pGuiGraphics.drawString(font, warningText, 89 - width / 2, -33, 0xff000000, false);
         }
+    }
+
+    public void clearActiveRecipe() {
+        menu.blockEntity.clearRecipeAfterNextProcess = true;
+        PacketRegistry.sendToServer(new DeviceRecipeClearC2SPacket(
+                menu.blockEntity.getBlockPos()
+        ));
     }
 }

@@ -108,7 +108,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             itemAngle = 0f, itemRotSpeed = ITEM_SPEED_MIN, itemScale = 7f,
             reductionRate = 0.0f;
     public boolean
-            preventDrawingLastMateria = false, forceDisplayedRecipeUpdate = false;
+            preventDrawingLastMateria = false, forceDisplayedRecipeUpdate = false, clearRecipeAfterNextProcess = false;
 
     ////////////////////
     // CONSTRUCTOR
@@ -198,8 +198,12 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             if(nbt.contains("alchemyObject")) {
                                 Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("alchemyObject")));
                                 SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(level, itemQuery);
-                                if(recipeQuery.isForbiddenByAdvancement()) {
-                                    Player playerQuery = level.getPlayerByUUID(initiatingPlayer);
+                                UUID uuidQuery = initiatingPlayer;
+                                if(nbt.contains("initiatingPlayer"))
+                                    uuidQuery = UUID.fromString(nbt.getString("initiatingPlayer"));
+
+                                if(recipeQuery.isForbiddenByAdvancement() && uuidQuery != null) {
+                                    Player playerQuery = level.getPlayerByUUID(uuidQuery);
                                     if(playerQuery instanceof ServerPlayer sp) {
                                         return !AdvancementUtil.serverPlayerHasAdvancement(level, sp, recipeQuery.getForbiddenAdvancement());
                                     }
@@ -544,8 +548,16 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
 
             if(anbe.animStage == ANIM_STAGE_IDLE) {
+                if(anbe.clearRecipeAfterNextProcess) {
+                    anbe.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
+                    anbe.clearRecipeAfterNextProcess = false;
+                    anbe.doDeferredRecipeLinkages = true;
+                    anbe.itemScale = ITEM_SCALE_START;
+                    anbe.itemRotSpeed = ITEM_SPEED_MIN;
+                }
+
                 //Just sit here and do nothing if we have no recipe
-                if(anbe.currentRecipe != null)
+                else if(anbe.currentRecipe != null)
                 {
                     //Check if all the items are present
                     if (anbe.hasAllRecipeItemsForCurrentStage()) {
@@ -792,6 +804,10 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                     anbe.forceDisplayedRecipeUpdate = true;
                                 }
                             }
+                        }
+                        if(anbe.clearRecipeAfterNextProcess) {
+                            anbe.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
+                            anbe.clearRecipeAfterNextProcess = false;
                         }
                         if(stagePreCraft > 0)
                             anbe.animStage = ANIM_STAGE_CANCEL_CRAFTING_ADVANCED;

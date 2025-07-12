@@ -1,12 +1,10 @@
 package com.aranaira.magichem.networking;
 
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.FuseryBlockEntity;
-import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
+import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.ext.AbstractFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractFixationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractSeparationBlockEntity;
+import com.aranaira.magichem.gui.AlchemicalNexusScreen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -47,6 +45,9 @@ public class DeviceRecipeClearC2SPacket {
             }
             else if(entity instanceof AbstractFabricationBlockEntity fabrication) {
                 fabrication.clearRecipeAfterNextProcess = true;
+            }
+            else if(entity instanceof AlchemicalNexusBlockEntity nexus) {
+                nexus.clearRecipeAfterNextProcess = true;
             }
         });
 
