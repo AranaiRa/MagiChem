@@ -290,6 +290,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(EldrinOrreryRouterBlockEntity::new, BlockRegistry.ELDRIN_ORRERY_ROUTER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<SelenolabeBlockEntity>> SELENOLABE_BE = BLOCK_ENTITIES.register("selenolabe", () ->
+            BlockEntityType.Builder.of(SelenolabeBlockEntity::new, BlockRegistry.SELENOLABE.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

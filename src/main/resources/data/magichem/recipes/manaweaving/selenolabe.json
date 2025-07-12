@@ -1,0 +1,22 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:selenolabe",
+  "tier": 3,
+  "items": [
+    "minecraft:stick",
+    "magichem:lunar_orb",
+    "minecraft:stick",
+    "mna:transmuted_silver",
+    "magichem:chiaroscuro",
+    "mna:transmuted_silver",
+    "minecraft:stick",
+    "mna:decoration/arcane_stone",
+    "minecraft:stick"
+  ],
+  "patterns": [
+    "mna:circle",
+    "mna:circle",
+    "mna:bolt",
+    "mna:circle"
+  ]
+}

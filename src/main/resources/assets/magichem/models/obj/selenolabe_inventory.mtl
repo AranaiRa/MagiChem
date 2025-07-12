@@ -1,0 +1,11 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 3
+
+newmtl ELDRIN_ORRERY
+map_Kd magichem:block/eldrin_orrery
+
+newmtl MAIN
+map_Kd magichem:block/decorator/moon_1
+
+newmtl OCCULUS
+map_Kd mna:block/material/occulus

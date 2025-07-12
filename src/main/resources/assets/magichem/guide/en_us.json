@@ -9951,5 +9951,144 @@
       }
     ]
   },
+  "Selenolabe": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Selenolabe"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "1 Wide, 1 Tall, 1 Deep\n",
+            "italic": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Selenolabe",
+            "color": "dark_purple"
+          },
+          {
+            "text": " uses the lunar magic held within a Lunar Orb to create a false moon which "
+          },
+          {
+            "text": "mirrors the phase",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of the true moon.\n\nIt outputs a redstone signal based on the moon's current phase; critically useful for automating nighttime Illuminations on the "
+          },
+          {
+            "text": "Astral Observer",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "value": "",
+        "newPage": true,
+        "json": [
+          {
+            "text": ""
+          },
+          {
+            "text": "Signal Strength Reference Chart\n\n",
+            "bold": true
+          },
+          {
+            "text": "1",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": New Moon\n"
+          },
+          {
+            "text": "2",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Waning Crescent\n"
+          },
+          {
+            "text": "3",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Waxing Crescent\n"
+          },
+          {
+            "text": "4",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Waning Half\n"
+          },
+          {
+            "text": "5",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Waxing Half\n"
+          },
+          {
+            "text": "6",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Waning Gibbous\n"
+          },
+          {
+            "text": "7",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Waxing Gibbous\n"
+          },
+          {
+            "text": "8",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Full Moon"
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/selenolabe"
+      },
+      {
+        "type": "illumination",
+        "location": "magichem:illumination/magichem/glass_orb_to_lunar_orb"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }
