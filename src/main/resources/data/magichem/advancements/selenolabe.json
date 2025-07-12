@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:selenolabe"
+    },
+    "title": {
+      "translate": "advancements.magichem.selenolabe.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.selenolabe.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:astral_observer",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:selenolabe"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

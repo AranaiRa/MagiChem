@@ -1336,6 +1336,8 @@
   "advancements.magichem.radiant_rose.description" : "Use a Dendritic Abjuration to break the curse on a Wither Rose",
   "advancements.magichem.rarefied_waste.title" : "Reduce, Reuse, Reprocess",
   "advancements.magichem.rarefied_waste.description" : "Extract Rarefied Waste from a Quake Refinery",
+  "advancements.magichem.selenolabe.title" : "Eight-Faced",
+  "advancements.magichem.selenolabe.description" : "Create a Selenolabe to help automate the Astral Observer",
   "advancements.magichem.sublimation_primer.title" : "Reference Material",
   "advancements.magichem.sublimation_primer.description" : "Create a Sublimation Primer to aid in the Ritual of the Balanced Scales",
   "advancements.magichem.scorched_profundity.title" : "A Dreadful Bolt of Inspiration",
@@ -1410,6 +1412,8 @@
   "mechanic.lumins.solar": "Solar Lumins",
 
   "death.attack.magichem_acid": "%s dissolved away",
+
+  "cantrip.magichem.acid_ward": "Acid Ward",
 
   "jei.magichem.anointing": "Materia Anointing",
   "jei.magichem.coloration": "Alchemical Coloration",
