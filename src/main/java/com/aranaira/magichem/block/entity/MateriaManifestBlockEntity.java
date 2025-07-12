@@ -63,7 +63,7 @@ public class MateriaManifestBlockEntity extends BlockEntity implements MenuProvi
     public BlockEntity tetherTarget = null;
     public MateriaItem tetherType = null;
     public AABB RENDER_BOUNDING_BOX;
-    public boolean isCompactMode = true;
+    public boolean isCompactMode = false;
 
     public MateriaManifestBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.MATERIA_MANIFEST_BE.get(), pos, state);
