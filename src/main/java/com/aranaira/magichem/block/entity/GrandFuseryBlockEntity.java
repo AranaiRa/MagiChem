@@ -602,7 +602,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         }
 
         //slurry gas particle stuff
-        if(pEntity.getLevel().isClientSide() && !pEntity.redstonePaused) {
+        if(pEntity.getLevel().isClientSide() && !pEntity.redstonePaused && pEntity.hasSufficientPower) {
             if(pEntity.getLevel().getGameTime() % 8 == 0) {
                 Vector3 start = new Vector3(pPos.getX() + 0.5, pPos.getY() + 1.8125, pPos.getZ() + 0.5);
 

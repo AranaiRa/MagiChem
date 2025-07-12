@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#magichem:alchemically_treated_glass"
+    "#magichem:alchemically_treated_glass",
+    "#magichem:big_blocks",
+    "#magichem:big_block_routers"
   ]
 }

@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:actuator_air_router",
+    "magichem:actuator_arcane_router",
+    "magichem:actuator_earth_router",
+    "magichem:actuator_ender_router",
+    "magichem:actuator_fire_router",
+    "magichem:actuator_water_router",
+    "magichem:acid_basin_router",
+    "magichem:alchemical_nexus_router",
+    "magichem:centrifuge_router",
+    "magichem:circle_fabrication_router",
+    "magichem:circle_power_router",
+    "magichem:conjurer_router",
+    "magichem:distillery_router",
+    "magichem:eldrin_orrery_router",
+    "magichem:fusery_router",
+    "magichem:grand_centrifuge_router",
+    "magichem:grand_distillery_router",
+    "magichem:grand_circle_fabrication_router",
+    "magichem:grand_fusery_router",
+    "magichem:materia_manifest_router",
+    "magichem:mirror_labyrinth_router",
+    "magichem:variegator_router"
+  ]
+}

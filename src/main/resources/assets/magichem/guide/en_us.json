@@ -4788,25 +4788,18 @@
             "text": " is a grand magical device that twists the space seen on the other side of a mirror. In these ever-shifting and winding corridors one can "
           },
           {
-            "text": "store large quantities of Materia",
+            "text": "store large quantities of every type of Materia",
             "color": "dark_purple"
           },
           {
-            "text": " (and only Materia; conventional matter cannot pass through the surface of a mirror). A Mirror Labyrinth can store "
-          },
-          {
-            "text": "every type of Materia at once",
-            "color": "dark_purple"
-          },
-          {
-            "text": ".\n\nThe Mirror Labyrinth requires FE from a "
+            "text": " (and only Materia; conventional matter cannot pass through the surface of a mirror).\n\nThe Mirror Labyrinth requires FE from a "
           },
           {
             "text": "Circle of Power",
             "color": "dark_purple"
           },
           {
-            "text": " in order to run. The amount of FE required can be controlled; higher FE usage results in more available storage space for each type of Materia.\n\nIf the device's FE requirements aren't met, no Materia can be inserted or extracted. Any Materia inserted in this state will be "
+            "text": " in order to run. The amount of FE required can be controlled; higher FE usage results in more available storage space for each type of Materia. The limit displayed on the right side of the GUI is the maximum storage per materia type.\n\nIf the device's FE requirements aren't met, no Materia can be inserted or extracted. Any Materia inserted in this state will be "
           },
           {
             "text": "forever lost in the mirror dimension",
@@ -6802,7 +6795,7 @@
             "color": "dark_purple"
           },
           {
-            "text": "instead.\n\nA magic circle will slowly form around an object being infused with Lumins, giving an alchemist a rough idea of what percent complete the transformation is. Exact Lumin values can be checked by removing the item from the Astral Observer and looking at its tooltip. Items gain "
+            "text": " instead.\n\nA magic circle will slowly form around an object being infused with Lumins, giving an alchemist a rough idea of what percent complete the transformation is. Exact Lumin values can be checked by removing the item from the Astral Observer and looking at its tooltip. Items gain "
           },
           {
             "text": "ten lumins",
@@ -6816,7 +6809,21 @@
             "color": "dark_purple"
           },
           {
-            "text": "; it must always be aligned in order to track the motion of the sun and moon."
+            "text": "; it must always be aligned in order to track the motion of the sun and moon.\n\nA "
+          },
+          {
+            "text": "Selenolabe",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be used by a construct to help "
+          },
+          {
+            "text": "automate",
+            "color": "dark_purple"
+          },
+          {
+            "text": " the Astral Observer."
           }
         ]
       },
@@ -6897,6 +6904,10 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/astral_observer"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/selenolabe"
       }
     ]
   },

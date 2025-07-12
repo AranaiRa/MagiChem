@@ -1,0 +1,27 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:actuator_air",
+    "magichem:actuator_arcane",
+    "magichem:actuator_earth",
+    "magichem:actuator_ender",
+    "magichem:actuator_fire",
+    "magichem:actuator_water",
+    "magichem:acid_basin",
+    "magichem:alchemical_nexus",
+    "magichem:centrifuge",
+    "magichem:circle_fabrication",
+    "magichem:circle_power",
+    "magichem:conjurer",
+    "magichem:distillery",
+    "magichem:eldrin_orrery",
+    "magichem:fusery",
+    "magichem:grand_centrifuge",
+    "magichem:grand_distillery",
+    "magichem:grand_circle_fabrication",
+    "magichem:grand_fusery",
+    "magichem:materia_manifest",
+    "magichem:mirror_labyrinth",
+    "magichem:variegator"
+  ]
+}
