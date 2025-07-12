@@ -281,6 +281,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         this.materiaToVent = 0;
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("fluidContents", 0);
         nbt.putInt("batchSize", this.batchSize);
@@ -299,6 +300,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             ventMateria(nbt.getInt("materiaToVent"));
         unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
+        powerUsageSetting = nbt.getInt("powerUsageSetting");
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
         redstonePaused = nbt.getBoolean("redstonePaused");
@@ -320,6 +322,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         this.materiaToVent = 0;
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("hasSufficientPower", this.hasSufficientPower);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
