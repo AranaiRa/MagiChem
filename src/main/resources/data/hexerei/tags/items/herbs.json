@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:alchemical_waste",
+    "magichem:rarefied_waste"
+  ]
+}
