@@ -2,8 +2,9 @@
   "type": "magichem:sublimation",
   "tier": 2,
   "wisdom": 0,
+  "required_advancement": "magichem:mna/mote_earth",
   "object": {
-    "item": "mna:mote_water"
+    "item": "mna:mote_earth"
   },
   "stages": [
     {
@@ -12,7 +13,7 @@
         { "item": "magichem:mote_achromatic" }
       ],
       "materia": [
-        { "item": "magichem:essentia_water", "count": 105 }
+        { "item": "magichem:essentia_earth", "count": 105 }
       ]
     }
   ]

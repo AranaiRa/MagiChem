@@ -2,6 +2,7 @@
   "type": "magichem:sublimation",
   "tier": 2,
   "wisdom": 0,
+  "required_advancement": "magichem:mna/mote_ender",
   "object": {
     "item": "mna:mote_ender"
   },

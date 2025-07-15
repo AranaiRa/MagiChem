@@ -2,8 +2,9 @@
   "type": "magichem:sublimation",
   "tier": 2,
   "wisdom": 0,
+  "required_advancement": "magichem:mna/mote_fire",
   "object": {
-    "item": "mna:mote_air"
+    "item": "mna:mote_fire"
   },
   "stages": [
     {
@@ -12,7 +13,7 @@
         { "item": "magichem:mote_achromatic" }
       ],
       "materia": [
-        { "item": "magichem:essentia_air", "count": 105 }
+        { "item": "magichem:essentia_fire", "count": 105 }
       ]
     }
   ]
