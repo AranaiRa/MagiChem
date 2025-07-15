@@ -41,6 +41,8 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -712,8 +714,10 @@ public class CommonEventHandler {
         if(event.getSpawnType() == MobSpawnType.NATURAL) {
             for (Player player : event.getLevel().players()) {
                 if (player.hasEffect(MobEffectsRegistry.SUNS_GRACE.get())) {
-                    if (event.getEntity().getPosition(0).distanceTo(player.getPosition(0)) <= 128)
-                        event.setResult(Event.Result.DENY);
+                    if(!(event.getEntity() instanceof AbstractSchoolingFish || event.getEntity() instanceof Squid)) {
+                        if (event.getEntity().getPosition(0).distanceTo(player.getPosition(0)) <= 128)
+                            event.setResult(Event.Result.DENY);
+                    }
                 }
             }
         }
@@ -724,8 +728,10 @@ public class CommonEventHandler {
         if(event.getEntity().canAttackType(EntityType.PLAYER)) {
             for (Player player : event.getLevel().players()) {
                 if (player.hasEffect(MobEffectsRegistry.SUNS_SCORN.get())) {
-                    for (int i = 0; i < r.nextInt(4) + 2; i++) {
-                        event.getLevel().addFreshEntity(event.getEntity());
+                    if(!(event.getEntity() instanceof AbstractSchoolingFish || event.getEntity() instanceof Squid)) {
+                        for (int i = 0; i < r.nextInt(4) + 2; i++) {
+                            event.getLevel().addFreshEntity(event.getEntity());
+                        }
                     }
                 }
             }
