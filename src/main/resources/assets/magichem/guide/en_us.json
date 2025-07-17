@@ -499,6 +499,8 @@
   },
   "Process: Illumination": {
     "index": "1113",
+    "tier": 3,
+    "required_advancement": "magichem:__wisdom_2",
     "category": "magichem",
     "sections": [
       {
@@ -5283,6 +5285,7 @@
   "Radiant Rose": {
     "index": 0,
     "category": "magichem_wonders",
+    "required_advancement": "magichem:__wisdom_1",
     "sections": [
       {
         "type": "title",
@@ -5356,6 +5359,68 @@
       {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/abjuration_dendritic"
+      }
+    ]
+  },
+  "Slumbering Idol": {
+    "index": 0,
+    "category": "magichem_wonders",
+    "required_advancement": "magichem:__wisdom_1",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Slumbering Idol"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "When activated, a "
+          },
+          {
+            "text": "Slumbering Idol",
+            "color": "dark_purple"
+          },
+          {
+            "text": " invokes the protective powers of a good night's sleep, "
+          },
+          {
+            "text": "destroying all Phantoms",
+            "color": "dark_purple"
+          },
+          {
+            "text": " within a very large radius of the user.\n\nAfter use the Idol requires a short recovery period to recharge its magic.\n\nAlong with a "
+          },
+          {
+            "text": "Bleached Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a Slumbering Idol can be used to recreate totem magic capable of "
+          },
+          {
+            "text": "denying death",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/inert_idol"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/slumbering_idol"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/minecraft/totem_of_undying"
       }
     ]
   },
@@ -6740,6 +6805,7 @@
     "index": "1212",
     "category": "magichem",
     "tier": 3,
+    "required_advancement": "magichem:__wisdom_2",
     "sections": [
       {
         "type": "title",
@@ -8134,7 +8200,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " curses, the Dendritic Abjuration will crumble to dust."
+            "text": " curses, the Dendritic Abjuration will crumble to dust.\n\nAn "
+          },
+          {
+            "text": "Ashen Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is necessary to create a Dendritic Abjuration."
           }
         ]
       },
@@ -8429,6 +8502,7 @@
     "index": "0",
     "category": "magichem_wonders",
     "tier": 3,
+    "required_advancement": "magichem:__wisdom_2",
     "sections": [
       {
         "type": "title",
@@ -9111,6 +9185,7 @@
     "index": "0",
     "category": "magichem_wonders",
     "tier": 2,
+    "required_advancement": "magichem:__wisdom_2",
     "sections": [
       {
         "type": "title",
@@ -9445,6 +9520,7 @@
     "index": "0",
     "category": "magichem_wonders",
     "tier": 3,
+    "required_advancement": "magichem:__wisdom_2",
     "sections": [
       {
         "type": "title",
@@ -9965,7 +10041,8 @@
   "Selenolabe": {
     "index": "0",
     "category": "magichem_wonders",
-    "tier": 2,
+    "tier": 3,
+    "required_advancement": "magichem:__wisdom_2",
     "sections": [
       {
         "type": "title",
