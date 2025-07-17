@@ -1364,8 +1364,14 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 itemScale = MathUtils.lerpf(ITEM_SCALE_START, ITEM_SCALE_END, timeInStage);
             }
         } else {
-            crystalRotSpeed = Math.max(CRYSTAL_SPEED_MIN, crystalRotSpeed - (CRYSTAL_SPEED_MAX - CRYSTAL_SPEED_MIN) / (SPEC_PARAM_RAMP_SPEEDUP[powerLevel] * 3));
-            itemRotSpeed = Math.max(ITEM_SPEED_MIN, crystalRotSpeed - (ITEM_SPEED_MAX - ITEM_SPEED_MIN) / (SPEC_PARAM_RAMP_SPEEDUP[powerLevel] * 3));
+            if(animStage == ANIM_STAGE_IDLE) {
+                crystalRotSpeed = CRYSTAL_SPEED_MIN;
+                itemRotSpeed = ITEM_SPEED_MIN;
+                itemScale = ITEM_SCALE_START;
+            } else {
+                crystalRotSpeed = Math.max(CRYSTAL_SPEED_MIN, crystalRotSpeed - (CRYSTAL_SPEED_MAX - CRYSTAL_SPEED_MIN) / (SPEC_PARAM_RAMP_SPEEDUP[powerLevel] * 3));
+                itemRotSpeed = Math.max(ITEM_SPEED_MIN, crystalRotSpeed - (ITEM_SPEED_MAX - ITEM_SPEED_MIN) / (SPEC_PARAM_RAMP_SPEEDUP[powerLevel] * 3));
+            }
         }
     }
 
