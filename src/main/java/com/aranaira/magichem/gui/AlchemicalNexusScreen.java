@@ -238,7 +238,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             } else {
                 if(menu.getCurrentRecipe().getAlchemyObject().getItem() instanceof BlockItem) {
                     pGuiGraphics.renderItem(menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
-                    pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 80, y + 80, x + 98, y + 98, menu.blockEntity.clearRecipeAfterNextProcess ? 0x40ffffff : 0xffffffff);
+                    if(menu.blockEntity.clearRecipeAfterNextProcess) pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 80, y + 80, x + 98, y + 98, 0x40ffffff);
                 } else {
                     float alpha = menu.blockEntity.clearRecipeAfterNextProcess ? 0.5f : 1.0f;
                     pGuiGraphics.setColor(1, 1, 1, alpha);
