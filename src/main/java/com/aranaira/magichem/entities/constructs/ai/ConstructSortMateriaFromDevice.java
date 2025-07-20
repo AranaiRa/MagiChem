@@ -349,6 +349,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 if (materiaBlockQuery == filter) {
                     transferredAmount = multi.fill(materiaBlockQuery, transitMateria.getCount(), this.voidExcess);
                     didTransfer = true;
+                    break;
                 }
             }
             if(!didTransfer) {
@@ -358,7 +359,7 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         }
 
         if(transferredAmount == transitMateria.getCount()) {
-            constructNBT.put("transitMateria", ItemStack.EMPTY.serializeNBT());
+            constructNBT.remove("transitMateria");
             construct.asEntity().addAdditionalSaveData(constructNBT);
         } else {
             transitMateria.setCount(transitMateria.getCount() - transferredAmount);
@@ -498,9 +499,12 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                     }
                 }
 
-                if (foundFilter && firstEmpty != null)
+                if (foundFilter || firstEmpty != null)
                     break;
             }
+
+            if (foundFilter || firstEmpty != null)
+                break;
         }
 
         if(!voidExcess) {
