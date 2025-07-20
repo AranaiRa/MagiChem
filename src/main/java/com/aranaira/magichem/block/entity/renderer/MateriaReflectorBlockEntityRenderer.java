@@ -126,7 +126,15 @@ public class MateriaReflectorBlockEntityRenderer implements BlockEntityRenderer<
         }
 
         if(pBlockEntity.getStackForDirection(Direction.WEST).getItem() instanceof MateriaItem mi) {
-            float[] color = ColorUtils.packedColorToFloatArray(mi.getMateriaColor());
+            int packedColor = mi.getMateriaColor();
+            if(mi.getMateriaName().equals("color")) {
+                int period = 131;
+                int gt = (int)(pBlockEntity.getLevel().getGameTime() % (period * 2));
+                float pScaledTime = ((float)((gt + pPartialTick) % period)) / (float)period;
+
+                packedColor = ColorUtils.getLerpedRainbowColor(pScaledTime);
+            }
+            float[] color = ColorUtils.packedColorToFloatArray(packedColor);
             pPoseStack.pushPose();
             pPoseStack.translate(0.0, 0.5, 0.5);
             pPoseStack.mulPose(Axis.YP.rotationDegrees(90));

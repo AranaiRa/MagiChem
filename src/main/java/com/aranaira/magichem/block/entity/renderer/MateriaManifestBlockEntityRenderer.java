@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.MateriaManifestBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -34,8 +35,8 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
     @Override
     public void render(MateriaManifestBlockEntity mmbe, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if(mmbe.tetherTarget != null) {
-            if(mmbe.tetherTarget instanceof AbstractMateriaStorageSingleTypeBlockEntity amsstbe) {
-                if (amsstbe.getMateriaType() != null) {
+            if(mmbe.tetherTarget instanceof AbstractMateriaStorageSingleTypeBlockEntity single) {
+                if (single.getMateriaType() != null) {
                     final Direction facing = mmbe.getBlockState().getValue(FACING);
                     double x = 0, z = 0;
                     if (facing == Direction.NORTH) z = -0.3125;
@@ -44,18 +45,27 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
                     else if (facing == Direction.WEST) x = -0.3125;
 
                     Vector3 startPos = new Vector3(0.5 + x, 1.78125, 0.5 + z);
-                    Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, amsstbe.getBlockPos().getY() + 0.5, amsstbe.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
+                    Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, single.getBlockPos().getY() + 0.5, single.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
 
-                    int colorInt = amsstbe.getMateriaType().getMateriaColor();
-                    int intR = (colorInt & 0x00ff0000) >> 16;
-                    int intG = (colorInt & 0x0000ff00) >> 8;
-                    int intB = (colorInt & 0x000000ff) >> 0;
+                    int colorInt, intR, intG, intB;
+                    if(mmbe.tetherType.getMateriaName().equals("color")) {
+                        int period = 200;
+                        int gtColor = (int)(mmbe.getLevel().getGameTime() % (period * 2));
+                        float pScaledTime = ((float)((gtColor + partialTick) % period)) / (float)period;
+
+                        colorInt = ColorUtils.getLerpedRainbowColor(pScaledTime);
+                    } else {
+                        colorInt = mmbe.tetherType.getMateriaColor();
+                    }
+                    intR = (colorInt & 0x00ff0000) >> 16;
+                    intG = (colorInt & 0x0000ff00) >> 8;
+                    intB = (colorInt & 0x000000ff);
 
                     RenderUtils.generateLinearVolumetricBeam(startPos, endPos, 0.03125f, bodyTexture, new int[]{intR, intG, intB, 255}, 1, poseStack, bufferSource, packedLight, BEAM_TEX_U1, BEAM_TEX_V1, BEAM_TEX_U2, BEAM_TEX_V2);
                 }
             }
-            else if(mmbe.tetherTarget instanceof AbstractMateriaStorageMultiTypeBlockEntity amsmtbe) {
-                for(MateriaItem type : amsmtbe.getMateriaTypes()) {
+            else if(mmbe.tetherTarget instanceof AbstractMateriaStorageMultiTypeBlockEntity multi) {
+                for(MateriaItem type : multi.getMateriaTypes()) {
                     if (type != null && type == mmbe.tetherType) {
                         final Direction facing = mmbe.getBlockState().getValue(FACING);
                         double x = 0, z = 0;
@@ -65,12 +75,21 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
                         else if (facing == Direction.WEST) x = -0.3125;
 
                         Vector3 startPos = new Vector3(0.5 + x, 1.78125, 0.5 + z);
-                        Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, amsmtbe.getBlockPos().getY() + 0.5, amsmtbe.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
+                        Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, multi.getBlockPos().getY() + 0.5, multi.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
 
-                        int colorInt = type.getMateriaColor();
-                        int intR = (colorInt & 0x00ff0000) >> 16;
-                        int intG = (colorInt & 0x0000ff00) >> 8;
-                        int intB = (colorInt & 0x000000ff) >> 0;
+                        int colorInt, intR, intG, intB;
+                        if(mmbe.tetherType.getMateriaName().equals("color")) {
+                            int period = 200;
+                            int gtColor = (int)(mmbe.getLevel().getGameTime() % (period * 2));
+                            float pScaledTime = ((float)((gtColor + partialTick) % period)) / (float)period;
+
+                            colorInt = ColorUtils.getLerpedRainbowColor(pScaledTime);
+                        } else {
+                            colorInt = mmbe.tetherType.getMateriaColor();
+                        }
+                        intR = (colorInt & 0x00ff0000) >> 16;
+                        intG = (colorInt & 0x0000ff00) >> 8;
+                        intB = (colorInt & 0x000000ff);
 
                         RenderUtils.generateLinearVolumetricBeam(startPos, endPos, 0.03125f, bodyTexture, new int[]{intR, intG, intB, 255}, 1, poseStack, bufferSource, packedLight, BEAM_TEX_U1, BEAM_TEX_V1, BEAM_TEX_U2, BEAM_TEX_V2);
                     }
