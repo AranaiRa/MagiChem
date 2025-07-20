@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlo
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeStaticBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
+import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
@@ -374,5 +375,18 @@ public class InventoryHelper {
 
     public static HashMap<MateriaItem, List<BlockEntity>> getAllMateriaStorageInZone(Level pLevel, BlockPos pCorner1, BlockPos pCorner2) {
         return getAllMateriaStorageInZone(pLevel, pCorner1.getX(), pCorner1.getY(), pCorner1.getZ(), pCorner2.getX(), pCorner2.getY(), pCorner2.getZ());
+    }
+
+    public static LuminType checkLuminTypeOnStack(ItemStack pStack) {
+        if(pStack.hasTag()) {
+            CompoundTag nbt = pStack.getTag();
+
+            if (nbt != null && nbt.contains("magichemLumins")) {
+                CompoundTag luminsTag = nbt.getCompound("magichemLumins");
+                return LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
+            }
+        }
+
+        return LuminType.NONE;
     }
 }

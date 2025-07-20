@@ -1173,6 +1173,7 @@
   "construct.magichem:query_has_eldrin_in_buffer": "Condition: Has Eldrin Power in Buffer",
   "construct.magichem:query_device_recipe_matches": "Condition: Device Recipe Matches",
   "construct.magichem:query_is_item_distillable": "Condition: Is Item Distillable",
+  "construct.magichem:query_item_has_lumins": "Condition: Item Has Lumins",
 
   "gui.mna.codex_search.recipe.anointing": "Alchemical Anointing > ",
   "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
@@ -1215,6 +1216,9 @@
   "gui.mna.parameter.query_has_eldrin_in_buffer.int.amount": "What percent full should your Eldrin power buffer for the chosen affinity be?",
 
   "gui.mna.parameter.query_device_needs_provisioning.boolean": "Should the construct check the item in its left hand?",
+
+  "gui.mna.parameter.query_item_has_lumins.boolean": "Should the construct check the item in its left hand?",
+  "gui.mna.parameter.query_item_has_lumins.int": "What type of Lumins should the construct check?\n\n 0: Any Lumins\n 1: Solar Lumins\n 2: Lunar Lumins\n 3: Sidereal Lumins",
 
   "hud.magichem.coloring_cauldron.current_item.processing": "Coloring ",
   "hud.magichem.coloring_cauldron.current_item.waiting": " Complete",

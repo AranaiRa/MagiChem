@@ -4107,6 +4107,68 @@
     ],
     "related_recipes": []
   },
+  "Condition: Item Has Lumins": {
+    "index": "4",
+    "category": "constructs",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Condition: Item Has Lumins"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "This condition will check whether an "
+          },
+          {
+            "text": "item in the Construct's hand",
+            "color": "dark_purple"
+          },
+          {
+            "text": " has "
+          },
+          {
+            "text": "Lumins",
+            "color": "dark_purple"
+          },
+          {
+            "text": " instilled through "
+          },
+          {
+            "text": "Alchemical Illumination",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". It has no purpose before "
+          },
+          {
+            "text": "Tier 4",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nBy default the task will check for any Lumins instilled into the item, but it can be set to check for a specific phase of Lumins using the slider bar.\n\nThe task returns "
+          },
+          {
+            "text": "success",
+            "color": "dark_green"
+          },
+          {
+            "text": " if the item's lumin type matches, and "
+          },
+          {
+            "text": "failure",
+            "color": "dark_red"
+          },
+          {
+            "text": " if it doesn't."
+          }
+        ]
+      }
+    ],
+    "related_recipes": []
+  },
   "Condition: Device Recipe Matches": {
     "index": "4",
     "category": "constructs",

@@ -43,13 +43,13 @@ public class ConstructIsItemDistillable extends ConstructConditional<ConstructIs
     @Override
     protected List<ConstructAITaskParameter> instantiateParameters() {
         List<ConstructAITaskParameter> parameters = super.instantiateParameters();
-        parameters.add(new ConstructTaskBooleanParameter("query_device_needs_provisioning.boolean"));
+        parameters.add(new ConstructTaskBooleanParameter("query_is_item_distillable.boolean"));
         return parameters;
     }
 
     @Override
     public void inflateParameters() {
-        this.getParameter("query_device_needs_provisioning.boolean").ifPresent((param) -> {
+        this.getParameter("query_is_item_distillable.boolean").ifPresent((param) -> {
             if (param instanceof ConstructTaskBooleanParameter booleanParam) {
                 useLeftHand = booleanParam.getValue();
             }

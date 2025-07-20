@@ -4,7 +4,6 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.entities.constructs.ai.*;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.ai.ConstructTask;
-import com.mna.entities.constructs.ai.ConstructHarvest;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,6 +30,7 @@ public class ConstructTasksRegistry {
     public static final ConstructTask QUERY_DEVICE_RECIPE_MATCHES = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_device_recipe_matches.png"), ConstructDeviceRecipeMatches.class, true, false, true);
     public static final ConstructTask QUERY_HAS_ELDRIN_IN_BUFFER = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_has_eldrin_power.png"), ConstructHasEldrinInBuffer.class, true, false, true);
     public static final ConstructTask QUERY_IS_ITEM_DISTILLABLE = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/is_item_distillable.png"), ConstructIsItemDistillable.class, true, false, true);
+    public static final ConstructTask QUERY_DOES_ITEM_HAVE_LUMINS = new ConstructTask(new ResourceLocation(MagiChemMod.MODID, "textures/gui/construct/task/query_item_has_lumins.png"), ConstructItemHasLumins.class, true, false, true);
 
     @SubscribeEvent
     public static void registerTasks(RegisterEvent event) {
@@ -49,6 +49,7 @@ public class ConstructTasksRegistry {
             helper.register(new ResourceLocation(MagiChemMod.MODID, "query_device_recipe_matches"), QUERY_DEVICE_RECIPE_MATCHES);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "query_has_eldrin_in_buffer"), QUERY_HAS_ELDRIN_IN_BUFFER);
             helper.register(new ResourceLocation(MagiChemMod.MODID, "query_is_item_distillable"), QUERY_IS_ITEM_DISTILLABLE);
+            helper.register(new ResourceLocation(MagiChemMod.MODID, "query_item_has_lumins"), QUERY_DOES_ITEM_HAVE_LUMINS);
         });
     }
 }
