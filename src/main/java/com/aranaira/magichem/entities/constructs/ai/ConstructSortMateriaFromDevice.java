@@ -499,11 +499,11 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                     }
                 }
 
-                if (foundFilter || firstEmpty != null)
+                if (foundFilter && firstEmpty != null)
                     break;
             }
 
-            if (foundFilter || firstEmpty != null)
+            if (foundFilter && firstEmpty != null)
                 break;
         }
 
