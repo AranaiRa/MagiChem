@@ -5053,7 +5053,14 @@
             "bold": true
           },
           {
-            "text": " (if full or over-full)."
+            "text": " (if full or over-full).\n\nIf you're combining a Materia Reflector with the "
+          },
+          {
+            "text": "Is Redstone Powered",
+            "color": "dark_purple"
+          },
+          {
+            "text": " Construct Condition, it's best to mark a block adjacent to the Materia Reflector rather than marking the Materia Reflector itself."
           }
         ]
       }
@@ -10146,7 +10153,14 @@
             "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ".\n\nIf you're combining a Selenolabe with the "
+          },
+          {
+            "text": "Is Redstone Powered",
+            "color": "dark_purple"
+          },
+          {
+            "text": " Construct Condition, it's best to mark a block adjacent to the Selenolabe rather than marking the Selenolabe itself."
           }
         ]
       },
