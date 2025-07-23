@@ -1,7 +1,6 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
-import com.aranaira.magichem.block.entity.container.BottleStockSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -43,7 +42,7 @@ public class GrandCircleFabricationMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new BottleStockSlot(handler, GrandCircleFabricationBlockEntity.SLOT_BOTTLES, 82, -5, true));
+            this.addSlot(new SlotItemHandler(handler, GrandCircleFabricationBlockEntity.SLOT_BOTTLES, 82, -5));
 
             for(int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
                 int shiftedSlot = i - SLOT_INPUT_START;

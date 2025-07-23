@@ -2,11 +2,6 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
-import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
-import com.aranaira.magichem.block.entity.container.BottleStockSlot;
-import com.aranaira.magichem.block.entity.container.OnlyAdmixtureInputSlot;
-import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
-import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -49,8 +44,8 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slot
-            this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES, 134, -12, false));
-            this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES_OUTPUT, 80, 3, true));
+            this.addSlot(new SlotItemHandler(handler, FuseryBlockEntity.SLOT_BOTTLES, 134, -12));
+            this.addSlot(new SlotItemHandler(handler, FuseryBlockEntity.SLOT_BOTTLES_OUTPUT, 80, 3));
 
             //Input item slots
             for(int i = FuseryBlockEntity.SLOT_INPUT_START; i< FuseryBlockEntity.SLOT_INPUT_START + FuseryBlockEntity.SLOT_INPUT_COUNT; i++)
@@ -67,7 +62,7 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
                 int x = (i - FuseryBlockEntity.SLOT_OUTPUT_START) % 3;
                 int y = (i - FuseryBlockEntity.SLOT_OUTPUT_START) / 3;
 
-                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 21 + (y) * 18, FuseryBlockEntity.SLOT_BOTTLES));
+                this.addSlot(new SlotItemHandler(handler, i, 116 + (x) * 18, 21 + (y) * 18));
             }
 
 //            setInputSlotFilters(blockEntity.getRecipeItem(FuseryBlockEntity::getVar));

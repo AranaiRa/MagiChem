@@ -1,8 +1,6 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.container.*;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -18,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.SlotItemHandler;
 import org.joml.Vector2i;
 
 public class CentrifugeMenu extends AbstractContainerMenu {
@@ -43,13 +42,13 @@ public class CentrifugeMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slots
-            this.addSlot(new BottleStockSlot(handler, CentrifugeBlockEntity.SLOT_BOTTLES, 116, -12, false));
-            this.addSlot(new BottleStockSlot(handler, CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, 62, 2, true));
+            this.addSlot(new SlotItemHandler(handler, CentrifugeBlockEntity.SLOT_BOTTLES, 116, -12));
+            this.addSlot(new SlotItemHandler(handler, CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, 62, 2));
 
             //Input item slots
             for(int i = CentrifugeBlockEntity.SLOT_INPUT_START; i< CentrifugeBlockEntity.SLOT_INPUT_START + CentrifugeBlockEntity.SLOT_INPUT_COUNT; i++)
             {
-                this.addSlot(new OnlyAdmixtureInputSlot(handler, i, 26, 21 + (i - CentrifugeBlockEntity.SLOT_INPUT_START) * 18));
+                this.addSlot(new SlotItemHandler(handler, i, 26, 21 + (i - CentrifugeBlockEntity.SLOT_INPUT_START) * 18));
             }
 
             //Output item slots
@@ -58,7 +57,7 @@ public class CentrifugeMenu extends AbstractContainerMenu {
                 int x = (i - CentrifugeBlockEntity.SLOT_OUTPUT_START) % 3;
                 int y = (i - CentrifugeBlockEntity.SLOT_OUTPUT_START) / 3;
 
-                this.addSlot(new BottleConsumingResultSlot(handler, i, 98 + (x) * 18, 21 + (y) * 18, CentrifugeBlockEntity.SLOT_BOTTLES));
+                this.addSlot(new SlotItemHandler(handler, i, 98 + (x) * 18, 21 + (y) * 18));
             }
         });
 

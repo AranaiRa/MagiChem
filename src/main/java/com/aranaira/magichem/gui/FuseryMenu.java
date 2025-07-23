@@ -1,11 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
-import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
-import com.aranaira.magichem.block.entity.container.BottleStockSlot;
-import com.aranaira.magichem.block.entity.container.OnlyMateriaInputSlot;
-import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -48,8 +43,8 @@ public class FuseryMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slots
-            this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES, 134, -12, false));
-            this.addSlot(new BottleStockSlot(handler, FuseryBlockEntity.SLOT_BOTTLES_OUTPUT, 80, 3, true));
+            this.addSlot(new SlotItemHandler(handler, FuseryBlockEntity.SLOT_BOTTLES, 134, -12));
+            this.addSlot(new SlotItemHandler(handler, FuseryBlockEntity.SLOT_BOTTLES_OUTPUT, 80, 3));
 
             //Recipe slot
             //this.addSlot(new SlotItemHandler(handler, FuseryBlockEntity.SLOT_RECIPE, 80, 75));
@@ -69,7 +64,7 @@ public class FuseryMenu extends AbstractContainerMenu {
                 int x = (i - FuseryBlockEntity.SLOT_OUTPUT_START) % 3;
                 int y = (i - FuseryBlockEntity.SLOT_OUTPUT_START) / 3;
 
-                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, 21 + (y) * 18, FuseryBlockEntity.SLOT_BOTTLES));
+                this.addSlot(new SlotItemHandler(handler, i, 116 + (x) * 18, 21 + (y) * 18));
             }
         });
 

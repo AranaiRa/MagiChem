@@ -1,10 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
-import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
-import com.aranaira.magichem.block.entity.container.BottleStockSlot;
-import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -45,7 +41,7 @@ public class DistilleryMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slot
-            this.addSlot(new BottleStockSlot(handler, DistilleryBlockEntity.SLOT_BOTTLES, 80, -11, false));
+            this.addSlot(new SlotItemHandler(handler, DistilleryBlockEntity.SLOT_BOTTLES, 80, -11));
 
             //Fuel slot
             this.addSlot(new SlotItemHandler(handler, DistilleryBlockEntity.SLOT_FUEL, 80, 79));
@@ -53,7 +49,7 @@ public class DistilleryMenu extends AbstractContainerMenu {
             //Input item slots
             for(int i = DistilleryBlockEntity.SLOT_INPUT_START; i< DistilleryBlockEntity.SLOT_INPUT_START + DistilleryBlockEntity.SLOT_INPUT_COUNT; i++)
             {
-                this.addSlot(new NoMateriaInputSlot(handler, i, 44, -11 + (i - DistilleryBlockEntity.SLOT_INPUT_START) * 18));
+                this.addSlot(new SlotItemHandler(handler, i, 44, -11 + (i - DistilleryBlockEntity.SLOT_INPUT_START) * 18));
             }
 
             //Output item slots
@@ -62,7 +58,7 @@ public class DistilleryMenu extends AbstractContainerMenu {
                 int x = (i - DistilleryBlockEntity.SLOT_OUTPUT_START) % 3;
                 int y = (i - DistilleryBlockEntity.SLOT_OUTPUT_START) / 3;
 
-                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, -11 + (y) * 18, DistilleryBlockEntity.SLOT_BOTTLES));
+                this.addSlot(new SlotItemHandler(handler, i, 116 + (x) * 18, -11 + (y) * 18));
             }
         });
 

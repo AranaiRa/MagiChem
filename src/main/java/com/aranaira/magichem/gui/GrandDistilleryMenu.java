@@ -1,10 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
-import com.aranaira.magichem.block.entity.container.BottleConsumingResultSlot;
-import com.aranaira.magichem.block.entity.container.BottleStockSlot;
-import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -45,12 +41,12 @@ public class GrandDistilleryMenu extends AbstractContainerMenu {
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
             //Bottle slot
-            this.addSlot(new BottleStockSlot(handler, GrandDistilleryBlockEntity.SLOT_BOTTLES, 80, -11, false));
+            this.addSlot(new SlotItemHandler(handler, GrandDistilleryBlockEntity.SLOT_BOTTLES, 80, -11));
 
             //Input item slots
             for(int i = GrandDistilleryBlockEntity.SLOT_INPUT_START; i< GrandDistilleryBlockEntity.SLOT_INPUT_START + GrandDistilleryBlockEntity.SLOT_INPUT_COUNT; i++)
             {
-                this.addSlot(new NoMateriaInputSlot(handler, i, 44, -11 + (i - GrandDistilleryBlockEntity.SLOT_INPUT_START) * 18));
+                this.addSlot(new SlotItemHandler(handler, i, 44, -11 + (i - GrandDistilleryBlockEntity.SLOT_INPUT_START) * 18));
             }
 
             //Output item slots
@@ -59,7 +55,7 @@ public class GrandDistilleryMenu extends AbstractContainerMenu {
                 int x = (i - GrandDistilleryBlockEntity.SLOT_OUTPUT_START) % 3;
                 int y = (i - GrandDistilleryBlockEntity.SLOT_OUTPUT_START) / 3;
 
-                this.addSlot(new BottleConsumingResultSlot(handler, i, 116 + (x) * 18, -11 + (y) * 18, GrandDistilleryBlockEntity.SLOT_BOTTLES));
+                this.addSlot(new SlotItemHandler(handler, i, 116 + (x) * 18, -11 + (y) * 18));
             }
         });
 

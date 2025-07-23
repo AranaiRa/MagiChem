@@ -1,9 +1,6 @@
 package com.aranaira.magichem.gui;
 
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
 import com.aranaira.magichem.block.entity.VariegatorBlockEntity;
-import com.aranaira.magichem.block.entity.container.BottleStockSlot;
-import com.aranaira.magichem.block.entity.container.NoMateriaInputSlot;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -50,12 +47,12 @@ public class VariegatorMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, SLOT_DYE_INPUT, 157, 15));
 
             //Bottle slot
-            this.addSlot(new BottleStockSlot(handler, SLOT_DYE_BOTTLES, 157, 41, false));
+            this.addSlot(new SlotItemHandler(handler, SLOT_DYE_BOTTLES, 157, 41));
 
             //Input item slots
             for(int i = SLOT_INPUT_START; i<SLOT_INPUT_START + SLOT_INPUT_COUNT; i++)
             {
-                this.addSlot(new NoMateriaInputSlot(handler, i, 44, 11 + (i - SLOT_INPUT_START) * 18));
+                this.addSlot(new SlotItemHandler(handler, i, 44, 11 + (i - SLOT_INPUT_START) * 18));
             }
 
             //Output item slots
