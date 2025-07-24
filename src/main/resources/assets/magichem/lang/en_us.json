@@ -1205,6 +1205,8 @@
   "gui.mna.parameter.query_device_needs_provisioning.point": "What device's provisioning needs should the construct check?",
   "gui.mna.parameter.query_device_needs_sorting.point": "What device's sorting needs should the construct check?",
 
+  "gui.mna.parameter.query_is_item_distillable.boolean": "Should the construct check the item in its left hand?",
+
   "gui.mna.parameter.set_device_recipe.point1": "What device's recipe should the construct set?",
   "gui.mna.parameter.set_device_recipe.point2": "What block holds the recipe output that the construct should set the device to craft?\n\nThe selected recipe item will be the block's first inventory slot; Blocks with a single slot inventory like Pedestals are ideal for this purpose.",
   "gui.mna.parameter.set_device_recipe.stack": "What should the construct set the device to craft?\n\nIgnored if the previous parameter is set.",

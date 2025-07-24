@@ -3,7 +3,7 @@
   "wisdom": 0,
   "categories": 34,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 16,
   "object": { "item": "mna:chimerite_gem" },
   "components": [
     { "item": "magichem:admixture_crystal", "count": 3 },
