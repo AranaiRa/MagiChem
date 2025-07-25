@@ -223,20 +223,6 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                 pEntity.resetProgress();
         }
 
-        if(pEntity.doDeferredRecipeCheck) {
-            boolean changed = false;
-            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
-            FixationSeparationRecipe recipeQuery = FixationSeparationRecipe.getSeparatingRecipe(pLevel, itemQuery);
-
-            if(recipeQuery != null) {
-                changed = pEntity.currentRecipe != recipeQuery;
-                pEntity.currentRecipe = recipeQuery;
-            }
-            pEntity.doDeferredRecipeCheck = false;
-            if(changed)
-                pEntity.syncAndSave();
-        }
-
         //deferred plugin linkage
         if(!pLevel.isClientSide()) {
             if (pEntity.pluginLinkageCountdown == 0) {

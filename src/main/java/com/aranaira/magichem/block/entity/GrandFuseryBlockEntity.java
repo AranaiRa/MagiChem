@@ -47,6 +47,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -508,6 +509,20 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandFuseryBlockEntity pEntity) {
+        if(pEntity.doDeferredRecipeCheck) {
+            boolean changed = false;
+            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
+            FixationSeparationRecipe recipeQuery = FixationSeparationRecipe.getSeparatingRecipe(pLevel, itemQuery);
+
+            if(recipeQuery != null) {
+                changed = pEntity.currentRecipe != recipeQuery;
+                pEntity.currentRecipe = recipeQuery;
+            }
+            pEntity.doDeferredRecipeCheck = false;
+            if(changed)
+                pEntity.syncAndSave();
+        }
+
         if(pLevel.isClientSide()) {
             pEntity.handleAnimationDrivers();
         }

@@ -37,6 +37,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -278,78 +279,84 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, CircleFabricationBlockEntity entity) {
-        if(!level.isClientSide()) {
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, CircleFabricationBlockEntity pEntity) {
+        if(pEntity.doDeferredRecipeCheck) {
+            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
+            if(itemQuery != null)
+                pEntity.recipe = DistillationFabricationRecipe.getDistillingRecipe(pLevel, itemQuery);
+        }
+
+        if(!pLevel.isClientSide()) {
             //Power check
-            if(entity.operationTicks > 0) {
-                int cost = entity.getPowerDraw();
-                if (entity.ENERGY_STORAGE.getEnergyStored() >= cost) {
-                    entity.ENERGY_STORAGE.extractEnergy(cost, false);
-                    entity.isFESatisfied = true;
+            if(pEntity.operationTicks > 0) {
+                int cost = pEntity.getPowerDraw();
+                if (pEntity.ENERGY_STORAGE.getEnergyStored() >= cost) {
+                    pEntity.ENERGY_STORAGE.extractEnergy(cost, false);
+                    pEntity.isFESatisfied = true;
                 } else {
-                    entity.isFESatisfied = false;
+                    pEntity.isFESatisfied = false;
                 }
             } else {
-                entity.isFESatisfied = true;
+                pEntity.isFESatisfied = true;
             }
 
             //Try to find a circle of toil
-            if(entity.linkedCircleToil == null) {
+            if(pEntity.linkedCircleToil == null) {
                 //Only search once every 5 seconds to cut down on server load
-                if(level.getGameTime() % 100 == 0) {
-                    final Direction facing = state.getValue(FACING);
+                if(pLevel.getGameTime() % 100 == 0) {
+                    final Direction facing = pState.getValue(FACING);
                     if(facing == Direction.NORTH) {
                         for(int z=-2; z>=-10; z--) {
-                            BlockPos queryPos = pos.offset(0, 0, z);
-                            if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
-                                entity.linkedCircleToil = queryPos;
+                            BlockPos queryPos = pPos.offset(0, 0, z);
+                            if(pLevel.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                pEntity.linkedCircleToil = queryPos;
                                 break;
                             }
                         }
                     } else if(facing == Direction.EAST) {
                         for(int x=2; x<=8; x++) {
-                            BlockPos queryPos = pos.offset(x, 0, 0);
-                            if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
-                                entity.linkedCircleToil = queryPos;
+                            BlockPos queryPos = pPos.offset(x, 0, 0);
+                            if(pLevel.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                pEntity.linkedCircleToil = queryPos;
                                 break;
                             }
                         }
                     } else if(facing == Direction.SOUTH) {
                         for(int z=2; z<=8; z++) {
-                            BlockPos queryPos = pos.offset(0, 0, z);
-                            if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
-                                entity.linkedCircleToil = queryPos;
+                            BlockPos queryPos = pPos.offset(0, 0, z);
+                            if(pLevel.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                pEntity.linkedCircleToil = queryPos;
                                 break;
                             }
                         }
                     } else if(facing == Direction.WEST) {
                         for(int x=-2; x>=-8; x--) {
-                            BlockPos queryPos = pos.offset(x, 0, 0);
-                            if(level.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
-                                entity.linkedCircleToil = queryPos;
+                            BlockPos queryPos = pPos.offset(x, 0, 0);
+                            if(pLevel.getBlockState(queryPos).getBlock() == BlockRegistry.CIRCLE_TOIL.get()) {
+                                pEntity.linkedCircleToil = queryPos;
                                 break;
                             }
                         }
                     }
                 }
             } else {
-                BlockEntity be = level.getBlockEntity(entity.linkedCircleToil);
+                BlockEntity be = pLevel.getBlockEntity(pEntity.linkedCircleToil);
                 if(be instanceof CircleToilBlockEntity ctbe) {
                     LazyOptional<IEnergyStorage> query = ctbe.getCapability(ForgeCapabilities.ENERGY);
                     if(query.isPresent()) {
                         IEnergyStorage cap = query.resolve().get();
-                        int tryExtract = cap.extractEnergy(entity.ENERGY_STORAGE.getMaxEnergyStored(), true);
-                        int insert = entity.ENERGY_STORAGE.receiveEnergy(tryExtract, false);
+                        int tryExtract = cap.extractEnergy(pEntity.ENERGY_STORAGE.getMaxEnergyStored(), true);
+                        int insert = pEntity.ENERGY_STORAGE.receiveEnergy(tryExtract, false);
                         cap.extractEnergy(insert, false);
                     }
                 } else {
-                    entity.linkedCircleToil = null;
+                    pEntity.linkedCircleToil = null;
                 }
             }
         }
         //particle work
-        else if(entity.progress > 0 && level.getGameTime() % 8 == 0) {
-            Direction facing = state.getValue(FACING);
+        else if(pEntity.progress > 0 && pLevel.getGameTime() % 8 == 0) {
+            Direction facing = pState.getValue(FACING);
 
             Vector3[] bowlPositions = {};
             if(facing == Direction.NORTH) {
@@ -387,7 +394,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             }
 
             if(bowlPositions.length > 0) {
-                final ItemStack[] contentsOfInputSlots = entity.getContentsOfInputSlots();
+                final ItemStack[] contentsOfInputSlots = pEntity.getContentsOfInputSlots();
                 boolean has1 = !contentsOfInputSlots[0].isEmpty() || !contentsOfInputSlots[1].isEmpty();
                 boolean has2 = !contentsOfInputSlots[2].isEmpty() || !contentsOfInputSlots[3].isEmpty();
                 boolean has3 = !contentsOfInputSlots[4].isEmpty() || !contentsOfInputSlots[5].isEmpty();
@@ -401,7 +408,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                                     (MateriaItem) contentsOfInputSlots[0].getItem()
                     ).getMateriaColor());
 
-                    entity.generateMateriaCloud(bowlPositions[0], color);
+                    pEntity.generateMateriaCloud(bowlPositions[0], color);
                 }
 
                 if (has2) {
@@ -411,7 +418,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                                     (MateriaItem) contentsOfInputSlots[2].getItem()
                     ).getMateriaColor());
 
-                    entity.generateMateriaCloud(bowlPositions[1], color);
+                    pEntity.generateMateriaCloud(bowlPositions[1], color);
                 }
 
                 if (has3) {
@@ -421,7 +428,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                                     (MateriaItem) contentsOfInputSlots[4].getItem()
                     ).getMateriaColor());
 
-                    entity.generateMateriaCloud(bowlPositions[2], color);
+                    pEntity.generateMateriaCloud(bowlPositions[2], color);
                 }
 
                 if (has4) {
@@ -431,7 +438,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                                     (MateriaItem) contentsOfInputSlots[6].getItem()
                     ).getMateriaColor());
 
-                    entity.generateMateriaCloud(bowlPositions[3], color);
+                    pEntity.generateMateriaCloud(bowlPositions[3], color);
                 }
 
                 if (has5) {
@@ -441,7 +448,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                                     (MateriaItem) contentsOfInputSlots[8].getItem()
                     ).getMateriaColor());
 
-                    entity.generateMateriaCloud(bowlPositions[4], color);
+                    pEntity.generateMateriaCloud(bowlPositions[4], color);
                 }
 
                 if(has1 || has2 || has3 || has4 || has5) {
@@ -459,11 +466,11 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
                         Vector3 mid = new Vector3(0.5, 0.015625, 0.5).add(new Vector3(x, 0, z).scale(0.9f));
 
-                        level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                        pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
                                         .setMaxAge(20 + r.nextInt(30)).setScale(0.03f + r.nextFloat() * 0.03f)
                                         .setColor(150+r.nextInt(75), 150+r.nextInt(75), 150+r.nextInt(75))
                                         .setMover(new ParticleVelocityMover(rx * 0.03, 0.01 + ry * 0.02, rz * 0.03, true)),
-                                pos.getX() + mid.x, pos.getY() + mid.y, pos.getZ() + mid.z,
+                                pPos.getX() + mid.x, pPos.getY() + mid.y, pPos.getZ() + mid.z,
                                 0, 0, 0);
                     }
 
@@ -479,14 +486,14 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                     }
 
                     //item chunks
-                    if(entity.recipe != null) {
+                    if(pEntity.recipe != null) {
                         total = 8;
                         for (int i = 0; i < total; i++) {
-                            Vector3 end = new Vector3(pos.getX() + outputCenter.x, pos.getY() + outputCenter.y, pos.getZ() + outputCenter.z);
+                            Vector3 end = new Vector3(pPos.getX() + outputCenter.x, pPos.getY() + outputCenter.y, pPos.getZ() + outputCenter.z);
                             Vector3 start = end.add(new Vector3(r.nextDouble() * 2 - 1, r.nextDouble(), r.nextDouble() * 2 - 1).scale(0.5f));
 
-                            level.addParticle(new MAParticleType(ParticleInit.ITEM.get())
-                                            .setScale(0.05f).setMaxAge(10 + r.nextInt(10)).setStack(entity.recipe.getAlchemyObject())
+                            pLevel.addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                                            .setScale(0.05f).setMaxAge(10 + r.nextInt(10)).setStack(pEntity.recipe.getAlchemyObject())
                                             .setMover(new ParticleLerpMover(
                                                     start.x, start.y, start.z,
                                                     end.x, end.y, end.z)),
@@ -498,12 +505,12 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             }
         }
 
-        entity.operationTicks = entity.getOperationTicks();
+        pEntity.operationTicks = pEntity.getOperationTicks();
 
-        boolean changed = AbstractFabricationBlockEntity.tick(level, pos, state, entity, CircleFabricationBlockEntity::getVar);
+        boolean changed = AbstractFabricationBlockEntity.tick(pLevel, pPos, pState, pEntity, CircleFabricationBlockEntity::getVar);
 
         if(changed)
-            entity.syncAndSave();
+            pEntity.syncAndSave();
     }
 
     public void generateMateriaCloud(Vector3 pPosition, int[] pColor) {

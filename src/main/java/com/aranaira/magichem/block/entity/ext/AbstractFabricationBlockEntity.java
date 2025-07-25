@@ -151,12 +151,6 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             pEntity.decrementProgress();
         }
 
-        if(pEntity.doDeferredRecipeCheck) {
-            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
-            if(itemQuery != null)
-                pEntity.recipe = DistillationFabricationRecipe.getDistillingRecipe(pLevel, itemQuery);
-        }
-
         //deferred plugin linkage
         if(!pLevel.isClientSide()) {
             if (pEntity.pluginLinkageCountdown == 0) {

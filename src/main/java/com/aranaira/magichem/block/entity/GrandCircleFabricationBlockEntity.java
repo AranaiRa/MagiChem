@@ -47,6 +47,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -259,6 +260,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandCircleFabricationBlockEntity pEntity) {
+        if(pEntity.doDeferredRecipeCheck) {
+            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
+            if(itemQuery != null)
+                pEntity.recipe = DistillationFabricationRecipe.getDistillingRecipe(pLevel, itemQuery);
+        }
+
         boolean wasFESatisfied = pEntity.isFESatisfied;
         if(!pLevel.isClientSide() && !pEntity.redstonePaused) {
             //Power check
