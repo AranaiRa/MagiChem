@@ -70,7 +70,7 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     }
 
     public ItemStack getRecipeItem() {
-        return blockEntity.getRecipeItem(CentrifugeBlockEntity::getVar);
+        return blockEntity.getRecipeItem();
     }
 
     public FixationSeparationRecipe getCurrentRecipe() {

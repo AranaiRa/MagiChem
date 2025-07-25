@@ -106,11 +106,15 @@ public class FixationSeparationRecipe implements Recipe<SimpleContainer>, IMARec
     }
 
     public static FixationSeparationRecipe getSeparatingRecipe(Level level, ItemStack query) {
+        return getSeparatingRecipe(level, query.getItem());
+    }
+
+    public static FixationSeparationRecipe getSeparatingRecipe(Level level, Item query) {
         FixationSeparationRecipe result = null;
         List<FixationSeparationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE);
 
         for(FixationSeparationRecipe fsr : allRecipes) {
-            if(fsr.resultAdmixture.getItem() == query.getItem()) {
+            if(fsr.resultAdmixture.getItem() == query) {
                 result = fsr;
                 break;
             }

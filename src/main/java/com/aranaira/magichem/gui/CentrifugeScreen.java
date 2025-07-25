@@ -56,7 +56,7 @@ public class CentrifugeScreen extends AbstractContainerScreen<CentrifugeMenu> {
     }
 
     private Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> getOrUpdateRecipe(){
-        ItemStack recipeItemQuery = menu.blockEntity.getRecipeItem(CentrifugeBlockEntity::getVar);
+        ItemStack recipeItemQuery = menu.blockEntity.getRecipeItem();
         if(lastRecipeResultAdmixture.getItem() != recipeItemQuery.getItem()) {
             if(recipeItemQuery.isEmpty()) {
                 lastRecipe = null;

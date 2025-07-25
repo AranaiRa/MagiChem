@@ -244,7 +244,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
         else
             deferredRecipeQuery = null;
-        doDeferredRecipeLinkages = true;
+        doDeferredRecipeCheck = true;
 
         if(getLevel() != null)
             getCurrentRecipe();

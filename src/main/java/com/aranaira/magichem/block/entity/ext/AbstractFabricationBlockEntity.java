@@ -44,7 +44,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     protected int
             progress = 0, operationTicks = 0, pluginLinkageCountdown = 3, batchSize = 1;
     protected boolean
-            isFESatisfied = false, doDeferredRecipeLinkages = false;
+            isFESatisfied = false, doDeferredRecipeCheck = false;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
@@ -151,7 +151,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             pEntity.decrementProgress();
         }
 
-        if(pEntity.doDeferredRecipeLinkages) {
+        if(pEntity.doDeferredRecipeCheck) {
             Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
             if(itemQuery != null)
                 pEntity.recipe = DistillationFabricationRecipe.getDistillingRecipe(pLevel, itemQuery);

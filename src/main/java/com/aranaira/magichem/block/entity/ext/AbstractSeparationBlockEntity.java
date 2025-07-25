@@ -17,9 +17,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -30,6 +32,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,6 +53,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected FixationSeparationRecipe currentRecipe;
+    protected ResourceLocation deferredRecipeQuery = null;
 
     ////////////////////
     // CONSTRUCTOR
@@ -213,6 +217,20 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                 }
             } else if (processingItem.isEmpty())
                 pEntity.resetProgress();
+        }
+
+        if(pEntity.doDeferredRecipeCheck) {
+            boolean changed = false;
+            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
+            FixationSeparationRecipe recipeQuery = FixationSeparationRecipe.getSeparatingRecipe(pLevel, itemQuery);
+
+            if(recipeQuery != null) {
+                changed = pEntity.currentRecipe != recipeQuery;
+                pEntity.currentRecipe = recipeQuery;
+            }
+            pEntity.doDeferredRecipeCheck = false;
+            if(changed)
+                pEntity.syncAndSave();
         }
 
         //deferred plugin linkage
@@ -455,7 +473,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
         resolveActuators(pEntity, totalCycles, materiaCreated);
         if(totalCycles > 0 && pEntity.clearRecipeAfterNextProcess) {
-            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE), ItemStack.EMPTY);
+            pEntity.currentRecipe = null;
             pEntity.clearRecipeAfterNextProcess = false;
             pEntity.syncAndSave();
         }
@@ -521,8 +539,12 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
         return 0;
     }
 
-    public ItemStack getRecipeItem(Function<IDs, Integer> pVarFunc) {
-        return itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE));
+    public ItemStack getRecipeItem() {
+        return currentRecipe == null ? ItemStack.EMPTY : currentRecipe.getResultItem().copy();
+    }
+
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return currentRecipe == null ? ItemStack.EMPTY : pMakeCopy ? currentRecipe.getResultItem().copy() : currentRecipe.getResultItem();
     }
 
     ////////////////////
@@ -581,7 +603,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     }
 
     public enum IDs {
-        SLOT_BOTTLES, SLOT_BOTTLES_OUTPUT, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT, SLOT_RECIPE,
+        SLOT_BOTTLES, SLOT_BOTTLES_OUTPUT, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT,
         CONFIG_BASE_EFFICIENCY, CONFIG_OPERATION_TIME, CONFIG_MAX_GRIME, CONFIG_GRIME_ON_SUCCESS, CONFIG_GRIME_ON_FAILURE,
         MODE_USES_RF,
         CONFIG_NO_TORQUE_GRACE_PERIOD, CONFIG_TORQUE_GAIN_ON_ACTIVATION, CONFIG_ANIMUS_GAIN_ON_DUSTING,

@@ -82,7 +82,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     protected int
         progress = 0, pluginLinkageCountdown = 3, animStage = 0, craftingStage = 0, powerLevel = 1, shlorpIndex = 0, remainingFluidForSatisfaction = 0;
     protected boolean
-        isStalled = false, doDeferredRecipeLinkages = false, preserveRecipe = false;
+        isStalled = false, doDeferredRecipeCheck = false, preserveRecipe = false;
     protected Random r = new Random();
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected UUID initiatingPlayer = null;
@@ -278,7 +278,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
-        doDeferredRecipeLinkages = true;
+        doDeferredRecipeCheck = true;
     }
 
     @Override
@@ -351,7 +351,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 ));
         }
 
-        doDeferredRecipeLinkages = true;
+        doDeferredRecipeCheck = true;
     }
 
     @Override
@@ -415,7 +415,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             if(itemQuery != null && level != null) {
                 SublimationRecipe sr = SublimationRecipe.getSublimationRecipe(level, itemQuery);
                 if(sr != null) {
-                    doDeferredRecipeLinkages = true;
+                    doDeferredRecipeCheck = true;
                     craftingStage = nbt.getInt("craftingStage");
                     animStage = nbt.getInt("animStage");
 
@@ -475,7 +475,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             }
         }
 
-        doDeferredRecipeLinkages = true;
+        doDeferredRecipeCheck = true;
     }
 
     public void unpackSlurryFromNBT(CompoundTag pSlurryTag) {
@@ -530,7 +530,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 }
             }
 
-            if(anbe.doDeferredRecipeLinkages) {
+            if(anbe.doDeferredRecipeCheck) {
                 boolean changed = false;
                 Item itemQuery = ForgeRegistries.ITEMS.getValue(anbe.deferredRecipeQuery);
                 SublimationRecipe recipeQuery = SublimationRecipe.getSublimationRecipe(pLevel, itemQuery);
@@ -543,7 +543,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         anbe.cacheAnimSpec(!anbe.getLevel().isClientSide());
                     }
                 }
-                anbe.doDeferredRecipeLinkages = false;
+                anbe.doDeferredRecipeCheck = false;
                 if(changed)
                     anbe.syncAndSave();
             }
@@ -552,7 +552,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 if(anbe.clearRecipeAfterNextProcess) {
                     anbe.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
                     anbe.clearRecipeAfterNextProcess = false;
-                    anbe.doDeferredRecipeLinkages = true;
+                    anbe.doDeferredRecipeCheck = true;
                     anbe.itemScale = ITEM_SCALE_START;
                     anbe.itemRotSpeed = ITEM_SPEED_MIN;
                 }
@@ -802,7 +802,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                     //Clear the recipe if we're crafting something that forbids its own recipe
                                     if(anbe.currentRecipe.isForbiddenByAdvancement() && anbe.currentRecipe.grantsAdvancementOnCraft() && anbe.currentRecipe.getForbiddenAdvancement().equals(anbe.currentRecipe.getGrantedAdvancement())) {
                                         anbe.deferredRecipeQuery = null;
-                                        anbe.doDeferredRecipeLinkages = true;
+                                        anbe.doDeferredRecipeCheck = true;
                                     }
                                     anbe.forceDisplayedRecipeUpdate = true;
                                 }

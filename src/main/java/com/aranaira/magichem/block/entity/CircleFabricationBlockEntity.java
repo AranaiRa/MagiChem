@@ -191,7 +191,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
         else
             deferredRecipeQuery = null;
-        doDeferredRecipeLinkages = true;
+        doDeferredRecipeCheck = true;
     }
 
     @Nullable
