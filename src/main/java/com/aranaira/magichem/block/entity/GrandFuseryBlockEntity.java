@@ -38,6 +38,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -59,6 +60,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -76,8 +78,8 @@ import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COL
 
 public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot {
     public static final int
-            SLOT_COUNT = 22,
-            SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0, SLOT_RECIPE = 21,
+            SLOT_COUNT = 21,
+            SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT  = 9,
             GRIME_BAR_WIDTH = 50, PROGRESS_BAR_WIDTH = 28, FLUID_BAR_HEIGHT = 88,
@@ -140,17 +142,12 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
                     return item;
                 }
-                else if(slot == SLOT_RECIPE) {
-                    return ItemStack.EMPTY;
-                }
 
                 return super.extractItem(slot, amount, simulate);
             }
 
             @Override
             protected void onContentsChanged(int slot) {
-                if(slot == SLOT_RECIPE)
-                    currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, getStackInSlot(SLOT_RECIPE));
                 setChanged();
                 if((slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) || (slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)) {
                     isStalled = false;
@@ -174,8 +171,6 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     }
                 }
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
-                    return false;
-                if(slot == SLOT_RECIPE)
                     return false;
 
                 return super.isItemValid(slot, stack);
@@ -282,7 +277,6 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
-        currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(level, itemHandler.getStackInSlot(SLOT_RECIPE));
     }
 
     @Override
@@ -297,9 +291,17 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
         });
+
+        if(currentRecipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
+            if(keyQuery != null)
+                nbt.putString("recipe", keyQuery.toString());
+        }
+
         super.saveAdditional(nbt);
     }
 
@@ -315,14 +317,18 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         batchSize = nbt.getInt("batchSize");
         redstonePaused = nbt.getBoolean("redstonePaused");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
+
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
         else
             containedSlurry = FluidStack.EMPTY;
-
-        if(level != null)
-            getCurrentRecipe();
+        
+        if(nbt.contains("recipe"))
+            deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
+        else
+            deferredRecipeQuery = null;
+        doDeferredRecipeCheck = true;
     }
 
     @Override
@@ -337,10 +343,18 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
             nbt.putInt("fluidContents", containedSlurry.getAmount());
+
+        if(currentRecipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem());
+            if(keyQuery != null)
+                nbt.putString("recipe", keyQuery.toString());
+        }
+
         return nbt;
     }
 
@@ -387,13 +401,10 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     @Override
     public byte setRecipe(ItemStack pStack, Player player) {
         if(pStack.getItem() instanceof AdmixtureItem) {
-            itemHandler.setStackInSlot(SLOT_RECIPE, new ItemStack(pStack.getItem()));
-            getCurrentRecipe();
             syncAndSave();
             return ERROR_CODE_SUCCESS;
         }
         else if(pStack.isEmpty()) {
-            itemHandler.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
             currentRecipe = null;
             syncAndSave();
             return ERROR_CODE_SUCCESS;
@@ -403,14 +414,12 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     @Override
     public ItemStack getRecipeItem() {
-        return itemHandler.getStackInSlot(SLOT_RECIPE);
+        return currentRecipe == null ? ItemStack.EMPTY.copy() : currentRecipe.getResultItem().copy();
     }
 
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
-        if(pMakeCopy)
-            return itemHandler.getStackInSlot(SLOT_RECIPE).copy();
-        return itemHandler.getStackInSlot(SLOT_RECIPE);
+        return currentRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentRecipe.getResultItem().copy() : currentRecipe.getResultItem();
     }
 
     ////////////////////
@@ -419,22 +428,6 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
     @Nullable
     public FixationSeparationRecipe getCurrentRecipe() {
-        if(currentRecipe == null) {
-            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
-            if(!stackInSlot.isEmpty()) {
-                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
-            } else {
-                currentRecipe = null;
-            }
-        } else if(currentRecipe.getResultAdmixture() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
-            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
-            if(!stackInSlot.isEmpty()) {
-                currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(getLevel(), stackInSlot);
-            } else {
-                currentRecipe = null;
-            }
-        }
-
         return currentRecipe;
     }
 
@@ -693,11 +686,6 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             }
         }
 
-        if(pEntity.doDeferredRecipeCheck) {
-            pEntity.getCurrentRecipe();
-            pEntity.doDeferredRecipeCheck = false;
-        }
-
         if(!pEntity.redstonePaused)
             AbstractFixationBlockEntity.tick(pLevel, pPos, pState, pEntity, GrandFuseryBlockEntity::getVar, pEntity::getPoweredOperationTime);
     }
@@ -751,7 +739,6 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
-            case SLOT_RECIPE -> SLOT_RECIPE;
 
             case DATA_PROGRESS -> DATA_PROGRESS;
             case DATA_GRIME -> DATA_GRIME;
@@ -847,39 +834,40 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     }
 
     public void setRecipeByOutput(ItemStack pRecipeOutput) {
-        itemHandler.setStackInSlot(SLOT_RECIPE, pRecipeOutput.copy());
-        getCurrentRecipe();
-        if(currentRecipe != null) {
-            if(!level.isClientSide()) {
-                getCurrentRecipe();
+        FixationSeparationRecipe fsr = FixationSeparationRecipe.getSeparatingRecipe(level, pRecipeOutput);
+        clearRecipeAfterNextProcess = false;
 
-                if (currentRecipe != null) {
-                    ItemStack[] componentMateria = new ItemStack[5];
-                    currentRecipe.getComponentMateria().toArray(componentMateria);
+        if(fsr != null) {
+            this.currentRecipe = fsr;
+            this.syncAndSave();
+        }
 
-                    for(int i=0; i<SLOT_INPUT_COUNT; i++) {
-                        if(componentMateria[i/2] != null) {
-                            if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
-                                ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                                if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
-                                    materiaToVent = materiaToVent | (1 << i);
-                                    itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
-                                    continue;
-                                }
-                            }
-                        } else {
-                            ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
-                            if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
-                                materiaToVent = materiaToVent | (1 << i);
-                                itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
-                                continue;
-                            }
+        if(!level.isClientSide() && currentRecipe != null) {
+            ItemStack[] componentMateria = new ItemStack[5];
+            currentRecipe.getComponentMateria().toArray(componentMateria);
+
+            for (int i = 0; i < SLOT_INPUT_COUNT; i++) {
+                if (componentMateria[i / 2] != null) {
+                    if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
+                        ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                        if (InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i / 2].getItem()) {
+                            materiaToVent = materiaToVent | (1 << i);
+                            itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                            continue;
                         }
-                        materiaToVent = materiaToVent & ~(1 << i);
+                    }
+                } else {
+                    ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                    if (InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i / 2].getItem()) {
+                        materiaToVent = materiaToVent | (1 << i);
+                        itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                        continue;
                     }
                 }
+                materiaToVent = materiaToVent & ~(1 << i);
             }
         }
+
         syncAndSave();
     }
 
@@ -1042,8 +1030,6 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                 if(amountToAdd > 0)
                     result.put((MateriaItem)recipeMateria.getItem(), amountToAdd);
             }
-        } else if(!itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty()) {
-            setRecipeByOutput(itemHandler.getStackInSlot(SLOT_RECIPE));
         }
 
         return result;

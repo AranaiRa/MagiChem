@@ -77,7 +77,7 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
     }
 
     public ItemStack getRecipeItem() {
-        return blockEntity.getRecipeItem(FuseryBlockEntity::getVar);
+        return blockEntity.getRecipeItem();
     }
 
     public FixationSeparationRecipe getCurrentRecipe() {

@@ -65,7 +65,7 @@ public class FuseryScreen extends AbstractContainerScreen<FuseryMenu> {
     }
 
     private Triplet<FixationSeparationRecipe, NonNullList<ItemStack>, ItemStack> getOrUpdateRecipe(){
-        ItemStack recipeItemQuery = menu.blockEntity.getRecipeItem(FuseryBlockEntity::getVar);
+        ItemStack recipeItemQuery = menu.blockEntity.getRecipeItem();
         if(lastRecipeResultAdmixture.getItem() != recipeItemQuery.getItem()) {
             if(recipeItemQuery.isEmpty()) {
                 lastRecipe = null;
