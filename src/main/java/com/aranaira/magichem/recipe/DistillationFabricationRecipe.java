@@ -140,11 +140,15 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer>, I
     }
 
     public static DistillationFabricationRecipe getDistillingRecipe(Level level, ItemStack query) {
+        return getDistillingRecipe(level, query.getItem());
+    }
+
+    public static DistillationFabricationRecipe getDistillingRecipe(Level level, Item query) {
         DistillationFabricationRecipe result = null;
         List<DistillationFabricationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 
         for(DistillationFabricationRecipe acr : allRecipes) {
-            if(acr.alchemyObject.getItem() == query.getItem()) {
+            if(acr.alchemyObject.getItem() == query) {
                 result = acr;
                 break;
             }
@@ -154,11 +158,15 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer>, I
     }
 
     public static DistillationFabricationRecipe getFabricatingRecipe(Level level, ItemStack query) {
+        return getFabricatingRecipe(level, query.getItem());
+    }
+
+    public static DistillationFabricationRecipe getFabricatingRecipe(Level level, Item query) {
         DistillationFabricationRecipe result = null;
         List<DistillationFabricationRecipe> allRecipes = level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
 
         for(DistillationFabricationRecipe acr : allRecipes) {
-            if(acr.alchemyObject.getItem() == query.getItem()) {
+            if(acr.alchemyObject.getItem() == query) {
                 result = acr;
                 if(acr.wisdom > 5)
                     return null;

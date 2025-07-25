@@ -233,7 +233,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 pGuiGraphics.pose().scale(2.0f, 2.0f, 2.0f);
             }
 
-            if(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_RECIPE).isEmpty() || menu.getCurrentRecipe() == null) {
+            if(menu.getCurrentRecipe() == null) {
                 pGuiGraphics.blit(TEXTURE, x + 79, y + 79, 28, 238, 18, 18);
             } else {
                 if(menu.getCurrentRecipe().getAlchemyObject().getItem() instanceof BlockItem) {

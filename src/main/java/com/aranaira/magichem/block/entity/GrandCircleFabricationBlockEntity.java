@@ -37,6 +37,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
@@ -58,6 +59,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,8 +70,8 @@ import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COL
 
 public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
     public static final int
-            SLOT_COUNT = 23,
-            SLOT_BOTTLES = 0, SLOT_RECIPE = 21, SLOT_WISDOM = 22,
+            SLOT_COUNT = 22,
+            SLOT_BOTTLES = 0, SLOT_WISDOM = 21,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10;
     public static final float
@@ -133,8 +135,6 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                         if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
                     }
                     return item;
-                } else if(slot == SLOT_RECIPE) {
-                    return ItemStack.EMPTY;
                 }
 
                 return super.extractItem(slot, amount, simulate);
@@ -154,34 +154,15 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             protected void onContentsChanged(int slot) {
                 setChanged();
                 DistillationFabricationRecipe recipePre = recipe;
-                if(slot == SLOT_RECIPE) {
-                    getCurrentRecipe();
-                }
                 if(slot == SLOT_WISDOM) {
                     forceDisplayedRecipeUpdate = true;
                 }
-                if(recipe != recipePre)
-                    syncAndSave();
             }
         };
     }
 
     @Nullable
     public DistillationFabricationRecipe getCurrentRecipe() {
-        if(itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty())
-            recipe = null;
-
-        if(recipe == null) {
-            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
-            if(!stackInSlot.isEmpty()) {
-                recipe = DistillationFabricationRecipe.getFabricatingRecipe(getLevel(), itemHandler.getStackInSlot(SLOT_RECIPE));
-            }
-        } else if(recipe.getAlchemyObject() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
-            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
-            if(!stackInSlot.isEmpty()) {
-                recipe = DistillationFabricationRecipe.getFabricatingRecipe(getLevel(), itemHandler.getStackInSlot(SLOT_RECIPE));
-            }
-        }
         return recipe;
     }
 
@@ -235,6 +216,13 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+
+        if(recipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem());
+            if(keyQuery != null)
+                nbt.putString("recipe", keyQuery.toString());
+        }
+
         super.saveAdditional(nbt);
     }
 
@@ -252,6 +240,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         isFESatisfied = nbt.getBoolean("isFESatisfied");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
 
+        if(nbt.contains("recipe"))
+            deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
+        else
+            deferredRecipeQuery = null;
+        doDeferredRecipeLinkages = true;
+
         if(getLevel() != null)
             getCurrentRecipe();
     }
@@ -262,32 +256,6 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     public int getCraftingProgress(){
         return progress;
-    }
-
-    public void dropInventoryToWorld() {
-        SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
-        for (int i = 0; i< itemHandler.getSlots(); i++) {
-            if(i == SLOT_RECIPE)
-                continue;
-
-            final ItemStack stackInSlot = itemHandler.getStackInSlot(i);
-            boolean dropItem = false;
-            if(stackInSlot.getItem() instanceof MateriaItem) {
-                if(stackInSlot.hasTag()) {
-                    if(!stackInSlot.getTag().contains("CustomModelData")) {
-                        dropItem = true;
-                    }
-                } else {
-                    dropItem = true;
-                }
-            } else {
-                dropItem = true;
-            }
-
-            if(dropItem) inventory.setItem(i, stackInSlot);
-        }
-
-        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, GrandCircleFabricationBlockEntity pEntity) {
@@ -622,6 +590,13 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+
+        if(recipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem());
+            if(keyQuery != null)
+                nbt.putString("recipe", keyQuery.toString());
+        }
+
         return nbt;
     }
 
@@ -733,13 +708,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     public void setCurrentRecipe(ItemStack pQuery) {
-        itemHandler.setStackInSlot(SLOT_RECIPE, pQuery);
-
         if(!level.isClientSide()) {
-            getCurrentRecipe();
-            batchSize = recipe.getBatchSize();
+            recipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
 
             if (recipe != null) {
+                batchSize = recipe.getBatchSize();
                 ItemStack[] componentMateria = new ItemStack[5];
                 recipe.getComponentMateria().toArray(componentMateria);
 
@@ -829,7 +802,6 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
-            case SLOT_RECIPE -> SLOT_RECIPE;
             case SLOT_STONE -> SLOT_WISDOM;
 
             default -> -1;
@@ -1044,12 +1016,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     @Override
     public ItemStack getRecipeItem() {
-        return itemHandler.getStackInSlot(SLOT_RECIPE);
+        return recipe == null ? ItemStack.EMPTY.copy() : recipe.getResultItem().copy();
     }
 
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
-        return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
+        return recipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? recipe.getResultItem().copy() : recipe.getResultItem();
     }
 
     public ItemStack getStoneItem() {

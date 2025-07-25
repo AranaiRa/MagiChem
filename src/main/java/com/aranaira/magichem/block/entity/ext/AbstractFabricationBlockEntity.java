@@ -12,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.ContainerData;
@@ -27,13 +28,13 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Function;
 
 public abstract class AbstractFabricationBlockEntity extends BlockEntity implements ICanTakePlugins, IMateriaProvisionRequester {
@@ -43,11 +44,12 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     protected int
             progress = 0, operationTicks = 0, pluginLinkageCountdown = 3, batchSize = 1;
     protected boolean
-            isFESatisfied = false;
+            isFESatisfied = false, doDeferredRecipeLinkages = false;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected DistillationFabricationRecipe recipe;
+    protected ResourceLocation deferredRecipeQuery = null;
 
     public boolean clearRecipeAfterNextProcess = false;
 
@@ -142,13 +144,17 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
                 } else {
                     pEntity.resetProgress();
                 }
-            } else if(!pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE)).isEmpty()) {
-                pEntity.recipe = DistillationFabricationRecipe.getFabricatingRecipe(pLevel, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE)));
             } else {
                 pEntity.resetProgress();
             }
         } else {
             pEntity.decrementProgress();
+        }
+
+        if(pEntity.doDeferredRecipeLinkages) {
+            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
+            if(itemQuery != null)
+                pEntity.recipe = DistillationFabricationRecipe.getDistillingRecipe(pLevel, itemQuery);
         }
 
         //deferred plugin linkage
@@ -289,7 +295,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
         resolveActuators(pEntity, materiaCreated);
         if(pEntity.clearRecipeAfterNextProcess) {
-            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_RECIPE), ItemStack.EMPTY);
+            pEntity.recipe = null;
             pEntity.clearRecipeAfterNextProcess = false;
             pEntity.syncAndSave();
         }
@@ -367,6 +373,6 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     }
 
     public enum IDs {
-        SLOT_RECIPE, SLOT_BOTTLES, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT, SLOT_STONE
+        SLOT_BOTTLES, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT, SLOT_STONE
     }
 }

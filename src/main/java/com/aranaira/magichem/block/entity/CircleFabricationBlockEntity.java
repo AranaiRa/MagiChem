@@ -16,7 +16,6 @@ import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.particles.types.movers.ParticleVelocityMover;
-import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -31,6 +30,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -49,6 +49,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,8 +62,8 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACI
 
 public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
     public static final int
-            SLOT_COUNT = 22,
-            SLOT_BOTTLES = 0, SLOT_RECIPE = 21,
+            SLOT_COUNT = 21,
+            SLOT_BOTTLES = 0,
             SLOT_INPUT_START = 1, SLOT_INPUT_COUNT = 10,
             SLOT_OUTPUT_START = 11, SLOT_OUTPUT_COUNT = 10;
 
@@ -79,10 +80,6 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    if(recipe == null) {
-                        getCurrentRecipe();
-                    }
-
                     if(recipe != null) {
                         if(((slot - SLOT_INPUT_START) / 2) >= recipe.getComponentMateria().size())
                             return false;
@@ -105,8 +102,6 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                         if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
                     }
                     return item;
-                } else if(slot == SLOT_RECIPE) {
-                    return ItemStack.EMPTY;
                 }
 
                 return super.extractItem(slot, amount, simulate);
@@ -115,32 +110,12 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
-                DistillationFabricationRecipe pre = recipe;
-                if(slot == SLOT_RECIPE) {
-                    getCurrentRecipe();
-                }
-                if(recipe != pre)
-                    syncAndSave();
             }
         };
     }
 
     @Nullable
     public DistillationFabricationRecipe getCurrentRecipe() {
-        if(itemHandler.getStackInSlot(SLOT_RECIPE).isEmpty())
-            recipe = null;
-
-        if(recipe == null) {
-            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
-            if(!stackInSlot.isEmpty()) {
-                recipe = DistillationFabricationRecipe.getFabricatingRecipe(getLevel(), itemHandler.getStackInSlot(SLOT_RECIPE));
-            }
-        } else if(recipe.getAlchemyObject() != itemHandler.getStackInSlot(SLOT_RECIPE)) {
-            ItemStack stackInSlot = itemHandler.getStackInSlot(SLOT_RECIPE);
-            if(!stackInSlot.isEmpty()) {
-                recipe = DistillationFabricationRecipe.getFabricatingRecipe(getLevel(), itemHandler.getStackInSlot(SLOT_RECIPE));
-            }
-        }
         return recipe;
     }
 
@@ -191,6 +166,13 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+
+        if(recipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem());
+            if(keyQuery != null)
+                nbt.putString("recipe", keyQuery.toString());
+        }
+
         super.saveAdditional(nbt);
     }
 
@@ -204,6 +186,12 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
         isFESatisfied = nbt.getBoolean("isFESatisfied");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
+
+        if(nbt.contains("recipe"))
+            deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
+        else
+            deferredRecipeQuery = null;
+        doDeferredRecipeLinkages = true;
     }
 
     @Nullable
@@ -227,6 +215,13 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+
+        if(recipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem());
+            if(keyQuery != null)
+                nbt.putString("recipe", keyQuery.toString());
+        }
+
         return nbt;
     }
 
@@ -263,9 +258,6 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     public void dropInventoryToWorld() {
         SimpleContainer inventory = new SimpleContainer(itemHandler.getSlots()+4);
         for (int i = 0; i< itemHandler.getSlots(); i++) {
-            if(i == SLOT_RECIPE)
-                continue;
-
             final ItemStack stackInSlot = itemHandler.getStackInSlot(i);
             boolean dropItem = false;
             if(stackInSlot.getItem() instanceof MateriaItem) {
@@ -588,10 +580,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     }
 
     public void setCurrentRecipe(ItemStack pQuery) {
-        itemHandler.setStackInSlot(SLOT_RECIPE, pQuery);
-
         if(!level.isClientSide()) {
-            getCurrentRecipe();
+            recipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
 
             if (recipe != null) {
                 ItemStack[] componentMateria = new ItemStack[5];
@@ -666,7 +656,6 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             case SLOT_INPUT_COUNT -> SLOT_INPUT_COUNT;
             case SLOT_OUTPUT_START -> SLOT_OUTPUT_START;
             case SLOT_OUTPUT_COUNT -> SLOT_OUTPUT_COUNT;
-            case SLOT_RECIPE -> SLOT_RECIPE;
 
             default -> -1;
         };
@@ -809,12 +798,12 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     @Override
     public ItemStack getRecipeItem() {
-        return itemHandler.getStackInSlot(SLOT_RECIPE);
+        return recipe == null ? ItemStack.EMPTY.copy() : recipe.getResultItem().copy();
     }
 
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
-        return pMakeCopy ? itemHandler.getStackInSlot(SLOT_RECIPE).copy() : itemHandler.getStackInSlot(SLOT_RECIPE);
+        return recipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? recipe.getResultItem().copy() : recipe.getResultItem();
     }
 
     @Override
