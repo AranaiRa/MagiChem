@@ -42,7 +42,9 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.NEED
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
 public class AstralObserverBlockEntity extends BlockEntity {
-    private LuminType luminType = LuminType.NONE;
+    private LuminType
+            luminType = LuminType.NONE,
+            recipeLuminType = LuminType.NONE;
     private int
             currentLumins = 0, luminsNeeded = 0, lastComparatorOutput = 0;
     private IlluminationRecipe recipe = null;
@@ -80,6 +82,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
                         luminsNeeded = 0;
                         heldItem = ItemStack.EMPTY;
                         recipe = null;
+                        recipeLuminType = LuminType.NONE;
                         syncAndSave();
                     }
                     return stack;
@@ -95,16 +98,25 @@ public class AstralObserverBlockEntity extends BlockEntity {
                 if(heldItem.isEmpty()) {
                     if (stack.hasTag()) {
                         final CompoundTag nbt = stack.getTag();
-                        if (nbt != null && nbt.contains("magichemLumins")) {
+                        if (!simulate && nbt != null && nbt.contains("magichemLumins")) {
                             CompoundTag luminsTag = nbt.getCompound("magichemLumins");
-                            luminType = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
+                            recipeLuminType = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
                             currentLumins = luminsTag.getInt("current");
                             luminsNeeded = luminsTag.getInt("needed");
+                            recipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), recipeLuminType);
                         }
                     }
                     if(!simulate) {
                         heldItem = stack.copy();
                         heldItem.setCount(1);
+                        if(recipe == null) {
+                            recipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), getLuminPhase(false));
+                            if(recipe != null) {
+                                recipeLuminType = recipe.getLuminType();
+                                currentLumins = 0;
+                                luminsNeeded = recipe.getCraftTime() * 1200;
+                            }
+                        }
                         syncAndSave();
                     }
 
@@ -128,7 +140,8 @@ public class AstralObserverBlockEntity extends BlockEntity {
                         final CompoundTag nbt = stack.getTag();
                         if (nbt != null && nbt.contains("magichemLumins")) {
                             CompoundTag luminsTag = nbt.getCompound("magichemLumins");
-                            luminType = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
+                            recipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), recipeLuminType);
+                            recipeLuminType = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
                             currentLumins = luminsTag.getInt("current");
                             luminsNeeded = luminsTag.getInt("needed");
                         }
@@ -207,12 +220,6 @@ public class AstralObserverBlockEntity extends BlockEntity {
         luminType = LuminType.luminTypeFromOrdinal(nbt.getInt("type"));
         currentLumins = nbt.getInt("current");
         luminsNeeded = nbt.getInt("needed");
-
-        //If we have no item or if it changed, we need to reset the current recipe
-        if(itemHandler.getStackInSlot(0).isEmpty() || recipe != null && recipe.getInputItem().getItem() != itemHandler.getStackInSlot(0).getItem()) {
-            recipe = null;
-            luminType = LuminType.NONE;
-        }
     }
 
     @Override
@@ -238,23 +245,39 @@ public class AstralObserverBlockEntity extends BlockEntity {
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
         if(t instanceof AstralObserverBlockEntity entity) {
+
             entity.luminType = entity.getLuminPhase(true);
+
+            //recipe settling
+            if(entity.heldItem.isEmpty()) {
+                if(entity.recipe != null) entity.recipe = null;
+            } else {
+                boolean doRecipeChange = false;
+                if(entity.recipe == null)  doRecipeChange = true;
+                else if(entity.recipe.getInputItem().getItem() != entity.heldItem.getItem()) doRecipeChange = true;
+
+                if(doRecipeChange) {
+                    entity.recipe = IlluminationRecipe.getIlluminationRecipe(level, entity.heldItem.getItem(), entity.recipeLuminType == LuminType.NONE ? entity.luminType : entity.recipeLuminType);
+                }
+            }
 
             if (true) { //sky check later
                 //we should have a recipe if there's an item present
                 boolean needsNewRecipe = entity.recipe == null && !entity.heldItem.isEmpty();
 
-                if (needsNewRecipe) {
-                    entity.recipe = IlluminationRecipe.getIlluminationRecipe(level, entity.heldItem.getItem(), entity.luminType);
-                    if (entity.recipe != null) {
-                        entity.luminsNeeded = entity.recipe.getCraftTime() * 1200;
-                    }
-                } else if (entity.recipe != null && entity.heldItem.getItem() != entity.recipe.getResultItem().getItem()) {
+                if (entity.recipe != null && entity.heldItem.getItem() != entity.recipe.getResultItem().getItem()) {
                     //If we have the wrong type of lumins we need to start draining them
                     if (entity.luminType != entity.recipe.getLuminType()) {
                         entity.currentLumins = Math.max(0, entity.currentLumins - 2);
                         //reset the recipe once the lumins are empty
-                        if (entity.currentLumins <= 0) entity.recipe = null;
+                        if (entity.currentLumins <= 0) {
+                            entity.recipe = IlluminationRecipe.getIlluminationRecipe(level, entity.heldItem.getItem(), entity.luminType);
+                            if(entity.recipe != null) {
+                                entity.recipeLuminType = entity.recipe.getLuminType();
+                                entity.luminsNeeded = entity.recipe.getCraftTime() * 1200;
+                                entity.syncAndSave();
+                            }
+                        }
                     } else {
                         if (entity.currentLumins < entity.luminsNeeded) {
                             entity.currentLumins++;
