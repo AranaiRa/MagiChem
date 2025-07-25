@@ -698,8 +698,8 @@ public class CommonEventHandler {
             if(nbt != null && nbt.contains("magichemLumins")) {
                 CompoundTag luminsTag = nbt.getCompound("magichemLumins");
                 int type = luminsTag.getInt("type");
-                int current = luminsTag.getInt("current") / 120;
-                int needed = luminsTag.getInt("needed") / 120;
+                int current = luminsTag.getInt("current") / 12;
+                int needed = luminsTag.getInt("needed") / 12;
 
                 event.getToolTip().add(1,
                         LuminType.luminComponentFromOrdinal(type).withStyle(LuminType.luminComponentFormattingFromOrdinal(type))

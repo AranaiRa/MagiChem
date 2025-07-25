@@ -323,7 +323,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
         else
             containedSlurry = FluidStack.EMPTY;
-        
+
         if(nbt.contains("recipe"))
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
         else
