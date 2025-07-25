@@ -488,7 +488,6 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
     public void setRecipeByOutput(ItemStack pRecipeOutput) {
         FixationSeparationRecipe fsr = FixationSeparationRecipe.getSeparatingRecipe(level, pRecipeOutput);
-        clearRecipeAfterNextProcess = false;
 
         if(fsr != null) {
             this.currentRecipe = fsr;
