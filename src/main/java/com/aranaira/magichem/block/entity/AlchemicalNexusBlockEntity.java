@@ -1194,7 +1194,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
     public void setRecipeFromOutput(Level pLevel, ItemStack pQuery) {
         SublimationRecipe sr = SublimationRecipe.getSublimationRecipe(pLevel, pQuery);
-        if(sr != null) {
+        if(sr != null && !sr.equals(this.currentRecipe)) {
             this.currentRecipe = sr;
             this.craftingStage = 0;
             this.syncAndSave();
