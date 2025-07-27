@@ -145,18 +145,22 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
     }
 
     private boolean scrapEnchantedBook() {
-        if(heldItem.getItem() == Items.ENCHANTED_BOOK && heldItem.hasTag() && heldItem.getTag().contains("StoredEnchantments")) {
-            final ListTag nbt = heldItem.getTag().getList("StoredEnchantments", ListTag.TAG_COMPOUND);
-
+        if(heldItem.getItem() == Items.ENCHANTED_BOOK) {
             int highestLevel = 0;
             int totalLevelsExpo = 0;
 
-            for(int i=0; i<nbt.size(); i++) {
-                final CompoundTag thisEntry = nbt.getCompound(i);
-                int lvlCapped = Math.min(10, thisEntry.getInt("lvl"));
+            if(heldItem.hasTag() && heldItem.getTag().contains("StoredEnchantments")) {
+                final ListTag nbt = heldItem.getTag().getList("StoredEnchantments", ListTag.TAG_COMPOUND);
+                for(int i=0; i<nbt.size(); i++) {
+                    final CompoundTag thisEntry = nbt.getCompound(i);
+                    int lvlCapped = Math.min(10, thisEntry.getInt("lvl"));
 
-                highestLevel = Math.max(highestLevel, lvlCapped);
-                totalLevelsExpo += ((lvlCapped*3) * (lvlCapped*3));
+                    highestLevel = Math.max(highestLevel, lvlCapped);
+                    totalLevelsExpo += ((lvlCapped*3) * (lvlCapped*3));
+                }
+            } else {
+                highestLevel = 1;
+                totalLevelsExpo = 1;
             }
 
             float divisor = Math.max(1, 10 - highestLevel);
@@ -164,7 +168,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
             if(r.nextFloat(100) <= chance) {
                 heldItem = new ItemStack(ItemRegistry.SCORCHED_PROFUNDITY.get(), 1);
             } else {
-                heldItem = new ItemStack(ItemRegistry.SCORCHED_THEOREM.get(), Math.round(totalLevelsExpo / 10f));
+                heldItem = new ItemStack(ItemRegistry.SCORCHED_THEOREM.get(), (int)Math.ceil(totalLevelsExpo / 10f));
             }
 
             syncAndSave();
