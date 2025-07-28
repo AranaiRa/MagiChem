@@ -1,0 +1,26 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 1,
+  "object": {
+    "item": "magichem:scorched_profundity"
+  },
+  "stages": [
+    {
+      "experience": 425,
+      "components": [
+        { "item": "magichem:salt_of_soot" },
+        { "item": "magichem:collated_theories" },
+        { "item": "magichem:illuminink" },
+        { "item": "magichem:collated_theories" },
+        { "item": "magichem:salt_of_soot" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_thought", "count": 133 },
+        { "item": "magichem:admixture_sorcery", "count": 22 },
+        { "item": "magichem:admixture_luck", "count": 11 },
+        { "item": "magichem:essentia_nigredo", "count": 44 }
+      ]
+    }
+  ]
+}
