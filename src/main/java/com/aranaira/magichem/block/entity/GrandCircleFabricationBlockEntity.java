@@ -745,6 +745,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                 }
             }
         }
+        doDeferredRecipeCheck = false;
 
         syncAndSave();
     }

@@ -591,6 +591,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             recipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
 
             if (recipe != null) {
+                batchSize = 1;
                 ItemStack[] componentMateria = new ItemStack[5];
                 recipe.getComponentMateria().toArray(componentMateria);
 
@@ -616,6 +617,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 }
             }
         }
+        doDeferredRecipeCheck = false;
 
         syncAndSave();
     }

@@ -551,11 +551,13 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
                     int newBatchSize = (int)Math.min(menu.blockEntity.getCurrentRecipe().getBatchSize(),
                             Math.max(1,Math.round(percent * maxBatch)));
-                    menu.blockEntity.setBatchSize(newBatchSize);
-                    PacketRegistry.sendToServer(new FabricationBatchSizeC2SPacket(
-                            menu.blockEntity.getBlockPos(),
-                            newBatchSize
-                    ));
+                    if(newBatchSize != menu.blockEntity.getBatchSize()) {
+                        menu.blockEntity.setBatchSize(newBatchSize);
+                        PacketRegistry.sendToServer(new FabricationBatchSizeC2SPacket(
+                                menu.blockEntity.getBlockPos(),
+                                newBatchSize
+                        ));
+                    }
                 }
             }
         }
