@@ -147,8 +147,9 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             animStage = ANIM_STAGE_CANCEL_CRAFTING_SPEEDUP;
 
                         if(!preserveRecipe) {
-                            currentRecipe = null;
                             craftingStage = 0;
+                            itemScale = ITEM_SCALE_START;
+                            itemRotSpeed = ITEM_SPEED_MIN;
                         }
 
                         syncAndSave();
@@ -401,6 +402,14 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             nbt.putString("alchemyObject", ForgeRegistries.ITEMS.getKey(currentRecipe.getAlchemyObject().getItem()).toString());
             nbt.putInt("craftingStage", craftingStage);
             nbt.putInt("animStage", animStage);
+            nbt.putInt("remainingFluidForSatisfaction", this.remainingFluidForSatisfaction);
+
+            nbt.putInt("numberOfDemands", satisfactionDemands.size());
+            for(int i=0; i<satisfactionDemands.size(); i++) {
+                nbt.putString("demandType"+i, ForgeRegistries.ITEMS.getKey(satisfactionDemands.get(i).getFirst()).toString());
+                nbt.putInt("demandCount"+i, satisfactionDemands.get(i).getSecond());
+                nbt.putBoolean("demandTransit"+i, satisfactionDemands.get(i).getThird());
+            }
 
             if(initiatingPlayer != null)
                 nbt.putString("initiatingPlayer", initiatingPlayer.toString());
@@ -415,12 +424,26 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             if(itemQuery != null && level != null) {
                 SublimationRecipe sr = SublimationRecipe.getSublimationRecipe(level, itemQuery);
                 if(sr != null) {
-                    doDeferredRecipeCheck = true;
+                    currentRecipe = sr;
+                    cacheAnimSpec(!getLevel().isClientSide());
+                    doDeferredRecipeCheck = false;
                     craftingStage = nbt.getInt("craftingStage");
                     animStage = nbt.getInt("animStage");
+                    remainingFluidForSatisfaction = nbt.getInt("remainingFluidForSatisfaction");
 
                     if(nbt.contains("initiatingPlayer"))
                         initiatingPlayer = UUID.fromString(nbt.getString("initiatingPlayer"));
+
+                    satisfactionDemands.clear();
+                    for(int i=0; i<nbt.getInt("numberOfDemands"); i++) {
+                        Item query = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("demandType"+i)));
+                        if(query instanceof MateriaItem mi)
+                            satisfactionDemands.add(new Triplet<>(
+                                    mi,
+                                    nbt.getInt("demandCount"+i),
+                                    nbt.getBoolean("demandTransit"+i)
+                            ));
+                    }
 
                     syncAndSave();
                 }
@@ -493,12 +516,15 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 anbe.handleAnimationDrivers();
                 anbe.spawnParticles();
             } else {
-                anbe.reductionRate = 0;
                 for (AbstractDirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
                     if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                         ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pBlockState, arcane, true);
                         float newReductionRate = arcane.getSlurryReductionRate() / 100f;
-                        if(newReductionRate != anbe.reductionRate) {
+                        if(newReductionRate == 0 && anbe.reductionRate != 0) {
+                            anbe.reductionRate = 0;
+                            anbe.syncAndSave();
+                        }
+                        else if(newReductionRate != anbe.reductionRate) {
                             anbe.reductionRate = newReductionRate;
                             anbe.syncAndSave();
                         }
