@@ -1441,7 +1441,7 @@
   "jei.magichem.info_panel.droplets": "Created when a Standing Retort inserts elemental essentia into an Eldrin Fume Filter. \n Creates 50% more Eldrin power than a dram of elemental Essentia alone. \n If you remove it from the Fume Filter it will evaporate into nothing very quickly.",
   "jei.magichem.info_panel.rarefied_waste": "When an advanced alchemical device is hooked up to a Quake Refinery a portion of absorbed Grime becomes Rarefied Waste instead of Alchemical Waste. \n Rarefied Waste can be distilled into random Admixtures and generates no Grime.",
   "jei.magichem.info_panel.scorched_theorem": "Results from Fulminating an Enchanted Book. \n Higher level enchantments create more Scorched Theorems.",
-  "jei.magichem.info_panel.scorched_profundity": "A rare result from Fulminating an Enchanted book. \n Higher level enchantments have a higher chance of resulting in a Scorched Profundity.",
+  "jei.magichem.info_panel.scorched_profundity": "A rare result from Fulminating an Enchanted book. \n Higher level enchantments and higher total number of enchantments combine for a higher chance of resulting in a Scorched Profundity.",
   "jei.magichem.info_panel.signalite": "Grows slowly over time on Budding Signalite. \n Can also be created through alchemical Anointing.",
   "jei.magichem.info_panel.smoke_bucket": "Created over time by an Inferno Engine as it operates. If the Inferno Engine's buffer fills up, any excess Smoke is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
   "jei.magichem.info_panel.steam_bucket": "Created over time by a Deluge Purifier as it operates. If the Deluge Purifier's buffer fills up, any excess Smoke is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
