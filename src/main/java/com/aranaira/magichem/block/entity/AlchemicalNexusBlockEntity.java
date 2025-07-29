@@ -441,7 +441,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             satisfactionDemands.add(new Triplet<>(
                                     mi,
                                     nbt.getInt("demandCount"+i),
-                                    nbt.getBoolean("demandTransit"+i)
+                                    false
                             ));
                     }
 
@@ -644,6 +644,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             for (int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++)
                                 anbe.itemHandler.getStackInSlot(i).shrink(1);
                             anbe.animStage = ANIM_STAGE_SHLORPS;
+                            anbe.createOrUpdateInProgressHolder(anbe.getCraftingStage());
                             anbe.syncAndSave();
                         } else if (amountInTank > 0) {
                             anbe.remainingFluidForSatisfaction -= anbe.drain(Math.min(amountInTank, anbe.remainingFluidForSatisfaction), FluidAction.EXECUTE).getAmount();
