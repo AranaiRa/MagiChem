@@ -164,6 +164,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         this.materiaToVent = 0;
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
@@ -184,6 +185,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             ventMateria(nbt.getInt("materiaToVent"));
         unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
+        batchSize = nbt.getInt("batchSize");
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
         isFESatisfied = nbt.getBoolean("isFESatisfied");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
@@ -214,6 +216,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.put("inventory", this.itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
 
