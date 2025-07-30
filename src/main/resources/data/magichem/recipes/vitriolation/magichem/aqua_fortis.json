@@ -4,7 +4,7 @@
   "inputFluidOverride": "magichem:aqua_vitae",
   "acidConsumed": 1000,
   "duration": 1,
-  "inputItem": { "item": "magichem:aristose", "count": 5 },
+  "inputItem": { "item": "magichem:aristose", "count": 3 },
   "resultFluid": { "fluid": "magichem:aqua_fortis", "amount": 500 },
   "outputForCodex": "magichem:aqua_fortis_bucket"
 }
