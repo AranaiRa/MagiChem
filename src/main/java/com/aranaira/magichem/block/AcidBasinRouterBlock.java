@@ -293,7 +293,7 @@ public class AcidBasinRouterBlock extends BaseEntityBlock implements INoCreative
         //OUTPUT TANK
         {
             VOXEL_SHAPE_OUTPUT_BASE_NORTH = Block.box(0, 0, 0, 16, 3, 16);
-            VOXEL_SHAPE_OUTPUT_BODY_NORTH = Block.box(2, 3, 0, 14, 8, 16);
+            VOXEL_SHAPE_OUTPUT_BODY_NORTH = Block.box(1, 3, 1, 15, 8, 15);
             VOXEL_SHAPE_OUTPUT_TANK_NORTH = Block.box(3, 8, 3, 13, 14, 13);
             VOXEL_SHAPE_OUTPUT_RIM_NORTH = Block.box(4, 14, 4, 12, 16, 12);
 
