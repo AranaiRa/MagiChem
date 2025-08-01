@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:campfire",
+    "minecraft:fire",
     "minecraft:magma_block",
     "minecraft:lava",
     "mna:brazier"
