@@ -8141,14 +8141,28 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nThis fused conduit can supply all six types of Eldrin power and has a buffer "
+            "text": ".\n\nThis fused conduit can supply "
+          },
+          {
+            "text": "all six types",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of Eldrin power, has a buffer "
           },
           {
             "text": "twelve times larger",
             "color": "dark_purple"
           },
           {
-            "text": " than a single conduit.\n\nLesser Prismatic Conduits can be broken back into the six component Lesser Conduits by a construct using the "
+            "text": " than a single conduit, and transfers power at "
+          },
+          {
+            "text": "twice the rate",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of a single conduit.\n\nLesser Prismatic Conduits can be broken back into the six component Lesser Conduits by a construct using the "
           },
           {
             "text": "Crush",
