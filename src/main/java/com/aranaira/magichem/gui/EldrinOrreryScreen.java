@@ -98,27 +98,27 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
             HashMap<Affinity, Float> nodeAmounts = wsRegistry.getNodeNetworkAmountFor(this.minecraft.player);
 
 //            gui.setColor(Affinity.WIND.getColor()[0]/255f, Affinity.WIND.getColor()[1]/255f, Affinity.WIND.getColor()[2]/255f, 1f);
-            int air = Math.round(nodeAmounts.get(Affinity.WIND) / 1000f * 44);
+            int air = Math.round(nodeAmounts.get(Affinity.WIND) / 5000f * 44);
             gui.blit(TEXTURE, x+111-air, y+32, 212, 254, air, 2);
 
             gui.setColor(Affinity.ENDER.getColor()[0]/255f, Affinity.ENDER.getColor()[1]/255f, Affinity.ENDER.getColor()[2]/255f, 1f);
-            int ender = Math.round(nodeAmounts.get(Affinity.ENDER) /1000f * 44);
+            int ender = Math.round(nodeAmounts.get(Affinity.ENDER) /5000f * 44);
             gui.blit(TEXTURE, x+111-ender, y+67, 212, 254, ender, 2);
 
             gui.setColor(Affinity.EARTH.getColor()[0]/255f, Affinity.EARTH.getColor()[1]/255f, Affinity.EARTH.getColor()[2]/255f, 1f);
-            int earth = Math.round(nodeAmounts.get(Affinity.EARTH) / 1000f * 44);
+            int earth = Math.round(nodeAmounts.get(Affinity.EARTH) / 5000f * 44);
             gui.blit(TEXTURE, x+111-earth, y+102, 212, 254, earth, 2);
 
             gui.setColor(Affinity.FIRE.getColor()[0]/255f, Affinity.FIRE.getColor()[1]/255f, Affinity.FIRE.getColor()[2]/255f, 1f);
-            int fire = Math.round(nodeAmounts.get(Affinity.FIRE) / 1000f * 44);
+            int fire = Math.round(nodeAmounts.get(Affinity.FIRE) / 5000f * 44);
             gui.blit(TEXTURE, x+119, y+32, 212, 252, fire, 2);
 
             gui.setColor(168/255f, 94/255f, 214/255f, 1f);
-            int arcane = Math.round(nodeAmounts.get(Affinity.ARCANE) / 1000f * 44);
+            int arcane = Math.round(nodeAmounts.get(Affinity.ARCANE) / 5000f * 44);
             gui.blit(TEXTURE, x+119, y+67, 212, 252, arcane, 2);
 
             gui.setColor(Affinity.WATER.getColor()[0]/255f, Affinity.WATER.getColor()[1]/255f, Affinity.WATER.getColor()[2]/255f, 1f);
-            int water = Math.round(nodeAmounts.get(Affinity.WATER) / 1000f * 44);
+            int water = Math.round(nodeAmounts.get(Affinity.WATER) / 5000f * 44);
             gui.blit(TEXTURE, x+119, y+102, 212, 252, water, 2);
 
             gui.setColor(1f,1,1,1);

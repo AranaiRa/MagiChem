@@ -215,7 +215,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
                     for (int i = 0; i < AFFINITIES.length; i++) {
                         Float amountInNetwork = nodeAmounts.get(aff);
                         if(amountInNetwork != null) {
-                            float spaceInNetwork = 1000 - amountInNetwork;
+                            float spaceInNetwork = 5000 - amountInNetwork;
 
                             float mult = wsRegistry.getEldrinGenerationMultiplierFor(playerRef, aff);
 
