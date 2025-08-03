@@ -4565,7 +4565,7 @@
             "italic": true
           },
           {
-            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.The large slot in the center of the device holds the current object being processed. The three slots to the left of that are for input items, which can be anything but Materia.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nAt the bottom is a single slot that fuel items can be inserted into.\n",
+            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nAt the bottom is a single slot that fuel items can be inserted into.\n",
             "italic": false
           }
         ]
