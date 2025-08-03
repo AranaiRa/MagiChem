@@ -1,0 +1,15 @@
+{
+  "type": "magichem:distillation_fabrication",
+  "wisdom": 6,
+  "categories": 32,
+  "output_rate": 1.0,
+  "batch_size": 1,
+  "object": { "item": "mna:bound_charm" },
+  "components": [
+    { "item": "magichem:admixture_sorcery", "count": 60 },
+    { "item": "magichem:admixture_instrument", "count": 60 },
+    { "item": "magichem:admixture_memory", "count": 35 },
+    { "item": "magichem:admixture_legend", "count": 6 },
+    { "item": "magichem:essentia_citrinitas", "count": 16 }
+  ]
+}

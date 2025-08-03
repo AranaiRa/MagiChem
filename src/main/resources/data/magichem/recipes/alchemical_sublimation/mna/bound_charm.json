@@ -1,0 +1,64 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 1,
+  "forbidden_advancement": "magichem:craft_a_relic",
+  "granted_advancement": "magichem:craft_a_relic",
+  "object": {
+    "item": "mna:bound_charm"
+  },
+  "stages": [
+    {
+      "experience": 20,
+      "components": [
+        { "item": "minecraft:netherite_ingot" },
+        { "item": "minecraft:shield" },
+        { "item": "minecraft:netherite_ingot" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_sorcery", "count": 128 },
+        { "item": "magichem:admixture_memory", "count": 58 },
+        { "item": "magichem:admixture_", "count": 35 }
+      ]
+    },
+    {
+      "experience": 25,
+      "components": [
+        { "item": "mna:rune_fire" },
+        { "item": "mna:rune_arcane" },
+        { "item": "mna:rune_air" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_instrument", "count": 99 },
+        { "item": "magichem:admixture_stone", "count": 63 },
+        { "item": "magichem:essentia_nigredo", "count": 36 }
+      ]
+    },
+    {
+      "experience": 30,
+      "components": [
+        { "item": "mna:rune_water" },
+        { "item": "mna:rune_ender" },
+        { "item": "mna:rune_earth" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_history", "count": 80 },
+        { "item": "magichem:admixture_potential", "count": 49 },
+        { "item": "magichem:essentia_albedo", "count": 24 }
+      ]
+    },
+    {
+      "experience": 35,
+      "components": [
+        { "item": "minecraft:diamond_sword" },
+        { "item": "minecraft:netherite_ingot" },
+        { "item": "minecraft:diamond_axe" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_adornment", "count": 74 },
+        { "item": "magichem:admixture_legend", "count": 6 },
+        { "item": "magichem:essentia_citrinitas", "count": 16 }
+      ]
+    }
+  ]
+}
