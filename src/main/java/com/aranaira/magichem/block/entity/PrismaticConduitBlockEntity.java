@@ -53,7 +53,7 @@ public class PrismaticConduitBlockEntity extends EldrinCapacitorTile {
     }
 
     public PrismaticConduitBlockEntity(BlockPos pos, BlockState blockState) {
-        this(blockState.getBlock() != BlockRegistry.PRISMATIC_CONDUIT.get() ? 12.0F : 3000.0F,
+        this(blockState.getBlock() != BlockRegistry.PRISMATIC_CONDUIT.get() ? 5.0F : 250.0F,
                 blockState.getBlock() != BlockRegistry.PRISMATIC_CONDUIT.get(),
                 pos,
                 blockState);
