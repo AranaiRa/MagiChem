@@ -10,8 +10,8 @@
       "experience": 120,
       "components": [
         { "item": "minecraft:golden_apple" },
-        { "item": "minecraft:collated_theories" },
-        { "item": "minecraft:salt_of_bone" },
+        { "item": "magichem:collated_theories" },
+        { "item": "magichem:salt_of_bone" },
         { "item": "minecraft:gold_block" }
       ],
       "materia": [

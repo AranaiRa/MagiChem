@@ -5,54 +5,54 @@
   "forbidden_advancement": "magichem:craft_a_relic",
   "granted_advancement": "magichem:craft_a_relic",
   "object": {
-    "item": "mna:bound_charm"
+    "item": "mna:mithions_magnificent_mbag"
   },
   "stages": [
     {
       "experience": 20,
       "components": [
-        { "item": "minecraft:netherite_ingot" },
-        { "item": "minecraft:shield" },
-        { "item": "minecraft:netherite_ingot" }
+        { "item": "minecraft:gold_block" },
+        { "item": "mna:practitioners_pouch" },
+        { "item": "minecraft:gold_block" }
       ],
       "materia": [
-        { "item": "magichem:admixture_sorcery", "count": 128 },
-        { "item": "magichem:admixture_memory", "count": 58 },
-        { "item": "magichem:admixture_lies", "count": 35 }
+        { "item": "magichem:admixture_vessel", "count": 128 },
+        { "item": "magichem:admixture_whimsy", "count": 58 },
+        { "item": "magichem:admixture_satiety", "count": 35 }
       ]
     },
     {
       "experience": 25,
       "components": [
-        { "item": "mna:rune_fire" },
-        { "item": "mna:rune_arcane" },
-        { "item": "mna:rune_air" }
+        { "item": "mna:patch_speed" },
+        { "item": "minecraft:totem_of_undying" },
+        { "item": "mna:patch_depth" }
       ],
       "materia": [
         { "item": "magichem:admixture_instrument", "count": 99 },
-        { "item": "magichem:admixture_stone", "count": 63 },
+        { "item": "magichem:admixture_sorcery", "count": 63 },
         { "item": "magichem:essentia_nigredo", "count": 36 }
       ]
     },
     {
       "experience": 30,
       "components": [
-        { "item": "mna:rune_water" },
-        { "item": "mna:rune_ender" },
-        { "item": "mna:rune_earth" }
+        { "item": "mna:patch_void" },
+        { "item": "magichem:inert_wisdom_stone" },
+        { "item": "mna:patch_mote" }
       ],
       "materia": [
-        { "item": "magichem:admixture_history", "count": 80 },
-        { "item": "magichem:admixture_potential", "count": 49 },
+        { "item": "magichem:admixture_comfort", "count": 80 },
+        { "item": "magichem:admixture_thought", "count": 49 },
         { "item": "magichem:essentia_albedo", "count": 24 }
       ]
     },
     {
       "experience": 35,
       "components": [
-        { "item": "minecraft:diamond_sword" },
-        { "item": "magichem:inert_wisdom_stone" },
-        { "item": "minecraft:diamond_axe" }
+        { "item": "mna:patch_weave" },
+        { "item": "magichem:profound_manuscript" },
+        { "item": "mna:patch_collection" }
       ],
       "materia": [
         { "item": "magichem:admixture_adornment", "count": 74 },
