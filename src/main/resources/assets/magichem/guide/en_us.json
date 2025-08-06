@@ -8835,10 +8835,17 @@
             "color": "dark_purple"
           },
           {
-            "text": ", which is "
+            "text": ", crafted by dissolving "
           },
           {
-            "text": "not yet craftable",
+            "text": "Regulus of Gold",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in "
+          },
+          {
+            "text": "Aqua Fortis",
             "color": "dark_purple"
           },
           {
@@ -8940,12 +8947,20 @@
         "location": "magichem:alchemical_sublimation/magichem/aristose"
       },
       {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/regulus_of_gold"
+      },
+      {
         "type": "vitriolation",
         "location": "magichem:vitriolation/magichem/simple_acid"
       },
       {
         "type": "vitriolation",
         "location": "magichem:vitriolation/magichem/aqua_fortis"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/aqua_regia"
       }
     ]
   },

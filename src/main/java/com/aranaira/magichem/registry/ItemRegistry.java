@@ -432,6 +432,10 @@ public class ItemRegistry {
             () -> new FluidConvertingItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> REGULUS_OF_GOLD = ITEMS.register("regulus_of_gold",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> SALT_OF_SOOT = ITEMS.register("salt_of_soot",
             () -> new TooltipLoreItem(new Item.Properties())
     );

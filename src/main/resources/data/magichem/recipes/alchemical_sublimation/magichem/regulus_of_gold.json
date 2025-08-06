@@ -1,0 +1,42 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 4,
+  "wisdom": 2,
+  "object": {
+    "item": "magichem:regulus_of_gold"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "minecraft:gold_ingot" },
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "minecraft:gold_ingot" },
+        { "item": "magichem:bleached_amethyst_shard" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_crystal", "count": 45 },
+        { "item": "magichem:admixture_acid", "count": 36 },
+        { "item": "magichem:admixture_change", "count": 27 },
+        { "item": "magichem:essentia_precious", "count": 40 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "minecraft:diorite" },
+        { "item": "magichem:bleached_amethyst_shard" },
+        { "item": "minecraft:granite" },
+        { "item": "magichem:bleached_amethyst_shard" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_metal", "count": 36 },
+        { "item": "magichem:admixture_adornment", "count": 18 },
+        { "item": "magichem:essentia_mineral", "count": 60 },
+        { "item": "magichem:essentia_albedo", "count": 6 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 0,
+  "inputFluidOverride": "magichem:aqua_fortis",
+  "acidConsumed": 1000,
+  "duration": 1,
+  "inputItem": { "item": "magichem:regulus_of_gold", "count": 1 },
+  "resultFluid": { "fluid": "magichem:aqua_regia", "amount": 500 },
+  "outputForCodex": "magichem:aqua_regia_bucket"
+}
