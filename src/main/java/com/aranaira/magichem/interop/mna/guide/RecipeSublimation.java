@@ -3,11 +3,13 @@ package com.aranaira.magichem.interop.mna.guide;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.recipe.SublimationRecipe;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.guidebook.RecipeRendererBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
@@ -30,6 +32,14 @@ public class RecipeSublimation extends RecipeRendererBase {
             if(pMouseX >= pX + 178 && pMouseX <= pX + 198) {
                 if(pMouseY >= pY + 72 && pMouseY <= pY + 92) {
                     pGuiGraphics.renderTooltip(Minecraft.getInstance().font, recipe.getAlchemyObject(), pMouseX, pMouseY);
+                }
+            }
+
+            pGuiGraphics.renderItem(getStackForWisdom(recipe.getWisdom()), pX + 178, pY + 42);
+            pGuiGraphics.renderItemDecorations(Minecraft.getInstance().font, getStackForWisdom(recipe.getWisdom()), pX + 178, pY + 42);
+            if(pMouseX >= pX + 178 && pMouseX <= pX + 198) {
+                if(pMouseY >= pY + 38 && pMouseY <= pY + 58) {
+                    pGuiGraphics.renderTooltip(Minecraft.getInstance().font, getStackForWisdom(recipe.getWisdom()), pMouseX, pMouseY);
                 }
             }
 
@@ -138,5 +148,45 @@ public class RecipeSublimation extends RecipeRendererBase {
 
     public int getTier() {
         return 1;
+    }
+    private static ItemStack
+            ASHEN = ItemStack.EMPTY,
+            BLEACHED = ItemStack.EMPTY,
+            YELLOWED = ItemStack.EMPTY,
+            FLUSHED = ItemStack.EMPTY,
+            PHILOSOPHERS = ItemStack.EMPTY;
+    public static ItemStack getStackForWisdom(int pWisdom) {
+        if(pWisdom == 1) {
+            if(ASHEN.isEmpty()) {
+                ASHEN = new ItemStack(ItemRegistry.ASHEN_WISDOM_STONE.get());
+            }
+            return ASHEN;
+        }
+        else if(pWisdom == 2) {
+            if(BLEACHED.isEmpty()) {
+                BLEACHED = new ItemStack(ItemRegistry.BLEACHED_WISDOM_STONE.get());
+            }
+            return BLEACHED;
+        }
+        else if(pWisdom == 3) {
+            if(YELLOWED.isEmpty()) {
+                YELLOWED = new ItemStack(ItemRegistry.YELLOWED_WISDOM_STONE.get());
+            }
+            return YELLOWED;
+        }
+        else if(pWisdom == 4) {
+            if(FLUSHED.isEmpty()) {
+                FLUSHED = new ItemStack(ItemRegistry.FLUSHED_WISDOM_STONE.get());
+            }
+            return FLUSHED;
+        }
+        else if(pWisdom == 5) {
+            if(PHILOSOPHERS.isEmpty()) {
+                PHILOSOPHERS = new ItemStack(ItemRegistry.PHILOSOPHERS_STONE.get());
+            }
+            return PHILOSOPHERS;
+        }
+
+        return ItemStack.EMPTY;
     }
 }
