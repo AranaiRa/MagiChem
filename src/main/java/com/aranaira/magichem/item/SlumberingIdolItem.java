@@ -62,7 +62,7 @@ public class SlumberingIdolItem extends Item {
             }
         }
 
-        pPlayer.getCooldowns().addCooldown(ItemRegistry.SLUMBERING_IDOL.get().asItem(), 1500);
+        pPlayer.getCooldowns().addCooldown(ItemRegistry.SLUMBERING_IDOL.get().asItem(), 1350);
         pPlayer.swing(pUsedHand);
         return super.use(pLevel, pPlayer, pUsedHand);
     }
