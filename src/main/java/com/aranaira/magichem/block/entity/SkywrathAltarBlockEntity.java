@@ -156,7 +156,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
                     int lvlCapped = Math.min(10, thisEntry.getInt("lvl"));
 
                     highestLevel = Math.max(highestLevel, lvlCapped);
-                    totalLevelsExpo += ((lvlCapped*3) * (lvlCapped*3));
+                    totalLevelsExpo += ((lvlCapped*4) * (lvlCapped*5));
                 }
             } else {
                 highestLevel = 1;
