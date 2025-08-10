@@ -307,7 +307,7 @@ public class GnosticOrbBlockEntity extends BlockEntity {
         boolean foundBookshelf = false;
 
         int range = 6;
-        for(int y = pEntity.getBlockPos().getY()-(range/2); y<=pEntity.getBlockPos().getX()+(range/2); y++) {
+        for(int y = pEntity.getBlockPos().getY()-(range/2); y<=pEntity.getBlockPos().getY()+(range/2); y++) {
             for (int x = pEntity.getBlockPos().getX()-range; x<=pEntity.getBlockPos().getX()+range; x++) {
                 for (int z = pEntity.getBlockPos().getZ()-range; z<=pEntity.getBlockPos().getZ()+range; z++) {
                     BlockPos posQuery = new BlockPos(x, y, z);
