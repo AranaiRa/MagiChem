@@ -10,6 +10,7 @@ import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.items.ItemInit;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -135,6 +136,12 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+        CompoundTag nbt = null;
+        if(pIndex == SLOT_INVENTORY_COUNT + SLOT_PROGRESS_HOLDER) {
+            nbt = blockEntity.packCraftDataToTag();
+        }
+
+        if(nbt != null) slots.get(pIndex).getItem().setTag(nbt);
         ItemStack result = InventoryHelper.quickMoveStackHandler(pIndex, slots, DIRSPEC, new Vector2i(SLOT_INVENTORY_BEGIN, SLOT_INVENTORY_COUNT), SPEC_FROM_INVENTORY, SPEC_TO_INVENTORY, SPEC_CONTAINER);
 
         slots.get(pIndex).set(result);
