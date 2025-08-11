@@ -399,7 +399,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         }
 
         int consumption = recipe.getBaseFluidConsumed();
-        if(VitriolationRecipe.isFluidAcid(inputTank.getFluid())) {
+        if(!recipe.hasInputFluidOverride() && VitriolationRecipe.isFluidAcid(inputTank.getFluid())) {
             int dAcid = VitriolationRecipe.getFluidAcidStrengthDifference(inputTank.getFluid(), recipe.getMinimumAcidStrength());
             if(dAcid == 1) consumption /= 4;
             else if(dAcid >= 2) consumption = 0;
