@@ -202,6 +202,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     if (pEntity.progress > operationTicks) {
                         if (!pLevel.isClientSide()) {
                             craftItem(pEntity, processingSlot, pVarFunc);
+                            pEntity.syncAndSave();
                         }
                         if (!pEntity.isStalled)
                             pEntity.resetProgress();
@@ -508,11 +509,6 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
         return Math.min(pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH), pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc));
-    }
-
-    @Override
-    public int getGrimeFromData() {
-        return 0;
     }
 
     @Override

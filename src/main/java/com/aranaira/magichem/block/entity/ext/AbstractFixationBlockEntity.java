@@ -204,9 +204,10 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             //figure out what slot and stack to target
             if (canCraftItem(pEntity, pVarFunc)) {
 
-                if (pEntity.progress > getOperationTicks(pEntity.getGrimeFromData(), pEntity.batchSize, pEntity.operationTimeMod*100, pVarFunc, pPoweredTimeFunc)) {
+                if (pEntity.progress > getOperationTicks(GrimeProvider.getCapability(pEntity).getGrime(), pEntity.batchSize, pEntity.operationTimeMod*100, pVarFunc, pPoweredTimeFunc)) {
                     if (!pLevel.isClientSide()) {
                         craftItem(pEntity, pVarFunc);
+                        pEntity.syncAndSave();
                     }
                     if (!pEntity.isStalled)
                         pEntity.resetProgress();
@@ -610,11 +611,6 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
 
     public static int getScaledProgress(int pProgress, int pGrime, int pBatchSize, float pOperationTimeMod, Function<IDs, Integer> pVarFunc, Function<Void, Integer> pPoweredTimeFunc) {
         return Math.min(pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH), pVarFunc.apply(IDs.GUI_PROGRESS_BAR_WIDTH) * pProgress / getOperationTicks(pGrime, pBatchSize, pOperationTimeMod, pVarFunc, pPoweredTimeFunc));
-    }
-
-    @Override
-    public int getGrimeFromData() {
-        return 0;
     }
 
     @Override

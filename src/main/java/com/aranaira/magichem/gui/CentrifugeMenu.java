@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -125,7 +126,7 @@ public class CentrifugeMenu extends AbstractContainerMenu {
     }
 
     public int getGrime() {
-        return data.get(CentrifugeBlockEntity.DATA_GRIME);
+        return GrimeProvider.getCapability(blockEntity).getGrime();
     }
 
     public int getEfficiencyMod() {

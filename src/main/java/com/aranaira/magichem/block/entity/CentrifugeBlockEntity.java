@@ -136,10 +136,6 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                     case DATA_PROGRESS: {
                         return CentrifugeBlockEntity.this.progress;
                     }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(CentrifugeBlockEntity.this);
-                        return grime.getGrime();
-                    }
                     case DATA_TORQUE: {
                         return CentrifugeBlockEntity.this.remainingTorque;
                     }
@@ -164,11 +160,6 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
                 switch(pIndex) {
                     case DATA_PROGRESS: {
                         CentrifugeBlockEntity.this.progress = pValue;
-                        break;
-                    }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(CentrifugeBlockEntity.this);
-                        grime.setGrime(pValue);
                         break;
                     }
                     case DATA_TORQUE: {
@@ -230,6 +221,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         nbt.putInt("remainingAnimus", this.remainingAnimus);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
 
         if(currentRecipe != null) {
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultAdmixture().getItem());
@@ -249,6 +241,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         remainingAnimus = nbt.getInt("remainingAnimus");
         batchSize = nbt.getInt("batchSize");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
+        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
 
         if(nbt.contains("recipe"))
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
@@ -268,6 +261,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         nbt.putInt("remainingAnimus", this.remainingAnimus);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
 
         if(currentRecipe != null) {
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultAdmixture().getItem());
@@ -312,11 +306,6 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     ////////////////////
 
     @Override
-    public int getGrimeFromData() {
-        return data.get(DATA_GRIME);
-    }
-
-    @Override
     public int getMaximumGrime() {
         return getVar(IDs.CONFIG_MAX_GRIME);
     }
@@ -326,7 +315,6 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
-        data.set(DATA_GRIME, 0);
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 
@@ -341,7 +329,6 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
-        this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
         this.data.set(DATA_TORQUE, remainingTorque);
         this.data.set(DATA_ANIMUS, remainingAnimus);
         //todo: push op time mod
@@ -370,6 +357,9 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
             if(recipeQuery != null) {
                 changed = pEntity.currentRecipe != recipeQuery;
                 pEntity.currentRecipe = recipeQuery;
+            } else {
+                changed = pEntity.currentRecipe != null;
+                pEntity.currentRecipe = null;
             }
             pEntity.doDeferredRecipeCheck = false;
             if(changed)

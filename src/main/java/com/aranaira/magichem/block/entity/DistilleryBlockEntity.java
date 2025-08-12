@@ -133,10 +133,6 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
                     case DATA_PROGRESS: {
                         return DistilleryBlockEntity.this.progress;
                     }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(DistilleryBlockEntity.this);
-                        return grime.getGrime();
-                    }
                     case DATA_REMAINING_HEAT: {
                         return DistilleryBlockEntity.this.remainingHeat;
                     }
@@ -161,11 +157,6 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
                 switch(pIndex) {
                     case DATA_PROGRESS: {
                         DistilleryBlockEntity.this.progress = pValue;
-                        break;
-                    }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(DistilleryBlockEntity.this);
-                        grime.setGrime(pValue);
                         break;
                     }
                     case DATA_REMAINING_HEAT: {
@@ -235,6 +226,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         nbt.putInt("remainingHeat", this.remainingHeat);
         nbt.putInt("heatDuration", this.heatDuration);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
         super.saveAdditional(nbt);
     }
 
@@ -246,6 +238,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         remainingHeat = nbt.getInt("remainingHeat");
         heatDuration = nbt.getInt("heatDuration");
         batchSize = nbt.getInt("batchSize");
+        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
     }
 
     @Nullable
@@ -262,6 +255,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         nbt.putInt("remainingHeat", this.remainingHeat);
         nbt.putInt("heatDuration", this.heatDuration);
         nbt.putInt("batchSize", this.batchSize);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
         return nbt;
     }
 
@@ -298,11 +292,6 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
     ////////////////////
 
     @Override
-    public int getGrimeFromData() {
-        return data.get(DATA_GRIME);
-    }
-
-    @Override
     public int getMaximumGrime() {
         return ServerConfig.distilleryMaximumGrime;
     }
@@ -316,7 +305,6 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
-        data.set(DATA_GRIME, 0);
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 
@@ -327,7 +315,6 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
-        this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
         this.data.set(DATA_REMAINING_HEAT, remainingHeat);
         this.data.set(DATA_HEAT_DURATION, heatDuration);
         //TODO: push op time mod

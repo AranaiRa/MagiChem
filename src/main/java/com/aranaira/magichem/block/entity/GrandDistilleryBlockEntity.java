@@ -145,10 +145,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                     case DATA_PROGRESS: {
                         return GrandDistilleryBlockEntity.this.progress;
                     }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(GrandDistilleryBlockEntity.this);
-                        return grime.getGrime();
-                    }
                     case DATA_POWER_SUFFICIENCY: {
                         return GrandDistilleryBlockEntity.this.hasSufficientPower ? 1 : 0;
                     }
@@ -170,11 +166,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
                 switch(pIndex) {
                     case DATA_PROGRESS: {
                         GrandDistilleryBlockEntity.this.progress = pValue;
-                        break;
-                    }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(GrandDistilleryBlockEntity.this);
-                        grime.setGrime(pValue);
                         break;
                     }
                     case DATA_POWER_SUFFICIENCY: {
@@ -240,6 +231,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
         super.saveAdditional(nbt);
     }
 
@@ -252,6 +244,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         batchSize = nbt.getInt("batchSize");
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         redstonePaused = nbt.getBoolean("redstonePaused");
+        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
     }
 
     @Override
@@ -263,6 +256,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putInt("batchSize", this.batchSize);
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
         return nbt;
     }
 
@@ -309,11 +303,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     ////////////////////
 
     @Override
-    public int getGrimeFromData() {
-        return data.get(DATA_GRIME);
-    }
-
-    @Override
     public int getMaximumGrime() {
         return ServerConfig.grandDistilleryMaximumGrime;
     }
@@ -357,7 +346,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
-        data.set(DATA_GRIME, 0);
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 
@@ -368,7 +356,6 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
-        this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
         this.data.set(DATA_POWER_SUFFICIENCY, hasSufficientPower ? 1 : 0);
         //TODO: push op time mod
     }

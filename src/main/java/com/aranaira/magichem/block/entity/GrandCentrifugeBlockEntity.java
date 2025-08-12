@@ -162,10 +162,6 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                     case DATA_PROGRESS: {
                         return GrandCentrifugeBlockEntity.this.progress;
                     }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(GrandCentrifugeBlockEntity.this);
-                        return grime.getGrime();
-                    }
                     case DATA_POWER_SUFFICIENCY: {
                         return GrandCentrifugeBlockEntity.this.hasSufficientPower ? 1 : 0;
                     }
@@ -187,11 +183,6 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
                 switch(pIndex) {
                     case DATA_PROGRESS: {
                         GrandCentrifugeBlockEntity.this.progress = pValue;
-                        break;
-                    }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(GrandCentrifugeBlockEntity.this);
-                        grime.setGrime(pValue);
                         break;
                     }
                     case DATA_POWER_SUFFICIENCY: {
@@ -258,6 +249,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
 
         if(currentRecipe != null) {
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultAdmixture().getItem());
@@ -278,6 +270,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         redstonePaused = nbt.getBoolean("redstonePaused");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
+        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
 
         if(nbt.contains("recipe"))
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
@@ -298,6 +291,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
 
         if(currentRecipe != null) {
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getResultAdmixture().getItem());
@@ -352,11 +346,6 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     ////////////////////
 
     @Override
-    public int getGrimeFromData() {
-        return data.get(DATA_GRIME);
-    }
-
-    @Override
     public int getMaximumGrime() {
         return ServerConfig.grandCentrifugeMaximumGrime;
     }
@@ -400,7 +389,6 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
-        data.set(DATA_GRIME, 0);
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 
@@ -411,7 +399,6 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
-        this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
         this.data.set(DATA_POWER_SUFFICIENCY, hasSufficientPower ? 1 : 0);
         //TODO: push op time mod
     }
@@ -634,6 +621,9 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
             if(recipeQuery != null) {
                 changed = pEntity.currentRecipe != recipeQuery;
                 pEntity.currentRecipe = recipeQuery;
+            } else {
+                changed = pEntity.currentRecipe != null;
+                pEntity.currentRecipe = null;
             }
             pEntity.doDeferredRecipeCheck = false;
             if(changed)

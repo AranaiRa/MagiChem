@@ -1,6 +1,8 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -115,7 +117,7 @@ public class AlembicMenu extends AbstractContainerMenu {
     }
 
     public int getGrime() {
-        return data.get(AlembicBlockEntity.DATA_GRIME);
+        return GrimeProvider.getCapability(blockEntity).getGrime();
     }
 
     public int getHeat() {

@@ -111,10 +111,6 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
                     case DATA_PROGRESS: {
                         return AlembicBlockEntity.this.progress;
                     }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(AlembicBlockEntity.this);
-                        return grime.getGrime();
-                    }
                     case DATA_REMAINING_HEAT: {
                         return AlembicBlockEntity.this.remainingHeat;
                     }
@@ -127,11 +123,6 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
                 switch(pIndex) {
                     case DATA_PROGRESS: {
                         AlembicBlockEntity.this.progress = pValue;
-                        break;
-                    }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(AlembicBlockEntity.this);
-                        grime.setGrime(pValue);
                         break;
                     }
                     case DATA_REMAINING_HEAT: {
@@ -173,6 +164,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
         super.saveAdditional(nbt);
     }
 
@@ -181,6 +173,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         super.load(nbt);
         unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
+        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
     }
 
     @Override
@@ -188,6 +181,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
         return nbt;
     }
 
@@ -224,11 +218,6 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     ////////////////////
 
     @Override
-    public int getGrimeFromData() {
-        return data.get(DATA_GRIME);
-    }
-
-    @Override
     public int getMaximumGrime() {
         return ServerConfig.alembicMaximumGrime;
     }
@@ -240,7 +229,6 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         int boostedGrime = Math.round((float)grimeDetected * grimeBonus);
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
-        data.set(DATA_GRIME, 0);
         return boostedGrime / ServerConfig.grimePerWaste;
     }
 
@@ -251,7 +239,6 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
-        this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
     }
 
     public int getRemainingHeat() {

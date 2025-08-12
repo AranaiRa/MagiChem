@@ -155,10 +155,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                     case DATA_PROGRESS: {
                         return FuseryBlockEntity.this.progress;
                     }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(FuseryBlockEntity.this);
-                        return grime.getGrime();
-                    }
                     case DATA_TORQUE: {
                         return FuseryBlockEntity.this.remainingTorque;
                     }
@@ -186,11 +182,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 switch(pIndex) {
                     case DATA_PROGRESS: {
                         FuseryBlockEntity.this.progress = pValue;
-                        break;
-                    }
-                    case DATA_GRIME: {
-                        IGrimeCapability grime = GrimeProvider.getCapability(FuseryBlockEntity.this);
-                        grime.setGrime(pValue);
                         break;
                     }
                     case DATA_TORQUE: {
@@ -261,6 +252,8 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         nbt.putInt("fluidContents", 0);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
+
         lazyFluidHandler.ifPresent(cap -> {
             nbt.putInt("fluidContents", cap.getFluidInTank(0).getAmount());
         });
@@ -283,6 +276,8 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         remainingAnimus = nbt.getInt("remainingAnimus");
         batchSize = nbt.getInt("batchSize");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
+        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
+
         int fluidContents = nbt.getInt("fluidContents");
         if(fluidContents > 0)
             containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
@@ -308,6 +303,8 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         nbt.putInt("remainingAnimus", this.remainingAnimus);
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+        nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
+
         if(containedSlurry.isEmpty())
             nbt.putInt("fluidContents", 0);
         else
@@ -359,11 +356,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     }
 
     @Override
-    public int getGrimeFromData() {
-        return data.get(DATA_GRIME);
-    }
-
-    @Override
     public int getMaximumGrime() {
         return getVar(IDs.CONFIG_MAX_GRIME);
     }
@@ -373,7 +365,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
-        data.set(DATA_GRIME, 0);
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 
@@ -392,7 +383,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     @Override
     protected void pushData() {
         this.data.set(DATA_PROGRESS, progress);
-        this.data.set(DATA_GRIME, GrimeProvider.getCapability(this).getGrime());
         this.data.set(DATA_TORQUE, remainingTorque);
         this.data.set(DATA_ANIMUS, remainingAnimus);
     }
@@ -420,6 +410,9 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             if(recipeQuery != null) {
                 changed = pEntity.currentRecipe != recipeQuery;
                 pEntity.currentRecipe = recipeQuery;
+            } else {
+                changed = pEntity.currentRecipe != null;
+                pEntity.currentRecipe = null;
             }
             pEntity.doDeferredRecipeCheck = false;
             if(changed)

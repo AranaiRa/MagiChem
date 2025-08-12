@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.MirrorLabyrinthBlockEntity;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
@@ -107,10 +108,6 @@ public class MirrorLabyrinthMenu extends AbstractContainerMenu {
 
     public int getProgress() {
         return data.get(DistilleryBlockEntity.DATA_PROGRESS);
-    }
-
-    public int getGrime() {
-        return data.get(DistilleryBlockEntity.DATA_GRIME);
     }
 
     public int getHeat() {

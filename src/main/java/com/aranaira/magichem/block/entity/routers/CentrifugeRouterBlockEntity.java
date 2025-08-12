@@ -242,11 +242,6 @@ public class CentrifugeRouterBlockEntity extends AbstractBlockEntityWithEfficien
     }
 
     @Override
-    public int getGrimeFromData() {
-        return getMaster().getGrimeFromData();
-    }
-
-    @Override
     public int getMaximumGrime() {
         return getMaster().getMaximumGrime();
     }

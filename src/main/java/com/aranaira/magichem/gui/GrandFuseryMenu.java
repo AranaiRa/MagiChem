@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.entity.FuseryBlockEntity;
 import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
+import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.MenuRegistry;
@@ -136,7 +137,7 @@ public class GrandFuseryMenu extends AbstractContainerMenu {
     }
 
     public int getGrime() {
-        return data.get(GrandFuseryBlockEntity.DATA_GRIME);
+        return GrimeProvider.getCapability(blockEntity).getGrime();
     }
 
     public int getEfficiencyMod() {

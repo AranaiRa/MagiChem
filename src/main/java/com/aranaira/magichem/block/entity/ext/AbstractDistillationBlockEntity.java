@@ -200,6 +200,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                         if (!pLevel.isClientSide()) {
                             craftItem(pEntity, recipe, processingSlot, pVarFunc);
                             pEntity.pushData();
+                            pEntity.syncAndSave();
                         }
                         if (!pEntity.isStalled)
                             pEntity.resetProgress();

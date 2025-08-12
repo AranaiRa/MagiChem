@@ -77,8 +77,6 @@ public abstract class AbstractBlockEntityWithEfficiency extends BlockEntity {
         }
     }
 
-    public abstract int getGrimeFromData();
-
     public abstract int getMaximumGrime();
 
     public abstract int clean();

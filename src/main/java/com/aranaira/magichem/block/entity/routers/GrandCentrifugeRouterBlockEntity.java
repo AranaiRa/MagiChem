@@ -203,11 +203,6 @@ public class GrandCentrifugeRouterBlockEntity extends AbstractBlockEntityWithEff
     }
 
     @Override
-    public int getGrimeFromData() {
-        return getMaster().getGrimeFromData();
-    }
-
-    @Override
     public int getMaximumGrime() {
         return getMaster().getMaximumGrime();
     }
