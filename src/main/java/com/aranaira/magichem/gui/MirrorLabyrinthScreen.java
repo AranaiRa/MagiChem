@@ -24,10 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrinthMenu> {
     private static final ResourceLocation TEXTURE_COMPACT =
@@ -235,7 +232,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
 
     private void updateMateriaOptionsByTextFilter() {
         String filter = "";
-        if(recipeFilterBox != null) filter = recipeFilterBox.getValue();
+        if(recipeFilterBox != null) filter = recipeFilterBox.getValue().toLowerCase(Locale.ROOT);
         orderedMateriaStorageFiltered.clear();
         for (Pair<MateriaItem, Integer> pair : orderedMateriaStorage) {
             MateriaItem mi = pair.getFirst();

@@ -24,10 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManifestMenu> {
     private static final ResourceLocation TEXTURE_COMPACT =
@@ -192,7 +189,7 @@ public class MateriaManifestScreen extends AbstractContainerScreen<MateriaManife
 
     private void updateMateriaOptionsByTextFilter() {
         String filter = "";
-        if(recipeFilterBox != null) filter = recipeFilterBox.getValue();
+        if(recipeFilterBox != null) filter = recipeFilterBox.getValue().toLowerCase(Locale.ROOT);
         orderedMateriaStorageFiltered.clear();
         for (Pair<MateriaItem, BlockEntity> pair : orderedMateriaStorage) {
             MateriaItem mi = pair.getFirst();
