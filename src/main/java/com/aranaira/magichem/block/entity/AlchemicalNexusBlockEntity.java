@@ -427,7 +427,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     currentRecipe = sr;
                     cacheAnimSpec(!getLevel().isClientSide());
                     doDeferredRecipeCheck = false;
-                    craftingStage = nbt.getInt("craftingStage");
+                    int craftingStageQuery = nbt.getInt("craftingStage");
+                    if(craftingStageQuery < sr.getStages(false).size())
+                        craftingStage = craftingStageQuery;
+                    else
+                        craftingStage = sr.getStages(false).size() - 1;
                     animStage = nbt.getInt("animStage");
                     remainingFluidForSatisfaction = nbt.getInt("remainingFluidForSatisfaction");
 
