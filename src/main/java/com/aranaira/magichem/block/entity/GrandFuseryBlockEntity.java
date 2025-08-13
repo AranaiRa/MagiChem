@@ -470,6 +470,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
+        syncAndSave();
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 

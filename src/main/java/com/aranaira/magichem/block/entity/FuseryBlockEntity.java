@@ -365,6 +365,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
+        syncAndSave();
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 

@@ -305,6 +305,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         int grimeDetected = GrimeProvider.getCapability(this).getGrime();
         IGrimeCapability grimeCapability = GrimeProvider.getCapability(this);
         grimeCapability.setGrime(0);
+        syncAndSave();
         return grimeDetected / ServerConfig.grimePerWaste;
     }
 
