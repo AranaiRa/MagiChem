@@ -1,4 +1,345 @@
 {
+  "The Magnum Opus": {
+    "index": "255000",
+    "category": "magichem",
+    "tier": 1,
+    "sections": [
+      {
+        "type": "title",
+        "value": "The Magnum Opus"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Magnum Opus (the \"Great Work\") is the ultimate goal of every serious alchemist: to create the "
+          },
+          {
+            "text": "Philosopher's Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThough the Philosopher's Stone remains an elusive thing of legends, alchemists have developed "
+          },
+          {
+            "text": "Wisdom Stones",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". These Stones are steps along the path to the Philosopher's Stone, each associated with one of the four mysterious types of "
+          },
+          {
+            "text": "Essentia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in the "
+          },
+          {
+            "text": "House of Alchemy",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". In theory, completing each of these stages will reveal the path to the Philosopher's Stone itself.\n\nWisdom Stones can be inserted into the "
+          },
+          {
+            "text": "Alchemical Nexus",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and the "
+          },
+          {
+            "text": "Grand Circle of Fabrication",
+            "color": "dark_purple"
+          },
+          {
+            "text": " to expand the available recipe options. The regular Circle of Fabrication is not advanced enough to use Wisdom Stones.\n\nIn a future update, the Wisdom Stones and Philosopher's Stone will also confer enhanced power to your spells while carried in a dedicated curio slot."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "I: Inert",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:inert_wisdom_stone",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The Great Work begins with the "
+          },
+          {
+            "text": "Inert Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". It can be crafted through "
+          },
+          {
+            "text": "Fulmination",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at "
+          },
+          {
+            "text": "Tier 1",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nWhile this Stone has no inherent magical properties, it represents enormous possibilities.\n\nIt is the starting point of the Magnum Opus and it can also be distilled into a very large amount of Admixture of Potential."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "II: Ashen",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:wisdom_stone_nigredo",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The destruction that comes before creation. Eliminating the unnecessary and leaving only the fundamentals.\n\nAssociated with "
+          },
+          {
+            "text": "Nigredo",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and the color black.\n\nThe "
+          },
+          {
+            "text": "Ashen Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be created through "
+          },
+          {
+            "text": "Sublimation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at "
+          },
+          {
+            "text": "Tier 2",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "III: Bleached",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:wisdom_stone_albedo",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The cleansing of impurities. Polishing away blemishes until true essence shines forth.\n\nAssociated with "
+          },
+          {
+            "text": "Albedo",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and the color white.\n\nThe "
+          },
+          {
+            "text": "Bleached Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be created through "
+          },
+          {
+            "text": "Sublimation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at "
+          },
+          {
+            "text": "Tier 3",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "IV: Yellowed",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:wisdom_stone_citrinitas",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The knowledge and experience that come with age. The simple refining into excellence over time.\n\nAssociated with "
+          },
+          {
+            "text": "Citrinitas",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and the color yellow.\n\nThe "
+          },
+          {
+            "text": "Yellowed Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be created through "
+          },
+          {
+            "text": "Sublimation",
+            "color": "dark_purple"
+          },
+          {
+            "text": " at "
+          },
+          {
+            "text": "Tier 4",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "V: Flushed",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:wisdom_stone_rubedo",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "To devour is to grow, to grow is to transcend. The insatiable desire for "
+          },
+          {
+            "text": "more",
+            "italic": true
+          },
+          {
+            "text": ".\n\nAssociated with "
+          },
+          {
+            "text": "Rubedo",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and the color red.\n\nThe "
+          },
+          {
+            "text": "Flushed Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is "
+          },
+          {
+            "text": "not yet craftable",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", but is planned for Tier 5."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Philosopher's Stone",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:philosophers_stone",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The culimation of the alchemist's art.\n\nThe "
+          },
+          {
+            "text": "Philosopher's Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is "
+          },
+          {
+            "text": "not yet craftable",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", but is planned for late Tier 5."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "fulmination",
+        "location": "magichem:alchemical_fulmination/magichem/diamond_block_to_inert_wisdom_stone"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_nigredo"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_albedo"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/wisdom_stone_citrinitas"
+      }
+    ]
+  },
   "Essentia": {
     "index": "1000",
     "category": "magichem",
