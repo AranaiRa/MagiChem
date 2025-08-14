@@ -14,7 +14,7 @@
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:experience_exchanger",
+  "parent": "magichem:distillery",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",

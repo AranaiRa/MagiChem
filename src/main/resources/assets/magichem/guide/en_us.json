@@ -445,6 +445,7 @@
   "Process: Vitriolation": {
     "index": "1113",
     "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "sections": [
       {
         "type": "title",
@@ -668,8 +669,9 @@
   },
   "Process: Conjuration": {
     "index": "1104",
-    "category": "magichem",
     "tier": 2,
+    "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "sections": [
       {
         "type": "title",
@@ -824,6 +826,13 @@
             "color": "dark_purple"
           },
           {
+            "text": ". A single Thunderstone can trigger "
+          },
+          {
+            "text": "multiple Skywrath Altars",
+            "color": "dark_purple"
+          },
+          {
             "text": ".\n\nThe Skywrath Altar will also use a lightning strike to "
           },
           {
@@ -831,7 +840,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " of items that can store FE if that item isn't used in a Fulmination recipe."
+            "text": " of items that can store FE if that item isn't used in a Fulmination recipe.\n\nIf there are more items on the Skywrath Altar than a Fulmination recipe requires then any extras will be ejected onto the ground once the craft completes."
           }
         ]
       }
@@ -1032,6 +1041,7 @@
   "Grand Circle of Fabrication": {
     "index": "1402",
     "category": "magichem",
+    "required_advancement": "magichem:circle_power",
     "tier": 2,
     "sections": [
       {
@@ -1997,6 +2007,7 @@
   "Centrifuge": {
     "index": "1203",
     "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "tier": 2,
     "sections": [
       {
@@ -2161,6 +2172,7 @@
   "Acid Basin": {
     "index": "1204",
     "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "tier": 2,
     "sections": [
       {
@@ -2245,8 +2257,9 @@
   },
   "Process: Fixation": {
     "index": "1103",
-    "category": "magichem",
     "tier": 3,
+    "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "sections": [
       {
         "type": "title",
@@ -2290,8 +2303,9 @@
   },
   "Process: Separation": {
     "index": "1108",
-    "category": "magichem",
     "tier": 2,
+    "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "sections": [
       {
         "type": "title",
@@ -2343,6 +2357,7 @@
   "Fusery": {
     "index": "1205",
     "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "tier": 3,
     "sections": [
       {
@@ -2679,6 +2694,7 @@
   "Variegator": {
     "index": "1206",
     "category": "magichem",
+    "required_advancement": "magichem:coloring_cauldron",
     "tier": 3,
     "sections": [
       {
@@ -4491,6 +4507,7 @@
   "Distillery": {
     "index": "1202",
     "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "tier": 2,
     "sections": [
       {
@@ -5182,6 +5199,7 @@
   },
   "Process: Sublimation": {
     "index": "1107",
+    "tier": 2,
     "category": "magichem",
     "sections": [
       {
@@ -6289,6 +6307,7 @@
   "Grand Distillery": {
     "index": "1209",
     "category": "magichem",
+    "required_advancement": "magichem:distillery",
     "tier": 4,
     "sections": [
       {
@@ -6490,6 +6509,7 @@
   "Grand Centrifuge": {
     "index": "1210",
     "category": "magichem",
+    "required_advancement": "magichem:centrifuge",
     "tier": 4,
     "sections": [
       {
@@ -6666,6 +6686,7 @@
   "Grand Fusery": {
     "index": "1211",
     "category": "magichem",
+    "required_advancement": "magichem:fusery",
     "tier": 4,
     "sections": [
       {
@@ -7124,6 +7145,7 @@
   "Conjurer": {
     "index": "1207",
     "category": "magichem",
+    "required_advancement": "magichem:alchemical_nexus",
     "tier": 2,
     "sections": [
       {
