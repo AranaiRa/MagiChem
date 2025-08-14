@@ -14,7 +14,6 @@
         "categories": 1,
         "output_rate": 0.111,
         "batch_size": 1,
-        "required_advancement": "occultism:recipes/building_blocks/crafting/iesnium_block",
         "object": {
           "item": "occultism:iesnium_nugget"
         },

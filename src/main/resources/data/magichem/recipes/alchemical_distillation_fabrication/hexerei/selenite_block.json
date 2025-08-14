@@ -14,6 +14,7 @@
         "categories": 35,
         "output_rate": 1.0,
         "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/hexerei/selenite",
         "object": {
           "item": "hexerei:selenite_block"
         },

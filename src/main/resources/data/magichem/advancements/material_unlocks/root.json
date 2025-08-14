@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:iris_argenti"
+    },
+    "title": {
+      "translate": "advancements.magichem.material_unlocks.root.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.material_unlocks.root.description"
+    },
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "mna:textures/block/artifice/decoration/arcane_sandstone.png"
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

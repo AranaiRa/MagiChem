@@ -1367,8 +1367,24 @@
   "advancements.magichem.vintage_shimmering_wine.title" : "Quite Possibly the Most Horrible Thing You'll Ever Drink",
   "advancements.magichem.vintage_shimmering_wine.description" : "Artificially age a bottle of Shimmering Wine using Sublimation",
 
-  "advancements.magichem.kill_wither.title" : "A Scream that Rips Through the World",
-  "advancements.magichem.kill_wither.description" : "Kill the Wither",
+  "advancements.magichem.material_unlocks.root.title" : "MagiChem Material Research",
+  "advancements.magichem.material_unlocks.root.description" : "Craft, Explore, and Battle to learn the secrets of esoteric materials",
+
+  "advancements.magichem.material_unlocks.nether_star.title" : "Dirtied Hands: Nether Star",
+  "advancements.magichem.material_unlocks.nether_star.description" : "Defeat the Wither to learn how to fabricate Nether Stars alchemically",
+
+  "advancements.magichem.material_unlocks.bifrost.title": "Practical Experimentation: Solid Rainbows",
+  "advancements.magichem.material_unlocks.bifrost.description": "Conventionally create a Rod of the Bifrost to learn how to fabricate Bifrost Blocks, Shimmerrock, and Shimmerwood alchemically",
+
+  "advancements.magichem.material_unlocks.selenite.title": "Far and Wide: Selenite",
+  "advancements.magichem.material_unlocks.selenite.description": "Collect a shard of selenite to learn how to fabricate it alchemically",
+
+  "advancements.magichem.material_unlocks.afrit_essence.title": "Dirtied Hands: Afrit Essence",
+  "advancements.magichem.material_unlocks.afrit_essence.description": "Defeat an Afrit to learn how to fabricate Afrit Essence alchemically",
+  "advancements.magichem.material_unlocks.iesnium_ingot.title": "Practical Experimentation: Iesnium",
+  "advancements.magichem.material_unlocks.iesnium_ingot.description": "Conventionally create an Iesnium Ingot to learn how to fabricate them alchemically",
+  "advancements.magichem.material_unlocks.tallow.title": "Dirtied Hands: Tallow",
+  "advancements.magichem.material_unlocks.tallow.description": "Slaughter a large animal with a Butcher Knife to learn how to fabricate Tallow alchemically",
 
   "advancements.magichem.greater_mote_air.title" : "A Handful of Gales",
   "advancements.magichem.greater_mote_air.description" : "Use the Eldrin Altar to create a Greater Mote of Air",

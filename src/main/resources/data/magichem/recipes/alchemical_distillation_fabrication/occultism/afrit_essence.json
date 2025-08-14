@@ -14,7 +14,7 @@
         "categories": 16,
         "output_rate": 1.0,
         "batch_size": 1,
-        "required_advancement": "magichem:occultism/kill_afrit",
+        "required_advancement": "magichem:material_unlocks/occultism/afrit_essence",
         "object": {
           "item": "occultism:afrit_essence"
         },

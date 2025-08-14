@@ -14,7 +14,7 @@
         "categories": 1,
         "output_rate": 0.333,
         "batch_size": 16,
-        "required_advancement": "botania:recipes/misc/bifrost_pane",
+        "required_advancement": "magichem:material_unlocks/botania/bifrost",
         "object": {
           "item": "botania:bifrost_pane"
         },

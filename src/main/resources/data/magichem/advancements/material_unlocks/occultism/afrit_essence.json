@@ -1,0 +1,44 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "advancement": {
+        "display": {
+          "icon": {
+            "item": "occultism:afrit_essence"
+          },
+          "title": {
+            "translate": "advancements.magichem.material_unlocks.afrit_essence.title"
+          },
+          "description": {
+            "translate": "advancements.magichem.material_unlocks.afrit_essence.description"
+          },
+          "frame": "task",
+          "show_toast": true,
+          "announce_to_chat": false,
+          "hidden": false
+        },
+        "parent": "magichem:material_unlocks/root",
+        "criteria": {
+          "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "occultism:afrit_essence"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

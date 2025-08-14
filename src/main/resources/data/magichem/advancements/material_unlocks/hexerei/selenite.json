@@ -1,0 +1,44 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "hexerei"
+        }
+      ],
+      "advancement": {
+        "display": {
+          "icon": {
+            "item": "hexerei:selenite_shard"
+          },
+          "title": {
+            "translate": "advancements.magichem.material_unlocks.selenite.title"
+          },
+          "description": {
+            "translate": "advancements.magichem.material_unlocks.selenite.description"
+          },
+          "frame": "task",
+          "show_toast": true,
+          "announce_to_chat": false,
+          "hidden": false
+        },
+        "parent": "magichem:material_unlocks/root",
+        "criteria": {
+          "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "hexerei:selenite_shard"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
