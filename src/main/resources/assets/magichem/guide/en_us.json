@@ -5818,7 +5818,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " within a very large radius of the user.\n\nAfter use the Idol requires a short recovery period to recharge its magic.\n\nAlong with a "
+            "text": " within a very large radius of the user and "
+          },
+          {
+            "text": "banishing further Phantoms",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for a few days as though you had slept.\n\nAfter use the Idol requires a recovery period to recharge its magic.\n\nAlong with a "
           },
           {
             "text": "Bleached Wisdom Stone",

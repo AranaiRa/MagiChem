@@ -6,6 +6,7 @@ import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.monster.Phantom;
@@ -62,7 +63,8 @@ public class SlumberingIdolItem extends Item {
             }
         }
 
-        pPlayer.getCooldowns().addCooldown(ItemRegistry.SLUMBERING_IDOL.get().asItem(), 1350);
+        pPlayer.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST));
+        pPlayer.getCooldowns().addCooldown(ItemRegistry.SLUMBERING_IDOL.get().asItem(), 6000);
         pPlayer.swing(pUsedHand);
         return super.use(pLevel, pPlayer, pUsedHand);
     }
