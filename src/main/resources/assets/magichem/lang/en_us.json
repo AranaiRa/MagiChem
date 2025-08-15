@@ -1177,9 +1177,12 @@
   "construct.magichem:query_is_item_distillable": "Condition: Is Item Distillable",
   "construct.magichem:query_item_has_lumins": "Condition: Item Has Lumins",
 
-  "gui.mna.codex_search.recipe.anointing": "Alchemical Anointing > ",
+  "gui.mna.codex_search.recipe.anointing": "Anointing > ",
+  "gui.mna.codex_search.recipe.fulmination": "Fulmination > ",
+  "gui.mna.codex_search.recipe.illumination": "Illumination > ",
   "gui.mna.codex_search.recipe.sublimation": "Nexus Sublimation > ",
   "gui.mna.codex_search.recipe.sublimation_ritual": "Ritual Sublimation > ",
+  "gui.mna.codex_search.recipe.vitriolation": "Vitriolation > ",
 
   "gui.mna.parameter.clean_alchemical_apparatus.point": "What alchemical device should the construct clean using water in its tank?",
 
