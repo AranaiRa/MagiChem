@@ -28,8 +28,8 @@ public class ItemRegistry {
     // MAGICHEM ITEMS
     ///////////////
 
-    public static final RegistryObject<Item> INERT_WISDOM_STONE = ITEMS.register("inert_wisdom_stone",
-            () -> new Item(new Item.Properties().stacksTo(1))
+    public static final RegistryObject<TooltipLoreItem> INERT_WISDOM_STONE = ITEMS.register("inert_wisdom_stone",
+            () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<PhilosophersStoneItem> ASHEN_WISDOM_STONE = ITEMS.register("wisdom_stone_nigredo",
@@ -76,12 +76,12 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().durability(10))
     );
 
-    public static final RegistryObject<Item> SUPERHEATED_GLASS_PANE = ITEMS.register("superheated_glass_pane",
-            () -> new Item(new Item.Properties())
+    public static final RegistryObject<TooltipLoreItem> SUPERHEATED_GLASS_PANE = ITEMS.register("superheated_glass_pane",
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<Item> PERFECTED_ELECTRUM = ITEMS.register("perfected_electrum",
-            () -> new Item(new Item.Properties())
+    public static final RegistryObject<TooltipLoreItem> PERFECTED_ELECTRUM = ITEMS.register("perfected_electrum",
+            () -> new TooltipLoreItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> TUBE_COMPONENTS = ITEMS.register("tube_components",
