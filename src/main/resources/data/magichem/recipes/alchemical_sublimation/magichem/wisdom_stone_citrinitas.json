@@ -10,7 +10,7 @@
       "experience": 135,
       "components": [
         { "item": "magichem:profound_manuscript" },
-        { "item": "magichem:wisdom_stone_albedo" },
+        { "item": "magichem:obscure_prognostications" },
         { "item": "magichem:profound_manuscript" }
       ],
       "materia": [
@@ -38,7 +38,7 @@
       "experience": 225,
       "components": [
         { "item": "magichem:immaculate_vinteum_crystal" },
-        { "item": "magichem:obscure_prognostications" },
+        { "item": "magichem:celestial_mechanism" },
         { "item": "magichem:immaculate_vinteum_crystal" }
       ],
       "materia": [
@@ -52,7 +52,7 @@
       "experience": 270,
       "components": [
         { "item": "magichem:daunting_esoterica" },
-        { "item": "magichem:celestial_mechanism" },
+        { "item": "magichem:wisdom_stone_albedo" },
         { "item": "magichem:daunting_esoterica" }
       ],
       "materia": [

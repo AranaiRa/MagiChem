@@ -55,9 +55,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " to expand the available recipe options. The regular Circle of Fabrication is not advanced enough to use Wisdom Stones.\n\nIn a future update, the Wisdom Stones and Philosopher's Stone will also confer enhanced power to your spells while carried in a dedicated curio slot."
+            "text": " to expand the available recipe options. The regular Circle of Fabrication is not advanced enough to use Wisdom Stones.\n\nIn a future update, the Wisdom Stones and Philosopher's Stone will also confer enhanced power to your spells while carried in a dedicated curio slot.\n\nEvery recipe in the Magnum Opus after the Inert Wisdom Stone requires the previous Wisdom Stone; you can "
+          },
+          {
+            "text": "remove the required Stone from the Nexus",
+            "color": "dark_purple"
+          },
+          {
+            "text": " safely when the recipe requests it."
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": " ",
+        "newPage": true
       },
       {
         "type": "title",

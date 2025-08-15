@@ -10,7 +10,7 @@
       "experience": 45,
       "components": [
         { "item": "magichem:collated_theories" },
-        { "item": "magichem:inert_wisdom_stone" },
+        { "item": "magichem:chiaroscuro" },
         { "item": "magichem:collated_theories" }
       ],
       "materia": [
@@ -38,7 +38,7 @@
       "experience": 75,
       "components": [
         { "item": "magichem:collated_theories" },
-        { "item": "magichem:chiaroscuro" },
+        { "item": "magichem:inert_wisdom_stone" },
         { "item": "magichem:collated_theories" }
       ],
       "materia": [

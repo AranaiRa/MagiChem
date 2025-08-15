@@ -10,7 +10,7 @@
       "experience": 90,
       "components": [
         { "item": "magichem:collated_theories" },
-        { "item": "magichem:wisdom_stone_nigredo" },
+        { "item": "magichem:chiaroscuro" },
         { "item": "magichem:collated_theories" }
       ],
       "materia": [
@@ -38,7 +38,7 @@
       "experience": 150,
       "components": [
         { "item": "magichem:profound_manuscript" },
-        { "item": "magichem:chiaroscuro" },
+        { "item": "magichem:wisdom_stone_nigredo" },
         { "item": "magichem:profound_manuscript" }
       ],
       "materia": [
