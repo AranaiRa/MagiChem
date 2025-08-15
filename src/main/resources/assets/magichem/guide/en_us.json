@@ -10667,15 +10667,121 @@
           }
         ]
       }
+    ]
+  },
+  "Scorched Theorems & Profundities": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "required_advancement": "magichem:skywrath_altar",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Scorched Theorems & Profundities"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": ""
+          },
+          {
+            "text": "Enchanted Books",
+            "color": "dark_purple"
+          },
+          {
+            "text": " contain magical insights, but much of it is buried in esoteric-sounding nonsense. You "
+          },
+          {
+            "text": "could",
+            "italic": true
+          },
+          {
+            "text": " sift through the book and extract the most useful bits of arcane knowledge... or you could let lightning do the work for you.\n\nWhen an Enchanted Book is "
+          },
+          {
+            "text": "Fulminated",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", all but the most useful scraps of knowledge are burned away, leaving behind a number of "
+          },
+          {
+            "text": "Scorched Theorems",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nPowerful enchanted books may leave behind a single "
+          },
+          {
+            "text": "Scorched Profundity",
+            "color": "dark_purple"
+          },
+          {
+            "text": " instead. A Scorched Profundity can also be created through Sublimation, but this process has a "
+          },
+          {
+            "text": "very high Academic Slurry cost",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe number of Theorems left behind and the chance that a Profundity is left behind are influenced by both the "
+          },
+          {
+            "text": "total number of enchantment levels",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the book and the "
+          },
+          {
+            "text": "highest level enchantment",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the book.\n\nSome alchemical recipes require Theorems or Profundities directly, but more powerful or complicated recipes may require you to compile them into "
+          },
+          {
+            "text": "Collated Theories",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "Profound Manuscripts",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", or "
+          },
+          {
+            "text": "Daunting Esoterica",
+            "color": "dark_purple"
+          },
+          {
+            "text": " first."
+          }
+        ]
+      }
     ],
     "related_recipes": [
       {
-        "type": "manaweaving-altar",
-        "location": "magichem:manaweaving/selenolabe"
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/scorched_profundity"
       },
       {
-        "type": "illumination",
-        "location": "magichem:illumination/magichem/glass_orb_to_lunar_orb"
+        "type": "crafting",
+        "location": "magichem:shaped/collated_theories"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/profound_manuscript"
+      },
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/daunting_esoterica"
       }
     ]
   },
