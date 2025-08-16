@@ -980,8 +980,17 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         this.cachedSpec = getAnimSpec(this.powerLevel);
 
         if(doSatisfactionDemandsUpdate && this.currentRecipe != null) {
+            boolean existingDemandsMatchCurrentSchema = this.currentRecipe.getStages(false).get(this.craftingStage).componentMateria.size() == this.satisfactionDemands.size();
+            if(existingDemandsMatchCurrentSchema) {
+                for (int i=0;i<satisfactionDemands.size();i++) {
+                    existingDemandsMatchCurrentSchema = satisfactionDemands.get(i).getFirst() == this.currentRecipe.getStages(false).get(this.craftingStage).componentMateria.get(i).getItem();
+                    if(!existingDemandsMatchCurrentSchema) break;
+                }
+            }
+
             InfusionStage currentStage = this.currentRecipe.getStages(false).get(this.craftingStage);
-            setSatisfactionDemands(currentStage.componentMateria);
+            if(!existingDemandsMatchCurrentSchema)
+                setSatisfactionDemands(currentStage.componentMateria);
         }
     }
 
