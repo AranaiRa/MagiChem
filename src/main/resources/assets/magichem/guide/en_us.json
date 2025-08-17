@@ -1444,7 +1444,28 @@
             "color": "dark_purple"
           },
           {
-            "text": ". The amount of FE required can be controlled; higher FE usage results in faster fabrications."
+            "text": ". The amount of FE required can be controlled; higher FE usage results in faster fabrications.\n\nThe "
+          },
+          {
+            "text": "Wisdom Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " inserted into the device reduces its FE consumption by a percentage. More advanced Wisdom Stones confer a larger FE discount, maxing out at a "
+          },
+          {
+            "text": "-75%",
+            "color": "dark_purple"
+          },
+          {
+            "text": " discount if a "
+          },
+          {
+            "text": "Philosopher's Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is present."
           }
         ]
       },

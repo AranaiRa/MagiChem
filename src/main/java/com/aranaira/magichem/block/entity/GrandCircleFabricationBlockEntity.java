@@ -84,6 +84,10 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             5640, 7050, 8810, 11010, 13765, 17205, 21505, 26880, 33600, 42000
     };
 
+    private static final float[] WISDOM_REDUCTION = { //TODO: Convert this to config
+            1.0f, 0.920f, 0.815f, 0.676f, 0.500f, 0.250f
+    };
+
     private static final int[] OPERATION_TICKS = { //TODO: Convert this to config
             1232, 1005, 820, 669, 546, 445, 363, 296, 241, 196,
             160, 130, 106, 86, 70, 57, 46, 37, 30, 24,
@@ -660,7 +664,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     }
 
     public int getPowerDraw() {
-        return POWER_DRAW[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
+        float baseRate = POWER_DRAW[MathUtils.clamp(powerUsageSetting, 1, 30)-1];
+        float stoneReduction = 1.0f;
+        if(getStoneItem().getItem() instanceof PhilosophersStoneItem pi) {
+            stoneReduction = WISDOM_REDUCTION[pi.getWisdom()];
+        }
+        return Math.round(baseRate * stoneReduction);
     }
 
     public int getOperationTicks() {
