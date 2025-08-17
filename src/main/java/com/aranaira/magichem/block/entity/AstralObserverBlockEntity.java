@@ -123,8 +123,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
                     if(stack.getCount() == 1)
                         return ItemStack.EMPTY;
                     else {
-                        stack.shrink(1);
-                        return stack;
+                        return stack.copyWithCount(stack.getCount()-1);
                     }
                 }
             }

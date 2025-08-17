@@ -75,11 +75,9 @@ public class AstralObserverBlock extends BaseEntityBlock {
                     }
                 }
             }
-
-            return InteractionResult.CONSUME;
         }
 
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return InteractionResult.CONSUME;
     }
 
     @Override
