@@ -47,6 +47,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
+    protected DistillationFabricationRecipe currentRecipe;
 
     private static HashMap<String, AdmixtureItem> admixturesMap = ItemRegistry.getAdmixturesMap(false, true);
     private static final NonNullList<AdmixtureItem> admixturesForRandomSelection = NonNullList.create();
@@ -189,53 +190,62 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             Pair<Integer, ItemStack> processing = getProcessingItem(pEntity, pVarFunc);
             int processingSlot = processing.getFirst();
             ItemStack processingItem = processing.getSecond();
+            boolean recipeMatchesProcessingItem = pEntity.currentRecipe != null && pEntity.currentRecipe.getAlchemyObject().getItem() == processingItem.getItem();
 
-            DistillationFabricationRecipe recipe = getRecipeInSlot(pEntity, processingSlot);
-            if(recipe != null) {
-                if(recipe.getOutputRate() > 0 && recipe.getOutputRate() <= 1)
-                    pEntity.progressMultiplier = Math.round(1f / recipe.getOutputRate());
+            if(!processingItem.isEmpty()){
+                if(!recipeMatchesProcessingItem)
+                    pEntity.currentRecipe = getRecipeInSlot(pEntity, processingSlot);
+                if (pEntity.currentRecipe != null) {
+                    if (pEntity.currentRecipe.getOutputRate() > 0 && pEntity.currentRecipe.getOutputRate() <= 1)
+                        pEntity.progressMultiplier = Math.round(1f / pEntity.currentRecipe.getOutputRate());
 
-                if (canCraftItem(pEntity, recipe, pVarFunc)) {
-                    if (pEntity.progress > operationTicks) {
-                        if (!pLevel.isClientSide()) {
-                            craftItem(pEntity, recipe, processingSlot, pVarFunc);
-                            pEntity.pushData();
-                            pEntity.syncAndSave();
+                    if (canCraftItem(pEntity, pEntity.currentRecipe, pVarFunc)) {
+                        if (pEntity.progress > operationTicks) {
+                            if (!pLevel.isClientSide()) {
+                                craftItem(pEntity, pEntity.currentRecipe, processingSlot, pVarFunc);
+                                pEntity.pushData();
+                                pEntity.syncAndSave();
+                            }
+                            if (!pEntity.isStalled)
+                                pEntity.resetProgress();
+                        } else {
+                            if (doubleSpeed) {
+                                pEntity.incrementProgress();
+                                pEntity.incrementProgress();
+                            } else if (!halfSpeed) {
+                                pEntity.incrementProgress();
+                            } else if (pLevel.getGameTime() % 2 == 0)
+                                pEntity.incrementProgress();
                         }
-                        if (!pEntity.isStalled)
-                            pEntity.resetProgress();
-                    } else {
-                        if (doubleSpeed) {
-                            pEntity.incrementProgress();
-                            pEntity.incrementProgress();
-                        } else if (!halfSpeed) {
-                            pEntity.incrementProgress();
-                        } else if (pLevel.getGameTime() % 2 == 0)
-                            pEntity.incrementProgress();
                     }
-                }
-            } else if(processingItem.getItem() == ItemRegistry.RAREFIED_WASTE.get()) {
-                if (canCraftRandom(pEntity, pVarFunc)) {
-                    if (pEntity.progress > operationTicks) {
-                        if (!pLevel.isClientSide()) {
-                            craftRandomAdmixture(pEntity, processingSlot, pVarFunc);
-                            pEntity.pushData();
+                } else if (processingItem.getItem() == ItemRegistry.RAREFIED_WASTE.get()) {
+                    if (canCraftRandom(pEntity, pVarFunc)) {
+                        if (pEntity.progress > operationTicks) {
+                            if (!pLevel.isClientSide()) {
+                                craftRandomAdmixture(pEntity, processingSlot, pVarFunc);
+                                pEntity.pushData();
+                            }
+                            if (!pEntity.isStalled)
+                                pEntity.resetProgress();
+                        } else {
+                            if (doubleSpeed) {
+                                pEntity.incrementProgress();
+                                pEntity.incrementProgress();
+                            } else if (!halfSpeed) {
+                                pEntity.incrementProgress();
+                            } else if (pLevel.getGameTime() % 2 == 0)
+                                pEntity.incrementProgress();
                         }
-                        if (!pEntity.isStalled)
-                            pEntity.resetProgress();
-                    } else {
-                        if (doubleSpeed) {
-                            pEntity.incrementProgress();
-                            pEntity.incrementProgress();
-                        } else if (!halfSpeed) {
-                            pEntity.incrementProgress();
-                        } else if (pLevel.getGameTime() % 2 == 0)
-                            pEntity.incrementProgress();
                     }
                 }
             }
-            if (processingItem == ItemStack.EMPTY)
+            if (processingItem.isEmpty()) {
                 pEntity.resetProgress();
+                Pair<Integer, ItemStack> postProcessingItem = getProcessingItem(pEntity, pVarFunc);
+                boolean recipeMatchesPostProcessingItem = pEntity.currentRecipe != null && pEntity.currentRecipe.getAlchemyObject().getItem() == processingItem.getItem();
+                if(postProcessingItem.getSecond().isEmpty() || recipeMatchesPostProcessingItem)
+                    pEntity.currentRecipe = null;
+            }
         }
 
         //deferred plugin linkage
