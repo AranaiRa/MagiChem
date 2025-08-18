@@ -73,7 +73,8 @@ public class ConstructRenderHelper {
             outPath += parsedString[4]+"/arm_"+parsedString[1]+"_"+(isLeftSide ? "l" : "r");
             outOffset = isLeftSide ? RENDER_OFFSET_ARM_LEFT : RENDER_OFFSET_ARM_RIGHT;
         } else if(parsedString[2].equals("torso")) {
-            outPath += parsedString[3]+"/torso_"+parsedString[1];
+            if(parsedString[1].equals("armor")) outPath += parsedString[3]+"/torso_reinforced";
+            else outPath += parsedString[3]+"/torso_"+parsedString[1];
             outOffset = RENDER_OFFSET_TORSO;
         } else if(parsedString[2].equals("legs")) {
             outPath += parsedString[3]+"/leg_"+parsedString[1]+"_"+(pFlipLeg ? "r" : "l");
