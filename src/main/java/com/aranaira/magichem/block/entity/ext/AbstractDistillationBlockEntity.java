@@ -120,13 +120,13 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                     pEntity.syncAndSave();
                 }
             }
-            if (dpbe instanceof ActuatorEarthBlockEntity earth) {
+            else if (dpbe instanceof ActuatorEarthBlockEntity earth) {
                 ActuatorEarthBlockEntity.delegatedTick(pLevel, pPos, pState, earth);
             }
-            if (dpbe instanceof ActuatorWaterBlockEntity water) {
+            else if (dpbe instanceof ActuatorWaterBlockEntity water) {
                 ActuatorWaterBlockEntity.delegatedTick(pLevel, pPos, pState, water);
             }
-            if (dpbe instanceof ActuatorAirBlockEntity air) {
+            else if (dpbe instanceof ActuatorAirBlockEntity air) {
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
                 int pre = pEntity.batchSize;
 
@@ -138,7 +138,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 if(pre != pEntity.batchSize)
                     pEntity.syncAndSave();
             }
-            if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
+            else if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                 ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, false);
             }
             else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
@@ -555,7 +555,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     @Override
     public void linkPlugins() {
         pluginDevices.clear();
-        pluginLinkageCountdown = 3;
+        pluginLinkageCountdown = 1;
     }
 
     @Override
@@ -575,7 +575,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     @Override
     public void linkPluginsDeferred() {
-        pluginLinkageCountdown = 3;
+        pluginLinkageCountdown = 1;
     }
 
     ////////////////////

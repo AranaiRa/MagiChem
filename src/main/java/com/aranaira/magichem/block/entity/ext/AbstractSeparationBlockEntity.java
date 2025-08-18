@@ -550,6 +550,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     @Override
     public void linkPlugins() {
         pluginDevices.clear();
+        pluginLinkageCountdown = 1;
     }
 
     @Override
@@ -569,7 +570,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
 
     @Override
     public void linkPluginsDeferred() {
-        pluginLinkageCountdown = 3;
+        pluginLinkageCountdown = 1;
     }
 
     ////////////////////

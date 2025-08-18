@@ -396,9 +396,12 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         }
 
         for(BlockEntity be : query) {
-            if (be instanceof GrandDistilleryRouterBlockEntity gdrbe) {
-                BlockEntity pe = gdrbe.getPlugEntity();
-                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            if (be instanceof GrandDistilleryRouterBlockEntity router) {
+                BlockEntity pe = router.getPlugEntity();
+                if(pe instanceof AbstractDirectionalPluginBlockEntity actuator) {
+                    actuator.setDevicePaused(false);
+                    pluginDevices.add(actuator);
+                }
             }
         }
     }
