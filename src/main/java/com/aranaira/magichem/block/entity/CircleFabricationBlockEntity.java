@@ -81,10 +81,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    if(recipe != null) {
-                        if(((slot - SLOT_INPUT_START) / 2) >= recipe.getComponentMateria().size())
+                    if(currentRecipe != null) {
+                        if(((slot - SLOT_INPUT_START) / 2) >= currentRecipe.getComponentMateria().size())
                             return false;
-                        ItemStack component = recipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
+                        ItemStack component = currentRecipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
                         return stack.getItem() == component.getItem();
                     } else {
                         return false;
@@ -117,7 +117,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     @Nullable
     public DistillationFabricationRecipe getCurrentRecipe() {
-        return recipe;
+        return currentRecipe;
     }
 
     @Override
@@ -169,8 +169,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
 
-        if(recipe != null) {
-            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem());
+        if(currentRecipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getAlchemyObject().getItem());
             if(keyQuery != null)
                 nbt.putString("recipe", keyQuery.toString());
         }
@@ -220,8 +220,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
 
-        if(recipe != null) {
-            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(recipe.getAlchemyObject().getItem());
+        if(currentRecipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getAlchemyObject().getItem());
             if(keyQuery != null)
                 nbt.putString("recipe", keyQuery.toString());
         }
@@ -286,7 +286,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         if(pEntity.doDeferredRecipeCheck) {
             Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
             if(itemQuery != null)
-                pEntity.recipe = DistillationFabricationRecipe.getDistillingRecipe(pLevel, itemQuery);
+                pEntity.currentRecipe = DistillationFabricationRecipe.getDistillingRecipe(pLevel, itemQuery);
+            pEntity.doDeferredRecipeCheck = false;
         }
 
         if(!pLevel.isClientSide()) {
@@ -489,14 +490,14 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                     }
 
                     //item chunks
-                    if(pEntity.recipe != null) {
+                    if(pEntity.currentRecipe != null) {
                         total = 8;
                         for (int i = 0; i < total; i++) {
                             Vector3 end = new Vector3(pPos.getX() + outputCenter.x, pPos.getY() + outputCenter.y, pPos.getZ() + outputCenter.z);
                             Vector3 start = end.add(new Vector3(r.nextDouble() * 2 - 1, r.nextDouble(), r.nextDouble() * 2 - 1).scale(0.5f));
 
                             pLevel.addParticle(new MAParticleType(ParticleInit.ITEM.get())
-                                            .setScale(0.05f).setMaxAge(10 + r.nextInt(10)).setStack(pEntity.recipe.getAlchemyObject())
+                                            .setScale(0.05f).setMaxAge(10 + r.nextInt(10)).setStack(pEntity.currentRecipe.getAlchemyObject())
                                             .setMover(new ParticleLerpMover(
                                                     start.x, start.y, start.z,
                                                     end.x, end.y, end.z)),
@@ -591,12 +592,12 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     public void setCurrentRecipe(ItemStack pQuery) {
         if(!level.isClientSide()) {
-            recipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
+            currentRecipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
 
-            if (recipe != null) {
+            if (currentRecipe != null) {
                 batchSize = 1;
                 ItemStack[] componentMateria = new ItemStack[5];
-                recipe.getComponentMateria().toArray(componentMateria);
+                currentRecipe.getComponentMateria().toArray(componentMateria);
 
                 for(int i=0; i<SLOT_INPUT_COUNT; i++) {
                     if(componentMateria[i/2] != null) {
@@ -686,7 +687,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     @Override
     public boolean needsProvisioning() {
-        if(recipe == null)
+        if(currentRecipe == null)
             return false;
 
         return getProvisioningNeeds().size() > 0;
@@ -696,8 +697,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
         Map<MateriaItem, Integer> result = new HashMap<>();
 
-        if(recipe != null) {
-            for (ItemStack recipeMateria : recipe.getComponentMateria()) {
+        if(currentRecipe != null) {
+            for (ItemStack recipeMateria : currentRecipe.getComponentMateria()) {
                 if(activeProvisionRequests.contains((MateriaItem)recipeMateria.getItem()))
                     continue;
 
@@ -810,12 +811,12 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     @Override
     public ItemStack getRecipeItem() {
-        return recipe == null ? ItemStack.EMPTY.copy() : recipe.getResultItem().copy();
+        return currentRecipe == null ? ItemStack.EMPTY.copy() : currentRecipe.getResultItem().copy();
     }
 
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
-        return recipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? recipe.getResultItem().copy() : recipe.getResultItem();
+        return currentRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentRecipe.getResultItem().copy() : currentRecipe.getResultItem();
     }
 
     @Override
