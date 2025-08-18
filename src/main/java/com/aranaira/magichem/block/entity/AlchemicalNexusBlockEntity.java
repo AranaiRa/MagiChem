@@ -1561,9 +1561,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         }
 
         for(BlockEntity be : query) {
-            if (be instanceof AlchemicalNexusRouterBlockEntity anrbe) {
-                BlockEntity pe = anrbe.getPlugEntity();
-                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            if (be instanceof AlchemicalNexusRouterBlockEntity router) {
+                BlockEntity pe = router.getPlugEntity();
+                if(pe instanceof AbstractDirectionalPluginBlockEntity actuator) {
+                    pluginDevices.add(actuator);
+                }
             }
         }
     }

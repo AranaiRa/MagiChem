@@ -994,9 +994,12 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         }
 
         for(BlockEntity be : query) {
-            if (be instanceof GrandCircleFabricationRouterBlockEntity gcfrbe) {
-                BlockEntity pe = gcfrbe.getPlugEntity();
-                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            if (be instanceof GrandCircleFabricationRouterBlockEntity router) {
+                BlockEntity pe = router.getPlugEntity();
+                if(pe instanceof AbstractDirectionalPluginBlockEntity actuator) {
+                    actuator.setDevicePaused(false);
+                    pluginDevices.add(actuator);
+                }
             }
         }
     }
