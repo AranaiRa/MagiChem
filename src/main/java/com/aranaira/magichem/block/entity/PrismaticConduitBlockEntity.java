@@ -61,11 +61,11 @@ public class PrismaticConduitBlockEntity extends EldrinCapacitorTile {
 
     @Override
     public float getRateLimit() {
-        return this.isLesser ? 0.1F : 5.0F;
+        return this.isLesser ? 0.3F : 15.0F;
     }
 
     public float getChargeRate() {
-        return this.isLesser ? 1.0F : 10.0F;
+        return this.isLesser ? 3.0F : 30.0F;
     }
 
     public float getDispersalRadius() {
