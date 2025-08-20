@@ -1035,7 +1035,7 @@
   "tooltip.magichem.gui.actuator.smokegen.line1": "How much Smoke is produced every time the linked device completes an operation.",
   "tooltip.magichem.gui.actuator.smokegen.line2": "When the Inferno Engine's reservoir is full, no additional Smoke will be produced.",
   "tooltip.magichem.gui.actuator.waterconsume": "Water Consumption Rate",
-  "tooltip.magichem.gui.actuator.waterconsume.line1": "How much Water is consumed every time the Deluge Purifier draws Eldrin power.",
+  "tooltip.magichem.gui.actuator.waterconsume.line1": "How much Water is consumed every time the Deluge Purifier consumes Essentia droplets or Eldrin power.",
   "tooltip.magichem.gui.actuator.waterconsume.line2": "If there is insufficient water in the Deluge Purifier's tank, it will not function even if there is sufficient Eldrin power.",
   "tooltip.magichem.gui.actuator.steamgen": "Steam Generation Rate",
   "tooltip.magichem.gui.actuator.steamgen.line1": "How much Steam is produced every time the linked device completes an operation.",
@@ -1476,7 +1476,7 @@
   "jei.magichem.info_panel.scorched_profundity": "A rare result from Fulminating an Enchanted book. \n Higher level enchantments and higher total number of enchantments combine for a higher chance of resulting in a Scorched Profundity.",
   "jei.magichem.info_panel.signalite": "Grows slowly over time on Budding Signalite. \n Can also be created through alchemical Anointing.",
   "jei.magichem.info_panel.smoke_bucket": "Created over time by an Inferno Engine as it operates. If the Inferno Engine's buffer fills up, any excess Smoke is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
-  "jei.magichem.info_panel.steam_bucket": "Created over time by a Deluge Purifier as it operates. If the Deluge Purifier's buffer fills up, any excess Smoke is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
+  "jei.magichem.info_panel.steam_bucket": "Created over time by a Deluge Purifier as it operates. If the Deluge Purifier's buffer fills up, any excess Steam is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
   "jei.magichem.info_panel.verdigris": "Sometimes collected by carving a layer of patina off of a Copper block using an Axe. \n Collection can be guaranteed by Vitriolation instead of using an Axe manually. \n DESIGNER'S NOTE: Vitriolating the Copper will only result in the Verdigris; this is temporary until fluid distillation is implemented in 0.5.1.",
   "jei.magichem.info_panel.vinteum_crystal_shard": "Grows slowly over time on Budding Vinteum Crystal.",
 
