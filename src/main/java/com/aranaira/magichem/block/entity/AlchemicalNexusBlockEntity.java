@@ -1144,10 +1144,16 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
 
         itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, ItemStack.EMPTY);
 
-        if(clearRecipeAfterNextProcess)
-            satisfactionDemands.clear();
-        else
-            setSatisfactionDemands(currentRecipe.getStages(false).get(0).componentMateria);
+        boolean isFinalStage = craftingStage >= currentRecipe.getStages(false).size() - 1;
+
+        if(isFinalStage) {
+            if (clearRecipeAfterNextProcess)
+                satisfactionDemands.clear();
+            else
+                setSatisfactionDemands(currentRecipe.getStages(false).get(0).componentMateria);
+        } else {
+            setSatisfactionDemands(currentRecipe.getStages(false).get(craftingStage + 1).componentMateria);
+        }
     }
 
     protected void createOrUpdateInProgressHolder(int pRecipeStage) {
