@@ -143,7 +143,6 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                     final ClientPacketListener connection = Minecraft.getInstance().getConnection();
                     if(connection != null) {
                         final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getForbiddenAdvancement());
-                        final Component chatComponent = advancement.getChatComponent();
 
                         out.add(Component.empty()
                                 .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
@@ -169,7 +168,6 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                     final ClientPacketListener connection = Minecraft.getInstance().getConnection();
                     if(connection != null) {
                         final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
-                        final Component chatComponent = advancement.getChatComponent();
 
                         out.add(Component.empty()
                                 .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
@@ -195,7 +193,6 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                 final ClientPacketListener connection = Minecraft.getInstance().getConnection();
                 if(connection != null) {
                     final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
-                    final Component chatComponent = advancement.getChatComponent();
 
                     out.add(Component.empty()
                             .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))

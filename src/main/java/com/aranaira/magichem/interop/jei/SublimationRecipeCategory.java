@@ -17,15 +17,21 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.aranaira.magichem.interop.jei.FabricationRecipeCategory.getStackForWisdom;
 
 public class SublimationRecipeCategory implements IRecipeCategory<SublimationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "sublimation");
@@ -101,21 +107,32 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
 
         //Output area
         {
+            boolean hasStone = recipe.getWisdom() > 0 && recipe.getWisdom() < 6;
+            boolean hasAdvancement = recipe.isAdvancementRequired() || recipe.isForbiddenByAdvancement();
+
             guiGraphics.blit(TEXTURE, 135, 87 - verticalShift + padding, 0, 234, 22, 22);
             guiGraphics.blit(TEXTURE, 112, 112 - verticalShift + padding, 189, 0, 67, 83);
+
+            guiGraphics.blit(TEXTURE, 112, 112 - verticalShift + padding, 189, 0, 67, 83);
+
+            if(hasAdvancement) {
+                guiGraphics.blit(TEXTURE, 165, 94 - verticalShift + padding, 230, 248, 8, 8);
+                if(recipe.isAdvancementRequired()) {
+                    guiGraphics.blit(TEXTURE, 160, 75 - verticalShift + padding, 238, 220, 18, 18);
+                }
+                if(recipe.isForbiddenByAdvancement()) {
+                    guiGraphics.blit(TEXTURE, 160, 104 - verticalShift + padding, 238, 238, 18, 18);
+                }
+            }
+
+            if(hasStone) {
+                guiGraphics.blit(TEXTURE, 148, 141 - verticalShift + padding, 0, 0, 24, 18);
+            }
 
             if(totalXP > 0) {
                 guiGraphics.blit(TEXTURE, 114, 200 - verticalShift + padding, 112, 236, 7, 7);
                 guiGraphics.drawString(Minecraft.getInstance().font, Component.literal(totalXP + "xp"), 124, 196 - verticalShift + padding, 0x21761f, false);
                 guiGraphics.drawString(Minecraft.getInstance().font, Component.literal((totalXP * ServerConfig.fluidPerXPPoint) + "mB"), 124, 206 - verticalShift + padding, 0x21761f, false);
-            }
-
-            if(recipe.getWisdom() > 0) {
-                ItemStack stack = FabricationRecipeCategory.getStackForWisdom(recipe.getWisdom());
-                int y = 112;
-                if(stages == 1) y = 156;
-                else if(stages == 2) y = 132;
-                guiGraphics.renderFakeItem(stack, 156 ,y - verticalShift);
             }
         }
 
@@ -162,22 +179,78 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
                 builder.addSlot(RecipeIngredientRole.INPUT, 22 + (ci * 18), 21 + (si * 43) + verticalShift + padding).addItemStack(stage.componentMateria.get(ci));
             }
         }
-//
-//        int i=0;
-//        for(ItemStack stack : recipe.getIngredientItemStacks()) {
-//            builder.addSlot(RecipeIngredientRole.INPUT, 4 + i*18, 4).addItemStack(stack);
-//            i++;
-//        }
-//
-//        builder.addSlot(RecipeIngredientRole.INPUT, 76, 4).addItemStack(recipe.getComponentMateria().getFirst());
-//        builder.addSlot(RecipeIngredientRole.INPUT, 76, 22).addItemStack(recipe.getComponentMateria().getSecond());
-//
-//        builder.addSlot(RecipeIngredientRole.INPUT,4,22).addItemStack(new ItemStack(ItemRegistry.SUBLIMATION_PRIMER.get(), 1));
+
+        if(recipe.getWisdom() < 6 && recipe.getWisdom() > 0) {
+            builder.addSlot(RecipeIngredientRole.CATALYST, 149 ,142 - verticalShift + padding).addItemStack(getStackForWisdom(recipe.getWisdom()));
+        }
     }
 
     @Override
     public List<Component> getTooltipStrings(SublimationRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        List<Component> in = IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+        ArrayList<Component> out = new ArrayList<>();
 
-        return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+        if(in.size() > 0) {
+            for (Object o : in.stream().toArray()) {
+                if (o instanceof Component c) {
+                    out.add(c);
+                }
+            }
+        }
+
+        int stages = recipe.getStages(false).size();
+        int verticalShift = (int)(21f * (5 - stages));
+        int padding = new int[]{43, 22, 0, 0, 0}[stages - 1];
+
+        if(recipe.isAdvancementRequired()) {
+            boolean xCoord = mouseX >= 160 && mouseX <= 178;
+            boolean yCoord = mouseY >= 75 - verticalShift + padding && mouseY <= 93 - verticalShift + padding;
+
+            if(xCoord && yCoord) {
+                out.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_required.part1"))
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_required.required").withStyle(ChatFormatting.GREEN))
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_required.part2"))
+                );
+                out.add(Component.empty());
+
+                final ClientPacketListener connection = Minecraft.getInstance().getConnection();
+                if(connection != null) {
+                    final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
+
+                    out.add(Component.empty()
+                            .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
+                            .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                    );
+                }
+            }
+        }
+        if(recipe.isForbiddenByAdvancement()) {
+            boolean xCoord = mouseX >= 160 && mouseX <= 178;
+            boolean yCoord = mouseY >= 104 - verticalShift + padding && mouseY <= 122 - verticalShift + padding;
+
+            if(xCoord && yCoord) {
+                out.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.part1"))
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.forbidden").withStyle(ChatFormatting.RED))
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.part2"))
+                );
+                out.add(Component.empty());
+
+                final ClientPacketListener connection = Minecraft.getInstance().getConnection();
+                if(connection != null) {
+                    final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getForbiddenAdvancement());
+
+                    out.add(Component.empty()
+                            .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
+                            .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                    );
+                }
+            }
+        }
+
+        return out.stream().toList();
     }
 }
