@@ -1125,6 +1125,12 @@
   "tooltip.magichem.jei.vitriolation.acid.line3": "Finally, if one of the following fluids is in the main tank of the Acid Basin, this recipe consumes no fluid:",
   "tooltip.magichem.jei.vitriolation.override.part1": "This recipe requires ",
   "tooltip.magichem.jei.vitriolation.override.part2": " of ",
+  "tooltip.magichem.jei.advancement_required.required": "required",
+  "tooltip.magichem.jei.advancement_required.part1": "The following advancement is ",
+  "tooltip.magichem.jei.advancement_required.part2": " to use this recipe: ",
+  "tooltip.magichem.jei.advancement_forbidden.forbidden": "disable",
+  "tooltip.magichem.jei.advancement_forbidden.part1": "The following advancement will ",
+  "tooltip.magichem.jei.advancement_forbidden.part2": " this recipe: ",
 
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
   "log.magichem.powerspike.bindpower": "Power Spike bound to this Circle of Power.",

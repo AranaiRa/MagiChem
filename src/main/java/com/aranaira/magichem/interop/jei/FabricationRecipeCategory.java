@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.VitriolationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -14,11 +15,22 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.multiplayer.ClientAdvancements;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FabricationRecipeCategory implements IRecipeCategory<DistillationFabricationRecipe> {
     public static final ResourceLocation UID = new ResourceLocation(MagiChemMod.MODID, "fabrication");
@@ -65,7 +77,7 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
         }
 
         if(recipe.getWisdom() < 6 && recipe.getWisdom() > 0) {
-            builder.addSlot(RecipeIngredientRole.CATALYST, 4, 22).addItemStack(getStackForWisdom(recipe.getWisdom()));
+            builder.addSlot(RecipeIngredientRole.CATALYST, 51, 48).addItemStack(getStackForWisdom(recipe.getWisdom()));
         }
     }
 
@@ -79,29 +91,147 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
 
                 gui.drawString(mc.font, oRateComponent, 62, 91, 0x000000, false);
             }
-
-            int offset = 0;
-            for(DistillationSourceCategory dsc : recipe.getSourceCategories()) {
-                gui.drawString(mc.font, dsc.name(), -120, offset, 0xffffff, true);
-                offset += 12;
-            }
-
-            offset += 12;
-            if(recipe.isAdvancementRequired()) {
-                gui.drawString(mc.font, "Needs Advancement:", -120, offset, 0xffffff, true);
-                offset += 12;
-                gui.drawString(mc.font, recipe.getRequiredAdvancement().getNamespace()+":"+recipe.getRequiredAdvancement().getPath(), -120, offset, 0xffffff, true);
-            }
-
-            offset += recipe.isAdvancementRequired() ? 12 : 0;
-            if(recipe.isForbiddenByAdvancement()) {
-                gui.drawString(mc.font, "Removed by Advancement:", -120, offset, 0xffffff, true);
-                offset += 12;
-                gui.drawString(mc.font, recipe.getForbiddenAdvancement().getNamespace()+":"+recipe.getForbiddenAdvancement().getPath(), -120, offset, 0xffffff, true);
-            }
         }
 
         IRecipeCategory.super.draw(recipe, recipeSlotsView, gui, mouseX, mouseY);
+
+        boolean hasStone = recipe.getWisdom() > 0 && recipe.getWisdom() < 6;
+        boolean hasAdvancement = recipe.isAdvancementRequired() || recipe.isForbiddenByAdvancement();
+        if(hasStone || hasAdvancement) {
+            gui.blit(TEXTURE, 50, 47, 96, 21, 24, 18);
+            if(recipe.isAdvancementRequired() || recipe.isForbiddenByAdvancement()) {
+                gui.blit(TEXTURE, 67 - (hasStone ? 0 : 8), 52, 230, 248, 8, 8);
+                if(recipe.isAdvancementRequired() && recipe.isForbiddenByAdvancement()) {
+                    gui.blit(TEXTURE, 75, 27, 238, 220, 18, 18);
+                    gui.blit(TEXTURE, 75, 47, 238, 238, 18, 18);
+                }
+                else if(recipe.isAdvancementRequired())
+                    gui.blit(TEXTURE, 75, 47, 238, 220, 18, 18);
+                else if(recipe.isForbiddenByAdvancement())
+                    gui.blit(TEXTURE, 75, 47, 238, 238, 18, 18);
+            }
+        }
+    }
+
+    @Override
+    public List<Component> getTooltipStrings(DistillationFabricationRecipe recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        List<Component> in = IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+        ArrayList<Component> out = new ArrayList<>();
+
+        if(in.size() > 0) {
+            for (Object o : in.stream().toArray()) {
+                if (o instanceof Component c) {
+                    out.add(c);
+                }
+            }
+        }
+
+        if(recipe.isAdvancementRequired() && recipe.isForbiddenByAdvancement()) {
+            //forbidden
+            {
+                boolean xCoord = mouseX >= 75 && mouseX <= 93;
+                boolean yCoord = mouseY >= 47 && mouseY <= 65;
+
+                if(xCoord && yCoord) {
+                    out.add(Component.empty()
+                            .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.part1"))
+                            .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.forbidden").withStyle(ChatFormatting.RED))
+                            .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.part2"))
+                    );
+                    out.add(Component.empty());
+
+                    final ClientPacketListener connection = Minecraft.getInstance().getConnection();
+                    if(connection != null) {
+                        final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getForbiddenAdvancement());
+                        final Component chatComponent = advancement.getChatComponent();
+
+                        out.add(Component.empty()
+                                .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
+                                .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
+                                .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                        );
+                    }
+                }
+            }
+            //required
+            {
+                boolean xCoord = mouseX >= 75 && mouseX <= 93;
+                boolean yCoord = mouseY >= 27 && mouseY <= 45;
+
+                if(xCoord && yCoord) {
+                    out.add(Component.empty()
+                            .append(Component.translatable("tooltip.magichem.jei.advancement_required.part1"))
+                            .append(Component.translatable("tooltip.magichem.jei.advancement_required.required").withStyle(ChatFormatting.GREEN))
+                            .append(Component.translatable("tooltip.magichem.jei.advancement_required.part2"))
+                    );
+                    out.add(Component.empty());
+
+                    final ClientPacketListener connection = Minecraft.getInstance().getConnection();
+                    if(connection != null) {
+                        final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
+                        final Component chatComponent = advancement.getChatComponent();
+
+                        out.add(Component.empty()
+                                .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
+                                .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
+                                .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                        );
+                    }
+                }
+            }
+        }
+        else if(recipe.isAdvancementRequired()) {
+            boolean xCoord = mouseX >= 75 && mouseX <= 93;
+            boolean yCoord = mouseY >= 47 && mouseY <= 65;
+
+            if(xCoord && yCoord) {
+                out.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_required.part1"))
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_required.required").withStyle(ChatFormatting.GREEN))
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_required.part2"))
+                );
+                out.add(Component.empty());
+
+                final ClientPacketListener connection = Minecraft.getInstance().getConnection();
+                if(connection != null) {
+                    final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
+                    final Component chatComponent = advancement.getChatComponent();
+
+                    out.add(Component.empty()
+                            .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
+                            .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                    );
+                }
+            }
+        }
+        else if(recipe.isForbiddenByAdvancement()) {
+            boolean xCoord = mouseX >= 75 && mouseX <= 93;
+            boolean yCoord = mouseY >= 47 && mouseY <= 65;
+
+            if(xCoord && yCoord) {
+                out.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.part1"))
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.forbidden").withStyle(ChatFormatting.RED))
+                        .append(Component.translatable("tooltip.magichem.jei.advancement_forbidden.part2"))
+                );
+                out.add(Component.empty());
+
+                final ClientPacketListener connection = Minecraft.getInstance().getConnection();
+                if(connection != null) {
+                    final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getForbiddenAdvancement());
+                    final Component chatComponent = advancement.getChatComponent();
+
+                    out.add(Component.empty()
+                            .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
+                            .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                    );
+                }
+            }
+        }
+
+        return out.stream().toList();
     }
 
     private static ItemStack
