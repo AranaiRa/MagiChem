@@ -1112,6 +1112,8 @@
   "tooltip.magichem.jei.coloration.cauldron.part2": " be crafted in a Coloring Cauldron",
   "tooltip.magichem.jei.coloration.variegator.part1": "This recipe ",
   "tooltip.magichem.jei.coloration.variegator.part2": " be crafted in a Variegator",
+  "tooltip.magichem.jei.coloration.can": "can",
+  "tooltip.magichem.jei.coloration.cannot": "cannot",
   "tooltip.magichem.jei.illumination.lumins": "This recipe uses ",
   "tooltip.magichem.jei.illumination.lumins.solar": "Solar Lumins",
   "tooltip.magichem.jei.illumination.lumins.lunar": "Lunar Lumins",
@@ -1232,8 +1234,6 @@
 
   "gui.mna.parameter.query_has_eldrin_in_buffer.int.selector": "What eldrin affinity should the construct check?\n\n 0: Average of all Affinities\n 1: Ender\n 2: Earth\n 3: Water\n 4: Air\n 5: Fire\n 6: Arcane",
   "gui.mna.parameter.query_has_eldrin_in_buffer.int.amount": "What percent full should your Eldrin power buffer for the chosen affinity be?",
-
-  "gui.mna.parameter.query_device_needs_provisioning.boolean": "Should the construct check the item in its left hand?",
 
   "gui.mna.parameter.query_item_has_lumins.boolean": "Should the construct check the item in its left hand?",
   "gui.mna.parameter.query_item_has_lumins.int": "What type of Lumins should the construct check?\n\n 0: Any Lumins\n 1: Solar Lumins\n 2: Lunar Lumins\n 3: Sidereal Lumins",

@@ -1,4 +1,4 @@
-package com.aranaira.magichem.util.render;
+package com.aranaira.magichem.util;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.registry.ItemRegistry;
