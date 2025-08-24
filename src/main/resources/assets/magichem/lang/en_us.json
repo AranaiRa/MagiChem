@@ -1459,8 +1459,8 @@
 
   "death.attack.magichem_acid": "%s dissolved away",
 
-  "cantrip.magichem.acid_ward": "Acid Ward",
-  "cantrip.magichem.acid_ward.desc": "Reduces the effect severity of touching acid. Effect lasts for a few minutes and scales with Tier.",
+  "cantrip.magichem.acid_ward": "Protection from Acid",
+  "cantrip.magichem.acid_ward.desc": "Reduces how severely you are harmed by touching acid. Effect lasts for a few minutes and scales with Tier.",
 
   "jei.magichem.anointing": "Materia Anointing",
   "jei.magichem.coloration": "Alchemical Coloration",
