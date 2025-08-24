@@ -22,12 +22,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class StatusGrantingConsumableItem extends Item {
-    private final boolean doParticles;
-    private final int cooldownTime, statusDuration, levelBoost;
+    private final boolean doParticles, multipleApplicationsStack;
+    private final int cooldownTime, statusDuration, levelBoost, multipleApplicationStackLimit;
     private final MobEffect effect;
     private final SoundEvent sound;
 
-    public StatusGrantingConsumableItem(Properties pProperties, MobEffect pEffect, int pStatusDuration, int pCooldownTime, SoundEvent pSound, int pLevelBoost, boolean pDoParticles) {
+    public StatusGrantingConsumableItem(Properties pProperties, MobEffect pEffect, int pStatusDuration, int pCooldownTime, SoundEvent pSound, int pLevelBoost, boolean pDoParticles, boolean pMultipleApplicationsStack, int pMultipleApplicationStackLimit) {
         super(pProperties);
         this.effect = pEffect;
         this.statusDuration = pStatusDuration;
@@ -35,16 +35,35 @@ public class StatusGrantingConsumableItem extends Item {
         this.sound = pSound;
         this.levelBoost = pLevelBoost;
         this.doParticles = pDoParticles;
+        this.multipleApplicationsStack = pMultipleApplicationsStack;
+        this.multipleApplicationStackLimit = pMultipleApplicationStackLimit;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         final ItemCooldowns cooldowns = pPlayer.getCooldowns();
         if(!cooldowns.isOnCooldown(this)) {
-            pPlayer.addEffect(new MobEffectInstance(effect, statusDuration, levelBoost, false, doParticles));
-            cooldowns.addCooldown(this, cooldownTime);
-            pPlayer.getItemInHand(pUsedHand).shrink(1);
-            pLevel.playSound((Player)null, pPlayer.blockPosition(), sound, SoundSource.PLAYERS, 2.0F, 1.0f);
+            if(!multipleApplicationsStack) {
+                pPlayer.addEffect(new MobEffectInstance(effect, statusDuration, levelBoost, false, doParticles));
+                cooldowns.addCooldown(this, cooldownTime);
+                pPlayer.getItemInHand(pUsedHand).shrink(1);
+                pLevel.playSound((Player) null, pPlayer.blockPosition(), sound, SoundSource.PLAYERS, 2.0F, 1.0f);
+            } else {
+                final MobEffectInstance existingEffect = pPlayer.getEffect(this.effect);
+                if(existingEffect != null) {
+                    if(existingEffect.getAmplifier() + 1 < multipleApplicationStackLimit) {
+                        pPlayer.addEffect(new MobEffectInstance(effect, statusDuration, existingEffect.getAmplifier() + 1, false, doParticles));
+                        cooldowns.addCooldown(this, cooldownTime);
+                        pPlayer.getItemInHand(pUsedHand).shrink(1);
+                        pLevel.playSound((Player) null, pPlayer.blockPosition(), sound, SoundSource.PLAYERS, 2.0F, 1.0f);
+                    }
+                } else {
+                    pPlayer.addEffect(new MobEffectInstance(effect, statusDuration, levelBoost, false, doParticles));
+                    cooldowns.addCooldown(this, cooldownTime);
+                    pPlayer.getItemInHand(pUsedHand).shrink(1);
+                    pLevel.playSound((Player) null, pPlayer.blockPosition(), sound, SoundSource.PLAYERS, 2.0F, 1.0f);
+                }
+            }
         }
 
         return super.use(pLevel, pPlayer, pUsedHand);

@@ -261,19 +261,19 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<StatusGrantingConsumableItem> HOROSCOPE_SOLAR = ITEMS.register("horoscope_solar",
-            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffectsRegistry.SUNS_GRACE.get(), 6000, 6000, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false)
+            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffectsRegistry.SUNS_GRACE.get(), 6000, 6000, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false, false, 1)
     );
 
     public static final RegistryObject<StatusGrantingConsumableItem> HOROSCOPE_SOLAR_FOREBODING = ITEMS.register("horoscope_solar_foreboding",
-            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffectsRegistry.SUNS_SCORN.get(), 6000, 6000, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false)
+            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffectsRegistry.SUNS_SCORN.get(), 6000, 6000, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false, false, 1)
     );
 
     public static final RegistryObject<StatusGrantingConsumableItem> HOROSCOPE_LUNAR = ITEMS.register("horoscope_lunar",
-            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffects.LUCK, 6000, 9000, SoundEvents.ENCHANTMENT_TABLE_USE, 9, false)
+            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffects.LUCK, 6000, 9000, SoundEvents.ENCHANTMENT_TABLE_USE, 9, false, false, 9)
     );
 
     public static final RegistryObject<StatusGrantingConsumableItem> HOROSCOPE_LUNAR_FOREBODING = ITEMS.register("horoscope_lunar_foreboding",
-            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffects.BAD_OMEN, -1, 9000, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false)
+            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffects.BAD_OMEN, -1, 30, SoundEvents.ENCHANTMENT_TABLE_USE, 0, false, true, 5)
     );
 
     public static final RegistryObject<Item> DEBUG_ORB = ITEMS.register("debug_orb",
@@ -549,7 +549,7 @@ public class ItemRegistry {
     ///////////////
 
     public static final RegistryObject<StatusGrantingConsumableItem> RADIANT_ROSE_PETAL = ITEMS.register("radiant_rose_petal",
-            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffectsRegistry.RADIANT_RESOLVE.get(), 120, 900, SoundEvents.GENERIC_EAT, 0, true)
+            () -> new StatusGrantingConsumableItem(new Item.Properties(), MobEffectsRegistry.RADIANT_RESOLVE.get(), 120, 900, SoundEvents.GENERIC_EAT, 0, true, false, 1)
     );
 
     ///////////////

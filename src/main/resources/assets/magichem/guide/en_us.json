@@ -8933,7 +8933,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " effect indefinitely."
+            "text": " effect indefinitely.\n\nAdditional Foreboding Lunar Horoscopes can be consumed to "
+          },
+          {
+            "text": "worsen the Bad Omen",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", each one increasing the effect by one tier (to a maximum of "
+          },
+          {
+            "text": "Bad Omen V",
+            "color": "dark_purple"
+          },
+          {
+            "text": ")."
           }
         ]
       }
