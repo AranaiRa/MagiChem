@@ -284,7 +284,7 @@ public class CommonEventHandler {
                 }
             }
         }
-        else if(stack.is(TAG_MINECRAFT_AXES)) {
+        else if(stack.is(TAG_MINECRAFT_AXES) || stack.getItem() == ItemInit.BOUND_AXE.get()) {
             InteropUtil.tryGenerateVerdigris(event.getLevel(), event.getPos(), event.getHitVec());
         }
     }
