@@ -1261,43 +1261,6 @@
       }
     ]
   },
-  "Perfected Electrum": {
-    "index": 1271,
-    "category": "magichem",
-    "tier": 2,
-    "sections": [
-      {
-        "type": "title",
-        "value": "Perfected Electrum"
-      },
-      {
-        "type": "text",
-        "value": "",
-        "json": [
-          {
-            "text": "While copper is an acceptable material for a simple Alembic, advanced alchemical devices require an advanced material.\n\n"
-          },
-          {
-            "text": "Perfected Electrum",
-            "color": "dark_purple"
-          },
-          {
-            "text": " combines the magical conductivity of gold with the alchemical inertness of quicksilver. The resultant alloy amplifies the alchemical magic of materia, but is unaffected by physical contact."
-          }
-        ]
-      }
-    ],
-    "related_recipes": [
-      {
-        "type": "ritual",
-        "location": "magichem:rituals/balanced_scales"
-      },
-      {
-        "type": "sublimation_ritual",
-        "location": "magichem:alchemical_sublimation_ritual/magichem/perfected_electrum"
-      }
-    ]
-  },
   "Circle of Fabrication": {
     "index": "1401",
     "category": "magichem",
