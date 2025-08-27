@@ -3644,7 +3644,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " is an Elemental Actuator that uses Ender Essentia and/or Arcane Eldrin Power.\n\nIt allows materia to be "
+            "text": " is an Elemental Actuator that uses Ender Essentia and/or Ender Eldrin Power.\n\nIt allows materia to be "
           },
           {
             "text": "directly imported or exported",
@@ -8963,7 +8963,7 @@
       },
       {
         "type": "illumination",
-        "location": "magichem:illumination/magichem/scorched_theorem_to_horoscope_solar"
+        "location": "magichem:illumination/magichem/scorched_theorem_to_horoscope_lunar"
       },
       {
         "type": "fulmination",
@@ -9450,7 +9450,7 @@
         "value": "",
         "json": [
           {
-            "text": "Alchemical Salts",
+            "text": "Alchemical Resins",
             "color": "dark_purple"
           },
           {

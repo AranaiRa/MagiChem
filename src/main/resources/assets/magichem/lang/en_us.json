@@ -662,6 +662,7 @@
   "feedback.item.hellfeather_charm.no_portal_pos": "You have never entered the Nether through a portal.",
   "feedback.warning.inventory_size_mismatch.part1": "A MagiChem ",
   "feedback.warning.inventory_size_mismatch.part2": " tried to load an inventory with a mismatched slot count (probably due to an update changing how the block works). Its saved inventory has been cleared to prevent corruption.",
+  "feedback.warning.api_bug_tier_tooltips": "Please Note: Due to a complicated API bug, all of Mana and Artifice's \"Requires Tier X\" tooltips will display incorrect values While MagiChem is installed. Apologies for the inconvenience.",
 
   "tooltip.magichem.sign": "Bears the sign",
   "tooltip.magichem.admixture_general": "A distilled alchemical concoction.",
