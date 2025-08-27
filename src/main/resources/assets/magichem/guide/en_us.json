@@ -6733,10 +6733,20 @@
             "italic": true
           },
           {
-            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot. The alchemical Distillation symbol in the center acts as a progress bar and fills as the current items are Distilling. The three slots to the left of that are for input items, which can be anything but Materia.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
+            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot. The alchemical Distillation symbol in the center acts as a progress bar and fills as the current items are Distilling.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
             "italic": false
           }
         ]
+      },
+      {
+        "type": "title",
+        "value": "Comparator Support",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "minecraft:comparator",
+        "scale": 2
       },
       {
         "type": "text",
@@ -6757,7 +6767,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first bit is 1 if the fuel slot has an item, or 0 if empty; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted.\n\n"
+            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted.\n\n"
           },
           {
             "text": "Meticulous Signalite",
@@ -6781,28 +6791,12 @@
             "bold": true
           },
           {
-            "text": "1",
-            "bold": true,
-            "color": "dark_red"
-          },
-          {
-            "text": ": Has fuel.\n"
-          },
-          {
             "text": "2",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input items.\n"
-          },
-          {
-            "text": "3",
-            "bold": true,
-            "color": "dark_red"
-          },
-          {
-            "text": ": Has fuel and input items.\n"
           },
           {
             "text": "4",
@@ -6813,28 +6807,12 @@
             "text": ": Has output items.\n"
           },
           {
-            "text": "5",
-            "bold": true,
-            "color": "dark_red"
-          },
-          {
-            "text": ": Has fuel and output items.\n"
-          },
-          {
             "text": "6",
             "bold": true,
             "color": "dark_red"
           },
           {
             "text": ": Has input and output items.\n"
-          },
-          {
-            "text": "7",
-            "bold": true,
-            "color": "dark_red"
-          },
-          {
-            "text": ": Has fuel, input, and output items.\n"
           }
         ]
       }
