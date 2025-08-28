@@ -18,6 +18,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -236,9 +237,7 @@ public class MirrorLabyrinthScreen extends AbstractContainerScreen<MirrorLabyrin
         orderedMateriaStorageFiltered.clear();
         for (Pair<MateriaItem, Integer> pair : orderedMateriaStorage) {
             MateriaItem mi = pair.getFirst();
-            String name = mi instanceof EssentiaItem ?
-                    Component.translatable("item.magichem.essentia_" + mi.getMateriaName()).toString() :
-                    Component.translatable("item.magichem.admixture_" + mi.getMateriaName()).toString();
+            String name = Language.getInstance().getOrDefault((mi instanceof EssentiaItem ? "item.magichem.essentia_" : "item.magichem.admixture_") + mi.getMateriaName()).toLowerCase(Locale.ROOT);
 
             if(filter.equals("") || name.contains(filter)) {
                 orderedMateriaStorageFiltered.add(pair);
