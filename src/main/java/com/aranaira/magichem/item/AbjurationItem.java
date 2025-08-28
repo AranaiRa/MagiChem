@@ -19,9 +19,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static com.aranaira.magichem.block.entity.MirrorLabyrinthBlockEntity.TRAIL_PARTICLE_COLORS;
 
@@ -37,7 +35,9 @@ public class AbjurationItem extends Item {
         boolean foundCurse = false;
 
         if(!pPlayer.getCooldowns().isOnCooldown(ItemRegistry.ABJURATION.get())) {
-            for (ItemStack stackWorn : pPlayer.getInventory().armor) {
+            List<ItemStack> allTargets = new ArrayList<>(pPlayer.getInventory().armor);
+            allTargets.add(pPlayer.getItemInHand(pUsedHand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND));
+            for (ItemStack stackWorn : allTargets) {
                 final Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stackWorn);
                 for (Enchantment e : enchantments.keySet()) {
                     foundCurse = e.isCurse();
