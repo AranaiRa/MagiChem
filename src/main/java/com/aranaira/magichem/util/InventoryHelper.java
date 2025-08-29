@@ -7,6 +7,7 @@ import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBl
 import com.aranaira.magichem.block.entity.routers.MirrorLabyrinthRouterBlockEntity;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.render.ColorUtils;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
@@ -90,7 +91,9 @@ public class InventoryHelper {
             if(doContainerLimiting && isInRange(pContainerSpec.getSecond().x, pContainerSpec.getSecond().y, pTargetSlot)) {
                 ItemStack containerStack = pSlots.get(pContainerSpec.getFirst()).getItem();
                 ItemStack limitedStack = modStack.copy();
-                limitedStack.setCount(Math.min(containerStack.getCount(), limitedStack.getCount()));
+                boolean isOrb = containerStack.getItem() == ItemRegistry.DEBUG_ORB.get();
+                int count = isOrb ? Integer.MAX_VALUE : containerStack.getCount();
+                limitedStack.setCount(Math.min(count, limitedStack.getCount()));
 
                 if(limitedStack.getItem() instanceof MateriaItem && InventoryHelper.isMateriaUnbottled(limitedStack)) {
                     limitedStack.removeTagKey("CustomModelData");
@@ -115,7 +118,7 @@ public class InventoryHelper {
                 }
 
                 int post = limitedStack.getCount();
-                containerStack.shrink(pre - post);
+                if(!isOrb) containerStack.shrink(pre - post);
                 modStack.shrink(pre - post);
                 return modStack;
             } else {

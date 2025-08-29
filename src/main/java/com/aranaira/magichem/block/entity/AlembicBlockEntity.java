@@ -66,16 +66,18 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
             public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
                 if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
                     ItemStack bottleStack = getStackInSlot(SLOT_BOTTLES);
+                    boolean isOrb = bottleStack.getItem() == ItemRegistry.DEBUG_ORB.get();
+
                     int bottleLimit =
                             bottleStack.isEmpty() ? 0 :
-                            bottleStack.getItem() == ItemRegistry.DEBUG_ORB.get() ? Integer.MAX_VALUE : bottleStack.getCount();
+                                    bottleStack.getItem() == ItemRegistry.DEBUG_ORB.get() ? Integer.MAX_VALUE : bottleStack.getCount();
 
-                    if(bottleLimit == 0) return ItemStack.EMPTY.copy();
+                    if (bottleLimit == 0) return ItemStack.EMPTY.copy();
 
                     ItemStack item = super.extractItem(slot, Math.min(amount, bottleLimit), simulate);
                     item.removeTagKey("CustomModelData");
 
-                    if(!simulate) bottleStack.shrink(Math.min(amount, bottleLimit));
+                    if (!simulate && !isOrb) bottleStack.shrink(Math.min(amount, bottleLimit));
 
                     return item;
                 }

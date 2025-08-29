@@ -130,6 +130,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                 }
                 else if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
                     ItemStack bottleStack = getStackInSlot(SLOT_BOTTLES);
+                    boolean isOrb = bottleStack.getItem() == ItemRegistry.DEBUG_ORB.get();
                     int bottleLimit =
                             bottleStack.isEmpty() ? 0 :
                                     bottleStack.getItem() == ItemRegistry.DEBUG_ORB.get() ? Integer.MAX_VALUE : bottleStack.getCount();
@@ -139,7 +140,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                     ItemStack item = super.extractItem(slot, Math.min(amount, bottleLimit), simulate);
                     item.removeTagKey("CustomModelData");
 
-                    if(!simulate) bottleStack.shrink(Math.min(amount, bottleLimit));
+                    if(!simulate && !isOrb) bottleStack.shrink(Math.min(amount, bottleLimit));
 
                     return item;
                 }
