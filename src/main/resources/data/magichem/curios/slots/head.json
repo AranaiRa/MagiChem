@@ -1,0 +1,6 @@
+{
+  "replace": true,
+  "order": 40,
+  "icon": "curios:slot/empty_head_slot",
+  "add_cosmetic": true
+}
