@@ -1,0 +1,8 @@
+{
+  "size": 1,
+  "operation": "SET",
+  "order": 25000,
+  "icon": "magichem:slot/empty_wisdom_slot",
+  "render_toggle": false,
+  "drop_rule": "ALWAYS_KEEP"
+}

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:wisdom_stone_nigredo",
+    "magichem:wisdom_stone_albedo",
+    "magichem:wisdom_stone_citrinitas",
+    "magichem:wisdom_stone_rubedo",
+    "magichem:philosophers_stone"
+  ]
+}
