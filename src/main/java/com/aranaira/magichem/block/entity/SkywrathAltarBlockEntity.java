@@ -82,7 +82,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
         @Override
         public int getSlotLimit(int slot) {
-            return 1;
+            return 64;
         }
 
         @Override
