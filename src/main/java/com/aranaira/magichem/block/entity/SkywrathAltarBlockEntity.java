@@ -62,12 +62,13 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         @Override
         public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
             if(level != null && !level.isClientSide()) {
-                if(heldItem.isEmpty()) {
-                    if(!simulate) {
-                        heldItem = stack;
+                if (heldItem.isEmpty() || ItemStack.isSameItemSameTags(stack, heldItem)) {
+                    int idealCount = getIdealInsertingAmount(stack, heldItem.getCount());
+                    if (!simulate) {
+                        heldItem = stack.copyWithCount(heldItem.getCount() + idealCount);
                         syncAndSave();
                     }
-                    return ItemStack.EMPTY;
+                    return stack.copyWithCount(stack.getCount() - idealCount);
                 }
             }
 
@@ -176,6 +177,12 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         }
 
         return false;
+    }
+
+    public int getIdealInsertingAmount(ItemStack toCheck, int numExisted) {
+        FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(level, toCheck.getItem());
+        if (recipe == null) return toCheck.getCount();
+        return Math.min(toCheck.getCount(), recipe.getInput().getCount() - numExisted);
     }
 
     public ItemStack getHeldItem() {
