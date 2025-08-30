@@ -206,10 +206,6 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                 final ClientPacketListener connection = Minecraft.getInstance().getConnection();
                 if(connection != null) {
                     final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
-                    final ClientAdvancements advancements = Minecraft.getInstance().player.connection.getAdvancements();
-
-                    final Advancement blah = advancements.getAdvancements().get(recipe.getRequiredAdvancement());
-                    int a =0;
 
                     if(advancement != null) {
                         out.add(Component.empty()
