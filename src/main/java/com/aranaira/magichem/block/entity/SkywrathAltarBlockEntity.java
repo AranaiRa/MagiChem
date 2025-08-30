@@ -62,12 +62,13 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         @Override
         public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
             if(level != null && !level.isClientSide()) {
-                if(heldItem.isEmpty()) {
-                    if(!simulate) {
-                        heldItem = stack;
+                if (heldItem.isEmpty() || ItemStack.isSameItemSameTags(stack, heldItem)) {
+                    int idealCount = getIdealInsertingAmount(stack, heldItem.getCount());
+                    if (!simulate) {
+                        heldItem = stack.copyWithCount(heldItem.getCount() + idealCount);
                         syncAndSave();
                     }
-                    return ItemStack.EMPTY;
+                    return stack.copyWithCount(stack.getCount() - idealCount);
                 }
             }
 
@@ -81,7 +82,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
         @Override
         public int getSlotLimit(int slot) {
-            return 1;
+            return 64;
         }
 
         @Override
@@ -178,6 +179,12 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         return false;
     }
 
+    public int getIdealInsertingAmount(ItemStack toCheck, int numExisted) {
+        FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(level, toCheck.getItem());
+        if (recipe == null) return toCheck.getCount();
+        return Math.min(toCheck.getCount(), recipe.getInput().getCount() - numExisted);
+    }
+
     public ItemStack getHeldItem() {
         return heldItem;
     }
@@ -255,79 +262,79 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
     public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, T t) {
         if(t instanceof SkywrathAltarBlockEntity entity)
-        if(entity.craftCountdown >= 0) {
-            if(entity.craftCountdown == 0) {
-                if(!entity.chargeItem())
-                    if(!entity.craftItem())
-                        entity.scrapEnchantedBook();
-            }
-
-            //Particle work
-            if(pLevel.isClientSide()) {
-                int period = 850;
-                int gt = (int)(pLevel.getGameTime() % (period * 2.75 + 0.25));
-                double posBob = Math.sin((((gt) % period) / (double)period) * (Math.PI * 2) * Math.PI * 2) * 0.03125 * 0.707 + 0.1875;
-                float vectorScale = ((float) entity.craftCountdown / (float) CRAFT_COUNTDOWN_LENGTH) * 1.5f;
-                Vector3 origin = new Vector3(0.5, 1.1 + posBob, 0.5);
-
-                for(int i=0; i<4; i++) {
-                    Vector3 extent = new Vector3(r.nextDouble() - 0.5, r.nextDouble() - 0.5, r.nextDouble() - 0.5)
-                            .normalize().scale(vectorScale * 2)
-                            .add(origin);
-
-                    pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
-                                    .setMaxAge(8 + r.nextInt(6)).setScale(20),
-                            pPos.getX() + origin.x, pPos.getY() + origin.y, pPos.getZ() + origin.z,
-                            pPos.getX() + extent.x, pPos.getY() + extent.y, pPos.getZ() + extent.z);
-                }
-
-                int radialCount = 4;
-                for(int i=0; i<radialCount; i++) {
-                    double cos = Math.cos((6.2832d / radialCount) * i);
-                    double sin = Math.sin((6.2832d / radialCount) * i);
-                    Vector3 start = new Vector3(cos, 0, sin).scale(2 * vectorScale).add(new Vector3(0.5, 0, 0.5));
-                    Vector3 end = new Vector3(cos, 0, sin).scale(2 * vectorScale).add(new Vector3(0.5, 4, 0.5));
-
-                    pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
-                                    .setMaxAge(3).setScale(20)
-                                    .setColor(128, 144, 255, 255),
-                            pPos.getX() + start.x, pPos.getY() + start.y, pPos.getZ() + start.z,
-                            pPos.getX() + end.x, pPos.getY() + end.y, pPos.getZ() + end.z);
-                }
-
-                double speed = 0.175;
-                pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                .setMaxAge(8 + r.nextInt(10)).setScale(0.04f),
-                        pPos.getX() + origin.x, pPos.getY() + origin.y, pPos.getZ() + origin.z,
-                        (r.nextFloat() - 0.5) * speed, (r.nextFloat() - 0.5) * speed, (r.nextFloat() - 0.5) * speed);
-
+            if(entity.craftCountdown >= 0) {
                 if(entity.craftCountdown == 0) {
-                    speed = 0.25;
-                    for(int i=0; i<96; i++) {
-                        int c = r.nextInt(32)+190;
-                        pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
-                                        .setMaxAge(28 + r.nextInt(42)).setGravity(0.01f).setPhysics(true)
-                                        .setColor(c, c, 255, 196).setScale(0.08f+r.nextFloat(0.04f)),
+                    if(!entity.chargeItem())
+                        if(!entity.craftItem())
+                            entity.scrapEnchantedBook();
+                }
+
+                //Particle work
+                if(pLevel.isClientSide()) {
+                    int period = 850;
+                    int gt = (int)(pLevel.getGameTime() % (period * 2.75 + 0.25));
+                    double posBob = Math.sin((((gt) % period) / (double)period) * (Math.PI * 2) * Math.PI * 2) * 0.03125 * 0.707 + 0.1875;
+                    float vectorScale = ((float) entity.craftCountdown / (float) CRAFT_COUNTDOWN_LENGTH) * 1.5f;
+                    Vector3 origin = new Vector3(0.5, 1.1 + posBob, 0.5);
+
+                    for(int i=0; i<4; i++) {
+                        Vector3 extent = new Vector3(r.nextDouble() - 0.5, r.nextDouble() - 0.5, r.nextDouble() - 0.5)
+                                .normalize().scale(vectorScale * 2)
+                                .add(origin);
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                        .setMaxAge(8 + r.nextInt(6)).setScale(20),
                                 pPos.getX() + origin.x, pPos.getY() + origin.y, pPos.getZ() + origin.z,
-                                (r.nextFloat() - 0.5) * speed, (r.nextFloat()) * speed * 0.625, (r.nextFloat() - 0.5) * speed);
+                                pPos.getX() + extent.x, pPos.getY() + extent.y, pPos.getZ() + extent.z);
                     }
 
-                    for(int i=0;i<5;i++) {
+                    int radialCount = 4;
+                    for(int i=0; i<radialCount; i++) {
+                        double cos = Math.cos((6.2832d / radialCount) * i);
+                        double sin = Math.sin((6.2832d / radialCount) * i);
+                        Vector3 start = new Vector3(cos, 0, sin).scale(2 * vectorScale).add(new Vector3(0.5, 0, 0.5));
+                        Vector3 end = new Vector3(cos, 0, sin).scale(2 * vectorScale).add(new Vector3(0.5, 4, 0.5));
+
                         pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
-                                        .setMaxAge(40).setScale(20)
+                                        .setMaxAge(3).setScale(20)
                                         .setColor(128, 144, 255, 255),
-                                pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5,
-                                pPos.getX() + 0.5, pPos.getY() + 12, pPos.getZ() + 0.5);
+                                pPos.getX() + start.x, pPos.getY() + start.y, pPos.getZ() + start.z,
+                                pPos.getX() + end.x, pPos.getY() + end.y, pPos.getZ() + end.z);
+                    }
+
+                    double speed = 0.175;
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setMaxAge(8 + r.nextInt(10)).setScale(0.04f),
+                            pPos.getX() + origin.x, pPos.getY() + origin.y, pPos.getZ() + origin.z,
+                            (r.nextFloat() - 0.5) * speed, (r.nextFloat() - 0.5) * speed, (r.nextFloat() - 0.5) * speed);
+
+                    if(entity.craftCountdown == 0) {
+                        speed = 0.25;
+                        for(int i=0; i<96; i++) {
+                            int c = r.nextInt(32)+190;
+                            pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                            .setMaxAge(28 + r.nextInt(42)).setGravity(0.01f).setPhysics(true)
+                                            .setColor(c, c, 255, 196).setScale(0.08f+r.nextFloat(0.04f)),
+                                    pPos.getX() + origin.x, pPos.getY() + origin.y, pPos.getZ() + origin.z,
+                                    (r.nextFloat() - 0.5) * speed, (r.nextFloat()) * speed * 0.625, (r.nextFloat() - 0.5) * speed);
+                        }
+
+                        for(int i=0;i<5;i++) {
+                            pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                            .setMaxAge(40).setScale(20)
+                                            .setColor(128, 144, 255, 255),
+                                    pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5,
+                                    pPos.getX() + 0.5, pPos.getY() + 12, pPos.getZ() + 0.5);
+                        }
                     }
                 }
-            }
 
-            if(entity.heldItem.isEmpty()) {
-                entity.craftCountdown = -1;
-            } else {
-                entity.craftCountdown--;
+                if(entity.heldItem.isEmpty()) {
+                    entity.craftCountdown = -1;
+                } else {
+                    entity.craftCountdown--;
+                }
             }
-        }
     }
 
     public void dropInventory() {
