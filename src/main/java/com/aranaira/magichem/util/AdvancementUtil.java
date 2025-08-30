@@ -45,11 +45,9 @@ public class AdvancementUtil {
     private static final Map<ResourceLocation, Boolean> pendingAdvancements = new ConcurrentHashMap<>();
 
     public static Advancement getAdvancementForDisplay(ResourceLocation key) {
-        if (!cachedAdvancements.containsKey(key)) {
-            if (!pendingAdvancements.containsKey(key)) {
-                pendingAdvancements.put(key, true);
-                PacketRegistry.sendToServer(new AdvancementQueryC2SPacket(key));
-            }
+        if (!cachedAdvancements.containsKey(key) && !pendingAdvancements.containsKey(key)) {
+            pendingAdvancements.put(key, true);
+            PacketRegistry.sendToServer(new AdvancementQueryC2SPacket(key));
         }
         return cachedAdvancements.get(key);
     }
