@@ -107,12 +107,23 @@ public class PacketRegistry {
                 .consumerMainThread(FabricationBatchSizeC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(AdvancementQueryC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(AdvancementQueryC2SPacket::new)
+                .encoder(AdvancementQueryC2SPacket::toBytes)
+                .consumerMainThread(AdvancementQueryC2SPacket::handle)
+                .add();
+
         //Server to Clients
 
         MagiChemMod.CHANNEL.registerMessage(ID(), ParticleSpawnAnointingS2CPacket.class,
                 ParticleSpawnAnointingS2CPacket::toBytes,
                 ParticleSpawnAnointingS2CPacket::new,
                 ParticleSpawnAnointingS2CPacket::handle);
+
+        MagiChemMod.CHANNEL.registerMessage(ID(), AdvancementQueryS2CPacket.class,
+                AdvancementQueryS2CPacket::toBytes,
+                AdvancementQueryS2CPacket::new,
+                AdvancementQueryS2CPacket::handle);
     }
 
     public static <MSG> void sendToServer(MSG message) {
