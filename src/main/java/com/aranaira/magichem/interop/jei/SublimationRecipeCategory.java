@@ -218,11 +218,17 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
                 if(connection != null) {
                     final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
 
-                    out.add(Component.empty()
-                            .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
-                            .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
-                    );
+                    if(advancement != null) {
+                        out.add(Component.empty()
+                                .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
+                                .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
+                                .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                        );
+                    } else {
+                        out.add(Component.empty()
+                                .append(Component.literal("ERROR: Advancement not found!").withStyle(ChatFormatting.RED))
+                        );
+                    }
                 }
             }
         }
@@ -242,11 +248,17 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
                 if(connection != null) {
                     final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getForbiddenAdvancement());
 
-                    out.add(Component.empty()
-                            .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
-                            .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
-                            .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
-                    );
+                    if(advancement != null) {
+                        out.add(Component.empty()
+                                .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
+                                .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
+                                .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                        );
+                    } else {
+                        out.add(Component.empty()
+                                .append(Component.literal("ERROR: Advancement not found!").withStyle(ChatFormatting.RED))
+                        );
+                    }
                 }
             }
         }
