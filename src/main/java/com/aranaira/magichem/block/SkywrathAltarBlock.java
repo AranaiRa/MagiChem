@@ -39,8 +39,9 @@ public class SkywrathAltarBlock extends BaseEntityBlock {
         if(pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() != ItemRegistry.THUNDERSTONE.get()) {
             if (pLevel.getBlockEntity(pPos) instanceof SkywrathAltarBlockEntity sabe && pHand == InteractionHand.MAIN_HAND) {
                 ItemStack stackQuery = pPlayer.getItemInHand(pHand);
-                sabe.setHeldItem(pPlayer, stackQuery);
-                pPlayer.setItemInHand(pHand, ItemStack.EMPTY);
+                int idealCount = sabe.getIdealInsertingAmount(stackQuery, 0);
+                sabe.setHeldItem(pPlayer, stackQuery.copyWithCount(idealCount));
+                pPlayer.setItemInHand(pHand, stackQuery.copyWithCount(stackQuery.getCount() - idealCount));
 
                 return InteractionResult.CONSUME;
             }
