@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.InfusionStage;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.SublimationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.AdvancementUtil;
 import com.mna.api.capabilities.IPlayerProgression;
 import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import mezz.jei.api.constants.VanillaTypes;
@@ -183,6 +184,10 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
         if(recipe.getWisdom() < 6 && recipe.getWisdom() > 0) {
             builder.addSlot(RecipeIngredientRole.CATALYST, 149 ,142 - verticalShift + padding).addItemStack(getStackForWisdom(recipe.getWisdom()));
         }
+
+        // pre-fetch needed advancement info
+        if(recipe.isAdvancementRequired()) AdvancementUtil.getAdvancementForDisplay(recipe.getRequiredAdvancement());
+        if(recipe.isForbiddenByAdvancement()) AdvancementUtil.getAdvancementForDisplay(recipe.getForbiddenAdvancement());
     }
 
     @Override
@@ -214,14 +219,17 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
                 );
                 out.add(Component.empty());
 
-                final ClientPacketListener connection = Minecraft.getInstance().getConnection();
-                if(connection != null) {
-                    final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
+                final Advancement advancement = AdvancementUtil.getAdvancementForDisplay(recipe.getRequiredAdvancement());
 
+                if(advancement != null) {
                     out.add(Component.empty()
                             .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
                             .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
                             .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                    );
+                } else {
+                    out.add(Component.empty()
+                            .append(Component.literal("ERROR: Advancement not found!").withStyle(ChatFormatting.RED))
                     );
                 }
             }
@@ -238,14 +246,17 @@ public class SublimationRecipeCategory implements IRecipeCategory<SublimationRec
                 );
                 out.add(Component.empty());
 
-                final ClientPacketListener connection = Minecraft.getInstance().getConnection();
-                if(connection != null) {
-                    final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getForbiddenAdvancement());
+                final Advancement advancement = AdvancementUtil.getAdvancementForDisplay(recipe.getForbiddenAdvancement());
 
+                if(advancement != null) {
                     out.add(Component.empty()
                             .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
                             .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
                             .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                    );
+                } else {
+                    out.add(Component.empty()
+                            .append(Component.literal("ERROR: Advancement not found!").withStyle(ChatFormatting.RED))
                     );
                 }
             }

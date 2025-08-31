@@ -6,6 +6,7 @@ import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.recipe.VitriolationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.AdvancementUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -30,6 +31,7 @@ import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class FabricationRecipeCategory implements IRecipeCategory<DistillationFabricationRecipe> {
@@ -79,6 +81,10 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
         if(recipe.getWisdom() < 6 && recipe.getWisdom() > 0) {
             builder.addSlot(RecipeIngredientRole.CATALYST, 51, 48).addItemStack(getStackForWisdom(recipe.getWisdom()));
         }
+
+        // pre-fetch needed advancement info
+        if(recipe.isAdvancementRequired()) AdvancementUtil.getAdvancementForDisplay(recipe.getRequiredAdvancement());
+        if(recipe.isForbiddenByAdvancement()) AdvancementUtil.getAdvancementForDisplay(recipe.getForbiddenAdvancement());
     }
 
     public void draw(DistillationFabricationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
@@ -140,14 +146,17 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                     );
                     out.add(Component.empty());
 
-                    final ClientPacketListener connection = Minecraft.getInstance().getConnection();
-                    if(connection != null) {
-                        final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getForbiddenAdvancement());
+                    final Advancement advancement = AdvancementUtil.getAdvancementForDisplay(recipe.getForbiddenAdvancement());
 
+                    if(advancement != null) {
                         out.add(Component.empty()
                                 .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
                                 .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
                                 .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                        );
+                    } else {
+                        out.add(Component.empty()
+                                .append(Component.literal("ERROR: Advancement not found!").withStyle(ChatFormatting.RED))
                         );
                     }
                 }
@@ -165,14 +174,17 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                     );
                     out.add(Component.empty());
 
-                    final ClientPacketListener connection = Minecraft.getInstance().getConnection();
-                    if(connection != null) {
-                        final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
+                    final Advancement advancement = AdvancementUtil.getAdvancementForDisplay(recipe.getRequiredAdvancement());
 
+                    if(advancement != null) {
                         out.add(Component.empty()
                                 .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
                                 .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
                                 .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                        );
+                    } else {
+                        out.add(Component.empty()
+                                .append(Component.literal("ERROR: Advancement not found!").withStyle(ChatFormatting.RED))
                         );
                     }
                 }
@@ -190,14 +202,17 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                 );
                 out.add(Component.empty());
 
-                final ClientPacketListener connection = Minecraft.getInstance().getConnection();
-                if(connection != null) {
-                    final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getRequiredAdvancement());
+                final Advancement advancement = AdvancementUtil.getAdvancementForDisplay(recipe.getRequiredAdvancement());
 
+                if(advancement != null) {
                     out.add(Component.empty()
                             .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
                             .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
                             .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                    );
+                } else {
+                    out.add(Component.empty()
+                            .append(Component.literal("ERROR: Advancement not found!").withStyle(ChatFormatting.RED))
                     );
                 }
             }
@@ -214,15 +229,17 @@ public class FabricationRecipeCategory implements IRecipeCategory<DistillationFa
                 );
                 out.add(Component.empty());
 
-                final ClientPacketListener connection = Minecraft.getInstance().getConnection();
-                if(connection != null) {
-                    final Advancement advancement = connection.getAdvancements().getAdvancements().get(recipe.getForbiddenAdvancement());
-                    final Component chatComponent = advancement.getChatComponent();
+                final Advancement advancement = AdvancementUtil.getAdvancementForDisplay(recipe.getForbiddenAdvancement());
 
+                if(advancement != null) {
                     out.add(Component.empty()
                             .append(advancement.getDisplay().getTitle().copy().withStyle(ChatFormatting.GOLD))
                             .append(Component.literal(" - ").withStyle(ChatFormatting.DARK_GRAY))
                             .append(advancement.getDisplay().getDescription().copy().withStyle(ChatFormatting.WHITE))
+                    );
+                } else {
+                    out.add(Component.empty()
+                            .append(Component.literal("ERROR: Advancement not found!").withStyle(ChatFormatting.RED))
                     );
                 }
             }
