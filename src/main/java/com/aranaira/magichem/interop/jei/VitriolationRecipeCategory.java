@@ -6,6 +6,7 @@ import com.aranaira.magichem.recipe.VitriolationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -69,6 +70,29 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
         builder.addSlot(RecipeIngredientRole.INPUT, 40, 4).addItemStack(recipe.getInputItem());
         if(recipe.hasInputFluidOverride()) {
             builder.addSlot(RecipeIngredientRole.INPUT, 73, 4).addFluidStack(recipe.getInputFluidOverride(), recipe.getBaseFluidConsumed());
+        } else {
+            int baseSize = recipe.getBaseFluidConsumed();
+            IRecipeSlotBuilder fluidSlot = builder.addSlot(RecipeIngredientRole.INPUT, 73, 4);
+            IRecipeSlotBuilder hiddenItemSlot = builder.addSlot(RecipeIngredientRole.INPUT, 73, 4096);
+            int baseStrength = recipe.getMinimumAcidStrength();
+            for (Fluid fluid : VitriolationRecipe.getAllFluidsOfAcidStrength(baseStrength)) {
+                fluidSlot.addFluidStack(fluid, baseSize);
+                hiddenItemSlot.addItemStack(new ItemStack(fluid.getBucket()));
+            }
+            if (baseStrength < 5) {
+                for (Fluid fluid : VitriolationRecipe.getAllFluidsOfAcidStrength(baseStrength + 1)) {
+                    fluidSlot.addFluidStack(fluid, baseSize / 4);
+                    hiddenItemSlot.addItemStack(new ItemStack(fluid.getBucket()));
+                }
+            }
+            if (baseStrength < 4) {
+                for (int level = baseStrength + 2; level <= 5; level++) {
+                    for (Fluid fluid : VitriolationRecipe.getAllFluidsOfAcidStrength(level)) {
+                        fluidSlot.addFluidStack(fluid, 1);
+                        hiddenItemSlot.addItemStack(new ItemStack(fluid.getBucket()));
+                    }
+                }
+            }
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 74, 88).addItemStack(recipe.getResultItem());
         if(recipe.hasResultFluid()) {
