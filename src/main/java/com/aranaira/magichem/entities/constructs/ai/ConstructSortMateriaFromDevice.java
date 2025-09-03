@@ -60,22 +60,6 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
         filter = null;
         jarTargetEntity = null;
         jarTargetPos = null;
-
-        //check to see if this construct can do shlorps
-        IConstructConstruction constructData = construct.getConstructData();
-        boolean correctMaterialTier = true;
-        for (ConstructMaterial mat : constructData.getComposition()) {
-            if(mat == ConstructMaterial.WICKERWOOD || mat == ConstructMaterial.WOOD || mat == ConstructMaterial.STONE) {
-                correctMaterialTier = false;
-                break;
-            }
-        }
-
-        boolean smartHead = constructData.calculateIntelligence() > 8;
-
-        boolean casterArm = constructData.isCapabilityEnabled(ConstructCapability.CAST_SPELL);
-
-        isAdvancedMode = correctMaterialTier && smartHead && casterArm;
     }
 
     @Override
@@ -595,6 +579,18 @@ public class ConstructSortMateriaFromDevice extends ConstructAITask<ConstructSor
                 this.voidExcess = boolParam.getValue();
             }
         });
+    }
+
+    @Override
+    public void setConstruct(IConstruct<?> construct) {
+        super.setConstruct(construct);
+        this.isAdvancedMode = ConstructProvideMateria.isConstructInAdvancedShlorpMode(construct);
+    }
+
+    @Override
+    public boolean areCapabilitiesMet() {
+        if (isAdvancedMode) return true;
+        return super.areCapabilitiesMet();
     }
 
     @Override
