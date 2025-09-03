@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "mna:herbalist_pouch",
+  "input_count": 1,
+  "result": "magichem:enchanted_fertilizer",
+  "result_count": 3
+}

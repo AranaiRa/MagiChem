@@ -1,0 +1,11 @@
+{
+  "replace": "false",
+  "values": [
+    "magichem:enchanted_soil",
+    "magichem:enchanted_soil_depths",
+    "magichem:enchanted_soil_forests",
+    "magichem:enchanted_soil_plains",
+    "magichem:enchanted_soil_swamps",
+    "magichem:enchanted_soil_wastes"
+  ]
+}

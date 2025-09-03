@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:salt_of_bone" },
+    { "item": "minecraft:glow_berries" },
+    { "item": "magichem:salt_of_bone" },
+    { "item": "magichem:alchemical_waste" },
+    { "item": "magichem:alchemical_waste" },
+    { "item": "magichem:alchemical_waste" }
+  ],
+  "result": {
+    "item": "magichem:enchanted_fertilizer"
+  }
+}

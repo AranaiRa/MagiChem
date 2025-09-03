@@ -1,0 +1,27 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 1,
+  "object": {
+    "item": "magichem:enchanted_soil"
+  },
+  "stages": [
+    {
+      "experience": 6,
+      "components": [
+        { "item": "minecraft:coarse_dirt" },
+        { "item": "minecraft:rooted_dirt" },
+        { "item": "minecraft:soul_soil" },
+        { "item": "minecraft:rooted_dirt" },
+        { "item": "minecraft:coarse_dirt" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_earth", "count": 28 },
+        { "item": "magichem:admixture_bone", "count": 11 },
+        { "item": "magichem:admixture_wizard", "count": 9 },
+        { "item": "magichem:admixture_realm", "count": 2 },
+        { "item": "magichem:essentia_nourishing", "count": 76 }
+      ]
+    }
+  ]
+}

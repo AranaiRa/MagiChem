@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all":  "magichem:block/enchanted_soil_wastes",
+    "particle": "magichem:block/enchanted_soil_wastes"
+  }
+}

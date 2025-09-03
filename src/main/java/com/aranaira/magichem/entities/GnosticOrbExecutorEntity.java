@@ -4,7 +4,9 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.Quadlet;
 import com.aranaira.magichem.networking.ParticleSpawnAnointingS2CPacket;
 import com.aranaira.magichem.recipe.ProphecyErosionRecipe;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.blocks.BlockInit;
 import com.mna.tools.SummonUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
@@ -429,11 +431,25 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
 
     public static void prophecyEffectOdors(GnosticOrbExecutorEntity pEntity) {
         BlockPos posQuery = pEntity.validBlockTargets.get(pEntity.iterator);
+        BlockState blockStateAtPos = pEntity.level().getBlockState(posQuery.below());
+
         BlockState stateQuery;
-        if(pEntity.validBlockStates.size() == 1)
-            stateQuery = pEntity.validBlockStates.get(0);
-        else
-            stateQuery = pEntity.validBlockStates.get(r.nextInt(pEntity.validBlockStates.size()));
+        if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_DEPTHS.get()) {
+            stateQuery = BlockInit.WAKEBLOOM.get().defaultBlockState();
+        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_FOREST.get()) {
+            stateQuery = BlockInit.AUM.get().defaultBlockState();
+        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_PLAINS.get()) {
+            stateQuery = BlockInit.CERUBLOSSOM.get().defaultBlockState();
+        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_SWAMPS.get()) {
+            stateQuery = BlockInit.TARMA_ROOT.get().defaultBlockState();
+        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_WASTES.get()) {
+            stateQuery = BlockInit.DESERT_NOVA.get().defaultBlockState();
+        } else {
+            if (pEntity.validBlockStates.size() == 1)
+                stateQuery = pEntity.validBlockStates.get(0);
+            else
+                stateQuery = pEntity.validBlockStates.get(r.nextInt(pEntity.validBlockStates.size()));
+        }
 
         pEntity.level().setBlock(posQuery, stateQuery, 3);
         if(stateQuery.is(BlockTags.TALL_FLOWERS)) {

@@ -10761,5 +10761,274 @@
       }
     ]
   },
+  "Cultivating Magical Flowers": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "required_advancement": "magichem:__wisdom_1",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Cultivating Magical Flowers"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The sorcerous arts make use of several varieties of "
+          },
+          {
+            "text": "magical flower",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that are, frustratingly, resistant to bonemeal. Fortunately, there is an alchemical solution to the flowers' dwindling populations.\n\nThe problem lies in the soil. "
+          },
+          {
+            "text": "Enchanted Soil",
+            "color": "dark_purple"
+          },
+          {
+            "text": " contains the missing magical nutrients these plants need to flourish, but Enchanted Soil alone isn't enough.\n\nFirst, the Enchanted Soil needs to be "
+          },
+          {
+            "text": "transformed into an ideal environment",
+            "color": "dark_purple"
+          },
+          {
+            "text": " for one type of magical flower by anointing the Enchanted Soil with a particular admixture.\n\nSecond, some "
+          },
+          {
+            "text": "Enchanted Fertilizer",
+            "color": "dark_purple"
+          },
+          {
+            "text": " needs to be used on the aspected Enchanted Soil. Enchanted Fertilizer will "
+          },
+          {
+            "text": "only",
+            "italics": true
+          },
+          {
+            "text": " grow magical flowers (no other plants will be created, including grass) and will only grow anything on aspected Enchanted Soils.\n\nAspected Enchanted Soils can also be filled with magical flowers by fulfilling a "
+          },
+          {
+            "text": "Prophecy of Odors",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with a Gnostic Orb."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Enchanted Loam",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:enchanted_soil_forests",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Enchanted Loam supports the growth of "
+          },
+          {
+            "text": "Aums",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nIt is created with "
+          },
+          {
+            "text": "Admixture of the Forests",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Enchanted Sand",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:enchanted_soil_wastes",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Enchanted Sand supports the growth of "
+          },
+          {
+            "text": "Desert Novas",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nIt is created with "
+          },
+          {
+            "text": "Admixture of the Wastes",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\n(Note: Desert Novas will pop off of the sand after a neighboring block updates; this is a known bug)"
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Enchanted Silt",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:enchanted_soil_plains",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Enchanted Silt supports the growth of "
+          },
+          {
+            "text": "Cerublossoms",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nIt is created with "
+          },
+          {
+            "text": "Admixture of the Plains",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Enchanted Peat",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:enchanted_soil_swamps",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Enchanted Peat supports the growth of "
+          },
+          {
+            "text": "Tarma Roots",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nIt is created with "
+          },
+          {
+            "text": "Admixture of the Swamps",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Enchanted Paddy",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:enchanted_soil_depths",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "Enchanted Paddy supports the growth of "
+          },
+          {
+            "text": "Wakeblooms",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nIt is created with "
+          },
+          {
+            "text": "Admixture of the Depths",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nEnchanted Paddy cannot support Wakeblooms unless the block is "
+          },
+          {
+            "text": "waterlogged",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shapeless/enchanted_fertilizer"
+      },
+      {
+        "type": "fulmination",
+        "location": "magichem:alchemical_fulmination/magichem/enchanted_fertilizer"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/enchanted_soil"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_forests"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_wastes"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_plains"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_swamps"
+      },
+      {
+        "type": "anointing",
+        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_depths"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

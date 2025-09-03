@@ -588,6 +588,36 @@ public class BlockRegistry {
                     8, false)
     );
 
+    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL = registerBlock("enchanted_soil",
+            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL_FOREST = registerBlock("enchanted_soil_forests",
+            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL_WASTES = registerBlock("enchanted_soil_wastes",
+            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL_PLAINS = registerBlock("enchanted_soil_plains",
+            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL_SWAMPS = registerBlock("enchanted_soil_swamps",
+            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
+    public static final RegistryObject<EnchantedWetSoilBlock> ENCHANTED_SOIL_DEPTHS = registerBlock("enchanted_soil_depths",
+            () -> new EnchantedWetSoilBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
