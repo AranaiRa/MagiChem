@@ -9,7 +9,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.TintedGlassBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -588,33 +587,33 @@ public class BlockRegistry {
                     8, false)
     );
 
-    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL = registerBlock("enchanted_soil",
-            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+    public static final RegistryObject<EnsorcelledSoilBlock> ENSORCELLED_SOIL = registerBlock("ensorcelled_soil",
+            () -> new EnsorcelledSoilBlock(BlockBehaviour.Properties.of()
                     .strength(0.125f).forceSolidOn())
     );
 
-    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL_FOREST = registerBlock("enchanted_soil_forests",
-            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+    public static final RegistryObject<EnsorcelledSoilBlock> ENSORCELLED_SOIL_FOREST = registerBlock("ensorcelled_soil_forests",
+            () -> new EnsorcelledSoilBlock(BlockBehaviour.Properties.of()
                     .strength(0.125f).forceSolidOn())
     );
 
-    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL_WASTES = registerBlock("enchanted_soil_wastes",
-            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+    public static final RegistryObject<EnsorcelledSoilBlock> ENSORCELLED_SOIL_WASTES = registerBlock("ensorcelled_soil_wastes",
+            () -> new EnsorcelledSoilBlock(BlockBehaviour.Properties.of()
                     .strength(0.125f).forceSolidOn())
     );
 
-    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL_PLAINS = registerBlock("enchanted_soil_plains",
-            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+    public static final RegistryObject<EnsorcelledSoilBlock> ENSORCELLED_SOIL_PLAINS = registerBlock("ensorcelled_soil_plains",
+            () -> new EnsorcelledSoilBlock(BlockBehaviour.Properties.of()
                     .strength(0.125f).forceSolidOn())
     );
 
-    public static final RegistryObject<EnchantedSoilBlock> ENCHANTED_SOIL_SWAMPS = registerBlock("enchanted_soil_swamps",
-            () -> new EnchantedSoilBlock(BlockBehaviour.Properties.of()
+    public static final RegistryObject<EnsorcelledSoilBlock> ENSORCELLED_SOIL_SWAMPS = registerBlock("ensorcelled_soil_swamps",
+            () -> new EnsorcelledSoilBlock(BlockBehaviour.Properties.of()
                     .strength(0.125f).forceSolidOn())
     );
 
-    public static final RegistryObject<EnchantedWetSoilBlock> ENCHANTED_SOIL_DEPTHS = registerBlock("enchanted_soil_depths",
-            () -> new EnchantedWetSoilBlock(BlockBehaviour.Properties.of()
+    public static final RegistryObject<EnsorcelledWetSoilBlock> ENSORCELLED_SOIL_DEPTHS = registerBlock("ensorcelled_soil_depths",
+            () -> new EnsorcelledWetSoilBlock(BlockBehaviour.Properties.of()
                     .strength(0.125f).forceSolidOn())
     );
 

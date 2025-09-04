@@ -10790,28 +10790,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " contains the missing magical nutrients these plants need to flourish, but Enchanted Soil alone isn't enough.\n\nFirst, the Enchanted Soil needs to be "
+            "text": " contains the missing magical nutrients these plants need to flourish, but Ensorcelled Soil alone isn't enough.\n\nFirst, the Ensorcelled Soil needs to be "
           },
           {
             "text": "transformed into an ideal environment",
             "color": "dark_purple"
           },
           {
-            "text": " for one type of magical flower by anointing the Enchanted Soil with a particular admixture.\n\nSecond, some "
+            "text": " for one type of magical flower by anointing the Ensorcelled Soil with a particular admixture.\n\nSecond, some "
           },
           {
-            "text": "Enchanted Fertilizer",
+            "text": "Ensorcelled Fertilizer",
             "color": "dark_purple"
           },
           {
-            "text": " needs to be used on the aspected Enchanted Soil. Enchanted Fertilizer will "
+            "text": " needs to be used on the aspected Ensorcelled Soil. Ensorcelled Fertilizer will "
           },
           {
             "text": "only",
             "italics": true
           },
           {
-            "text": " grow magical flowers (no other plants will be created, including grass) and will only grow anything on aspected Enchanted Soils.\n\nAspected Enchanted Soils can also be filled with magical flowers by fulfilling a "
+            "text": " grow magical flowers (no other plants will be created, including grass) and will only grow anything on aspected Ensorcelled Soils.\n\nAspected Ensorcelled Soils can also be filled with magical flowers by fulfilling a "
           },
           {
             "text": "Prophecy of Odors",
@@ -10824,12 +10824,12 @@
       },
       {
         "type": "title",
-        "value": "Enchanted Loam",
+        "value": "Ensorcelled Loam",
         "newPage": true
       },
       {
         "type": "item",
-        "location": "magichem:enchanted_soil_forests",
+        "location": "magichem:ensorcelled_soil_forests",
         "scale": 2
       },
       {
@@ -10837,7 +10837,7 @@
         "value": "",
         "json": [
           {
-            "text": "Enchanted Loam supports the growth of "
+            "text": "Ensorcelled Loam supports the growth of "
           },
           {
             "text": "Aums",
@@ -10857,12 +10857,12 @@
       },
       {
         "type": "title",
-        "value": "Enchanted Sand",
+        "value": "Ensorcelled Sand",
         "newPage": true
       },
       {
         "type": "item",
-        "location": "magichem:enchanted_soil_wastes",
+        "location": "magichem:ensorcelled_soil_wastes",
         "scale": 2
       },
       {
@@ -10870,7 +10870,7 @@
         "value": "",
         "json": [
           {
-            "text": "Enchanted Sand supports the growth of "
+            "text": "Ensorcelled Sand supports the growth of "
           },
           {
             "text": "Desert Novas",
@@ -10895,7 +10895,7 @@
       },
       {
         "type": "item",
-        "location": "magichem:enchanted_soil_plains",
+        "location": "magichem:ensorcelled_soil_plains",
         "scale": 2
       },
       {
@@ -10903,7 +10903,7 @@
         "value": "",
         "json": [
           {
-            "text": "Enchanted Silt supports the growth of "
+            "text": "Ensorcelled Silt supports the growth of "
           },
           {
             "text": "Cerublossoms",
@@ -10923,12 +10923,12 @@
       },
       {
         "type": "title",
-        "value": "Enchanted Peat",
+        "value": "Ensorcelled Peat",
         "newPage": true
       },
       {
         "type": "item",
-        "location": "magichem:enchanted_soil_swamps",
+        "location": "magichem:ensorcelled_soil_swamps",
         "scale": 2
       },
       {
@@ -10936,7 +10936,7 @@
         "value": "",
         "json": [
           {
-            "text": "Enchanted Peat supports the growth of "
+            "text": "Ensorcelled Peat supports the growth of "
           },
           {
             "text": "Tarma Roots",
@@ -10956,12 +10956,12 @@
       },
       {
         "type": "title",
-        "value": "Enchanted Paddy",
+        "value": "Ensorcelled Paddy",
         "newPage": true
       },
       {
         "type": "item",
-        "location": "magichem:enchanted_soil_depths",
+        "location": "magichem:ensorcelled_soil_depths",
         "scale": 2
       },
       {
@@ -10969,7 +10969,7 @@
         "value": "",
         "json": [
           {
-            "text": "Enchanted Paddy supports the growth of "
+            "text": "Ensorcelled Paddy supports the growth of "
           },
           {
             "text": "Wakeblooms",
@@ -10983,7 +10983,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nEnchanted Paddy cannot support Wakeblooms unless the block is "
+            "text": ".\n\nEnsorcelled Paddy cannot support Wakeblooms unless the block is "
           },
           {
             "text": "waterlogged",

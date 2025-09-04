@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all":  "magichem:block/enchanted_soil_swamps",
-    "particle": "magichem:block/enchanted_soil_swamps"
-  }
-}

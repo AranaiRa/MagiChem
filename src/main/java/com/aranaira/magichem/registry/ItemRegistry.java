@@ -436,8 +436,8 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
-    public static final RegistryObject<EnchantedFertilizerItem> ENCHANTED_FERTILIZER = ITEMS.register("enchanted_fertilizer",
-            () -> new EnchantedFertilizerItem(new Item.Properties())
+    public static final RegistryObject<EnsorcelledFertilizerItem> ENSORCELLED_FERTILIZER = ITEMS.register("ensorcelled_fertilizer",
+            () -> new EnsorcelledFertilizerItem(new Item.Properties())
     );
 
     public static final RegistryObject<TooltipLoreItem> SALT_OF_SOOT = ITEMS.register("salt_of_soot",

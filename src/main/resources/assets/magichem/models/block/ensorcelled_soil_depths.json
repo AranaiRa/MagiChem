@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "magichem:block/ensorcelled_soil_depths",
+    "side": "magichem:block/ensorcelled_soil_depths",
+    "top": "magichem:block/ensorcelled_soil_depths"
+  }
+}

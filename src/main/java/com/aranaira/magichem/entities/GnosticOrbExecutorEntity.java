@@ -434,15 +434,15 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
         BlockState blockStateAtPos = pEntity.level().getBlockState(posQuery.below());
 
         BlockState stateQuery;
-        if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_DEPTHS.get()) {
+        if(blockStateAtPos.getBlock() == BlockRegistry.ENSORCELLED_SOIL_DEPTHS.get()) {
             stateQuery = BlockInit.WAKEBLOOM.get().defaultBlockState();
-        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_FOREST.get()) {
+        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENSORCELLED_SOIL_FOREST.get()) {
             stateQuery = BlockInit.AUM.get().defaultBlockState();
-        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_PLAINS.get()) {
+        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENSORCELLED_SOIL_PLAINS.get()) {
             stateQuery = BlockInit.CERUBLOSSOM.get().defaultBlockState();
-        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_SWAMPS.get()) {
+        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENSORCELLED_SOIL_SWAMPS.get()) {
             stateQuery = BlockInit.TARMA_ROOT.get().defaultBlockState();
-        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENCHANTED_SOIL_WASTES.get()) {
+        } else if(blockStateAtPos.getBlock() == BlockRegistry.ENSORCELLED_SOIL_WASTES.get()) {
             stateQuery = BlockInit.DESERT_NOVA.get().defaultBlockState();
         } else {
             if (pEntity.validBlockStates.size() == 1)

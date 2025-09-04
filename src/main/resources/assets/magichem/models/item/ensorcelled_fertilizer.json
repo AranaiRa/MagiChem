@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "magichem:item/enchanted_fertilizer"
+    "layer0": "magichem:item/ensorcelled_fertilizer"
   }
 }

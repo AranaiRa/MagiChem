@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all":  "magichem:block/enchanted_soil",
+    "all":  "magichem:block/ensorcelled_soil",
     "particle": "magichem:block/enchanted_soil"
   }
 }
