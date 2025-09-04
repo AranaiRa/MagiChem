@@ -6,7 +6,10 @@ import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
+import com.aranaira.magichem.util.render.RenderUtils;
+import com.mna.tools.render.WorldRenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.Util;
@@ -17,11 +20,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -52,6 +57,8 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
     public static final ResourceLocation RENDERER_JAR = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_jar");
     public static final ResourceLocation RENDERER_JAR_QUAD = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_jar_quad");
     public static final ResourceLocation RENDERER_VESSEL = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_vessel");
+    private static final ItemStack STACK_PHILO_DUMMY = new ItemStack(ItemRegistry.PHILOSOPHERS_STONE_DUMMY.get());
+    public static final ResourceLocation TEXTURE_PHILO_DUMMY = new ResourceLocation(MagiChemMod.MODID, "item/philosophers_stone");
     private BakedModel bakedModel;
 
     private final List<Direction> sides = Util.make(new ArrayList<>(), c -> {
@@ -225,6 +232,40 @@ public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     private void renderPhilosophersStone(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        int a = 0;
+        PoseStack.Pose last = pPoseStack.last();
+        VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());
+        final Minecraft instance = Minecraft.getInstance();
+
+        if(instance.player != null) {
+            long gameTime = instance.player.level().getGameTime();
+            int period = 100;
+
+            int colorFromTime = ColorUtils.getLerpedRainbowColor((float) (gameTime % period) / (float) period);
+            int[] rgba = ColorUtils.getRGBAIntTintFromPackedInt(colorFromTime);
+
+            pPoseStack.pushPose();
+
+            if (pDisplayContext == ItemDisplayContext.GUI) {
+                TextureAtlasSprite texture = instance.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(TEXTURE_PHILO_DUMMY);
+                int[] white = new int[]{255, 255, 255};
+
+                pPoseStack.translate(0.5, 0.5, 0.5);
+                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, white, white, 128, 3.75f, false);
+                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, rgba, white, 255, 4f, false);
+
+                RenderUtils.renderFaceWithUV(Direction.SOUTH, pPoseStack.last().pose(), pPoseStack.last().normal(), pBuffer.getBuffer(RenderType.cutout()), texture,
+                    -0.5f, -0.5f, 10.0f, 1.0f, 1.0f,
+                    0f,1f,
+                    1f,0f,
+                    0xffffffff, pPackedLight);
+            } else {
+                pPoseStack.translate(0.5, 0.625, 0.5);
+                WorldRenderUtils.renderRadiant(gameTime, pPoseStack, pBuffer, rgba, new int[]{255, 255, 255}, 255, 4f, false);
+
+                pPoseStack.translate(0.0, -0.125, 0.0);
+                instance.getItemRenderer().renderStatic(STACK_PHILO_DUMMY, pDisplayContext, pPackedLight, pPackedOverlay, pPoseStack, pBuffer, null, 0);
+            }
+            pPoseStack.popPose();
+        }
     }
 }
