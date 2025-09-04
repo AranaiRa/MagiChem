@@ -5,7 +5,7 @@ import com.aranaira.magichem.block.entity.MateriaJarQuadBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.item.renderer.MateriaJarItemRenderer;
+import com.aranaira.magichem.item.renderer.MasterItemRenderer;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
@@ -40,13 +40,9 @@ public class MateriaJarItem extends BlockItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private final NonNullLazy<BlockEntityWithoutLevelRenderer> renderer = NonNullLazy.of(() -> new MateriaJarItemRenderer(
-                    Minecraft.getInstance().getBlockEntityRenderDispatcher(),
-                    Minecraft.getInstance().getEntityModels()));
-
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return this.renderer.get();
+                return MasterItemRenderer.getOrCreateMasterRenderer().get();
             }
         });
     }

@@ -28,6 +28,10 @@ public class ItemRegistry {
     // MAGICHEM ITEMS
     ///////////////
 
+    public static final RegistryObject<CodexMateriaItem> CODEX_MATERIA = ITEMS.register("codex_materia",
+            () -> new CodexMateriaItem(new Item.Properties().stacksTo(1))
+    );
+
     public static final RegistryObject<TooltipLoreItem> INERT_WISDOM_STONE = ITEMS.register("inert_wisdom_stone",
             () -> new TooltipLoreItem(new Item.Properties().stacksTo(1))
     );

@@ -1,0 +1,5 @@
+# Blender MTL File: 'codex_arcana.blend'
+# Material Count: 1
+
+newmtl MAIN
+map_Kd magichem:item/codex_materia

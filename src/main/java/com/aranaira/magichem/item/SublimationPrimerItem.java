@@ -1,6 +1,6 @@
 package com.aranaira.magichem.item;
 
-import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
+import com.aranaira.magichem.item.renderer.mna.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.networking.SublimationPrimerSyncRecipeC2SPacket;
 import com.aranaira.magichem.recipe.SublimationRitualRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;

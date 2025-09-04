@@ -1,4 +1,4 @@
-package com.aranaira.magichem.item.renderer;
+package com.aranaira.magichem.item.renderer.mna;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.mna.items.renderers.books.ItemBookRenderer;

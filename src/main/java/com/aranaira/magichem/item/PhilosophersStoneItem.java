@@ -1,14 +1,21 @@
 package com.aranaira.magichem.item;
 
+import com.aranaira.magichem.item.renderer.MasterItemRenderer;
+import com.aranaira.magichem.item.renderer.mna.SublimationPrimerItemRenderer;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.util.NonNullLazy;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class PhilosophersStoneItem extends Item {
     int wisdom = 0;
@@ -16,6 +23,16 @@ public class PhilosophersStoneItem extends Item {
     public PhilosophersStoneItem(Properties pProperties, int pWisdom) {
         super(pProperties);
         this.wisdom = pWisdom;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                return MasterItemRenderer.getOrCreateMasterRenderer().get();
+            }
+        });
     }
 
     public int getWisdom() {

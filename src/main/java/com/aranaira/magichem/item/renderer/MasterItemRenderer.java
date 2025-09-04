@@ -1,0 +1,230 @@
+package com.aranaira.magichem.item.renderer;
+
+import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.item.EssentiaItem;
+import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.render.MateriaVesselContentsRenderUtil;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.ForgeRenderTypes;
+import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.common.util.NonNullLazy;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static com.aranaira.magichem.block.entity.renderer.MateriaJarQuadBlockEntityRenderer.X_OFFSET;
+import static com.aranaira.magichem.block.entity.renderer.MateriaJarQuadBlockEntityRenderer.Z_OFFSET;
+
+public class MasterItemRenderer extends BlockEntityWithoutLevelRenderer {
+    private static NonNullLazy<BlockEntityWithoutLevelRenderer> MASTER_RENDERER = null;
+
+    public static NonNullLazy<BlockEntityWithoutLevelRenderer> getOrCreateMasterRenderer() {
+        if(MASTER_RENDERER == null) {
+            MASTER_RENDERER = NonNullLazy.of(() -> new MasterItemRenderer(
+                    Minecraft.getInstance().getBlockEntityRenderDispatcher(),
+                    Minecraft.getInstance().getEntityModels()));
+        }
+        return MASTER_RENDERER;
+    }
+
+    //Special models
+    public static final ResourceLocation RENDERER_JAR = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_jar");
+    public static final ResourceLocation RENDERER_JAR_QUAD = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_jar_quad");
+    public static final ResourceLocation RENDERER_VESSEL = new ResourceLocation(MagiChemMod.MODID, "item/special/materia_vessel");
+    private BakedModel bakedModel;
+
+    private final List<Direction> sides = Util.make(new ArrayList<>(), c -> {
+        Collections.addAll(c, Direction.values());
+        c.add(null);
+    });
+
+    public MasterItemRenderer(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
+        super(pBlockEntityRenderDispatcher, pEntityModelSet);
+    }
+
+    @Override
+    public void renderByItem(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        if(pStack.getItem() == BlockRegistry.MATERIA_JAR.get().asItem())
+            renderMateriaJar(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        else if(pStack.getItem() == BlockRegistry.MATERIA_JAR_QUAD.get().asItem())
+            renderMateriaJarQuad(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        else if(pStack.getItem() == BlockRegistry.MATERIA_VESSEL.get().asItem())
+            renderMateriaVessel(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        else if(pStack.getItem() == ItemRegistry.PHILOSOPHERS_STONE.get())
+            renderPhilosophersStone(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+
+        super.renderByItem(pStack, pDisplayContext, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+    }
+
+    private void renderMateriaJar(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        this.bakedModel = Minecraft.getInstance().getModelManager().getModel(RENDERER_JAR);
+
+        PoseStack.Pose last = pPoseStack.last();
+        VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());
+
+        //ghz version
+        BakedModel jarModel = bakedModel.getOverrides().resolve(bakedModel, pStack, null, null, 0);
+        if (jarModel == null)
+            jarModel = bakedModel;
+
+        //TODO: Figure out how to get handedness from a displaycontext
+        boolean leftHand = false;
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5D, 0.5D, 0.5D);
+        jarModel = ForgeHooksClient.handleCameraTransforms(pPoseStack, jarModel, pDisplayContext, leftHand);
+
+        CompoundTag nbt = pStack.getTag();
+        if(nbt != null) {
+            if(nbt.contains("type")) {
+                MateriaItem materia = ItemRegistry.getMateriaMap(false, false)
+                        .get(nbt.getString("type"));
+                int cap = materia instanceof EssentiaItem ? ServerConfig.materiaJarEssentiaCapacity : ServerConfig.materiaJarAdmixtureCapacity;
+                float fill = (float)nbt.getInt("amount") / (float)cap;
+
+                MateriaVesselContentsRenderUtil.renderJarFluidContents(last.pose(), last.normal(), buffer, fill, materia.getMateriaColor(), pPackedLight);
+            }
+        }
+
+        pPoseStack.translate(-0.5D, -0.5D, -0.5D);
+
+        buffer = pBuffer.getBuffer(ForgeRenderTypes.ITEM_UNSORTED_TRANSLUCENT.get());
+        RandomSource rnd = RandomSource.create();
+        for (Direction side : sides)
+        {
+            rnd.setSeed(42);
+            for (BakedQuad quad : jarModel.getQuads(null, side, rnd, ModelData.EMPTY, null))
+            {
+                buffer.putBulkData(pPoseStack.last(), quad, 1.0f, 1.0f, 1.0f, pPackedLight, pPackedOverlay);
+            }
+        }
+
+        pPoseStack.popPose();
+    }
+
+    private void renderMateriaJarQuad(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        this.bakedModel = Minecraft.getInstance().getModelManager().getModel(RENDERER_JAR_QUAD);
+
+        PoseStack.Pose last = pPoseStack.last();
+        VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());
+
+        //ghz version
+        BakedModel jarModel = bakedModel.getOverrides().resolve(bakedModel, pStack, null, null, 0);
+        if (jarModel == null)
+            jarModel = bakedModel;
+
+        //TODO: Figure out how to get handedness from a displaycontext
+        boolean leftHand = false;
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5D, 0.5D, 0.5D);
+        jarModel = ForgeHooksClient.handleCameraTransforms(pPoseStack, jarModel, pDisplayContext, leftHand);
+
+        CompoundTag nbt = pStack.getTag();
+        if(nbt != null) {
+            for(int i=0; i<4; i++) {
+                if (nbt.contains("materiaType"+i)) {
+                    CompoundTag entry = nbt.getCompound("materiaType"+i);
+                    String type = entry.getString("type");
+
+                    if(type.equals("empty")) continue;
+
+                    MateriaItem materia = ItemRegistry.getMateriaMap(false, false)
+                            .get(type);
+                    int cap = materia instanceof EssentiaItem ? ServerConfig.materiaJarEssentiaCapacity : ServerConfig.materiaJarAdmixtureCapacity;
+                    float fill = (float) entry.getInt("count") / (float) cap;
+
+                    MateriaVesselContentsRenderUtil.renderJarFluidContentsWithXZOffset(last.pose(), last.normal(), buffer, fill, materia.getMateriaColor(), pPackedLight, X_OFFSET[i], Z_OFFSET[i]);
+                }
+            }
+        }
+
+        pPoseStack.translate(-0.5D, -0.5D, -0.5D);
+
+        buffer = pBuffer.getBuffer(ForgeRenderTypes.ITEM_UNSORTED_TRANSLUCENT.get());
+        RandomSource rnd = RandomSource.create();
+        for (Direction side : sides)
+        {
+            rnd.setSeed(42);
+            for (BakedQuad quad : jarModel.getQuads(null, side, rnd, ModelData.EMPTY, null))
+            {
+                buffer.putBulkData(pPoseStack.last(), quad, 1.0f, 1.0f, 1.0f, pPackedLight, pPackedOverlay);
+            }
+        }
+
+        pPoseStack.popPose();
+    }
+
+    private void renderMateriaVessel(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        this.bakedModel = Minecraft.getInstance().getModelManager().getModel(RENDERER_VESSEL);
+
+        PoseStack.Pose last = pPoseStack.last();
+        VertexConsumer buffer = pBuffer.getBuffer(RenderType.solid());
+
+        //ghz version
+        BakedModel jarModel = bakedModel.getOverrides().resolve(bakedModel, pStack, null, null, 0);
+        if (jarModel == null)
+            jarModel = bakedModel;
+
+        //TODO: Figure out how to get handedness from a displaycontext
+        boolean leftHand = false;
+
+        pPoseStack.pushPose();
+        pPoseStack.translate(0.5D, 0.5D, 0.5D);
+        jarModel = ForgeHooksClient.handleCameraTransforms(pPoseStack, jarModel, pDisplayContext, leftHand);
+
+        CompoundTag nbt = pStack.getTag();
+        if(nbt != null) {
+            if(nbt.contains("type")) {
+                MateriaItem materia = ItemRegistry.getMateriaMap(false, false)
+                        .get(nbt.getString("type"));
+                int cap = materia instanceof EssentiaItem ? ServerConfig.materiaVesselEssentiaCapacity : ServerConfig.materiaVesselAdmixtureCapacity;
+                float fill = (float)nbt.getInt("amount") / (float)cap;
+
+                MateriaVesselContentsRenderUtil.renderVesselFluidContents(last.pose(), last.normal(), buffer, fill, materia.getMateriaColor(), pPackedLight);
+                if(materia instanceof EssentiaItem ei)
+                    MateriaVesselContentsRenderUtil.renderVesselEssentiaLabel(last.pose(), last.normal(), buffer, ei, Direction.NORTH, pPackedLight);
+            }
+        }
+
+        pPoseStack.translate(-0.5D, -0.5D, -0.5D);
+
+        buffer = pBuffer.getBuffer(ForgeRenderTypes.ITEM_UNSORTED_TRANSLUCENT.get());
+        RandomSource rnd = RandomSource.create();
+        for (Direction side : sides)
+        {
+            rnd.setSeed(42);
+            for (BakedQuad quad : jarModel.getQuads(null, side, rnd, ModelData.EMPTY, null))
+            {
+                buffer.putBulkData(pPoseStack.last(), quad, 1.0f, 1.0f, 1.0f, pPackedLight, pPackedOverlay);
+            }
+        }
+
+        pPoseStack.popPose();
+    }
+
+    private void renderPhilosophersStone(ItemStack pStack, ItemDisplayContext pDisplayContext, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        int a = 0;
+    }
+}

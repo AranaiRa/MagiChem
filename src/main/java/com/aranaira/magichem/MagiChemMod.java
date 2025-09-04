@@ -6,10 +6,9 @@ import com.aranaira.magichem.data.DamageTypeProvider;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
-import com.aranaira.magichem.item.renderer.MateriaJarItemRenderer;
-import com.aranaira.magichem.item.renderer.MateriaJarQuadItemRenderer;
-import com.aranaira.magichem.item.renderer.MateriaVesselItemRenderer;
-import com.aranaira.magichem.item.renderer.SublimationPrimerItemRenderer;
+import com.aranaira.magichem.item.renderer.*;
+import com.aranaira.magichem.item.renderer.mna.CodexMateriaItemRenderer;
+import com.aranaira.magichem.item.renderer.mna.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.registry.*;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
@@ -196,9 +195,9 @@ public class MagiChemMod
 
         @SubscribeEvent
         public static void onRegisterSpecialRenderers(ModelEvent.RegisterAdditional event) {
-            event.register(MateriaVesselItemRenderer.RENDERER_VESSEL);
-            event.register(MateriaJarItemRenderer.RENDERER_JAR);
-            event.register(MateriaJarQuadItemRenderer.RENDERER_JAR_QUAD);
+            event.register(MasterItemRenderer.RENDERER_JAR);
+            event.register(MasterItemRenderer.RENDERER_JAR_QUAD);
+            event.register(MasterItemRenderer.RENDERER_VESSEL);
 
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_COG);
             event.register(CentrifugeBlockEntityRenderer.RENDERER_MODEL_WHEEL);
@@ -253,6 +252,9 @@ public class MagiChemMod
 
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_OPEN);
             event.register(SublimationPrimerItemRenderer.SUBLIMATION_PRIMER_CLOSED);
+
+            event.register(CodexMateriaItemRenderer.CODEX_MATERIA_OPEN);
+            event.register(CodexMateriaItemRenderer.CODEX_MATERIA_CLOSED);
 
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_BUTT);
             event.register(SignaliteBlockEntityRenderer.RENDERER_MODEL_SPIKE);
