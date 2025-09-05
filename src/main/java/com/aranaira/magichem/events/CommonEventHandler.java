@@ -15,13 +15,17 @@ import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.networking.WisdomSyncC2SPacket;
+import com.aranaira.magichem.networking.WisdomSyncS2CPacket;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
+import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.InteropUtil;
 import com.mna.api.events.construct.ConstructSprayEffectEvent;
 import com.mna.api.events.construct.ConstructSprayTargetingEvent;
 import com.mna.items.ItemInit;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -78,6 +82,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -326,6 +331,14 @@ public class CommonEventHandler {
         }
         else if(event.getEntity() instanceof ServerPlayer sp) {
             sp.sendSystemMessage(Component.translatable("feedback.warning.api_bug_tier_tooltips"));
+
+            final Pair<Short, Short> cardinalIntercardinalPair = WisdomProvider.serializeShorts(WisdomProvider.getCapability(sp));
+
+            MagiChemMod.CHANNEL.send(
+                    PacketDistributor.PLAYER.with(() -> sp), new WisdomSyncS2CPacket(
+                    cardinalIntercardinalPair.getFirst(),
+                    cardinalIntercardinalPair.getSecond()
+            ));
         }
     }
 

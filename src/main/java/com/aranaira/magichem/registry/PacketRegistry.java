@@ -130,6 +130,11 @@ public class PacketRegistry {
                 AdvancementQueryS2CPacket::toBytes,
                 AdvancementQueryS2CPacket::new,
                 AdvancementQueryS2CPacket::handle);
+
+        MagiChemMod.CHANNEL.registerMessage(ID(), WisdomSyncS2CPacket.class,
+                WisdomSyncS2CPacket::toBytes,
+                WisdomSyncS2CPacket::new,
+                WisdomSyncS2CPacket::handle);
     }
 
     public static <MSG> void sendToServer(MSG message) {

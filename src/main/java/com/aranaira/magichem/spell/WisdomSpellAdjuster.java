@@ -1,6 +1,8 @@
 package com.aranaira.magichem.spell;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.capabilities.wisdom.IWisdomCapability;
+import com.aranaira.magichem.capabilities.wisdom.WisdomProvider;
 import com.google.common.collect.ImmutableList;
 import com.mna.api.spells.adjusters.SpellAdjustingContext;
 import com.mna.api.spells.adjusters.SpellCastStage;
@@ -127,8 +129,10 @@ public class WisdomSpellAdjuster {
 
     // BASE METHODS
 
-    private static int getWisdomAdjustmentForAttribute(Player player, Attribute attribute) {
-        return 3;
+    private static int getWisdomAdjustmentForAttribute(Player pPlayer, Attribute pAttribute) {
+        final IWisdomCapability capability = WisdomProvider.getCapability(pPlayer);
+
+        return capability.getValue(pAttribute);
     }
 
     private static boolean checkSpellAttribute(SpellAdjustingContext context, Attribute attribute) {
