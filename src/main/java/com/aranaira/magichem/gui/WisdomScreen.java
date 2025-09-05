@@ -177,10 +177,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
             int limit = menu.capability.getLimit(Attribute.RADIUS, menu.getWisdom());
 
-            bRadiusUp.setPosition(this.leftPos + startX, this.topPos + startY - padding - (perStep * limit));
-            bRadiusDown.setPosition(this.leftPos + startX, this.topPos + startY);
-            bRadiusUp.visible = true;
-            bRadiusDown.visible = true;
+            if(limit > 0) {
+                bRadiusUp.setPosition(this.leftPos + startX, this.topPos + startY - padding - (perStep * limit));
+                bRadiusDown.setPosition(this.leftPos + startX, this.topPos + startY);
+                bRadiusUp.visible = true;
+                bRadiusDown.visible = true;
+            }
         }
 
         //Range
@@ -192,10 +194,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
             int limit = menu.capability.getLimit(Attribute.RANGE, menu.getWisdom());
 
-            bRangeUp.setPosition(this.leftPos + startX + padding + (perStep * limit), this.topPos + startY - padding - (perStep * limit));
-            bRangeDown.setPosition(this.leftPos + startX, this.topPos + startY);
-            bRangeUp.visible = true;
-            bRangeDown.visible = true;
+            if(limit > 0) {
+                bRangeUp.setPosition(this.leftPos + startX + padding + (perStep * limit), this.topPos + startY - padding - (perStep * limit));
+                bRangeDown.setPosition(this.leftPos + startX, this.topPos + startY);
+                bRangeUp.visible = true;
+                bRangeDown.visible = true;
+            }
         }
 
         //Duration
@@ -207,10 +211,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
             int limit = menu.capability.getLimit(Attribute.DURATION, menu.getWisdom());
 
-            bDurationUp.setPosition(this.leftPos + startX + padding + (perStep * limit), this.topPos + startY);
-            bDurationDown.setPosition(this.leftPos + startX, this.topPos + startY);
-            bDurationUp.visible = true;
-            bDurationDown.visible = true;
+            if(limit > 0) {
+                bDurationUp.setPosition(this.leftPos + startX + padding + (perStep * limit), this.topPos + startY);
+                bDurationDown.setPosition(this.leftPos + startX, this.topPos + startY);
+                bDurationUp.visible = true;
+                bDurationDown.visible = true;
+            }
         }
 
         //Magnitude
@@ -222,10 +228,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
             int limit = menu.capability.getLimit(Attribute.MAGNITUDE, menu.getWisdom());
 
-            bMagnitudeUp.setPosition(this.leftPos + startX + padding + (perStep * limit), this.topPos + startY + padding + (perStep * limit));
-            bMagnitudeDown.setPosition(this.leftPos + startX, this.topPos + startY);
-            bMagnitudeUp.visible = true;
-            bMagnitudeDown.visible = true;
+            if(limit > 0) {
+                bMagnitudeUp.setPosition(this.leftPos + startX + padding + (perStep * limit), this.topPos + startY + padding + (perStep * limit));
+                bMagnitudeDown.setPosition(this.leftPos + startX, this.topPos + startY);
+                bMagnitudeUp.visible = true;
+                bMagnitudeDown.visible = true;
+            }
         }
 
         //Damage
@@ -237,10 +245,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
             int limit = menu.capability.getLimit(Attribute.DAMAGE, menu.getWisdom());
 
-            bDamageUp.setPosition(this.leftPos + startX, this.topPos + startY + padding + (perStep * limit));
-            bDamageDown.setPosition(this.leftPos + startX, this.topPos + startY);
-            bDamageUp.visible = true;
-            bDamageDown.visible = true;
+            if(limit > 0) {
+                bDamageUp.setPosition(this.leftPos + startX, this.topPos + startY + padding + (perStep * limit));
+                bDamageDown.setPosition(this.leftPos + startX, this.topPos + startY);
+                bDamageUp.visible = true;
+                bDamageDown.visible = true;
+            }
         }
 
         //Lesser Magnitude
@@ -252,10 +262,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
             int limit = menu.capability.getLimit(Attribute.LESSER_MAGNITUDE, menu.getWisdom());
 
-            bLesserMagnitudeUp.setPosition(this.leftPos + startX - padding - (perStep * limit), this.topPos + startY + padding + (perStep * limit));
-            bLesserMagnitudeDown.setPosition(this.leftPos + startX, this.topPos + startY);
-            bLesserMagnitudeUp.visible = true;
-            bLesserMagnitudeDown.visible = true;
+            if(limit > 0) {
+                bLesserMagnitudeUp.setPosition(this.leftPos + startX - padding - (perStep * limit), this.topPos + startY + padding + (perStep * limit));
+                bLesserMagnitudeDown.setPosition(this.leftPos + startX, this.topPos + startY);
+                bLesserMagnitudeUp.visible = true;
+                bLesserMagnitudeDown.visible = true;
+            }
         }
 
         //Delay
@@ -267,10 +279,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
             int limit = menu.capability.getLimit(Attribute.DELAY, menu.getWisdom());
 
-            bDelayUp.setPosition(this.leftPos + startX - padding - (perStep * limit), this.topPos + startY);
-            bDelayDown.setPosition(this.leftPos + startX, this.topPos + startY);
-            bDelayUp.visible = true;
-            bDelayDown.visible = true;
+            if(limit > 0) {
+                bDelayUp.setPosition(this.leftPos + startX - padding - (perStep * limit), this.topPos + startY);
+                bDelayDown.setPosition(this.leftPos + startX, this.topPos + startY);
+                bDelayUp.visible = true;
+                bDelayDown.visible = true;
+            }
         }
 
         //Speed
@@ -282,10 +296,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
             int limit = menu.capability.getLimit(Attribute.SPEED, menu.getWisdom());
 
-            bSpeedUp.setPosition(this.leftPos + startX - padding - (perStep * limit), this.topPos + startY - padding - (perStep * limit));
-            bSpeedDown.setPosition(this.leftPos + startX, this.topPos + startY);
-            bSpeedUp.visible = true;
-            bSpeedDown.visible = true;
+            if(limit > 0) {
+                bSpeedUp.setPosition(this.leftPos + startX - padding - (perStep * limit), this.topPos + startY - padding - (perStep * limit));
+                bSpeedDown.setPosition(this.leftPos + startX, this.topPos + startY);
+                bSpeedUp.visible = true;
+                bSpeedDown.visible = true;
+            }
         }
     }
 
