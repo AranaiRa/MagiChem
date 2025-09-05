@@ -70,17 +70,20 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
         builder.addSlot(RecipeIngredientRole.INPUT, 40, 4).addItemStack(recipe.getInputItem());
         if(recipe.hasInputFluidOverride()) {
             builder.addSlot(RecipeIngredientRole.INPUT, 73, 4).addFluidStack(recipe.getInputFluidOverride(), recipe.getBaseFluidConsumed());
+            builder.addSlot(RecipeIngredientRole.INPUT, 73, 4096).addItemStack(recipe.getInputFluidOverride().getBucket().getDefaultInstance()); // hidden bucket item for reference
         } else {
             int baseSize = recipe.getBaseFluidConsumed();
             IRecipeSlotBuilder fluidSlot = builder.addSlot(RecipeIngredientRole.INPUT, 73, 4);
             IRecipeSlotBuilder hiddenItemSlot = builder.addSlot(RecipeIngredientRole.INPUT, 73, 4096);
             int baseStrength = recipe.getMinimumAcidStrength();
             for (Fluid fluid : VitriolationRecipe.getAllFluidsOfAcidStrength(baseStrength)) {
+                if (!fluid.isSource(fluid.defaultFluidState())) continue;
                 fluidSlot.addFluidStack(fluid, baseSize);
                 hiddenItemSlot.addItemStack(new ItemStack(fluid.getBucket()));
             }
             if (baseStrength < 5) {
                 for (Fluid fluid : VitriolationRecipe.getAllFluidsOfAcidStrength(baseStrength + 1)) {
+                    if (!fluid.isSource(fluid.defaultFluidState())) continue;
                     fluidSlot.addFluidStack(fluid, baseSize / 4);
                     hiddenItemSlot.addItemStack(new ItemStack(fluid.getBucket()));
                 }
@@ -88,6 +91,7 @@ public class VitriolationRecipeCategory implements IRecipeCategory<VitriolationR
             if (baseStrength < 4) {
                 for (int level = baseStrength + 2; level <= 5; level++) {
                     for (Fluid fluid : VitriolationRecipe.getAllFluidsOfAcidStrength(level)) {
+                        if (!fluid.isSource(fluid.defaultFluidState())) continue;
                         fluidSlot.addFluidStack(fluid, 1);
                         hiddenItemSlot.addItemStack(new ItemStack(fluid.getBucket()));
                     }
