@@ -113,6 +113,12 @@ public class PacketRegistry {
                 .consumerMainThread(AdvancementQueryC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(WisdomSyncC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(WisdomSyncC2SPacket::new)
+                .encoder(WisdomSyncC2SPacket::toBytes)
+                .consumerMainThread(WisdomSyncC2SPacket::handle)
+                .add();
+
         //Server to Clients
 
         MagiChemMod.CHANNEL.registerMessage(ID(), ParticleSpawnAnointingS2CPacket.class,

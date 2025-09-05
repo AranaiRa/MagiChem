@@ -24,23 +24,111 @@ public class WisdomSpellAdjuster {
 
     // CHECK METHODS
 
+    public static boolean checkSpellDamageAttribute(SpellAdjustingContext context) {
+        if(context.stage != SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)
+            return checkSpellAttribute(context, Attribute.DAMAGE);
+        return false;
+    }
+
+    public static boolean checkSpellDelayAttribute(SpellAdjustingContext context) {
+        if(context.stage != SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)
+            return checkSpellAttribute(context, Attribute.DELAY);
+        return false;
+    }
+
+    public static boolean checkSpellDurationAttribute(SpellAdjustingContext context) {
+        if(context.stage != SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)
+            return checkSpellAttribute(context, Attribute.DURATION);
+        return false;
+    }
+
+    public static boolean checkSpellLesserMagnitudeAttribute(SpellAdjustingContext context) {
+        if(context.stage != SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)
+            return checkSpellAttribute(context, Attribute.LESSER_MAGNITUDE);
+        return false;
+    }
+
+    public static boolean checkSpellMagnitudeAttribute(SpellAdjustingContext context) {
+        if(context.stage != SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)
+            return checkSpellAttribute(context, Attribute.MAGNITUDE);
+        return false;
+    }
+
+    public static boolean checkSpellSpeedAttribute(SpellAdjustingContext context) {
+        if(context.stage != SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)
+            return checkSpellAttribute(context, Attribute.RADIUS);
+        return false;
+    }
+
     public static boolean checkSpellRadiusAttribute(SpellAdjustingContext context) {
-        return true;
-//        return checkSpellAttribute(context, Attribute.RADIUS);
+        if(context.stage != SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)
+            return checkSpellAttribute(context, Attribute.RADIUS);
+        return false;
+    }
+
+    public static boolean checkSpellRangeAttribute(SpellAdjustingContext context) {
+        if(context.stage != SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)
+            return checkSpellAttribute(context, Attribute.RANGE);
+        return false;
     }
 
     // MODIFY METHODS
 
+    public static void modifySpellDamageAttribute(SpellAdjustingContext context) {
+        if(context.caster instanceof Player p) {
+            modifySpellAttribute(context, Attribute.DAMAGE, getWisdomAdjustmentForAttribute(p, Attribute.DAMAGE));
+        }
+    }
+
+    public static void modifySpellDelayAttribute(SpellAdjustingContext context) {
+        if(context.caster instanceof Player p) {
+            modifySpellAttribute(context, Attribute.DELAY, getWisdomAdjustmentForAttribute(p, Attribute.DELAY));
+        }
+    }
+
+    public static void modifySpellDurationAttribute(SpellAdjustingContext context) {
+        if(context.caster instanceof Player p) {
+            modifySpellAttribute(context, Attribute.DURATION, getWisdomAdjustmentForAttribute(p, Attribute.DURATION));
+        }
+    }
+
+    public static void modifySpellLesserMagnitudeAttribute(SpellAdjustingContext context) {
+        if(context.caster instanceof Player p) {
+            modifySpellAttribute(context, Attribute.LESSER_MAGNITUDE, getWisdomAdjustmentForAttribute(p, Attribute.LESSER_MAGNITUDE));
+        }
+    }
+
+    public static void modifySpellMagnitudeAttribute(SpellAdjustingContext context) {
+        if(context.caster instanceof Player p) {
+            modifySpellAttribute(context, Attribute.MAGNITUDE, getWisdomAdjustmentForAttribute(p, Attribute.MAGNITUDE));
+        }
+    }
+
+    public static void modifySpellSpeedAttribute(SpellAdjustingContext context) {
+        if(context.caster instanceof Player p) {
+            modifySpellAttribute(context, Attribute.SPEED, getWisdomAdjustmentForAttribute(p, Attribute.SPEED));
+        }
+    }
+
     public static void modifySpellRadiusAttribute(SpellAdjustingContext context) {
         if(context.caster instanceof Player p) {
             modifySpellAttribute(context, Attribute.RADIUS, getWisdomAdjustmentForAttribute(p, Attribute.RADIUS));
+            modifySpellAttribute(context, Attribute.DEPTH, getWisdomAdjustmentForAttribute(p, Attribute.DEPTH));
+            modifySpellAttribute(context, Attribute.WIDTH, getWisdomAdjustmentForAttribute(p, Attribute.WIDTH));
+            modifySpellAttribute(context, Attribute.HEIGHT, getWisdomAdjustmentForAttribute(p, Attribute.HEIGHT));
+        }
+    }
+
+    public static void modifySpellRangeAttribute(SpellAdjustingContext context) {
+        if(context.caster instanceof Player p) {
+            modifySpellAttribute(context, Attribute.RANGE, getWisdomAdjustmentForAttribute(p, Attribute.RANGE));
         }
     }
 
     // BASE METHODS
 
     private static int getWisdomAdjustmentForAttribute(Player player, Attribute attribute) {
-        return 1;
+        return 3;
     }
 
     private static boolean checkSpellAttribute(SpellAdjustingContext context, Attribute attribute) {
@@ -54,9 +142,12 @@ public class WisdomSpellAdjuster {
             });
         });
 
-        if(hasWisdom.booleanValue()) {
+        if(hasWisdom.booleanValue() && context.spell.getShape() != null) {
             if (context.caster instanceof Player && (context.stage == SpellCastStage.CASTING || context.stage == SpellCastStage.SPELL_TOOLTIP || context.stage == SpellCastStage.CALCULATING_MANA_COST || context.stage == SpellCastStage.SPELLCRAFTING_MANA_COST_ESTIMATE)) {
                 final List<IModifiedSpellPart<SpellEffect>> components = context.spell.getComponents();
+
+                ImmutableList<Attribute> shapeAttributes = context.spell.getShape().getContainedAttributes();
+                if(shapeAttributes.contains(attribute)) return true;
 
                 for (IModifiedSpellPart<SpellEffect> component : components) {
                     final ImmutableList<Attribute> containedAttributes = component.getContainedAttributes();
@@ -84,7 +175,7 @@ public class WisdomSpellAdjuster {
 
             pContext.spell.iterateComponents((c) -> {
                 for (Attribute attributeQuery : c.getContainedAttributes()) {
-                    if (attributeQuery == Attribute.DAMAGE) {
+                    if (attributeQuery == pAttribute) {
                         c.setValue(attributeQuery, Math.max(0, (c.getValue(attributeQuery) + pSteps)));
                     }
                 }

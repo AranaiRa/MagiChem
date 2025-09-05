@@ -1,6 +1,8 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.block.entity.ext.*;
+import com.aranaira.magichem.capabilities.wisdom.IWisdomCapability;
+import com.aranaira.magichem.capabilities.wisdom.WisdomProvider;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.*;
@@ -586,6 +588,9 @@ public class CommonEventHandler {
     public static void onAttachCapability(AttachCapabilitiesEvent<?> event) {
         if(event.getObject() instanceof AbstractBlockEntityWithEfficiency) {
             event.addCapability(IGrimeCapability.GRIME, new GrimeProvider());
+        }
+        else if(event.getObject() instanceof Player) {
+            event.addCapability(IWisdomCapability.WISDOM, new WisdomProvider());
         }
     }
 

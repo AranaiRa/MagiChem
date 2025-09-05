@@ -169,6 +169,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.MIRROR_LABYRINTH_MENU.get(), MirrorLabyrinthScreen::new);
                 MenuScreens.register(MenuRegistry.MATERIA_REFLECTOR_MENU.get(), MateriaReflectorScreen::new);
                 MenuScreens.register(MenuRegistry.ELDRIN_ORRERY_MENU.get(), EldrinOrreryScreen::new);
+                MenuScreens.register(MenuRegistry.WISDOM_MENU.get(), WisdomScreen::new);
 
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID_FLOWING.get(), RenderType.translucent());

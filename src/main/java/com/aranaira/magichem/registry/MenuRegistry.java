@@ -93,6 +93,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<EldrinOrreryMenu>> ELDRIN_ORRERY_MENU =
             registerMenuType(EldrinOrreryMenu::new, "eldrin_orrery");
 
+    public static final RegistryObject<MenuType<WisdomMenu>> WISDOM_MENU =
+            registerMenuType(WisdomMenu::new, "wisdom");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

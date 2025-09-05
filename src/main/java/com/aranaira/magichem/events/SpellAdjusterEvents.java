@@ -18,6 +18,13 @@ public class SpellAdjusterEvents {
 
     @SubscribeEvent
     public static void onLoadComplete(FMLLoadCompleteEvent event) {
+        SpellCaster.registerAdjuster(WisdomSpellAdjuster::checkSpellDamageAttribute, WisdomSpellAdjuster::modifySpellDamageAttribute);
+        SpellCaster.registerAdjuster(WisdomSpellAdjuster::checkSpellDelayAttribute, WisdomSpellAdjuster::modifySpellDelayAttribute);
+        SpellCaster.registerAdjuster(WisdomSpellAdjuster::checkSpellDurationAttribute, WisdomSpellAdjuster::modifySpellDurationAttribute);
+        SpellCaster.registerAdjuster(WisdomSpellAdjuster::checkSpellLesserMagnitudeAttribute, WisdomSpellAdjuster::modifySpellLesserMagnitudeAttribute);
+        SpellCaster.registerAdjuster(WisdomSpellAdjuster::checkSpellMagnitudeAttribute, WisdomSpellAdjuster::modifySpellMagnitudeAttribute);
         SpellCaster.registerAdjuster(WisdomSpellAdjuster::checkSpellRadiusAttribute, WisdomSpellAdjuster::modifySpellRadiusAttribute);
+        SpellCaster.registerAdjuster(WisdomSpellAdjuster::checkSpellRangeAttribute, WisdomSpellAdjuster::modifySpellRangeAttribute);
+        SpellCaster.registerAdjuster(WisdomSpellAdjuster::checkSpellSpeedAttribute, WisdomSpellAdjuster::modifySpellSpeedAttribute);
     }
 }
