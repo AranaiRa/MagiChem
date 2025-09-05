@@ -2573,7 +2573,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " end up in the smaller tank to its left.\n\nThe main tank will "
+            "text": " end up in the smaller tank to its left.\n\nFluid can only be inserted into the large, central main tank.\n\nThe main tank will "
           },
           {
             "text": "emit steam",
@@ -3215,7 +3215,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " item from the slot. Inserting this item back into the slot later will allow you to resume the craft where you left off. If you right click while bottles are in your inventory, consumed materia will be bottled and also extracted. There is no way to retrieve spent Academic Slurry."
+            "text": " item from the slot. Inserting this item back into the slot later will allow you to resume the craft where you left off."
           }
         ]
       }

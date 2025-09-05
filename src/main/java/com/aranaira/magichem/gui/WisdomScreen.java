@@ -341,7 +341,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
         pGuiGraphics.blit(TEXTURE, x+127, y+108, 240, 176, 16, 16); //Magnitude
         pGuiGraphics.blit(TEXTURE, x+97, y+120, 240, 64, 16, 16); //Damage
 
-        //Upgrade pips
+        //Upgrade chevrons
         {
             //Radius
             {
@@ -436,9 +436,36 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
             buttonsReadyForWisdomShift = menu.getWisdom() > 0;
             if(buttonsReadyForWisdomShift) {
                 setButtonPositionsForWisdomLimits();
+                capModifiersIfOverLimit();
                 buttonsShiftedToFinalPosition = true;
             }
         }
+    }
+
+    private void capModifiersIfOverLimit() {
+        int radiusLimit = menu.capability.getLimit(Attribute.RADIUS, menu.getWisdom());
+        if(menu.capability.getValue(Attribute.RADIUS) > radiusLimit) menu.capability.setValue(Attribute.RADIUS, radiusLimit);
+
+        int rangeLimit = menu.capability.getLimit(Attribute.RANGE, menu.getWisdom());
+        if(menu.capability.getValue(Attribute.RANGE) > rangeLimit) menu.capability.setValue(Attribute.RANGE, rangeLimit);
+
+        int durationLimit = menu.capability.getLimit(Attribute.DURATION, menu.getWisdom());
+        if(menu.capability.getValue(Attribute.DURATION) > durationLimit) menu.capability.setValue(Attribute.DURATION, durationLimit);
+
+        int magnitudeLimit = menu.capability.getLimit(Attribute.MAGNITUDE, menu.getWisdom());
+        if(menu.capability.getValue(Attribute.MAGNITUDE) > magnitudeLimit) menu.capability.setValue(Attribute.MAGNITUDE, magnitudeLimit);
+
+        int damageLimit = menu.capability.getLimit(Attribute.DAMAGE, menu.getWisdom());
+        if(menu.capability.getValue(Attribute.DAMAGE) > damageLimit) menu.capability.setValue(Attribute.DAMAGE, damageLimit);
+
+        int lesserMagnitudeLimit = menu.capability.getLimit(Attribute.LESSER_MAGNITUDE, menu.getWisdom());
+        if(menu.capability.getValue(Attribute.LESSER_MAGNITUDE) > lesserMagnitudeLimit) menu.capability.setValue(Attribute.LESSER_MAGNITUDE, lesserMagnitudeLimit);
+
+        int delayLimit = menu.capability.getLimit(Attribute.DELAY, menu.getWisdom());
+        if(menu.capability.getValue(Attribute.DELAY) > delayLimit) menu.capability.setValue(Attribute.DELAY, delayLimit);
+
+        int speedLimit = menu.capability.getLimit(Attribute.SPEED, menu.getWisdom());
+        if(menu.capability.getValue(Attribute.SPEED) > speedLimit) menu.capability.setValue(Attribute.SPEED, speedLimit);
     }
 
     @Override
