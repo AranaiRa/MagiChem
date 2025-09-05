@@ -180,7 +180,9 @@ public class WisdomSpellAdjuster {
             pContext.spell.iterateComponents((c) -> {
                 for (Attribute attributeQuery : c.getContainedAttributes()) {
                     if (attributeQuery == pAttribute) {
-                        c.setValue(attributeQuery, Math.max(0, (c.getValue(attributeQuery) + pSteps)));
+//                        c.setValue(attributeQuery, Math.max(0, (c.getValue(attributeQuery) + pSteps)));
+                        for(int i=0;i<pSteps;i++)
+                            c.stepUpIgnoreMax(pAttribute);
                     }
                 }
             });
