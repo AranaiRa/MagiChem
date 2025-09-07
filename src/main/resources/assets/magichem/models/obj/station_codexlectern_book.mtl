@@ -1,0 +1,8 @@
+# Blender MTL File: 'wizard_lab_blocks.blend'
+# Material Count: 2
+
+newmtl MAIN.003
+map_Kd magichem:item/codex_materia
+
+newmtl THESIS_DESK
+map_Kd mna:block/artifice/wizard_lab/laboratory_thesisdesk

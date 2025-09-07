@@ -1,0 +1,48 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "children": {
+    "crystal": {
+      "loader": "forge:obj",
+      "automatic_culling": true,
+      "shade_quads": true,
+      "flip_v": true,
+      "emissive_ambient": false,
+      "model": "mna:models/item/obj/wizard_lab/station_codex_lectern_inventory.obj"
+    }
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "scale": [0.4, 0.4, 0.4],
+      "rotation": [75, 135, 0],
+      "translation": [0, 0, 1]
+    },
+    "thirdperson_lefthand": {
+      "scale": [0.4, 0.4, 0.4],
+      "rotation": [75, 135, 0],
+      "translation": [0, 0, 1]
+    },
+    "firstperson_righthand": {
+      "scale": [0.25, 0.25, 0.25],
+      "rotation": [-15, 180, 0]
+    },
+    "firstperson_lefthand": {
+      "scale": [0.25, 0.25, 0.25],
+      "rotation": [-15, 180, 0]
+    },
+    "ground": {
+      "rotation": [-6, -180, 0],
+      "translation": [0, 0.25, -0.5],
+      "scale": [0.25, 0.25, 0.25]
+    },
+    "gui": {
+      "rotation": [29, 225, 0],
+      "scale": [0.5, 0.5, 0.5],
+      "translation": [0, -1.5, 0]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    }
+  }
+}

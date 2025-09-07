@@ -1,10 +1,29 @@
 package com.aranaira.magichem.item;
 
+import com.aranaira.magichem.block.LecternWithCodexMateriaBlock;
 import com.aranaira.magichem.item.renderer.mna.CodexMateriaItemRenderer;
 import com.aranaira.magichem.item.renderer.mna.SublimationPrimerItemRenderer;
+import com.aranaira.magichem.registry.BlockRegistry;
+import com.mna.api.blocks.WizardLabBlock;
+import com.mna.blocks.BlockInit;
+import com.mna.blocks.artifice.BookStandBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.util.NonNullLazy;
 
@@ -27,5 +46,34 @@ public class CodexMateriaItem extends Item {
                 return this.renderer.get();
             }
         });
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext pContext) {
+        BlockState stateQuery = pContext.getLevel().getBlockState(pContext.getClickedPos());
+        if(stateQuery.getBlock() == BlockInit.BOOK_STAND.get()) {
+            if(!stateQuery.getValue(BookStandBlock.BOOK)) {
+                if(!pContext.getLevel().isClientSide()) {
+                    boolean left = stateQuery.getValue(WizardLabBlock.LEFT);
+                    boolean right = stateQuery.getValue(WizardLabBlock.RIGHT);
+                    final Direction dir = stateQuery.getValue(HorizontalDirectionalBlock.FACING);
+
+                    BlockState newState = BlockRegistry.LECTERN_WITH_CODEX_MATERIA.get().defaultBlockState()
+                            .setValue(WizardLabBlock.LEFT, left)
+                            .setValue(WizardLabBlock.RIGHT, right)
+                            .setValue(HorizontalDirectionalBlock.FACING, dir);
+                    pContext.getLevel().setBlock(pContext.getClickedPos().above(), Blocks.AIR.defaultBlockState(), 3);
+                    pContext.getLevel().setBlock(pContext.getClickedPos(), newState, 3);
+                }
+                pContext.getPlayer().setItemInHand(pContext.getHand(), ItemStack.EMPTY);
+                return InteractionResult.CONSUME;
+            }
+        }
+        return super.useOn(pContext);
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        return super.use(pLevel, pPlayer, pUsedHand);
     }
 }

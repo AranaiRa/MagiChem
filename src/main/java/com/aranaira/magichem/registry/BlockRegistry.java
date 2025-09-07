@@ -617,6 +617,11 @@ public class BlockRegistry {
                     .strength(0.125f).forceSolidOn())
     );
 
+    public static final RegistryObject<LecternWithCodexMateriaBlock> LECTERN_WITH_CODEX_MATERIA = registerBlock("lectern_with_codex_materia",
+            () -> new LecternWithCodexMateriaBlock(BlockBehaviour.Properties.of()
+                    .strength(0.125f).forceSolidOn())
+    );
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

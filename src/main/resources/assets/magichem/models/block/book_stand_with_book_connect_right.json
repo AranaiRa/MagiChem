@@ -1,0 +1,25 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:composite",
+  "textures": {
+  	"particle": "mna:block/artifice/wizard_lab/inscription_table"
+  },
+  "children": {
+    "table": {
+      "loader": "forge:obj",
+      "automatic_culling": false,
+	  "shade_quads": false,
+	  "flip_v": true,
+	  "emissive_ambient": true,
+      "model": "mna:models/block/obj/wizard_lab/desk_right.obj"
+    },
+    "deco": {
+      "loader": "forge:obj",
+      "automatic_culling": false,
+	  "shade_quads": false,
+	  "flip_v": true,
+	  "emissive_ambient": true,
+      "model": "magichem:models/obj/station_codexlectern_book.obj"
+    }
+  }
+}

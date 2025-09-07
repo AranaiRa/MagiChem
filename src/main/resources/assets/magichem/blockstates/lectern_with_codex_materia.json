@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "facing=east,left=false,right=false": { "model": "magichem:block/book_stand_with_book_standalone", "y": 90 },
+    "facing=east,left=true,right=false": { "model": "magichem:block/book_stand_with_book_connect_left", "y": 90 },
+    "facing=east,left=true,right=true": { "model": "magichem:block/book_stand_with_book_center", "y": 90 },
+    "facing=east,left=false,right=true": { "model": "magichem:block/book_stand_with_book_connect_right", "y": 90 },
+
+    "facing=west,left=false,right=false": { "model": "magichem:block/book_stand_with_book_standalone", "y": 270 },
+    "facing=west,left=true,right=false": { "model": "magichem:block/book_stand_with_book_connect_left", "y": 270 },
+    "facing=west,left=true,right=true": { "model": "magichem:block/book_stand_with_book_center", "y": 270 },
+    "facing=west,left=false,right=true": { "model": "magichem:block/book_stand_with_book_connect_right", "y": 270 },
+
+    "facing=north,left=false,right=false": { "model": "magichem:block/book_stand_with_book_standalone" },
+    "facing=north,left=true,right=false": { "model": "magichem:block/book_stand_with_book_connect_left" },
+    "facing=north,left=true,right=true": { "model": "magichem:block/book_stand_with_book_center" },
+    "facing=north,left=false,right=true": { "model": "magichem:block/book_stand_with_book_connect_right" },
+
+    "facing=south,left=false,right=false": { "model": "magichem:block/book_stand_with_book_standalone", "y": 180 },
+    "facing=south,left=true,right=false": { "model": "magichem:block/book_stand_with_book_connect_left", "y": 180 },
+    "facing=south,left=true,right=true": { "model": "magichem:block/book_stand_with_book_center", "y": 180 },
+    "facing=south,left=false,right=true": { "model": "magichem:block/book_stand_with_book_connect_right", "y": 180 }
+  }
+}
