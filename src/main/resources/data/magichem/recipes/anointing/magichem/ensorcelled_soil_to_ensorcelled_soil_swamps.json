@@ -1,7 +1,7 @@
 {
   "type": "magichem:anointing",
-  "targetBlock": "magichem:enchanted_soil",
+  "targetBlock": "magichem:ensorcelled_soil",
   "materia": "magichem:admixture_swamps",
   "chance": 100.0,
-  "result": "magichem:enchanted_soil_swamps"
+  "result": "magichem:ensorcelled_soil_swamps"
 }
