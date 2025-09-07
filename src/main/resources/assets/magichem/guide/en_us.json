@@ -10998,35 +10998,35 @@
     "related_recipes": [
       {
         "type": "crafting",
-        "location": "magichem:shapeless/enchanted_fertilizer"
+        "location": "magichem:shapeless/ensorcelled_fertilizer"
       },
       {
         "type": "fulmination",
-        "location": "magichem:alchemical_fulmination/magichem/enchanted_fertilizer"
+        "location": "magichem:alchemical_fulmination/magichem/ensorcelled_fertilizer"
       },
       {
         "type": "sublimation",
-        "location": "magichem:alchemical_sublimation/magichem/enchanted_soil"
+        "location": "magichem:alchemical_sublimation/magichem/ensorcelled_soil"
       },
       {
         "type": "anointing",
-        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_forests"
+        "location": "magichem:anointing/magichem/ensorcelled_soil_to_ensorcelled_soil_forests"
       },
       {
         "type": "anointing",
-        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_wastes"
+        "location": "magichem:anointing/magichem/ensorcelled_soil_to_ensorcelled_soil_wastes"
       },
       {
         "type": "anointing",
-        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_plains"
+        "location": "magichem:anointing/magichem/ensorcelled_soil_to_ensorcelled_soil_plains"
       },
       {
         "type": "anointing",
-        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_swamps"
+        "location": "magichem:anointing/magichem/ensorcelled_soil_to_ensorcelled_soil_swamps"
       },
       {
         "type": "anointing",
-        "location": "magichem:anointing/magichem/enchanted_soil_to_enchanted_soil_depths"
+        "location": "magichem:anointing/magichem/ensorcelled_soil_to_ensorcelled_soil_depths"
       }
     ]
   },

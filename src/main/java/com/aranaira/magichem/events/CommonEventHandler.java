@@ -24,6 +24,7 @@ import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.InteropUtil;
 import com.mna.api.events.construct.ConstructSprayEffectEvent;
 import com.mna.api.events.construct.ConstructSprayTargetingEvent;
+import com.mna.entities.utility.WanderingWizard;
 import com.mna.items.ItemInit;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -41,7 +42,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -704,6 +708,47 @@ public class CommonEventHandler {
 
                         event.setResult(Event.Result.DENY);
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityActivated(PlayerInteractEvent.EntityInteract event) {
+        //Trade Codex Materia for Codex Arcana with the Wandering Wizard and vice versa
+        if(event.getTarget() instanceof WanderingWizard ww) {
+            if(event.getEntity().getItemInHand(event.getHand()).getItem() == ItemInit.GUIDE_BOOK.get() || event.getEntity().getItemInHand(event.getHand()).getItem() == ItemRegistry.CODEX_MATERIA.get()) {
+                event.setCancellationResult(InteractionResult.CONSUME);
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityActivatedWithItem(PlayerInteractEvent.EntityInteract event) {
+        if(event.getTarget() instanceof WanderingWizard ww) {
+            if(event.getEntity().getItemInHand(event.getHand()).getItem() == ItemInit.GUIDE_BOOK.get()) {
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.CONSUME);
+                if(!event.getLevel().isClientSide()) {
+                    event.getEntity().setItemInHand(event.getHand(), ItemStack.EMPTY);
+                    SimpleContainer codex = new SimpleContainer(1);
+                    codex.setItem(0, new ItemStack(ItemRegistry.CODEX_MATERIA.get()));
+                    Containers.dropContents(event.getLevel(), ww, codex);
+                } else {
+                    event.getEntity().sendSystemMessage(Component.translatable("chat.magichem.trade_for_codex_materia"));
+                }
+            }
+            else if(event.getEntity().getItemInHand(event.getHand()).getItem() == ItemRegistry.CODEX_MATERIA.get()) {
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.CONSUME);
+                if(!event.getLevel().isClientSide()) {
+                    event.getEntity().setItemInHand(event.getHand(), ItemStack.EMPTY);
+                    SimpleContainer codex = new SimpleContainer(1);
+                    codex.setItem(0, new ItemStack(ItemInit.GUIDE_BOOK.get()));
+                    Containers.dropContents(event.getLevel(), ww, codex);
+                } else {
+                    event.getEntity().sendSystemMessage(Component.translatable("chat.magichem.trade_for_codex_arcana"));
                 }
             }
         }

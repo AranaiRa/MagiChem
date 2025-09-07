@@ -220,6 +220,7 @@
   "block.magichem.grand_distillery_router": "Grand Distillery",
   "block.magichem.grand_fusery": "Grand Fusery",
   "block.magichem.grand_fusery_router": "Grand Fusery",
+  "block.magichem.lectern_with_codex_materia": "Lectern",
   "block.magichem.magic_mirror": "Magic Mirror",
   "block.magichem.materia_jar": "Materia Jar",
   "block.magichem.materia_jar_quad": "Materia Jar Quad",
@@ -1471,6 +1472,9 @@
   "mechanic.lumins.lunar": "Lunar Lumins",
   "mechanic.lumins.sidereal": "Sidereal Lumins",
   "mechanic.lumins.solar": "Solar Lumins",
+
+  "chat.magichem.trade_for_codex_materia": "<Wandering Wizard> Interested in my notes on alchemy, are you? Don't drop it on your foot, it's heavy. You might break something.",
+  "chat.magichem.trade_for_codex_arcana": "<Wandering Wizard> You want your book back? Fine. Give me back my notes.",
 
   "death.attack.magichem_acid": "%s dissolved away",
 
