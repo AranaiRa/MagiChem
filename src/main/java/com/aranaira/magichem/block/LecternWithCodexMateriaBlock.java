@@ -1,16 +1,21 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.blocks.WizardLabBlock;
 import com.mna.api.tools.BlockUtilities;
+import com.mna.blocks.BlockInit;
+import com.mna.blocks.artifice.BookStandBlock;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,8 +25,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-public class LecternWithCodexMateriaBlock extends Block implements INoCreativeTab {
+public class LecternWithCodexMateriaBlock extends WizardLabBlock implements INoCreativeTab {
     private static final VoxelShape OFFSET_SHAPE_NORTH = Shapes.or(Block.box(3.0D, 0.0D, 3.0D, 13.0D, 3.0D, 13.0D), new VoxelShape[]{Block.box(2.0D, 0.0D, 13.0D, 14.0D, 3.0D, 15.0D), Block.box(3.5D, 3.0D, 13.5D, 4.5D, 6.0D, 14.5D), Block.box(11.5D, 3.0D, 13.5D, 12.5D, 6.0D, 14.5D), Block.box(2.5D, 4.0D, 13.0D, 13.5D, 5.0D, 14.0D)});
     private static final VoxelShape OFFSET_SHAPE_EAST;
     private static final VoxelShape OFFSET_SHAPE_SOUTH;
@@ -35,28 +41,41 @@ public class LecternWithCodexMateriaBlock extends Block implements INoCreativeTa
         super(pProperties);
     }
 
+    @Nullable
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(WizardLabBlock.LEFT, WizardLabBlock.RIGHT, HorizontalDirectionalBlock.FACING);
+    protected MenuProvider getProvider(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        return null;
     }
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        if(pPlayer.isCrouching()) {
+            boolean left = pState.getValue(WizardLabBlock.LEFT);
+            boolean right = pState.getValue(WizardLabBlock.RIGHT);
+            final Direction dir = pState.getValue(HorizontalDirectionalBlock.FACING);
+
+            BlockState newState = BlockInit.BOOK_STAND.get().defaultBlockState()
+                    .setValue(WizardLabBlock.LEFT, left)
+                    .setValue(WizardLabBlock.RIGHT, right)
+                    .setValue(HorizontalDirectionalBlock.FACING, dir);
+            pLevel.setBlock(pPos, Blocks.AIR.defaultBlockState(), 4);
+            pLevel.setBlock(pPos, newState, 3);
+        }
+
+        return InteractionResult.PASS;
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        switch((Direction)pState.getValue(HorizontalDirectionalBlock.FACING)) {
+    public VoxelShape getOffsetShape(BlockPos delta, BlockState parentState, BlockPos parentPos, BlockGetter pLevel, CollisionContext pContext) {
+        switch((Direction)parentState.getValue(HorizontalDirectionalBlock.FACING)) {
             case EAST:
-                return OFFSET_SHAPE_EAST;
+                return OFFSET_WITH_BOOK_SHAPE_EAST;
             case NORTH:
-                return OFFSET_SHAPE_NORTH;
+                return OFFSET_WITH_BOOK_SHAPE_NORTH;
             case SOUTH:
-                return OFFSET_SHAPE_SOUTH;
+                return OFFSET_WITH_BOOK_SHAPE_SOUTH;
             case WEST:
-                return OFFSET_SHAPE_WEST;
+                return OFFSET_WITH_BOOK_SHAPE_WEST;
             default:
                 return Shapes.block();
         }
@@ -65,6 +84,16 @@ public class LecternWithCodexMateriaBlock extends Block implements INoCreativeTa
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            SimpleContainer inv = new SimpleContainer(1);
+            inv.setItem(0, new ItemStack(ItemRegistry.CODEX_MATERIA.get()));
+            Containers.dropContents(level, pos, inv);
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     static {

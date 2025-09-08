@@ -15,6 +15,7 @@
     },
     "deco": {
       "loader": "forge:obj",
+      "render_type": "minecraft:cutout",
       "automatic_culling": false,
 	  "shade_quads": false,
 	  "flip_v": true,

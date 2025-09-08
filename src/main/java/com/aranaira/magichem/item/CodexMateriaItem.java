@@ -49,30 +49,6 @@ public class CodexMateriaItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        BlockState stateQuery = pContext.getLevel().getBlockState(pContext.getClickedPos());
-        if(stateQuery.getBlock() == BlockInit.BOOK_STAND.get()) {
-            if(!stateQuery.getValue(BookStandBlock.BOOK)) {
-                if(!pContext.getLevel().isClientSide()) {
-                    boolean left = stateQuery.getValue(WizardLabBlock.LEFT);
-                    boolean right = stateQuery.getValue(WizardLabBlock.RIGHT);
-                    final Direction dir = stateQuery.getValue(HorizontalDirectionalBlock.FACING);
-
-                    BlockState newState = BlockRegistry.LECTERN_WITH_CODEX_MATERIA.get().defaultBlockState()
-                            .setValue(WizardLabBlock.LEFT, left)
-                            .setValue(WizardLabBlock.RIGHT, right)
-                            .setValue(HorizontalDirectionalBlock.FACING, dir);
-                    pContext.getLevel().setBlock(pContext.getClickedPos().above(), Blocks.AIR.defaultBlockState(), 3);
-                    pContext.getLevel().setBlock(pContext.getClickedPos(), newState, 3);
-                }
-                pContext.getPlayer().setItemInHand(pContext.getHand(), ItemStack.EMPTY);
-                return InteractionResult.CONSUME;
-            }
-        }
-        return super.useOn(pContext);
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         return super.use(pLevel, pPlayer, pUsedHand);
     }
