@@ -150,6 +150,15 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                             craftingStage = 0;
                             itemScale = ITEM_SCALE_START;
                             itemRotSpeed = ITEM_SPEED_MIN;
+                            satisfactionDemands.clear();
+                            final NonNullList<ItemStack> stageOneMateriaRequirements = currentRecipe.getStages(false).get(0).componentMateria;
+                            for(int i = 0; i< stageOneMateriaRequirements.size(); i++) {
+                                satisfactionDemands.add(new Triplet<>(
+                                        (MateriaItem)stageOneMateriaRequirements.get(i).getItem(),
+                                        stageOneMateriaRequirements.get(i).getCount(),
+                                        false
+                                ));
+                            }
                         }
 
                         syncAndSave();
