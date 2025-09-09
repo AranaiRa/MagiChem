@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.gui.CodexMateriaMenu;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.blocks.WizardLabBlock;
@@ -9,8 +10,14 @@ import com.mna.blocks.artifice.BookStandBlock;
 import com.mna.items.base.INoCreativeTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,6 +32,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class LecternWithCodexMateriaBlock extends WizardLabBlock implements INoCreativeTab {
@@ -60,6 +68,20 @@ public class LecternWithCodexMateriaBlock extends WizardLabBlock implements INoC
                     .setValue(HorizontalDirectionalBlock.FACING, dir);
             pLevel.setBlock(pPos, Blocks.AIR.defaultBlockState(), 4);
             pLevel.setBlock(pPos, newState, 3);
+        } else if(!pLevel.isClientSide()){
+            NetworkHooks.openScreen((ServerPlayer)pPlayer, new SimpleMenuProvider(new MenuProvider() {
+                @Override
+                public Component getDisplayName() {
+                    return Component.empty();
+                }
+
+                @Nullable
+                @Override
+                public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pInternalPlayer) {
+                    ContainerData data = new SimpleContainerData(0);
+                    return new CodexMateriaMenu(pContainerId, pPlayerInventory, data);
+                }
+            }, Component.empty()));
         }
 
         return InteractionResult.PASS;

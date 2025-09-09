@@ -96,6 +96,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<WisdomMenu>> WISDOM_MENU =
             registerMenuType(WisdomMenu::new, "wisdom");
 
+    public static final RegistryObject<MenuType<CodexMateriaMenu>> CODEX_MATERIA_MENU =
+            registerMenuType(CodexMateriaMenu::new, "codex_materia");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
