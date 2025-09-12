@@ -19,6 +19,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WisdomSpellAdjuster {
     private static final TagKey<Item>
@@ -130,9 +131,9 @@ public class WisdomSpellAdjuster {
     // BASE METHODS
 
     private static int getWisdomAdjustmentForAttribute(Player pPlayer, Attribute pAttribute) {
-        final IWisdomCapability capability = WisdomProvider.getCapability(pPlayer);
+        final Optional<IWisdomCapability> capability = WisdomProvider.getCapability(pPlayer);
 
-        return capability.getValue(pAttribute);
+        return capability.map(iWisdomCapability -> iWisdomCapability.getValue(pAttribute)).orElse(0);
     }
 
     private static boolean checkSpellAttribute(SpellAdjustingContext context, Attribute attribute) {

@@ -8,6 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class WisdomSyncS2CPacket {
@@ -31,8 +32,8 @@ public class WisdomSyncS2CPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         LocalPlayer player = Minecraft.getInstance().player;
         if(player != null) {
-            final IWisdomCapability capability = WisdomProvider.getCapability(player);
-            WisdomProvider.deserializeShorts(capability, cardinal, intercardinal);
+            final Optional<IWisdomCapability> capability = WisdomProvider.getCapability(player);
+            capability.ifPresent(iWisdomCapability -> WisdomProvider.deserializeShorts(iWisdomCapability, cardinal, intercardinal));
         }
 
         return true;

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class WisdomSyncC2SPacket {
@@ -35,8 +36,8 @@ public class WisdomSyncC2SPacket {
         Player player = context.getSender();
 
         context.enqueueWork(() -> {
-            final IWisdomCapability capability = WisdomProvider.getCapability(player);
-            WisdomProvider.deserializeShorts(capability, cardinal, intercardinal);
+            final Optional<IWisdomCapability> capability = WisdomProvider.getCapability(player);
+            capability.ifPresent(iWisdomCapability -> WisdomProvider.deserializeShorts(iWisdomCapability, cardinal, intercardinal));
         });
 
         return true;
