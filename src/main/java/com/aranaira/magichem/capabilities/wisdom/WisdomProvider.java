@@ -114,13 +114,12 @@ public class WisdomProvider implements ICapabilitySerializable<Tag> {
                 (pIntercardinal & 0b1111000000000000) >> 12);
     }
 
-    public static IWisdomCapability getCapability(Player entity) {
+    public static Optional<IWisdomCapability> getCapability(Player entity) {
         Optional<IWisdomCapability> wisdomCapability = entity.getCapability(WisdomProvider.WISDOM).resolve();
         if(wisdomCapability.isEmpty()) {
-            String errorMessage = "Player "+entity.toString()+" had no Wisdom capability!";
+            String errorMessage = "Player \""+entity.getDisplayName()+"\" had no Wisdom capability!";
             MagiChemMod.LOGGER.error(errorMessage);
-            throw new Error(errorMessage);
         }
-        return wisdomCapability.get();
+        return wisdomCapability;
     }
 }

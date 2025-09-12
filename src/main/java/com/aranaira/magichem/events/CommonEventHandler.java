@@ -90,10 +90,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
@@ -367,16 +364,19 @@ public class CommonEventHandler {
                 }
             }
         }
-        else if(event.getEntity() instanceof ServerPlayer sp) {
+        else if(event.getEntity() instanceof ServerPlayer sp && !sp.level().isClientSide()) {
             sp.sendSystemMessage(Component.translatable("feedback.warning.api_bug_tier_tooltips"));
 
-            final Pair<Short, Short> cardinalIntercardinalPair = WisdomProvider.serializeShorts(WisdomProvider.getCapability(sp));
+            final Optional<IWisdomCapability> wisdomCap = WisdomProvider.getCapability(sp);
+            if(wisdomCap.isPresent()) {
+                final Pair<Short, Short> cardinalIntercardinalPair = WisdomProvider.serializeShorts(wisdomCap.get());
 
-            MagiChemMod.CHANNEL.send(
-                    PacketDistributor.PLAYER.with(() -> sp), new WisdomSyncS2CPacket(
-                    cardinalIntercardinalPair.getFirst(),
-                    cardinalIntercardinalPair.getSecond()
-            ));
+                MagiChemMod.CHANNEL.send(
+                        PacketDistributor.PLAYER.with(() -> sp), new WisdomSyncS2CPacket(
+                                cardinalIntercardinalPair.getFirst(),
+                                cardinalIntercardinalPair.getSecond()
+                        ));
+            }
         }
     }
 

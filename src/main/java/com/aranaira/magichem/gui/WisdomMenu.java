@@ -26,6 +26,8 @@ import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
+import java.util.Optional;
+
 public class WisdomMenu extends AbstractContainerMenu {
     public Inventory playerInventory;
     public IWisdomCapability capability;
@@ -40,7 +42,8 @@ public class WisdomMenu extends AbstractContainerMenu {
 
         this.data = data;
         playerInventory = inv;
-        capability = WisdomProvider.getCapability(playerInventory.player);
+        Optional<IWisdomCapability> capQuery = WisdomProvider.getCapability(playerInventory.player);
+        capability = capQuery.orElse(null);
         addDataSlots(data);
     }
 
@@ -50,7 +53,7 @@ public class WisdomMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        return true;
+        return capability != null;
     }
 
     @Override
