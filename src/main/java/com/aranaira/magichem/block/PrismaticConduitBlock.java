@@ -6,6 +6,7 @@ import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.api.affinity.Affinity;
 import com.mna.blocks.artifice.EldrinConduitBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,5 +37,10 @@ public class PrismaticConduitBlock extends EldrinConduitBlock {
 
     public boolean isLesser() {
         return isLesser();
+    }
+
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return 15;
     }
 }
