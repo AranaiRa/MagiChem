@@ -93,34 +93,52 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int y = (height - PANEL_MAIN_H) / 2;
 
         categoryToggleButtons[0] = this.addRenderableWidget(new ImageButton(x+174, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-                if(categories.contains(CRAFTABLE)) categories.remove(CRAFTABLE);
+            if(categories.size() > 1) {
+                if (categories.contains(CRAFTABLE)) categories.remove(CRAFTABLE);
                 else categories.add(CRAFTABLE);
                 updateDisplayedRecipes(recipe);
+                recipeFilterPage = 0;
+            }
             }));
         categoryToggleButtons[1] = this.addRenderableWidget(new ImageButton(x+185, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-                if(categories.contains(GATHERABLE)) categories.remove(GATHERABLE);
+            if(categories.size() > 1) {
+                if (categories.contains(GATHERABLE)) categories.remove(GATHERABLE);
                 else categories.add(GATHERABLE);
                 updateDisplayedRecipes(recipe);
+                recipeFilterPage = 0;
+            }
             }));
         categoryToggleButtons[2] = this.addRenderableWidget(new ImageButton(x+196, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-                if(categories.contains(FARMABLE)) categories.remove(FARMABLE);
+            if(categories.size() > 1) {
+                if (categories.contains(FARMABLE)) categories.remove(FARMABLE);
                 else categories.add(FARMABLE);
                 updateDisplayedRecipes(recipe);
+                recipeFilterPage = 0;
+            }
             }));
         categoryToggleButtons[3] = this.addRenderableWidget(new ImageButton(x+207, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-                if(categories.contains(RENEWABLE)) categories.remove(RENEWABLE);
+            if(categories.size() > 1) {
+                if (categories.contains(RENEWABLE)) categories.remove(RENEWABLE);
                 else categories.add(RENEWABLE);
                 updateDisplayedRecipes(recipe);
+                recipeFilterPage = 0;
+            }
             }));
         categoryToggleButtons[4] = this.addRenderableWidget(new ImageButton(x+218, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-                if(categories.contains(TROPHY)) categories.remove(TROPHY);
+            if(categories.size() > 1) {
+                if (categories.contains(TROPHY)) categories.remove(TROPHY);
                 else categories.add(TROPHY);
                 updateDisplayedRecipes(recipe);
+                recipeFilterPage = 0;
+            }
             }));
         categoryToggleButtons[5] = this.addRenderableWidget(new ImageButton(x+229, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-                if(categories.contains(RARE)) categories.remove(RARE);
+            if(categories.size() > 1){
+                if (categories.contains(RARE)) categories.remove(RARE);
                 else categories.add(RARE);
                 updateDisplayedRecipes(recipe);
+                recipeFilterPage = 0;
+            }
             }));
     }
 
@@ -136,11 +154,95 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     }
 
     public void setActiveRecipe(int index) {
-        int trueIndex = materiaFilterRow *3 + index;
+        int trueIndex = materiaFilterRow *6 + index;
         if(trueIndex < filteredMateria.size()) {
             recipe = (MateriaItem) filteredMateria.get(trueIndex).getItem();
             updateDisplayedRecipes(recipe);
         }
+    }
+
+    @Override
+    public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        if(pMouseX >= x-20 && pMouseX <= x+122 &&
+                pMouseY >= y+75 && pMouseY <= y+146) {
+            if (materiaFilterRowTotal > 4) {
+                if (pDelta < 0)
+                    materiaFilterRow = Math.min(materiaFilterRowTotal - 4, materiaFilterRow + 1);
+                else
+                    materiaFilterRow = Math.max(0, materiaFilterRow - 1);
+            }
+        }
+
+        if(pMouseX >= x+134 && pMouseX <= x+275 &&
+                pMouseY >= y+3 && pMouseY <= y+146) {
+            if (recipeFilterPagesTotal > 1) {
+                if (pDelta < 0)
+                    recipeFilterPage = Math.min(recipeFilterPagesTotal, recipeFilterPage + 1);
+                else
+                    recipeFilterPage = Math.max(0, recipeFilterPage - 1);
+            }
+        }
+
+        return super.mouseScrolled(pMouseX, pMouseY, pDelta);
+    }
+
+    @Override
+    public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
+        if(pButton == 0) {
+            int x = (width - PANEL_MAIN_W) / 2;
+            int y = (height - PANEL_MAIN_H) / 2;
+            if (materiaFilterRowTotal > 4) {
+
+                if (pMouseX >= x-20 && pMouseX <= x+122 &&
+                        pMouseY >= y+75 && pMouseY <= y+146) {
+                    double point = pMouseY - (y + 75);
+                    double percent = point / 54d;
+
+                    materiaFilterRow = Math.max(0, Math.min(materiaFilterRowTotal - 4, (int) Math.round(percent * materiaFilterRowTotal)));
+                }
+            }
+            if (recipeFilterPagesTotal > 1) {
+                if (pMouseX >= x+134 && pMouseX <= x+275 &&
+                        pMouseY >= y+3 && pMouseY <= y+146) {
+                    double point = pMouseY - (y + 3);
+                    double percent = point / 126d;
+
+                    recipeFilterPage = Math.max(0, Math.min(recipeFilterPagesTotal, (int) Math.round(percent * recipeFilterPagesTotal)));
+                }
+            }
+        }
+        return super.mouseReleased(pMouseX, pMouseY, pButton);
+    }
+
+    @Override
+    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
+        if(pButton == 0) {
+            int x = (width - PANEL_MAIN_W) / 2;
+            int y = (height - PANEL_MAIN_H) / 2;
+            if (materiaFilterRowTotal > 4) {
+
+                if (pMouseX >= x-20 && pMouseX <= x+122 &&
+                        pMouseY >= y+75 && pMouseY <= y+146) {
+                    double point = pMouseY - (y + 75);
+                    double percent = point / 54d;
+
+                    materiaFilterRow = Math.max(0, Math.min(materiaFilterRowTotal - 4, (int) Math.round(percent * materiaFilterRowTotal)));
+                }
+            }
+            if (recipeFilterPagesTotal > 1) {
+                if (pMouseX >= x+134 && pMouseX <= x+275 &&
+                        pMouseY >= y+3 && pMouseY <= y+146) {
+                    double point = pMouseY - (y + 3);
+                    double percent = point / 126d;
+
+                    recipeFilterPage = Math.max(0, Math.min(recipeFilterPagesTotal, (int) Math.round(percent * recipeFilterPagesTotal)));
+                }
+            }
+        }
+        return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
 
     private final List<ItemStack> filteredMateria = new ArrayList<>();
@@ -155,7 +257,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             }
         }
 
-        materiaFilterRowTotal = (int)Math.ceil(filteredMateria.size() / 3d);
+        materiaFilterRowTotal = (int)Math.ceil(filteredMateria.size() / 6d);
 
 //        recipesChanged = false;
     }
@@ -200,7 +302,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             filteredRecipes.add(sortingArray[i]);
         }
 
-        recipeFilterPagesTotal = (int)Math.ceil(filteredRecipes.size() / 8d);
+        recipeFilterPagesTotal = (int)Math.ceil(filteredRecipes.size() / 8d) - 1;
     }
 
     @Override
@@ -235,6 +337,28 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 
         if(recipe != null)
             pGuiGraphics.renderFakeItem(materiaMap.get(recipe.getMateriaName()), x+154, y-12);
+
+        //Left Scroll Ribbon
+        if(materiaFilterRowTotal > 4) {
+            boolean top = materiaFilterRow == 0;
+            boolean bottom = materiaFilterRow == materiaFilterRowTotal - 4;
+            int u = top ? 84 : (bottom ? 28 : 56);
+            int v = 196;
+            float percent = (float)materiaFilterRow / (float)(materiaFilterRowTotal - 4);
+            int nubbinShift = (int)Math.floor(percent * 54);
+            pGuiGraphics.blit(TEXTURE, x - 20, y + 75 + nubbinShift, u, v, 28, 18);
+        }
+
+        //Right Scroll Ribbon
+        if(recipeFilterPagesTotal > 1) {
+            boolean top = recipeFilterPage == 0;
+            boolean bottom = recipeFilterPage == recipeFilterPagesTotal;
+            int u = top ? 84 : (bottom ? 28 : 56);
+            int v = 178;
+            float percent = (float)recipeFilterPage / (float)(recipeFilterPagesTotal);
+            int nubbinShift = (int)Math.floor(percent * 126);
+            pGuiGraphics.blit(TEXTURE, x + 248, y + 3 + nubbinShift, u, v, 28, 18);
+        }
     }
 
     private void renderMateriaSelections(GuiGraphics gui) {
@@ -242,7 +366,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
         List<ItemStack> snipped = new ArrayList<>();
-        for(int i = materiaFilterRow *4; i<Math.min(filteredMateria.size(), materiaFilterRow *4 + 24); i++) {
+        for(int i = materiaFilterRow *6; i<Math.min(filteredMateria.size(), materiaFilterRow *6 + 24); i++) {
             snipped.add(filteredMateria.get(i));
         }
 
@@ -339,6 +463,9 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         pGuiGraphics.drawString(font, "-y:"+y, 10, 50, 0xffffffff, true);
         pGuiGraphics.drawString(font, "py:"+pY, 10, 62, 0xffffffff, true);
         pGuiGraphics.drawString(font, "dy:"+(pY-y), 10, 74, 0xffffffff, true);
+
+        pGuiGraphics.drawString(font, "rp:"+recipeFilterPage, 10, 90, 0xffffffff, true);
+        pGuiGraphics.drawString(font, "rt:"+recipeFilterPagesTotal, 10, 102, 0xffffffff, true);
 
         //Upper right category tooltips
         {
