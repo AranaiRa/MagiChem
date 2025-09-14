@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 import java.util.*;
 
@@ -514,6 +515,42 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                         .append(Component.translatable("tooltip.magichem.gui.codex_materia.rare.desc"))
                 );
             }
+        }
+
+        //Items in materia picker
+        if(pX >= x+134 && pX <= x+151 &&
+                pY >= y+3 && pY <= y+146) {
+            int my = pY - (y+3);
+            int id = (my / 18);
+
+            if (id >= 0 && id < 8) {
+                if(id + recipeFilterPage * 8 < filteredRecipes.size()) {
+                    DistillationFabricationRecipe recipeQuery = filteredRecipes.get(id + recipeFilterPage * 8);
+                    tooltipContents.addAll(recipeQuery.getAlchemyObject().getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                }
+            }
+        }
+
+        //Items in recipe picker
+        if(pX >= x+15 && pX <= x+122 &&
+                pY >= y+75 && pY <= y+146) {
+            int mx = pX - (x+15);
+            int my = pY - (y+75);
+            int id = ((my / 18) * 6) + ((mx / 18) % 6);
+
+            if (id >= 0 && id < 24) {
+                if(id + materiaFilterRow * 6 < filteredMateria.size()) {
+                    ItemStack stackUnderMouse = filteredMateria.get(id + materiaFilterRow * 6);
+                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                }
+            }
+        }
+
+        //Active materia type on right page
+
+        if(selectedMateria != null && pX >= x+154 && pX <= x+170 && pY >= y-12 && pY <= y+4) {
+            ItemStack stackUnderMouse = materiaMap.get(selectedMateria.getMateriaName());
+            tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
         }
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
