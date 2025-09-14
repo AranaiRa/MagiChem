@@ -11,6 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -30,9 +31,11 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     private final ImageButton[] categoryToggleButtons = new ImageButton[6];
     private final ArrayList<DistillationSourceCategory> categories = new ArrayList<>();
     private MateriaItem selectedMateria;
+    private EditBox recipeFilterBox;
     private static final ArrayList<String> sortedMateriaKeys = new ArrayList<>();
     private static final HashMap<String, ItemStack> materiaMap = new HashMap<>();
     private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
+    private boolean materiaFilterChanged = false;
 
     public static final int
         PANEL_MAIN_W = 256, PANEL_MAIN_H = 178;
@@ -68,6 +71,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         super.init();
         initializeRecipeButtons();
         initializeCategoryToggleButtons();
+        initializeRecipeFilterBox();
 
         renderButtons();
     }
@@ -150,6 +154,62 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             bd.getButton().active = true;
             bd.getButton().visible = true;
         }
+    }
+
+    private void initializeRecipeFilterBox() {
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        this.recipeFilterBox = new EditBox(Minecraft.getInstance().font, x, y, 106, 16, Component.empty()) {
+            @Override
+            public boolean charTyped(char pCodePoint, int pModifiers) {
+                materiaFilterChanged = true;
+                materiaFilterRow = 0;
+                return super.charTyped(pCodePoint, pModifiers);
+            }
+
+            @Override
+            public void deleteChars(int pNum) {
+                materiaFilterChanged = true;
+                materiaFilterRow = 0;
+                super.deleteChars(pNum);
+            }
+
+            @Override
+            public void deleteWords(int pNum) {
+                materiaFilterChanged = true;
+                materiaFilterRow = 0;
+                super.deleteWords(pNum);
+            }
+        };
+        this.recipeFilterBox.setMaxLength(60);
+        this.recipeFilterBox.setFocused(false);
+        this.recipeFilterBox.setCanLoseFocus(false);
+        this.setFocused(this.recipeFilterBox);
+
+        renderFilterBox();
+    }
+
+    private void renderFilterBox() {
+        int xOrigin = (width - PANEL_MAIN_W) / 2;
+        int yOrigin = (height - PANEL_MAIN_H) / 2;
+
+        recipeFilterBox.setX(xOrigin + 16);
+        recipeFilterBox.setY(yOrigin + 51);
+
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
+
+        addRenderableWidget(recipeFilterBox);
+    }
+
+    private void updateFilterBoxContents() {
+        if(recipeFilterBox.getValue().isEmpty())
+            recipeFilterBox.setSuggestion(Component.translatable("gui.magichem.typetofilter").getString());
+        else
+            recipeFilterBox.setSuggestion("");
     }
 
     public void setActiveRecipe(int index) {
@@ -440,6 +500,9 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     public void render(GuiGraphics gui, int mouseX, int mouseY, float delta) {
         super.render(gui, mouseX, mouseY, delta);
         renderTooltip(gui, mouseX, mouseY);
+        if(materiaFilterChanged)
+            updateDisplayedMateria(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
+        updateFilterBoxContents();
     }
 
     @Override
