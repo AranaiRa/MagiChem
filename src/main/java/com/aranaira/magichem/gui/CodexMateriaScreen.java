@@ -16,9 +16,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.*;
 
@@ -30,7 +28,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     private final ButtonData[] recipeSelectButtons = new ButtonData[24];
     private final ImageButton[] categoryToggleButtons = new ImageButton[6];
     private final ArrayList<DistillationSourceCategory> categories = new ArrayList<>();
-    private MateriaItem recipe;
+    private MateriaItem selectedMateria;
     private static final ArrayList<String> sortedMateriaKeys = new ArrayList<>();
     private static final HashMap<String, ItemStack> materiaMap = new HashMap<>();
     private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
@@ -96,7 +94,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             if(categories.size() > 1) {
                 if (categories.contains(CRAFTABLE)) categories.remove(CRAFTABLE);
                 else categories.add(CRAFTABLE);
-                updateDisplayedRecipes(recipe);
+                updateDisplayedRecipes(selectedMateria);
                 recipeFilterPage = 0;
             }
             }));
@@ -104,7 +102,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             if(categories.size() > 1) {
                 if (categories.contains(GATHERABLE)) categories.remove(GATHERABLE);
                 else categories.add(GATHERABLE);
-                updateDisplayedRecipes(recipe);
+                updateDisplayedRecipes(selectedMateria);
                 recipeFilterPage = 0;
             }
             }));
@@ -112,7 +110,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             if(categories.size() > 1) {
                 if (categories.contains(FARMABLE)) categories.remove(FARMABLE);
                 else categories.add(FARMABLE);
-                updateDisplayedRecipes(recipe);
+                updateDisplayedRecipes(selectedMateria);
                 recipeFilterPage = 0;
             }
             }));
@@ -120,7 +118,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             if(categories.size() > 1) {
                 if (categories.contains(RENEWABLE)) categories.remove(RENEWABLE);
                 else categories.add(RENEWABLE);
-                updateDisplayedRecipes(recipe);
+                updateDisplayedRecipes(selectedMateria);
                 recipeFilterPage = 0;
             }
             }));
@@ -128,7 +126,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             if(categories.size() > 1) {
                 if (categories.contains(TROPHY)) categories.remove(TROPHY);
                 else categories.add(TROPHY);
-                updateDisplayedRecipes(recipe);
+                updateDisplayedRecipes(selectedMateria);
                 recipeFilterPage = 0;
             }
             }));
@@ -136,7 +134,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             if(categories.size() > 1){
                 if (categories.contains(RARE)) categories.remove(RARE);
                 else categories.add(RARE);
-                updateDisplayedRecipes(recipe);
+                updateDisplayedRecipes(selectedMateria);
                 recipeFilterPage = 0;
             }
             }));
@@ -156,8 +154,8 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     public void setActiveRecipe(int index) {
         int trueIndex = materiaFilterRow *6 + index;
         if(trueIndex < filteredMateria.size()) {
-            recipe = (MateriaItem) filteredMateria.get(trueIndex).getItem();
-            updateDisplayedRecipes(recipe);
+            selectedMateria = (MateriaItem) filteredMateria.get(trueIndex).getItem();
+            updateDisplayedRecipes(selectedMateria);
         }
     }
 
@@ -196,7 +194,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             int y = (height - PANEL_MAIN_H) / 2;
             if (materiaFilterRowTotal > 4) {
 
-                if (pMouseX >= x-20 && pMouseX <= x+122 &&
+                if (pMouseX >= x-20 && pMouseX <= x+7 &&
                         pMouseY >= y+75 && pMouseY <= y+146) {
                     double point = pMouseY - (y + 75);
                     double percent = point / 54d;
@@ -205,7 +203,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                 }
             }
             if (recipeFilterPagesTotal > 1) {
-                if (pMouseX >= x+134 && pMouseX <= x+275 &&
+                if (pMouseX >= x+248 && pMouseX <= x+275 &&
                         pMouseY >= y+3 && pMouseY <= y+146) {
                     double point = pMouseY - (y + 3);
                     double percent = point / 126d;
@@ -224,7 +222,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             int y = (height - PANEL_MAIN_H) / 2;
             if (materiaFilterRowTotal > 4) {
 
-                if (pMouseX >= x-20 && pMouseX <= x+122 &&
+                if (pMouseX >= x-20 && pMouseX <= x+7 &&
                         pMouseY >= y+75 && pMouseY <= y+146) {
                     double point = pMouseY - (y + 75);
                     double percent = point / 54d;
@@ -233,7 +231,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                 }
             }
             if (recipeFilterPagesTotal > 1) {
-                if (pMouseX >= x+134 && pMouseX <= x+275 &&
+                if (pMouseX >= x+248 && pMouseX <= x+275 &&
                         pMouseY >= y+3 && pMouseY <= y+146) {
                     double point = pMouseY - (y + 3);
                     double percent = point / 126d;
@@ -335,8 +333,8 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         if(categories.contains(RARE))
             pGuiGraphics.blit(TEXTURE, x+229, y-10, 50, 246, 10, 10);
 
-        if(recipe != null)
-            pGuiGraphics.renderFakeItem(materiaMap.get(recipe.getMateriaName()), x+154, y-12);
+        if(selectedMateria != null)
+            pGuiGraphics.renderFakeItem(materiaMap.get(selectedMateria.getMateriaName()), x+154, y-12);
 
         //Left Scroll Ribbon
         if(materiaFilterRowTotal > 4) {
@@ -401,7 +399,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             for(int y=0; y<8; y++) {
                 gui.renderItem(snipped.get(c).getAlchemyObject(), xOrigin+135, yOrigin+4 + y*18);
                 for(ItemStack materiaQuery : snipped.get(c).getComponentMateria()) {
-                    if(materiaQuery.getItem() == recipe) {
+                    if(materiaQuery.getItem() == selectedMateria) {
                         float outputRate = snipped.get(c).getOutputRate();
 //                        gui.renderItem(materiaQuery, xOrigin+154, yOrigin+4 + y*18);
                         if(outputRate == 1f) {
