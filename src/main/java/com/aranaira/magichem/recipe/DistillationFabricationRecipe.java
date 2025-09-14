@@ -157,6 +157,10 @@ public class DistillationFabricationRecipe implements Recipe<SimpleContainer>, I
         return result;
     }
 
+    public static List<DistillationFabricationRecipe> getAllDistillingRecipes(Level level) {
+        return level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+    }
+
     public static DistillationFabricationRecipe getFabricatingRecipe(Level level, ItemStack query) {
         return getFabricatingRecipe(level, query.getItem());
     }
