@@ -1175,6 +1175,8 @@
   "gui.magichem.insufficientsteam": "Insufficient Steam!",
   "gui.magichem.insufficientsmoke": "Insufficient Smoke!",
   "gui.magichem.insufficientsteamsmoke": "Insufficient Steam/Smoke!",
+  "gui.magichem.reducedoutputrate": "Reduced Rate:",
+  "gui.magichem.reducedoutputrate.peritem": " / item",
   "gui.magichem.waitingforslurry": "Waiting for Slurry...",
   "gui.magichem.waitingformateria": "Waiting for Materia...",
   "gui.magichem.mode.drain": "Drain",

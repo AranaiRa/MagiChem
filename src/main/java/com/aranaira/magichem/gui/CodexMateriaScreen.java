@@ -15,6 +15,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -27,10 +28,12 @@ import static com.aranaira.magichem.foundation.enums.DistillationSourceCategory.
 public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_codex_materia.png");
-    private final ButtonData[] recipeSelectButtons = new ButtonData[24];
+    private final ButtonData[] materiaSelectButtons = new ButtonData[24];
+    private final ButtonData[] recipeSelectButtons = new ButtonData[8];
     private final ImageButton[] categoryToggleButtons = new ImageButton[6];
     private final ArrayList<DistillationSourceCategory> categories = new ArrayList<>();
     private MateriaItem selectedMateria;
+    private DistillationFabricationRecipe selectedRecipe;
     private EditBox recipeFilterBox;
     private static final ArrayList<String> sortedMateriaKeys = new ArrayList<>();
     private static final HashMap<String, ItemStack> materiaMap = new HashMap<>();
@@ -71,6 +74,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         super.init();
         initializeRecipeButtons();
         initializeCategoryToggleButtons();
+        initializeRecipeSelectButtons();
         initializeRecipeFilterBox();
 
         renderButtons();
@@ -80,11 +84,11 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int c = 0;
         for(int y=0; y<4; y++) {
             for(int x=0; x<6; x++) {
-                recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new CodexMateriaButtonRecipeSelector(
+                materiaSelectButtons[c] = new ButtonData(this.addRenderableWidget(new CodexMateriaButtonRecipeSelector(
                         this, c, this.leftPos, this.topPos, 18, 18, 0, 206, TEXTURE, button -> {
 
                     CodexMateriaScreen query = (CodexMateriaScreen) ((CodexMateriaButtonRecipeSelector) button).getScreen();
-                    query.setActiveRecipe(((CodexMateriaButtonRecipeSelector) button).getArrayIndex());
+                    query.setSelectedMateria(((CodexMateriaButtonRecipeSelector) button).getArrayIndex());
                 })), x*18 + 15, y*18 + 75);
                 c++;
             }
@@ -96,58 +100,77 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int y = (height - PANEL_MAIN_H) / 2;
 
         categoryToggleButtons[0] = this.addRenderableWidget(new ImageButton(x+174, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-            if(categories.size() > 1) {
-                if (categories.contains(CRAFTABLE)) categories.remove(CRAFTABLE);
-                else categories.add(CRAFTABLE);
-                updateDisplayedRecipes(selectedMateria);
-                recipeFilterPage = 0;
+            if (categories.contains(CRAFTABLE)) {
+                if(categories.size() > 1) categories.remove(CRAFTABLE);
             }
+            else categories.add(CRAFTABLE);
+            updateDisplayedRecipes(selectedMateria);
+            recipeFilterPage = 0;
             }));
         categoryToggleButtons[1] = this.addRenderableWidget(new ImageButton(x+185, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-            if(categories.size() > 1) {
-                if (categories.contains(GATHERABLE)) categories.remove(GATHERABLE);
-                else categories.add(GATHERABLE);
-                updateDisplayedRecipes(selectedMateria);
-                recipeFilterPage = 0;
+            if (categories.contains(GATHERABLE)) {
+                if(categories.size() > 1) categories.remove(GATHERABLE);
             }
+            else categories.add(GATHERABLE);
+            updateDisplayedRecipes(selectedMateria);
+            recipeFilterPage = 0;
             }));
         categoryToggleButtons[2] = this.addRenderableWidget(new ImageButton(x+196, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-            if(categories.size() > 1) {
-                if (categories.contains(FARMABLE)) categories.remove(FARMABLE);
-                else categories.add(FARMABLE);
-                updateDisplayedRecipes(selectedMateria);
-                recipeFilterPage = 0;
+            if (categories.contains(FARMABLE)) {
+                if(categories.size() > 1) categories.remove(FARMABLE);
             }
+            else categories.add(FARMABLE);
+            updateDisplayedRecipes(selectedMateria);
+            recipeFilterPage = 0;
             }));
         categoryToggleButtons[3] = this.addRenderableWidget(new ImageButton(x+207, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-            if(categories.size() > 1) {
-                if (categories.contains(RENEWABLE)) categories.remove(RENEWABLE);
-                else categories.add(RENEWABLE);
-                updateDisplayedRecipes(selectedMateria);
-                recipeFilterPage = 0;
+            if (categories.contains(RENEWABLE)) {
+                if(categories.size() > 1) categories.remove(RENEWABLE);
             }
+            else categories.add(RENEWABLE);
+            updateDisplayedRecipes(selectedMateria);
+            recipeFilterPage = 0;
             }));
         categoryToggleButtons[4] = this.addRenderableWidget(new ImageButton(x+218, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-            if(categories.size() > 1) {
-                if (categories.contains(TROPHY)) categories.remove(TROPHY);
-                else categories.add(TROPHY);
-                updateDisplayedRecipes(selectedMateria);
-                recipeFilterPage = 0;
+            if (categories.contains(TROPHY)) {
+                if(categories.size() > 1) categories.remove(TROPHY);
             }
+            else categories.add(TROPHY);
+            updateDisplayedRecipes(selectedMateria);
+            recipeFilterPage = 0;
             }));
         categoryToggleButtons[5] = this.addRenderableWidget(new ImageButton(x+229, y-10, 10, 10, 246, 236, TEXTURE, button -> {
-            if(categories.size() > 1){
-                if (categories.contains(RARE)) categories.remove(RARE);
-                else categories.add(RARE);
-                updateDisplayedRecipes(selectedMateria);
-                recipeFilterPage = 0;
+            if (categories.contains(RARE)) {
+                if(categories.size() > 1) categories.remove(RARE);
             }
+            else categories.add(RARE);
+            updateDisplayedRecipes(selectedMateria);
+            recipeFilterPage = 0;
             }));
+    }
+
+    private void initializeRecipeSelectButtons() {
+        int c = 0;
+        for(int y=0; y<8; y++) {
+            recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new CodexMateriaButtonRecipeSelector(
+                    this, c, this.leftPos, this.topPos, 18, 18, 0, 206, TEXTURE, button -> {
+
+                CodexMateriaScreen query = (CodexMateriaScreen) ((CodexMateriaButtonRecipeSelector) button).getScreen();
+                query.setActiveRecipe(((CodexMateriaButtonRecipeSelector) button).getArrayIndex());
+            })), 134, y*18 + 3);
+            c++;
+        }
     }
 
     private void renderButtons() {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
+
+        for (ButtonData bd : materiaSelectButtons) {
+            bd.getButton().setPosition(x + bd.getXOffset(), y + bd.getYOffset());
+            bd.getButton().active = true;
+            bd.getButton().visible = true;
+        }
 
         for (ButtonData bd : recipeSelectButtons) {
             bd.getButton().setPosition(x + bd.getXOffset(), y + bd.getYOffset());
@@ -212,11 +235,20 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             recipeFilterBox.setSuggestion("");
     }
 
-    public void setActiveRecipe(int index) {
+    public void setSelectedMateria(int index) {
         int trueIndex = materiaFilterRow *6 + index;
         if(trueIndex < filteredMateria.size()) {
             selectedMateria = (MateriaItem) filteredMateria.get(trueIndex).getItem();
             updateDisplayedRecipes(selectedMateria);
+            selectedRecipe = null;
+            recipeFilterPage = 0;
+        }
+    }
+
+    public void setActiveRecipe(int index) {
+        int trueIndex = recipeFilterPage*8 + index;
+        if(trueIndex < filteredRecipes.size()) {
+            selectedRecipe = filteredRecipes.get(trueIndex);
         }
     }
 
@@ -372,12 +404,6 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         pGuiGraphics.blit(TEXTURE, x, y-20, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
         pGuiGraphics.blit(TEXTURE, x+89, y+206, 224, 220, 32, 36);
 
-        pGuiGraphics.pose().pushPose();
-        pGuiGraphics.pose().scale(2.0f, 2.0f, 2.0f);
-        pGuiGraphics.pose().translate(0.0f, 0.5f, 0.0f);
-//        pGuiGraphics.renderFakeItem(blah, (x/2)+45, (y/2)+35);
-        pGuiGraphics.pose().popPose();
-
         renderMateriaSelections(pGuiGraphics);
         renderRecipeOptions(pGuiGraphics);
 
@@ -417,6 +443,42 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             float percent = (float)recipeFilterPage / (float)(recipeFilterPagesTotal);
             int nubbinShift = (int)Math.floor(percent * 126);
             pGuiGraphics.blit(TEXTURE, x + 248, y + 3 + nubbinShift, u, v, 28, 18);
+        }
+
+        if(selectedRecipe != null) {
+            if(selectedRecipe.getOutputRate() < 1f){
+                pGuiGraphics.drawString(font, Component.translatable("gui.magichem.reducedoutputrate"), x + 54, y - 9, 0xff5c3b14, false);
+                MutableComponent compound = Component.empty()
+                        .append(Math.max(1, Math.round((selectedRecipe.getOutputRate()) * 100)) + "%")
+                        .append(Component.translatable("gui.magichem.reducedoutputrate.peritem")
+                        );
+                int shift = 70 - font.width(compound.getString());
+                pGuiGraphics.drawString(font, compound, x + 54 + shift, y + 1, 0xff5c3b14, false);
+            }
+
+            pGuiGraphics.pose().pushPose();
+            pGuiGraphics.pose().scale(2,2,2);
+            pGuiGraphics.renderFakeItem(selectedRecipe.getAlchemyObject(), (x/2)+9, (y/2)-4);
+            pGuiGraphics.pose().popPose();
+
+            int componentShift = (5 - selectedRecipe.getComponentMateria().size()) * 18;
+            for (int i=0; i<selectedRecipe.getComponentMateria().size(); i++) {
+                pGuiGraphics.renderFakeItem(selectedRecipe.getComponentMateria().get(i), x+33 + i*18 + componentShift, y+26);
+                pGuiGraphics.renderItemDecorations(font, selectedRecipe.getComponentMateria().get(i), x+33 + i*18 + componentShift, y+26);
+            }
+
+            if(selectedRecipe.hasSourceCategory(CRAFTABLE))
+                pGuiGraphics.blit(TEXTURE, x+55, y+12, 0, 246, 10, 10);
+            if(selectedRecipe.hasSourceCategory(GATHERABLE))
+                pGuiGraphics.blit(TEXTURE, x+66, y+12, 10, 246, 10, 10);
+            if(selectedRecipe.hasSourceCategory(FARMABLE))
+                pGuiGraphics.blit(TEXTURE, x+77, y+12, 20, 246, 10, 10);
+            if(selectedRecipe.hasSourceCategory(RENEWABLE))
+                pGuiGraphics.blit(TEXTURE, x+88, y+12, 30, 246, 10, 10);
+            if(selectedRecipe.hasSourceCategory(TROPHY))
+                pGuiGraphics.blit(TEXTURE, x+99, y+12, 40, 246, 10, 10);
+            if(selectedRecipe.hasSourceCategory(RARE))
+                pGuiGraphics.blit(TEXTURE, x+110, y+12, 50, 246, 10, 10);
         }
     }
 
@@ -518,17 +580,6 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        pGuiGraphics.drawString(font, "-x:"+x, 10, 10, 0xffffffff, true);
-        pGuiGraphics.drawString(font, "pX:"+pX, 10, 22, 0xffffffff, true);
-        pGuiGraphics.drawString(font, "dX:"+(pX-x), 10, 34, 0xffffffff, true);
-
-        pGuiGraphics.drawString(font, "-y:"+y, 10, 50, 0xffffffff, true);
-        pGuiGraphics.drawString(font, "py:"+pY, 10, 62, 0xffffffff, true);
-        pGuiGraphics.drawString(font, "dy:"+(pY-y), 10, 74, 0xffffffff, true);
-
-        pGuiGraphics.drawString(font, "rp:"+recipeFilterPage, 10, 90, 0xffffffff, true);
-        pGuiGraphics.drawString(font, "rt:"+recipeFilterPagesTotal, 10, 102, 0xffffffff, true);
-
         //Upper right category tooltips
         {
             if (pX >= x + 174 && pX <= x + 184 && pY >= y - 10 && pY <= y) {
@@ -572,6 +623,57 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             }
 
             if (pX >= x + 229 && pX <= x + 239 && pY >= y - 10 && pY <= y) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.rare").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.rare.desc"))
+                );
+            }
+        }
+
+        //Focused recipe area category tooltips
+        if(selectedRecipe != null){
+            if (selectedRecipe.hasSourceCategory(CRAFTABLE) && pX >= x + 55 && pX <= x + 65 && pY >= y + 12 && pY <= y + 22) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.crafted").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.crafted.desc"))
+                );
+            }
+
+            if (selectedRecipe.hasSourceCategory(GATHERABLE) && pX >= x + 66 && pX <= x + 76 && pY >= y + 12 && pY <= y + 22) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.gatherable").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.gatherable.desc"))
+                );
+            }
+
+            if (selectedRecipe.hasSourceCategory(FARMABLE) && pX >= x + 77 && pX <= x + 87 && pY >= y + 12 && pY <= y + 22) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.farmable").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.farmable.desc"))
+                );
+            }
+
+            if (selectedRecipe.hasSourceCategory(RENEWABLE) && pX >= x + 88 && pX <= x + 98 && pY >= y + 12 && pY <= y + 22) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.renewable").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.renewable.desc"))
+                );
+            }
+
+            if (selectedRecipe.hasSourceCategory(TROPHY) && pX >= x + 99 && pX <= x + 109 && pY >= y + 12 && pY <= y + 22) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.trophy").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.codex_materia.trophy.desc"))
+                );
+            }
+
+            if (selectedRecipe.hasSourceCategory(RARE) && pX >= x + 110 && pX <= x + 120 && pY >= y + 12 && pY <= y + 22) {
                 tooltipContents.add(Component.empty()
                         .append(Component.translatable("tooltip.magichem.gui.codex_materia.rare").withStyle(ChatFormatting.GOLD))
                         .append(": ")

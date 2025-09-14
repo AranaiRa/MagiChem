@@ -582,6 +582,52 @@
     ],
     "related_recipes": []
   },
+  "Codex Materia": {
+    "index": "1002",
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Codex Materia"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Codex Materia",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a magical tome containing the alchemical formulation of "
+          },
+          {
+            "text": "every item and block in the world that can be distilled",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". Like a Codex Arcana, it can be placed on a wizard's Lectern.\n\nIf you right click the "
+          },
+          {
+            "text": "Wandering Wizard",
+            "color": "dark_purple"
+          },
+          {
+            "text": " with a Codex Arcana she'll gladly exchange it for a Codex Materia, or vice-versa."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "mna:book_stand"
+      }
+    ]
+  },
   "Process: Fulmination": {
     "index": "1101",
     "category": "magichem",
