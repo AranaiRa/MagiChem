@@ -6,6 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.Optional;
@@ -30,12 +32,10 @@ public class WisdomSyncS2CPacket {
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if(player != null) {
-            final Optional<IWisdomCapability> capability = WisdomProvider.getCapability(player);
-            capability.ifPresent(iWisdomCapability -> WisdomProvider.deserializeShorts(iWisdomCapability, cardinal, intercardinal));
-        }
-
+        supplier.get().enqueueWork(() -> {
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> PacketHelper.handleWisdomPacket(cardinal, intercardinal));
+        });
+        supplier.get().setPacketHandled(true);
         return true;
     }
 }

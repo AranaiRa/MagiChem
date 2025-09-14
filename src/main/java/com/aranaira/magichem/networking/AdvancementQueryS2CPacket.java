@@ -30,6 +30,7 @@ public class AdvancementQueryS2CPacket {
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         AdvancementUtil.onReceiveFetchedAdvancement(this);
+        supplier.get().setPacketHandled(true);
         return true;
     }
 }

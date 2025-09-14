@@ -50,6 +50,7 @@ public class ParticleSpawnAnointingS2CPacket {
                 MateriaItem.generateFailureParticles(x, y, z, color);
         });
 
+        context.setPacketHandled(true);
         return true;
     }
 }
