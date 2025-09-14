@@ -27,7 +27,7 @@ import static com.aranaira.magichem.foundation.enums.DistillationSourceCategory.
 public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_codex_materia.png");
-    private final ButtonData[] recipeSelectButtons = new ButtonData[20];
+    private final ButtonData[] recipeSelectButtons = new ButtonData[24];
     private final ImageButton[] categoryToggleButtons = new ImageButton[6];
     private final ArrayList<DistillationSourceCategory> categories = new ArrayList<>();
     private MateriaItem recipe;
@@ -76,13 +76,13 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     private void initializeRecipeButtons() {
         int c = 0;
         for(int y=0; y<4; y++) {
-            for(int x=0; x<5; x++) {
+            for(int x=0; x<6; x++) {
                 recipeSelectButtons[c] = new ButtonData(this.addRenderableWidget(new CodexMateriaButtonRecipeSelector(
                         this, c, this.leftPos, this.topPos, 18, 18, 0, 206, TEXTURE, button -> {
 
                     CodexMateriaScreen query = (CodexMateriaScreen) ((CodexMateriaButtonRecipeSelector) button).getScreen();
                     query.setActiveRecipe(((CodexMateriaButtonRecipeSelector) button).getArrayIndex());
-                })), x*18 + 16, y*18 + 75);
+                })), x*18 + 15, y*18 + 75);
                 c++;
             }
         }
@@ -242,17 +242,17 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
         List<ItemStack> snipped = new ArrayList<>();
-        for(int i = materiaFilterRow *4; i<Math.min(filteredMateria.size(), materiaFilterRow *4 + 20); i++) {
+        for(int i = materiaFilterRow *4; i<Math.min(filteredMateria.size(), materiaFilterRow *4 + 24); i++) {
             snipped.add(filteredMateria.get(i));
         }
 
         int c = 0;
-        int cLimit = Math.min(20, snipped.size());
+        int cLimit = Math.min(24, snipped.size());
         while(c < cLimit) {
 
             for(int y=0; y<4; y++) {
-                for (int x=0; x<5; x++) {
-                    gui.renderItem(snipped.get(c), xOrigin+17 + x*18, yOrigin+76 + y*18);
+                for (int x=0; x<6; x++) {
+                    gui.renderItem(snipped.get(c), xOrigin+16 + x*18, yOrigin+76 + y*18);
                     c++;
                     if(c >= cLimit) break;
                 }
