@@ -11,6 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -21,10 +22,14 @@ import net.minecraft.world.item.Items;
 
 import java.util.*;
 
+import static com.aranaira.magichem.foundation.enums.DistillationSourceCategory.*;
+
 public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_codex_materia.png");
     private final ButtonData[] recipeSelectButtons = new ButtonData[20];
+    private final ImageButton[] categoryToggleButtons = new ImageButton[6];
+    private final ArrayList<DistillationSourceCategory> categories = new ArrayList<>();
     private MateriaItem recipe;
     private static final ArrayList<String> sortedMateriaKeys = new ArrayList<>();
     private static final HashMap<String, ItemStack> materiaMap = new HashMap<>();
@@ -37,25 +42,35 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         super(pMenu, pPlayerInventory, pTitle);
         if(materiaMap.size() == 0) {
             HashMap<String, MateriaItem> materiaItemMap = ItemRegistry.getMateriaMap(false, false);
-            String[] sortingArray = new String[materiaItemMap.size()];
-            materiaItemMap.keySet().toArray(sortingArray);
-            Arrays.sort(sortingArray, Comparator.comparing(o -> {
-                return materiaItemMap.get(o).getMateriaSortingName();
-            }));
-            for(String key : sortedMateriaKeys) {
-                sortedMateriaKeys.add(key);
+            for(String key : materiaItemMap.keySet()) {
                 materiaMap.put(key, new ItemStack(materiaItemMap.get(key)));
             }
         }
         if(allDistillationRecipes.size() == 0)
             allDistillationRecipes = DistillationFabricationRecipe.getAllDistillingRecipes(pPlayerInventory.player.level());
+        categories.addAll(Arrays.asList(DistillationSourceCategory.values()));
         updateDisplayedMateria("");
+    }
+
+    private ArrayList<String> getSortedMateriaKeys() {
+        if(sortedMateriaKeys.size() == 0) {
+            String[] sortingArray = new String[materiaMap.size()];
+            materiaMap.keySet().toArray(sortingArray);
+            Arrays.sort(sortingArray, Comparator.comparing(o -> {
+                return ((MateriaItem)materiaMap.get(o).getItem()).getMateriaSortingName();
+            }));
+            sortedMateriaKeys.addAll(Arrays.asList(sortingArray));
+        }
+        return sortedMateriaKeys;
     }
 
     @Override
     protected void init() {
         super.init();
         initializeRecipeButtons();
+        initializeCategoryToggleButtons();
+
+        renderButtons();
     }
 
     private void initializeRecipeButtons() {
@@ -71,8 +86,42 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                 c++;
             }
         }
+    }
 
-        renderButtons();
+    private void initializeCategoryToggleButtons() {
+        int x = (width - PANEL_MAIN_W) / 2;
+        int y = (height - PANEL_MAIN_H) / 2;
+
+        categoryToggleButtons[0] = this.addRenderableWidget(new ImageButton(x+174, y-10, 10, 10, 246, 236, TEXTURE, button -> {
+                if(categories.contains(CRAFTABLE)) categories.remove(CRAFTABLE);
+                else categories.add(CRAFTABLE);
+                updateDisplayedRecipes(recipe);
+            }));
+        categoryToggleButtons[1] = this.addRenderableWidget(new ImageButton(x+185, y-10, 10, 10, 246, 236, TEXTURE, button -> {
+                if(categories.contains(GATHERABLE)) categories.remove(GATHERABLE);
+                else categories.add(GATHERABLE);
+                updateDisplayedRecipes(recipe);
+            }));
+        categoryToggleButtons[2] = this.addRenderableWidget(new ImageButton(x+196, y-10, 10, 10, 246, 236, TEXTURE, button -> {
+                if(categories.contains(FARMABLE)) categories.remove(FARMABLE);
+                else categories.add(FARMABLE);
+                updateDisplayedRecipes(recipe);
+            }));
+        categoryToggleButtons[3] = this.addRenderableWidget(new ImageButton(x+207, y-10, 10, 10, 246, 236, TEXTURE, button -> {
+                if(categories.contains(RENEWABLE)) categories.remove(RENEWABLE);
+                else categories.add(RENEWABLE);
+                updateDisplayedRecipes(recipe);
+            }));
+        categoryToggleButtons[4] = this.addRenderableWidget(new ImageButton(x+218, y-10, 10, 10, 246, 236, TEXTURE, button -> {
+                if(categories.contains(TROPHY)) categories.remove(TROPHY);
+                else categories.add(TROPHY);
+                updateDisplayedRecipes(recipe);
+            }));
+        categoryToggleButtons[5] = this.addRenderableWidget(new ImageButton(x+229, y-10, 10, 10, 246, 236, TEXTURE, button -> {
+                if(categories.contains(RARE)) categories.remove(RARE);
+                else categories.add(RARE);
+                updateDisplayedRecipes(recipe);
+            }));
     }
 
     private void renderButtons() {
@@ -94,15 +143,15 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         }
     }
 
-    private List<ItemStack> filteredMateria = new ArrayList<>();
+    private final List<ItemStack> filteredMateria = new ArrayList<>();
     private int materiaFilterRow, materiaFilterRowTotal;
     private void updateDisplayedMateria(String filter) {
         filteredMateria.clear();
 
-        for(String key : sortedMateriaKeys) {
-            String display = Component.translatable("item.magichem.admixture_"+key).toString();
+        for(int i=0; i<getSortedMateriaKeys().size(); i++) {
+            String display = Component.translatable("item.magichem.admixture_"+getSortedMateriaKeys().get(i)).toString();
             if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
-                filteredMateria.add(materiaMap.get(key));
+                filteredMateria.add(materiaMap.get(getSortedMateriaKeys().get(i)));
             }
         }
 
@@ -111,7 +160,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 //        recipesChanged = false;
     }
 
-    private List<DistillationFabricationRecipe> filteredRecipes = new ArrayList<>();
+    private final List<DistillationFabricationRecipe> filteredRecipes = new ArrayList<>();
     private int recipeFilterPage, recipeFilterPagesTotal;
     private void updateDisplayedRecipes(MateriaItem pFilter) {
         filteredRecipes.clear();
@@ -119,7 +168,12 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         for(DistillationFabricationRecipe recipeQuery : allDistillationRecipes) {
             for(ItemStack materiaQuery : recipeQuery.getComponentMateria()) {
                 if (materiaQuery.getItem() == pFilter) {
-                    filteredRecipes.add(recipeQuery);
+                    boolean hasMatchingCategory = false;
+                    for(DistillationSourceCategory category : categories) {
+                        hasMatchingCategory = recipeQuery.hasSourceCategory(category);
+                        if(hasMatchingCategory) break;
+                    }
+                    if(hasMatchingCategory) filteredRecipes.add(recipeQuery);
                     break;
                 }
             }
@@ -165,6 +219,22 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 
         renderMateriaSelections(pGuiGraphics);
         renderRecipeOptions(pGuiGraphics);
+
+        if(categories.contains(CRAFTABLE))
+            pGuiGraphics.blit(TEXTURE, x+174, y-10, 0, 246, 10, 10);
+        if(categories.contains(GATHERABLE))
+            pGuiGraphics.blit(TEXTURE, x+185, y-10, 10, 246, 10, 10);
+        if(categories.contains(FARMABLE))
+            pGuiGraphics.blit(TEXTURE, x+196, y-10, 20, 246, 10, 10);
+        if(categories.contains(RENEWABLE))
+            pGuiGraphics.blit(TEXTURE, x+207, y-10, 30, 246, 10, 10);
+        if(categories.contains(TROPHY))
+            pGuiGraphics.blit(TEXTURE, x+218, y-10, 40, 246, 10, 10);
+        if(categories.contains(RARE))
+            pGuiGraphics.blit(TEXTURE, x+229, y-10, 50, 246, 10, 10);
+
+        if(recipe != null)
+            pGuiGraphics.renderFakeItem(materiaMap.get(recipe.getMateriaName()), x+154, y-12);
     }
 
     private void renderMateriaSelections(GuiGraphics gui) {
@@ -224,7 +294,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                     }
                 }
 
-                if(snipped.get(c).hasSourceCategory(DistillationSourceCategory.CRAFTABLE))
+                if(snipped.get(c).hasSourceCategory(CRAFTABLE))
                     gui.blit(TEXTURE, xOrigin+175, yOrigin+9 + y*18, 18, 206, 8, 6);
                 if(snipped.get(c).hasSourceCategory(DistillationSourceCategory.GATHERABLE))
                     gui.blit(TEXTURE, xOrigin+186, yOrigin+9 + y*18, 18, 206, 8, 6);
@@ -320,19 +390,6 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                 );
             }
         }
-//
-//        if(pX >= x + 65 && pX < x + 65 + 18 && pY >= y + 50 && pY < y + 50 + 18) {
-//            if(menu.itemHandler.getStackInSlot(ChargingTalismanMenu.SLOT_CHARGEABLE_ITEM) == ItemStack.EMPTY) {
-//                tooltipContents.add(Component.empty()
-//                        .append(Component.translatable("tooltip.magichem.gui.charging_talisman.chargee.line1"))
-//                );
-//                tooltipContents.add(Component.empty());
-//                tooltipContents.add(Component.empty()
-//                        .append(Component.translatable("tooltip.magichem.gui.charging_talisman.chargee.line2"))
-//                );
-//                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
-//            }
-//        }
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
     }
