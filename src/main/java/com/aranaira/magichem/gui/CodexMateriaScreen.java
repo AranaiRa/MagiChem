@@ -712,10 +712,21 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         }
 
         //Active materia type on right page
-
         if(selectedMateria != null && pX >= x+154 && pX <= x+170 && pY >= y-12 && pY <= y+4) {
             ItemStack stackUnderMouse = materiaMap.get(selectedMateria.getMateriaName());
             tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+        }
+
+        if(selectedRecipe != null) {
+            if(pX >= x+17 && pX <= x+50 && pY >= y-8 && pY <= y+24) {
+                tooltipContents.addAll(selectedRecipe.getAlchemyObject().getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            }
+
+            if(pX >= x+32 && pX <= x+122 && pY >= y+25 && pY <= y+43) {
+                int index = ((pX-(x+33)) / 18) - (5 - selectedRecipe.getComponentMateria().size());
+                if(index >= 0 && index < selectedRecipe.getComponentMateria().size())
+                    tooltipContents.addAll(selectedRecipe.getComponentMateria().get(index).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            }
         }
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
