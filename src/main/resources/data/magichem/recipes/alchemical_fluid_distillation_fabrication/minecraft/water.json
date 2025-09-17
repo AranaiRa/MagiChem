@@ -1,0 +1,11 @@
+{
+  "type": "magichem:fluid_distillation_fabrication",
+  "wisdom": 0,
+  "categories": 6,
+  "output_rate": 1.0,
+  "batch_size": 8,
+  "fluid": "minecraft:water",
+  "components": [
+    { "item": "magichem:essentia_water", "count": 1 }
+  ]
+}

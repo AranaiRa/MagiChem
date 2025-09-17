@@ -596,7 +596,15 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties())
     );
 
+    public static final RegistryObject<Item> DUMMY_PROCESS_FLUID_DISTILLATION = ITEMS.register("dummy/process_fluid_distillation",
+            () -> new Item(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DUMMY_PROCESS_FABRICATION = ITEMS.register("dummy/process_fabrication",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> DUMMY_PROCESS_FLUID_FABRICATION = ITEMS.register("dummy/process_fluid_fabrication",
             () -> new Item(new Item.Properties())
     );
 
@@ -656,6 +664,7 @@ public class ItemRegistry {
             PHILOSOPHERS_STONE_DUMMY, SUBLIMATION_IN_PROGRESS,
             DUMMY_ANOINTING,DUMMY_INFO_PANEL,DUMMY_VITRIOLATION,DUMMY_ILLUMINATION,
             DUMMY_PROCESS_FULMINATION, DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL, DUMMY_PROCESS_COLORATION, DUMMY_PROCESS_CONJURATION,
+            DUMMY_PROCESS_FLUID_DISTILLATION, DUMMY_PROCESS_FLUID_FABRICATION,
             ESSENTIA_DROPLETS_ENDER, ESSENTIA_DROPLETS_EARTH, ESSENTIA_DROPLETS_WATER, ESSENTIA_DROPLETS_AIR, ESSENTIA_DROPLETS_FIRE, ESSENTIA_DROPLETS_ARCANE
     );
 

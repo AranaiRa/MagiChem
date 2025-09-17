@@ -1,0 +1,13 @@
+{
+  "type": "magichem:fluid_distillation_fabrication",
+  "wisdom": 1,
+  "categories": 1,
+  "output_rate": 1.0,
+  "batch_size": 8,
+  "fluid": "magichem:steam",
+  "components": [
+    { "item": "magichem:essentia_water", "count": 2 },
+    { "item": "magichem:essentia_air", "count": 4 },
+    { "item": "magichem:admixture_industry", "count": 1 }
+  ]
+}

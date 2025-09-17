@@ -28,8 +28,12 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(FulminationRecipeCategory.UID, FulminationRecipe.class);
     public static RecipeType<DistillationFabricationRecipe> DISTILLATION_TYPE =
             new RecipeType<>(DistillationRecipeCategory.UID, DistillationFabricationRecipe.class);
+    public static RecipeType<FluidDistillationFabricationRecipe> FLUID_DISTILLATION_TYPE =
+            new RecipeType<>(FluidDistillationRecipeCategory.UID, FluidDistillationFabricationRecipe.class);
     public static RecipeType<DistillationFabricationRecipe> FABRICATION_TYPE =
             new RecipeType<>(FabricationRecipeCategory.UID, DistillationFabricationRecipe.class);
+    public static RecipeType<FluidDistillationFabricationRecipe> FLUID_FABRICATION_TYPE =
+            new RecipeType<>(FluidFabricationRecipeCategory.UID, FluidDistillationFabricationRecipe.class);
     public static RecipeType<FixationSeparationRecipe> FIXATION_TYPE =
             new RecipeType<>(FixationRecipeCategory.UID, FixationSeparationRecipe.class);
     public static RecipeType<FixationSeparationRecipe> SEPARATION_TYPE =
@@ -63,7 +67,11 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCategories(new
                 DistillationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
+                FluidDistillationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
                 FabricationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                FluidFabricationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 FixationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
@@ -96,11 +104,20 @@ public class JEIPlugin implements IModPlugin {
         List<DistillationFabricationRecipe> recipesDistillation = rm.getAllRecipesFor(DistillationFabricationRecipe.Type.INSTANCE);
         registration.addRecipes(DISTILLATION_TYPE, recipesDistillation);
 
+        List<FluidDistillationFabricationRecipe> recipesFluidDistillation = rm.getAllRecipesFor(FluidDistillationFabricationRecipe.Type.INSTANCE);
+        registration.addRecipes(FLUID_DISTILLATION_TYPE, recipesFluidDistillation);
+
         List<DistillationFabricationRecipe> recipesFabrication = new ArrayList<>();
         for(DistillationFabricationRecipe acr : recipesDistillation) {
             if(!acr.getIsDistillOnly())  recipesFabrication.add(acr);
         }
         registration.addRecipes(FABRICATION_TYPE, recipesFabrication);
+
+        List<FluidDistillationFabricationRecipe> recipesFluidFabrication = new ArrayList<>();
+        for(FluidDistillationFabricationRecipe acr : recipesFluidDistillation) {
+            if(!acr.getIsDistillOnly())  recipesFluidFabrication.add(acr);
+        }
+        registration.addRecipes(FLUID_FABRICATION_TYPE, recipesFluidFabrication);
 
         List<FixationSeparationRecipe> recipesFixationSeparation = rm.getAllRecipesFor(FixationSeparationRecipe.Type.INSTANCE);
         registration.addRecipes(FIXATION_TYPE, recipesFixationSeparation);
@@ -135,17 +152,17 @@ public class JEIPlugin implements IModPlugin {
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.SKYWRATH_ALTAR.get(), 1), FULMINATION_TYPE);
 
-        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ALEMBIC.get(), 1), DISTILLATION_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.DISTILLERY.get(), 1), DISTILLATION_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_DISTILLERY.get(), 1), DISTILLATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ALEMBIC.get(), 1), DISTILLATION_TYPE, FLUID_DISTILLATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.DISTILLERY.get(), 1), DISTILLATION_TYPE, FLUID_DISTILLATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_DISTILLERY.get(), 1), DISTILLATION_TYPE, FLUID_DISTILLATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CENTRIFUGE.get(), 1), SEPARATION_TYPE);
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_CENTRIFUGE.get(), 1), SEPARATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.FUSERY.get(), 1), FIXATION_TYPE);
 
-        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE);
-        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE, FLUID_FABRICATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GRAND_CIRCLE_FABRICATION.get(), 1), FABRICATION_TYPE, FLUID_FABRICATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(ItemInit.RUNE_RITUAL_METAL.get(), 1).setHoverName(Component.translatable("magichem:rituals/balanced_scales")), SUBLIMATION_RITUAL_TYPE);
 

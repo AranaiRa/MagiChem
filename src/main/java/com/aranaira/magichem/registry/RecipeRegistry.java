@@ -15,6 +15,9 @@ public class RecipeRegistry {
     public static final RegistryObject<RecipeSerializer<DistillationFabricationRecipe>> DISTILLATION_FABRICATION_SERIALIZER =
             SERIALIZERS.register("distillation_fabrication", () -> DistillationFabricationRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<FluidDistillationFabricationRecipe>> FLUID_DISTILLATION_FABRICATION_SERIALIZER =
+            SERIALIZERS.register("fluid_distillation_fabrication", () -> FluidDistillationFabricationRecipe.Serializer.INSTANCE);
+
     public static final RegistryObject<RecipeSerializer<FixationSeparationRecipe>> FIXATION_SEPARATION_SERIALIZER =
             SERIALIZERS.register("fixation_separation", () -> FixationSeparationRecipe.Serializer.INSTANCE);
 
