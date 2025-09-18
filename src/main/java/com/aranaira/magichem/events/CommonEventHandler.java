@@ -76,6 +76,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -101,10 +102,19 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 )
 public class CommonEventHandler {
     private static final TagKey<Item>
-            TAG_MINECRAFT_AXES = ItemTags.create(new ResourceLocation("minecraft", "axes"));
+            TAG_MINECRAFT_AXES = ItemTags.create(new ResourceLocation("minecraft", "axes")),
+            TAG_MAGICHEM_NODECAY = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "no_item_decay"));
     private static final Random r = new Random();
 
     public CommonEventHandler() {}
+
+    @SubscribeEvent
+    public static void onItemDecay(ItemExpireEvent event) {
+        if(event.getEntity().getItem().is(TAG_MAGICHEM_NODECAY)) {
+            event.setExtraLife(Short.MAX_VALUE);
+            event.setCanceled(true);
+        }
+    }
 
     @SubscribeEvent
     public static void onBlockActivated(PlayerInteractEvent.RightClickBlock event) {
