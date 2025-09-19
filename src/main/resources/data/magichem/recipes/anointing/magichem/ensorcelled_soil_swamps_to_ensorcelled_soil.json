@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "magichem:ensorcelled_soil_swamps",
+  "materia": "magichem:essentia_verdant",
+  "chance": 100.0,
+  "result": "magichem:ensorcelled_soil"
+}
