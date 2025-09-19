@@ -11,16 +11,21 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.aranaira.magichem.block.entity.AcidBasinBlockEntity.TANK_INPUT;
 
 public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
     private static final ResourceLocation TEXTURE =
@@ -69,6 +74,18 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
             gui.blit(TEXTURE, x+79, y+87, 43, 232, 18, 16);
         if(heat > 0)
             gui.blit(TEXTURE, x+79, y+87, 24, 232, 18, 16);
+
+        if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
+            //fluid gauge
+            IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(
+                    menu.blockEntity.getFluidInTank(0).getFluid()
+            );
+
+            int height = menu.blockEntity.getFluidInTank(0).getAmount() * 52 / menu.blockEntity.getTankCapacity(0);
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderColor(1,1,1,1);
+            gui.blit(extension.getStillTexture(), x + 8, y + 93 - height, 0, 0, 16, height);
+        }
     }
 
     private void renderGrimePanel(GuiGraphics gui, int x, int y) {

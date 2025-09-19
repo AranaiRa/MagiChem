@@ -7,6 +7,7 @@ import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
@@ -24,9 +25,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +42,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins {
+public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntityWithEfficiency implements ICanTakePlugins, IFluidHandler {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
@@ -48,9 +52,12 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected DistillationFabricationRecipe currentRecipe;
+    protected FluidStack inputTank = FluidStack.EMPTY;
+    protected final LazyOptional<IFluidHandler> lazyFluidHandler;
 
     private static HashMap<String, AdmixtureItem> admixturesMap = ItemRegistry.getAdmixturesMap(false, true);
     private static final NonNullList<AdmixtureItem> admixturesForRandomSelection = NonNullList.create();
+    private static final ArrayList<Fluid> validFluidsForDistillation = new ArrayList<>();
     private static final Random random = new Random();
 
     ////////////////////
@@ -67,6 +74,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 }
             }
         }
+
+        this.lazyFluidHandler = LazyOptional.of(() -> this);
     }
 
     ////////////////////
@@ -75,9 +84,10 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER)
             return lazyItemHandler.cast();
-        }
+        else if(cap == ForgeCapabilities.FLUID_HANDLER)
+            return lazyFluidHandler.cast();
 
         return super.getCapability(cap, side);
     }
@@ -86,6 +96,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyFluidHandler.invalidate();
     }
 
     @Nullable
@@ -576,6 +587,81 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     @Override
     public void linkPluginsDeferred() {
         pluginLinkageCountdown = 1;
+    }
+
+    ////////////////////
+    // FLUID HANDLERS
+    ////////////////////
+
+    private ArrayList<Fluid> getValidFluidsForDistillation() {
+        if(level != null && validFluidsForDistillation.size() == 0) {
+            for(FluidDistillationFabricationRecipe recipe : FluidDistillationFabricationRecipe.getAllDistillingRecipes(level)) {
+                validFluidsForDistillation.add(recipe.getAlchemyFluid().getFluid());
+            }
+        }
+
+        return validFluidsForDistillation;
+    }
+
+    public boolean fluidHasDistillationRecipe(Fluid pFluid) {
+        return getValidFluidsForDistillation().contains(pFluid);
+    }
+
+    @Override
+    public int getTanks() {
+        return 1;
+    }
+
+    @Override
+    public @NotNull FluidStack getFluidInTank(int tank) {
+        return inputTank;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
+        return fluidHasDistillationRecipe(stack.getFluid());
+    }
+
+    @Override
+    public int fill(FluidStack resource, FluidAction action) {
+        if(inputTank.isEmpty()) {
+            int inserted = Math.min(getTankCapacity(0), resource.getAmount());
+            if(action == FluidAction.EXECUTE) {
+                inputTank = new FluidStack(resource.getFluid(), inserted);
+                syncAndSave();
+            }
+            return inserted;
+        } else if(resource.getFluid() == inputTank.getFluid()) {
+            int capacity = getTankCapacity(0) - inputTank.getAmount();
+            int inserted = Math.min(resource.getAmount(), capacity);
+            if(action == FluidAction.EXECUTE) {
+                inputTank.grow(inserted);
+                syncAndSave();
+            }
+            return inserted;
+        }
+        return 0;
+    }
+
+    @Override
+    public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
+        if(resource.getFluid() == inputTank.getFluid() || inputTank.isEmpty()) {
+            int extracted = Math.min(resource.getAmount(), inputTank.getAmount());
+            FluidStack output = inputTank.copy();
+            output.setAmount(extracted);
+            if(action == FluidAction.EXECUTE) {
+                inputTank.shrink(extracted);
+                syncAndSave();
+            }
+            return output;
+        }
+
+        return FluidStack.EMPTY;
+    }
+
+    @Override
+    public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+        return drain(maxDrain, action);
     }
 
     ////////////////////

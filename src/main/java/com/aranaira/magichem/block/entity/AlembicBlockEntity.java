@@ -20,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -34,9 +35,12 @@ import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -167,6 +171,12 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
+        if(!inputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid",ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",inputTank.getAmount());
+            nbt.put("inputTank",inputTankTag);
+        }
         super.saveAdditional(nbt);
     }
 
@@ -176,6 +186,14 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         unpackInventoryFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
+        if(nbt.contains("inputTank")) {
+            CompoundTag inputTankTag = nbt.getCompound("inputTank");
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+            if(fluid != null)
+                inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+        } else {
+            inputTank = FluidStack.EMPTY;
+        }
     }
 
     @Override
@@ -184,6 +202,12 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("craftingProgress", this.progress);
         nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
+        if(!inputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid",ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",inputTank.getAmount());
+            nbt.put("inputTank",inputTankTag);
+        }
         return nbt;
     }
 
@@ -194,6 +218,12 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("grime", grimeCap.getGrime());
         nbt.put("inventory", itemHandler.serializeNBT());
+        if(!inputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid", ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",inputTank.getAmount());
+            nbt.put("inputTank",inputTankTag);
+        }
 
         stack.setTag(nbt);
 
@@ -204,6 +234,14 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         int size = pInventoryTag.getInt("Size");
         if(size == SLOT_COUNT) {
             itemHandler.deserializeNBT(pInventoryTag);
+            if(pInventoryTag.contains("inputTank")) {
+                CompoundTag inputTankTag = pInventoryTag.getCompound("inputTank");
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+                if(fluid != null)
+                    inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+            } else {
+                inputTank = FluidStack.EMPTY;
+            }
         } else if(getLevel() != null && getLevel().isClientSide()) {
             final LocalPlayer player = Minecraft.getInstance().player;
             if(player != null) {
@@ -213,6 +251,15 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
                 player.displayClientMessage(msg, false);
             }
         }
+    }
+
+    ////////////////////
+    // FLUID HANDLING
+    ////////////////////
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return ServerConfig.alembicTankCapacity;
     }
 
     ////////////////////

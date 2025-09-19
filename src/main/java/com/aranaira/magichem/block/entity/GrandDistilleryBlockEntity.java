@@ -29,6 +29,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -43,12 +44,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -234,6 +238,12 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
+        if(!inputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid", ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",inputTank.getAmount());
+            nbt.put("inputTank",inputTankTag);
+        }
         super.saveAdditional(nbt);
     }
 
@@ -247,6 +257,14 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         redstonePaused = nbt.getBoolean("redstonePaused");
         GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
+        if(nbt.contains("inputTank")) {
+            CompoundTag inputTankTag = nbt.getCompound("inputTank");
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+            if(fluid != null)
+                inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+        } else {
+            inputTank = FluidStack.EMPTY;
+        }
     }
 
     @Override
@@ -259,6 +277,12 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.putBoolean("redstonePaused", this.redstonePaused);
         nbt.putLong("grime", GrimeProvider.getCapability(this).getGrime());
+        if(!inputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid",ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",inputTank.getAmount());
+            nbt.put("inputTank",inputTankTag);
+        }
         return nbt;
     }
 
@@ -270,6 +294,12 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         nbt.putInt("grime", grimeCap.getGrime());
         nbt.putInt("powerUsageSetting", this.powerUsageSetting);
         nbt.put("inventory", itemHandler.serializeNBT());
+        if(!inputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid",ForgeRegistries.FLUIDS.getKey(inputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",inputTank.getAmount());
+            nbt.put("inputTank",inputTankTag);
+        }
 
         stack.setTag(nbt);
 
@@ -280,6 +310,14 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         int size = pInventoryTag.getInt("Size");
         if(size == SLOT_COUNT) {
             itemHandler.deserializeNBT(pInventoryTag);
+            if(pInventoryTag.contains("inputTank")) {
+                CompoundTag inputTankTag = pInventoryTag.getCompound("inputTank");
+                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+                if(fluid != null)
+                    inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+            } else {
+                inputTank = FluidStack.EMPTY;
+            }
         } else if(getLevel() != null && getLevel().isClientSide()) {
             final LocalPlayer player = Minecraft.getInstance().player;
             if(player != null) {
@@ -298,6 +336,15 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         }
 
         return super.getCapability(cap, side);
+    }
+
+    ////////////////////
+    // FLUID HANDLING
+    ////////////////////
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return ServerConfig.grandDistilleryTankCapacity;
     }
 
     ////////////////////
