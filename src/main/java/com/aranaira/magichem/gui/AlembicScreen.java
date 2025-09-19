@@ -1,5 +1,6 @@
 package com.aranaira.magichem.gui;
 
+import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
@@ -172,6 +173,19 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
                     .append(" ")
                     .append(Component.literal(String.format("%.1f", AlembicBlockEntity.getGrimePercent(menu.getGrime(), AlembicBlockEntity::getVar)*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Fluid Bar
+        if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
+            if (mouseX >= x + 8 && mouseX <= x + 24 &&
+                    mouseY >= y + 41 && mouseY <= y + 93) {
+
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable(menu.blockEntity.getFluidInTank(0).getTranslationKey()).withStyle(ChatFormatting.GOLD)));
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(menu.blockEntity.getFluidInTank(0).getAmount() + " / " + menu.blockEntity.getTankCapacity(0)).withStyle(ChatFormatting.DARK_AQUA)));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
         }
     }
 

@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,23 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
             int sHeat = DistilleryBlockEntity.getScaledHeat(menu.getHeat(), menu.getHeatDuration(), DistilleryBlockEntity::getVar);
             int hHeat = DistilleryBlockEntity.getVar(AbstractDistillationBlockEntity.IDs.GUI_HEAT_GAUGE_HEIGHT) - sHeat;
             gui.blit(TEXTURE, x + 79, y + 78 + hHeat, 24, 232 + hHeat, 18, sHeat);
+        }
+
+        if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
+            IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(menu.blockEntity.getFluidInTank(0).getFluid());
+            int packedTint = extension.getTintColor();
+            float a = ((packedTint >> 24) & 0xff) / 255.0f;
+            float r = ((packedTint >> 16) & 0xff) / 255.0f;
+            float g = ((packedTint >> 8) & 0xff) / 255.0f;
+            float b = ((packedTint) & 0xff) / 255.0f;
+            gui.setColor(r,g,b,a);
+
+            int height = menu.blockEntity.getFluidInTank(0).getAmount() * 106 / menu.blockEntity.getTankCapacity(0);
+
+            ResourceLocation rl = new ResourceLocation(extension.getStillTexture().getNamespace(), "textures/"+extension.getStillTexture().getPath()+".png");
+            gui.blit(rl, x + 8, y + 114 - height, 0, 0, 16, height, 16, 16);
+
+            gui.setColor(1.0f,1.0f,1.0f,1.0f);
         }
     }
 
@@ -132,6 +150,19 @@ public class DistilleryScreen extends AbstractContainerScreen<DistilleryMenu> {
                     .append(" ")
                     .append(Component.literal(String.format("%.1f", DistilleryBlockEntity.getGrimePercent(menu.getGrime(), DistilleryBlockEntity::getVar)*100.0f)+"%").withStyle(ChatFormatting.DARK_AQUA)));
             gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+        }
+
+        //Fluid Bar
+        if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
+            if (mouseX >= x + 8 && mouseX <= x + 24 &&
+                    mouseY >= y + 8 && mouseY <= y + 114) {
+
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable(menu.blockEntity.getFluidInTank(0).getTranslationKey()).withStyle(ChatFormatting.GOLD)));
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(menu.blockEntity.getFluidInTank(0).getAmount() + " / " + menu.blockEntity.getTankCapacity(0)).withStyle(ChatFormatting.DARK_AQUA)));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
         }
     }
 
