@@ -577,6 +577,17 @@
       ]
     },
     {
+      "name": "radiation",
+      "color": "3ac2da",
+      "depth": 2,
+      "components": [
+        { "admixture": "light", "count": 2 },
+        { "admixture": "poison", "count": 2 },
+        { "admixture": "destruction", "count": 1 },
+        { "essentia": "mineral", "count": 3 }
+      ]
+    },
+    {
       "name": "realm",
       "color": "387293",
       "depth": 1,

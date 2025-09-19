@@ -1,0 +1,24 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_realm"
+  },
+  "components": [
+    {
+      "item": "magichem:admixture_light",
+      "count": 2
+    },
+    {
+      "item": "magichem:admixture_poison",
+      "count": 2
+    },
+    {
+      "item": "magichem:admixture_destruction",
+      "count": 1
+    },
+    {
+      "item": "magichem:essentia_mineral",
+      "count": 3
+    }
+  ]
+}
