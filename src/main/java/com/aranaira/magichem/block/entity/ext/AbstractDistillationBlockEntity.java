@@ -799,7 +799,14 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     @Override
     public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
-        return drain(maxDrain, action);
+        int extracted = Math.min(maxDrain, inputTank.getAmount());
+        FluidStack output = inputTank.copy();
+        output.setAmount(extracted);
+        if(action == FluidAction.EXECUTE) {
+            inputTank.shrink(extracted);
+            syncAndSave();
+        }
+        return output;
     }
 
     ////////////////////
