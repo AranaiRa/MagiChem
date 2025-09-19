@@ -3,6 +3,7 @@ package com.aranaira.magichem.block.entity.ext;
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.item.AdmixtureItem;
@@ -52,6 +53,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected DistillationFabricationRecipe currentRecipe;
+    protected FluidDistillationFabricationRecipe currentFluidRecipe;
     protected FluidStack inputTank = FluidStack.EMPTY;
     protected final LazyOptional<IFluidHandler> lazyFluidHandler;
 
@@ -202,15 +204,46 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             int processingSlot = processing.getFirst();
             ItemStack processingItem = processing.getSecond();
             boolean recipeMatchesProcessingItem = pEntity.currentRecipe != null && pEntity.currentRecipe.getAlchemyObject().getItem() == processingItem.getItem();
+            boolean fluidRecipeMatchesInputTank = pEntity.currentFluidRecipe != null && pEntity.currentFluidRecipe.getAlchemyFluid().getFluid() == pEntity.inputTank.getFluid();
 
-            if(!processingItem.isEmpty()){
+            //Distill fluids
+            if(!pEntity.inputTank.isEmpty()){
+                if(!fluidRecipeMatchesInputTank)
+                    pEntity.currentFluidRecipe = getRecipeInTank(pEntity);
+                if (pEntity.currentFluidRecipe != null) {
+                    if (pEntity.currentFluidRecipe.getOutputRate() > 0 && pEntity.currentFluidRecipe.getOutputRate() <= 1)
+                        pEntity.progressMultiplier = Math.round(1f / pEntity.currentFluidRecipe.getOutputRate());
+
+                    if (canProcessFluid(pEntity, pEntity.currentFluidRecipe, pVarFunc)) {
+                        if (pEntity.progress > operationTicks) {
+                            if (!pLevel.isClientSide()) {
+                                craftFluid(pEntity, pEntity.currentFluidRecipe, pVarFunc);
+                                pEntity.pushData();
+                                pEntity.syncAndSave();
+                            }
+                            if (!pEntity.isStalled)
+                                pEntity.resetProgress();
+                        } else {
+                            if (doubleSpeed) {
+                                pEntity.incrementProgress();
+                                pEntity.incrementProgress();
+                            } else if (!halfSpeed) {
+                                pEntity.incrementProgress();
+                            } else if (pLevel.getGameTime() % 2 == 0)
+                                pEntity.incrementProgress();
+                        }
+                    }
+                }
+            }
+            //Distill items
+            else if(!processingItem.isEmpty()){
                 if(!recipeMatchesProcessingItem)
                     pEntity.currentRecipe = getRecipeInSlot(pEntity, processingSlot);
                 if (pEntity.currentRecipe != null) {
                     if (pEntity.currentRecipe.getOutputRate() > 0 && pEntity.currentRecipe.getOutputRate() <= 1)
                         pEntity.progressMultiplier = Math.round(1f / pEntity.currentRecipe.getOutputRate());
 
-                    if (canCraftItem(pEntity, pEntity.currentRecipe, pVarFunc)) {
+                    if (canProcessItem(pEntity, pEntity.currentRecipe, pVarFunc)) {
                         if (pEntity.progress > operationTicks) {
                             if (!pLevel.isClientSide()) {
                                 craftItem(pEntity, pEntity.currentRecipe, processingSlot, pVarFunc);
@@ -250,7 +283,12 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                     }
                 }
             }
-            if (processingItem.isEmpty()) {
+
+            //Clear recipes out
+            if (pEntity.inputTank.isEmpty()) {
+                pEntity.currentFluidRecipe = null;
+            }
+            if (processingItem.isEmpty() && pEntity.inputTank.isEmpty()) {
                 pEntity.resetProgress();
                 Pair<Integer, ItemStack> postProcessingItem = getProcessingItem(pEntity, pVarFunc);
                 boolean recipeMatchesPostProcessingItem = pEntity.currentRecipe != null && pEntity.currentRecipe.getAlchemyObject().getItem() == processingItem.getItem();
@@ -348,7 +386,38 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return null;
     }
 
-    protected static boolean canCraftItem(AbstractDistillationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
+    protected static FluidDistillationFabricationRecipe getRecipeInTank(AbstractDistillationBlockEntity entity) {
+        Level level = entity.level;
+
+        FluidDistillationFabricationRecipe recipe = FluidDistillationFabricationRecipe.getDistillingRecipe(level, entity.inputTank.getFluid());
+
+        if(recipe != null) {
+            return recipe;
+        }
+
+        return null;
+    }
+
+    protected static boolean canProcessFluid(AbstractDistillationBlockEntity pEntity, FluidDistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
+        SimpleContainer cont = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
+        for(int i=pVarFunc.apply(IDs.SLOT_OUTPUT_START); i<pVarFunc.apply(IDs.SLOT_OUTPUT_START)+pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+            cont.setItem(i-pVarFunc.apply(IDs.SLOT_OUTPUT_START), pEntity.itemHandler.getStackInSlot(i).copy());
+        }
+
+        for(int i=0; i<pRecipe.getComponentMateria().size(); i++) {
+            final ItemStack query = pRecipe.getComponentMateria().get(i).copy();
+            while(query.getCount() > 0) {
+                if (!cont.canAddItem(query))
+                    return false;
+                cont.addItem(new ItemStack(query.getItem(), Math.min(64, query.getCount())));
+                query.shrink(Math.min(64, query.getCount()));
+            }
+        }
+
+        return true;
+    }
+
+    protected static boolean canProcessItem(AbstractDistillationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
         SimpleContainer cont = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=pVarFunc.apply(IDs.SLOT_OUTPUT_START); i<pVarFunc.apply(IDs.SLOT_OUTPUT_START)+pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
             cont.setItem(i-pVarFunc.apply(IDs.SLOT_OUTPUT_START), pEntity.itemHandler.getStackInSlot(i).copy());
@@ -378,6 +447,75 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         return hasSpace;
     }
 
+    protected static void craftFluid(AbstractDistillationBlockEntity pEntity, FluidDistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
+        SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
+        for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+            outputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START)+i));
+        }
+
+        int totalCycles = 0;
+        int materiaCreated = 0;
+        int craftLimit = pEntity.batchSize;
+        for(int batch=0; batch<craftLimit; batch++) {
+            totalCycles++;
+            if(!canProcessFluid(pEntity, pRecipe, pVarFunc)) {
+                break;
+            } else if (pEntity.inputTank.isEmpty()) {
+                break;
+            }
+
+            float outputRate = Math.min(1000, pEntity.inputTank.getAmount()) / 1000f;
+
+            //Fluids distill at boosted efficiency rate
+            int efficiency = AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc);
+            int adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * 0.5f));
+            Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), adjustedEfficiency, pRecipe.getOutputRate() * outputRate, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
+            int grimeToAdd = Math.round(pair.getFirst() * pRecipe.getOutputRate());
+            NonNullList<ItemStack> componentMateria = pair.getSecond();
+
+            for (ItemStack item : componentMateria) {
+                if (outputSlots.canAddItem(item)) {
+                    ItemStack query = item.copy();
+                    while(query.getCount() > 0) {
+                        ItemStack stackToAdd = new ItemStack(query.getItem(), Math.min(64, query.getCount()));
+                        materiaCreated += query.getCount();
+
+                        CompoundTag nbt = item.getOrCreateTag();
+                        nbt.putInt("CustomModelData", 1);
+                        stackToAdd.setTag(nbt);
+
+                        outputSlots.addItem(stackToAdd);
+                        query.shrink(Math.min(64, query.getCount()));
+                    }
+                } else {
+                    pEntity.isStalled = true;
+                    break;
+                }
+            }
+
+            if (!pEntity.isStalled) {
+                for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
+                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
+                }
+                pEntity.inputTank.shrink(1000);
+            }
+
+            //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
+            for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
+                if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
+                    grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
+                }
+            }
+
+            if (grimeToAdd > 0) {
+                IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
+                grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), pVarFunc.apply(IDs.CONFIG_MAX_GRIME)));
+            }
+        }
+
+        resolveActuators(pEntity, totalCycles, materiaCreated);
+    }
+
     protected static void craftItem(AbstractDistillationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, int pProcessingSlot, Function<IDs, Integer> pVarFunc) {
         SimpleContainer outputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT));
         for(int i=0; i<pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
@@ -389,7 +527,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         int craftLimit = Math.min(pEntity.batchSize, pEntity.itemHandler.getStackInSlot(pProcessingSlot).getCount());
         for(int batch=0; batch<craftLimit; batch++) {
             totalCycles++;
-            if(!canCraftItem(pEntity, pRecipe, pVarFunc)) {
+            if(!canProcessItem(pEntity, pRecipe, pVarFunc)) {
                 break;
             } else if (pEntity.itemHandler.getStackInSlot(pProcessingSlot).isEmpty()) {
                 break;
