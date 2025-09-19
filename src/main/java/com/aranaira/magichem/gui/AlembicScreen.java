@@ -4,6 +4,7 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.util.render.GuiUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -76,15 +77,20 @@ public class AlembicScreen extends AbstractContainerScreen<AlembicMenu> {
             gui.blit(TEXTURE, x+79, y+87, 24, 232, 18, 16);
 
         if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
-            //fluid gauge
-            IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(
-                    menu.blockEntity.getFluidInTank(0).getFluid()
-            );
+            IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(menu.blockEntity.getFluidInTank(0).getFluid());
+            int packedTint = extension.getTintColor();
+            float a = ((packedTint >> 24) & 0xff) / 255.0f;
+            float r = ((packedTint >> 16) & 0xff) / 255.0f;
+            float g = ((packedTint >> 8) & 0xff) / 255.0f;
+            float b = ((packedTint) & 0xff) / 255.0f;
+            gui.setColor(r,g,b,a);
 
             int height = menu.blockEntity.getFluidInTank(0).getAmount() * 52 / menu.blockEntity.getTankCapacity(0);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderColor(1,1,1,1);
-            gui.blit(extension.getStillTexture(), x + 8, y + 93 - height, 0, 0, 16, height);
+
+            ResourceLocation rl = new ResourceLocation(extension.getStillTexture().getNamespace(), "textures/"+extension.getStillTexture().getPath()+".png");
+            gui.blit(rl, x + 8, y + 93 - height, 0, 0, 16, height, 16, 16);
+
+            gui.setColor(1.0f,1.0f,1.0f,1.0f);
         }
     }
 
