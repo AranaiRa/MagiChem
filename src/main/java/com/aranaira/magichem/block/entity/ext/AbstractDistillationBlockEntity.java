@@ -468,7 +468,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
             //Fluids distill at boosted efficiency rate
             int efficiency = AbstractDistillationBlockEntity.getActualEfficiency(pEntity.efficiencyMod, GrimeProvider.getCapability(pEntity).getGrime(), pVarFunc);
-            int adjustedEfficiency = efficiency + Math.min(100, Math.round((100 - efficiency) * 0.5f));
+            int adjustedEfficiency = Math.min(100, efficiency + 15);
             Pair<Integer, NonNullList<ItemStack>> pair = applyEfficiencyToCraftingResult(pRecipe.getComponentMateria(), adjustedEfficiency, pRecipe.getOutputRate() * outputRate, pVarFunc.apply(IDs.CONFIG_GRIME_ON_SUCCESS), pVarFunc.apply(IDs.CONFIG_GRIME_ON_FAILURE));
             int grimeToAdd = Math.round(pair.getFirst() * pRecipe.getOutputRate());
             NonNullList<ItemStack> componentMateria = pair.getSecond();
