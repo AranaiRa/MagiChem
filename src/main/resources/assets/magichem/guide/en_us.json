@@ -725,7 +725,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " which decreases the chance that a dram of materia is successfully distilled independently of the device's Efficiency; for example, a device with 30% Efficiency processing an item with a 33% output rate will result in a dram of materia 10% of the time (30 x 0.33). Items with a reduced output rate will craft proportionately faster to compensate; for example, an item with a 33% output rate will process 3x faster."
+            "text": " which decreases the chance that a dram of materia is successfully distilled independently of the device's Efficiency; for example, a device with 30% Efficiency processing an item with a 33% output rate will result in a dram of materia 10% of the time (30 x 0.33). Items with a reduced output rate will craft proportionately faster to compensate; for example, an item with a 33% output rate will process 3x faster.\n\nFluids are easier for Distillation devices to process and will distill at "
+          },
+          {
+            "text": "15% higher Efficiency",
+            "color": "dark_purple"
+          },
+          {
+            "text": " than the device's listed value."
           }
         ]
       }
@@ -1167,12 +1174,7 @@
         "value": "",
         "json": [
           {
-            "text": "The tall, leftmost slot is for fluids and is currently unimplemented.",
-            "italic": true
-          },
-          {
-            "text": "\n\nThe three slots to the right of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nThe wavy lines below the alchemical Distillation symbol represent the device's current heat. A bright yellow-orange represents heat from a furnace, blast furnace, or smoker, while a dark red represents a passive heat source.",
-            "italic": false
+            "text": "The tall, leftmost slot is for input fluids.\n\nThe three slots to the right of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe nine slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nThe wavy lines below the alchemical Distillation symbol represent the device's current heat. A bright yellow-orange represents heat from a furnace, blast furnace, or smoker, while a dark red represents a passive heat source."
           }
         ]
       }
@@ -4961,12 +4963,7 @@
         "value": "",
         "json": [
           {
-            "text": "The tall, leftmost slot is for fluids and is currently unimplemented.",
-            "italic": true
-          },
-          {
-            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nAt the bottom is a single slot that fuel items can be inserted into.\n",
-            "italic": false
+            "text": "The tall, leftmost slot is for input fluids.\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nAt the bottom is a single slot that fuel items can be inserted into.\n"
           }
         ]
       },
@@ -6775,12 +6772,7 @@
         "value": "",
         "json": [
           {
-            "text": "The tall, leftmost slot is for fluids and is currently unimplemented.",
-            "italic": true
-          },
-          {
-            "text": "\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot. The alchemical Distillation symbol in the center acts as a progress bar and fills as the current items are Distilling.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time).",
-            "italic": false
+            "text": "The tall, leftmost slot is for input fluids and is currently unimplemented\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot. The alchemical Distillation symbol in the center acts as a progress bar and fills as the current items are Distilling.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time)."
           }
         ]
       },
