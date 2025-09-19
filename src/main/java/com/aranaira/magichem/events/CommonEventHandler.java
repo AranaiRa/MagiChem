@@ -758,17 +758,6 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
-    public static void onEntityActivated(PlayerInteractEvent.EntityInteract event) {
-        //Trade Codex Materia for Codex Arcana with the Wandering Wizard and vice versa
-        if(event.getTarget() instanceof WanderingWizard ww) {
-            if(event.getEntity().getItemInHand(event.getHand()).getItem() == ItemInit.GUIDE_BOOK.get() || event.getEntity().getItemInHand(event.getHand()).getItem() == ItemRegistry.CODEX_MATERIA.get()) {
-                event.setCancellationResult(InteractionResult.CONSUME);
-                event.setCanceled(true);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onEntityActivatedWithItem(PlayerInteractEvent.EntityInteract event) {
         if(event.getTarget() instanceof WanderingWizard ww) {
             if(event.getEntity().getItemInHand(event.getHand()).getItem() == ItemInit.GUIDE_BOOK.get()) {
