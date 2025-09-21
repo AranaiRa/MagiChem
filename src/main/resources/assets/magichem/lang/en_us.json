@@ -1551,5 +1551,9 @@
 
   "jei.general.info_panel.storage_block_no_recipe": "This storage block deliberately has no Distillation output because the resultant materia stacks would be way above the 256 limit. \n Break it apart into its component items if you want to distill it.",
 
-  "curios.identifier.wisdom": "Wisdom Stone"
+  "curios.identifier.wisdom": "Wisdom Stone",
+
+  "key.openwisdomwheel": "Open Wisdom GUI",
+  "key.togglewisdomeffects": "Toggle Wisdom Effects",
+  "key.categories.mna.magichem": "MnA (MagiChem)"
 }

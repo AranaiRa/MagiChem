@@ -11068,5 +11068,8 @@
       }
     ]
   },
-  "version": "1.0.0a"
+  "version": "1.0.0a",
+  "key.openwisdomwheel": "Open Wisdom GUI",
+  "key.togglewisdomeffects": "Toggle Wisdom Effects",
+  "key.categories.mna.magichem": "MnA (MagiChem)"
 }
