@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
 import com.aranaira.magichem.gui.element.CodexMateriaButtonRecipeSelector;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -14,12 +15,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 
 import java.util.*;
 
@@ -33,11 +36,12 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
     private final ImageButton[] categoryToggleButtons = new ImageButton[6];
     private final ArrayList<DistillationSourceCategory> categories = new ArrayList<>();
     private MateriaItem selectedMateria;
-    private DistillationFabricationRecipe selectedRecipe;
+    private CodexMateriaOption selectedRecipe;
     private EditBox recipeFilterBox;
     private static final ArrayList<String> sortedMateriaKeys = new ArrayList<>();
     private static final HashMap<String, ItemStack> materiaMap = new HashMap<>();
     private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
+    private static List<FluidDistillationFabricationRecipe> allFluidDistillationRecipes = new ArrayList<>();
     private boolean materiaFilterChanged = false;
 
     public static final int
@@ -53,6 +57,8 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         }
         if(allDistillationRecipes.size() == 0)
             allDistillationRecipes = DistillationFabricationRecipe.getAllDistillingRecipes(pPlayerInventory.player.level());
+        if(allFluidDistillationRecipes.size() == 0)
+            allFluidDistillationRecipes = FluidDistillationFabricationRecipe.getAllDistillingRecipes(pPlayerInventory.player.level());
         categories.addAll(Arrays.asList(DistillationSourceCategory.values()));
         updateDisplayedMateria("");
     }
@@ -353,7 +359,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 //        recipesChanged = false;
     }
 
-    private final List<DistillationFabricationRecipe> filteredRecipes = new ArrayList<>();
+    private final List<CodexMateriaOption> filteredRecipes = new ArrayList<>();
     private int recipeFilterPage, recipeFilterPagesTotal;
     private void updateDisplayedRecipes(MateriaItem pFilter) {
         filteredRecipes.clear();
@@ -366,23 +372,47 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                         hasMatchingCategory = recipeQuery.hasSourceCategory(category);
                         if(hasMatchingCategory) break;
                     }
-                    if(hasMatchingCategory) filteredRecipes.add(recipeQuery);
+                    if(hasMatchingCategory) filteredRecipes.add(new CodexMateriaOption(recipeQuery));
+                    break;
+                }
+            }
+        }
+
+        for(FluidDistillationFabricationRecipe recipeQuery : allFluidDistillationRecipes) {
+            for(ItemStack materiaQuery : recipeQuery.getComponentMateria()) {
+                if (materiaQuery.getItem() == pFilter) {
+                    boolean hasMatchingCategory = false;
+                    for(DistillationSourceCategory category : categories) {
+                        hasMatchingCategory = recipeQuery.hasSourceCategory(category);
+                        if(hasMatchingCategory) break;
+                    }
+                    if(hasMatchingCategory) filteredRecipes.add(new CodexMateriaOption(recipeQuery));
                     break;
                 }
             }
         }
 
         //sort recipes
-        DistillationFabricationRecipe[] sortingArray = new DistillationFabricationRecipe[filteredRecipes.size()];
+        CodexMateriaOption[] sortingArray = new CodexMateriaOption[filteredRecipes.size()];
         filteredRecipes.toArray(sortingArray);
         Arrays.sort(sortingArray, Comparator.comparing(o -> {
             String sortingKey = "";
 
-            for(ItemStack materiaQuery : o.getComponentMateria()) {
-                if (materiaQuery.getItem() == pFilter) {
-                    sortingKey = String.format("%06.2f", o.getOutputRate() * materiaQuery.getCount());
-                    sortingKey += o.getAlchemyObject().getDisplayName();
-                    break;
+            if(!o.isFluidRecipe()) {
+                for (ItemStack materiaQuery : o.itemRecipe.getComponentMateria()) {
+                    if (materiaQuery.getItem() == pFilter) {
+                        sortingKey = String.format("%06.2f", o.getSortingFloat(pFilter));
+                        sortingKey += o.itemRecipe.getAlchemyObject().getDisplayName();
+                        break;
+                    }
+                }
+            } else {
+                for (ItemStack materiaQuery : o.fluidRecipe.getComponentMateria()) {
+                    if (materiaQuery.getItem() == pFilter) {
+                        sortingKey = String.format("%06.2f", o.getSortingFloat(pFilter));
+                        sortingKey += o.fluidRecipe.getAlchemyFluid().getDisplayName();
+                        break;
+                    }
                 }
             }
 
@@ -458,7 +488,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 
             pGuiGraphics.pose().pushPose();
             pGuiGraphics.pose().scale(2,2,2);
-            pGuiGraphics.renderFakeItem(selectedRecipe.getAlchemyObject(), (x/2)+9, (y/2)-4);
+            selectedRecipe.draw(pGuiGraphics, (x/2)+9, (y/2)-4);
             pGuiGraphics.pose().popPose();
 
             int componentShift = (5 - selectedRecipe.getComponentMateria().size()) * 18;
@@ -510,7 +540,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        List<DistillationFabricationRecipe> snipped = new ArrayList<>();
+        List<CodexMateriaOption> snipped = new ArrayList<>();
         for(int i = recipeFilterPage*8; i<Math.min(filteredRecipes.size(), recipeFilterPage*8 + 8); i++) {
             snipped.add(filteredRecipes.get(i));
         }
@@ -520,7 +550,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         while(c < cLimit) {
 
             for(int y=0; y<8; y++) {
-                gui.renderItem(snipped.get(c).getAlchemyObject(), xOrigin+135, yOrigin+4 + y*18);
+                snipped.get(c).draw(gui, xOrigin+135, yOrigin+4 + y*18);
                 for(ItemStack materiaQuery : snipped.get(c).getComponentMateria()) {
                     if(materiaQuery.getItem() == selectedMateria) {
                         float outputRate = snipped.get(c).getOutputRate();
@@ -690,8 +720,8 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 
             if (id >= 0 && id < 8) {
                 if(id + recipeFilterPage * 8 < filteredRecipes.size()) {
-                    DistillationFabricationRecipe recipeQuery = filteredRecipes.get(id + recipeFilterPage * 8);
-                    tooltipContents.addAll(recipeQuery.getAlchemyObject().getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                    CodexMateriaOption optionQuery = filteredRecipes.get(id + recipeFilterPage * 8);
+                    tooltipContents.addAll(optionQuery.getTooltipLines());
                 }
             }
         }
@@ -719,7 +749,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 
         if(selectedRecipe != null) {
             if(pX >= x+17 && pX <= x+50 && pY >= y-8 && pY <= y+24) {
-                tooltipContents.addAll(selectedRecipe.getAlchemyObject().getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                tooltipContents.addAll(selectedRecipe.getTooltipLines());
             }
 
             if(pX >= x+32 && pX <= x+122 && pY >= y+25 && pY <= y+43) {
@@ -730,5 +760,79 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         }
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+    }
+
+    private class CodexMateriaOption {
+        private DistillationFabricationRecipe itemRecipe;
+        private FluidDistillationFabricationRecipe fluidRecipe;
+
+        public CodexMateriaOption(DistillationFabricationRecipe pRecipe) {
+            itemRecipe = pRecipe;
+            fluidRecipe = null;
+        }
+
+        public CodexMateriaOption(FluidDistillationFabricationRecipe pRecipe) {
+            itemRecipe = null;
+            fluidRecipe = pRecipe;
+        }
+
+        public void draw(GuiGraphics pGui, int pX, int pY) {
+            if(itemRecipe != null) {
+                pGui.renderItem(itemRecipe.getAlchemyObject(), pX, pY);
+//                pGui.renderItemDecorations(Minecraft.getInstance().font, itemRecipe.getAlchemyObject(), pX, pY);
+            } else if(fluidRecipe != null) {
+                IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluidRecipe.getAlchemyFluid().getFluid());
+                int packedTint = extension.getTintColor();
+                float a = ((packedTint >> 24) & 0xff) / 255.0f;
+                float r = ((packedTint >> 16) & 0xff) / 255.0f;
+                float g = ((packedTint >> 8) & 0xff) / 255.0f;
+                float b = ((packedTint) & 0xff) / 255.0f;
+                pGui.setColor(r,g,b,a);
+                ResourceLocation rl = new ResourceLocation(extension.getStillTexture().getNamespace(), "textures/"+extension.getStillTexture().getPath()+".png");
+                pGui.blit(rl, pX, pY, 0, 0, 16, 16, 16, 16);
+                pGui.setColor(1f,1f,1f,1f);
+            }
+        }
+
+        public float getSortingFloat(MateriaItem pFilter) {
+            if(itemRecipe != null) {
+                for(ItemStack stackQuery : itemRecipe.getComponentMateria()) {
+                    if(stackQuery.getItem() == pFilter) return (float)stackQuery.getCount() * itemRecipe.getOutputRate();
+                }
+            } else {
+                for(ItemStack stackQuery : fluidRecipe.getComponentMateria()) {
+                    if(stackQuery.getItem() == pFilter) return (float)stackQuery.getCount() * fluidRecipe.getOutputRate();
+                }
+            }
+            return 0f;
+        }
+
+        public boolean isFluidRecipe() {
+            return fluidRecipe != null && itemRecipe == null;
+        }
+
+        public float getOutputRate() {
+            return itemRecipe != null ? itemRecipe.getOutputRate() : fluidRecipe.getOutputRate();
+        }
+
+        public NonNullList<ItemStack> getComponentMateria() {
+            return itemRecipe != null ? itemRecipe.getComponentMateria() : fluidRecipe.getComponentMateria();
+        }
+
+        public boolean hasSourceCategory(DistillationSourceCategory pCategory) {
+            return itemRecipe != null ? itemRecipe.hasSourceCategory(pCategory) : fluidRecipe.hasSourceCategory(pCategory);
+        }
+
+        public List<Component> getTooltipLines() {
+            if(itemRecipe != null)
+                return itemRecipe.getAlchemyObject().getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL);
+            else {
+                List<Component> out = new ArrayList<>();
+                out.add(Component.empty()
+                        .append(Component.translatable(fluidRecipe.getAlchemyFluid().getTranslationKey()))
+                );
+                return out;
+            }
+        }
     }
 }
