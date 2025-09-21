@@ -518,7 +518,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
 
     @Override
     public byte setRecipe(ItemStack pStack, Player player) {
-        if(pStack.getItem() instanceof AdmixtureItem) {
+        if(pStack.getItem() instanceof AdmixtureItem ai) {
+            currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(player.level(), ai);
             syncAndSave();
             return ERROR_CODE_SUCCESS;
         }
