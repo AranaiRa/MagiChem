@@ -2,7 +2,7 @@ package com.aranaira.magichem.registry;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.mojang.blaze3d.platform.InputConstants;
-import cpw.mods.util.Lazy;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -21,16 +21,16 @@ public class KeybindRegistry {
                 "key.openwisdomwheel",
                 KeyConflictContext.IN_GAME,
                 InputConstants.Type.KEYSYM,
-                InputConstants.UNKNOWN.getValue(),
-                "key.categories.mna.magichem");
+                333, //Numpad -, doesn't have a constant for some reason
+                "key.categories.mna");
     });
     public static final Lazy<KeyMapping> ToggleWisdomEffects = Lazy.of(() -> {
         return new KeyMapping(
                 "key.togglewisdomeffects",
                 KeyConflictContext.IN_GAME,
                 InputConstants.Type.KEYSYM,
-                InputConstants.UNKNOWN.getValue(),
-                "key.categories.mna.magichem");
+                InputConstants.KEY_ADD,
+                "key.categories.mna");
     });
 
     public KeybindRegistry() {

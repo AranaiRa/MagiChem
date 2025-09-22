@@ -4,6 +4,8 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.registry.KeybindRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
@@ -13,20 +15,26 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
 
 @Mod.EventBusSubscriber(
         modid = MagiChemMod.MODID,
@@ -34,6 +42,7 @@ import org.jetbrains.annotations.Nullable;
         value = Dist.CLIENT
 )
 public class ClientEventHandler {
+
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof EssentiaDropletsItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.ESSENTIA_DROPLETS_ENDER.get());

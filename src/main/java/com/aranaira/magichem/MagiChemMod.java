@@ -3,6 +3,7 @@ package com.aranaira.magichem;
 import com.aranaira.magichem.block.entity.renderer.*;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.data.DamageTypeProvider;
+import com.aranaira.magichem.events.ClientEventHandler;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
