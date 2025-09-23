@@ -275,7 +275,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
 
         if(pMouseX >= x+134 && pMouseX <= x+275 &&
                 pMouseY >= y+3 && pMouseY <= y+146) {
-            if (recipeFilterPagesTotal > 1) {
+            if (recipeFilterPagesTotal > 0) {
                 if (pDelta < 0)
                     recipeFilterPage = Math.min(recipeFilterPagesTotal, recipeFilterPage + 1);
                 else
@@ -301,7 +301,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                     materiaFilterRow = Math.max(0, Math.min(materiaFilterRowTotal - 4, (int) Math.round(percent * materiaFilterRowTotal)));
                 }
             }
-            if (recipeFilterPagesTotal > 1) {
+            if (recipeFilterPagesTotal > 0) {
                 if (pMouseX >= x+248 && pMouseX <= x+275 &&
                         pMouseY >= y+3 && pMouseY <= y+146) {
                     double point = pMouseY - (y + 3);
@@ -329,7 +329,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
                     materiaFilterRow = Math.max(0, Math.min(materiaFilterRowTotal - 4, (int) Math.round(percent * materiaFilterRowTotal)));
                 }
             }
-            if (recipeFilterPagesTotal > 1) {
+            if (recipeFilterPagesTotal > 0) {
                 if (pMouseX >= x+248 && pMouseX <= x+275 &&
                         pMouseY >= y+3 && pMouseY <= y+146) {
                     double point = pMouseY - (y + 3);
@@ -423,7 +423,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
             filteredRecipes.add(sortingArray[i]);
         }
 
-        recipeFilterPagesTotal = (int)Math.ceil(filteredRecipes.size() / 8d) - 1;
+        recipeFilterPagesTotal = filteredRecipes.size() / 8;
     }
 
     @Override
@@ -465,7 +465,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         }
 
         //Right Scroll Ribbon
-        if(recipeFilterPagesTotal > 1) {
+        if(recipeFilterPagesTotal > 0) {
             boolean top = recipeFilterPage == 0;
             boolean bottom = recipeFilterPage == recipeFilterPagesTotal;
             int u = top ? 84 : (bottom ? 28 : 56);
