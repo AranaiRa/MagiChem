@@ -125,6 +125,12 @@ public class PacketRegistry {
                 .consumerMainThread(OpenWisdomWheelC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(ToggleWisdomC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ToggleWisdomC2SPacket::new)
+                .encoder(ToggleWisdomC2SPacket::toBytes)
+                .consumerMainThread(ToggleWisdomC2SPacket::handle)
+                .add();
+
         //Server to Clients
 
         MagiChemMod.CHANNEL.registerMessage(ID(), ParticleSpawnAnointingS2CPacket.class,
@@ -141,6 +147,11 @@ public class PacketRegistry {
                 WisdomSyncS2CPacket::toBytes,
                 WisdomSyncS2CPacket::new,
                 WisdomSyncS2CPacket::handle);
+
+        MagiChemMod.CHANNEL.registerMessage(ID(), ResetWisdomToggleS2CPacket.class,
+                ResetWisdomToggleS2CPacket::toBytes,
+                ResetWisdomToggleS2CPacket::new,
+                ResetWisdomToggleS2CPacket::handle);
     }
 
     public static <MSG> void sendToServer(MSG message) {

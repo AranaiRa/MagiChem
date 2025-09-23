@@ -47,6 +47,7 @@ public class WisdomProvider implements ICapabilitySerializable<Tag> {
 
         nbt.putShort("wisdomCardinal", cardinal);
         nbt.putShort("wisdomIntercardinal", intercardinal);
+        nbt.putBoolean("disabled", instance.getIsDisabled());
 
         return nbt;
     }
@@ -75,6 +76,8 @@ public class WisdomProvider implements ICapabilitySerializable<Tag> {
                     (intercardinal & 0b111100000000) >> 8);
             instance.setValue(Attribute.SPEED,
                     (intercardinal & 0b1111000000000000) >> 12);
+
+            instance.setIsDisabled(ct.getBoolean("disabled"));
         }
     }
 

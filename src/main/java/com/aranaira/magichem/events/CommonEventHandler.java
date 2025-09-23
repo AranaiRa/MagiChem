@@ -15,6 +15,8 @@ import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.enums.*;
 import com.aranaira.magichem.item.MateriaItem;
+import com.aranaira.magichem.networking.AdvancementQueryS2CPacket;
+import com.aranaira.magichem.networking.ResetWisdomToggleS2CPacket;
 import com.aranaira.magichem.networking.WisdomSyncC2SPacket;
 import com.aranaira.magichem.networking.WisdomSyncS2CPacket;
 import com.aranaira.magichem.registry.*;
@@ -90,6 +92,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
+import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.*;
 
@@ -390,261 +393,6 @@ public class CommonEventHandler {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    @SubscribeEvent
-    public static void onDrawScreenPost(RenderGuiOverlayEvent.Post event) {
-        HitResult hitResult = Minecraft.getInstance().hitResult;
-        Font font = Minecraft.getInstance().font;
-        Player player = Minecraft.getInstance().player;
-
-        if(hitResult instanceof BlockHitResult bhr) {
-            if (hitResult.getType() == HitResult.Type.BLOCK) {
-                int x = event.getWindow().getGuiScaledWidth() / 2;
-                int y = event.getWindow().getGuiScaledHeight() / 2;
-
-                BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(bhr.getBlockPos());
-                if (blockEntity instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
-                    MateriaItem type = amsbe.getMateriaType();
-                    if (type != null && amsbe.getCurrentStock() > 0) {
-
-                        MutableComponent textRow1 = Component.translatable("item.magichem." + type.toString());
-                        MutableComponent textRow2 = Component.literal("   " + amsbe.getCurrentStock() + " / " + amsbe.getStorageLimit());
-                        MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
-
-                        event.getGuiGraphics().drawString(font, textRow1, x + 4, y + 4, 0xffffff, true);
-                        event.getGuiGraphics().drawString(font, textRow2, x + 4, y + 14, 0xffffff, true);
-                        event.getGuiGraphics().drawString(font, textRow3, x + 4, y + 24, 0xffffff, true);
-                        return;
-                    }
-                }
-                else if (blockEntity instanceof AbstractMateriaStorageMultiTypeStaticBlockEntity amsbe) {
-                    int slot = amsbe.getSlotFromWorldCoord(hitResult.getLocation());
-                    if(slot == -1) return;
-
-                    MateriaItem type = amsbe.getMateriaTypeInSlot(slot);
-                    if (type != null && amsbe.getCurrentStock(type) > 0) {
-                        MutableComponent textRow1 = Component.translatable("item.magichem." + type.toString());
-                        MutableComponent textRow2 = Component.literal("   " + amsbe.getCurrentStock(type) + " / " + amsbe.getStorageLimit(type));
-                        MutableComponent textRow3 = Component.literal("   " + type.getDisplayFormula()).withStyle(ChatFormatting.GRAY);
-
-                        event.getGuiGraphics().drawString(font, textRow1, x + 4, y + 4, 0xffffff, true);
-                        event.getGuiGraphics().drawString(font, textRow2, x + 4, y + 14, 0xffffff, true);
-                        event.getGuiGraphics().drawString(font, textRow3, x + 4, y + 24, 0xffffff, true);
-                        return;
-                    }
-                }
-                else if (blockEntity instanceof ColoringCauldronBlockEntity ccbe) {
-                    final List<String> infoReadout = ccbe.getInfoReadout();
-
-                    boolean lit = ccbe.getBlockState().getValue(LIT);
-                    MutableComponent indicator = Component.literal(" [")
-                        .append((lit ? Component.translatable("hud.magichem.coloring_cauldron.dye_list.subtractive") : Component.translatable("hud.magichem.coloring_cauldron.dye_list.additive")).withStyle(lit ? ChatFormatting.RED : ChatFormatting.GREEN)
-                        .append(Component.literal("]").withStyle(ChatFormatting.WHITE)));
-
-                    event.getGuiGraphics().drawString(font, infoReadout.get(0), x + 4, y + 4, 0xffffff, true);
-
-                    if(!ccbe.isReadyToCollect()) {
-                        if (ccbe.hasColors()) {
-                            event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.remaining.part1")
-                                    .append(Component.literal(""+ccbe.getOperationsRemaining())
-                                    .append(Component.translatable("hud.magichem.coloring_cauldron.remaining.part2"))),
-                                    x + 4, y + 20, 0xffffff, true);
-
-                            event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list")
-                                    .append(indicator).append(":"),
-                                    x + 4, y + 36, 0xffffff, true);
-
-                            for(int i=1; i<infoReadout.size(); i++) {
-                                event.getGuiGraphics().drawString(font, infoReadout.get(i), x + 10, y + 36 + (i * 12), 0xffffff, true);
-                            }
-                            return;
-                        } else {
-                            event.getGuiGraphics().drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list.waiting"), x + 4, y + 20, 0xffffff, true);
-                            return;
-                        }
-                    }
-                }
-                else if (Minecraft.getInstance().player.isCrouching() && blockEntity != null) {
-                    List<MutableComponent> components = new ArrayList<>();
-                    BlockState state = blockEntity.getBlockState();
-                    int mode = 0;
-                    //mode 1: all six types
-                    //mode 2: just arcane and ender
-
-                    if (blockEntity instanceof DistilleryBlockEntity dbe) {
-                        if(CommonEventHelper.checkDirectionAndPos(dbe.getPlugDirection(), bhr)) {
-                            mode = 1;
-                        }
-                    } else if (blockEntity instanceof DistilleryRouterBlockEntity drbe) {
-                        if (drbe.getRouterType() == DistilleryRouterType.PLUG_LEFT) {
-                            if(CommonEventHelper.checkDirectionAndPos(drbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        }
-                    } else if (blockEntity instanceof CentrifugeRouterBlockEntity crbe) {
-                        if (crbe.getRouterType() == CentrifugeRouterType.PLUG_LEFT || crbe.getRouterType() == CentrifugeRouterType.PLUG_RIGHT) {
-                            if(CommonEventHelper.checkDirectionAndPos(crbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        }
-                    } else if (blockEntity instanceof FuseryRouterBlockEntity frbe) {
-                        if (frbe.getRouterType() == FuseryRouterType.PLUG_LEFT || frbe.getRouterType() == FuseryRouterType.PLUG_RIGHT) {
-                            if(CommonEventHelper.checkDirectionAndPos(frbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        }
-                    } else if (blockEntity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
-                        if (anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_LEFT || anrbe.getRouterType() == AlchemicalNexusRouterType.PLUG_RIGHT) {
-                            if(CommonEventHelper.checkDirectionAndPos(anrbe.getPlugDirection(), bhr)) {
-                                mode = 2;
-                            }
-                        }
-                    } else if (blockEntity instanceof GrandCircleFabricationRouterBlockEntity gcfrbe) {
-                        int routerType = gcfrbe.getBlockState().getValue(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION);
-                        if ((routerType == 2 || routerType == 6) && CommonEventHelper.checkDirectionAndPos(gcfrbe.getPlugDirection(), bhr)) {
-                            mode = 2;
-                        }
-                    } else if (blockEntity instanceof GrandDistilleryRouterBlockEntity gdrbe) {
-                        boolean hasLaboratoryUpgrade = state.getValue(HAS_LABORATORY_UPGRADE);
-                        GrandDistilleryRouterType routerType = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_GRAND_DISTILLERY));
-
-                        if(routerType == GrandDistilleryRouterType.PLUG_BACK_LEFT ||
-                           routerType == GrandDistilleryRouterType.PLUG_BACK_RIGHT ||
-                           routerType == GrandDistilleryRouterType.PLUG_FRONT_LEFT ||
-                           routerType == GrandDistilleryRouterType.PLUG_FRONT_RIGHT) {
-
-                            if(CommonEventHelper.checkDirectionAndPos(gdrbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        } else if(hasLaboratoryUpgrade && (routerType == GrandDistilleryRouterType.PLUG_MID_LEFT || routerType == GrandDistilleryRouterType.PLUG_MID_RIGHT)) {
-
-                            if(CommonEventHelper.checkDirectionAndPos(gdrbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        }
-                    } else if (blockEntity instanceof GrandCentrifugeRouterBlockEntity gcrbe) {
-                        boolean hasLaboratoryUpgrade = state.getValue(HAS_LABORATORY_UPGRADE);
-                        GrandCentrifugeRouterType routerType = GrandCentrifugeRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_GRAND_CENTRIFUGE));
-
-                        if(routerType == GrandCentrifugeRouterType.PLUG_BACK_LEFT ||
-                           routerType == GrandCentrifugeRouterType.PLUG_BACK_RIGHT ||
-                           routerType == GrandCentrifugeRouterType.PLUG_FRONT_LEFT ||
-                           routerType == GrandCentrifugeRouterType.PLUG_FRONT_RIGHT) {
-
-                            if(CommonEventHelper.checkDirectionAndPos(gcrbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        } else if(hasLaboratoryUpgrade && (routerType == GrandCentrifugeRouterType.PLUG_MID_LEFT || routerType == GrandCentrifugeRouterType.PLUG_MID_RIGHT)) {
-
-                            if(CommonEventHelper.checkDirectionAndPos(gcrbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        }
-                    } else if (blockEntity instanceof GrandFuseryRouterBlockEntity gfrbe) {
-                        boolean hasLaboratoryUpgrade = state.getValue(HAS_LABORATORY_UPGRADE);
-                        GrandFuseryRouterType routerType = GrandFuseryRouterBlock.unmapRouterTypeFromInt(state.getValue(ROUTER_TYPE_GRAND_FUSERY));
-
-                        if(routerType == GrandFuseryRouterType.PLUG_BACK_LEFT ||
-                           routerType == GrandFuseryRouterType.PLUG_BACK_RIGHT ||
-                           routerType == GrandFuseryRouterType.PLUG_FRONT_LEFT ||
-                           routerType == GrandFuseryRouterType.PLUG_FRONT_RIGHT) {
-
-                            if(CommonEventHelper.checkDirectionAndPos(gfrbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        } else if(hasLaboratoryUpgrade && (routerType == GrandFuseryRouterType.PLUG_MID_LEFT || routerType == GrandFuseryRouterType.PLUG_MID_RIGHT)) {
-
-                            if(CommonEventHelper.checkDirectionAndPos(gfrbe.getPlugDirection(), bhr)) {
-                                mode = 1;
-                            }
-                        }
-                    }
-
-                    if (mode == 1) {
-                        components.add(Component.translatable("overlay.magichem.actuator.port"));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_fire")));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_water")));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_earth")));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_air")));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_arcane")));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_ender")));
-                    } else if (mode == 2) {
-                        components.add(Component.translatable("overlay.magichem.actuator.port"));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_arcane")));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_ender")));
-                    }
-
-                    for (int i = 0; i < components.size(); i++) {
-                        MutableComponent c = components.get(i);
-
-                        event.getGuiGraphics().drawString(font, c, x + 4, y + 4 + i * 10, 0xffffff, true);
-                    }
-
-                    if(mode != 0) return;
-                }
-            }
-        }
-        if(player != null) {
-            int x = event.getWindow().getGuiScaledWidth() / 2;
-            int y = event.getWindow().getGuiScaledHeight() / 2;
-
-            ItemStack
-                    mainHandItem = player.getItemInHand(InteractionHand.MAIN_HAND),
-                    offHandItem = player.getItemInHand(InteractionHand.OFF_HAND),
-                    targetStack = null;
-
-            if (mainHandItem.getItem() == ItemRegistry.TRAVELLERS_COMPASS.get()) targetStack = mainHandItem;
-            else if(offHandItem.getItem() == ItemRegistry.TRAVELLERS_COMPASS.get()) targetStack = offHandItem;
-
-            if(targetStack != null) {
-                if (targetStack.hasTag()) {
-                    if(targetStack.getTag().contains("LodestonePos")) {
-                        CompoundTag posTag = targetStack.getTag().getCompound("LodestonePos");
-                        BlockPos target = new BlockPos(posTag.getInt("X"), posTag.getInt("Y"), posTag.getInt("Z"));
-
-                        int distance = (int) Math.round(Math.sqrt(player.getOnPos().distSqr(target)));
-
-                        MutableComponent dist = Component.literal(distance + "m");
-                        event.getGuiGraphics().drawString(font, dist, x + 4, y + 4, 0xffffff, true);
-
-                        float time = player.level().getTimeOfDay(0);
-                        event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 14, 0x888888, true);
-
-                        float rot = (360 + (player.getYRot() % 360)) % 360;
-                        event.getGuiGraphics().drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, y + 24, 0x888888, true);
-                    } else {
-                        if(targetStack.getTag().contains("respawnDimension")) {
-                            if(targetStack.getTag().getString("respawnDimension").equals(player.level().dimension().location().toString())) {
-                                int spawnBedDist = (int) Math.round(Math.sqrt(player.getOnPos().distSqr(BlockPos.of(targetStack.getTag().getLong("respawnPosition")))));
-                                event.getGuiGraphics().drawString(font, spawnBedDist + "m", x + 4, y + 4, 0xffffff, true);
-                                event.getGuiGraphics().drawString(font, Component.translatable("gui.magichem.distance.bedspawn"), x + 4, y + 14, 0x888888, true);
-                            } else {
-                                event.getGuiGraphics().drawString(font, "?m", x + 4, y + 4, 0xffffff, true);
-                                event.getGuiGraphics().drawString(font, Component.translatable("gui.magichem.distance.otherdimbed"), x + 4, y + 14, 0x888888, true);
-                            }
-                        } else {
-                            event.getGuiGraphics().drawString(font, "?m", x + 4, y + 4, 0xffffff, true);
-                            event.getGuiGraphics().drawString(font, Component.translatable("gui.magichem.distance.nobed"), x + 4, y + 14, 0x888888, true);
-                        }
-
-                        int spawnWorldDist = (int) Math.round(Math.sqrt(player.getOnPos().distSqr(player.level().getSharedSpawnPos())));
-                        event.getGuiGraphics().drawString(font, spawnWorldDist+"m", x + 4, y + 24, 0xffffff, true);
-                        event.getGuiGraphics().drawString(font, Component.translatable("gui.magichem.distance.worldspawn"), x + 4, y + 34, 0x888888, true);
-
-                        float time = player.level().getTimeOfDay(0);
-                        event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 44, 0x888888, true);
-
-                        float rot = (360 + (player.getYRot() % 360)) % 360;
-                        event.getGuiGraphics().drawString(font, CommonEventHelper.getFacingComponent(rot), x + 4, y + 54, 0x888888, true);
-                    }
-                } else {
-                    float time = player.level().getTimeOfDay(0);
-                    event.getGuiGraphics().drawString(font, CommonEventHelper.getTimeOfDayComponent(time), x + 4, y + 4, 0x888888, true);
-                }
-            }
-        }
-    }
-
     @SubscribeEvent
     public static void onAttachCapability(AttachCapabilitiesEvent<?> event) {
         if(event.getObject() instanceof AbstractBlockEntityWithEfficiency) {
@@ -857,6 +605,17 @@ public class CommonEventHandler {
             event.getTarget().addEffect(new MobEffectInstance(MobEffectsRegistry.DISSOLUTION.get(), 200, 3));
         } else if(fluid == FluidRegistry.AZOTH.get()) {
             event.getTarget().addEffect(new MobEffectInstance(MobEffectsRegistry.DISSOLUTION.get(), 200, 4));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCurioChange(CurioChangeEvent event) {
+        if(event.getIdentifier().equals("wisdom")) {
+            if(event.getEntity() instanceof ServerPlayer p && WisdomProvider.getCapability(p).isPresent()) {
+                WisdomProvider.getCapability(p).get().setIsDisabled(false);
+
+                MagiChemMod.CHANNEL.send(PacketDistributor.PLAYER.with(() -> p), new ResetWisdomToggleS2CPacket());
+            }
         }
     }
 }

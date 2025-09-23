@@ -133,7 +133,7 @@ public class WisdomSpellAdjuster {
     private static int getWisdomAdjustmentForAttribute(Player pPlayer, Attribute pAttribute) {
         final Optional<IWisdomCapability> capability = WisdomProvider.getCapability(pPlayer);
 
-        return capability.map(iWisdomCapability -> iWisdomCapability.getValue(pAttribute)).orElse(0);
+        return capability.map(iWisdomCapability -> capability.get().getIsDisabled() ? 0 : iWisdomCapability.getValue(pAttribute)).orElse(0);
     }
 
     private static boolean checkSpellAttribute(SpellAdjustingContext context, Attribute attribute) {

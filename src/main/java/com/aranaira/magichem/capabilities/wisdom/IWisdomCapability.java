@@ -20,4 +20,8 @@ public interface IWisdomCapability {
     boolean decrementValue(Attribute pSpellAttribute, int pWisdom);
 
     int getLimit(Attribute pSpellAttribute, int pWisdom);
+
+    boolean getIsDisabled();
+
+    void setIsDisabled(boolean pDisabled);
 }
