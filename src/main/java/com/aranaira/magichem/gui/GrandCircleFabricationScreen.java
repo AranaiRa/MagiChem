@@ -292,21 +292,6 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         menu.blockEntity.forceDisplayedRecipeUpdate = false;
     }
 
-    private List<DistillationFabricationRecipe> allRecipes = new ArrayList<>();
-    @NotNull
-    private List<DistillationFabricationRecipe> getAllRecipes() {
-        if(allRecipes.size() == 0) {
-            List<DistillationFabricationRecipe> raw = menu.blockEntity.getLevel().getRecipeManager().getAllRecipesFor(DistillationFabricationRecipe.Type.INSTANCE);
-            Object[] sortable = raw.toArray();
-            Arrays.sort(sortable, Comparator.comparing(o -> ((DistillationFabricationRecipe)o).getAlchemyObject().getDisplayName().getString()));
-            for (Object o : sortable) {
-                allRecipes.add((DistillationFabricationRecipe) o);
-            }
-        }
-
-        return allRecipes;
-    }
-
     @Override
     protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -360,6 +345,23 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             float percent = (float)(menu.blockEntity.getBatchSize() - 1) / (float)(batchLimit - 1);
             int nubbinShift = (int)Math.floor(percent * 57);
             gui.blit(TEXTURE, x - 77 + nubbinShift, y + 171, 28, 230, 8, 8);
+        }
+
+        if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
+            IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(menu.blockEntity.getFluidInTank(0).getFluid());
+            int packedTint = extension.getTintColor();
+            float a = ((packedTint >> 24) & 0xff) / 255.0f;
+            float r = ((packedTint >> 16) & 0xff) / 255.0f;
+            float g = ((packedTint >> 8) & 0xff) / 255.0f;
+            float b = ((packedTint) & 0xff) / 255.0f;
+            gui.setColor(r,g,b,a);
+
+            int height = menu.blockEntity.getFluidInTank(0).getAmount() * 88 / menu.blockEntity.getTankCapacity(0);
+
+            ResourceLocation rl = new ResourceLocation(extension.getStillTexture().getNamespace(), "textures/"+extension.getStillTexture().getPath()+".png");
+            gui.blit(rl, x + 161, y + 96 - height, 0, 0, 12, height, 16, 16);
+
+            gui.setColor(1.0f,1.0f,1.0f,1.0f);
         }
     }
 
@@ -582,6 +584,19 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                         tooltipContents.add(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY));
                     }
                 }
+            }
+        }
+
+        //Fluid Bar
+        if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
+            if (pX >= x + 160 && pX <= x + 174 &&
+                    pY >= y + 7 && pY <= y + 97) {
+
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable(menu.blockEntity.getFluidInTank(0).getTranslationKey()).withStyle(ChatFormatting.GOLD)));
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(menu.blockEntity.getFluidInTank(0).getAmount() + " / " + menu.blockEntity.getTankCapacity(0)).withStyle(ChatFormatting.DARK_AQUA)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
             }
         }
 

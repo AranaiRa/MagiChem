@@ -28,6 +28,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public abstract class AbstractFabricationBlockEntity extends BlockEntity implements ICanTakePlugins, IMateriaProvisionRequester {
+public abstract class AbstractFabricationBlockEntity extends BlockEntity implements ICanTakePlugins, IMateriaProvisionRequester, IFluidHandler {
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected ContainerData data;
@@ -49,6 +51,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             isFESatisfied = false, doDeferredRecipeCheck = false, deferredRecipeIsFluid = false;
 
     protected ItemStackHandler itemHandler;
+    protected FluidStack outputTank = FluidStack.EMPTY.copy();
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
     protected DistillationFabricationRecipe currentItemRecipe;
     protected FluidDistillationFabricationRecipe currentFluidRecipe;
@@ -142,6 +145,20 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
                     if (pEntity.progress > pEntity.operationTicks) {
                         if (!pLevel.isClientSide()) {
                             craftItem(pEntity, pEntity.currentItemRecipe, pVarFunc);
+                            pEntity.resetProgress();
+                            changed = true;
+                        }
+                    } else {
+                        pEntity.incrementProgress();
+                    }
+                } else {
+                    pEntity.resetProgress();
+                }
+            } else if(pEntity.currentFluidRecipe != null) {
+                if (canCraftFluid(pEntity, pEntity.currentFluidRecipe, pVarFunc)) {
+                    if (pEntity.progress > pEntity.operationTicks) {
+                        if (!pLevel.isClientSide()) {
+                            craftFluid(pEntity, pEntity.currentFluidRecipe, pVarFunc);
                             pEntity.resetProgress();
                             changed = true;
                         }
@@ -277,6 +294,34 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         return cont.canAddItem(new ItemStack(pRecipe.getAlchemyObject().getItem(), Math.round(pRecipe.getAlchemyObject().getCount() * pEntity.batchSize * (1/ pEntity.currentItemRecipe.getOutputRate()))));
     }
 
+    protected static boolean canCraftFluid(AbstractFabricationBlockEntity pEntity, FluidDistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
+        //Has all inputs?
+        SimpleContainer inputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
+        for (int i = 0; i < pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
+            inputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START) + i));
+        }
+
+        for(ItemStack query : pRecipe.getComponentMateria()) {
+            int remaining = query.getCount() * pEntity.batchSize;
+            for(int i=0; i<inputSlots.getContainerSize(); i++) {
+                ItemStack stackInSlot = inputSlots.getItem(i);
+                if(stackInSlot.getItem() == query.getItem())
+                    remaining -= stackInSlot.getCount();
+            }
+
+            if(remaining > 0)
+                return false;
+        }
+
+        //Space for output?
+        if(!pEntity.outputTank.isEmpty()) {
+            if(pEntity.outputTank.getFluid() != pRecipe.getAlchemyFluid().getFluid()) return false;
+            if(pEntity.outputTank.getAmount() > pEntity.getTankCapacity(0) - 1000 * pEntity.batchSize) return false;
+        }
+
+        return true;
+    }
+
     protected static void craftItem(AbstractFabricationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
         SimpleContainer inputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
         for (int i = 0; i < pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
@@ -313,6 +358,75 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
         for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
             pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
+        }
+
+        resolveActuators(pEntity, materiaCreated);
+        if(pEntity.clearRecipeAfterNextProcess) {
+            pEntity.currentItemRecipe = null;
+            pEntity.clearRecipeAfterNextProcess = false;
+            pEntity.syncAndSave();
+        }
+
+        //Put bottles into output slot, eject the rest
+        ItemStack bottleStack = pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES));
+        int spillCount;
+        int limit = pEntity.itemHandler.getSlotLimit(pVarFunc.apply(IDs.SLOT_BOTTLES));
+        if(bottleStack.getCount() >= limit) {
+            spillCount = bottlesGenerated;
+        } else if(bottleStack.getCount() > 0) {
+            int delta = Math.min(limit - bottleStack.getCount(), bottlesGenerated);
+            bottleStack.grow(delta);
+            spillCount = bottlesGenerated - delta;
+        } else {
+            pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES), new ItemStack(Items.GLASS_BOTTLE, Math.min(limit, bottlesGenerated)));
+            spillCount = Math.max(0, bottlesGenerated - limit);
+        }
+
+        while(spillCount > 0) {
+            ItemStack spillStack = new ItemStack(Items.GLASS_BOTTLE);
+            int maxStackSizeBottles = spillStack.getMaxStackSize();
+            int delta = Math.min(spillCount, maxStackSizeBottles);
+            spillStack.setCount(delta);
+
+            ItemEntity ie = new ItemEntity(pEntity.getLevel(), pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 0.5, pEntity.getBlockPos().getZ() + 0.5, spillStack);
+            pEntity.getLevel().addFreshEntity(ie);
+
+            spillCount -= delta;
+
+        }
+    }
+
+    protected static void craftFluid(AbstractFabricationBlockEntity pEntity, FluidDistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
+        SimpleContainer inputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
+        for (int i = 0; i < pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
+            inputSlots.setItem(i, pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_INPUT_START) + i));
+        }
+
+        int bottlesGenerated = 0;
+        int materiaCreated = 0;
+        for (ItemStack item : pRecipe.getComponentMateria()) {
+            int totalThisIngredient = item.getCount() * pEntity.batchSize;
+            materiaCreated += totalThisIngredient;
+
+            //tally up bottles
+            for (int i=0; i<inputSlots.getContainerSize(); i++) {
+                ItemStack stackInSlot = inputSlots.getItem(i);
+                if(stackInSlot.getItem() == item.getItem()) {
+                    if(!InventoryHelper.isMateriaUnbottled(stackInSlot)) {
+                        int limit = Math.min(totalThisIngredient, stackInSlot.getCount());
+                        bottlesGenerated += limit;
+                        totalThisIngredient -= limit;
+                    }
+                }
+            }
+
+            inputSlots.removeItemType(item.getItem(), item.getCount() * pEntity.batchSize);
+        }
+
+        if(pEntity.outputTank.isEmpty()) {
+            pEntity.outputTank = pRecipe.getAlchemyFluid().copy();
+        } else {
+            pEntity.outputTank.setAmount(Math.min(pEntity.getTankCapacity(0), pEntity.outputTank.getAmount() + 1000 * pEntity.batchSize));
         }
 
         resolveActuators(pEntity, materiaCreated);
@@ -396,5 +510,59 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
     public enum IDs {
         SLOT_BOTTLES, SLOT_INPUT_START, SLOT_INPUT_COUNT, SLOT_OUTPUT_START, SLOT_OUTPUT_COUNT, SLOT_STONE
+    }
+
+    ////////////////////
+    // FLUID HANDLING
+    ////////////////////
+
+    @Override
+    public int getTanks() {
+        return 1;
+    }
+
+    @Override
+    public @NotNull FluidStack getFluidInTank(int tank) {
+        return outputTank;
+    }
+
+    @Override
+    public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
+        //Tank is withdraw-only
+        return false;
+    }
+
+    @Override
+    public int fill(FluidStack resource, FluidAction action) {
+        //Tank is withdraw-only
+        return 0;
+    }
+
+    @Override
+    public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
+        if(resource.getFluid() == outputTank.getFluid() || outputTank.isEmpty()) {
+            int extracted = Math.min(resource.getAmount(), outputTank.getAmount());
+            FluidStack output = outputTank.copy();
+            output.setAmount(extracted);
+            if(action == FluidAction.EXECUTE) {
+                outputTank.shrink(extracted);
+                syncAndSave();
+            }
+            return output;
+        }
+
+        return FluidStack.EMPTY;
+    }
+
+    @Override
+    public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+        int extracted = Math.min(maxDrain, outputTank.getAmount());
+        FluidStack output = outputTank.copy();
+        output.setAmount(extracted);
+        if(action == FluidAction.EXECUTE) {
+            outputTank.shrink(extracted);
+            syncAndSave();
+        }
+        return output;
     }
 }

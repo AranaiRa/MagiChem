@@ -293,6 +293,23 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             int nubbinShift = (int)Math.floor(percent * 57);
             gui.blit(TEXTURE, x - 77 + nubbinShift, y + 171, 28, 230, 8, 8);
         }
+
+        if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
+            IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(menu.blockEntity.getFluidInTank(0).getFluid());
+            int packedTint = extension.getTintColor();
+            float a = ((packedTint >> 24) & 0xff) / 255.0f;
+            float r = ((packedTint >> 16) & 0xff) / 255.0f;
+            float g = ((packedTint >> 8) & 0xff) / 255.0f;
+            float b = ((packedTint) & 0xff) / 255.0f;
+            gui.setColor(r,g,b,a);
+
+            int height = menu.blockEntity.getFluidInTank(0).getAmount() * 88 / menu.blockEntity.getTankCapacity(0);
+
+            ResourceLocation rl = new ResourceLocation(extension.getStillTexture().getNamespace(), "textures/"+extension.getStillTexture().getPath()+".png");
+            gui.blit(rl, x + 161, y + 96 - height, 0, 0, 12, height, 16, 16);
+
+            gui.setColor(1.0f,1.0f,1.0f,1.0f);
+        }
     }
 
     @Override
@@ -501,6 +518,19 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                         tooltipContents.add(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY));
                     }
                 }
+            }
+        }
+
+        //Fluid Bar
+        if(!menu.blockEntity.getFluidInTank(0).isEmpty()) {
+            if (pX >= x + 160 && pX <= x + 174 &&
+                    pY >= y + 7 && pY <= y + 97) {
+
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable(menu.blockEntity.getFluidInTank(0).getTranslationKey()).withStyle(ChatFormatting.GOLD)));
+                tooltipContents.add(Component.empty()
+                        .append(Component.literal(menu.blockEntity.getFluidInTank(0).getAmount() + " / " + menu.blockEntity.getTankCapacity(0)).withStyle(ChatFormatting.DARK_AQUA)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
             }
         }
 

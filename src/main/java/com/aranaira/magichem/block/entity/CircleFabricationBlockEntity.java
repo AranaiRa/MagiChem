@@ -51,6 +51,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -88,6 +89,11 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                         if(((slot - SLOT_INPUT_START) / 2) >= currentItemRecipe.getComponentMateria().size())
                             return false;
                         ItemStack component = currentItemRecipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
+                        return stack.getItem() == component.getItem();
+                    } else if(currentFluidRecipe != null) {
+                        if(((slot - SLOT_INPUT_START) / 2) >= currentFluidRecipe.getComponentMateria().size())
+                            return false;
+                        ItemStack component = currentFluidRecipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
                         return stack.getItem() == component.getItem();
                     } else {
                         return false;
@@ -172,6 +178,13 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
 
+        if(!outputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid", ForgeRegistries.FLUIDS.getKey(outputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",outputTank.getAmount());
+            nbt.put("outputTank",inputTankTag);
+        }
+
         if(currentItemRecipe != null) {
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentItemRecipe.getAlchemyObject().getItem());
             if(keyQuery != null)
@@ -199,6 +212,15 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
         isFESatisfied = nbt.getBoolean("isFESatisfied");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
+
+        if(nbt.contains("outputTank")) {
+            CompoundTag inputTankTag = nbt.getCompound("outputTank");
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+            if(fluid != null)
+                outputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+        } else {
+            outputTank = FluidStack.EMPTY;
+        }
 
         if(nbt.contains("recipe")) {
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
@@ -231,6 +253,13 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putInt("batchSize", this.batchSize);
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
+
+        if(!outputTank.isEmpty()) {
+            CompoundTag inputTankTag = new CompoundTag();
+            inputTankTag.putString("fluid", ForgeRegistries.FLUIDS.getKey(outputTank.getFluid()).toString());
+            inputTankTag.putInt("amount",outputTank.getAmount());
+            nbt.put("outputTank",inputTankTag);
+        }
 
         if(currentItemRecipe != null) {
             ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentItemRecipe.getAlchemyObject().getItem());
@@ -901,5 +930,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     @Override
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-2, 0, -2), getBlockPos().offset(2,0,2));
+    }
+
+    @Override
+    public int getTankCapacity(int tank) {
+        return ServerConfig.circleFabricationTankCapacity;
     }
 }

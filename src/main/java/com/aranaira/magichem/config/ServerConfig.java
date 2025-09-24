@@ -258,7 +258,7 @@ public class ServerConfig
             .comment("How many ticks of activity the Circle of Power stores at once")
             .defineInRange("circlePowerBuffer", 3, 1, 72000);
 
-    //----------------CIRCLE OF FABRICATION
+    //----------------CIRCLE OF TOIL
 
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_TOIL_GEN = BUILDER
             .comment("How much FE/tick the Circle of Toil generates at max speed")
@@ -269,6 +269,16 @@ public class ServerConfig
             .defineInRange("circleToilBuffer", 3, 1, 72000);
 
     //----------------CIRCLE OF FABRICATION
+
+    private static final ForgeConfigSpec.IntValue CIRCLE_FABRICATION_TANK_CAPACITY = BUILDER
+            .comment("How much fluid, in mB, a Circle of Fabrication can hold")
+            .defineInRange("circleFabricationTankCapacity", 8000, 1000, Integer.MAX_VALUE);
+
+    //----------------GRAND CIRCLE OF FABRICATION
+
+    private static final ForgeConfigSpec.IntValue GRAND_CIRCLE_FABRICATION_TANK_CAPACITY = BUILDER
+            .comment("How much fluid, in mB, a Grand Circle of Fabrication can hold")
+            .defineInRange("GrandCircleFabricationTankCapacity", 32000, 1000, Integer.MAX_VALUE);
 
     //----------------MATERIA JAR
 
@@ -502,6 +512,8 @@ public class ServerConfig
         circlePowerBuffer,
         circleToilGen,
         circleToilBuffer,
+        circleFabricationTankCapacity,
+        grandCircleFabricationTankCapacity,
         materiaJarEssentiaCapacity,
         materiaJarAdmixtureCapacity,
         materiaVesselEssentiaCapacity,
@@ -605,6 +617,8 @@ public class ServerConfig
         circlePowerBuffer = CIRCLE_OF_POWER_BUFFER.get();
         circleToilGen = CIRCLE_OF_TOIL_GEN.get();
         circleToilBuffer = CIRCLE_OF_TOIL_BUFFER.get();
+        circleFabricationTankCapacity = CIRCLE_FABRICATION_TANK_CAPACITY.get();
+        grandCircleFabricationTankCapacity = GRAND_CIRCLE_FABRICATION_TANK_CAPACITY.get();
         materiaJarEssentiaCapacity = MATERIA_JAR_ESSENTIA_CAPACITY.get();
         materiaJarAdmixtureCapacity = MATERIA_JAR_ADMIXTURE_CAPACITY.get();
         materiaVesselEssentiaCapacity = MATERIA_VESSEL_ESSENTIA_CAPACITY.get();

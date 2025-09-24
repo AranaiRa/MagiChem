@@ -42,11 +42,11 @@ public class GrandCircleFabricationMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, GrandCircleFabricationBlockEntity.SLOT_BOTTLES, 82, -5));
+            this.addSlot(new SlotItemHandler(handler, GrandCircleFabricationBlockEntity.SLOT_BOTTLES, 80, -5));
 
             for(int i = SLOT_INPUT_START; i < SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
                 int shiftedSlot = i - SLOT_INPUT_START;
-                SlotItemHandler slot = new SlotItemHandler(handler, i, 28 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2)));
+                SlotItemHandler slot = new SlotItemHandler(handler, i, 26 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2)));
                 inputSlots[shiftedSlot] = slot;
                 this.addSlot(slot);
             }
@@ -54,7 +54,7 @@ public class GrandCircleFabricationMenu extends AbstractContainerMenu {
             for(int i = GrandCircleFabricationBlockEntity.SLOT_OUTPUT_START;
                 i < GrandCircleFabricationBlockEntity.SLOT_OUTPUT_START + GrandCircleFabricationBlockEntity.SLOT_OUTPUT_COUNT; i++) {
                 int shiftedSlot = i - GrandCircleFabricationBlockEntity.SLOT_OUTPUT_START;
-                this.addSlot(new SlotItemHandler(handler, i, 118 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
+                this.addSlot(new SlotItemHandler(handler, i, 116 + (18 * (shiftedSlot % 2)), -5 + (18 * (shiftedSlot / 2))));
             }
 
             this.addSlot(new SlotItemHandler(handler, SLOT_WISDOM, 193, 95));
