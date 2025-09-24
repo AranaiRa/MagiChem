@@ -102,4 +102,10 @@ public class DistillationFabricationOption {
     public Recipe<SimpleContainer> getRecipe() {
         return fluidRecipe == null ? itemRecipe : fluidRecipe;
     }
+
+    public String getSortingString() {
+        return fluidRecipe == null ?
+                itemRecipe.getAlchemyObject().getDisplayName().getString() :
+                fluidRecipe.getAlchemyFluid().getDisplayName().getString();
+    }
 }

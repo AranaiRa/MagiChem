@@ -186,6 +186,7 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
         filteredRecipes.clear();
+        List<DistillationFabricationOption> dump = new ArrayList<>();
 
         for(DistillationFabricationRecipe acr : allDistillationRecipes) {
             String display = acr.getAlchemyObject().getDisplayName().getString();
@@ -202,9 +203,17 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
-                filteredRecipes.add(new DistillationFabricationOption(acr));
+                dump.add(new DistillationFabricationOption(acr));
             }
         }
+
+        //sort filtered item recipes
+        Object[] sortable = dump.toArray();
+        Arrays.sort(sortable, Comparator.comparing(o -> ((DistillationFabricationOption)o).getSortingString()));
+        for(Object o : sortable) {
+            filteredRecipes.add((DistillationFabricationOption)o);
+        }
+        dump.clear();
 
         for(FluidDistillationFabricationRecipe facr : allFluidDistillationRecipes) {
             String display = facr.getAlchemyFluid().getDisplayName().getString();
@@ -221,8 +230,15 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
-                filteredRecipes.add(new DistillationFabricationOption(facr));
+                dump.add(new DistillationFabricationOption(facr));
             }
+        }
+
+        //sort filtered item recipes
+        sortable = dump.toArray();
+        Arrays.sort(sortable, Comparator.comparing(o -> ((DistillationFabricationOption)o).getSortingString()));
+        for(Object o : sortable) {
+            filteredRecipes.add((DistillationFabricationOption)o);
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);

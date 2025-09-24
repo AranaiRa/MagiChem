@@ -10,6 +10,7 @@ import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.FabricationBatchSizeC2SPacket;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.AdvancementUtil;
@@ -230,6 +231,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
         filteredRecipes.clear();
+        List<DistillationFabricationOption> dump = new ArrayList<>();
 
         for(DistillationFabricationRecipe acr : allDistillationRecipes) {
             String display = acr.getAlchemyObject().getDisplayName().getString();
@@ -246,9 +248,17 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
-                filteredRecipes.add(new DistillationFabricationOption(acr));
+                dump.add(new DistillationFabricationOption(acr));
             }
         }
+
+        //sort filtered item recipes
+        Object[] sortable = dump.toArray();
+        Arrays.sort(sortable, Comparator.comparing(o -> ((DistillationFabricationOption)o).getSortingString()));
+        for(Object o : sortable) {
+            filteredRecipes.add((DistillationFabricationOption)o);
+        }
+        dump.clear();
 
         for(FluidDistillationFabricationRecipe facr : allFluidDistillationRecipes) {
             String display = facr.getAlchemyFluid().getDisplayName().getString();
@@ -265,8 +275,15 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
-                filteredRecipes.add(new DistillationFabricationOption(facr));
+                dump.add(new DistillationFabricationOption(facr));
             }
+        }
+
+        //sort filtered item recipes
+        sortable = dump.toArray();
+        Arrays.sort(sortable, Comparator.comparing(o -> ((DistillationFabricationOption)o).getSortingString()));
+        for(Object o : sortable) {
+            filteredRecipes.add((DistillationFabricationOption)o);
         }
 
         recipeFilterRowTotal = (int)Math.ceil(filteredRecipes.size() / 3d);
