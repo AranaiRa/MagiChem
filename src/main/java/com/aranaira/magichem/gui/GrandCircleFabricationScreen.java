@@ -4,11 +4,13 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.foundation.ButtonData;
 import com.aranaira.magichem.foundation.enums.DistillationSourceCategory;
+import com.aranaira.magichem.foundation.options.DistillationFabricationOption;
 import com.aranaira.magichem.gui.element.FabricationButtonRecipeSelector;
 import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.FabricationBatchSizeC2SPacket;
 import com.aranaira.magichem.networking.FabricationSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.AdvancementUtil;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -35,6 +37,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -52,13 +57,19 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             PANEL_MAIN_W = 181, PANEL_MAIN_H = 192,
             PANEL_RECIPE_U = 160, PANEL_RECIPE_V = 96, PANEL_RECIPE_W = 81, PANEL_RECIPE_H = 126,
             PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
-    private DistillationFabricationRecipe lastClickedRecipe = null;
+    private DistillationFabricationOption lastClickedRecipe = null;
     private boolean recipesChanged = true;
     private Player player;
+    private static List<DistillationFabricationRecipe> allDistillationRecipes = new ArrayList<>();
+    private static List<FluidDistillationFabricationRecipe> allFluidDistillationRecipes = new ArrayList<>();
 
     public GrandCircleFabricationScreen(GrandCircleFabricationMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
         player = inventory.player;
+        if(allDistillationRecipes.size() == 0)
+            allDistillationRecipes = DistillationFabricationRecipe.getAllDistillingRecipes(inventory.player.level());
+        if(allFluidDistillationRecipes.size() == 0)
+            allFluidDistillationRecipes = FluidDistillationFabricationRecipe.getAllDistillingRecipes(inventory.player.level());
     }
 
     @Override
@@ -118,26 +129,42 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
     private void initializePowerLevelButtons(){
         b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 167, this.topPos + 126, 12, 7, 232, 242, TEXTURE, button -> {
-            menu.blockEntity.incrementPowerUsageSetting();
-            Item recipeTarget = null;
-            if(menu.blockEntity.getCurrentRecipe() != null) {
-                recipeTarget = menu.blockEntity.getCurrentRecipe().getAlchemyObject().getItem();
+            ResourceLocation rl;
+            boolean isFluid = false;
+            if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe itemRecipe)
+                rl = ForgeRegistries.ITEMS.getKey(itemRecipe.getAlchemyObject().getItem());
+            else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluidRecipe) {
+                rl = ForgeRegistries.FLUIDS.getKey(fluidRecipe.getAlchemyFluid().getFluid());
+                isFluid = true;
             }
+            else
+                rl = new ResourceLocation("minecraft","barrier");
+
+            menu.blockEntity.incrementPowerUsageSetting();
             PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    recipeTarget,
+                    rl,
+                    isFluid,
                     menu.blockEntity.getPowerUsageSetting()
             ));
         }));
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 167, this.topPos + 126, 12, 7, 244, 242, TEXTURE, button -> {
-            menu.blockEntity.decrementPowerUsageSetting();
-            Item recipeTarget = null;
-            if(menu.blockEntity.getCurrentRecipe() != null) {
-                recipeTarget = menu.blockEntity.getCurrentRecipe().getAlchemyObject().getItem();
+            ResourceLocation rl;
+            boolean isFluid = false;
+            if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe itemRecipe)
+                rl = ForgeRegistries.ITEMS.getKey(itemRecipe.getAlchemyObject().getItem());
+            else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluidRecipe) {
+                rl = ForgeRegistries.FLUIDS.getKey(fluidRecipe.getAlchemyFluid().getFluid());
+                isFluid = true;
             }
+            else
+                rl = new ResourceLocation("minecraft","barrier");
+
+            menu.blockEntity.decrementPowerUsageSetting();
             PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    recipeTarget,
+                    rl,
+                    isFluid,
                     menu.blockEntity.getPowerUsageSetting()
             ));
         }));
@@ -172,12 +199,23 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
     public void setActiveRecipe(int index) {
         int trueIndex = recipeFilterRow*3 + index;
         if(trueIndex < filteredRecipes.size()) {
+            final DistillationFabricationOption option = filteredRecipes.get(trueIndex);
+
+            if (option.getRecipe() instanceof DistillationFabricationRecipe itemRecipe)
+                menu.blockEntity.setCurrentRecipe(itemRecipe.getAlchemyObject().getItem());
+            else if (option.getRecipe() instanceof FluidDistillationFabricationRecipe fluidRecipe)
+                menu.blockEntity.setCurrentRecipe(fluidRecipe.getAlchemyFluid().getFluid());
+
+            ResourceLocation rl = option.isFluidRecipe() ?
+                    ForgeRegistries.FLUIDS.getKey(option.getFluidRecipe().getAlchemyFluid().getFluid()) :
+                    ForgeRegistries.ITEMS.getKey(option.getItemRecipe().getAlchemyObject().getItem());
             PacketRegistry.sendToServer(new FabricationSyncDataC2SPacket(
                     menu.blockEntity.getBlockPos(),
-                    filteredRecipes.get(trueIndex).getAlchemyObject().getItem(),
+                    rl,
+                    option.isFluidRecipe(),
                     menu.blockEntity.getPowerUsageSetting()
             ));
-            lastClickedRecipe = filteredRecipes.get(trueIndex);
+            lastClickedRecipe = option;
         }
     }
 
@@ -188,16 +226,15 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         ));
     }
 
-    private List<DistillationFabricationRecipe> filteredRecipes = new ArrayList<>();
+    private List<DistillationFabricationOption> filteredRecipes = new ArrayList<>();
     private int recipeFilterRow, recipeFilterRowTotal;
     private void updateDisplayedRecipes(String filter) {
-        List<DistillationFabricationRecipe> fabricationRecipeOutputs = getAllRecipes();
         filteredRecipes.clear();
 
-        for(DistillationFabricationRecipe acr : fabricationRecipeOutputs) {
+        for(DistillationFabricationRecipe acr : allDistillationRecipes) {
             String display = acr.getAlchemyObject().getDisplayName().getString();
             boolean nameMatchesFilter = (Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()));
-            boolean wisdomValidForCurrentStone = acr.getWisdom() <= menu.blockEntity.getCurrentWisdom(GrandCircleFabricationBlockEntity::getVar);
+            boolean wisdomValidForCurrentStone = acr.getWisdom() == 0;
             boolean requiredAdvancementCompliant = true;
             boolean forbiddenAdvancementCompliant = true;
 
@@ -209,7 +246,26 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             }
 
             if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
-                filteredRecipes.add(acr);
+                filteredRecipes.add(new DistillationFabricationOption(acr));
+            }
+        }
+
+        for(FluidDistillationFabricationRecipe facr : allFluidDistillationRecipes) {
+            String display = facr.getAlchemyFluid().getDisplayName().getString();
+            boolean nameMatchesFilter = (Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()));
+            boolean wisdomValidForCurrentStone = facr.getWisdom() == 0;
+            boolean requiredAdvancementCompliant = true;
+            boolean forbiddenAdvancementCompliant = true;
+
+            if(facr.getRequiredAdvancement() != null && player instanceof LocalPlayer lp) {
+                requiredAdvancementCompliant = AdvancementUtil.clientHasAdvancement(lp, facr.getRequiredAdvancement());
+            }
+            if(facr.getForbiddenAdvancement() != null && player instanceof LocalPlayer lp) {
+                forbiddenAdvancementCompliant = !AdvancementUtil.clientHasAdvancement(lp, facr.getForbiddenAdvancement());
+            }
+
+            if(nameMatchesFilter && wisdomValidForCurrentStone && requiredAdvancementCompliant && forbiddenAdvancementCompliant) {
+                filteredRecipes.add(new DistillationFabricationOption(facr));
             }
         }
 
@@ -280,8 +336,11 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         gui.blit(TEXTURE_EXT, x - 85, y + 142, 0, 168, 81, 45);
 
         //Scroll Nubbin for Batch Size
-        if(menu.blockEntity.getCurrentRecipe() != null && menu.blockEntity.getCurrentRecipe().getBatchSize() > 1) {
-            float percent = (float)(menu.blockEntity.getBatchSize() - 1) / (float)(menu.blockEntity.getCurrentRecipe().getBatchSize() - 1);
+        int batchLimit = 1;
+        if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe item) batchLimit = item.getBatchSize();
+        else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluid) batchLimit = fluid.getBatchSize();
+        if(batchLimit > 1) {
+            float percent = (float)(menu.blockEntity.getBatchSize() - 1) / (float)(batchLimit - 1);
             int nubbinShift = (int)Math.floor(percent * 57);
             gui.blit(TEXTURE, x - 77 + nubbinShift, y + 171, 28, 230, 8, 8);
         }
@@ -325,19 +384,31 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
     }
 
     private void renderSelectedRecipe(GuiGraphics gui, int x, int y) {
-        if(menu.blockEntity.getCurrentRecipe() == null) {
-            gui.blit(TEXTURE, x, y, 28, 238, 18, 18);
-        }
-        else {
-            if(menu.blockEntity.getCurrentRecipe().getAlchemyObject().getItem() instanceof BlockItem) {
-                gui.renderItem(menu.blockEntity.getCurrentRecipe().getAlchemyObject(), x + 1, y + 1);
+        if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe item) {
+            if(item.getAlchemyObject().getItem() instanceof BlockItem) {
+                gui.renderItem(item.getAlchemyObject(), x + 1, y + 1);
                 if(menu.blockEntity.clearRecipeAfterNextProcess) gui.fill(RenderType.guiGhostRecipeOverlay(), x, y, x + 18, y + 18, 0x40ffffff);
             } else {
                 float alpha = menu.blockEntity.clearRecipeAfterNextProcess ? 0.5f : 1.0f;
                 gui.setColor(1, 1, 1, alpha);
-                gui.renderItem(menu.blockEntity.getCurrentRecipe().getAlchemyObject(), x + 1, y + 1);
+                gui.renderItem(item.getAlchemyObject(), x + 1, y + 1);
                 gui.setColor(1, 1, 1, 1);
             }
+        }
+        else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluid) {
+            IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(fluid.getAlchemyFluid().getFluid());
+            int packedTint = extension.getTintColor();
+            float a = ((packedTint >> 24) & 0xff) / 255.0f;
+            float r = ((packedTint >> 16) & 0xff) / 255.0f;
+            float g = ((packedTint >> 8) & 0xff) / 255.0f;
+            float b = ((packedTint) & 0xff) / 255.0f;
+            gui.setColor(r,g,b,a);
+            ResourceLocation rl = new ResourceLocation(extension.getStillTexture().getNamespace(), "textures/"+extension.getStillTexture().getPath()+".png");
+            gui.blit(rl, x+1, y+1, 0, 0, 16, 16, 16, 16);
+            gui.setColor(1f,1f,1f,1f);
+        }
+        else {
+            gui.blit(TEXTURE, x, y, 28, 238, 18, 18);
         }
     }
 
@@ -369,14 +440,21 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         if(menu.blockEntity.getCurrentRecipe() == null)
             return;
 
-        DistillationFabricationRecipe acr = menu.blockEntity.getCurrentRecipe();
-
         gui.setColor(1f, 1f, 1f, 0.25f);
         int slotGroup = 0;
-        for(ItemStack stack : acr.getComponentMateria()) {
-            gui.renderItem(stack, xOrigin + 31, yOrigin+8 + (18*slotGroup));
-            gui.renderItem(stack, xOrigin + 49, yOrigin+8 + (18*slotGroup));
-            slotGroup++;
+        if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe item) {
+            for (ItemStack stack : item.getComponentMateria()) {
+                gui.renderItem(stack, xOrigin + 31, yOrigin + 8 + (18 * slotGroup));
+                gui.renderItem(stack, xOrigin + 49, yOrigin + 8 + (18 * slotGroup));
+                slotGroup++;
+            }
+        }
+        else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluid) {
+            for (ItemStack stack : fluid.getComponentMateria()) {
+                gui.renderItem(stack, xOrigin + 31, yOrigin + 8 + (18 * slotGroup));
+                gui.renderItem(stack, xOrigin + 49, yOrigin + 8 + (18 * slotGroup));
+                slotGroup++;
+            }
         }
         gui.setColor(1f, 1f, 1f, 1f);
     }
@@ -392,7 +470,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         int xOrigin = (width - PANEL_MAIN_W) / 2;
         int yOrigin = (height - PANEL_MAIN_H) / 2;
 
-        List<DistillationFabricationRecipe> snipped = new ArrayList<>();
+        List<DistillationFabricationOption> snipped = new ArrayList<>();
         for(int i=recipeFilterRow*3; i<Math.min(filteredRecipes.size(), recipeFilterRow*3 + 15); i++) {
             snipped.add(filteredRecipes.get(i));
         }
@@ -403,7 +481,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
             for(int y=0; y<5; y++) {
                 for (int x = 0; x < 3; x++) {
-                    gui.renderItem(snipped.get(c).getAlchemyObject(), xOrigin-77 + x*18, yOrigin+40 + y*18);
+                    snipped.get(c).draw(gui, xOrigin-77 + x*18, yOrigin+40 + y*18);
                     c++;
                     if(c >= cLimit) break;
                 }
@@ -427,11 +505,26 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             if(menu.blockEntity.getCurrentRecipe() == null) {
                 tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             } else {
-                ItemStack recipeItem = menu.blockEntity.getCurrentRecipe().getAlchemyObject();
-                if (recipeItem == ItemStack.EMPTY) {
+                if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe item) {
+                    ItemStack recipeItem = item.getAlchemyObject();
+
+                    if (recipeItem.isEmpty()) {
+                        tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                    } else {
+                        tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                    }
+                }
+                else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluid) {
+                    FluidStack recipeFluid = fluid.getAlchemyFluid();
+
+                    if (recipeFluid.isEmpty()) {
+                        tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                    } else {
+                        tooltipContents.add(Component.translatable(recipeFluid.getTranslationKey()));
+                    }
+                }
+                else {
                     tooltipContents.add(Component.translatable("tooltip.magichem.gui.no_selected_recipe").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-                } else {
-                    tooltipContents.addAll(recipeItem.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
                 }
             }
         }
@@ -445,8 +538,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
             if (id >= 0 && id < 16) {
                 if(id + recipeFilterRow * 3 < filteredRecipes.size()) {
-                    ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3).getAlchemyObject();
-                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                    tooltipContents.addAll(filteredRecipes.get(id + recipeFilterRow * 3).getTooltipLines());
                 }
             }
         }
@@ -461,11 +553,18 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
                 ItemStack stackInSlot = menu.inputSlots[slotIndex].getItem();
 
-                if(stackInSlot.isEmpty() && recipeIndex < menu.blockEntity.getCurrentRecipe().getComponentMateria().size()) {
-                    String name = menu.blockEntity.getCurrentRecipe().getComponentMateria().get(recipeIndex).getDisplayName().getString();
-                    tooltipContents.add(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY));
+                if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe item) {
+                    if (stackInSlot.isEmpty() && recipeIndex < item.getComponentMateria().size()) {
+                        String name = item.getComponentMateria().get(recipeIndex).getDisplayName().getString();
+                        tooltipContents.add(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY));
+                    }
                 }
-
+                else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluid) {
+                    if (stackInSlot.isEmpty() && recipeIndex < fluid.getComponentMateria().size()) {
+                        String name = fluid.getComponentMateria().get(recipeIndex).getDisplayName().getString();
+                        tooltipContents.add(Component.literal(name.substring(1, name.length() - 1)).withStyle(ChatFormatting.DARK_GRAY));
+                    }
+                }
             }
         }
 
@@ -539,7 +638,13 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
 
         //Batch Size Scroll Bar
         if(menu.blockEntity.getCurrentRecipe() != null){
-            int maxBatch = menu.blockEntity.getCurrentRecipe().getBatchSize();
+            int maxBatch = 1;
+
+            if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe item)
+                maxBatch = item.getBatchSize();
+            else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluid)
+                maxBatch = fluid.getBatchSize();
+
             if (maxBatch > 1) {
                 int x = (width - PANEL_MAIN_W) / 2;
                 int y = (height - PANEL_MAIN_H) / 2;
@@ -549,7 +654,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                     double point = pMouseX - (x - 81);
                     double percent = point / 65d;
 
-                    int newBatchSize = (int)Math.min(menu.blockEntity.getCurrentRecipe().getBatchSize(),
+                    int newBatchSize = (int)Math.min(maxBatch,
                             Math.max(1,Math.round(percent * maxBatch)));
                     if(newBatchSize != menu.blockEntity.getBatchSize()) {
                         menu.blockEntity.setBatchSize(newBatchSize);
@@ -574,32 +679,57 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         gui.drawString(font ,powerDraw+"/t", 193, 26, 0xff000000, false);
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 193, 45, 0xff000000, false);
 
-        DistillationFabricationRecipe recipe = menu.blockEntity.getCurrentRecipe();
-        if(recipe != null) {
-            for (int i = 0; i < recipe.getComponentMateria().size(); i++) {
-                Component text = Component.literal((recipe.getComponentMateria().get(i).getCount() * menu.blockEntity.getBatchSize()) + "");
+        if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe itemRecipe) {
+            for (int i = 0; i < itemRecipe.getComponentMateria().size(); i++) {
+                Component text = Component.literal((itemRecipe.getComponentMateria().get(i).getCount() * menu.blockEntity.getBatchSize()) + "");
                 int rightAlignShift = 17 - font.width(text.getString());
 
                 gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
             }
 
-            if(recipe.getOutputRate() < 1f) {
-                int amt = (int)Math.round(1f / recipe.getOutputRate());
+            if (itemRecipe.getOutputRate() < 1f) {
+                int amt = (int) Math.round(1f / itemRecipe.getOutputRate());
 
-                gui.drawString(font, amt < 9 ? "x"+amt : ""+amt, 101, 72, 0xff000000, false);
+                gui.drawString(font, amt < 9 ? "x" + amt : "" + amt, 101, 72, 0xff000000, false);
+            }
+
+            if (!menu.blockEntity.hasSufficientPower()) {
+                MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
+                int width = Minecraft.getInstance().font.width(warningText.getString());
+                gui.drawString(font, warningText, 89 - width / 2, -33, 0xff000000, false);
+            }
+
+            if (itemRecipe.getBatchSize() > 1) {
+                int currentBatchSize = menu.blockEntity.getBatchSize();
+                String str = currentBatchSize + " / " + itemRecipe.getBatchSize();
+                int width = font.width(str);
+
+                gui.drawString(font, str, -46 - width / 2, 141, 0xff000000, false);
             }
         }
+        else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluidRecipe) {
+            for (int i = 0; i < fluidRecipe.getComponentMateria().size(); i++) {
+                Component text = Component.literal((fluidRecipe.getComponentMateria().get(i).getCount() * menu.blockEntity.getBatchSize()) + "");
+                int rightAlignShift = 17 - font.width(text.getString());
 
-        if(!menu.blockEntity.hasSufficientPower()) {
-            MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
-            int width = Minecraft.getInstance().font.width(warningText.getString());
-            gui.drawString(font, warningText, 89 - width/2, -33, 0xff000000, false);
-        }
+                gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
+            }
 
-        if(recipe != null) {
-            if(recipe.getBatchSize() > 1) {
+            if (fluidRecipe.getOutputRate() < 1f) {
+                int amt = (int) Math.round(1f / fluidRecipe.getOutputRate());
+
+                gui.drawString(font, amt < 9 ? "x" + amt : "" + amt, 101, 72, 0xff000000, false);
+            }
+
+            if (!menu.blockEntity.hasSufficientPower()) {
+                MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
+                int width = Minecraft.getInstance().font.width(warningText.getString());
+                gui.drawString(font, warningText, 89 - width / 2, -33, 0xff000000, false);
+            }
+
+            if (fluidRecipe.getBatchSize() > 1) {
                 int currentBatchSize = menu.blockEntity.getBatchSize();
-                String str = currentBatchSize + " / " + recipe.getBatchSize();
+                String str = currentBatchSize + " / " + fluidRecipe.getBatchSize();
                 int width = font.width(str);
 
                 gui.drawString(font, str, -46 - width / 2, 141, 0xff000000, false);

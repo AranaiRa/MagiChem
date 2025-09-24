@@ -7,6 +7,7 @@ import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.CircleFabricationMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.IEnergyStoragePlus;
@@ -39,10 +40,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -81,10 +84,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot >= SLOT_INPUT_START && slot < SLOT_INPUT_START + SLOT_INPUT_COUNT) {
-                    if(currentRecipe != null) {
-                        if(((slot - SLOT_INPUT_START) / 2) >= currentRecipe.getComponentMateria().size())
+                    if(currentItemRecipe != null) {
+                        if(((slot - SLOT_INPUT_START) / 2) >= currentItemRecipe.getComponentMateria().size())
                             return false;
-                        ItemStack component = currentRecipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
+                        ItemStack component = currentItemRecipe.getComponentMateria().get((slot - SLOT_INPUT_START) / 2);
                         return stack.getItem() == component.getItem();
                     } else {
                         return false;
@@ -116,8 +119,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     }
 
     @Nullable
-    public DistillationFabricationRecipe getCurrentRecipe() {
-        return currentRecipe;
+    public Recipe<SimpleContainer> getCurrentRecipe() {
+        return currentItemRecipe == null ? currentFluidRecipe : currentItemRecipe;
     }
 
     @Override
@@ -169,10 +172,17 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
 
-        if(currentRecipe != null) {
-            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getAlchemyObject().getItem());
+        if(currentItemRecipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentItemRecipe.getAlchemyObject().getItem());
             if(keyQuery != null)
                 nbt.putString("recipe", keyQuery.toString());
+            nbt.putBoolean("recipeIsFluid", false);
+        }
+        else if(currentFluidRecipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.FLUIDS.getKey(currentFluidRecipe.getAlchemyFluid().getFluid());
+            if(keyQuery != null)
+                nbt.putString("recipe", keyQuery.toString());
+            nbt.putBoolean("recipeIsFluid", true);
         }
 
         super.saveAdditional(nbt);
@@ -190,8 +200,10 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         isFESatisfied = nbt.getBoolean("isFESatisfied");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
 
-        if(nbt.contains("recipe"))
+        if(nbt.contains("recipe")) {
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
+            deferredRecipeIsFluid = nbt.getBoolean("recipeIsFluid");
+        }
         else
             deferredRecipeQuery = null;
         doDeferredRecipeCheck = true;
@@ -220,10 +232,17 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         nbt.putBoolean("isFESatisfied", this.isFESatisfied);
         nbt.putBoolean("clearRecipeAfterNextProcess", this.clearRecipeAfterNextProcess);
 
-        if(currentRecipe != null) {
-            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentRecipe.getAlchemyObject().getItem());
+        if(currentItemRecipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.ITEMS.getKey(currentItemRecipe.getAlchemyObject().getItem());
             if(keyQuery != null)
                 nbt.putString("recipe", keyQuery.toString());
+            nbt.putBoolean("recipeIsFluid", false);
+        }
+        else if(currentFluidRecipe != null) {
+            ResourceLocation keyQuery = ForgeRegistries.FLUIDS.getKey(currentFluidRecipe.getAlchemyFluid().getFluid());
+            if(keyQuery != null)
+                nbt.putString("recipe", keyQuery.toString());
+            nbt.putBoolean("recipeIsFluid", true);
         }
 
         return nbt;
@@ -284,9 +303,15 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, CircleFabricationBlockEntity pEntity) {
         if(pEntity.doDeferredRecipeCheck) {
-            Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
-            if(itemQuery != null)
-                pEntity.currentRecipe = DistillationFabricationRecipe.getDistillingRecipe(pLevel, itemQuery);
+            if(pEntity.deferredRecipeIsFluid) {
+                Fluid fluidQuery = ForgeRegistries.FLUIDS.getValue(pEntity.deferredRecipeQuery);
+                if(fluidQuery != null)
+                    pEntity.currentFluidRecipe = pEntity.getRecipeForFluid(fluidQuery);
+            } else {
+                Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
+                if (itemQuery != null)
+                    pEntity.currentItemRecipe = pEntity.getRecipeForItem(itemQuery);
+            }
             pEntity.doDeferredRecipeCheck = false;
         }
 
@@ -490,14 +515,14 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                     }
 
                     //item chunks
-                    if(pEntity.currentRecipe != null) {
+                    if(pEntity.currentItemRecipe != null) {
                         total = 8;
                         for (int i = 0; i < total; i++) {
                             Vector3 end = new Vector3(pPos.getX() + outputCenter.x, pPos.getY() + outputCenter.y, pPos.getZ() + outputCenter.z);
                             Vector3 start = end.add(new Vector3(r.nextDouble() * 2 - 1, r.nextDouble(), r.nextDouble() * 2 - 1).scale(0.5f));
 
                             pLevel.addParticle(new MAParticleType(ParticleInit.ITEM.get())
-                                            .setScale(0.05f).setMaxAge(10 + r.nextInt(10)).setStack(pEntity.currentRecipe.getAlchemyObject())
+                                            .setScale(0.05f).setMaxAge(10 + r.nextInt(10)).setStack(pEntity.currentItemRecipe.getAlchemyObject())
                                             .setMover(new ParticleLerpMover(
                                                     start.x, start.y, start.z,
                                                     end.x, end.y, end.z)),
@@ -569,8 +594,14 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     public int getOperationTicks() {
         float batchModifier = 1f;
-        if(getCurrentRecipe() != null && getCurrentRecipe().getBatchSize() > 0) {
-            batchModifier = (float)batchSize / (float)getCurrentRecipe().getBatchSize();
+        if(getCurrentRecipe() instanceof DistillationFabricationRecipe item) {
+            if (item.getBatchSize() > 0) {
+                batchModifier = (float) batchSize / (float) item.getBatchSize();
+            }
+        } else if(getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluid) {
+            if (fluid.getBatchSize() > 0) {
+                batchModifier = (float) batchSize / (float) fluid.getBatchSize();
+            }
         }
         return Math.max(1,Math.round(1800f * batchModifier));
     }
@@ -590,14 +621,15 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         materiaToVent = 0;
     }
 
-    public void setCurrentRecipe(ItemStack pQuery) {
+    public void setCurrentRecipe(Item pQuery) {
         if(!level.isClientSide()) {
-            currentRecipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
+            currentItemRecipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
+            currentFluidRecipe = null;
 
-            if (currentRecipe != null) {
+            if (currentItemRecipe != null) {
                 batchSize = 1;
                 ItemStack[] componentMateria = new ItemStack[5];
-                currentRecipe.getComponentMateria().toArray(componentMateria);
+                currentItemRecipe.getComponentMateria().toArray(componentMateria);
 
                 for(int i=0; i<SLOT_INPUT_COUNT; i++) {
                     if(componentMateria[i/2] != null) {
@@ -622,6 +654,44 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             }
         }
         doDeferredRecipeCheck = false;
+
+        syncAndSave();
+    }
+
+    public void setCurrentRecipe(Fluid pQuery) {
+        currentFluidRecipe = FluidDistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
+        currentItemRecipe = null;
+
+        if (currentFluidRecipe != null) {
+            batchSize = 1;
+            ItemStack[] componentMateria = new ItemStack[5];
+            currentFluidRecipe.getComponentMateria().toArray(componentMateria);
+
+            for(int i=0; i<SLOT_INPUT_COUNT; i++) {
+                if(componentMateria[i/2] != null) {
+                    if (componentMateria[i / 2].getItem() instanceof MateriaItem mi) {
+                        ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                        if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                            materiaToVent = materiaToVent | (1 << i);
+                            itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                            continue;
+                        }
+                    }
+                } else {
+                    ItemStack query = itemHandler.getStackInSlot(SLOT_INPUT_START + i);
+                    if(InventoryHelper.isMateriaUnbottled(query) && query.getItem() != componentMateria[i/2].getItem()) {
+                        materiaToVent = materiaToVent | (1 << i);
+                        itemHandler.setStackInSlot(SLOT_INPUT_START + i, ItemStack.EMPTY.copy());
+                        continue;
+                    }
+                }
+                materiaToVent = materiaToVent & ~(1 << i);
+            }
+        }
+
+        if(!level.isClientSide()) {
+            doDeferredRecipeCheck = false;
+        }
 
         syncAndSave();
     }
@@ -687,7 +757,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
 
     @Override
     public boolean needsProvisioning() {
-        if(currentRecipe == null)
+        if(currentItemRecipe == null)
             return false;
 
         return getProvisioningNeeds().size() > 0;
@@ -697,8 +767,8 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
         Map<MateriaItem, Integer> result = new HashMap<>();
 
-        if(currentRecipe != null) {
-            for (ItemStack recipeMateria : currentRecipe.getComponentMateria()) {
+        if(currentItemRecipe != null) {
+            for (ItemStack recipeMateria : currentItemRecipe.getComponentMateria()) {
                 if(activeProvisionRequests.contains((MateriaItem)recipeMateria.getItem()))
                     continue;
 
@@ -805,18 +875,18 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         if(distillationFabricationRecipeQuery == null)
             return ERROR_CODE_NO_SUCH_RECIPE;
 
-        setCurrentRecipe(pStack);
+        setCurrentRecipe(pStack.getItem());
         return ERROR_CODE_SUCCESS;
     }
 
     @Override
     public ItemStack getRecipeItem() {
-        return currentRecipe == null ? ItemStack.EMPTY.copy() : currentRecipe.getResultItem().copy();
+        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : currentItemRecipe.getResultItem().copy();
     }
 
     @Override
     public ItemStack getRecipeItem(boolean pMakeCopy) {
-        return currentRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentRecipe.getResultItem().copy() : currentRecipe.getResultItem();
+        return currentItemRecipe == null ? ItemStack.EMPTY.copy() : pMakeCopy ? currentItemRecipe.getResultItem().copy() : currentItemRecipe.getResultItem();
     }
 
     @Override

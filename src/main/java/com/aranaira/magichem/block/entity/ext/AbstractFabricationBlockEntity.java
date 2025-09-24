@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.item.PhilosophersStoneItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
+import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.util.InventoryHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -32,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -43,12 +46,15 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     protected int
             progress = 0, operationTicks = 0, pluginLinkageCountdown = 3, batchSize = 1;
     protected boolean
-            isFESatisfied = false, doDeferredRecipeCheck = false;
+            isFESatisfied = false, doDeferredRecipeCheck = false, deferredRecipeIsFluid = false;
 
     protected ItemStackHandler itemHandler;
     protected List<AbstractDirectionalPluginBlockEntity> pluginDevices = new ArrayList<>();
-    protected DistillationFabricationRecipe currentRecipe;
+    protected DistillationFabricationRecipe currentItemRecipe;
+    protected FluidDistillationFabricationRecipe currentFluidRecipe;
     protected ResourceLocation deferredRecipeQuery = null;
+    protected static final HashMap<Item, DistillationFabricationRecipe> allItemRecipes = new HashMap<>();
+    protected static final HashMap<Fluid, FluidDistillationFabricationRecipe> allFluidRecipes = new HashMap<>();
 
     public boolean clearRecipeAfterNextProcess = false;
 
@@ -58,6 +64,8 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
     protected AbstractFabricationBlockEntity(BlockEntityType pType, BlockPos pPos, BlockState pState) {
         super(pType, pPos, pState);
+
+
     }
 
     ////////////////////
@@ -129,11 +137,11 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
         if(pEntity.isFESatisfied && pEntity.operationTicks > 0) {
 
-            if(pEntity.currentRecipe != null) {
-                if (canCraftItem(pEntity, pEntity.currentRecipe, pVarFunc)) {
+            if(pEntity.currentItemRecipe != null) {
+                if (canCraftItem(pEntity, pEntity.currentItemRecipe, pVarFunc)) {
                     if (pEntity.progress > pEntity.operationTicks) {
                         if (!pLevel.isClientSide()) {
-                            craftItem(pEntity, pEntity.currentRecipe, pVarFunc);
+                            craftItem(pEntity, pEntity.currentItemRecipe, pVarFunc);
                             pEntity.resetProgress();
                             changed = true;
                         }
@@ -221,6 +229,26 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     // RECIPE HANDLING
     ////////////////////
 
+    protected DistillationFabricationRecipe getRecipeForItem(Item pItem) {
+        if(allItemRecipes.size() == 0) {
+            for(DistillationFabricationRecipe recipe : DistillationFabricationRecipe.getAllDistillingRecipes(level)) {
+                if(recipe.getWisdom() < 6) allItemRecipes.put(recipe.getAlchemyObject().getItem(), recipe);
+            }
+        }
+
+        return allItemRecipes.get(pItem);
+    }
+
+    protected FluidDistillationFabricationRecipe getRecipeForFluid(Fluid pFluid) {
+        if(allFluidRecipes.size() == 0) {
+            for(FluidDistillationFabricationRecipe recipe : FluidDistillationFabricationRecipe.getAllDistillingRecipes(level)) {
+                if(recipe.getWisdom() < 6) allFluidRecipes.put(recipe.getAlchemyFluid().getFluid(), recipe);
+            }
+        }
+
+        return allFluidRecipes.get(pFluid);
+    }
+
     protected static boolean canCraftItem(AbstractFabricationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
         //Has all inputs?
         SimpleContainer inputSlots = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
@@ -246,7 +274,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             cont.setItem(i-pVarFunc.apply(IDs.SLOT_OUTPUT_START), pEntity.itemHandler.getStackInSlot(i).copy());
         }
 
-        return cont.canAddItem(new ItemStack(pRecipe.getAlchemyObject().getItem(), Math.round(pRecipe.getAlchemyObject().getCount() * pEntity.batchSize * (1/ pEntity.currentRecipe.getOutputRate()))));
+        return cont.canAddItem(new ItemStack(pRecipe.getAlchemyObject().getItem(), Math.round(pRecipe.getAlchemyObject().getCount() * pEntity.batchSize * (1/ pEntity.currentItemRecipe.getOutputRate()))));
     }
 
     protected static void craftItem(AbstractFabricationBlockEntity pEntity, DistillationFabricationRecipe pRecipe, Function<IDs, Integer> pVarFunc) {
@@ -281,7 +309,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             inputSlots.removeItemType(item.getItem(), item.getCount() * pEntity.batchSize);
         }
 
-        outputSlots.addItem(new ItemStack(pRecipe.getAlchemyObject().getItem(), Math.round(pRecipe.getAlchemyObject().getCount() * pEntity.batchSize * (1/pEntity.currentRecipe.getOutputRate()))));
+        outputSlots.addItem(new ItemStack(pRecipe.getAlchemyObject().getItem(), Math.round(pRecipe.getAlchemyObject().getCount() * pEntity.batchSize * (1/pEntity.currentItemRecipe.getOutputRate()))));
 
         for (int i = 0; i < pVarFunc.apply(IDs.SLOT_OUTPUT_COUNT); i++) {
             pEntity.itemHandler.setStackInSlot(pVarFunc.apply(IDs.SLOT_OUTPUT_START) + i, outputSlots.getItem(i));
@@ -289,7 +317,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
         resolveActuators(pEntity, materiaCreated);
         if(pEntity.clearRecipeAfterNextProcess) {
-            pEntity.currentRecipe = null;
+            pEntity.currentItemRecipe = null;
             pEntity.clearRecipeAfterNextProcess = false;
             pEntity.syncAndSave();
         }
