@@ -54,7 +54,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
     private ButtonData[] recipeSelectButtons = new ButtonData[15];
     private EditBox recipeFilterBox;
     private static final int
-            PANEL_MAIN_W = 181, PANEL_MAIN_H = 192,
+            PANEL_MAIN_W = 186, PANEL_MAIN_H = 192,
             PANEL_RECIPE_U = 160, PANEL_RECIPE_V = 96, PANEL_RECIPE_W = 81, PANEL_RECIPE_H = 126,
             PANEL_POWER_U = 0, PANEL_POWER_V = 102, PANEL_POWER_W = 80, PANEL_POWER_H = 66;
     private DistillationFabricationOption lastClickedRecipe = null;
@@ -128,7 +128,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
     }
 
     private void initializePowerLevelButtons(){
-        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 167, this.topPos + 126, 12, 7, 232, 242, TEXTURE, button -> {
+        b_powerLevelUp = this.addRenderableWidget(new ImageButton(this.leftPos + 213, this.topPos + 126, 12, 7, 81, 242, TEXTURE, button -> {
             ResourceLocation rl;
             boolean isFluid = false;
             if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe itemRecipe)
@@ -148,7 +148,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                     menu.blockEntity.getPowerUsageSetting()
             ));
         }));
-        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 167, this.topPos + 126, 12, 7, 244, 242, TEXTURE, button -> {
+        b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 190, this.topPos + 126, 12, 7, 93, 242, TEXTURE, button -> {
             ResourceLocation rl;
             boolean isFluid = false;
             if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe itemRecipe)
@@ -184,7 +184,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             }
         }
 
-        int x = this.leftPos + 71;
+        int x = this.leftPos + 68;
         int y = this.topPos + 66;
         new ButtonData(this.addRenderableWidget(new FabricationButtonRecipeSelector(
                 this, c, x, y, 9, 9, 72, 238, TEXTURE, button -> {
@@ -305,13 +305,13 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         gui.blit(TEXTURE_EXT, x - 85, y + 10, PANEL_RECIPE_U, PANEL_RECIPE_V, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
         //Power Settings Panel
-        gui.blit(TEXTURE_EXT, x + 163, y + 19, PANEL_POWER_U, PANEL_POWER_V, PANEL_POWER_W, PANEL_POWER_H);
+        gui.blit(TEXTURE_EXT, x + 186, y + 19, PANEL_POWER_U, PANEL_POWER_V, PANEL_POWER_W, PANEL_POWER_H);
 
         renderProgressBar(gui, x + 79, y + 39);
 
         renderSelectedRecipe(gui, x + 84, y + 79);
 
-        renderPowerLevelBar(gui, x + 169, y + 37);
+        renderPowerLevelBar(gui, x + 192, y + 37);
 
         renderSlotGhosts(gui);
 
@@ -328,9 +328,9 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         }
 
         //Philosopher's Stone hole
-        gui.blit(TEXTURE, x + 188, y + 100, 224, 66, 32, 32);
+        gui.blit(TEXTURE, x + 190, y + 100, 0, 198, 32, 32);
         if(menu.blockEntity.getStoneItem().isEmpty())
-            gui.blit(TEXTURE, x + 195, y + 107, 238, 98, 18, 18);
+            gui.blit(TEXTURE, x + 197, y + 107, 54, 202, 18, 18);
 
         //Batch Size Selector
         gui.blit(TEXTURE_EXT, x - 85, y + 142, 0, 168, 81, 45);
@@ -362,11 +362,11 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        b_powerLevelUp.setPosition(x+167, y+26);
+        b_powerLevelUp.setPosition(x+190, y+26);
         b_powerLevelUp.active = true;
         b_powerLevelUp.visible = true;
 
-        b_powerLevelDown.setPosition(x+167, y+71);
+        b_powerLevelDown.setPosition(x+190, y+71);
         b_powerLevelDown.active = true;
         b_powerLevelDown.visible = true;
 
@@ -676,13 +676,13 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         int secPartial = (menu.blockEntity.getOperationTicks() % 20) * 5;
 
         Font font = Minecraft.getInstance().font;
-        gui.drawString(font ,powerDraw+"/t", 193, 26, 0xff000000, false);
-        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 193, 45, 0xff000000, false);
+        gui.drawString(font ,powerDraw+"/t", 213, 26, 0xff000000, false);
+        gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 213, 45, 0xff000000, false);
 
         if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe itemRecipe) {
             for (int i = 0; i < itemRecipe.getComponentMateria().size(); i++) {
                 Component text = Component.literal((itemRecipe.getComponentMateria().get(i).getCount() * menu.blockEntity.getBatchSize()) + "");
-                int rightAlignShift = 17 - font.width(text.getString());
+                int rightAlignShift = 15 - font.width(text.getString());
 
                 gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
             }
@@ -690,7 +690,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             if (itemRecipe.getOutputRate() < 1f) {
                 int amt = (int) Math.round(1f / itemRecipe.getOutputRate());
 
-                gui.drawString(font, amt < 9 ? "x" + amt : "" + amt, 101, 72, 0xff000000, false);
+                gui.drawString(font, amt < 9 ? "x" + amt : "" + amt, 99, 72, 0xff000000, false);
             }
 
             if (!menu.blockEntity.hasSufficientPower()) {
@@ -704,13 +704,13 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                 String str = currentBatchSize + " / " + itemRecipe.getBatchSize();
                 int width = font.width(str);
 
-                gui.drawString(font, str, -46 - width / 2, 141, 0xff000000, false);
+                gui.drawString(font, str, -49 - width / 2, 141, 0xff000000, false);
             }
         }
         else if(menu.blockEntity.getCurrentRecipe() instanceof FluidDistillationFabricationRecipe fluidRecipe) {
             for (int i = 0; i < fluidRecipe.getComponentMateria().size(); i++) {
                 Component text = Component.literal((fluidRecipe.getComponentMateria().get(i).getCount() * menu.blockEntity.getBatchSize()) + "");
-                int rightAlignShift = 17 - font.width(text.getString());
+                int rightAlignShift = 15 - font.width(text.getString());
 
                 gui.drawString(font, text, 6 + rightAlignShift, -1 + i * 18, 0xff000000, false);
             }
@@ -718,7 +718,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
             if (fluidRecipe.getOutputRate() < 1f) {
                 int amt = (int) Math.round(1f / fluidRecipe.getOutputRate());
 
-                gui.drawString(font, amt < 9 ? "x" + amt : "" + amt, 101, 72, 0xff000000, false);
+                gui.drawString(font, amt < 9 ? "x" + amt : "" + amt, 99, 72, 0xff000000, false);
             }
 
             if (!menu.blockEntity.hasSufficientPower()) {
@@ -732,7 +732,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
                 String str = currentBatchSize + " / " + fluidRecipe.getBatchSize();
                 int width = font.width(str);
 
-                gui.drawString(font, str, -46 - width / 2, 141, 0xff000000, false);
+                gui.drawString(font, str, -49 - width / 2, 141, 0xff000000, false);
             }
         }
     }

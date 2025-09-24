@@ -305,12 +305,16 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         if(pEntity.doDeferredRecipeCheck) {
             if(pEntity.deferredRecipeIsFluid) {
                 Fluid fluidQuery = ForgeRegistries.FLUIDS.getValue(pEntity.deferredRecipeQuery);
-                if(fluidQuery != null)
+                if(fluidQuery != null) {
                     pEntity.currentFluidRecipe = pEntity.getRecipeForFluid(fluidQuery);
+                    pEntity.currentItemRecipe = null;
+                }
             } else {
                 Item itemQuery = ForgeRegistries.ITEMS.getValue(pEntity.deferredRecipeQuery);
-                if (itemQuery != null)
+                if (itemQuery != null) {
                     pEntity.currentItemRecipe = pEntity.getRecipeForItem(itemQuery);
+                    pEntity.currentFluidRecipe = null;
+                }
             }
             pEntity.doDeferredRecipeCheck = false;
         }
