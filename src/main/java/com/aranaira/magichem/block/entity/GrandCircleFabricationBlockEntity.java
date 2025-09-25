@@ -62,6 +62,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -99,6 +100,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     };
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+    private LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.empty();
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private static final Random r = new Random();
 
@@ -196,8 +198,10 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
             return lazyItemHandler.cast();
         }
-
-        if(cap == ForgeCapabilities.ENERGY) {
+        else if(cap == ForgeCapabilities.FLUID_HANDLER) {
+            return lazyFluidHandler.cast();
+        }
+        else if(cap == ForgeCapabilities.ENERGY) {
             return lazyEnergyHandler.cast();
         }
 
@@ -208,6 +212,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyFluidHandler = LazyOptional.of(() -> this);
         lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
     }
 
@@ -215,6 +220,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
+        lazyFluidHandler.invalidate();
         lazyEnergyHandler.invalidate();
     }
 

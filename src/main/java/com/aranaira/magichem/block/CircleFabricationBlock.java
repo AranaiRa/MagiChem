@@ -13,7 +13,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -27,9 +31,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -175,19 +186,68 @@ public class CircleFabricationBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof CircleFabricationBlockEntity cfbe) {
-                NetworkHooks.openScreen((ServerPlayer)player, new SimpleMenuProvider((id, playerInventory, user) -> {
-                    return new CircleFabricationMenu(id, playerInventory, cfbe);
-                }, Component.empty()), cfbe);
+    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+        if(!pLevel.isClientSide()) {
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            ItemStack itemInHand = pPlayer.getItemInHand(pHand);
+            LazyOptional<IFluidHandlerItem> itemCapabilityQuery = itemInHand.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+            LazyOptional<IFluidHandler> capabilityQuery = null;
+
+            if(be instanceof CircleFabricationBlockEntity main)
+                capabilityQuery = main.getCapability(ForgeCapabilities.FLUID_HANDLER);
+            else if(be instanceof CircleFabricationRouterBlockEntity router)
+                capabilityQuery = router.getCapability(ForgeCapabilities.FLUID_HANDLER);
+
+            if(itemCapabilityQuery.isPresent() && capabilityQuery != null) {
+                final IFluidHandler fluidHandler = capabilityQuery.resolve().get();
+                final IFluidHandlerItem iCap = itemCapabilityQuery.resolve().get();
+                final FluidStack fluidInItem = iCap.getFluidInTank(0);
+
+                if(itemInHand.getItem() == Items.BUCKET) {
+                    FluidStack extractionQuery = fluidHandler.drain(1000, IFluidHandler.FluidAction.SIMULATE);
+
+                    if(extractionQuery.getAmount() == 1000) {
+                        if(!pPlayer.isCreative()) {
+                            ItemStack bucket = FluidUtil.getFilledBucket(extractionQuery);
+                            if(itemInHand.getCount() == 1) {
+                                pPlayer.setItemInHand(pHand, bucket);
+                            }
+                            else {
+                                pPlayer.getItemInHand(pHand).shrink(1);
+                                ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), bucket);
+                                pLevel.addFreshEntity(ie);
+                            }
+                        }
+                        fluidHandler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                    }
+                } else {
+                    FluidStack extractionQuery = fluidHandler.drain(iCap.getTankCapacity(0) - fluidInItem.getAmount(), IFluidHandler.FluidAction.SIMULATE);
+
+                    if (extractionQuery.getAmount() > 0) {
+                        fluidHandler.drain(iCap.getTankCapacity(0) - fluidInItem.getAmount(), IFluidHandler.FluidAction.EXECUTE);
+                        if(!pPlayer.isCreative()) {
+                            iCap.fill(extractionQuery, IFluidHandler.FluidAction.EXECUTE);
+                            if (iCap.getFluidInTank(0).isEmpty() && itemInHand.getItem() instanceof BucketItem bi) {
+                                pPlayer.setItemInHand(pHand, new ItemStack(Items.BUCKET));
+                            }
+                        }
+                    }
+                }
+
+                return InteractionResult.CONSUME;
             } else {
-                throw new IllegalStateException("CircleFabricationBlockEntity container provider is missing!");
+                BlockEntity entity = pLevel.getBlockEntity(pPos);
+                if (entity instanceof CircleFabricationBlockEntity main) {
+                    NetworkHooks.openScreen((ServerPlayer)pPlayer, new SimpleMenuProvider((id, playerInventory, user) -> {
+                        return new CircleFabricationMenu(id, playerInventory, main);
+                    }, Component.empty()), main);
+                } else {
+                    throw new IllegalStateException("CircleFabricationBlockEntity container provider is missing!");
+                }
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     @Nullable
