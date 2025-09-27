@@ -2628,7 +2628,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " while the device is performing a valid Vitriolation recipe.\n\nThough the device is most commonly used to submerge items in acids, it can also be used to dissolve certain items with water (or other fluids)."
+            "text": " while the device is performing a valid Vitriolation recipe.\n\nThough the device is most commonly used to submerge items in acids, it can also be used to dissolve certain items with water (or other fluids).\n\nUnwanted fluids can be removed from an Acid Basin with a "
+          },
+          {
+            "text": "Brimming Urn",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (or other fluid containers provided by other mods)."
           }
         ]
       }
