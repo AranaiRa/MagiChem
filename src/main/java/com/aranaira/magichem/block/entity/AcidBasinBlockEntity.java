@@ -160,7 +160,7 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
             outputTank = FluidStack.EMPTY;
         }
 
-        if(progress > -1 && level != null) {
+        if(progress > -1) {
             reCheckRecipe = true;
         }
     }
