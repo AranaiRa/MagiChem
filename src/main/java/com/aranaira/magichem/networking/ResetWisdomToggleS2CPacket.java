@@ -5,6 +5,8 @@ import com.aranaira.magichem.capabilities.wisdom.WisdomProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.Optional;
@@ -26,12 +28,8 @@ public class ResetWisdomToggleS2CPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
-        Player player = Minecraft.getInstance().player;
-
         context.enqueueWork(() -> {
-            if(player != null && WisdomProvider.getCapability(player).isPresent()) {
-                WisdomProvider.getCapability(player).get().setIsDisabled(false);
-            }
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> PacketHelper::handleWisdomToggleResetPacket);
         });
 
         return true;

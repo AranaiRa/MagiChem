@@ -1,16 +1,10 @@
 package com.aranaira.magichem.networking;
 
-import com.aranaira.magichem.capabilities.wisdom.IWisdomCapability;
-import com.aranaira.magichem.capabilities.wisdom.WisdomProvider;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class WisdomSyncS2CPacket {
@@ -33,7 +27,7 @@ public class WisdomSyncS2CPacket {
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         supplier.get().enqueueWork(() -> {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> PacketHelper.handleWisdomPacket(cardinal, intercardinal));
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> PacketHelper.handleWisdomSyncPacket(cardinal, intercardinal));
         });
         supplier.get().setPacketHandled(true);
         return true;
