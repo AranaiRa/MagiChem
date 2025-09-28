@@ -540,6 +540,9 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
     @Override
     public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
+        if(outputTank.isEmpty())
+            return FluidStack.EMPTY;
+        
         if(resource.getFluid() == outputTank.getFluid() || outputTank.isEmpty()) {
             int extracted = Math.min(resource.getAmount(), outputTank.getAmount());
             FluidStack output = outputTank.copy();
@@ -556,6 +559,9 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
     @Override
     public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+        if(outputTank.isEmpty())
+            return FluidStack.EMPTY;
+
         int extracted = Math.min(maxDrain, outputTank.getAmount());
         FluidStack output = outputTank.copy();
         output.setAmount(extracted);
