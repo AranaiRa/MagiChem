@@ -542,7 +542,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
         if(outputTank.isEmpty())
             return FluidStack.EMPTY;
-        
+
         if(resource.getFluid() == outputTank.getFluid() || outputTank.isEmpty()) {
             int extracted = Math.min(resource.getAmount(), outputTank.getAmount());
             FluidStack output = outputTank.copy();

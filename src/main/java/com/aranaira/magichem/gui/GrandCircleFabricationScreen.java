@@ -236,7 +236,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         for(DistillationFabricationRecipe acr : allDistillationRecipes) {
             String display = acr.getAlchemyObject().getDisplayName().getString();
             boolean nameMatchesFilter = (Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()));
-            boolean wisdomValidForCurrentStone = acr.getWisdom() == 0;
+            boolean wisdomValidForCurrentStone = acr.getWisdom() <= menu.blockEntity.getCurrentWisdom(GrandCircleFabricationBlockEntity::getVar);
             boolean requiredAdvancementCompliant = true;
             boolean forbiddenAdvancementCompliant = true;
 
@@ -263,7 +263,7 @@ public class GrandCircleFabricationScreen extends AbstractContainerScreen<GrandC
         for(FluidDistillationFabricationRecipe facr : allFluidDistillationRecipes) {
             String display = facr.getAlchemyFluid().getDisplayName().getString();
             boolean nameMatchesFilter = (Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()));
-            boolean wisdomValidForCurrentStone = facr.getWisdom() == 0;
+            boolean wisdomValidForCurrentStone = facr.getWisdom() <= menu.blockEntity.getCurrentWisdom(GrandCircleFabricationBlockEntity::getVar);
             boolean requiredAdvancementCompliant = true;
             boolean forbiddenAdvancementCompliant = true;
 
