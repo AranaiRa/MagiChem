@@ -149,6 +149,13 @@ public class FuseryRouterBlock extends BaseEntityBlock implements INoCreativeTab
                     return true;
                 }
             }
+            else if(isp.getPart().equals(Components.ANIMUS) || isp.getPart().equals(Components.GREATER_ANIMUS)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof FuseryRouterBlockEntity frbe) {
+                    frbe.getMaster().dustCog();
+                    return true;
+                }
+            }
         }
         return false;
     }

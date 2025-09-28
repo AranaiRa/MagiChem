@@ -234,6 +234,13 @@ public class CentrifugeBlock extends BaseEntityBlock implements ISpellInteractib
                     return true;
                 }
             }
+            else if(isp.getPart().equals(Components.ANIMUS) || isp.getPart().equals(Components.GREATER_ANIMUS)) {
+                BlockEntity be = level.getBlockEntity(blockPos);
+                if(be instanceof CentrifugeBlockEntity cbe) {
+                    cbe.dustCog();
+                    return true;
+                }
+            }
         }
         return false;
     }

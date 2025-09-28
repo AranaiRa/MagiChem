@@ -2435,7 +2435,21 @@
             "color": "dark_purple"
           },
           {
-            "text": " the block, or for ten minutes by dusting it with Animus Dust.\n\nTwo corners of the device have "
+            "text": " the block, or for ten minutes by sprinkling it with "
+          },
+          {
+            "text": "Animus Dust",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (or an "
+          },
+          {
+            "text": "Animus",
+            "color": "dark_purple"
+          },
+          {
+            "text": " spell).\n\nTwo corners of the device have "
           },
           {
             "text": "Elemental Actuator",
@@ -2792,7 +2806,35 @@
             "color": "dark_purple"
           },
           {
-            "text": " in its tank for each operation. More complex admixtures require larger amounts of slurry than simpler Admixtures."
+            "text": " in its tank for each operation. More complex admixtures require larger amounts of slurry than simpler Admixtures.\n\nA quicksilver gear on one corner of the device can be cranked to operate the device—either manually, with a construct set to "
+          },
+          {
+            "text": "Activate",
+            "color": "dark_purple"
+          },
+          {
+            "text": " the block, or for ten minutes by sprinkling it with "
+          },
+          {
+            "text": "Animus Dust",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (or an "
+          },
+          {
+            "text": "Animus",
+            "color": "dark_purple"
+          },
+          {
+            "text": " spell).\n\nTwo corners of the device have "
+          },
+          {
+            "text": "Elemental Actuator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " ports if you wish to enhance the device using Eldrin power."
           }
         ]
       },

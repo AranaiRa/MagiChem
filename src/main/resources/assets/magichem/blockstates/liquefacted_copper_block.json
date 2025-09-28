@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "magichem:block/liquefacted_copper_block"
+    }
+  }
+}
