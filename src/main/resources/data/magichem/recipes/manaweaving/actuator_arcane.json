@@ -7,7 +7,7 @@
     "magichem:experience_exchanger",
     "magichem:magic_circle",
     "mna:mote_arcane",
-    "minecraft:bookshelf",
+    "#forge:bookshelves",
     "magichem:magichemical_mechanism"
   ],
   "patterns": [
