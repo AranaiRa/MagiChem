@@ -11,7 +11,7 @@
       "experience": 0,
       "components": [
         { "item": "mna:vellum" },
-        { "item": "#forge:chests/wooden" }
+        { "item": "minecraft:chest" }
       ],
       "materia": [
         { "item": "magichem:essentia_mineral", "count": 20 },
