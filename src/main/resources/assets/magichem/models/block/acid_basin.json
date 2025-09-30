@@ -7,6 +7,7 @@
   "children": {
     "part1": {
       "loader": "forge:obj",
+      "render_type": "cutout",
       "automatic_culling": false,
       "shade_quads": true,
       "flip_v": true,

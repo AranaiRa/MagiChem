@@ -39,10 +39,12 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
 
         if(!pBlockEntity.getFluidInTank(TANK_INPUT).isEmpty()) {
             this.renderMainTankFluid(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+            this.renderMainTankGauge(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         }
 
         if(!pBlockEntity.getFluidInTank(TANK_OUTPUT).isEmpty()) {
             this.renderOutputTankFluid(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+            this.renderOutputTankGauge(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         }
     }
 
@@ -194,7 +196,7 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
         pPoseStack.pushPose();
         RenderUtils.renderFace(Direction.UP, last.pose(), last.normal(), buffer, texture,
                 0.3125f, 0.3125f, 0.9375f + height, width, width,
-                pBlockEntity.getFluidInTank(TANK_INPUT).getFluid() == Fluids.WATER ? 0xff2a76d1 : 0xffffffff,
+                extension.getTintColor(),
                 pPackedLight);
 
         pPoseStack.popPose();
@@ -213,6 +215,46 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                 pPoseStack.translate(0, 0, -1.0f);
             }
         }
+    }
+
+    private void renderMainTankGauge(AcidBasinBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        BlockState state = pBlockEntity.getBlockState();
+        VertexConsumer buffer = pBuffer.getBuffer(RenderType.translucent());
+
+        pPoseStack.pushPose();
+        switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            case NORTH -> {
+                pPoseStack.translate(-0.125f, 0.6875f, 0.919194f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(45));
+            }
+            case EAST -> {
+                pPoseStack.translate(0.080806f, 0.6875f, -0.125f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(315));
+            }
+            case SOUTH -> {
+                pPoseStack.translate(1.125f, 0.6875f, 0.080806f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(225));
+            }
+            case WEST -> {
+                pPoseStack.translate(0.919194f, 0.6875f, 1.125f);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(135));
+            }
+        }
+
+        IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(
+                pBlockEntity.getFluidInTank(TANK_INPUT).getFluid()
+        );
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(extension.getStillTexture());
+
+        float width = 0.0625f;
+        float height = 0.25f * ((float)pBlockEntity.getFluidInTank(TANK_INPUT).getAmount() / (float)ServerConfig.acidBasinTankCapacity);
+
+        PoseStack.Pose last = pPoseStack.last();
+        RenderUtils.renderFace(Direction.SOUTH, last.pose(), last.normal(), buffer, texture,
+                0.0f, 0.0f, 1.0f, width, height,
+                extension.getTintColor(),
+                pPackedLight);
+        pPoseStack.popPose();
     }
 
     private void renderOutputTankFluid(AcidBasinBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
@@ -246,10 +288,47 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
         pPoseStack.pushPose();
         RenderUtils.renderFace(Direction.UP, last.pose(), last.normal(), buffer, texture,
                 0.375f, 0.375f, 0.75f + height, width, width,
-                pBlockEntity.getFluidInTank(TANK_OUTPUT).getFluid() == Fluids.WATER ? 0xff2a76d1 : 0xffffffff,
+                extension.getTintColor(),
                 pPackedLight);
         pPoseStack.popPose();
+    }
 
+    private void renderOutputTankGauge(AcidBasinBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        BlockState state = pBlockEntity.getBlockState();
+        VertexConsumer buffer = pBuffer.getBuffer(RenderType.translucent());
 
+        pPoseStack.pushPose();
+        switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            case NORTH -> {
+                pPoseStack.translate(-0.15625f, 0.5625f, 0.46875f);
+            }
+            case EAST -> {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
+                pPoseStack.translate(-0.15625f, 0.5625f, -0.53125f);
+            }
+            case SOUTH -> {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(180));
+                pPoseStack.translate(-1.15625f, 0.5625f, -0.53125f);
+            }
+            case WEST -> {
+                pPoseStack.mulPose(Axis.YN.rotationDegrees(270));
+                pPoseStack.translate(-1.15625f, 0.5625f, 0.46875f);
+            }
+        }
+
+        IClientFluidTypeExtensions extension = IClientFluidTypeExtensions.of(
+                pBlockEntity.getFluidInTank(TANK_OUTPUT).getFluid()
+        );
+        TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(extension.getStillTexture());
+
+        float width = 0.0625f;
+        float height = 0.25f * ((float)pBlockEntity.getFluidInTank(TANK_OUTPUT).getAmount() / (float)ServerConfig.acidBasinTankCapacity);
+
+        PoseStack.Pose last = pPoseStack.last();
+        RenderUtils.renderFace(Direction.WEST, last.pose(), last.normal(), buffer, texture,
+                0.0f, 0.0f, 0.0f, width, height,
+                extension.getTintColor(),
+                pPackedLight);
+        pPoseStack.popPose();
     }
 }
