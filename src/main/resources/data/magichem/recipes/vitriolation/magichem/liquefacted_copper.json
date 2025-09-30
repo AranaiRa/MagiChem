@@ -1,0 +1,9 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 2,
+  "acidConsumed": 10,
+  "duration": 80,
+  "inputItem": { "item": "minecraft:raw_copper", "count": 1 },
+  "resultFluid": { "fluid": "magichem:liquefacted_copper", "amount": 250 },
+  "outputForCodex": "magichem:liquefacted_copper_bucket"
+}

@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.fluid.AcidFluidBlock;
 import com.aranaira.magichem.block.fluid.LiquidLightFluidBlock;
 import com.aranaira.magichem.fluid.AcidFluidType;
+import com.aranaira.magichem.fluid.TintableFluidType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
@@ -279,6 +280,45 @@ public class FluidRegistry {
 
     public static ForgeFlowingFluid.Properties getShimmeringWineProperties() {
         return new ForgeFlowingFluid.Properties(SHIMMERING_WINE_FLUID_TYPE, SHIMMERING_WINE, SHIMMERING_WINE_FLOWING).block(SHIMMERING_WINE_BLOCK).bucket(ItemRegistry.SHIMMERING_WINE_BUCKET);
+    }
+
+    //////////////////////
+    //-----LIQUEFACTED METALS
+    //////////////////////
+
+    //Copper
+    public static final RegistryObject<TintableFluidType> LIQUEFACTED_COPPER_FLUID_TYPE = FLUID_TYPES.register("liquefacted_copper_fluid_type", () ->
+            new TintableFluidType(FluidType.Properties.create().descriptionId("liquefacted_copper_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH), 0xffc15a36) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
+//                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> LIQUEFACTED_COPPER = FLUIDS.register("liquefacted_copper", () -> new ForgeFlowingFluid.Source(getLiquefactedCopperProperties()));
+    public static final RegistryObject<FlowingFluid> LIQUEFACTED_COPPER_FLOWING = FLUIDS.register("liquefacted_copper_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedCopperProperties()));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_COPPER_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_copper_block", () -> new AcidFluidBlock(LIQUEFACTED_COPPER_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+
+    public static ForgeFlowingFluid.Properties getLiquefactedCopperProperties() {
+        return new ForgeFlowingFluid.Properties(LIQUEFACTED_COPPER_FLUID_TYPE, LIQUEFACTED_COPPER, LIQUEFACTED_COPPER_FLOWING).block(LIQUEFACTED_COPPER_BLOCK).bucket(ItemRegistry.LIQUEFACTED_COPPER_BUCKET);
     }
 
     //////////////////////
