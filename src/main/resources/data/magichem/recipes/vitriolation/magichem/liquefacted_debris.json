@@ -1,0 +1,9 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 2,
+  "acidConsumed": 10,
+  "duration": 80,
+  "inputItem": { "item": "minecraft:ancient_debris", "count": 1 },
+  "resultFluid": { "fluid": "magichem:liquefacted_debris", "amount": 250 },
+  "outputForCodex": "magichem:liquefacted_debris_bucket"
+}

@@ -1,0 +1,9 @@
+{
+  "type": "magichem:vitriolation",
+  "minimumAcidStrength": 2,
+  "acidConsumed": 10,
+  "duration": 80,
+  "inputItem": { "item": "minecraft:raw_iron", "count": 1 },
+  "resultFluid": { "fluid": "magichem:liquefacted_iron", "amount": 250 },
+  "outputForCodex": "magichem:liquefacted_iron_bucket"
+}

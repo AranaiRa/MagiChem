@@ -1,0 +1,23 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:vitriolation",
+        "minimumAcidStrength": 0,
+        "acidConsumed": 20,
+        "inputFluidOverride": "magichem:simple_acid",
+        "duration": 120,
+        "inputItem": { "item": "occultism:raw_silver", "count": 1 },
+        "resultFluid": { "fluid": "magichem:liquefacted_silver", "amount": 200 },
+        "outputForCodex": "magichem:liquefacted_silver_bucket"
+      }
+    }
+  ]
+}

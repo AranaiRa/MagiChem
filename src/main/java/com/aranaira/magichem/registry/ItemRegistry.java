@@ -528,6 +528,18 @@ public class ItemRegistry {
             () -> new BucketItem(FluidRegistry.LIQUEFACTED_COPPER, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );
 
+    public static final RegistryObject<Item> LIQUEFACTED_IRON_BUCKET = ITEMS.register("liquefacted_iron_bucket",
+            () -> new BucketItem(FluidRegistry.LIQUEFACTED_IRON, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> LIQUEFACTED_GOLD_BUCKET = ITEMS.register("liquefacted_gold_bucket",
+            () -> new BucketItem(FluidRegistry.LIQUEFACTED_GOLD, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> LIQUEFACTED_DEBRIS_BUCKET = ITEMS.register("liquefacted_debris_bucket",
+            () -> new BucketItem(FluidRegistry.LIQUEFACTED_DEBRIS, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
+    );
+
     public static final RegistryObject<Item> AQUA_VITAE_BUCKET = ITEMS.register("aqua_vitae_bucket",
             () -> new BucketItem(FluidRegistry.AQUA_VITAE, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))
     );

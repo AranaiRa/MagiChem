@@ -1,0 +1,14 @@
+{
+  "type": "magichem:fluid_distillation_fabrication",
+  "wisdom": 6,
+  "categories": 1,
+  "output_rate": 1.0,
+  "batch_size": 1,
+  "fluid": "magichem:liquefacted_debris",
+  "components": [
+    { "item": "magichem:admixture_hells", "count": 160 },
+    { "item": "magichem:admixture_metal", "count": 160 },
+    { "item": "magichem:essentia_precious", "count": 40 },
+    { "item": "magichem:essentia_albedo", "count": 60 }
+  ]
+}

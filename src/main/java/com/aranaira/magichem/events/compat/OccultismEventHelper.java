@@ -1,6 +1,7 @@
 package com.aranaira.magichem.events.compat;
 
 import com.aranaira.magichem.item.compat.occultism.OccultRitualTalismanItem;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.klikli_dev.modonomicon.api.ModonomiconAPI;
 import com.klikli_dev.modonomicon.api.multiblock.Multiblock;
@@ -19,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -27,6 +29,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.items.ItemStackHandler;
@@ -325,5 +329,10 @@ public class OccultismEventHelper {
                         .setMover(new ParticleLerpMover(pPos.getX()+.5, pPos.getY()+.125, pPos.getZ()+.5, pPos.getX()+.5, pPos.getY()+.625, pPos.getZ()+.5)),
                 pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5,
                 0, 0, 0);
+    }
+
+    public static void registerItemLayers(RegisterColorHandlersEvent.Item event) {
+        event.register( (stack, layer) -> (layer == 1 && stack.getItem() instanceof BucketItem mItem) ? IClientFluidTypeExtensions.of(mItem.getFluid()).getTintColor() : -1, OccultismItemRegistry.LIQUEFACTED_SILVER_BUCKET.get());
+        event.register( (stack, layer) -> (layer == 1 && stack.getItem() instanceof BucketItem mItem) ? IClientFluidTypeExtensions.of(mItem.getFluid()).getTintColor() : -1, OccultismItemRegistry.LIQUEFACTED_IESNIUM_BUCKET.get());
     }
 }

@@ -1,0 +1,22 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:vitriolation",
+        "minimumAcidStrength": 2,
+        "acidConsumed": 10,
+        "duration": 80,
+        "inputItem": { "item": "occultism:raw_iesnium", "count": 1 },
+        "resultFluid": { "fluid": "magichem:liquefacted_iesnium", "amount": 250 },
+        "outputForCodex": "magichem:liquefacted_iesnium_bucket"
+      }
+    }
+  ]
+}

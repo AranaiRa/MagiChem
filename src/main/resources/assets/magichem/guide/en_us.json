@@ -10849,7 +10849,7 @@
     ]
   },
   "Cultivating Magical Flowers": {
-    "index": "0",
+    "index": "-10",
     "category": "magichem_wonders",
     "tier": 2,
     "required_advancement": "magichem:__wisdom_1",
@@ -11117,8 +11117,93 @@
       }
     ]
   },
-  "version": "1.0.0a",
-  "key.openwisdomwheel": "Open Wisdom GUI",
-  "key.togglewisdomeffects": "Toggle Wisdom Effects",
-  "key.categories.mna.magichem": "MnA (MagiChem)"
+  "Alchemical Ore Processing": {
+    "index": "-10",
+    "category": "magichem_wonders",
+    "tier": 3,
+    "required_advancement": "magichem:acid_basin",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Alchemical Ore Processing"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "An "
+          },
+          {
+            "text": "Acid Basin",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be used to increase the yields of ores.\n\nBy submerging ores in a bath of "
+          },
+          {
+            "text": "alchemical acid",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", the ore can be broken down into a "
+          },
+          {
+            "text": "liquid form",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". This liquefacted metal can then be "
+          },
+          {
+            "text": "Distilled",
+            "color": "dark_purple"
+          },
+          {
+            "text": " into a large amount of materia, and that materia can be "
+          },
+          {
+            "text": "Fabricated",
+            "color": "dark_purple"
+          },
+          {
+            "text": " into ingots.\n\nIdeally the process requires an acid of strength 2 ("
+          },
+          {
+            "text": "Aqua Fortis",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or better).\n\n"
+          },
+          {
+            "text": "Simple Acid",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be used, but the process takes longer and produces less liquefacted metal. Some more esoteric ores cannot be liquefacted in Simple Acid."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/liquefacted_copper"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/liquefacted_iron"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/liquefacted_gold"
+      },
+      {
+        "type": "vitriolation",
+        "location": "magichem:vitriolation/magichem/liquefacted_debris"
+      }
+    ]
+  },
+  "version": "1.0.0a"
 }

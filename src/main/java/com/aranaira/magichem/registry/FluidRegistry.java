@@ -4,7 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.fluid.AcidFluidBlock;
 import com.aranaira.magichem.block.fluid.LiquidLightFluidBlock;
 import com.aranaira.magichem.fluid.AcidFluidType;
-import com.aranaira.magichem.fluid.TintableFluidType;
+import com.aranaira.magichem.registry.compat.OccultismFluidRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
@@ -17,6 +17,7 @@ import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -287,19 +288,20 @@ public class FluidRegistry {
     //////////////////////
 
     //Copper
-    public static final RegistryObject<TintableFluidType> LIQUEFACTED_COPPER_FLUID_TYPE = FLUID_TYPES.register("liquefacted_copper_fluid_type", () ->
-            new TintableFluidType(FluidType.Properties.create().descriptionId("liquefacted_copper_fluid_type")
+    public static final RegistryObject<FluidType> LIQUEFACTED_COPPER_FLUID_TYPE = FLUID_TYPES.register("liquefacted_copper_fluid_type", () ->
+            new FluidType(FluidType.Properties.create().descriptionId("liquefacted_copper_fluid_type")
                     .canExtinguish(true).canConvertToSource(false)
                     .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
                     .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
-                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH), 0xffc15a36) {
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
                 @Override
                 public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {
                         public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
 //                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
-                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft", "block/snow");
+//                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
 
                         @Override
                         public ResourceLocation getStillTexture() {
@@ -310,6 +312,11 @@ public class FluidRegistry {
                         public ResourceLocation getFlowingTexture() {
                             return FLUID_FLOWING;
                         }
+
+                        @Override
+                        public int getTintColor() {
+                            return 0xffc15a36;
+                        }
                     });
                 }
             });
@@ -319,6 +326,129 @@ public class FluidRegistry {
 
     public static ForgeFlowingFluid.Properties getLiquefactedCopperProperties() {
         return new ForgeFlowingFluid.Properties(LIQUEFACTED_COPPER_FLUID_TYPE, LIQUEFACTED_COPPER, LIQUEFACTED_COPPER_FLOWING).block(LIQUEFACTED_COPPER_BLOCK).bucket(ItemRegistry.LIQUEFACTED_COPPER_BUCKET);
+    }
+
+    //Iron
+    public static final RegistryObject<FluidType> LIQUEFACTED_IRON_FLUID_TYPE = FLUID_TYPES.register("liquefacted_iron_fluid_type", () ->
+            new FluidType(FluidType.Properties.create().descriptionId("liquefacted_iron_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
+//                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft", "block/snow");
+//                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+
+                        @Override
+                        public int getTintColor() {
+                            return 0xffab8b8b;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> LIQUEFACTED_IRON = FLUIDS.register("liquefacted_iron", () -> new ForgeFlowingFluid.Source(getLiquefactedIronProperties()));
+    public static final RegistryObject<FlowingFluid> LIQUEFACTED_IRON_FLOWING = FLUIDS.register("liquefacted_iron_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedIronProperties()));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_IRON_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_iron_block", () -> new AcidFluidBlock(LIQUEFACTED_IRON_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+
+    public static ForgeFlowingFluid.Properties getLiquefactedIronProperties() {
+        return new ForgeFlowingFluid.Properties(LIQUEFACTED_IRON_FLUID_TYPE, LIQUEFACTED_IRON, LIQUEFACTED_IRON_FLOWING).block(LIQUEFACTED_IRON_BLOCK).bucket(ItemRegistry.LIQUEFACTED_IRON_BUCKET);
+    }
+
+    //Gold
+    public static final RegistryObject<FluidType> LIQUEFACTED_GOLD_FLUID_TYPE = FLUID_TYPES.register("liquefacted_gold_fluid_type", () ->
+            new FluidType(FluidType.Properties.create().descriptionId("liquefacted_gold_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
+//                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft", "block/snow");
+//                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+
+                        @Override
+                        public int getTintColor() {
+                            return 0xffefcd56;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> LIQUEFACTED_GOLD = FLUIDS.register("liquefacted_gold", () -> new ForgeFlowingFluid.Source(getLiquefactedGoldProperties()));
+    public static final RegistryObject<FlowingFluid> LIQUEFACTED_GOLD_FLOWING = FLUIDS.register("liquefacted_gold_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedGoldProperties()));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_GOLD_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_gold_block", () -> new AcidFluidBlock(LIQUEFACTED_GOLD_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+
+    public static ForgeFlowingFluid.Properties getLiquefactedGoldProperties() {
+        return new ForgeFlowingFluid.Properties(LIQUEFACTED_GOLD_FLUID_TYPE, LIQUEFACTED_GOLD, LIQUEFACTED_GOLD_FLOWING).block(LIQUEFACTED_GOLD_BLOCK).bucket(ItemRegistry.LIQUEFACTED_GOLD_BUCKET);
+    }
+
+    //Debris
+    public static final RegistryObject<FluidType> LIQUEFACTED_DEBRIS_FLUID_TYPE = FLUID_TYPES.register("liquefacted_debris_fluid_type", () ->
+            new FluidType(FluidType.Properties.create().descriptionId("liquefacted_debris_fluid_type")
+                    .canExtinguish(true).canConvertToSource(false)
+                    .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)) {
+                @Override
+                public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+                    consumer.accept(new IClientFluidTypeExtensions() {
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
+//                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft", "block/snow");
+//                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+
+                        @Override
+                        public ResourceLocation getStillTexture() {
+                            return FLUID_STILL;
+                        }
+
+                        @Override
+                        public ResourceLocation getFlowingTexture() {
+                            return FLUID_FLOWING;
+                        }
+
+                        @Override
+                        public int getTintColor() {
+                            return 0xff4f2920;
+                        }
+                    });
+                }
+            });
+    public static final RegistryObject<Fluid> LIQUEFACTED_DEBRIS = FLUIDS.register("liquefacted_debris", () -> new ForgeFlowingFluid.Source(getLiquefactedDebrisProperties()));
+    public static final RegistryObject<FlowingFluid> LIQUEFACTED_DEBRIS_FLOWING = FLUIDS.register("liquefacted_debris_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedDebrisProperties()));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_DEBRIS_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_debris_block", () -> new AcidFluidBlock(LIQUEFACTED_DEBRIS_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+
+    public static ForgeFlowingFluid.Properties getLiquefactedDebrisProperties() {
+        return new ForgeFlowingFluid.Properties(LIQUEFACTED_DEBRIS_FLUID_TYPE, LIQUEFACTED_DEBRIS, LIQUEFACTED_DEBRIS_FLOWING).block(LIQUEFACTED_DEBRIS_BLOCK).bucket(ItemRegistry.LIQUEFACTED_DEBRIS_BUCKET);
     }
 
     //////////////////////
@@ -501,5 +631,11 @@ public class FluidRegistry {
     public static void register(IEventBus eventBus) {
         FLUIDS.register(eventBus);
         FLUID_TYPES.register(eventBus);
+
+        ModList modList = ModList.get();
+
+        if(modList.isLoaded("occultism")) {
+            OccultismFluidRegistry.register(eventBus);
+        }
     }
 }

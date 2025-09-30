@@ -1,6 +1,7 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.events.compat.OccultismEventHelper;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -21,16 +22,19 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.jetbrains.annotations.Nullable;
@@ -54,6 +58,19 @@ public class ClientEventHandler {
 
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.getEssentia().toArray(new EssentiaItem[0]));
         event.register( (stack, layer) -> (layer == 0 && stack.getItem() instanceof MateriaItem mItem) ? mItem.getMateriaColor() : -1, ItemRegistry.getAdmixtures().toArray(new AdmixtureItem[0]));
+
+        event.register( (stack, layer) -> (layer == 1 && stack.getItem() instanceof BucketItem mItem) ? IClientFluidTypeExtensions.of(mItem.getFluid()).getTintColor() : -1, ItemRegistry.LIQUEFACTED_COPPER_BUCKET.get());
+        event.register( (stack, layer) -> (layer == 1 && stack.getItem() instanceof BucketItem mItem) ? IClientFluidTypeExtensions.of(mItem.getFluid()).getTintColor() : -1, ItemRegistry.LIQUEFACTED_IRON_BUCKET.get());
+        event.register( (stack, layer) -> (layer == 1 && stack.getItem() instanceof BucketItem mItem) ? IClientFluidTypeExtensions.of(mItem.getFluid()).getTintColor() : -1, ItemRegistry.LIQUEFACTED_GOLD_BUCKET.get());
+        event.register( (stack, layer) -> (layer == 1 && stack.getItem() instanceof BucketItem mItem) ? IClientFluidTypeExtensions.of(mItem.getFluid()).getTintColor() : -1, ItemRegistry.LIQUEFACTED_DEBRIS_BUCKET.get());
+
+        //Compat items below this point
+        ModList modList = ModList.get();
+
+        //Occultism
+        if(modList.isLoaded("occultism")) {
+            OccultismEventHelper.registerItemLayers(event);
+        }
     }
 
     @SubscribeEvent
