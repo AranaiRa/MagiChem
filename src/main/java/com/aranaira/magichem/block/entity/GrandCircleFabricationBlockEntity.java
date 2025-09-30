@@ -977,6 +977,26 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                     result.put((MateriaItem)recipeMateria.getItem(), amountToAdd);
             }
         }
+        else if(currentFluidRecipe != null) {
+            for (ItemStack recipeMateria : currentFluidRecipe.getComponentMateria()) {
+                if(activeProvisionRequests.contains((MateriaItem)recipeMateria.getItem()))
+                    continue;
+
+                int amountToAdd = recipeMateria.getCount() * batchSize;
+                for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START + SLOT_INPUT_COUNT; i++) {
+                    ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+                    if(stackInSlot.getItem() == recipeMateria.getItem()) {
+                        amountToAdd -= stackInSlot.getCount();
+
+                        if(amountToAdd <= 0)
+                            break;
+                    }
+                }
+
+                if(amountToAdd > 0)
+                    result.put((MateriaItem)recipeMateria.getItem(), amountToAdd);
+            }
+        }
 
         return result;
     }
