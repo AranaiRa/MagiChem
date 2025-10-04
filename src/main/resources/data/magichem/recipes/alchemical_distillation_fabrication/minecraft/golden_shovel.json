@@ -6,9 +6,9 @@
   "batch_size": 1,
   "object": { "item": "minecraft:golden_shovel" },
   "components": [
-    { "item": "magichem:admixture_metal", "count": 2 },
     { "item": "magichem:admixture_instrument", "count": 3 },
     { "item": "magichem:admixture_sorcery", "count": 3 },
+    { "item": "magichem:admixture_metal", "count": 2 },
     { "item": "magichem:essentia_precious", "count": 4 }
   ]
 }

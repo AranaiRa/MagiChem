@@ -6,8 +6,8 @@
   "batch_size": 1,
   "object": { "item": "minecraft:diamond_hoe" },
   "components": [
-    { "item": "magichem:admixture_instrument", "count": 14 },
     { "item": "magichem:admixture_crystal", "count": 14 },
+    { "item": "magichem:admixture_instrument", "count": 14 },
     { "item": "magichem:essentia_precious", "count": 16 },
     { "item": "magichem:essentia_nigredo", "count": 4 }
   ]

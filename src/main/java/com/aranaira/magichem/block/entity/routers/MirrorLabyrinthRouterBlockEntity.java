@@ -54,7 +54,8 @@ public class MirrorLabyrinthRouterBlockEntity extends AbstractMateriaStorageMult
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putLong("masterPos", masterPos.asLong());
+        if(masterPos != null)
+            nbt.putLong("masterPos", masterPos.asLong());
         return nbt;
     }
 

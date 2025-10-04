@@ -6,8 +6,8 @@
   "batch_size": 1,
   "object": { "item": "minecraft:diamond_axe" },
   "components": [
-    { "item": "magichem:admixture_instrument", "count": 21 },
     { "item": "magichem:admixture_crystal", "count": 21 },
+    { "item": "magichem:admixture_instrument", "count": 21 },
     { "item": "magichem:essentia_precious", "count": 24 },
     { "item": "magichem:essentia_nigredo", "count": 6 }
   ]

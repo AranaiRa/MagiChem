@@ -6,8 +6,8 @@
   "batch_size": 1,
   "object": { "item": "minecraft:diamond_shovel" },
   "components": [
-    { "item": "magichem:admixture_instrument", "count": 7 },
     { "item": "magichem:admixture_crystal", "count": 7 },
+    { "item": "magichem:admixture_instrument", "count": 7 },
     { "item": "magichem:essentia_precious", "count": 8 },
     { "item": "magichem:essentia_nigredo", "count": 2 }
   ]
