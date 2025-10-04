@@ -16,6 +16,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -347,7 +348,7 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         filteredMateria.clear();
 
         for(int i=0; i<getSortedMateriaKeys().size(); i++) {
-            String display = Component.translatable("item.magichem.admixture_"+getSortedMateriaKeys().get(i)).toString();
+            String display = Language.getInstance().getOrDefault("item.magichem.admixture_" + getSortedMateriaKeys().get(i));
             if((Objects.equals(filter, "") || display.toLowerCase().contains(filter.toLowerCase()))) {
                 filteredMateria.add(materiaMap.get(getSortedMateriaKeys().get(i)));
             }
