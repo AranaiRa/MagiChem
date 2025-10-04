@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:glass_pane" },
+    { "item": "minecraft:glass_pane" },
+    { "item": "minecraft:glass_pane" },
+    { "item": "magichem:alchemical_waste" }
+  ],
+  "result": {
+    "item": "magichem:alchemically_treated_glass_pane",
+    "count": 6
+  }
+}
