@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class AlembicBlockEntityRenderer implements BlockEntityRenderer<AlembicBlockEntity> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(MagiChemMod.MODID, "block/alembic");
-    public static ResourceLocation PASSIVE_HEAT_TAG = new ResourceLocation("minecraft:alembic_passive_heat_source");
+    public static ResourceLocation PASSIVE_HEAT_TAG = new ResourceLocation(MagiChemMod.MODID, "alembic_passive_heat_source");
 
     public AlembicBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 

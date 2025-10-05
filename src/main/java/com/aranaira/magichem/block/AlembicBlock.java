@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.AlembicBlockEntity;
 import com.aranaira.magichem.events.CommonEventHelper;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -61,7 +62,7 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
     }
 
     private static final VoxelShape VOXEL_SHAPE = Block.box(4,0,4,12,10,12);
-    public static final TagKey<Block> PASSIVE_HEAT_TAG = BlockTags.create(new ResourceLocation("minecraft", "alembic_passive_heat_source"));
+    public static final TagKey<Block> PASSIVE_HEAT_TAG = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "alembic_passive_heat_source"));
 
     @Override
     public boolean propagatesSkylightDown(BlockState state, BlockGetter getter, BlockPos pos) {
@@ -124,7 +125,7 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
 
         Stream<TagKey<Block>> tags = pLevelReader.getBlockState(pPos.below()).getBlockHolder().tags();
 
-        if (pLevelReader.getBlockState(pPos.below()).getBlockHolder().is(new ResourceLocation("minecraft:alembic_passive_heat_source"))) {
+        if (pLevelReader.getBlockState(pPos.below()).getBlockHolder().is(new ResourceLocation(MagiChemMod.MODID, "alembic_passive_heat_source"))) {
             hasPassiveHeat = true;
         }
 

@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.ColoringCauldronBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
@@ -35,7 +36,7 @@ public class ColoringCauldronBlock extends BaseEntityBlock {
 
     private static final VoxelShape
         VOXEL_SHAPE_FOOT_NS, VOXEL_SHAPE_FOOT_EW, VOXEL_SHAPE_BODY, VOXEL_SHAPE_RIM, VOXEL_SHAPE_AGGREGATE;
-    public static final TagKey<Block> PASSIVE_HEAT_TAG = BlockTags.create(new ResourceLocation("minecraft", "alembic_passive_heat_source"));
+    public static final TagKey<Block> PASSIVE_HEAT_TAG = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "alembic_passive_heat_source"));
 
     public ColoringCauldronBlock(Properties pProperties) {
         super(pProperties);
