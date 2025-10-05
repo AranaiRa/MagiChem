@@ -5,6 +5,7 @@
     "minecraft:fire",
     "minecraft:magma_block",
     "minecraft:lava",
-    "mna:brazier"
+    "mna:brazier",
+    { "id": "farmersdelight:stove", "required": false }
   ]
 }

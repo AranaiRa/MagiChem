@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": { "item": "farmersdelight:hot_cocoa" },
+        "components": [
+          { "item": "magichem:admixture_delight", "count": 5 },
+          { "item": "magichem:admixture_healing", " count": 2 },
+          { "item": "magichem:admixture_odors", "count": 2 },
+          { "item": "magichem:essentia_wrought", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

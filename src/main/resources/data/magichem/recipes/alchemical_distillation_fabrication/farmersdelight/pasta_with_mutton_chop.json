@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": { "item": "farmersdelight:pasta_with_mutton_chop" },
+        "components": [
+          { "item": "magichem:admixture_satiety", "count": 8 },
+          { "item": "magichem:admixture_blood", "count": 4 },
+          { "item": "magichem:admixture_creature", "count": 3 },
+          { "item": "magichem:admixture_gourmet", "count": 1 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
+        ]
+      }
+    }
+  ]
+}

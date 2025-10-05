@@ -158,6 +158,7 @@ dependencies {
     implementation fg.deobf("curse.maven:supplementaries-412082:6463022")
     implementation fg.deobf("curse.maven:patchouli-306770:4966125")
     implementation fg.deobf("curse.maven:botania-225643:5594997")
+    implementation fg.deobf("curse.maven:farmers-delight-398521:6917255")
 
     implementation fg.deobf("hexerei:hexerei:0.4.2.3")
 

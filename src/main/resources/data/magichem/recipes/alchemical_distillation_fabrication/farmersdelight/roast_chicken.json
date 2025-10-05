@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": { "item": "farmersdelight:roast_chicken" },
+        "components": [
+          { "item": "magichem:admixture_satiety", "count": 10 },
+          { "item": "magichem:admixture_blood", "count": 4 },
+          { "item": "magichem:admixture_bone", "count": 3 },
+          { "item": "magichem:admixture_gourmet", "count": 2 },
+          { "item": "magichem:essentia_wrought", "count": 3 }
+        ]
+      }
+    }
+  ]
+}

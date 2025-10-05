@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": { "item": "farmersdelight:golden_knife" },
+        "components": [
+          { "item": "magichem:admixture_instrument", "count": 3 },
+          { "item": "magichem:admixture_sorcery", "count": 3 },
+          { "item": "magichem:admixture_metal", "count": 2 },
+          { "item": "magichem:essentia_precious", "count": 4 }
+        ]
+      }
+    }
+  ]
+}

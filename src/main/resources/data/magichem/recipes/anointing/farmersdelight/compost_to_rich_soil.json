@@ -1,0 +1,20 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:anointing",
+        "targetBlock": "farmersdelight:organic_compost",
+        "materia": "magichem:essentia_rotten",
+        "chance": 25.0,
+        "result": "farmersdelight:rich_soil"
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "valid_on_cauldron": true,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "farmersdelight:hanging_canvas_sign"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "farmersdelight:red_hanging_canvas_sign"
+          },
+          {
+            "color": "orange",
+            "item": "farmersdelight:orange_hanging_canvas_sign"
+          },
+          {
+            "color": "yellow",
+            "item": "farmersdelight:yellow_hanging_canvas_sign"
+          },
+          {
+            "color": "lime",
+            "item": "farmersdelight:lime_hanging_canvas_sign"
+          },
+          {
+            "color": "green",
+            "item": "farmersdelight:green_hanging_canvas_sign"
+          },
+          {
+            "color": "cyan",
+            "item": "farmersdelight:cyan_hanging_canvas_sign"
+          },
+          {
+            "color": "light_blue",
+            "item": "farmersdelight:light_blue_hanging_canvas_sign"
+          },
+          {
+            "color": "blue",
+            "item": "farmersdelight:blue_hanging_canvas_sign"
+          },
+          {
+            "color": "purple",
+            "item": "farmersdelight:purple_hanging_canvas_sign"
+          },
+          {
+            "color": "magenta",
+            "item": "farmersdelight:magenta_hanging_canvas_sign"
+          },
+          {
+            "color": "pink",
+            "item": "farmersdelight:pink_hanging_canvas_sign"
+          },
+          {
+            "color": "brown",
+            "item": "farmersdelight:brown_hanging_canvas_sign"
+          },
+          {
+            "color": "black",
+            "item": "farmersdelight:black_hanging_canvas_sign"
+          },
+          {
+            "color": "gray",
+            "item": "farmersdelight:gray_hanging_canvas_sign"
+          },
+          {
+            "color": "light_gray",
+            "item": "farmersdelight:light_gray_hanging_canvas_sign"
+          },
+          {
+            "color": "white",
+            "item": "farmersdelight:white_hanging_canvas_sign"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": { "item": "farmersdelight:kelp_roll" },
+        "components": [
+          { "item": "magichem:admixture_depths", "count": 9 },
+          { "item": "magichem:admixture_satiety", "count": 9 },
+          { "item": "magichem:admixture_comfort", "count": 2 },
+          { "item": "magichem:essentia_wrought", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

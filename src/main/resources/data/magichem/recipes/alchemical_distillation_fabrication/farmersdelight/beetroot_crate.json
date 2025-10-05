@@ -1,0 +1,26 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": { "item": "farmersdelight:beetroot_crate" },
+        "components": [
+          { "item": "magichem:essentia_arcane", "count": 18 },
+          { "item": "magichem:admixture_plant", "count": 3 },
+          { "item": "magichem:essentia_nourishing", "count": 18 }
+        ]
+      }
+    }
+  ]
+}

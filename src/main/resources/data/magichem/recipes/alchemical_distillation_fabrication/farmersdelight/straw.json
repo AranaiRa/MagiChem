@@ -1,0 +1,25 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 10,
+        "output_rate": 0.25,
+        "batch_size": 32,
+        "object": { "item": "farmersdelight:straw" },
+        "components": [
+          { "item": "magichem:admixture_death", "count": 1 },
+          { "item": "magichem:admixture_plant", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

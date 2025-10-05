@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": { "item": "farmersdelight:chocolate_pie" },
+        "components": [
+          { "item": "magichem:admixture_delight", "count": 8 },
+          { "item": "magichem:admixture_satiety", "count": 4 },
+          { "item": "magichem:admixture_nectar", "count": 2 },
+          { "item": "magichem:essentia_wrought", "count": 3 }
+        ]
+      }
+    }
+  ]
+}

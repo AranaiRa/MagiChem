@@ -1,0 +1,24 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 0.5,
+        "batch_size": 16,
+        "object": { "item": "farmersdelight:cabbage_seeds" },
+        "components": [
+          { "item": "magichem:admixture_nectar", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

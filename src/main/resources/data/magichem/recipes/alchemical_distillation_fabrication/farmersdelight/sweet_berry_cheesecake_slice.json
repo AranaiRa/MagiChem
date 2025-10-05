@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 8,
+        "object": { "item": "farmersdelight:sweet_berry_cheesecake_slice" },
+        "components": [
+          { "item": "magichem:admixture_nectar", "count": 10 },
+          { "item": "magichem:admixture_satiety", "count": 6 },
+          { "item": "magichem:admixture_delight", "count": 4 },
+          { "item": "magichem:essentia_wrought", "count": 3 }
+        ]
+      }
+    }
+  ]
+}

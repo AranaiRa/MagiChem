@@ -1,0 +1,26 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": { "item": "farmersdelight:fried_egg" },
+        "components": [
+          { "item": "magichem:admixture_satiety", "count": 2 },
+          { "item": "magichem:admixture_bone", "count": 1 },
+          { "item": "magichem:essentia_wrought", "count": 1 }
+        ]
+      }
+    }
+  ]
+}

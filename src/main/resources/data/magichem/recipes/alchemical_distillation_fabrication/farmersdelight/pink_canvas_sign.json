@@ -1,0 +1,27 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.33,
+        "batch_size": 16,
+        "object": { "item": "farmersdelight:pink_canvas_sign" },
+        "components": [
+          { "item": "magichem:admixture_wood", "count": 2 },
+          { "item": "magichem:admixture_color", "count": 1 },
+          { "item": "magichem:admixture_comfort", "count": 1 },
+          { "item": "magichem:admixture_instrument", "count": 1 }
+        ]
+      }
+    }
+  ]
+}
