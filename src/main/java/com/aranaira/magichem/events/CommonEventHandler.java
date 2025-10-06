@@ -10,16 +10,20 @@ import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.block.entity.routers.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.events.compat.FarmersDelightEventHelper;
+import com.aranaira.magichem.events.compat.HexereiEventHelper;
 import com.aranaira.magichem.foundation.ICanAbsorbConstructs;
 import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.enums.*;
+import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.networking.AdvancementQueryS2CPacket;
 import com.aranaira.magichem.networking.ResetWisdomToggleS2CPacket;
 import com.aranaira.magichem.networking.WisdomSyncC2SPacket;
 import com.aranaira.magichem.networking.WisdomSyncS2CPacket;
 import com.aranaira.magichem.registry.*;
+import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.aranaira.magichem.util.InteropUtil;
 import com.mna.api.blocks.WizardLabBlock;
 import com.mna.api.events.construct.ConstructSprayEffectEvent;
@@ -90,6 +94,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
@@ -125,6 +130,10 @@ public class CommonEventHandler {
         ItemStack stack = event.getItemStack();
         BlockState targetState = event.getLevel().getBlockState(event.getPos());
         BlockEntity target = event.getLevel().getBlockEntity(event.getPos());
+
+        //Conditional registration
+        ModList modList = ModList.get();
+
         if(target instanceof AbstractMateriaStorageSingleTypeBlockEntity amsbe) {
             if(stack.getItem() == Items.GLASS_BOTTLE) {
                 if(amsbe.getMateriaType() != null) {
@@ -342,6 +351,12 @@ public class CommonEventHandler {
         }
         else if(stack.is(TAG_MINECRAFT_AXES) || stack.getItem() == ItemInit.BOUND_AXE.get()) {
             InteropUtil.tryGenerateVerdigris(event.getLevel(), event.getPos(), event.getHitVec());
+        }
+        else if(modList.isLoaded("farmersdelight")) {
+            FarmersDelightEventHelper.onBlockActivated(event);
+        }
+        else if(modList.isLoaded("hexerei")) {
+            HexereiEventHelper.onBlockActivated(event);
         }
     }
 
