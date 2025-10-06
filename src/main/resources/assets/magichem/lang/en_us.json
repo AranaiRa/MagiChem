@@ -1554,7 +1554,7 @@
   "jei.magichem.info_panel.signalite": "Grows slowly over time on Budding Signalite. \n Can also be created through alchemical Anointing.",
   "jei.magichem.info_panel.smoke_bucket": "Created over time by an Inferno Engine as it operates. If the Inferno Engine's buffer fills up, any excess Smoke is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
   "jei.magichem.info_panel.steam_bucket": "Created over time by a Deluge Purifier as it operates. If the Deluge Purifier's buffer fills up, any excess Steam is discarded. \n Needed by a Gale Pressurizer at mid and high settings.",
-  "jei.magichem.info_panel.verdigris": "Sometimes collected by carving a layer of patina off of a Copper block using an Axe. \n Collection can be guaranteed by Vitriolation instead of using an Axe manually. \n DESIGNER'S NOTE: Vitriolating the Copper will only result in the Verdigris; this is temporary until fluid distillation is implemented in 0.5.1.",
+  "jei.magichem.info_panel.verdigris": "Sometimes collected by carving a layer of patina off of a Copper block using an Axe. \n Collection can be guaranteed by Vitriolation instead of using an Axe manually.",
   "jei.magichem.info_panel.vinteum_crystal_shard": "Grows slowly over time on Budding Vinteum Crystal.",
 
   "jei.magichem.info_panel.tarnished_silver_lump": "Created as a waste product by the Circle of Power when Grains of Quicksilver finish processing.",
