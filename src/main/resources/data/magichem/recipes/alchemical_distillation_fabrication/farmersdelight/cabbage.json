@@ -16,7 +16,8 @@
         "batch_size": 16,
         "object": { "item": "farmersdelight:cabbage" },
         "components": [
-          { "item": "magichem:essentia_verdant", "count": 2 },
+          { "item": "magichem:essentia_earth", "count": 1 },
+          { "item": "magichem:essentia_water", "count": 1 },
           { "item": "magichem:essentia_nourishing", "count": 2 }
         ]
       }

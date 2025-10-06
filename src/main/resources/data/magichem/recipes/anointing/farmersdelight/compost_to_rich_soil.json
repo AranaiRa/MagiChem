@@ -12,7 +12,7 @@
         "type": "magichem:anointing",
         "targetBlock": "farmersdelight:organic_compost",
         "materia": "magichem:essentia_rotten",
-        "chance": 25.0,
+        "chance": 10.0,
         "result": "farmersdelight:rich_soil"
       }
     }

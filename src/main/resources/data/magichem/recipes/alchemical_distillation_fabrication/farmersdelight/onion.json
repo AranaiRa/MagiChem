@@ -16,7 +16,7 @@
         "batch_size": 16,
         "object": { "item": "farmersdelight:onion" },
         "components": [
-          { "item": "magichem:essentia_fleshy", "count": 2 },
+          { "item": "magichem:essentia_fire", "count": 2 },
           { "item": "magichem:essentia_nourishing", "count": 2 }
         ]
       }

@@ -10,15 +10,16 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 0,
+        "wisdom": 6,
         "categories": 1,
         "output_rate": 0.25,
         "batch_size": 8,
         "object": { "item": "farmersdelight:milk_bottle" },
         "components": [
-          { "item": "magichem:admixture_healing", "count": 2 },
-          { "item": "magichem:admixture_crystal", "count": 1 },
-          { "item": "magichem:essentia_nourishing", "count": 12 }
+          { "item": "magichem:admixture_crystal", "count": 3 },
+          { "item": "magichem:admixture_healing", "count": 1 },
+          { "item": "magichem:essentia_nourishing", "count": 4 },
+          { "item": "magichem:essentia_wrought", "count": 2 }
         ]
       }
     }

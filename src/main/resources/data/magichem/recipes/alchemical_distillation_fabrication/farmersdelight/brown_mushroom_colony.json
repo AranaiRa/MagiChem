@@ -13,11 +13,11 @@
         "wisdom": 1,
         "categories": 1,
         "output_rate": 1.0,
-        "batch_size": 16,
+        "batch_size": 6,
         "object": { "item": "farmersdelight:brown_mushroom_colony" },
         "components": [
           { "item": "magichem:admixture_fungus", "count": 10 },
-          { "item": "magichem:admixture_signals", "count": 2 }
+          { "item": "magichem:essentia_verdant", "count": 2 }
         ]
       }
     }

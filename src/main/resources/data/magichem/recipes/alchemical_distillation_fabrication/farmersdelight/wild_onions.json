@@ -16,9 +16,9 @@
         "batch_size": 16,
         "object": { "item": "farmersdelight:wild_onions" },
         "components": [
+          { "item": "magichem:essentia_fire", "count": 1 },
           { "item": "magichem:admixture_plant", "count": 3 },
-          { "item": "magichem:admixture_nectar", "count": 1 },
-          { "item": "magichem:essentia_fleshy", "count": 1 }
+          { "item": "magichem:admixture_nectar", "count": 1 }
         ]
       }
     }
