@@ -17,9 +17,8 @@
         "object": { "item": "farmersdelight:chicken_soup" },
         "components": [
           { "item": "magichem:essentia_water", "count": 8 },
-          { "item": "magichem:admixture_satiety", "count": 10 },
+          { "item": "magichem:admixture_satiety", "count": 14 },
           { "item": "magichem:admixture_blood", "count": 2 },
-          { "item": "magichem:admixture_gourmet", "count": 2 },
           { "item": "magichem:essentia_wrought", "count": 3 }
         ]
       }

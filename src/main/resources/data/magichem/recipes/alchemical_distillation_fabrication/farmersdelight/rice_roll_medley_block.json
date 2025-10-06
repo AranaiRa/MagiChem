@@ -16,9 +16,8 @@
         "batch_size": 1,
         "object": { "item": "farmersdelight:rice_roll_medley_block" },
         "components": [
-          { "item": "magichem:admixture_satiety", "count": 40 },
+          { "item": "magichem:admixture_gourmet", "count": 12 },
           { "item": "magichem:admixture_depths", "count": 8 },
-          { "item": "magichem:admixture_gourmet", "count": 8 },
           { "item": "magichem:admixture_comfort", "count": 6 },
           { "item": "magichem:essentia_wrought", "count": 12 }
         ]

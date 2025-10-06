@@ -16,7 +16,7 @@
         "batch_size": 8,
         "object": { "item": "farmersdelight:hamburger" },
         "components": [
-          { "item": "magichem:admixture_satiety", "count": 11 },
+          { "item": "magichem:admixture_satiety", "count": 5 },
           { "item": "magichem:admixture_delight", "count": 3 },
           { "item": "magichem:admixture_gourmet", "count": 1 },
           { "item": "magichem:essentia_wrought", "count": 2 }

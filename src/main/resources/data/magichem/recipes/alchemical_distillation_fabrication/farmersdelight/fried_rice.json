@@ -17,9 +17,8 @@
         "object": { "item": "farmersdelight:fried_rice" },
         "components": [
           { "item": "magichem:essentia_water", "count": 3 },
-          { "item": "magichem:admixture_satiety", "count": 10 },
+          { "item": "magichem:admixture_satiety", "count": 14 },
           { "item": "magichem:admixture_comfort", "count": 4 },
-          { "item": "magichem:admixture_gourmet", "count": 2 },
           { "item": "magichem:essentia_wrought", "count": 2 }
         ]
       }

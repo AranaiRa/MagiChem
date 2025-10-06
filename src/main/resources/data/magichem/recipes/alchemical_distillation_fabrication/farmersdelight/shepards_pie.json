@@ -16,10 +16,9 @@
         "batch_size": 1,
         "object": { "item": "farmersdelight:shepherds_pie" },
         "components": [
-          { "item": "magichem:admixture_satiety", "count": 10 },
           { "item": "magichem:admixture_blood", "count": 4 },
+          { "item": "magichem:admixture_gourmet", "count": 3 },
           { "item": "magichem:admixture_plant", "count": 3 },
-          { "item": "magichem:admixture_gourmet", "count": 2 },
           { "item": "magichem:essentia_wrought", "count": 3 }
         ]
       }

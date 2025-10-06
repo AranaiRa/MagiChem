@@ -16,10 +16,9 @@
         "batch_size": 1,
         "object": { "item": "farmersdelight:roast_chicken_block" },
         "components": [
-          { "item": "magichem:admixture_satiety", "count": 40 },
           { "item": "magichem:admixture_blood", "count": 16 },
           { "item": "magichem:admixture_bone", "count": 12 },
-          { "item": "magichem:admixture_gourmet", "count": 8 },
+          { "item": "magichem:admixture_gourmet", "count": 12 },
           { "item": "magichem:essentia_wrought", "count": 12 }
         ]
       }

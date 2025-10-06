@@ -16,10 +16,9 @@
         "batch_size": 8,
         "object": { "item": "farmersdelight:pasta_with_meatballs" },
         "components": [
-          { "item": "magichem:admixture_satiety", "count": 8 },
+          { "item": "magichem:admixture_satiety", "count": 21 },
           { "item": "magichem:admixture_blood", "count": 4 },
           { "item": "magichem:admixture_creature", "count": 3 },
-          { "item": "magichem:admixture_gourmet", "count": 1 },
           { "item": "magichem:essentia_wrought", "count": 2 }
         ]
       }

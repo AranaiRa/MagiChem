@@ -16,10 +16,9 @@
         "batch_size": 8,
         "object": { "item": "farmersdelight:mushroom_rice" },
         "components": [
+          { "item": "magichem:admixture_satiety", "count": 21 },
           { "item": "magichem:admixture_fungus", "count": 10 },
-          { "item": "magichem:admixture_satiety", "count": 8 },
           { "item": "magichem:admixture_comfort", "count": 3 },
-          { "item": "magichem:admixture_gourmet", "count": 1 },
           { "item": "magichem:essentia_wrought", "count": 2 }
         ]
       }
