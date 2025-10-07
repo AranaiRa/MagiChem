@@ -1,5 +1,6 @@
 package com.aranaira.magichem.entities.constructs.ai;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.Animations;
@@ -29,7 +30,7 @@ public class ConstructHarvestCrystals extends ConstructAITask<ConstructHarvestCr
     private ETaskPhase phase = ETaskPhase.SETUP;
     private int waitTimer;
     private static final Random random = new Random();
-    private static final TagKey<Block> harvestableCrystal = BlockTags.create(new ResourceLocation("minecraft", "harvestable_crystal"));
+    private static final TagKey<Block> harvestableCrystal = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "harvestable_crystal"));
 
     public ConstructHarvestCrystals(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);

@@ -3,6 +3,7 @@
   "values": [
     "minecraft:amethyst_cluster",
     "magichem:cluster_vinteum",
-    "magichem:cluster_signalite"
+    "magichem:cluster_signalite",
+    { "id": "hexerei:selenite_cluster", "required": false }
   ]
 }
