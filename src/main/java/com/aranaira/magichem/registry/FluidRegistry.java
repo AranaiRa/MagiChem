@@ -298,10 +298,8 @@ public class FluidRegistry {
                 @Override
                 public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {
-                        public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
-//                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
-                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft", "block/snow");
-//                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquefacted_metal_still");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquefacted_metal_still");
 
                         @Override
                         public ResourceLocation getStillTexture() {
@@ -339,10 +337,8 @@ public class FluidRegistry {
                 @Override
                 public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {
-                        public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
-//                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
-                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft", "block/snow");
-//                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquefacted_metal_still");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquefacted_metal_still");
 
                         @Override
                         public ResourceLocation getStillTexture() {
@@ -380,10 +376,8 @@ public class FluidRegistry {
                 @Override
                 public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {
-                        public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
-//                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
-                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft", "block/snow");
-//                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquefacted_metal_still");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquefacted_metal_still");
 
                         @Override
                         public ResourceLocation getStillTexture() {
@@ -421,10 +415,8 @@ public class FluidRegistry {
                 @Override
                 public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
                     consumer.accept(new IClientFluidTypeExtensions() {
-                        public static final ResourceLocation FLUID_STILL = new ResourceLocation("minecraft", "block/snow");
-//                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
-                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation("minecraft", "block/snow");
-//                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/acid_simple");
+                        public static final ResourceLocation FLUID_STILL = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquefacted_metal_still");
+                        public static final ResourceLocation FLUID_FLOWING = new ResourceLocation(MagiChemMod.MODID, "block/fluid/liquefacted_metal_still");
 
                         @Override
                         public ResourceLocation getStillTexture() {
