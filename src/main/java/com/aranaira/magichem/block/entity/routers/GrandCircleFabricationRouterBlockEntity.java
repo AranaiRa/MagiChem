@@ -72,9 +72,7 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(getMasterPos() == null)
-            return LazyOptional.empty();
-        return getMaster().getCapability(cap, side);
+        return getMaster() == null ? LazyOptional.empty() : getMaster().getCapability(cap, side);
     }
 
     @Override

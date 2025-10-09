@@ -84,7 +84,7 @@ public class AcidBasinRouterBlockEntity extends BlockEntity implements IRouterBl
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return getMaster().getCapability(cap, side);
+        return getMaster() == null ? LazyOptional.empty() : getMaster().getCapability(cap, side);
     }
 
     @Override
