@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.fluid;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.fluid.AcidFluidType;
 import com.aranaira.magichem.recipe.VitriolationRecipe;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -68,6 +70,7 @@ public class AcidFluidBlock extends LiquidBlock {
 
                 if (acidStrength == 5) {
                     doDestruction = !stateQuery.is(TAG_ACID_5_INVULNERABLE);
+                    if(stateQuery.getBlock() == Blocks.BEDROCK && !ServerConfig.canAzothDestroyBedrock) doDestruction = false;
                 }
                 if (!doDestruction && acidStrength >= 4) {
                     doDestruction = stateQuery.is(TAG_ACID_4_VULNERABLE);

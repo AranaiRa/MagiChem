@@ -50,6 +50,10 @@ public class ServerConfig
             .comment("The Efficiency that Nigredo, Albedo, Citrinitas, and Rubedo receive during distillation. A percentage of the distance between the actual device Efficiency and 100% Efficiency.")
             .defineInRange("houseOfAlchemyDistillationEfficiencyBonus", 50, 0, 100);
 
+    private static final ForgeConfigSpec.BooleanValue CAN_AZOTH_DESTROY_BEDROCK = BUILDER
+            .comment("Can Azoth destroy bedrock?")
+            .define("canAzothDestroyBedrock", true);
+
     //----------------FIXATION PROCESS
 
     private static final ForgeConfigSpec.IntValue FIXATION_BASE_SLURRY_COST = BUILDER
@@ -548,6 +552,8 @@ public class ServerConfig
         materiaManifestDistanceLimit,
         materiaManifestDefaultRange,
         slumberingIdolRange;
+    public static boolean
+        canAzothDestroyBedrock;
     public static HashSet<? extends String>
         gnosticOrbProphecyBlacklist;
 
@@ -568,6 +574,7 @@ public class ServerConfig
         constructStudyExperienceAdvanced = CONSTRUCT_STUDY_EXPERIENCE_ADVANCED.get();
         constructStudyExperienceMaster = CONSTRUCT_STUDY_EXPERIENCE_MASTER.get();
         houseOfAlchemyDistillationEfficiencyBonus = HOUSE_OF_ALCHEMY_DISTILLATION_EFFICIENCY_BONUS.get();
+        canAzothDestroyBedrock = CAN_AZOTH_DESTROY_BEDROCK.get();
         fixationBaseSlurryCost = FIXATION_BASE_SLURRY_COST.get();
         fixationSlurryCompoundCost = FIXATION_SLURRY_COMPOUND_COST.get();
         fixationFailureRefund = FIXATION_FAILURE_REFUND.get();
