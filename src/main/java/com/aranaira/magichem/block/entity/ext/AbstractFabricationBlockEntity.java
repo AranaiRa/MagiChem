@@ -432,6 +432,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         resolveActuators(pEntity, materiaCreated);
         if(pEntity.clearRecipeAfterNextProcess) {
             pEntity.currentItemRecipe = null;
+            pEntity.currentFluidRecipe = null;
             pEntity.clearRecipeAfterNextProcess = false;
             pEntity.syncAndSave();
         }
