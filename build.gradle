@@ -161,6 +161,7 @@ dependencies {
     implementation fg.deobf("curse.maven:farmers-delight-398521:6917255")
 
     implementation fg.deobf("hexerei:hexerei:0.4.2.3")
+    implementation fg.deobf("mekanism:Mekanism-1.20.1:10.4.15.75")
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

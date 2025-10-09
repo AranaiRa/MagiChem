@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.block.entity.MateriaJarQuadBlockEntity;
 import com.aranaira.magichem.block.entity.MateriaManifestBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
@@ -9,6 +10,7 @@ import com.aranaira.magichem.util.render.ColorUtils;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.tools.math.Vector3;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -75,7 +77,14 @@ public class MateriaManifestBlockEntityRenderer implements BlockEntityRenderer<M
                         else if (facing == Direction.WEST) x = -0.3125;
 
                         Vector3 startPos = new Vector3(0.5 + x, 1.78125, 0.5 + z);
-                        Vector3 endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, multi.getBlockPos().getY() + 0.5, multi.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
+                        Vector3 endPos;
+                        if(multi instanceof MateriaJarQuadBlockEntity) {
+                            final Pair<Vector3, Vector3> oat = multi.getDefaultOriginAndTangent(mmbe.tetherType);
+                            endPos = new Vector3(multi.getBlockPos().getX() + oat.getFirst().x, multi.getBlockPos().getY() + oat.getFirst().y, multi.getBlockPos().getZ() + oat.getFirst().z);
+                        } else {
+                            endPos = new Vector3(mmbe.tetherTarget.getBlockPos().getX() + 0.5, multi.getBlockPos().getY() + 0.5, multi.getBlockPos().getZ() + 0.5).sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
+                        }
+                        endPos = endPos.sub(new Vector3(mmbe.getBlockPos().getX(), mmbe.getBlockPos().getY(), mmbe.getBlockPos().getZ()));
 
                         int colorInt, intR, intG, intB;
                         if(mmbe.tetherType.getMateriaName().equals("color")) {
