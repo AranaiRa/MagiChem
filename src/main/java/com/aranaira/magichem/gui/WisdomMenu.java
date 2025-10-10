@@ -32,6 +32,7 @@ public class WisdomMenu extends AbstractContainerMenu {
     public Inventory playerInventory;
     public IWisdomCapability capability;
     private final ContainerData data;
+    private static final int[] POINT_LIMITS = {0, 2, 5, 8, 12, 16};
 
     public WisdomMenu(int pID, Inventory pInv, FriendlyByteBuf pExtraData) {
         this(pID, pInv, new SimpleContainerData(1));
@@ -49,6 +50,10 @@ public class WisdomMenu extends AbstractContainerMenu {
 
     public int getWisdom() {
         return data.get(0);
+    }
+
+    public int getPointLimit() {
+        return POINT_LIMITS[getWisdom()];
     }
 
     @Override

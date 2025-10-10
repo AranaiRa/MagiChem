@@ -25,8 +25,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
-    private static final ResourceLocation TEXTURE =
-            new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom.png");
+    private static final ResourceLocation
+            TEXTURE_WISDOM_1 = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_1.png"),
+            TEXTURE_WISDOM_2 = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_2.png"),
+            TEXTURE_WISDOM_3 = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_3.png");
     public static final ItemStack[] WISDOM_STONES = new ItemStack[]{
             new ItemStack(ItemRegistry.INERT_WISDOM_STONE.get()),
             new ItemStack(ItemRegistry.ASHEN_WISDOM_STONE.get()),
@@ -53,15 +55,33 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
         initializeSettingButtons();
     }
 
+    private void handleIncrementButton(Attribute pAttribute, int pPointCost) {
+        boolean hasEnoughPoints = currentPointTotal + pPointCost <= menu.getPointLimit();
+        boolean notAtPointCap = currentPointTotal < menu.getPointLimit();
+        boolean gaugeBelowMax = menu.capability.getValue(pAttribute) < menu.capability.getLimit(pAttribute, menu.getWisdom());
+        if(hasEnoughPoints && notAtPointCap && gaugeBelowMax) {
+            menu.capability.incrementValue(pAttribute, menu.getWisdom());
+            currentPointTotal = Math.min(menu.getPointLimit(), currentPointTotal+pPointCost);
+        }
+    }
+
+    private void handleDecrementButton(Attribute pAttribute, int pPointCost) {
+        boolean gaugeAboveZero = menu.capability.getValue(pAttribute) > 0;
+        if(gaugeAboveZero) {
+            menu.capability.decrementValue(pAttribute, menu.getWisdom());
+            currentPointTotal = Math.max(0, currentPointTotal-pPointCost);
+        }
+    }
+
     private void initializeSettingButtons() {
         //Radius
         {
-            bRadiusUp = this.addRenderableWidget(new ImageButton(0, 0, 6, 4, 220, 0, TEXTURE, button -> {
-                menu.capability.incrementValue(Attribute.RADIUS, menu.getWisdom());
+            bRadiusUp = this.addRenderableWidget(new ImageButton(0, 0, 6, 4, 220, 0, getTexture(), button -> {
+                handleIncrementButton(Attribute.RADIUS, 2);
             }));
 
-            bRadiusDown = this.addRenderableWidget(new ImageButton(0, 0, 6, 4, 226, 0, TEXTURE, button -> {
-                menu.capability.decrementValue(Attribute.RADIUS, menu.getWisdom());
+            bRadiusDown = this.addRenderableWidget(new ImageButton(0, 0, 6, 4, 226, 0, getTexture(), button -> {
+                handleDecrementButton(Attribute.RADIUS, 2);
             }));
 
             bRadiusUp.visible = false;
@@ -70,12 +90,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
         //Range
         {
-            bRangeUp = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 227, 20, TEXTURE, button -> {
-                menu.capability.incrementValue(Attribute.RANGE, menu.getWisdom());
+            bRangeUp = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 227, 20, getTexture(), button -> {
+                handleIncrementButton(Attribute.RANGE, 1);
             }));
 
-            bRangeDown = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 222, 20, TEXTURE, button -> {
-                menu.capability.decrementValue(Attribute.RANGE, menu.getWisdom());
+            bRangeDown = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 222, 20, getTexture(), button -> {
+                handleDecrementButton(Attribute.RANGE, 1);
             }));
 
             bRangeUp.visible = false;
@@ -84,12 +104,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
         //Duration
         {
-            bDurationUp = this.addRenderableWidget(new ImageButton(0, 0, 4, 6, 228, 8, TEXTURE, button -> {
-                menu.capability.incrementValue(Attribute.DURATION, menu.getWisdom());
+            bDurationUp = this.addRenderableWidget(new ImageButton(0, 0, 4, 6, 228, 8, getTexture(), button -> {
+                handleIncrementButton(Attribute.DURATION, 1);
             }));
 
-            bDurationDown = this.addRenderableWidget(new ImageButton(0, 0, 4, 6, 224, 8, TEXTURE, button -> {
-                menu.capability.decrementValue(Attribute.DURATION, menu.getWisdom());
+            bDurationDown = this.addRenderableWidget(new ImageButton(0, 0, 4, 6, 224, 8, getTexture(), button -> {
+                handleDecrementButton(Attribute.DURATION, 1);
             }));
 
             bDurationUp.visible = false;
@@ -98,12 +118,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
         //Magnitude
         {
-            bMagnitudeUp = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 227, 30, TEXTURE, button -> {
-                menu.capability.incrementValue(Attribute.MAGNITUDE, menu.getWisdom());
+            bMagnitudeUp = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 227, 30, getTexture(), button -> {
+                handleIncrementButton(Attribute.MAGNITUDE, 1);
             }));
 
-            bMagnitudeDown = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 222, 30, TEXTURE, button -> {
-                menu.capability.decrementValue(Attribute.MAGNITUDE, menu.getWisdom());
+            bMagnitudeDown = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 222, 30, getTexture(), button -> {
+                handleDecrementButton(Attribute.MAGNITUDE, 1);
             }));
 
             bMagnitudeUp.visible = false;
@@ -112,12 +132,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
         //Damage
         {
-            bDamageUp = this.addRenderableWidget(new ImageButton(0, 0, 6, 4, 226, 0, TEXTURE, button -> {
-                menu.capability.incrementValue(Attribute.DAMAGE, menu.getWisdom());
+            bDamageUp = this.addRenderableWidget(new ImageButton(0, 0, 6, 4, 226, 0, getTexture(), button -> {
+                handleIncrementButton(Attribute.DAMAGE, 1);
             }));
 
-            bDamageDown = this.addRenderableWidget(new ImageButton(0, 0, 6, 4, 220, 0, TEXTURE, button -> {
-                menu.capability.decrementValue(Attribute.DAMAGE, menu.getWisdom());
+            bDamageDown = this.addRenderableWidget(new ImageButton(0, 0, 6, 4, 220, 0, getTexture(), button -> {
+                handleDecrementButton(Attribute.DAMAGE, 1);
             }));
 
             bDamageUp.visible = false;
@@ -126,12 +146,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
         //Lesser Magnitude
         {
-            bLesserMagnitudeUp = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 222, 20, TEXTURE, button -> {
-                menu.capability.incrementValue(Attribute.LESSER_MAGNITUDE, menu.getWisdom());
+            bLesserMagnitudeUp = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 222, 20, getTexture(), button -> {
+                handleIncrementButton(Attribute.LESSER_MAGNITUDE, 1);
             }));
 
-            bLesserMagnitudeDown = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 227, 20, TEXTURE, button -> {
-                menu.capability.decrementValue(Attribute.LESSER_MAGNITUDE, menu.getWisdom());
+            bLesserMagnitudeDown = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 227, 20, getTexture(), button -> {
+                handleDecrementButton(Attribute.LESSER_MAGNITUDE, 1);
             }));
 
             bLesserMagnitudeUp.visible = false;
@@ -140,12 +160,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
         //Delay
         {
-            bDelayUp = this.addRenderableWidget(new ImageButton(0, 0, 4, 6, 224, 8, TEXTURE, button -> {
-                menu.capability.incrementValue(Attribute.DELAY, menu.getWisdom());
+            bDelayUp = this.addRenderableWidget(new ImageButton(0, 0, 4, 6, 224, 8, getTexture(), button -> {
+                handleIncrementButton(Attribute.DELAY, 1);
             }));
 
-            bDelayDown = this.addRenderableWidget(new ImageButton(0, 0, 4, 6, 228, 8, TEXTURE, button -> {
-                menu.capability.decrementValue(Attribute.DELAY, menu.getWisdom());
+            bDelayDown = this.addRenderableWidget(new ImageButton(0, 0, 4, 6, 228, 8, getTexture(), button -> {
+                handleDecrementButton(Attribute.DELAY, 1);
             }));
 
             bDelayUp.visible = false;
@@ -154,12 +174,12 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
         //Speed
         {
-            bSpeedUp = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 222, 30, TEXTURE, button -> {
-                menu.capability.incrementValue(Attribute.SPEED, menu.getWisdom());
+            bSpeedUp = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 222, 30, getTexture(), button -> {
+                handleIncrementButton(Attribute.SPEED, 1);
             }));
 
-            bSpeedDown = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 227, 30, TEXTURE, button -> {
-                menu.capability.decrementValue(Attribute.SPEED, menu.getWisdom());
+            bSpeedDown = this.addRenderableWidget(new ImageButton(0, 0, 5, 5, 227, 30, getTexture(), button -> {
+                handleDecrementButton(Attribute.SPEED, 1);
             }));
 
             bSpeedUp.visible = false;
@@ -317,13 +337,32 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
         super.onClose();
     }
 
+    int currentPointTotal = 0;
+    private void registerCurrentPointTotal() {
+        currentPointTotal = 0;
+        currentPointTotal += menu.capability.getValue(Attribute.DAMAGE);
+        currentPointTotal += menu.capability.getValue(Attribute.LESSER_MAGNITUDE);
+        currentPointTotal += menu.capability.getValue(Attribute.DELAY);
+        currentPointTotal += menu.capability.getValue(Attribute.SPEED);
+        currentPointTotal += menu.capability.getValue(Attribute.RADIUS) * 2;
+        currentPointTotal += menu.capability.getValue(Attribute.RANGE);
+        currentPointTotal += menu.capability.getValue(Attribute.DURATION);
+        currentPointTotal += menu.capability.getValue(Attribute.MAGNITUDE);
+    }
+
+    private ResourceLocation getTexture() {
+        if(menu.getWisdom() <= 1) return TEXTURE_WISDOM_1;
+        else if(menu.getWisdom() == 2) return TEXTURE_WISDOM_2;
+        else return TEXTURE_WISDOM_3;
+    }
+
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-        pGuiGraphics.blit(TEXTURE, x, y-20, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
-        pGuiGraphics.blit(TEXTURE, x+89, y+206, 224, 220, 32, 36);
+        pGuiGraphics.blit(getTexture(), x, y-20, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
+        pGuiGraphics.blit(getTexture(), x+89, y+206, 224, 220, 32, 36);
 
         pGuiGraphics.pose().pushPose();
         pGuiGraphics.pose().scale(2.0f, 2.0f, 2.0f);
@@ -332,14 +371,14 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
         pGuiGraphics.pose().popPose();
 
         //Modifier Icons
-        pGuiGraphics.blit(TEXTURE, x+97, y+36, 240, 128, 16, 16); //Radius
-        pGuiGraphics.blit(TEXTURE, x+67, y+48, 240, 112, 16, 16); //Speed
-        pGuiGraphics.blit(TEXTURE, x+127, y+48, 240, 144, 16, 16); //Range
-        pGuiGraphics.blit(TEXTURE, x+55, y+78, 240, 96, 16, 16); //Delay
-        pGuiGraphics.blit(TEXTURE, x+139, y+78, 240, 160, 16, 16); //Duration
-        pGuiGraphics.blit(TEXTURE, x+67, y+108, 240, 80, 16, 16); //Lesser Magnitude
-        pGuiGraphics.blit(TEXTURE, x+127, y+108, 240, 176, 16, 16); //Magnitude
-        pGuiGraphics.blit(TEXTURE, x+97, y+120, 240, 64, 16, 16); //Damage
+        if(menu.getWisdom() >= 2) pGuiGraphics.blit(getTexture(), x+97, y+36, 240, 128, 16, 16); //Radius
+        pGuiGraphics.blit(getTexture(), x+67, y+48, 240, 112, 16, 16); //Speed
+        pGuiGraphics.blit(getTexture(), x+127, y+48, 240, 144, 16, 16); //Range
+        pGuiGraphics.blit(getTexture(), x+55, y+78, 240, 96, 16, 16); //Delay
+        if(menu.getWisdom() >= 2) pGuiGraphics.blit(getTexture(), x+139, y+78, 240, 160, 16, 16); //Duration
+        if(menu.getWisdom() >= 2) pGuiGraphics.blit(getTexture(), x+67, y+108, 240, 80, 16, 16); //Lesser Magnitude
+        if(menu.getWisdom() >= 3) pGuiGraphics.blit(getTexture(), x+127, y+108, 240, 176, 16, 16); //Magnitude
+        pGuiGraphics.blit(getTexture(), x+97, y+120, 240, 64, 16, 16); //Damage
 
         //Upgrade chevrons
         {
@@ -350,7 +389,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
                 for(int i=0; i<limit; i++) {
                     int ux = i < boost ? 244 : 232;
-                    pGuiGraphics.blit(TEXTURE, x+99, y+19 - i*5, ux, 0, 12, 6);
+                    pGuiGraphics.blit(getTexture(), x+99, y+19 - i*5, ux, 0, 12, 6);
                 }
             }
 
@@ -361,7 +400,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
                 for(int i=0; i<limit; i++) {
                     int ux = i < boost ? 246 : 236;
-                    pGuiGraphics.blit(TEXTURE, x+146 + i*3, y+35 - i*3, ux, 24, 10, 10);
+                    pGuiGraphics.blit(getTexture(), x+146 + i*3, y+35 - i*3, ux, 24, 10, 10);
                 }
             }
 
@@ -372,7 +411,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
                 for(int i=0; i<limit; i++) {
                     int ux = i < boost ? 250 : 244;
-                    pGuiGraphics.blit(TEXTURE, x+166 + i*5, y+80, ux, 12, 6, 12);
+                    pGuiGraphics.blit(getTexture(), x+166 + i*5, y+80, ux, 12, 6, 12);
                 }
             }
 
@@ -383,7 +422,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
                 for(int i=0; i<limit; i++) {
                     int ux = i < boost ? 246 : 236;
-                    pGuiGraphics.blit(TEXTURE, x+146 + i*3, y+127 + i*3, ux, 54, 10, 10);
+                    pGuiGraphics.blit(getTexture(), x+146 + i*3, y+127 + i*3, ux, 54, 10, 10);
                 }
             }
 
@@ -394,7 +433,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
                 for(int i=0; i<limit; i++) {
                     int ux = i < boost ? 244 : 232;
-                    pGuiGraphics.blit(TEXTURE, x+99, y+147 + i*5, ux, 6, 12, 6);
+                    pGuiGraphics.blit(getTexture(), x+99, y+147 + i*5, ux, 6, 12, 6);
                 }
             }
 
@@ -405,7 +444,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
                 for(int i=0; i<limit; i++) {
                     int ux = i < boost ? 246 : 236;
-                    pGuiGraphics.blit(TEXTURE, x+54 - i*3, y+127 + i*3, ux, 44, 10, 10);
+                    pGuiGraphics.blit(getTexture(), x+54 - i*3, y+127 + i*3, ux, 44, 10, 10);
                 }
             }
 
@@ -416,7 +455,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
                 for(int i=0; i<limit; i++) {
                     int ux = i < boost ? 238 : 232;
-                    pGuiGraphics.blit(TEXTURE, x+38 - i*5, y+80, ux, 12, 6, 12);
+                    pGuiGraphics.blit(getTexture(), x+38 - i*5, y+80, ux, 12, 6, 12);
                 }
             }
 
@@ -427,14 +466,21 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
                 for(int i=0; i<limit; i++) {
                     int ux = i < boost ? 246 : 236;
-                    pGuiGraphics.blit(TEXTURE, x+54 - i*3, y+35 - i*3, ux, 34, 10, 10);
+                    pGuiGraphics.blit(getTexture(), x+54 - i*3, y+35 - i*3, ux, 34, 10, 10);
                 }
             }
+        }
+
+        //Point tracker
+        int pointLimit = menu.getPointLimit();
+        for(int i=0; i<pointLimit; i++){
+            pGuiGraphics.blit(getTexture(), x - 16, y + (86 - (pointLimit*6 + (pointLimit-1)*2)/2) + i*8, 214, i < currentPointTotal ? 0 : 6, 6, 6);
         }
 
         if(!buttonsShiftedToFinalPosition) {
             buttonsReadyForWisdomShift = menu.getWisdom() > 0;
             if(buttonsReadyForWisdomShift) {
+                registerCurrentPointTotal();
                 setButtonPositionsForWisdomLimits();
                 capModifiersIfOverLimit();
                 buttonsShiftedToFinalPosition = true;
@@ -466,6 +512,8 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
         int speedLimit = menu.capability.getLimit(Attribute.SPEED, menu.getWisdom());
         if(menu.capability.getValue(Attribute.SPEED) > speedLimit) menu.capability.setValue(Attribute.SPEED, speedLimit);
+
+        registerCurrentPointTotal();
     }
 
     @Override
