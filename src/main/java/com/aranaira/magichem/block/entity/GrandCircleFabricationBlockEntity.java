@@ -136,7 +136,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                     }
                 }
                 if(slot == SLOT_WISDOM) {
-                    return stack.getItem() instanceof PhilosophersStoneItem;
+                    return false;
                 }
 
                 return false;
@@ -151,6 +151,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                         if (nbt.contains("CustomModelData")) return ItemStack.EMPTY;
                     }
                     return item;
+                } else if(slot == SLOT_WISDOM) {
+                    return ItemStack.EMPTY;
                 }
 
                 return super.extractItem(slot, amount, simulate);
@@ -915,6 +917,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
     public GrandCircleFabricationBlockEntity readFrom(FriendlyByteBuf friendlyByteBuf){
         this.isFESatisfied = friendlyByteBuf.readBoolean();
         return this;
+    }
+
+    public void setWisdomStone(ItemStack pStone) {
+        itemHandler.setStackInSlot(SLOT_WISDOM, pStone.copy());
+        syncAndSave();
     }
 
     ////////////////////

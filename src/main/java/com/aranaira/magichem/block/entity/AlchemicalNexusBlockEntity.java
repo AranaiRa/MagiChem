@@ -178,6 +178,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     if(!simulate)
                         itemHandler.setStackInSlot(slot, ItemStack.EMPTY);
                     return stackInSlot;
+                } else if(slot == SLOT_WISDOM) {
+                    return ItemStack.EMPTY;
                 }
 
                 return super.extractItem(slot, amount, simulate);
@@ -224,7 +226,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                 else if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT)
                     return false;
                 else if(slot == SLOT_WISDOM)
-                    return stack.getItem() instanceof PhilosophersStoneItem;
+                    return false;
 
                 return super.isItemValid(slot, stack);
             }
@@ -1001,6 +1003,11 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             if(!existingDemandsMatchCurrentSchema)
                 setSatisfactionDemands(currentStage.componentMateria);
         }
+    }
+
+    public void setWisdomStone(ItemStack pStone) {
+        itemHandler.setStackInSlot(SLOT_WISDOM, pStone.copy());
+        syncAndSave();
     }
 
     public NonNullList<Pair<BlockEntity, BlockPos>> getMarkedEntitiesAndLocations() {

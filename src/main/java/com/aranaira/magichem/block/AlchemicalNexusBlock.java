@@ -37,8 +37,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -217,8 +220,17 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
                         }
 
                         return InteractionResult.CONSUME;
-                    } else
+                    } else {
+                        CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
+                            curiosInventory.getStacksHandler("wisdom").ifPresent(slotsInventory -> {
+                                for (int i = 0; i < slotsInventory.getStacks().getSlots(); i++) {
+                                    ItemStack stack = slotsInventory.getStacks().getStackInSlot(i);
+                                    anbe.setWisdomStone(stack);
+                                }
+                            });
+                        });
                         NetworkHooks.openScreen((ServerPlayer) player, anbe, pos);
+                    }
                 } else {
                     throw new IllegalStateException("AlchemicalNexusBlockEntity container provider is missing!");
                 }

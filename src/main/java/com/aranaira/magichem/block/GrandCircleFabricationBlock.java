@@ -48,6 +48,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,6 +150,14 @@ public class GrandCircleFabricationBlock extends BaseEntityBlock {
             } else {
                 BlockEntity entity = pLevel.getBlockEntity(pPos);
                 if (entity instanceof GrandCircleFabricationBlockEntity main) {
+                    CuriosApi.getCuriosInventory(pPlayer).ifPresent(curiosInventory -> {
+                        curiosInventory.getStacksHandler("wisdom").ifPresent(slotsInventory -> {
+                            for (int i = 0; i < slotsInventory.getStacks().getSlots(); i++) {
+                                ItemStack stack = slotsInventory.getStacks().getStackInSlot(i);
+                                main.setWisdomStone(stack);
+                            }
+                        });
+                    });
                     NetworkHooks.openScreen((ServerPlayer)pPlayer, new SimpleMenuProvider((id, playerInventory, user) -> {
                         return new GrandCircleFabricationMenu(id, playerInventory, main);
                     }, Component.empty()), main);
