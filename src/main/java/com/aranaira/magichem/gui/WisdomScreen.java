@@ -28,7 +28,8 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
     private static final ResourceLocation
             TEXTURE_WISDOM_1 = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_1.png"),
             TEXTURE_WISDOM_2 = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_2.png"),
-            TEXTURE_WISDOM_3 = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_3.png");
+            TEXTURE_WISDOM_3 = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_3.png"),
+            TEXTURE_WISDOM_4 = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_4.png");
     public static final ItemStack[] WISDOM_STONES = new ItemStack[]{
             new ItemStack(ItemRegistry.INERT_WISDOM_STONE.get()),
             new ItemStack(ItemRegistry.ASHEN_WISDOM_STONE.get()),
@@ -353,7 +354,8 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
     private ResourceLocation getTexture() {
         if(menu.getWisdom() <= 1) return TEXTURE_WISDOM_1;
         else if(menu.getWisdom() == 2) return TEXTURE_WISDOM_2;
-        else return TEXTURE_WISDOM_3;
+        else if(menu.getWisdom() == 3) return TEXTURE_WISDOM_3;
+        else return TEXTURE_WISDOM_4;
     }
 
     @Override
