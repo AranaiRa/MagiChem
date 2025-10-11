@@ -138,6 +138,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(MateriaVesselBlockEntity::new, BlockRegistry.MATERIA_VESSEL.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<ActuatorNeutralBlockEntity>> ACTUATOR_NEUTRAL_BE = BLOCK_ENTITIES.register("actuator_neutral", () ->
+            BlockEntityType.Builder.of(ActuatorNeutralBlockEntity::new, BlockRegistry.ACTUATOR_NEUTRAL.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<ActuatorFireBlockEntity>> ACTUATOR_FIRE_BE = BLOCK_ENTITIES.register("actuator_fire", () ->
             BlockEntityType.Builder.of(ActuatorFireBlockEntity::new, BlockRegistry.ACTUATOR_FIRE.get()).build(null)
     );

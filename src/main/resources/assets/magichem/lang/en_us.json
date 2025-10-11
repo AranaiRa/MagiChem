@@ -158,6 +158,7 @@
 
   "block.magichem.acid_basin": "Acid Basin",
   "block.magichem.acid_basin_router": "Acid Basin",
+  "block.magichem.actuator_neutral": "Proto-Actuator",
   "block.magichem.actuator_air": "Gale Pressurizer",
   "block.magichem.actuator_air_router": "Gale Pressurizer",
   "block.magichem.actuator_arcane": "Occult Matrix",

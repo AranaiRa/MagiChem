@@ -201,6 +201,11 @@ public class BlockRegistry {
                     .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> ACTUATOR_NEUTRAL = registerBlock("actuator_neutral",
+            () -> new ActuatorNeutralBlock(BlockBehaviour.Properties.of()
+                    .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())
+    );
+
     public static final RegistryObject<Block> ACTUATOR_FIRE = registerBlock("actuator_fire",
             () -> new ActuatorFireBlock(BlockBehaviour.Properties.of()
                     .strength(0.5f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).forceSolidOn())

@@ -322,6 +322,12 @@ public class ServerConfig
             .comment("The number of materia units that an Actuator gets from a single dram of materia")
             .defineInRange("actuatorMateriaUnitsPerDram", 40, 1, Integer.MAX_VALUE);
 
+    //----------------PROTO ACTUATOR
+
+    private static final ForgeConfigSpec.IntValue PROTO_ACTUATOR_FE_COST = BUILDER
+            .comment("The amount of FE per tick that must be supplied to a Proto-Actuator.")
+            .defineInRange("protoActuatorFECost", 20, 1, Integer.MAX_VALUE);
+
     //----------------DELUGE PURIFIER
 
     private static final ForgeConfigSpec.IntValue DELUGE_PURIFIER_TANK_CAPACITY = BUILDER
@@ -526,6 +532,7 @@ public class ServerConfig
         actuatorDoubleSuppliedPeriod,
         actuatorMateriaBufferMaximum,
         actuatorMateriaUnitsPerDram,
+        protoActuatorFECost,
         delugePurifierTankCapacity,
         infernoEngineTankCapacity,
         quakeRefinerySandCapacity,
@@ -634,6 +641,7 @@ public class ServerConfig
         actuatorDoubleSuppliedPeriod = ACTUATOR_DOUBLE_SUPPLIED_PERIOD.get();
         actuatorMateriaBufferMaximum = ACTUATOR_MATERIA_BUFFER_MAXIMUM.get();
         actuatorMateriaUnitsPerDram = ACTUATOR_MATERIA_UNITS_PER_DRAM.get();
+        protoActuatorFECost = PROTO_ACTUATOR_FE_COST.get();
         delugePurifierTankCapacity = DELUGE_PURIFIER_TANK_CAPACITY.get();
         infernoEngineTankCapacity = INFERNO_ENGINE_TANK_CAPACITY.get();
         quakeRefinerySandCapacity = QUAKE_REFINERY_SAND_CAPACITY.get();
