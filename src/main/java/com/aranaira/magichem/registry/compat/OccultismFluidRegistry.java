@@ -63,7 +63,7 @@ public class OccultismFluidRegistry {
                     });
                 }
             });
-    public static final RegistryObject<Fluid> LIQUEFACTED_SILVER = FLUIDS.register("liquefacted_silver.json", () -> new ForgeFlowingFluid.Source(getLiquefactedSilverProperties()));
+    public static final RegistryObject<Fluid> LIQUEFACTED_SILVER = FLUIDS.register("liquefacted_silver", () -> new ForgeFlowingFluid.Source(getLiquefactedSilverProperties()));
     public static final RegistryObject<FlowingFluid> LIQUEFACTED_SILVER_FLOWING = FLUIDS.register("liquefacted_silver_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedSilverProperties()));
     public static final RegistryObject<LiquidBlock> LIQUEFACTED_SILVER_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_silver_block", () -> new AcidFluidBlock(LIQUEFACTED_SILVER_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
 
