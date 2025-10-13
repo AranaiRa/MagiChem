@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block;
 
+import com.aranaira.magichem.block.entity.ActuatorNeutralBlockEntity;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
@@ -57,8 +58,8 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
 
     private static final VoxelShape
             VOXEL_SHAPE_ERROR = Block.box(0,0,0,16,16,16),
-            VOXEL_SHAPE_TOP   = Block.box(1,0,0,15,15,4),
-            VOXEL_SHAPE_BODY  = Block.box(4,0,4,12,12,8),
+            VOXEL_SHAPE_TOP   = Block.box(1,0,0,15,15,15),
+            VOXEL_SHAPE_BODY  = Block.box(3,15,3,13,16,13),
             VOXEL_SHAPE_AGGREGATE_NORTH, VOXEL_SHAPE_AGGREGATE_SOUTH, VOXEL_SHAPE_AGGREGATE_EAST, VOXEL_SHAPE_AGGREGATE_WEST;
     private static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -70,8 +71,8 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         if(pPlacer instanceof Player player) {
-            ActuatorWaterBlockEntity awbe = (ActuatorWaterBlockEntity) pLevel.getBlockEntity(pPos);
-            awbe.setOwner(player);
+            ActuatorNeutralBlockEntity anbe = (ActuatorNeutralBlockEntity) pLevel.getBlockEntity(pPos);
+            anbe.setOwner(player);
         }
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
     }
@@ -97,24 +98,6 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
             }
         }
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
-    }
-
-    @Override
-    public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
-        super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
-        Direction facing = pNewState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        BlockState state = BlockRegistry.ACTUATOR_WATER_ROUTER.get().defaultBlockState();
-        state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
-        state = state.setValue(ACTUATOR_ELEMENT, BaseActuatorRouterBlock.ELEMENT_WATER);
-
-        BlockPos targetPos = pPos.offset(0,1,0);
-        pLevel.setBlock(targetPos, state, 3);
-        ((BaseActuatorRouterBlockEntity)pLevel.getBlockEntity(targetPos)).configure(pPos, facing);
-
-        ActuatorWaterBlockEntity awbe = (ActuatorWaterBlockEntity) pLevel.getBlockEntity(pPos);
-        ICanTakePlugins ictp = awbe.getTargetMachine();
-        if(ictp != null)
-            ictp.linkPluginsDeferred();
     }
 
     @Override
@@ -160,74 +143,23 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        ActuatorWaterBlockEntity awbe = (ActuatorWaterBlockEntity) level.getBlockEntity(pos);
-        ICanTakePlugins ictp = awbe.getTargetMachine();
+        ActuatorNeutralBlockEntity anbe = (ActuatorNeutralBlockEntity) level.getBlockEntity(pos);
+        ICanTakePlugins ictp = anbe.getTargetMachine();
         if(ictp != null)
-            ictp.removePlugin(awbe);
-
-        awbe.dropContents();
+            ictp.removePlugin(anbe);
 
         super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if(!level.isClientSide()) {
-            ItemStack heldItem = player.getItemInHand(hand);
-            LazyOptional<IFluidHandlerItem> fluidCap = heldItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-
-            if (fluidCap.isPresent()) {
-                BlockEntity be = level.getBlockEntity(pos);
-                if(be instanceof ActuatorWaterBlockEntity awbe) {
-                    fluidCap.ifPresent(cap -> {
-                        FluidStack fluidInItem = cap.getFluidInTank(0);
-
-                        //If container has water
-                        if(fluidInItem.getFluid() == Fluids.WATER || heldItem.getItem() == Items.WATER_BUCKET) {
-                            int capacity = awbe.fill(new FluidStack(Fluids.WATER, ServerConfig.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
-                            FluidStack drainedFS;
-                            if(player.isCreative())
-                                drainedFS = new FluidStack(Fluids.WATER, fluidInItem.getAmount());
-                            else
-                                drainedFS = cap.drain(new FluidStack(Fluids.WATER, capacity), IFluidHandler.FluidAction.EXECUTE);
-                            awbe.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
-
-                            if(player.getItemInHand(hand).getItem() == Items.WATER_BUCKET && !player.isCreative())
-                                player.setItemInHand(hand, new ItemStack(Items.BUCKET));
-                        }
-                        //If container is empty or has steam
-                        else if(fluidInItem.isEmpty() || fluidInItem.getFluid() == FluidRegistry.STEAM.get()) {
-                            if(player.getItemInHand(hand).getItem() == Items.BUCKET) {
-                                if(awbe.getFluidInTank(0).getAmount() >= 1000) {
-                                    awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
-                                    player.getItemInHand(hand).shrink(1);
-                                    ItemEntity ie = new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), new ItemStack(ItemRegistry.STEAM_BUCKET.get()));
-                                    player.level().addFreshEntity(ie);
-                                }
-                            } else {
-                                int capacity = cap.fill(new FluidStack(FluidRegistry.STEAM.get(), ServerConfig.delugePurifierTankCapacity), IFluidHandler.FluidAction.SIMULATE);
-                                FluidStack drainedFS = awbe.drain(new FluidStack(FluidRegistry.STEAM.get(), Math.min(capacity, awbe.getFluidInTank(ActuatorWaterBlockEntity.TANK_ID_STEAM).getAmount())), IFluidHandler.FluidAction.EXECUTE);
-                                cap.fill(drainedFS, IFluidHandler.FluidAction.EXECUTE);
-                            }
-                        }
-                    });
-                }
-            } else {
-                BlockEntity entity = level.getBlockEntity(pos);
-                if (entity instanceof ActuatorWaterBlockEntity awbe) {
-                    NetworkHooks.openScreen((ServerPlayer) player, (ActuatorWaterBlockEntity) entity, pos);
-                } else {
-                    throw new IllegalStateException("ActuatorWaterBlockEntity container provider is missing!");
-                }
-            }
-        }
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new ActuatorWaterBlockEntity(pos, state);
+        return new ActuatorNeutralBlockEntity(pos, state);
     }
 
     @Nullable

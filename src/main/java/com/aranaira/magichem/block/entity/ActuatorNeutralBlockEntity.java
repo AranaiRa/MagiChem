@@ -10,6 +10,7 @@ import com.aranaira.magichem.gui.ActuatorEarthScreen;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.aranaira.magichem.util.IEnergyStoragePlus;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
@@ -41,6 +42,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +54,8 @@ import java.util.Map;
 
 public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEntity implements IPluginDevice {
 
+    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+
     public ActuatorNeutralBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
     }
@@ -61,8 +65,35 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
     }
 
     @Override
+    public boolean getIsSatisfied() {
+        return true;
+    }
+
+    @Override
+    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if(cap == ForgeCapabilities.ENERGY) {
+            return lazyEnergyHandler.cast();
+        }
+
+        return super.getCapability(cap, side);
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        lazyEnergyHandler.invalidate();
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
+    }
+
+    @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putBoolean("isPaused", isPaused);
+        nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
     }
 
@@ -70,17 +101,14 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
     public void load(CompoundTag nbt) {
         super.load(nbt);
         this.isPaused = nbt.getBoolean("isPaused");
-    }
-
-    @Override
-    public void onLoad() {
-        super.onLoad();
+        this.ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
     }
 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.putBoolean("isPaused", isPaused);
+        nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         return nbt;
     }
 
@@ -127,10 +155,12 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
         return Affinity.LIGHTNING;
     }
 
-    @Override
-    public AABB getRenderBoundingBox() {
-        return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,2,1));
-    }
+    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(60, 60) {
+        @Override
+        public void onEnergyChanged() {
+            setChanged();
+        }
+    };
 
     ////////////////////
     // STATIC RETRIEVAL

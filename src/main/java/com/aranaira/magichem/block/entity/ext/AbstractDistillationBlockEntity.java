@@ -176,6 +176,26 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                     }
                 }
             }
+            else if (dpbe instanceof ActuatorNeutralBlockEntity neutral && !(pEntity instanceof GrandDistilleryBlockEntity)) {
+                boolean efficiencyChanged = false;
+                boolean opTimeChanged = false;
+
+                if(neutral.getIsSatisfied()) {
+                    if(pEntity.operationTimeMod != 20f) {
+                        pEntity.operationTimeMod = 20f;
+                        opTimeChanged = true;
+                    }
+                }
+                else {
+                    if(pEntity.operationTimeMod == 20f) {
+                        pEntity.operationTimeMod = 0;
+                        opTimeChanged = true;
+                    }
+                }
+
+                if(efficiencyChanged || opTimeChanged)
+                    pEntity.syncAndSave();
+            }
         }
 
         pEntity.remainingHeat = Math.max(0, pEntity.remainingHeat - 1);
@@ -691,6 +711,8 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
         for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
                 entity.efficiencyMod = (water.getIsSatisfied() && water.isAuxiliaryRequirementSatisfied() && !water.getPaused()) ? water.getEfficiencyIncrease() : 0;
+            } else if(dpbe instanceof ActuatorNeutralBlockEntity neutral) {
+                entity.efficiencyMod = Math.max(10, entity.efficiencyMod);
             }
         }
     }
