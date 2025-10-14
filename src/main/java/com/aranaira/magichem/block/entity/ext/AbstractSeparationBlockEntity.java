@@ -154,6 +154,16 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                                 }
                             }
                         }
+                        if(pEntity.currentRecipe == null && pLevel.getGameTime() % 40 == 0) {
+                            final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
+                            for (int i = 0; i < inputs.getContainerSize(); i++) {
+                                final ItemStack inputQuery = inputs.getItem(i);
+                                if(!inputQuery.isEmpty() && InventoryHelper.isMateriaUnbottled(inputQuery)) {
+                                    pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractSeparationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
+                                    ender.createShlorpToTarget(inputQuery, instant);
+                                }
+                            }
+                        }
                     }
                     //importing
                     final Map<MateriaItem, Integer> provisioningNeeds = pEntity.getProvisioningNeeds();

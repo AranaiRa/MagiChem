@@ -9,6 +9,7 @@ import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -153,7 +154,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                     if (ender.getMirrorTarget() != null) {
                         boolean instant = ender.getPowerLevel() == 3;
                         if (instant || pLevel.getGameTime() % 10 == 0) {
-                            final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();
+                            final SimpleContainer outputs = pEntity.getContentsOfOutputSlots(pVarFunc);
                             if (!outputs.isEmpty()) {
                                 for (int i = 0; i < outputs.getContainerSize(); i++) {
                                     if (!outputs.getItem(i).isEmpty()) {
@@ -161,6 +162,16 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
                                         pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractFixationBlockEntity.IDs.SLOT_OUTPUT_START) + i, ItemStack.EMPTY);
                                         ender.createShlorpToTarget(outputStack, instant);
                                         break;
+                                    }
+                                }
+                            }
+                            if(pEntity.currentRecipe == null && pLevel.getGameTime() % 40 == 0) {
+                                final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
+                                for (int i = 0; i < inputs.getContainerSize(); i++) {
+                                    final ItemStack inputQuery = inputs.getItem(i);
+                                    if(!inputQuery.isEmpty() && InventoryHelper.isMateriaUnbottled(inputQuery)) {
+                                        pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractFixationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
+                                        ender.createShlorpToTarget(inputQuery, instant);
                                     }
                                 }
                             }
