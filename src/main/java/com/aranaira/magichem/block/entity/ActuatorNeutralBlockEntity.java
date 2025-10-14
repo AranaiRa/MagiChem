@@ -55,6 +55,8 @@ import java.util.Map;
 public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEntity implements IPluginDevice {
 
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private boolean isFESatisfied = false;
+    private static final int FE_CONSUMPTION_RATE = 10;
 
     public ActuatorNeutralBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -66,7 +68,7 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
 
     @Override
     public boolean getIsSatisfied() {
-        return true;
+        return isFESatisfied;
     }
 
     @Override
@@ -129,26 +131,12 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
-        boolean changed = AbstractDirectionalPluginBlockEntity.tick(level, pos, blockState, t, ActuatorNeutralBlockEntity::getValue);
 
-        if(t instanceof ActuatorNeutralBlockEntity entity) {
-            if(changed && !level.isClientSide())
-                entity.syncAndSave();
-
-            if (!entity.getPaused()) {
-                //do stuff
-            }
-        }
     }
 
     public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorNeutralBlockEntity entity) {
-        boolean changed = AbstractDirectionalPluginBlockEntity.delegatedTick(level, pos, state, entity,
-                ActuatorNeutralBlockEntity::getValue,
-                ActuatorNeutralBlockEntity::getAffinity,
-                ActuatorNeutralBlockEntity::getPowerDraw,
-                ActuatorNeutralBlockEntity::handleAuxiliaryRequirements);
-
-        if(changed) entity.syncAndSave();
+        int extracted = entity.ENERGY_STORAGE.extractEnergy(FE_CONSUMPTION_RATE, false);
+        entity.isFESatisfied = extracted == FE_CONSUMPTION_RATE;
     }
 
     private static Affinity getAffinity(Void unused) {

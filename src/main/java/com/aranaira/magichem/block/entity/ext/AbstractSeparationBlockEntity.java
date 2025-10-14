@@ -114,13 +114,13 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     pEntity.syncAndSave();
                 }
             }
-            if (dpbe instanceof ActuatorEarthBlockEntity earth) {
+            else if (dpbe instanceof ActuatorEarthBlockEntity earth) {
                 ActuatorEarthBlockEntity.delegatedTick(pLevel, pPos, pState, earth);
             }
-            if (dpbe instanceof ActuatorWaterBlockEntity water) {
+            else if (dpbe instanceof ActuatorWaterBlockEntity water) {
                 ActuatorWaterBlockEntity.delegatedTick(pLevel, pPos, pState, water);
             }
-            if (dpbe instanceof ActuatorAirBlockEntity air) {
+            else if (dpbe instanceof ActuatorAirBlockEntity air) {
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
                 int pre = pEntity.batchSize;
 
@@ -132,7 +132,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                 if(pre != pEntity.batchSize)
                     pEntity.syncAndSave();
             }
-            if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
+            else if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
                 ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pState, arcane, false);
             }
             else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
@@ -175,6 +175,28 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                         }
                     }
                 }
+            }
+            else if (dpbe instanceof ActuatorNeutralBlockEntity neutral && !(pEntity instanceof GrandCentrifugeBlockEntity)) {
+                ActuatorNeutralBlockEntity.delegatedTick(pLevel, pPos, pState, neutral);
+
+                boolean efficiencyChanged = false;
+                boolean opTimeChanged = false;
+
+                if(neutral.getIsSatisfied()) {
+                    if(pEntity.operationTimeMod != 20f) {
+                        pEntity.operationTimeMod = 20f;
+                        opTimeChanged = true;
+                    }
+                }
+                else {
+                    if(pEntity.operationTimeMod == 20f) {
+                        pEntity.operationTimeMod = 0;
+                        opTimeChanged = true;
+                    }
+                }
+
+                if(efficiencyChanged || opTimeChanged)
+                    pEntity.syncAndSave();
             }
         }
 
@@ -401,14 +423,22 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     pEntity.itemHandler.setStackInSlot(pProcessingSlot, ItemStack.EMPTY);
             }
 
+            boolean hasProto = false;
+            boolean hasQuake = false;
             //Check to see if there's a Quake Refinery attached and shunt the grime over there if it exists
             for (AbstractDirectionalPluginBlockEntity dpbe : pEntity.pluginDevices) {
-                if (dpbe instanceof ActuatorEarthBlockEntity aebe) {
-                    grimeToAdd = aebe.addGrimeToBuffer(grimeToAdd);
+                if (dpbe instanceof ActuatorEarthBlockEntity earth) {
+                    grimeToAdd = earth.addGrimeToBuffer(grimeToAdd);
+                    hasQuake = true;
+                }
+                if (dpbe instanceof ActuatorNeutralBlockEntity neutral) {
+                    hasProto = true;
                 }
             }
 
             if (grimeToAdd > 0) {
+                if(!hasQuake && hasProto) grimeToAdd = Math.round((float)grimeToAdd * 0.8f);
+
                 IGrimeCapability grimeCapability = GrimeProvider.getCapability(pEntity);
                 grimeCapability.setGrime(Math.min(Math.max(grimeCapability.getGrime() + grimeToAdd, 0), pVarFunc.apply(IDs.CONFIG_MAX_GRIME)));
             }
@@ -534,9 +564,12 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     ////////////////////
 
     protected static void updateActuatorValues(AbstractSeparationBlockEntity entity) {
+        entity.efficiencyMod = 0;
         for(AbstractDirectionalPluginBlockEntity dpbe : entity.pluginDevices) {
             if(dpbe instanceof ActuatorWaterBlockEntity water) {
                 entity.efficiencyMod = (water.getIsSatisfied() && !water.getPaused() && water.isAuxiliaryRequirementSatisfied()) ? water.getEfficiencyIncrease() : 0;
+            } else if(dpbe instanceof ActuatorNeutralBlockEntity neutral) {
+                entity.efficiencyMod = Math.max(neutral.getIsSatisfied() ? 10 : 0, entity.efficiencyMod);
             }
         }
     }
@@ -563,6 +596,10 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             batchSize = 4;
         }
         if(pPlugin instanceof ActuatorFireBlockEntity) {
+            operationTimeMod = 0;
+        }
+        if(pPlugin instanceof ActuatorNeutralBlockEntity) {
+            efficiencyMod = 0;
             operationTimeMod = 0;
         }
         syncAndSave();
