@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    "SLS",
+    "SCS"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:polished_deepslate"
+    },
+    "S": {
+      "item": "mna:decoration/arcane_sandstone"
+    },
+    "L": {
+      "item": "minecraft:lightning_rod"
+    },
+    "C": {
+      "item": "minecraft:cut_copper"
+    }
+  },
+  "result": {
+    "item": "magichem:bleached_amethyst_block"
+  }
+}
