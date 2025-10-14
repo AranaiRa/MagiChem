@@ -63,6 +63,12 @@ public class TooltipLoreBlockItem extends BlockItem {
                     .withStyle(ChatFormatting.DARK_GRAY)
             );
         }
+        else if(pStack.getItem() == BlockRegistry.ACTUATOR_NEUTRAL.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.actuator.neutral")
+                    .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
         else if(pStack.getItem() == BlockRegistry.SIGNALITE.get().asItem()) {
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.signalite")

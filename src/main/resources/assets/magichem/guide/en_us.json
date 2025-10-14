@@ -55,14 +55,56 @@
             "color": "dark_purple"
           },
           {
-            "text": " to expand the available recipe options. The regular Circle of Fabrication is not advanced enough to use Wisdom Stones.\n\nIn a future update, the Wisdom Stones and Philosopher's Stone will also confer enhanced power to your spells while carried in a dedicated curio slot.\n\nEvery recipe in the Magnum Opus after the Inert Wisdom Stone requires the previous Wisdom Stone; you can "
+            "text": " to expand the available recipe options. The regular Circle of Fabrication is not advanced enough to use Wisdom Stones.\n\nEvery recipe in the Magnum Opus after the Inert Wisdom Stone requires the previous Wisdom Stone; you can "
           },
           {
             "text": "remove the required Stone from the Nexus",
             "color": "dark_purple"
           },
           {
-            "text": " safely when the recipe requests it."
+            "text": " safely when the recipe requests it.\n\nAll Wisdom Stones other than the Inert Wisdom Stone open the "
+          },
+          {
+            "text": "Wisdom Wheel",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when used. This magical diagram allows you to "
+          },
+          {
+            "text": "globally boost the modifiers",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of all of your spells as long as the Wisdom Stone is in your "
+          },
+          {
+            "text": "Wisdom Stone curio slot",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". A Wisdom Stone in the Wisdom Stone curio slot is "
+          },
+          {
+            "text": "never dropped on death",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe Wisdom Wheel can be opened directly with a keybind (default "
+          },
+          {
+            "text": "Numpad -",
+            "color": "dark_purple"
+          },
+          {
+            "text": ") or toggled on and off with a different keybind (default "
+          },
+          {
+            "text": "Numpad +",
+            "color": "dark_purple"
+          },
+          {
+            "text": "). An icon near your magic level on your mana bar will display whether your Wisdom Wheel is currently active or not as long as the Stone is in your curio slot."
           }
         ]
       },
@@ -3332,8 +3374,66 @@
       }
     ]
   },
-  "Elemental Actuators": {
+  "Proto Actuator": {
     "index": "1300",
+    "category": "magichem",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Proto Actuator"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "While the Distillery's internal furnace and increased input and output trays are nice, its Efficiency bonus over a simple Alembic leaves much to be desired. The "
+          },
+          {
+            "text": "Proto Actuator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an early attempt to enhance the device's capabilities.\n\nA Proto Actuator can be plugged into one of the "
+          },
+          {
+            "text": "upgrade ports",
+            "color": "dark_purple"
+          },
+          {
+            "text": " on the sides of alchemical devices. When supplied with at least "
+          },
+          {
+            "text": "10 FE/t",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", the linked device gains +10% Efficiency, 20% reduced operation time, and 20% reduced Grime buildup.\n\nA device can only benefit from one Proto Actuator at a time. Plugging in a second one will confer no additional benefit.\n\nAt Tier 3 and higher you'll be able to create specialized Elemental Actuators that consume elemental essentia and/or Eldrin power instead of FE. You can use both a Proto Actuator and an Elemental Actuator on the same device, but the effects "
+          },
+          {
+            "text": "do not stack",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (for example, a device with both a Proto Actuator and a Deluge Purifier will only use the Purifier's bonus to Efficiency because that bonus is larger)."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "crafting",
+        "location": "magichem:shaped/actuator_neutral"
+      },
+      {
+        "type": "manaweaving_altar",
+        "location": "magichem:manaweaving/power_spike"
+      }
+    ]
+  },
+  "Elemental Actuators": {
+    "index": "1301",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -3346,14 +3446,14 @@
         "value": "",
         "json": [
           {
-            "text": "An "
+            "text": "A "
           },
           {
-            "text": "Elemental Actuator",
+            "text": "Proto Actuator",
             "color": "dark_purple"
           },
           {
-            "text": " is a device that consumes elemental Essentia and/or Eldrin power (and other reagents) in order to enhance an alchemical device. An elemental actuator supplied with both Essentia and appropriate Eldrin power becomes much more effcient, consuming both resources at a much slower rate.\n\nThe Alembic is too simple and crude to make use of Elemental Actuators, but all other devices have at least two ports that an Elemental Actuator can be plugged into. Looking at a port while sneaking will provide you with a list of what Elemental Actuators are compatible with the device.\n\nSlotting multiple copies of an Elemental Actuator into the same device has no effect; only one of the Actuators will have any effect on the target device.\n\nElemental Actuators that use Earth, Water, Air, and Fire Eldrin power can be crafted at Tier 3, while those that use Arcane and Ender Eldrin power can be crafted at Tier 4."
+            "text": " "
           }
         ]
       }
@@ -3386,7 +3486,7 @@
     ]
   },
   "Quake Refinery": {
-    "index": "1301",
+    "index": "1302",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -3442,7 +3542,7 @@
     ]
   },
   "Deluge Purifier": {
-    "index": "1302",
+    "index": "1303",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -3503,7 +3603,7 @@
     ]
   },
   "Inferno Engine": {
-    "index": "1303",
+    "index": "1304",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -3564,7 +3664,7 @@
     ]
   },
   "Gale Pressurizer": {
-    "index": "1304",
+    "index": "1305",
     "category": "magichem",
     "tier": 3,
     "sections": [
@@ -3646,7 +3746,7 @@
     ]
   },
   "Occult Matrix": {
-    "index": "1305",
+    "index": "1306",
     "category": "magichem",
     "tier": 4,
     "sections": [
@@ -3721,7 +3821,7 @@
     ]
   },
   "Labyrinthine Navigator": {
-    "index": "1306",
+    "index": "1307",
     "category": "magichem",
     "tier": 4,
     "sections": [
@@ -3811,7 +3911,7 @@
     ]
   },
   "Standing Retort": {
-    "index": "1307",
+    "index": "1308",
     "category": "magichem",
     "tier": 3,
     "sections": [

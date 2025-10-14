@@ -1,35 +1,32 @@
 {
   "display": {
     "icon": {
-      "item": "magichem:actuator_fire"
+      "item": "magichem:actuator_neutral"
     },
     "title": {
-      "translate": "advancements.magichem.actuator.title"
+      "translate": "advancements.magichem.actuator_neutral.title"
     },
     "description": {
-      "translate": "advancements.magichem.actuator.description"
+      "translate": "advancements.magichem.actuator_neutral.description"
     },
-    "frame": "challenge",
+    "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:actuator_neutral",
+  "parent": "magichem:distillery",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "magichem:actuators"
+            "items": [
+              "magichem:actuator_neutral"
+            ]
           }
         ]
       }
     }
-  },
-  "requirements": [
-    [
-      "requirement"
-    ]
-  ]
+  }
 }
