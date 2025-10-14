@@ -65,7 +65,7 @@ public class OccultismFluidRegistry {
             });
     public static final RegistryObject<Fluid> LIQUEFACTED_SILVER = FLUIDS.register("liquefacted_silver", () -> new ForgeFlowingFluid.Source(getLiquefactedSilverProperties()));
     public static final RegistryObject<FlowingFluid> LIQUEFACTED_SILVER_FLOWING = FLUIDS.register("liquefacted_silver_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedSilverProperties()));
-    public static final RegistryObject<LiquidBlock> LIQUEFACTED_SILVER_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_silver_block", () -> new AcidFluidBlock(LIQUEFACTED_SILVER_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_SILVER_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_silver_block", () -> new LiquidBlock(LIQUEFACTED_SILVER_FLOWING, BlockBehaviour.Properties.copy(Blocks.LAVA)));
 
     public static ForgeFlowingFluid.Properties getLiquefactedSilverProperties() {
         return new ForgeFlowingFluid.Properties(LIQUEFACTED_SILVER_FLUID_TYPE, LIQUEFACTED_SILVER, LIQUEFACTED_SILVER_FLOWING).block(LIQUEFACTED_SILVER_BLOCK).bucket(OccultismItemRegistry.LIQUEFACTED_SILVER_BUCKET);
@@ -104,7 +104,7 @@ public class OccultismFluidRegistry {
             });
     public static final RegistryObject<Fluid> LIQUEFACTED_IESNIUM = FLUIDS.register("liquefacted_iesnium", () -> new ForgeFlowingFluid.Source(getLiquefactedIesniumProperties()));
     public static final RegistryObject<FlowingFluid> LIQUEFACTED_IESNIUM_FLOWING = FLUIDS.register("liquefacted_iesnium_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedIesniumProperties()));
-    public static final RegistryObject<LiquidBlock> LIQUEFACTED_IESNIUM_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_iesnium_block", () -> new AcidFluidBlock(LIQUEFACTED_IESNIUM_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_IESNIUM_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_iesnium_block", () -> new LiquidBlock(LIQUEFACTED_IESNIUM_FLOWING, BlockBehaviour.Properties.copy(Blocks.LAVA)));
 
     public static ForgeFlowingFluid.Properties getLiquefactedIesniumProperties() {
         return new ForgeFlowingFluid.Properties(LIQUEFACTED_IESNIUM_FLUID_TYPE, LIQUEFACTED_IESNIUM, LIQUEFACTED_IESNIUM_FLOWING).block(LIQUEFACTED_IESNIUM_BLOCK).bucket(OccultismItemRegistry.LIQUEFACTED_IESNIUM_BUCKET);

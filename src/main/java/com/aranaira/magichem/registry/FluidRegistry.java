@@ -320,7 +320,7 @@ public class FluidRegistry {
             });
     public static final RegistryObject<Fluid> LIQUEFACTED_COPPER = FLUIDS.register("liquefacted_copper", () -> new ForgeFlowingFluid.Source(getLiquefactedCopperProperties()));
     public static final RegistryObject<FlowingFluid> LIQUEFACTED_COPPER_FLOWING = FLUIDS.register("liquefacted_copper_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedCopperProperties()));
-    public static final RegistryObject<LiquidBlock> LIQUEFACTED_COPPER_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_copper_block", () -> new AcidFluidBlock(LIQUEFACTED_COPPER_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_COPPER_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_copper_block", () -> new LiquidBlock(LIQUEFACTED_COPPER_FLOWING, BlockBehaviour.Properties.copy(Blocks.LAVA)));
 
     public static ForgeFlowingFluid.Properties getLiquefactedCopperProperties() {
         return new ForgeFlowingFluid.Properties(LIQUEFACTED_COPPER_FLUID_TYPE, LIQUEFACTED_COPPER, LIQUEFACTED_COPPER_FLOWING).block(LIQUEFACTED_COPPER_BLOCK).bucket(ItemRegistry.LIQUEFACTED_COPPER_BUCKET);
@@ -359,7 +359,7 @@ public class FluidRegistry {
             });
     public static final RegistryObject<Fluid> LIQUEFACTED_IRON = FLUIDS.register("liquefacted_iron", () -> new ForgeFlowingFluid.Source(getLiquefactedIronProperties()));
     public static final RegistryObject<FlowingFluid> LIQUEFACTED_IRON_FLOWING = FLUIDS.register("liquefacted_iron_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedIronProperties()));
-    public static final RegistryObject<LiquidBlock> LIQUEFACTED_IRON_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_iron_block", () -> new AcidFluidBlock(LIQUEFACTED_IRON_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_IRON_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_iron_block", () -> new LiquidBlock(LIQUEFACTED_IRON_FLOWING, BlockBehaviour.Properties.copy(Blocks.LAVA)));
 
     public static ForgeFlowingFluid.Properties getLiquefactedIronProperties() {
         return new ForgeFlowingFluid.Properties(LIQUEFACTED_IRON_FLUID_TYPE, LIQUEFACTED_IRON, LIQUEFACTED_IRON_FLOWING).block(LIQUEFACTED_IRON_BLOCK).bucket(ItemRegistry.LIQUEFACTED_IRON_BUCKET);
@@ -398,7 +398,7 @@ public class FluidRegistry {
             });
     public static final RegistryObject<Fluid> LIQUEFACTED_GOLD = FLUIDS.register("liquefacted_gold", () -> new ForgeFlowingFluid.Source(getLiquefactedGoldProperties()));
     public static final RegistryObject<FlowingFluid> LIQUEFACTED_GOLD_FLOWING = FLUIDS.register("liquefacted_gold_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedGoldProperties()));
-    public static final RegistryObject<LiquidBlock> LIQUEFACTED_GOLD_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_gold_block", () -> new AcidFluidBlock(LIQUEFACTED_GOLD_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_GOLD_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_gold_block", () -> new LiquidBlock(LIQUEFACTED_GOLD_FLOWING, BlockBehaviour.Properties.copy(Blocks.LAVA)));
 
     public static ForgeFlowingFluid.Properties getLiquefactedGoldProperties() {
         return new ForgeFlowingFluid.Properties(LIQUEFACTED_GOLD_FLUID_TYPE, LIQUEFACTED_GOLD, LIQUEFACTED_GOLD_FLOWING).block(LIQUEFACTED_GOLD_BLOCK).bucket(ItemRegistry.LIQUEFACTED_GOLD_BUCKET);
@@ -437,7 +437,7 @@ public class FluidRegistry {
             });
     public static final RegistryObject<Fluid> LIQUEFACTED_DEBRIS = FLUIDS.register("liquefacted_debris", () -> new ForgeFlowingFluid.Source(getLiquefactedDebrisProperties()));
     public static final RegistryObject<FlowingFluid> LIQUEFACTED_DEBRIS_FLOWING = FLUIDS.register("liquefacted_debris_flowing", () -> new ForgeFlowingFluid.Flowing(getLiquefactedDebrisProperties()));
-    public static final RegistryObject<LiquidBlock> LIQUEFACTED_DEBRIS_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_debris_block", () -> new AcidFluidBlock(LIQUEFACTED_DEBRIS_FLOWING.get(), BlockBehaviour.Properties.copy(Blocks.LAVA)));
+    public static final RegistryObject<LiquidBlock> LIQUEFACTED_DEBRIS_BLOCK = BlockRegistry.BLOCKS.register("liquefacted_debris_block", () -> new LiquidBlock(LIQUEFACTED_DEBRIS_FLOWING, BlockBehaviour.Properties.copy(Blocks.LAVA)));
 
     public static ForgeFlowingFluid.Properties getLiquefactedDebrisProperties() {
         return new ForgeFlowingFluid.Properties(LIQUEFACTED_DEBRIS_FLUID_TYPE, LIQUEFACTED_DEBRIS, LIQUEFACTED_DEBRIS_FLOWING).block(LIQUEFACTED_DEBRIS_BLOCK).bucket(ItemRegistry.LIQUEFACTED_DEBRIS_BUCKET);
