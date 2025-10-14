@@ -678,7 +678,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
                 }
 
                 if(amountToAdd > 0)
-                    result.put((MateriaItem)recipeMateria.getItem(), amountToAdd);
+                    result.put((MateriaItem)recipeMateria.getItem(), amountToAdd*batchSize);
             }
         }
 

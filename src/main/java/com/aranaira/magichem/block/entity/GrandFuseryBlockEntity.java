@@ -1038,7 +1038,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
                 }
 
                 if(amountToAdd > 0)
-                    result.put((MateriaItem)recipeMateria.getItem(), amountToAdd);
+                    result.put((MateriaItem)recipeMateria.getItem(), amountToAdd*batchSize);
             }
         }
 
