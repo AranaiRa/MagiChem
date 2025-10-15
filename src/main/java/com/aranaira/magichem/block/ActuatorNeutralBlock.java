@@ -1,25 +1,18 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.ActuatorNeutralBlockEntity;
-import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
-import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
-import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -93,7 +86,7 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {
-            if(be instanceof ActuatorWaterBlockEntity awbe) {
+            if(be instanceof ActuatorNeutralBlockEntity awbe) {
                 awbe.checkPaused();
             }
         }
@@ -102,9 +95,17 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
 
     @Override
     public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
-        pLevel.destroyBlock(pPos.above(), true);
-
         super.destroy(pLevel, pPos, pState);
+    }
+
+    @Override
+    public void onPlace(BlockState pNewState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        super.onPlace(pNewState, pLevel, pPos, pOldState, pMovedByPiston);
+
+        ActuatorNeutralBlockEntity aebe = (ActuatorNeutralBlockEntity) pLevel.getBlockEntity(pPos);
+        ICanTakePlugins ictp = aebe.getTargetMachine();
+        if(ictp != null)
+            ictp.linkPluginsDeferred();
     }
 
     @Override
@@ -153,6 +154,10 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if(player.getItemInHand(hand).getItem() == BlockRegistry.POWER_SPIKE.get().asItem()) {
+            return InteractionResult.PASS;
+        }
+
         return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
@@ -165,8 +170,8 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_WATER_BE.get()) {
-            return ActuatorWaterBlockEntity::tick;
+        if(pBlockEntityType == BlockEntitiesRegistry.ACTUATOR_NEUTRAL_BE.get()) {
+            return ActuatorNeutralBlockEntity::tick;
         }
         return null;
     }
