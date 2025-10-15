@@ -178,7 +178,7 @@ public class ActuatorAirBlock extends BaseEntityBlock {
             ItemStack heldItem = player.getItemInHand(hand);
             LazyOptional<IFluidHandlerItem> fluidCap = heldItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
 
-            if (fluidCap.isPresent()) {
+            if (!heldItem.isEmpty() && fluidCap.isPresent()) {
                 BlockEntity be = level.getBlockEntity(pos);
                 if(be instanceof ActuatorAirBlockEntity aabe) {
                     fluidCap.ifPresent(cap -> {

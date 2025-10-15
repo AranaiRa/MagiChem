@@ -186,7 +186,7 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
             ItemStack heldItem = player.getItemInHand(hand);
             LazyOptional<IFluidHandlerItem> fluidCap = heldItem.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
 
-            if (fluidCap.isPresent()) {
+            if (!heldItem.isEmpty() && fluidCap.isPresent()) {
                 BlockEntity be = level.getBlockEntity(pos);
                 if(be instanceof ActuatorFireBlockEntity afbe) {
                     fluidCap.ifPresent(cap -> {
