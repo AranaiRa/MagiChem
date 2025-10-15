@@ -243,7 +243,7 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
         //Materia export rate
         if(!menu.blockEntity.getIsSatisfied() || menu.blockEntity.getPaused())
             gui.drawString(font, Component.literal("-"), 124, 32, 0xffaa0000, false);
-        else if(menu.blockEntity.getPowerLevel() <= 2)
+        else if(menu.blockEntity.getPowerLevel() == 1)
             gui.drawString(font, Component.translatable("tooltip.magichem.gui.actuator.ender.speed.fast"), 124, 32, 0xff000000, false);
         else
             gui.drawString(font, Component.translatable("tooltip.magichem.gui.actuator.ender.speed.instant.export"), 124, 32, 0xff000000, false);

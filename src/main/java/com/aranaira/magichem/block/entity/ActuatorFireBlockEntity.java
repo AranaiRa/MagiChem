@@ -60,14 +60,14 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
-            ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
-            SMOKE_PER_PROCESS = {0, 3, 5, 7, 10, 13, 17, 22, 27, 33, 39, 46, 53, 61};
+            ELDRIN_POWER_USAGE = {0, 1, 4, 16},
+            SMOKE_PER_PROCESS = {0, 15, 30, 60};
     private static final float[]
-            POWER_REDUCTION_BASE = {0, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48},
-            POWER_REDUCTION_FUEL_NORMAL = {0, 30, 32.5f, 35, 37.5f, 40, 42.5f, 45, 47.5f, 50, 52.5f, 55, 57.5f, 60},
-            POWER_REDUCTION_FUEL_SUPER = {0, 36, 39, 42, 45, 48, 51, 54, 57, 60 ,63, 66, 69, 72};
+            POWER_REDUCTION_BASE = {0, 30, 45, 60},
+            POWER_REDUCTION_FUEL_NORMAL = {0, 35, 55, 75},
+            POWER_REDUCTION_FUEL_SUPER = {0, 37.5f, 60, 85};
     public static final int
-            MAX_POWER_LEVEL = 13,
+            MAX_POWER_LEVEL = 3,
             SLOT_COUNT = 3,
             SLOT_FUEL = 0, SLOT_ESSENTIA_INSERTION = 1, SLOT_BOTTLES = 2,
             FLAG_IS_SATISFIED = 1, FLAG_REDUCTION_TYPE_POWER = 2, FLAG_FUEL_NORMAL = 4, FLAG_FUEL_SUPER = 8, FLAG_FUEL_SATISFACTION_TYPE = 12, FLAG_IS_PAUSED = 16;
@@ -212,7 +212,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("remainingCycleTime", remainingCycleTime);
-        nbt.putInt("powerLevel", powerLevel);
+        this.powerLevel = Math.min(MAX_POWER_LEVEL,nbt.getInt("powerLevel"));
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);

@@ -57,12 +57,12 @@ import java.util.Map;
 public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IFluidHandler, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
-            ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
-            WATER_PER_OPERATION = {0, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440, 470, 500},
-            STEAM_PER_PROCESS = {0, 3, 5, 7, 10, 13, 17, 22, 27, 33, 39, 46, 53, 61},
-            EFFICIENCY_INCREASE = {0, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40};
+            ELDRIN_POWER_USAGE = {0, 1, 4, 16},
+            WATER_PER_OPERATION = {0, 40, 120, 200},
+            STEAM_PER_PROCESS = {0, 15, 30, 60},
+            EFFICIENCY_INCREASE = {0, 25, 35, 40};
     public static final int
-            MAX_POWER_LEVEL = 13,
+            MAX_POWER_LEVEL = 3,
             SLOT_COUNT = 2,
             SLOT_ESSENTIA_INSERTION = 0, SLOT_BOTTLES = 1,
             TANK_ID_WATER = 0, TANK_ID_STEAM = 1,
@@ -203,7 +203,7 @@ public class ActuatorWaterBlockEntity extends AbstractDirectionalPluginBlockEnti
             this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         }
         this.remainingCycleTime = nbt.getInt("remainingCycleTime");
-        this.powerLevel = nbt.getInt("powerLevel");
+        this.powerLevel = Math.min(MAX_POWER_LEVEL,nbt.getInt("powerLevel"));
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");

@@ -53,11 +53,11 @@ import java.util.Map;
 public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
-            ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
-            SAND_PER_OPERATION = {0, 45, 50, 55, 60, 70, 80, 90, 105, 120, 135, 155, 175, 200},
-            GRIME_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
+            ELDRIN_POWER_USAGE = {0, 1, 4, 16},
+            SAND_PER_OPERATION = {0, 20, 40, 80},
+            GRIME_REDUCTION = {0, 40, 65, 90};
     public static final int
-            MAX_POWER_LEVEL = 13,
+            MAX_POWER_LEVEL = 3,
             SLOT_COUNT = 5, SLOT_SAND = 0, SLOT_WASTE = 1, SLOT_RAREFIED_WASTE = 2, SLOT_ESSENTIA_INSERTION = 3, SLOT_BOTTLES = 4,
             DATA_COUNT = 6, DATA_REMAINING_ELDRIN_TIME = 0, DATA_POWER_LEVEL = 1, DATA_FLAGS = 2, DATA_SAND = 3, DATA_GRIME = 4, DATA_RAREFIED_GRIME = 5,
             FLAG_IS_SATISFIED = 1, FLAG_IS_PAUSED = 2,
@@ -183,7 +183,7 @@ public class ActuatorEarthBlockEntity extends AbstractDirectionalPluginBlockEnti
             this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         }
         this.remainingCycleTime = nbt.getInt("remainingCycleTime");
-        this.powerLevel = nbt.getInt("powerLevel");
+        this.powerLevel = Math.min(MAX_POWER_LEVEL,nbt.getInt("powerLevel"));
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");

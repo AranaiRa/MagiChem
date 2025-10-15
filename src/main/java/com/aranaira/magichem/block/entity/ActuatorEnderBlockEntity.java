@@ -53,9 +53,9 @@ import java.util.Random;
 public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IPluginDevice, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
-            ELDRIN_POWER_USAGE = {0, 1, 28, 100};
+            ELDRIN_POWER_USAGE = {0, 4, 16};
     public static final int
-            MAX_POWER_LEVEL = 3,
+            MAX_POWER_LEVEL = 2,
             SLOT_COUNT = 3, SLOT_MARK = 0, SLOT_ESSENTIA_INSERTION = 1, SLOT_BOTTLES = 2;
     protected ContainerData data;
     public static final MateriaItem ESSENTIA_ENDER = ItemRegistry.getEssentiaMap(false, false).get("ender");
@@ -156,7 +156,7 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
             this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         }
         this.remainingCycleTime = nbt.getInt("remainingCycleTime");
-        this.powerLevel = nbt.getInt("powerLevel");
+        this.powerLevel = Math.min(MAX_POWER_LEVEL,nbt.getInt("powerLevel"));
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");

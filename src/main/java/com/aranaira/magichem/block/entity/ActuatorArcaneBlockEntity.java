@@ -55,11 +55,11 @@ import java.util.Map;
 public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEntity implements MenuProvider, IFluidHandler, IPluginDevice, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
 
     private static final int[]
-            ELDRIN_POWER_USAGE = {0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 67, 82, 100},
-            SLURRY_PER_OPERATION = {0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
-            SLURRY_REDUCTION = {0, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70};
+            ELDRIN_POWER_USAGE = {0, 4, 16},
+            SLURRY_PER_OPERATION = {0, 6, 12},
+            SLURRY_REDUCTION = {0, 35, 70};
     public static final int
-            MAX_POWER_LEVEL = 13,
+            MAX_POWER_LEVEL = 2,
             SLOT_COUNT = 4, SLOT_INPUT = 0, SLOT_OUTPUT = 1, SLOT_ESSENTIA_INSERTION = 2, SLOT_BOTTLES = 3,
             FLAG_IS_REDUCTION_MODE = 1;
     private int
@@ -201,7 +201,7 @@ public class ActuatorArcaneBlockEntity extends AbstractDirectionalPluginBlockEnt
             this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         }
         this.remainingCycleTime = nbt.getInt("remainingCycleTime");
-        this.powerLevel = nbt.getInt("powerLevel");
+        this.powerLevel = Math.min(MAX_POWER_LEVEL,nbt.getInt("powerLevel"));
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");

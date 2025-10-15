@@ -159,7 +159,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 if (ender.getIsSatisfied()) {
                     //exporting
                     if (ender.getMirrorTarget() != null) {
-                        boolean instant = ender.getPowerLevel() == 3;
+                        boolean instant = ender.getPowerLevel() == 2;
                         if (instant || pLevel.getGameTime() % 10 == 0) {
                             final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();
                             if (!outputs.isEmpty()) {

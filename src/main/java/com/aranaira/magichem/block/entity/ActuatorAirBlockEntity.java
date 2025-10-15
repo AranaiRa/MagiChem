@@ -250,7 +250,7 @@ public class ActuatorAirBlockEntity extends AbstractDirectionalPluginBlockEntity
             this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         }
         this.remainingCycleTime = nbt.getInt("remainingCycleTime");
-        this.powerLevel = nbt.getInt("powerLevel");
+        this.powerLevel = Math.min(MAX_POWER_LEVEL,nbt.getInt("powerLevel"));
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");

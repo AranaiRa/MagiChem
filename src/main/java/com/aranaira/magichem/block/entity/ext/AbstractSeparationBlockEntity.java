@@ -141,7 +141,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                     //exporting
                     if (ender.getMirrorTarget() != null) {
                         final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();
-                        boolean instant = ender.getPowerLevel() == 3;
+                        boolean instant = ender.getPowerLevel() == 2;
                         if (instant || pLevel.getGameTime() % 10 == 0) {
                             if (!outputs.isEmpty()) {
                                 for (int i = 0; i < outputs.getContainerSize(); i++) {
