@@ -58,7 +58,7 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
         b_powerLevelDown = this.addRenderableWidget(new ImageButton(this.leftPos + 26, this.topPos + 53, 12, 7, 188, 26, TEXTURE, button -> {
             menu.decrementPowerLevel();
         }));
-        this.addRenderableWidget(new ImageButton(this.leftPos + 218, this.topPos + 12, 11, 11, 238, 0, TEXTURE, button -> {
+        this.addRenderableWidget(new ImageButton(this.leftPos + 218, this.topPos + 12, 11, 11, 97, 174, TEXTURE, button -> {
             menu.toggleEldrinMode();
         }));
     }
@@ -76,11 +76,11 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
 
         //mark slot bg
         gui.pose().scale(0.5f, 0.5f, 0.5f);
-        gui.blit(TEXTURE, x*2 + 174, y*2 + 44, 202, 0, 36, 36);
+        gui.blit(TEXTURE, x*2 + 174, y*2 + 44, 210, 0, 36, 36);
         gui.pose().scale(2.0f, 2.0f, 2.0f);
 
         //power level
-        int plH = (menu.blockEntity.getPowerLevel() - 1) * 12 + 2;
+        int plH = 17 + (menu.blockEntity.getPowerLevel() - 1) * 9;
         int plY = POWER_H - plH;
         gui.blit(TEXTURE, x + 28, y + 19 + plY, POWER_U, plY, POWER_W, plH);
 
@@ -96,6 +96,9 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
 
         //Power draw
         gui.blit(TEXTURE, x + 211, y, 40, 174 + (menu.blockEntity.doEldrinPowerConsumption ? 28 : 0), 57, 28);
+
+        //Tier blocks
+        gui.blit(TEXTURE, x + 28, y + 19, 202, 0, 8, menu.getTier() <= 3 ? 18 : (menu.getTier() == 4 ? 9 : 0));
     }
 
     @Override

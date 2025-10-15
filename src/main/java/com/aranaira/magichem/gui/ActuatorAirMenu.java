@@ -11,6 +11,8 @@ import com.aranaira.magichem.registry.MenuRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.mna.api.affinity.Affinity;
+import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
+import com.mna.capabilities.playerdata.progression.PlayerProgressionProvider;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,12 +33,16 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
     public final ActuatorAirBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
+    private int tier = 0;
 
     private static final int
         SLOT_FUEL_X = 70, SLOT_FUEL_Y = 36;
 
     public ActuatorAirMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
         this(id, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(0));
+        inv.player.getCapability(PlayerProgressionProvider.PROGRESSION).ifPresent(p -> {
+            tier = p.getTier();
+        });
     }
 
     public ActuatorAirMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -55,6 +61,10 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
         });
 
         addDataSlots(data);
+
+        inv.player.getCapability(PlayerProgressionProvider.PROGRESSION).ifPresent(p -> {
+            tier = p.getTier();
+        });
     }
 
     @Override
@@ -77,8 +87,9 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
     }
 
     public void incrementPowerLevel() {
+        int maxPowerLevel = Math.max(0, tier - 3) + 1;
         int previous = blockEntity.getPowerLevel();
-        int current = Math.min(getValue(IDs.MAX_POWER_LEVEL), blockEntity.getPowerLevel() + 1);
+        int current = Math.min(maxPowerLevel, blockEntity.getPowerLevel() + 1);
         if(previous != current) {
             PacketRegistry.sendToServer(new ActuatorSyncPowerLevelC2SPacket(
                     blockEntity.getBlockPos(), true, Affinity.WIND
@@ -101,6 +112,10 @@ public class ActuatorAirMenu extends AbstractContainerMenu {
         PacketRegistry.sendToServer(new ActuatorToggleEldrinC2SPacket(
                 blockEntity.getBlockPos(), blockEntity.doEldrinPowerConsumption
         ));
+    }
+
+    public int getTier() {
+        return tier;
     }
 
     private static final int
