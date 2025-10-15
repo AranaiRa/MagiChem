@@ -258,6 +258,34 @@ public class ServerConfig
             .comment("How much FE/tick the Circle of Power generates when it has all four reagents")
             .defineInRange("circlePowerGen4", 75000, 4, Integer.MAX_VALUE);
 
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_1_REPROCESSING_TYPE = BUILDER
+            .comment("How does the reprocessing chain work for the Circle of Power's first reagent (Grains of Quicksilver)?")
+            .comment("0: Default behavior")
+            .comment("1: Reagent burns 10 times longer")
+            .comment("2: Reagent is never consumed")
+            .defineInRange("circlePowerReprocessing1", 0, 0, 2);
+
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_2_REPROCESSING_TYPE = BUILDER
+            .comment("How does the reprocessing chain work for the Circle of Power's second reagent (Focusing Catalyst)?")
+            .comment("0: Default behavior")
+            .comment("1: One-step reprocessing, Reagent burns 10 times longer")
+            .comment("2: Reagent is never consumed")
+            .defineInRange("circlePowerReprocessing2", 0, 0, 2);
+
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_3_REPROCESSING_TYPE = BUILDER
+            .comment("How does the reprocessing chain work for the Circle of Power's third reagent (Amplifying Prism)?")
+            .comment("0: Default behavior")
+            .comment("1: One-step reprocessing, Reagent burns 10 times longer")
+            .comment("2: Reagent is never consumed")
+            .defineInRange("circlePowerReprocessing3", 0, 0, 2);
+
+    private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_GEN_4_REPROCESSING_TYPE = BUILDER
+            .comment("How does the reprocessing chain work for the Circle of Power's final reagent (Auxiliary Circle Array)?")
+            .comment("0: Default behavior")
+            .comment("1: One-step reprocessing, Reagent burns 10 times longer")
+            .comment("2: Reagent is never consumed")
+            .defineInRange("circlePowerReprocessing4", 0, 0, 2);
+
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_BUFFER = BUILDER
             .comment("How many ticks of activity the Circle of Power stores at once")
             .defineInRange("circlePowerBuffer", 3, 1, 72000);
@@ -370,7 +398,7 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue COLORING_CAULDRON_BASE_OPERATION_TIME = BUILDER
             .comment("The amount of time, in ticks, that it takes for a Coloring Cauldron with one dye to color an item. This time is exponentially reduced with more dyes down to a quarter at 15 dyes.")
-            .defineInRange("coloringCauldronBaseOperationTime", 1200, 10, Integer.MAX_VALUE);
+            .defineInRange("coloringCauldronBaseOperationTime", 300, 10, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue COLORING_CAULDRON_POSITIVE_CHARGES = BUILDER
             .comment("The number of items that a Coloring Cauldron can color per unit of dye when in positive mode.")
@@ -384,11 +412,11 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_OPERATION_TIME_SLOW = BUILDER
             .comment("The amount of time, in ticks, a Variegator requires to dye something if there is insufficient dye/Admixture of Color.")
-            .defineInRange("variegatorOperationTimeSlow", 1200, 1, Integer.MAX_VALUE);
+            .defineInRange("variegatorOperationTimeSlow", 300, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_OPERATION_TIME_FAST = BUILDER
             .comment("The amount of time, in ticks, a Variegator requires to dye something if appropriate dye/Admixture of Color is provided.")
-            .defineInRange("variegatorOperationTimeFast", 50, 1, Integer.MAX_VALUE);
+            .defineInRange("variegatorOperationTimeFast", 40, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue VARIEGATOR_MATCHED_COLOR_TIME_DISCOUNT = BUILDER
             .comment("What percentage the crafting time is reduced by if both Admixture of Color and a full bar of the appropriate dye are present. This is linearly reduced with the fill of the dye gauge.")
@@ -519,6 +547,10 @@ public class ServerConfig
         circlePowerGen2Reagent,
         circlePowerGen3Reagent,
         circlePowerGen4Reagent,
+        circlePowerReprocessingType1Reagent,
+        circlePowerReprocessingType2Reagent,
+        circlePowerReprocessingType3Reagent,
+        circlePowerReprocessingType4Reagent,
         circlePowerBuffer,
         circleToilGen,
         circleToilBuffer,
@@ -628,6 +660,10 @@ public class ServerConfig
         circlePowerGen2Reagent = CIRCLE_OF_POWER_GEN_2_REAGENT.get();
         circlePowerGen3Reagent = CIRCLE_OF_POWER_GEN_3_REAGENT.get();
         circlePowerGen4Reagent = CIRCLE_OF_POWER_GEN_4_REAGENT.get();
+        circlePowerReprocessingType1Reagent = CIRCLE_OF_POWER_GEN_1_REPROCESSING_TYPE.get();
+        circlePowerReprocessingType2Reagent = CIRCLE_OF_POWER_GEN_2_REPROCESSING_TYPE.get();
+        circlePowerReprocessingType3Reagent = CIRCLE_OF_POWER_GEN_3_REPROCESSING_TYPE.get();
+        circlePowerReprocessingType4Reagent = CIRCLE_OF_POWER_GEN_4_REPROCESSING_TYPE.get();
         circlePowerBuffer = CIRCLE_OF_POWER_BUFFER.get();
         circleToilGen = CIRCLE_OF_TOIL_GEN.get();
         circleToilBuffer = CIRCLE_OF_TOIL_BUFFER.get();
@@ -668,5 +704,115 @@ public class ServerConfig
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
         materiaManifestDefaultRange = MATERIA_MANIFEST_DEFAULT_RANGE.get();
         slumberingIdolRange = SLUMBERING_IDOL_RANGE.get();
+    }
+
+    public static int getIntValue(String pConfigID) {
+        return switch(pConfigID) {
+            case "grimePerWaste" -> grimePerWaste;
+            case "grimePenaltyPoint" -> grimePenaltyPoint;
+            case "fluidPerXPPoint" -> fluidPerXPPoint;
+            case "constructStudyExperienceSimple" -> constructStudyExperienceSimple;
+            case "constructStudyExperienceAdvanced" -> constructStudyExperienceAdvanced;
+            case "constructStudyExperienceMaster" -> constructStudyExperienceMaster;
+            case "houseOfAlchemyDistillationEfficiencyBonus" -> houseOfAlchemyDistillationEfficiencyBonus;
+            case "fixationBaseSlurryCost" -> fixationBaseSlurryCost;
+            case "fixationSlurryCompoundCost" -> fixationSlurryCompoundCost;
+            case "fixationFailureRefund" -> fixationFailureRefund;
+            case "alembicEfficiency" -> alembicEfficiency;
+            case "alembicOperationTime" -> alembicOperationTime;
+            case "alembicMaximumGrime" -> alembicMaximumGrime;
+            case "alembicGrimeOnSuccess" -> alembicGrimeOnSuccess;
+            case "alembicGrimeOnFailure" -> alembicGrimeOnFailure;
+            case "alembicBonusWaste" -> alembicBonusWaste;
+            case "alembicTankCapacity" -> alembicTankCapacity;
+            case "distilleryEfficiency" -> distilleryEfficiency;
+            case "distilleryOperationTime" -> distilleryOperationTime;
+            case "distilleryMaximumGrime" -> distilleryMaximumGrime;
+            case "distilleryGrimeOnSuccess" -> distilleryGrimeOnSuccess;
+            case "distilleryGrimeOnFailure" -> distilleryGrimeOnFailure;
+            case "distilleryTankCapacity" -> distilleryTankCapacity;
+            case "centrifugeEfficiency" -> centrifugeEfficiency;
+            case "centrifugeOperationTime" -> centrifugeOperationTime;
+            case "centrifugeMaximumGrime" -> centrifugeMaximumGrime;
+            case "centrifugeGrimeOnSuccess" -> centrifugeGrimeOnSuccess;
+            case "centrifugeGrimeOnFailure" -> centrifugeGrimeOnFailure;
+            case "fuseryEfficiency" -> fuseryEfficiency;
+            case "fuseryOperationTime" -> fuseryOperationTime;
+            case "fuseryMaximumGrime" -> fuseryMaximumGrime;
+            case "fuseryGrimeOnSuccess" -> fuseryGrimeOnSuccess;
+            case "fuseryGrimeOnFailure" -> fuseryGrimeOnFailure;
+            case "fuseryTankCapacity" -> fuseryTankCapacity;
+            case "grandDistilleryEfficiency" -> grandDistilleryEfficiency;
+            case "grandDistilleryMaximumGrime" -> grandDistilleryMaximumGrime;
+            case "grandDistilleryGrimeOnSuccess" -> grandDistilleryGrimeOnSuccess;
+            case "grandDistilleryGrimeOnFailure" -> grandDistilleryGrimeOnFailure;
+            case "grandDistilleryTankCapacity" -> grandDistilleryTankCapacity;
+            case "grandCentrifugeEfficiency" -> grandCentrifugeEfficiency;
+            case "grandCentrifugeMaximumGrime" -> grandCentrifugeMaximumGrime;
+            case "grandCentrifugeGrimeOnSuccess" -> grandCentrifugeGrimeOnSuccess;
+            case "grandCentrifugeGrimeOnFailure" -> grandCentrifugeGrimeOnFailure;
+            case "grandFuseryEfficiency" -> grandFuseryEfficiency;
+            case "grandFuseryMaximumGrime" -> grandFuseryMaximumGrime;
+            case "grandFuseryGrimeOnSuccess" -> grandFuseryGrimeOnSuccess;
+            case "grandFuseryGrimeOnFailure" -> grandFuseryGrimeOnFailure;
+            case "grandFuseryTankCapacity" -> grandFuseryTankCapacity;
+            case "alchemicalNexusTankCapacity" -> alchemicalNexusTankCapacity;
+            case "circlePowerGen1Reagent" -> circlePowerGen1Reagent;
+            case "circlePowerGen2Reagent" -> circlePowerGen2Reagent;
+            case "circlePowerGen3Reagent" -> circlePowerGen3Reagent;
+            case "circlePowerGen4Reagent" -> circlePowerGen4Reagent;
+            case "circlePowerReprocessingType1Reagent" -> circlePowerReprocessingType1Reagent;
+            case "circlePowerReprocessingType2Reagent" -> circlePowerReprocessingType2Reagent;
+            case "circlePowerReprocessingType3Reagent" -> circlePowerReprocessingType3Reagent;
+            case "circlePowerReprocessingType4Reagent" -> circlePowerReprocessingType4Reagent;
+            case "circlePowerBuffer" -> circlePowerBuffer;
+            case "circleToilGen" -> circleToilGen;
+            case "circleToilBuffer" -> circleToilBuffer;
+            case "circleFabricationTankCapacity" -> circleFabricationTankCapacity;
+            case "grandCircleFabricationTankCapacity" -> grandCircleFabricationTankCapacity;
+            case "materiaJarEssentiaCapacity" -> materiaJarEssentiaCapacity;
+            case "materiaJarAdmixtureCapacity" -> materiaJarAdmixtureCapacity;
+            case "materiaVesselEssentiaCapacity" -> materiaVesselEssentiaCapacity;
+            case "materiaVesselAdmixtureCapacity" -> materiaVesselAdmixtureCapacity;
+            case "actuatorSingleSuppliedPeriod" -> actuatorSingleSuppliedPeriod;
+            case "actuatorDoubleSuppliedPeriod" -> actuatorDoubleSuppliedPeriod;
+            case "actuatorMateriaBufferMaximum" -> actuatorMateriaBufferMaximum;
+            case "actuatorMateriaUnitsPerDram" -> actuatorMateriaUnitsPerDram;
+            case "protoActuatorFECost" -> protoActuatorFECost;
+            case "delugePurifierTankCapacity" -> delugePurifierTankCapacity;
+            case "infernoEngineTankCapacity" -> infernoEngineTankCapacity;
+            case "quakeRefinerySandCapacity" -> quakeRefinerySandCapacity;
+            case "quakeRefineryGrimeCapacity" -> quakeRefineryGrimeCapacity;
+            case "quakeRefineryRarefiedRate" -> quakeRefineryRarefiedRate;
+            case "galePressurizerTankCapacity" -> galePressurizerTankCapacity;
+            case "occultMatrixTankCapacity" -> occultMatrixTankCapacity;
+            case "coloringCauldronBaseOperationTime" -> coloringCauldronBaseOperationTime;
+            case "coloringCauldronPositiveCharges" -> coloringCauldronPositiveCharges;
+            case "coloringCauldronNegativeCharges" -> coloringCauldronNegativeCharges;
+            case "variegatorOperationTimeSlow" -> variegatorOperationTimeSlow;
+            case "variegatorOperationTimeFast" -> variegatorOperationTimeFast;
+            case "variegatorMatchedColorTimeDiscount" -> variegatorMatchedColorTimeDiscount;
+            case "variegatorMaxDye" -> variegatorMaxDye;
+            case "variegatorDyePerItem" -> variegatorDyePerItem;
+            case "variegatorMaxAdmixture" -> variegatorMaxAdmixture;
+            case "variegatorAdmixturePerItem" -> variegatorAdmixturePerItem;
+            case "conjurerMateriaCapacity" -> conjurerMateriaCapacity;
+            case "conjurerPointsPerDram" -> conjurerPointsPerDram;
+            case "skywrathAltarFERechargePercentage" -> skywrathAltarFERechargePercentage;
+            case "skywrathAltarFERechargeLimit" -> skywrathAltarFERechargeLimit;
+            case "acidBasinTankCapacity" -> acidBasinTankCapacity;
+            case "materiaManifestSizeConstraint" -> materiaManifestSizeConstraint;
+            case "materiaManifestDistanceLimit" -> materiaManifestDistanceLimit;
+            case "materiaManifestDefaultRange" -> materiaManifestDefaultRange;
+            case "slumberingIdolRange" -> slumberingIdolRange;
+            default -> throw new IllegalStateException("Unexpected value: " + pConfigID);
+        };
+    }
+
+    public static boolean getBooleanValue(String pConfigID) {
+        return switch(pConfigID) {
+            case "canAzothDestroyBedrock" -> canAzothDestroyBedrock;
+            default -> throw new IllegalStateException("Unexpected value: " + pConfigID);
+        };
     }
 }

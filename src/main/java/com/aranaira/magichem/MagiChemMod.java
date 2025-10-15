@@ -1,9 +1,9 @@
 package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.entity.renderer.*;
+import com.aranaira.magichem.conditions.ConfigIntCondition;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.data.DamageTypeProvider;
-import com.aranaira.magichem.events.ClientEventHandler;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -109,6 +110,7 @@ public class MagiChemMod
         event.enqueueWork(() -> {
             CantripRegistry.register();
             ConstructFluidSprayRegistry.register();
+            CraftingHelper.register(ConfigIntCondition.Serializer.INSTANCE);
         });
 
         PacketRegistry.register();
