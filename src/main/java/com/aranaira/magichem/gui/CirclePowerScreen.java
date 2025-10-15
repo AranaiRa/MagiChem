@@ -42,22 +42,22 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
         gui.blit(TEXTURE, x, y, 0, 0, w, h);
 
         //Progress Bars
-        if(ServerConfig.circlePowerReprocessingType1Reagent < 2)
+        if(!ServerConfig.circlePowerReprocessing1Eternal)
             renderProgressBar(1, gui, x + 23, y + 42);
         else if(menu.blockEntity.hasReagent(1))
             gui.blit(TEXTURE, x + 23, y + 42, 0, 253, 22, 3);
 
-        if(ServerConfig.circlePowerReprocessingType2Reagent < 2)
+        if(!ServerConfig.circlePowerReprocessing2Eternal)
             renderProgressBar(2, gui, x + 59, y + 42);
         else if(menu.blockEntity.hasReagent(2))
             gui.blit(TEXTURE, x + 59, y + 42, 0, 253, 22, 3);
 
-        if(ServerConfig.circlePowerReprocessingType3Reagent < 2)
+        if(!ServerConfig.circlePowerReprocessing3Eternal)
             renderProgressBar(3, gui, x + 95, y + 42);
         else if(menu.blockEntity.hasReagent(3))
             gui.blit(TEXTURE, x + 95, y + 42, 0, 253, 22, 3);
 
-        if(ServerConfig.circlePowerReprocessingType4Reagent < 2)
+        if(!ServerConfig.circlePowerReprocessing4Eternal)
             renderProgressBar(4, gui, x + 131, y + 42);
         else if(menu.blockEntity.hasReagent(4))
             gui.blit(TEXTURE, x + 131, y + 42, 0, 253, 22, 3);
@@ -68,13 +68,13 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
         gui.blit(TEXTURE, x + 2, y - 30, 0, 167, 172, 25);
 
         //Slot backgrounds
-        if(ServerConfig.circlePowerReprocessingType1Reagent < 2)
+        if(!ServerConfig.circlePowerReprocessing1Eternal)
             gui.blit(TEXTURE, x + 25, y + 46, 176, 32, 18, 28);
-        if(ServerConfig.circlePowerReprocessingType2Reagent < 2)
+        if(!ServerConfig.circlePowerReprocessing2Eternal)
             gui.blit(TEXTURE, x + 61, y + 46, 194, 32, 18, 28);
-        if(ServerConfig.circlePowerReprocessingType3Reagent < 2)
+        if(!ServerConfig.circlePowerReprocessing3Eternal)
             gui.blit(TEXTURE, x + 97, y + 46, 212, 32, 18, 28);
-        if(ServerConfig.circlePowerReprocessingType4Reagent < 2)
+        if(!ServerConfig.circlePowerReprocessing4Eternal)
             gui.blit(TEXTURE, x + 133, y + 46, 230, 32, 18, 28);
     }
 

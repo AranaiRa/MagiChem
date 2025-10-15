@@ -264,15 +264,15 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.BooleanValue CIRCLE_OF_POWER_REPROCESSING_2_ETERNAL = BUILDER
             .comment("Should the second Circle of Power reagent (Focusing Catalyst) function forever without requiring reprocessing?")
-            .define("circlePowerReprocessing1Eternal", false);
+            .define("circlePowerReprocessing2Eternal", false);
 
     private static final ForgeConfigSpec.BooleanValue CIRCLE_OF_POWER_REPROCESSING_3_ETERNAL = BUILDER
             .comment("Should the third Circle of Power reagent (Amplifying Prism) function forever without requiring reprocessing?")
-            .define("circlePowerReprocessing1Eternal", false);
+            .define("circlePowerReprocessing3Eternal", false);
 
     private static final ForgeConfigSpec.BooleanValue CIRCLE_OF_POWER_REPROCESSING_4_ETERNAL = BUILDER
             .comment("Should the last Circle of Power reagent (Auxiliary Circle Array) function forever without requiring reprocessing?")
-            .define("circlePowerReprocessing1Eternal", false);
+            .define("circlePowerReprocessing4Eternal", false);
 
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_POWER_BUFFER = BUILDER
             .comment("How many ticks of activity the Circle of Power stores at once")

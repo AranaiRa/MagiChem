@@ -79,7 +79,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                 }
             });
             this.addSlot(new SlotItemHandler(handler, SLOT_RECHARGE, 188, 18));
-            if(ServerConfig.circlePowerReprocessingType1Reagent < 2) {
+            if(!ServerConfig.circlePowerReprocessing1Eternal) {
                 this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_1, 26, 57) {
                     @Override
                     public boolean mayPlace(@NotNull ItemStack stack) {
@@ -87,7 +87,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                     }
                 });
             }
-            if(ServerConfig.circlePowerReprocessingType2Reagent < 2) {
+            if(!ServerConfig.circlePowerReprocessing2Eternal) {
                 this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_2, 62, 57) {
                     @Override
                     public boolean mayPlace(@NotNull ItemStack stack) {
@@ -95,7 +95,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                     }
                 });
             }
-            if(ServerConfig.circlePowerReprocessingType3Reagent < 2) {
+            if(!ServerConfig.circlePowerReprocessing3Eternal) {
                 this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_3, 98, 57) {
                     @Override
                     public boolean mayPlace(@NotNull ItemStack stack) {
@@ -103,7 +103,7 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                     }
                 });
             }
-            if(ServerConfig.circlePowerReprocessingType4Reagent < 2) {
+            if(!ServerConfig.circlePowerReprocessing4Eternal) {
                 this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_4, 134, 57) {
                     @Override
                     public boolean mayPlace(@NotNull ItemStack stack) {

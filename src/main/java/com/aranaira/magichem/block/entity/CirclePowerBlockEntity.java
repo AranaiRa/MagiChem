@@ -399,13 +399,13 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         kickstart(entity);
 
         if(entity.ENERGY_STORAGE.getEnergyStored() < getEnergyLimit(entity)) {
-            if(ServerConfig.circlePowerReprocessingType1Reagent < 2)
+            if(!ServerConfig.circlePowerReprocessing1Eternal)
                 processReagent(level, pos, state, entity, 1);
-            if(ServerConfig.circlePowerReprocessingType2Reagent < 2)
+            if(!ServerConfig.circlePowerReprocessing2Eternal)
                 processReagent(level, pos, state, entity, 2);
-            if(ServerConfig.circlePowerReprocessingType3Reagent < 2)
+            if(!ServerConfig.circlePowerReprocessing3Eternal)
                 processReagent(level, pos, state, entity, 3);
-            if(ServerConfig.circlePowerReprocessingType4Reagent < 2)
+            if(!ServerConfig.circlePowerReprocessing4Eternal)
                 processReagent(level, pos, state, entity, 4);
 
             generatePower(entity);
@@ -496,7 +496,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
     }
 
     private static void kickstart(CirclePowerBlockEntity entity) {
-        if(ServerConfig.circlePowerReprocessingType1Reagent < 2) {
+        if(!ServerConfig.circlePowerReprocessing1Eternal) {
             if (getProgressByTier(entity, 1) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_1).getItem() == REAGENT_TIER1) {
                 entity.itemHandler.setStackInSlot(SLOT_REAGENT_1, ItemStack.EMPTY);
                 entity.incrementProgress(1);
@@ -506,7 +506,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
             }
         }
 
-        if(ServerConfig.circlePowerReprocessingType2Reagent < 2) {
+        if(!ServerConfig.circlePowerReprocessing2Eternal) {
             if (getProgressByTier(entity, 2) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_2).getItem() == REAGENT_TIER2) {
                 entity.itemHandler.setStackInSlot(SLOT_REAGENT_2, ItemStack.EMPTY);
                 entity.incrementProgress(2);
@@ -516,7 +516,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
             }
         }
 
-        if(ServerConfig.circlePowerReprocessingType3Reagent < 2) {
+        if(!ServerConfig.circlePowerReprocessing3Eternal) {
             if (getProgressByTier(entity, 3) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_3).getItem() == REAGENT_TIER3) {
                 entity.itemHandler.setStackInSlot(SLOT_REAGENT_3, ItemStack.EMPTY);
                 entity.incrementProgress(3);
@@ -526,7 +526,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
             }
         }
 
-        if(ServerConfig.circlePowerReprocessingType4Reagent < 2) {
+        if(!ServerConfig.circlePowerReprocessing4Eternal) {
             if (getProgressByTier(entity, 4) == 0 && entity.itemHandler.getStackInSlot(SLOT_REAGENT_4).getItem() == REAGENT_TIER4) {
                 entity.itemHandler.setStackInSlot(SLOT_REAGENT_4, ItemStack.EMPTY);
                 entity.incrementProgress(4);
@@ -628,10 +628,10 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
     }
 
     public static int getMaxProgressByTier(int tier) {
-        if(tier == 1) return ServerConfig.circlePowerReprocessingType1Reagent == 1 ? maxProgressReagentTier1 * 10 : maxProgressReagentTier1;
-        else if(tier == 2) return  ServerConfig.circlePowerReprocessingType2Reagent == 1 ? maxProgressReagentTier2 * 10 : maxProgressReagentTier2;
-        else if(tier == 3) return  ServerConfig.circlePowerReprocessingType3Reagent == 1 ? maxProgressReagentTier3 * 10 : maxProgressReagentTier3;
-        else if(tier == 4) return  ServerConfig.circlePowerReprocessingType4Reagent == 1 ? maxProgressReagentTier4 * 10 : maxProgressReagentTier4;
+        if(tier == 1) return maxProgressReagentTier1;
+        else if(tier == 2) return maxProgressReagentTier2;
+        else if(tier == 3) return maxProgressReagentTier3;
+        else if(tier == 4) return maxProgressReagentTier4;
         return -1;
     }
 
@@ -673,16 +673,16 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         int reagentCount = 0;
         int cap;
         int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
-        if(ServerConfig.circlePowerReprocessingType1Reagent == 2 && entity.hasReagent(1)) reagentCount++;
+        if(ServerConfig.circlePowerReprocessing1Eternal && entity.hasReagent(1)) reagentCount++;
         else if(entity.progressReagentTier1 > 0) reagentCount++;
 
-        if(ServerConfig.circlePowerReprocessingType2Reagent == 2 && entity.hasReagent(2)) reagentCount++;
+        if(ServerConfig.circlePowerReprocessing2Eternal && entity.hasReagent(2)) reagentCount++;
         else if(entity.progressReagentTier2 > 0) reagentCount++;
 
-        if(ServerConfig.circlePowerReprocessingType3Reagent == 2 && entity.hasReagent(3)) reagentCount++;
+        if(ServerConfig.circlePowerReprocessing3Eternal && entity.hasReagent(3)) reagentCount++;
         else if(entity.progressReagentTier3 > 0) reagentCount++;
 
-        if(ServerConfig.circlePowerReprocessingType4Reagent == 2 && entity.hasReagent(4)) reagentCount++;
+        if(ServerConfig.circlePowerReprocessing4Eternal && entity.hasReagent(4)) reagentCount++;
         else if(entity.progressReagentTier4 > 0) reagentCount++;
 
         int genRate = getGenRate(reagentCount);

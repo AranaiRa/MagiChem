@@ -1,7 +1,6 @@
 package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.entity.renderer.*;
-import com.aranaira.magichem.conditions.ConfigIntCondition;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.data.DamageTypeProvider;
 import com.aranaira.magichem.gui.*;
@@ -110,7 +109,6 @@ public class MagiChemMod
         event.enqueueWork(() -> {
             CantripRegistry.register();
             ConstructFluidSprayRegistry.register();
-            CraftingHelper.register(ConfigIntCondition.Serializer.INSTANCE);
         });
 
         PacketRegistry.register();
