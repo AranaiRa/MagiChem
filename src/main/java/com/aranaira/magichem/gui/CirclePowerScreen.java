@@ -2,6 +2,7 @@ package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
+import com.aranaira.magichem.config.ServerConfig;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -39,15 +40,42 @@ public class CirclePowerScreen extends AbstractContainerScreen<CirclePowerMenu> 
         int y = (height - h) / 2;
 
         gui.blit(TEXTURE, x, y, 0, 0, w, h);
-        renderProgressBar(1, gui, x + 23, y + 42);
-        renderProgressBar(2, gui, x + 59, y + 42);
-        renderProgressBar(3, gui, x + 95, y + 42);
-        renderProgressBar(4, gui, x + 131, y + 42);
+
+        //Progress Bars
+        if(ServerConfig.circlePowerReprocessingType1Reagent < 2)
+            renderProgressBar(1, gui, x + 23, y + 42);
+        else if(menu.blockEntity.hasReagent(1))
+            gui.blit(TEXTURE, x + 23, y + 42, 0, 253, 22, 3);
+
+        if(ServerConfig.circlePowerReprocessingType2Reagent < 2)
+            renderProgressBar(2, gui, x + 59, y + 42);
+        else if(menu.blockEntity.hasReagent(2))
+            gui.blit(TEXTURE, x + 59, y + 42, 0, 253, 22, 3);
+
+        if(ServerConfig.circlePowerReprocessingType3Reagent < 2)
+            renderProgressBar(3, gui, x + 95, y + 42);
+        else if(menu.blockEntity.hasReagent(3))
+            gui.blit(TEXTURE, x + 95, y + 42, 0, 253, 22, 3);
+
+        if(ServerConfig.circlePowerReprocessingType4Reagent < 2)
+            renderProgressBar(4, gui, x + 131, y + 42);
+        else if(menu.blockEntity.hasReagent(4))
+            gui.blit(TEXTURE, x + 131, y + 42, 0, 253, 22, 3);
 
         gui.blit(TEXTURE, x + w + 4, y + 10, 176, 0, 32, 32);
 
         //generation panel
         gui.blit(TEXTURE, x + 2, y - 30, 0, 167, 172, 25);
+
+        //Slot backgrounds
+        if(ServerConfig.circlePowerReprocessingType1Reagent < 2)
+            gui.blit(TEXTURE, x + 25, y + 46, 176, 32, 18, 28);
+        if(ServerConfig.circlePowerReprocessingType2Reagent < 2)
+            gui.blit(TEXTURE, x + 61, y + 46, 194, 32, 18, 28);
+        if(ServerConfig.circlePowerReprocessingType3Reagent < 2)
+            gui.blit(TEXTURE, x + 97, y + 46, 212, 32, 18, 28);
+        if(ServerConfig.circlePowerReprocessingType4Reagent < 2)
+            gui.blit(TEXTURE, x + 133, y + 46, 230, 32, 18, 28);
     }
 
     private void renderProgressBar(int tier, GuiGraphics gui, int x, int y) {

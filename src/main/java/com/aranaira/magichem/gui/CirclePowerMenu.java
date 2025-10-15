@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.block.CirclePowerBlock;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.jetbrains.annotations.NotNull;
 
 import static com.aranaira.magichem.block.entity.CirclePowerBlockEntity.*;
@@ -77,30 +79,38 @@ public class CirclePowerMenu extends AbstractContainerMenu {
                 }
             });
             this.addSlot(new SlotItemHandler(handler, SLOT_RECHARGE, 188, 18));
-            this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_1, 26, 57) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-            });
-            this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_2, 62, 57) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-            });
-            this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_3, 98, 57) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-            });
-            this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_4, 134, 57) {
-                @Override
-                public boolean mayPlace(@NotNull ItemStack stack) {
-                    return false;
-                }
-            });
+            if(ServerConfig.circlePowerReprocessingType1Reagent < 2) {
+                this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_1, 26, 57) {
+                    @Override
+                    public boolean mayPlace(@NotNull ItemStack stack) {
+                        return false;
+                    }
+                });
+            }
+            if(ServerConfig.circlePowerReprocessingType2Reagent < 2) {
+                this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_2, 62, 57) {
+                    @Override
+                    public boolean mayPlace(@NotNull ItemStack stack) {
+                        return false;
+                    }
+                });
+            }
+            if(ServerConfig.circlePowerReprocessingType3Reagent < 2) {
+                this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_3, 98, 57) {
+                    @Override
+                    public boolean mayPlace(@NotNull ItemStack stack) {
+                        return false;
+                    }
+                });
+            }
+            if(ServerConfig.circlePowerReprocessingType4Reagent < 2) {
+                this.addSlot(new SlotItemHandler(handler, WASTE_REAGENT_4, 134, 57) {
+                    @Override
+                    public boolean mayPlace(@NotNull ItemStack stack) {
+                        return false;
+                    }
+                });
+            }
         });
 
         addDataSlots(data);
