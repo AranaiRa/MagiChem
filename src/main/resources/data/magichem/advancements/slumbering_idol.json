@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:slumbering_idol"
+    },
+    "title": {
+      "translate": "advancements.magichem.slumbering_idol.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.slumbering_idol.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:alchemical_nexus",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:slumbering_idol"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

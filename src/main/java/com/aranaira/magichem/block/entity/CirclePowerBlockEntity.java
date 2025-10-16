@@ -646,11 +646,16 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
     public static int getEnergyLimit(CirclePowerBlockEntity entity) {
         int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
 
+        boolean hasEternal1 = ServerConfig.circlePowerReprocessing1Eternal && entity.hasReagent(1);
+        boolean hasEternal2 = ServerConfig.circlePowerReprocessing2Eternal && entity.hasReagent(2);
+        boolean hasEternal3 = ServerConfig.circlePowerReprocessing3Eternal && entity.hasReagent(3);
+        boolean hasEternal4 = ServerConfig.circlePowerReprocessing4Eternal && entity.hasReagent(4);
+
         int reagentCount = 0;
-        if(entity.progressReagentTier1 > 0) reagentCount++;
-        if(entity.progressReagentTier2 > 0) reagentCount++;
-        if(entity.progressReagentTier3 > 0) reagentCount++;
-        if(entity.progressReagentTier4 > 0) reagentCount++;
+        if(hasEternal1 || entity.progressReagentTier1 > 0) reagentCount++;
+        if(hasEternal2 || entity.progressReagentTier2 > 0) reagentCount++;
+        if(hasEternal3 || entity.progressReagentTier3 > 0) reagentCount++;
+        if(hasEternal4 || entity.progressReagentTier4 > 0) reagentCount++;
 
         return getGenRate(reagentCount) * ServerConfig.circlePowerBuffer;
     }

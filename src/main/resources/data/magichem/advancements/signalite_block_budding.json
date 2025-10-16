@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "magichem:signalite_block_budding"
+    },
+    "title": {
+      "translate": "advancements.magichem.signalite_block_budding.title"
+    },
+    "description": {
+      "translate": "advancements.magichem.signalite_block_budding.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "parent": "magichem:budding_amethyst",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "magichem:signalite_block_budding"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
