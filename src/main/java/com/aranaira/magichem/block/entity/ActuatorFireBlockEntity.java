@@ -212,7 +212,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("remainingCycleTime", remainingCycleTime);
-        this.powerLevel = Math.min(MAX_POWER_LEVEL,nbt.getInt("powerLevel"));
+        nbt.putInt("powerLevel", powerLevel);
         nbt.putInt("storedMateria", storedMateria);
         nbt.putBoolean("drewEldrinThisCycle", drewEldrinThisCycle);
         nbt.putBoolean("drewEssentiaThisCycle", drewEssentiaThisCycle);
@@ -241,7 +241,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
             this.itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         }
         this.remainingCycleTime = nbt.getInt("remainingCycleTime");
-        this.powerLevel = nbt.getInt("powerLevel");
+        this.powerLevel = Math.min(MAX_POWER_LEVEL,nbt.getInt("powerLevel"));
         this.storedMateria = nbt.getInt("storedMateria");
         this.drewEldrinThisCycle = nbt.getBoolean("drewEldrinThisCycle");
         this.drewEssentiaThisCycle = nbt.getBoolean("drewEssentiaThisCycle");
@@ -455,7 +455,8 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
             }
         }
 
-        if(changed) entity.syncAndSave();
+        if(changed)
+            entity.syncAndSave();
     }
 
     public void handleAnimationDrivers() {
