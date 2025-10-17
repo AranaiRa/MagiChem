@@ -14,10 +14,10 @@
         { "item": "magichem:collated_theories" }
       ],
       "materia": [
-        { "item": "magichem:admixture_potential", "count": 160 },
-        { "item": "magichem:admixture_breath", "count": 80 },
-        { "item": "magichem:essentia_conceptual", "count": 120 },
-        { "item": "magichem:essentia_albedo", "count": 100 }
+        { "item": "magichem:admixture_potential", "count": 100 },
+        { "item": "magichem:admixture_breath", "count": 55 },
+        { "item": "magichem:essentia_conceptual", "count": 70 },
+        { "item": "magichem:essentia_albedo", "count": 50 }
       ]
     },
     {
@@ -28,10 +28,10 @@
         { "item": "magichem:slumbering_idol" }
       ],
       "materia": [
-        { "item": "magichem:admixture_alcohol", "count": 80 },
-        { "item": "magichem:admixture_firmament", "count": 80 },
-        { "item": "magichem:admixture_healing", "count": 80 },
-        { "item": "magichem:admixture_light", "count": 80 }
+        { "item": "magichem:admixture_alcohol", "count": 55 },
+        { "item": "magichem:admixture_firmament", "count": 55 },
+        { "item": "magichem:admixture_healing", "count": 55 },
+        { "item": "magichem:admixture_light", "count": 55 }
       ]
     },
     {
@@ -42,10 +42,10 @@
         { "item": "magichem:profound_manuscript" }
       ],
       "materia": [
-        { "item": "magichem:admixture_change", "count": 120 },
-        { "item": "magichem:admixture_acid", "count": 80 },
-        { "item": "magichem:admixture_realm", "count": 80 },
-        { "item": "magichem:essentia_albedo", "count": 150 }
+        { "item": "magichem:admixture_change", "count": 70 },
+        { "item": "magichem:admixture_acid", "count": 55 },
+        { "item": "magichem:admixture_realm", "count": 55 },
+        { "item": "magichem:essentia_albedo", "count": 40 }
       ]
     }
   ]

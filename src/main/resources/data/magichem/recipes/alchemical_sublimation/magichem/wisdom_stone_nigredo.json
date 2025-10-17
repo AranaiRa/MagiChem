@@ -14,10 +14,10 @@
         { "item": "magichem:collated_theories" }
       ],
       "materia": [
-        { "item": "magichem:admixture_potential", "count": 120 },
-        { "item": "magichem:admixture_dust", "count": 40 },
-        { "item": "magichem:essentia_conceptual", "count": 80 },
-        { "item": "magichem:essentia_nigredo", "count": 100 }
+        { "item": "magichem:admixture_potential", "count": 70 },
+        { "item": "magichem:admixture_dust", "count": 30 },
+        { "item": "magichem:essentia_conceptual", "count": 55 },
+        { "item": "magichem:essentia_nigredo", "count": 50 }
       ]
     },
     {
@@ -28,10 +28,10 @@
         { "item": "magichem:salt_of_bone" }
       ],
       "materia": [
-        { "item": "magichem:admixture_death", "count": 40 },
-        { "item": "magichem:admixture_destruction", "count": 40 },
-        { "item": "magichem:admixture_disaster", "count": 40 },
-        { "item": "magichem:admixture_violence", "count": 40 }
+        { "item": "magichem:admixture_death", "count": 30 },
+        { "item": "magichem:admixture_destruction", "count": 30 },
+        { "item": "magichem:admixture_disaster", "count": 30 },
+        { "item": "magichem:admixture_violence", "count": 30 }
       ]
     },
     {
@@ -42,10 +42,10 @@
         { "item": "magichem:collated_theories" }
       ],
       "materia": [
-        { "item": "magichem:admixture_change", "count": 80 },
-        { "item": "magichem:admixture_erosion", "count": 40 },
-        { "item": "magichem:admixture_realm", "count": 40 },
-        { "item": "magichem:essentia_nigredo", "count": 150 }
+        { "item": "magichem:admixture_change", "count": 55 },
+        { "item": "magichem:admixture_erosion", "count": 30 },
+        { "item": "magichem:admixture_realm", "count": 30 },
+        { "item": "magichem:essentia_nigredo", "count": 40 }
       ]
     }
   ]
