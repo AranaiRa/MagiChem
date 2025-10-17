@@ -1724,7 +1724,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " back into a usable reagent with some Construct labor; with well-constructed Construct logic no Circle of Power should require more than two of any individual reagent.\n\nOne Construct can handle the needs of the first two reagents, but the third and fourth require a dedicated Construct each."
+            "text": " back into a usable reagent with some Construct labor; with well-constructed Construct logic no Circle of Power should require more than two of any individual reagent.\n\nOne Construct can handle the needs of the first two reagents, but the third and fourth require a dedicated Construct each.\n\nIf this reagent is set to Eternal mode in the MagiChem config then no reprocessing steps are necessary and a waste product will never be created."
           }
         ]
       },
@@ -2021,7 +2021,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " as a waste product."
+            "text": " as a waste product.\n\nIf this reagent is set to Eternal mode in the MagiChem config then no reprocessing steps are necessary and a waste product will never be created."
           }
         ]
       },
@@ -2111,7 +2111,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nThe Prism has a long burn time and ejects "
+            "text": ".\n\nBy default this reagent is set to "
+          },
+          {
+            "text": "Eternal mode",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; it provides power forever as long as it's inserted into the Circle of Power. You can turn this setting off in the MagiChem configs if you would prefer a difficult automation challenge.\n\nWhen Eternal mode is disabled, the Prism has a long burn time and ejects "
           },
           {
             "text": "Malformed Brindle Glass",
@@ -2194,7 +2201,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " in a Manaweaving Altar.\n\nCircle Projection Apparati can be made on the Alchemical Nexus.\n\nThe Array has a very long burn time and ejects six "
+            "text": " in a Manaweaving Altar.\n\nCircle Projection Apparati can be made on the Alchemical Nexus.\n\nBy default this reagent is set to "
+          },
+          {
+            "text": "Eternal mode",
+            "color": "dark_purple"
+          },
+          {
+            "text": "; it provides power forever as long as it's inserted into the Circle of Power. You can turn this setting off in the MagiChem configs if you would prefer a difficult automation challenge.\n\nWhen Eternal mode is disabled, the Array has a very long burn time and ejects six "
           },
           {
             "text": "Ruined Projection Apparati",
