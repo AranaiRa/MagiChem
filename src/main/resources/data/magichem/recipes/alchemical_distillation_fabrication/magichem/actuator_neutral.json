@@ -4,7 +4,7 @@
   "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
-  "object": { "item": "magichem:proto_actuator" },
+  "object": { "item": "magichem:actuator_neutral" },
   "components": [
     { "item": "magichem:admixture_metal", "count": 25 },
     { "item": "magichem:admixture_energy", "count": 18 },
