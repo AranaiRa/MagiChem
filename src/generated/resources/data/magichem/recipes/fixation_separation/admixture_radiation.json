@@ -1,7 +1,7 @@
 {
   "type": "magichem:fixation_separation",
   "object": {
-    "item": "magichem:admixture_realm"
+    "item": "magichem:admixture_radiation"
   },
   "components": [
     {
