@@ -8,6 +8,7 @@ import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
 import com.mna.tools.render.ModelUtils;
+import com.mna.tools.render.WorldRenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -19,6 +20,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.BlockItem;
@@ -26,7 +29,9 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.ArrayList;
 
@@ -49,6 +54,30 @@ public class ColoringCauldronBlockEntityRenderer implements BlockEntityRenderer<
     public void render(ColoringCauldronBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         this.renderItem(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
         this.renderWater(pBlockEntity, pPoseStack, pBuffer, pPartialTick, pPackedLight, pPackedOverlay);
+
+        if(Minecraft.getInstance().hitResult instanceof BlockHitResult bhr) {
+            if(!bhr.getBlockPos().equals(pBlockEntity.getBlockPos())) return;
+
+            float fill = pBlockEntity.getProgressPercent();
+            if(fill == 0 || fill == 1) return;
+
+            int color = Mth.hsvToRgb(fill / 3.0F, 1.0F, 1.0F) | -16777216;
+            int r = FastColor.ARGB32.red(color) / 3 * 2;
+            int g = FastColor.ARGB32.green(color) / 3 * 2;
+            int b = FastColor.ARGB32.blue(color) / 3 * 2;
+
+            for(int i=0; i<4; i++){
+                pPoseStack.pushPose();
+                pPoseStack.translate(0.5D, 0.0D, 0.5D);
+                pPoseStack.mulPose(Axis.YP.rotationDegrees((float)(i * 90)));
+                pPoseStack.translate(0.0D, 0.875D, -0.4395D);
+                pPoseStack.scale(0.5025F, 0.05F, 1.0F);
+                WorldRenderUtils.renderProgressBar(pPoseStack, pBuffer, fill, new int[]{r, g, b}, 255);
+                pPoseStack.scale(-1.0F, 1.0F, 1.0F);
+                WorldRenderUtils.renderProgressBar(pPoseStack, pBuffer, 1-fill, new int[]{0, 0, 0}, 255);
+                pPoseStack.popPose();
+            }
+        }
     }
 
     private void renderItem(ColoringCauldronBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, float pPartialTick, int pPackedLight, int pPackedOverlay) {

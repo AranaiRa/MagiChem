@@ -150,6 +150,10 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         return total;
     }
 
+    public float getProgressPercent() {
+        return (float)(getOperationTicks() - progress) / (float)getOperationTicks();
+    }
+
     public void syncAndSave() {
         this.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
@@ -166,8 +170,6 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("bitpackedColors", this.bitpackedColors);
         nbt.putInt("operationsRemaining", this.operationsRemaining);
-        nbt.putInt("lastSuccessfulCraft", ColorUtils.getIDFromDyeColor(this.lastSuccessfulCraft));
-        nbt.putBoolean("readyToCollect", this.readyToCollect);
         super.saveAdditional(nbt);
     }
 
@@ -180,16 +182,6 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         progress = nbt.getInt("craftingProgress");
         bitpackedColors = nbt.getInt("bitpackedColors");
         operationsRemaining = nbt.getInt("operationsRemaining");
-        lastSuccessfulCraft = ColorUtils.getDyeColorFromID(nbt.getInt("lastSuccessfulCraft"));
-
-        boolean doParticles = !readyToCollect && nbt.getBoolean("readyToCollect");
-        readyToCollect = nbt.getBoolean("readyToCollect");
-
-        if(doParticles && getLevel() != null) {
-            if(getLevel().isClientSide()) {
-                generateCompletionParticles(this, lastSuccessfulCraft);
-            }
-        }
     }
 
     @Override
@@ -199,8 +191,6 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("bitpackedColors", this.bitpackedColors);
         nbt.putInt("operationsRemaining", this.operationsRemaining);
-        nbt.putInt("lastSuccessfulCraft", ColorUtils.getIDFromDyeColor(this.lastSuccessfulCraft));
-        nbt.putBoolean("readyToCollect", this.readyToCollect);
         return nbt;
     }
 
@@ -235,7 +225,11 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
     }
 
     public static <E extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pBlockState, ColoringCauldronBlockEntity pBlockEntity) {
-        if(!pLevel.isClientSide() && pBlockEntity.bitpackedColors != 0) {
+        if(pBlockEntity.bitpackedColors != 0) {
+            if(pLevel.isClientSide() && pBlockEntity.recipe == null && !pBlockEntity.containedItem.isEmpty()) {
+                pBlockEntity.recipe = ColorationRecipe.getFilteredColorationRecipe(pLevel, pBlockEntity.containedItem, false);
+            }
+
             boolean sync = false;
             if(pBlockEntity.recipe != null && !pBlockEntity.readyToCollect) {
                 pBlockEntity.progress--;
@@ -250,6 +244,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
                     pBlockEntity.lastSuccessfulCraft = color;
 
                     pBlockEntity.recipe = null;
+                    if(pLevel.isClientSide()) generateCompletionParticles(pBlockEntity, pBlockEntity.lastSuccessfulCraft);
                     sync = true;
                 }
             }
@@ -260,7 +255,7 @@ public class ColoringCauldronBlockEntity extends BlockEntity {
                 sync = true;
             }
 
-            if(sync)
+            if(!pLevel.isClientSide() && sync)
                 pBlockEntity.syncAndSave();
         }
     }

@@ -1,9 +1,11 @@
 package com.aranaira.magichem.block.entity.renderer;
 
 import com.aranaira.magichem.block.entity.AcidBasinBlockEntity;
+import com.aranaira.magichem.block.entity.routers.AcidBasinRouterBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.util.render.RenderUtils;
 import com.mna.tools.render.ModelUtils;
+import com.mna.tools.render.WorldRenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -15,13 +17,17 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 
 import static com.aranaira.magichem.block.entity.AcidBasinBlockEntity.TANK_INPUT;
@@ -45,6 +51,38 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
         if(!pBlockEntity.getFluidInTank(TANK_OUTPUT).isEmpty()) {
             this.renderOutputTankFluid(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
             this.renderOutputTankGauge(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
+        }
+
+        if(Minecraft.getInstance().hitResult instanceof BlockHitResult bhr) {
+            BlockEntity be = pBlockEntity.getLevel().getBlockEntity(bhr.getBlockPos());
+            AcidBasinBlockEntity basin = null;
+            if(be instanceof AcidBasinBlockEntity query) {
+                basin = query;
+            }
+            else if(be instanceof AcidBasinRouterBlockEntity query) {
+                basin = query.getMaster();
+            }
+
+            if(basin != null) {
+                float fill = basin.getProgressPercent();
+
+                int color = Mth.hsvToRgb(fill / 3.0F, 1.0F, 1.0F) | -16777216;
+                int r = FastColor.ARGB32.red(color) / 3 * 2;
+                int g = FastColor.ARGB32.green(color) / 3 * 2;
+                int b = FastColor.ARGB32.blue(color) / 3 * 2;
+
+                for(int i=0; i<4; i++){
+                    pPoseStack.pushPose();
+                    pPoseStack.translate(-0.5D, 0.0D, 0.5D);
+                    pPoseStack.mulPose(Axis.YP.rotationDegrees((float)(i * 90)));
+                    pPoseStack.translate(0.0D, 1.1875D, -0.3145D);
+                    pPoseStack.scale(0.565F, 0.05F, 1.0F);
+                    WorldRenderUtils.renderProgressBar(pPoseStack, pBuffer, fill, new int[]{r, g, b}, 255);
+                    pPoseStack.scale(-1.0F, 1.0F, 1.0F);
+                    WorldRenderUtils.renderProgressBar(pPoseStack, pBuffer, 1-fill, new int[]{0, 0, 0}, 255);
+                    pPoseStack.popPose();
+                }
+            }
         }
     }
 

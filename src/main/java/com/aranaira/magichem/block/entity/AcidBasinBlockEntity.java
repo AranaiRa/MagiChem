@@ -448,6 +448,15 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         }
     }
 
+    public float getProgressPercent() {
+        if(recipe != null) {
+            int max = recipe.getCraftTicks();
+            return (float)(max - progress) / (float)max;
+        }
+
+        return 0;
+    }
+
     public void packInventoryToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.ACID_BASIN.get());
 
