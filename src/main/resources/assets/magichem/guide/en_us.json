@@ -1303,6 +1303,74 @@
       }
     ]
   },
+  "Skywrath Condenser": {
+    "index": "1200",
+    "tier": 3,
+    "category": "magichem",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Skywrath Condenser"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Skywrath Condenser",
+            "color": "dark_purple"
+          },
+          {
+            "text": " can be used to streamline the use of "
+          },
+          {
+            "text": "Skywrath Altars",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", eliminating the need for "
+          },
+          {
+            "text": "Thunderstones",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nSkywrath Altars must be placed three blocks below the Skywrath Condenser (there must be two air blocks in between the altar. A single Condenser can activate up to nine Altars arranged a 3x3 pattern.\n\nIt must be supplied with "
+          },
+          {
+            "text": "Admixture of the Storm",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in order to function. As long as there's enough Admixture of the Storm inside the device, the Skywrath Condenser will try to trigger crafts on the Skywrath Altars beneath it when it "
+          },
+          {
+            "text": "receives a redstone signal",
+            "color": "dark_purple"
+          },
+          {
+            "text": " or when it's struck by a "
+          },
+          {
+            "text": "Lightning Damage spell",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nCrafts triggered with Lightning damage spells will consume significantly less Admixture of the Storm and will complete instantly."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/skywrath_condenser"
+      }
+    ]
+  },
   "Magic Circles": {
     "index": 1270,
     "category": "magichem",
