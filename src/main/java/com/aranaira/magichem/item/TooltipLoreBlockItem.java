@@ -427,6 +427,11 @@ public class TooltipLoreBlockItem extends BlockItem {
                         if(nbt.contains("inventory"))
                             eobe.unpackInventoryFromNBT(nbt);
                     }
+                } else if (cachedItem == BlockRegistry.SKYWRATH_CONDENSER.get().asItem()) {
+                    SkywrathCondenserBlockEntity condenser = (SkywrathCondenserBlockEntity) pContext.getLevel().getBlockEntity(pContext.getClickedPos());
+                    if (condenser != null) {
+                        condenser.unpackInventoryFromNBT(nbt);
+                    }
                 }
             }
             return result;

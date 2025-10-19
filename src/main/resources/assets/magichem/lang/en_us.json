@@ -757,6 +757,7 @@
   "tooltip.magichem.radiant_rose": "A Wither Rose freed from its odious curse. Anything that touches it is purged of and gains immunity to negative effects for a short time.",
   "tooltip.magichem.selenolabe": "Outputs a redstone signal based on the current moon phase.",
   "tooltip.magichem.skywrath_altar": "Transforms items when struck by lightning.",
+  "tooltip.magichem.skywrath_condenser": "Triggers Skywrath Altars when given a redstone signal or when struck by lightning damage. Requires Admixture of the Storm.",
   "tooltip.magichem.silver_button": "Outputs a signal strength equal to the pusher's magic tier plus one.",
   "tooltip.magichem.silver_pressure_plate": "Outputs a signal strength equal to the activator's magic tier plus one.",
   "tooltip.magichem.standing_retort": "Can be placed on top of an Eldrin Fume Filter and provided with elemental Essentia by a Construct.",

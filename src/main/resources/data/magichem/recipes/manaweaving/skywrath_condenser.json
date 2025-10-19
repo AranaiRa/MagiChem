@@ -1,0 +1,23 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:skywrath_condenser",
+  "tier": 3,
+  "items": [
+    "minecraft:lightning_rod",
+    "minecraft:lightning_rod",
+    "minecraft:lightning_rod",
+    "minecraft:lightning_rod",
+    "mna:mote_fire",
+    "minecraft:lightning_rod",
+    "mna:decoration/arcane_sandstone",
+    "magichem:skywrath_altar",
+    "mna:decoration/arcane_sandstone"
+  ],
+  "patterns": [
+    "mna:triangle",
+    "mna:triangle",
+    "mna:bolt",
+    "mna:inverted_triangle",
+    "mna:bolt"
+  ]
+}
