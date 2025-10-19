@@ -22,6 +22,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(SkywrathAltarBlockEntity::new, BlockRegistry.SKYWRATH_ALTAR.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<SkywrathCondenserBlockEntity>> SKYWRATH_CONDENSER_BE = BLOCK_ENTITIES.register("skywrath_condenser", () ->
+            BlockEntityType.Builder.of(SkywrathCondenserBlockEntity::new, BlockRegistry.SKYWRATH_CONDENSER.get()).build(null)
+    );
+
     public static final RegistryObject<BlockEntityType<DistilleryBlockEntity>> DISTILLERY_BE = BLOCK_ENTITIES.register("distillery", () ->
             BlockEntityType.Builder.of(DistilleryBlockEntity::new, BlockRegistry.DISTILLERY.get()).build(null)
     );

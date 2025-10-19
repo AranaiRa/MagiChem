@@ -81,6 +81,11 @@ public class BlockRegistry {
                     .strength(3.0f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<SkywrathCondenserBlock> SKYWRATH_CONDENSER = registerBlock("skywrath_condenser",
+            () -> new SkywrathCondenserBlock(BlockBehaviour.Properties.of()
+                    .strength(3.0f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<AstralObserverBlock> ASTRAL_OBSERVER = registerBlock("astral_observer",
             () -> new AstralObserverBlock(BlockBehaviour.Properties.of()
                     .strength(3.0f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

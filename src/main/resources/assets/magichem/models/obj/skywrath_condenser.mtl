@@ -1,0 +1,8 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 2
+
+newmtl SKYWRATH_ALTAR
+map_Kd magichem:block/skywrath_altar
+
+newmtl SKYWRATH_CONDENSER
+map_Kd magichem:block/skywrath_condenser

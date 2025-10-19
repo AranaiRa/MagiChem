@@ -172,6 +172,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.ELDRIN_ORRERY_MENU.get(), EldrinOrreryScreen::new);
                 MenuScreens.register(MenuRegistry.WISDOM_MENU.get(), WisdomScreen::new);
                 MenuScreens.register(MenuRegistry.CODEX_MATERIA_MENU.get(), CodexMateriaScreen::new);
+                MenuScreens.register(MenuRegistry.SKYWRATH_CONDENSER_MENU.get(), SkywrathCondenserScreen::new);
 
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID_FLOWING.get(), RenderType.translucent());

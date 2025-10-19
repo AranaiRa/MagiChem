@@ -446,6 +446,20 @@ public class ServerConfig
             .comment("The maximum amount of FE a Skywrath Altar will recharge an object's FE gauge by. Only used if this value would be greater than the recharge percentage above.")
             .defineInRange("skywrathAltarFEChargeLimit", 30000, 1, Integer.MAX_VALUE);
 
+    //----------------SKYWRATH CONDENSER
+
+    private static final ForgeConfigSpec.IntValue SKYWRATH_CONDENSER_MATERIA_UNITS_PER_DRAM = BUILDER
+            .comment("The number of materia units that a Skywrath Condenser gets from a single dram of materia")
+            .defineInRange("skywrathCondenserMateriaUnitsPerDram", 40, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue SKYWRATH_CONDENSER_LIGHTNING_TRIGGER_COST = BUILDER
+            .comment("How many materia units are consumed by a Skywrath Altar when a craft is triggered by Lightning Damage")
+            .defineInRange("skywrathCondenserLightningTriggerCost", 30, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue SKYWRATH_CONDENSER_REDSTONE_TRIGGER_COST = BUILDER
+            .comment("How many materia units are consumed by a Skywrath Altar when a craft is triggered by a redstone signal")
+            .defineInRange("skywrathCondenserRedstoneTriggerCost", 120, 1, Integer.MAX_VALUE);
+
     //----------------ACID BASIN
 
     private static final ForgeConfigSpec.IntValue ACID_BASIN_TANK_CAPACITY = BUILDER
@@ -570,6 +584,9 @@ public class ServerConfig
         conjurerPointsPerDram,
         skywrathAltarFERechargePercentage,
         skywrathAltarFERechargeLimit,
+        skywrathCondenserMateriaUnitsPerDram,
+        skywrathCondenserLightningTriggerCost,
+        skywrathCondenserRedstoneTriggerCost,
         acidBasinTankCapacity,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
@@ -687,6 +704,9 @@ public class ServerConfig
         conjurerPointsPerDram = CONJURER_POINTS_PER_DRAM.get();
         skywrathAltarFERechargePercentage = SKYWRATH_ALTAR_FE_RECHARGE_PERCENTAGE.get();
         skywrathAltarFERechargeLimit = SKYWRATH_ALTAR_FE_RECHARGE_LIMIT.get();
+        skywrathCondenserMateriaUnitsPerDram = SKYWRATH_CONDENSER_MATERIA_UNITS_PER_DRAM.get();
+        skywrathCondenserLightningTriggerCost = SKYWRATH_CONDENSER_LIGHTNING_TRIGGER_COST.get();
+        skywrathCondenserRedstoneTriggerCost = SKYWRATH_CONDENSER_REDSTONE_TRIGGER_COST.get();
         acidBasinTankCapacity = ACID_BASIN_TANK_CAPACITY.get();
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
