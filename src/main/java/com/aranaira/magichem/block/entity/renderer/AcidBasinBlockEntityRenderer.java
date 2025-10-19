@@ -329,6 +329,21 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                 extension.getTintColor(),
                 pPackedLight);
         pPoseStack.popPose();
+
+        switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            case NORTH -> {
+                pPoseStack.translate(1f, 0f, -1f);
+            }
+            case EAST -> {
+                pPoseStack.translate(1f, 0f, 1f);
+            }
+            case SOUTH -> {
+                pPoseStack.translate(-1f, 0f, 1f);
+            }
+            case WEST -> {
+                pPoseStack.translate(-1f, 0f, -1f);
+            }
+        }
     }
 
     private void renderOutputTankGauge(AcidBasinBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
