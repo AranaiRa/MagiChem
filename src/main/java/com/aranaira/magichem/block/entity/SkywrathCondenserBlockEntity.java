@@ -83,7 +83,8 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
             droplets -= (pLightningDamageTrigger ? ServerConfig.skywrathCondenserLightningTriggerCost : ServerConfig.skywrathCondenserRedstoneTriggerCost);
             syncAndSave();
             for(SkywrathAltarBlockEntity altar : altars.values()) {
-                altar.tryCraftItem();
+                if(pLightningDamageTrigger) altar.tryCraftItemFast();
+                else altar.tryCraftItem();
             }
         }
     }

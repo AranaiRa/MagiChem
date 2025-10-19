@@ -39,6 +39,7 @@ import java.util.Random;
 public class SkywrathAltarBlockEntity extends BlockEntity {
     private ItemStack heldItem = ItemStack.EMPTY;
     private int craftCountdown = -1;
+    private int craftDelay = -1;
 
     public static final int CRAFT_COUNTDOWN_LENGTH = 90;
     public static final Random r = new Random();
@@ -104,6 +105,18 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
 
         if(hasValidRecipe || canStoreRF || isEnchantedBook) {
             craftCountdown = CRAFT_COUNTDOWN_LENGTH;
+            syncAndSave();
+        }
+    }
+
+    public void tryCraftItemFast() {
+        final FulminationRecipe recipe = FulminationRecipe.getFulminationRecipe(getLevel(), heldItem.getItem());
+        boolean hasValidRecipe = recipe != null && heldItem.getCount() >= recipe.getInput().getCount();
+        boolean canStoreRF = heldItem.getCapability(ForgeCapabilities.ENERGY).isPresent();
+        boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
+
+        if(hasValidRecipe || canStoreRF || isEnchantedBook) {
+            craftCountdown = 0;
             syncAndSave();
         }
     }
