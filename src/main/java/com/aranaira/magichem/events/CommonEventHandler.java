@@ -381,15 +381,20 @@ public class CommonEventHandler {
         if(event.getEntity() instanceof LightningBolt bolt) {
             BlockPos onPos = bolt.getOnPos();
 
+            int altarsTriggered = 0;
             for(int y=-2;y<=2;y++) {
                 for(int x=-2;x<=2;x++) {
                     for(int z=-2;z<=2;z++) {
                         BlockEntity entityQuery = event.getLevel().getBlockEntity(onPos.offset(x, y, z));
                         if(entityQuery instanceof SkywrathAltarBlockEntity sabe) {
                             sabe.tryCraftItem();
+                            altarsTriggered++;
                         }
+                        if(altarsTriggered >= 4) break;
                     }
+                    if(altarsTriggered >= 4) break;
                 }
+                if(altarsTriggered >= 4) break;
             }
         }
         else if(event.getEntity() instanceof ServerPlayer sp && !sp.level().isClientSide()) {

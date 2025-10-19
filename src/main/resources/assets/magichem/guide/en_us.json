@@ -6403,7 +6403,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " will not damage entities or cause fires."
+            "text": " will not damage entities or cause fires. A single Thunderstone can trigger no more than four Skywrath Altars at a time, even if more of them are within range."
           }
         ]
       }
