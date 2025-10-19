@@ -7,12 +7,14 @@ import com.aranaira.magichem.gui.SkywrathCondenserMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -49,6 +51,7 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
         SLOT_COUNT = 2,
         SLOT_MATERIA = 0, SLOT_BOTTLES = 1;
     private int droplets = 0;
+    public static final MateriaItem ADMIXTURE_STORM = ItemRegistry.getMateriaMap(false, false).get("storm");
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
@@ -222,6 +225,12 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
         return droplets;
     }
 
+    ////////////////////
+    // PROVISIONING AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
     @Override
     public boolean allowIncreasedDeliverySize() {
         return false;
@@ -229,36 +238,71 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
 
     @Override
     public boolean needsProvisioning() {
-        return false;
+        if(activeProvisionRequests.size() > 0)
+            return false;
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA);
+        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA) / 2;
+        }
+        return insertionStack.isEmpty();
     }
 
     @Override
     public Map<MateriaItem, Integer> getProvisioningNeeds() {
-        return null;
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA);
+
+        if(insertionStack.isEmpty() || insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA) / 2) {
+            result.put(ADMIXTURE_STORM, itemHandler.getSlotLimit(SLOT_MATERIA) - insertionStack.getCount());
+        }
+
+        return result;
     }
 
     @Override
     public void setProvisioningInProgress(MateriaItem pMateriaItem) {
-
+        if(pMateriaItem == ADMIXTURE_STORM)
+            activeProvisionRequests.add(pMateriaItem);
     }
 
     @Override
     public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
-
+        activeProvisionRequests.remove(pMateriaItem);
     }
 
     @Override
     public void provide(ItemStack pStack) {
+        if(pStack.getItem() == ADMIXTURE_STORM) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA);
 
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+            } else {
+                insertionStack.grow(pStack.getCount());
+            }
+            itemHandler.setStackInSlot(SLOT_MATERIA, insertionStack);
+
+            syncAndSave();
+
+            activeProvisionRequests.remove((MateriaItem)pStack.getItem());
+        }
     }
 
     @Override
     public int canAcceptStackFromShlorp(ItemStack pStack) {
-        return 0;
+        if(pStack.getItem() == ADMIXTURE_STORM) {
+            return 0;
+        }
+        return pStack.getCount();
     }
 
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
         return 0;
     }
 
