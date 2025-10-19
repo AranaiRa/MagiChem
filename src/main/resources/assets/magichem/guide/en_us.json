@@ -1359,7 +1359,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nCrafts triggered with Lightning damage spells will consume significantly less Admixture of the Storm and will complete instantly."
+            "text": ".\n\nCrafts triggered with Lightning damage spells will consume significantly less Admixture of the Storm and will complete instantly.\n\nRight-clicking a Skywrath Altar with a Skywrath Condenser will automatically place the Condenser in the correct position (unless another block is in the way)."
           }
         ]
       }

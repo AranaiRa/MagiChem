@@ -1,7 +1,9 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.SkywrathAltarBlockEntity;
+import com.aranaira.magichem.block.entity.SkywrathCondenserBlockEntity;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -36,7 +38,19 @@ public class SkywrathAltarBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() != ItemRegistry.THUNDERSTONE.get()) {
+        final ItemStack stackInHand = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+        if(stackInHand.getItem() == BlockRegistry.SKYWRATH_CONDENSER.get().asItem()) {
+            BlockPos posQuery = pPos.offset(0, 3, 0);
+            if(pLevel.getBlockState(posQuery).isAir()) {
+                pLevel.setBlock(posQuery, BlockRegistry.SKYWRATH_CONDENSER.get().defaultBlockState(), 3);
+                if(stackInHand.hasTag() && pLevel.getBlockEntity(posQuery) instanceof SkywrathCondenserBlockEntity condenser) {
+                    condenser.unpackInventoryFromNBT(stackInHand.getTag());
+                }
+                stackInHand.shrink(1);
+            }
+            return InteractionResult.CONSUME;
+        }
+        else if(stackInHand.getItem() != ItemRegistry.THUNDERSTONE.get()) {
             if (pLevel.getBlockEntity(pPos) instanceof SkywrathAltarBlockEntity sabe && pHand == InteractionHand.MAIN_HAND) {
                 ItemStack stackQuery = pPlayer.getItemInHand(pHand);
                 int idealCount = sabe.getIdealInsertingAmount(stackQuery, 0);
