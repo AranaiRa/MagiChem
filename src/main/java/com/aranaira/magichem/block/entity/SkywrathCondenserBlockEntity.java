@@ -123,9 +123,9 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
     }
 
     public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        int size = pInventoryTag.getInt("Size");
+        int size = pInventoryTag.getCompound("inventory").getInt("Size");
         if(size == SLOT_COUNT) {
-            itemHandler.deserializeNBT(pInventoryTag);
+            itemHandler.deserializeNBT(pInventoryTag.getCompound("inventory"));
         } else if(getLevel() != null && getLevel().isClientSide()) {
             final LocalPlayer player = Minecraft.getInstance().player;
             if(player != null) {

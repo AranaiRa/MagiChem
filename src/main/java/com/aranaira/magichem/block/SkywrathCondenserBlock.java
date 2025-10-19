@@ -86,4 +86,15 @@ public class SkywrathCondenserBlock extends BaseEntityBlock implements ISpellInt
 
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if(blockEntity instanceof SkywrathCondenserBlockEntity condenser) {
+                condenser.packInventoryToBlockItem();
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
 }
