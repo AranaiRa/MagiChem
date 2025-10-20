@@ -485,4 +485,12 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
     public AABB getRenderBoundingBox() {
         return new AABB(getBlockPos().offset(-1, 0, -1), getBlockPos().offset(1,1,1));
     }
+
+    public boolean hasSufficientItemsForRecipe() {
+        if(recipe != null && !itemHandler.getStackInSlot(SLOT_INPUT).isEmpty()) {
+            return itemHandler.getStackInSlot(SLOT_INPUT).getCount() >= recipe.getInputItem().getCount();
+        }
+
+        return false;
+    }
 }

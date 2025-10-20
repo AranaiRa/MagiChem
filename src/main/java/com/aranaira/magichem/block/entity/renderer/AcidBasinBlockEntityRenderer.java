@@ -63,24 +63,29 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                 basin = query.getMaster();
             }
 
-            if(basin != null && !basin.getInputItem().isEmpty() && !basin.getFluidInTank(TANK_INPUT).isEmpty()) {
-                float fill = basin.getProgressPercent();
+            if(basin != null) {
+                if(basin.getInputItem().isEmpty() || basin.getFluidInTank(TANK_INPUT).isEmpty())
+                    return;
+                if(basin.hasSufficientItemsForRecipe()) {
 
-                int color = Mth.hsvToRgb(fill / 3.0F, 1.0F, 1.0F) | -16777216;
-                int r = FastColor.ARGB32.red(color) / 3 * 2;
-                int g = FastColor.ARGB32.green(color) / 3 * 2;
-                int b = FastColor.ARGB32.blue(color) / 3 * 2;
+                    float fill = basin.getProgressPercent();
 
-                for(int i=0; i<4; i++){
-                    pPoseStack.pushPose();
-                    pPoseStack.translate(-0.5D, 0.0D, 0.5D);
-                    pPoseStack.mulPose(Axis.YP.rotationDegrees((float)(i * 90)));
-                    pPoseStack.translate(0.0D, 1.1875D, -0.3145D);
-                    pPoseStack.scale(0.565F, 0.05F, 1.0F);
-                    WorldRenderUtils.renderProgressBar(pPoseStack, pBuffer, fill, new int[]{r, g, b}, 255);
-                    pPoseStack.scale(-1.0F, 1.0F, 1.0F);
-                    WorldRenderUtils.renderProgressBar(pPoseStack, pBuffer, 1-fill, new int[]{0, 0, 0}, 255);
-                    pPoseStack.popPose();
+                    int color = Mth.hsvToRgb(fill / 3.0F, 1.0F, 1.0F) | -16777216;
+                    int r = FastColor.ARGB32.red(color) / 3 * 2;
+                    int g = FastColor.ARGB32.green(color) / 3 * 2;
+                    int b = FastColor.ARGB32.blue(color) / 3 * 2;
+
+                    for (int i = 0; i < 4; i++) {
+                        pPoseStack.pushPose();
+                        pPoseStack.translate(-0.5D, 0.0D, 0.5D);
+                        pPoseStack.mulPose(Axis.YP.rotationDegrees((float) (i * 90)));
+                        pPoseStack.translate(0.0D, 1.1875D, -0.3145D);
+                        pPoseStack.scale(0.565F, 0.05F, 1.0F);
+                        WorldRenderUtils.renderProgressBar(pPoseStack, pBuffer, fill, new int[]{r, g, b}, 255);
+                        pPoseStack.scale(-1.0F, 1.0F, 1.0F);
+                        WorldRenderUtils.renderProgressBar(pPoseStack, pBuffer, 1 - fill, new int[]{0, 0, 0}, 255);
+                        pPoseStack.popPose();
+                    }
                 }
             }
         }
