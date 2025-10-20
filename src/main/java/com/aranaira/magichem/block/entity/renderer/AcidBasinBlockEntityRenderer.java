@@ -63,7 +63,7 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                 basin = query.getMaster();
             }
 
-            if(basin != null) {
+            if(basin != null && !basin.getInputItem().isEmpty() && !basin.getFluidInTank(TANK_INPUT).isEmpty()) {
                 float fill = basin.getProgressPercent();
 
                 int color = Mth.hsvToRgb(fill / 3.0F, 1.0F, 1.0F) | -16777216;
