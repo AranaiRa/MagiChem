@@ -208,12 +208,14 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
                 int maxDeduction = (limit - pEntity.droplets) / upd;
                 int actualDeduction = Math.min(maxDeduction, materiaSlot.getCount());
 
-                if(InventoryHelper.isMateriaUnbottled(materiaSlot) || (bottleSlot.isEmpty() || bottleSlot.getCount() <= pEntity.itemHandler.getSlotLimit(SLOT_BOTTLES) - actualDeduction)) {
+                if(bottleSlot.isEmpty() || bottleSlot.getCount() <= pEntity.itemHandler.getSlotLimit(SLOT_BOTTLES) - actualDeduction) {
                     materiaSlot.shrink(actualDeduction);
-                    if(bottleSlot.isEmpty()) {
-                        pEntity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, actualDeduction));
-                    } else {
-                        bottleSlot.grow(actualDeduction);
+                    if(!InventoryHelper.isMateriaUnbottled(materiaSlot)){
+                        if (bottleSlot.isEmpty()) {
+                            pEntity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, actualDeduction));
+                        } else {
+                            bottleSlot.grow(actualDeduction);
+                        }
                     }
                     pEntity.droplets += actualDeduction * upd;
                     pEntity.syncAndSave();
