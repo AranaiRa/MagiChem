@@ -9,6 +9,7 @@ import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mna.api.spells.attributes.Attribute;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -537,18 +538,87 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
-//        if(pX >= x + 93 && pX < x + 93 + 18 && pY >= y + 22 && pY < y + 22 + 18) {
-//            if(menu.itemHandler.getStackInSlot(ChargingTalismanMenu.SLOT_SPIKE) == ItemStack.EMPTY) {
-//                tooltipContents.add(Component.empty()
-//                        .append(Component.translatable("tooltip.magichem.gui.charging_talisman.spike.line1"))
-//                );
-//                tooltipContents.add(Component.empty());
-//                tooltipContents.add(Component.empty()
-//                        .append(Component.translatable("tooltip.magichem.gui.charging_talisman.spike.line2"))
-//                );
-//                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
-//            }
-//        }
+        int pointLimit = menu.getPointLimit();
+        int pointStart = 84 - (pointLimit / 2)*8;
+        int pointEnd = 4 + pointLimit * 8;
+        if(pX >= x - 18 && pX < x - 8 && pY >= y + pointStart && pY < y + pointStart + pointEnd) {
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.points").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.points.line1")));
+            tooltipContents.add(Component.empty());
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.points.line2").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(""+(pointLimit - currentPointTotal)).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(""+pointLimit).withStyle(ChatFormatting.DARK_AQUA))
+
+            );
+            pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+        }
+
+        if(menu.getWisdom() >= 3) {
+            //Magnitude
+            if(pX >= x+124 && pX < x+146 && pY >= y+105 && pY < y+127) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.magnitude").withStyle(ChatFormatting.GOLD)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+            }
+        }
+        if(menu.getWisdom() >= 2) {
+            //Radius
+            if(pX >= x+94 && pX < x+119 && pY >= y+30 && pY < y+58) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.radius").withStyle(ChatFormatting.GOLD)));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.radius.note")));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+            }
+
+            //Duration
+            if(pX >= x+136 && pX < x+158 && pY >= y+75 && pY < y+97) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.duration").withStyle(ChatFormatting.GOLD)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+            }
+
+            //Lesser Magnitude
+            if(pX >= x+64 && pX < x+86 && pY >= y+105 && pY < y+127) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.lesser_magnitude").withStyle(ChatFormatting.GOLD)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+            }
+        }
+        {
+            //Range
+            if (pX >= x+124 && pX < x+146 && pY >= y+45 && pY < y+67) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.range").withStyle(ChatFormatting.GOLD)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+            }
+
+            //Damage
+            if (pX >= x+94 && pX < x+116 && pY >= y+117 && pY < y+139) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.damage").withStyle(ChatFormatting.GOLD)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+            }
+
+            //Delay
+            if (pX >= x+52 && pX < x+74 && pY >= y+75 && pY < y+97) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.delay").withStyle(ChatFormatting.GOLD)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+            }
+
+            //Speed
+            if (pX >= x+64 && pX < x+86 && pY >= y+45 && pY < y+67) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.delay").withStyle(ChatFormatting.GOLD)));
+                pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+            }
+        }
 //
 //        if(pX >= x + 65 && pX < x + 65 + 18 && pY >= y + 50 && pY < y + 50 + 18) {
 //            if(menu.itemHandler.getStackInSlot(ChargingTalismanMenu.SLOT_CHARGEABLE_ITEM) == ItemStack.EMPTY) {
