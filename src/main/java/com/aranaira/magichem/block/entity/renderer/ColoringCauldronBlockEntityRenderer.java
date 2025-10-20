@@ -37,7 +37,8 @@ import java.util.ArrayList;
 
 import static com.aranaira.magichem.block.entity.ColoringCauldronBlockEntity.*;
 
-public class ColoringCauldronBlockEntityRenderer implements BlockEntityRenderer<ColoringCauldronBlockEntity> {
+public class
+ColoringCauldronBlockEntityRenderer implements BlockEntityRenderer<ColoringCauldronBlockEntity> {
     private static final ResourceLocation TEXTURE_WATER = new ResourceLocation("minecraft", "block/water_still");
 
     private static final DyeColor[] COLOR_GUI_ORDER = {
@@ -57,6 +58,8 @@ public class ColoringCauldronBlockEntityRenderer implements BlockEntityRenderer<
 
         if(Minecraft.getInstance().hitResult instanceof BlockHitResult bhr) {
             if(!bhr.getBlockPos().equals(pBlockEntity.getBlockPos())) return;
+            if(pBlockEntity.getProgressPercent() >= 1 || pBlockEntity.getProgressPercent() <= 0) return;
+            if(!pBlockEntity.hasItem()) return;
 
             float fill = pBlockEntity.getProgressPercent();
             if(fill == 0 || fill == 1) return;
