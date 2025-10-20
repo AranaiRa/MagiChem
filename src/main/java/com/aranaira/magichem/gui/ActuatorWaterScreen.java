@@ -146,11 +146,37 @@ public class ActuatorWaterScreen extends AbstractContainerScreen<ActuatorWaterMe
         if(mouseX >= x+TOOLTIP_POWER_X && mouseX <= x+TOOLTIP_POWER_X+TOOLTIP_POWER_W &&
                 mouseY >= y+TOOLTIP_POWER_Y && mouseY <= y+TOOLTIP_POWER_Y+TOOLTIP_POWER_H) {
 
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.powerlevel").withStyle(ChatFormatting.GOLD))
-                    .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.water.powerlevel.line1")));
-            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            boolean standardText = true;
+            if(menu.getTier() <= 4 && mouseY <= y+TOOLTIP_POWER_Y+9) {
+                standardText = false;
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock.line1")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock.5")));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
+            else if(menu.getTier() <= 3 && mouseY <= y+TOOLTIP_POWER_Y+18) {
+                standardText = false;
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock.line1")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock.4")));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
+
+            if(standardText) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.actuator.powerlevel").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.actuator.water.powerlevel.line1")));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
         }
 
         //Water Tank

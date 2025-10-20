@@ -80,7 +80,7 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
         gui.pose().scale(2.0f, 2.0f, 2.0f);
 
         //power level
-        int plH = 17 + (menu.blockEntity.getPowerLevel() - 1) * 9;
+        int plH = 13 + (menu.blockEntity.getPowerLevel() - 1) * 13;
         int plY = POWER_H - plH;
         gui.blit(TEXTURE, x + 28, y + 19 + plY, POWER_U, plY, POWER_W, plH);
 
@@ -98,7 +98,7 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
         gui.blit(TEXTURE, x + 211, y, 40, 174 + (menu.blockEntity.doEldrinPowerConsumption ? 28 : 0), 57, 28);
 
         //Tier blocks
-        gui.blit(TEXTURE, x + 28, y + 19, 202, 0, 8, menu.getTier() <= 3 ? 18 : (menu.getTier() == 4 ? 9 : 0));
+        gui.blit(TEXTURE, x + 28, y + 19, 202, 0, 8, menu.getTier() <= 4 ? 13 : 0);
     }
 
     @Override
@@ -131,11 +131,26 @@ public class ActuatorEnderScreen extends AbstractContainerScreen<ActuatorEnderMe
         if(mouseX >= x+TOOLTIP_POWER_X && mouseX <= x+TOOLTIP_POWER_X+TOOLTIP_POWER_W &&
                 mouseY >= y+TOOLTIP_POWER_Y && mouseY <= y+TOOLTIP_POWER_Y+TOOLTIP_POWER_H) {
 
-            tooltipContents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.powerlevel").withStyle(ChatFormatting.GOLD))
-                    .append(": ")
-                    .append(Component.translatable("tooltip.magichem.gui.actuator.ender.powerlevel.line1")));
-            gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            boolean standardText = true;
+            if(menu.getTier() <= 4 && mouseY <= y+TOOLTIP_POWER_Y+13) {
+                standardText = false;
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock.line1")));
+                tooltipContents.add(Component.empty());
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.tier_lock.5")));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
+
+            if(standardText) {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.actuator.powerlevel").withStyle(ChatFormatting.GOLD))
+                        .append(": ")
+                        .append(Component.translatable("tooltip.magichem.gui.actuator.ender.powerlevel.line1")));
+                gui.renderTooltip(font, tooltipContents, Optional.empty(), mouseX, mouseY);
+            }
         }
 
         //Materia Import Rate

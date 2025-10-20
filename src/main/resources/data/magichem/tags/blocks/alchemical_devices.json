@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "magichem:actuator_neutral",
+    "magichem:circle_fabrication",
+    "magichem:grand_circle_fabrication",
+    "magichem:grand_distillery",
+    "magichem:grand_centrifuge",
+    "magichem:grand_fusery",
+    "magichem:mirror_labyrinth"
+  ]
+}
