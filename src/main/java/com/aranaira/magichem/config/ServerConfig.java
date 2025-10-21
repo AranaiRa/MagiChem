@@ -8,10 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 // An example config class. This is not required, but it's a good idea to have one to keep your config organized.
 // Demonstrates how to use Forge's config APIs
@@ -492,6 +489,66 @@ public class ServerConfig
                 return true;
             });
 
+    //WISDOM BLACKLISTS
+    private static final List<String> WISDOM_BLACKLIST_DAMAGE_DEFAULTS = new ArrayList<>();
+    private static final List<String> WISDOM_BLACKLIST_DELAY_DEFAULTS = new ArrayList<>();
+    private static final List<String> WISDOM_BLACKLIST_DURATION_DEFAULTS = new ArrayList<>();
+    private static final List<String> WISDOM_BLACKLIST_LESSER_MAGNITUDE_DEFAULTS = new ArrayList<>();
+    private static final List<String> WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS = new ArrayList<>();
+    private static final List<String> WISDOM_BLACKLIST_RADIUS_DEFAULTS = new ArrayList<>();
+    private static final List<String> WISDOM_BLACKLIST_RANGE_DEFAULTS = new ArrayList<>();
+    private static final List<String> WISDOM_BLACKLIST_SPEED_DEFAULTS = new ArrayList<>();
+    static {
+        WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS.add("mna:components/shield");
+    }
+
+    private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_DAMAGE = BUILDER
+            .comment("A comma separated list of component registry names that ignore boosts to Damage from the Wisdom Stones.")
+            .defineList("wisdomBlacklistDamage", WISDOM_BLACKLIST_DAMAGE_DEFAULTS, (e) -> {
+                return true;
+            });
+
+    private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_DELAY = BUILDER
+            .comment("A comma separated list of component registry names that ignore boosts to Delay from the Wisdom Stones.")
+            .defineList("wisdomBlacklistDelay", WISDOM_BLACKLIST_DELAY_DEFAULTS, (e) -> {
+                return true;
+            });
+
+    private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_DURATION = BUILDER
+            .comment("A comma separated list of component registry names that ignore boosts to Duration from the Wisdom Stones.")
+            .defineList("wisdomBlacklistDuration", WISDOM_BLACKLIST_DURATION_DEFAULTS, (e) -> {
+                return true;
+            });
+
+    private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_LESSER_MAGNITUDE = BUILDER
+            .comment("A comma separated list of component registry names that ignore boosts to Lesser Magnitude from the Wisdom Stones.")
+            .defineList("wisdomBlacklistLesserMagnitude", WISDOM_BLACKLIST_LESSER_MAGNITUDE_DEFAULTS, (e) -> {
+                return true;
+            });
+
+    private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_MAGNITUDE = BUILDER
+            .comment("A comma separated list of component registry names that ignore boosts to Magnitude from the Wisdom Stones.")
+            .defineList("wisdomBlacklistMagnitude", WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS, (e) -> {
+                return true;
+            });
+
+    private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_RADIUS = BUILDER
+            .comment("A comma separated list of component registry names that ignore boosts to Radius from the Wisdom Stones.")
+            .defineList("wisdomBlacklistRadius", WISDOM_BLACKLIST_RADIUS_DEFAULTS, (e) -> {
+                return true;
+            });
+
+    private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_RANGE = BUILDER
+            .comment("A comma separated list of component registry names that ignore boosts to Range from the Wisdom Stones.")
+            .defineList("wisdomBlacklistRange", WISDOM_BLACKLIST_RANGE_DEFAULTS, (e) -> {
+                return true;
+            });
+
+    private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_SPEED = BUILDER
+            .comment("A comma separated list of component registry names that ignore boosts to Speed from the Wisdom Stones.")
+            .defineList("wisdomBlacklistSpeed", WISDOM_BLACKLIST_SPEED_DEFAULTS, (e) -> {
+                return true;
+            });
 
     public static final ForgeConfigSpec SPEC = BUILDER.build();
 
@@ -599,7 +656,15 @@ public class ServerConfig
         circlePowerReprocessing3Eternal,
         circlePowerReprocessing4Eternal;
     public static HashSet<? extends String>
-        gnosticOrbProphecyBlacklist;
+        gnosticOrbProphecyBlacklist,
+        wisdomBlacklistDamage,
+        wisdomBlacklistDelay,
+        wisdomBlacklistDuration,
+        wisdomBlacklistLesserMagnitude,
+        wisdomBlacklistMagnitude,
+        wisdomBlacklistRadius,
+        wisdomBlacklistRange,
+        wisdomBlacklistSpeed;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -607,9 +672,29 @@ public class ServerConfig
     }
 
     @SubscribeEvent
+    public static void onModConfigEvent(ModConfigEvent event) {
+        if (event.getConfig().getSpec() == SPEC) {
+            bakeConfig();
+        }
+    }
+
+    @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
+        bakeConfig();
+    }
+
+    private static void bakeConfig() {
         gnosticOrbProphecyBlacklist = new HashSet(GNOSTIC_ORB_PROPHECY_BLACKLIST.get());
+
+        wisdomBlacklistDamage = new HashSet(WISDOM_BLACKLIST_DAMAGE.get());
+        wisdomBlacklistDelay = new HashSet(WISDOM_BLACKLIST_DELAY.get());
+        wisdomBlacklistDuration = new HashSet(WISDOM_BLACKLIST_DURATION.get());
+        wisdomBlacklistLesserMagnitude = new HashSet(WISDOM_BLACKLIST_LESSER_MAGNITUDE.get());
+        wisdomBlacklistMagnitude = new HashSet(WISDOM_BLACKLIST_MAGNITUDE.get());
+        wisdomBlacklistRadius = new HashSet(WISDOM_BLACKLIST_RADIUS.get());
+        wisdomBlacklistRange = new HashSet(WISDOM_BLACKLIST_RANGE.get());
+        wisdomBlacklistSpeed = new HashSet(WISDOM_BLACKLIST_SPEED.get());
 
         grimePerWaste = GRIME_PER_WASTE.get();
         grimePenaltyPoint = GRIME_PENALTY_POINT.get();

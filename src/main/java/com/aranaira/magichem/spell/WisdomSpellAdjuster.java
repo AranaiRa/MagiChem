@@ -3,6 +3,7 @@ package com.aranaira.magichem.spell;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.capabilities.wisdom.IWisdomCapability;
 import com.aranaira.magichem.capabilities.wisdom.WisdomProvider;
+import com.aranaira.magichem.config.ServerConfig;
 import com.google.common.collect.ImmutableList;
 import com.mna.api.spells.adjusters.SpellAdjustingContext;
 import com.mna.api.spells.adjusters.SpellCastStage;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.Item;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -180,13 +182,29 @@ public class WisdomSpellAdjuster {
 
             pContext.spell.iterateComponents((c) -> {
                 for (Attribute attributeQuery : c.getContainedAttributes()) {
-                    if (attributeQuery == pAttribute) {
-//                        c.setValue(attributeQuery, Math.max(0, (c.getValue(attributeQuery) + pSteps)));
-                        for(int i=0;i<pSteps;i++)
-                            c.stepUpIgnoreMax(pAttribute);
+                    final String nameQuery = c.getPart().getRegistryName().toString();
+                    if (!getBlacklistForAttribute(attributeQuery).contains(nameQuery)) {
+                        if (attributeQuery == pAttribute) {
+                            for (int i = 0; i < pSteps; i++)
+                                c.stepUpIgnoreMax(pAttribute);
+                        }
                     }
                 }
             });
         }
+    }
+
+    private static HashSet<? extends String> getBlacklistForAttribute(Attribute pAttribute) {
+        return switch(pAttribute) {
+            case SPEED -> ServerConfig.wisdomBlacklistSpeed;
+            case RANGE -> ServerConfig.wisdomBlacklistRange;
+            case DAMAGE -> ServerConfig.wisdomBlacklistDamage;
+            case RADIUS, WIDTH, HEIGHT, DEPTH -> ServerConfig.wisdomBlacklistRadius;
+            case MAGNITUDE -> ServerConfig.wisdomBlacklistMagnitude;
+            case LESSER_MAGNITUDE -> ServerConfig.wisdomBlacklistLesserMagnitude;
+            case DURATION -> ServerConfig.wisdomBlacklistDuration;
+            case DELAY -> ServerConfig.wisdomBlacklistDelay;
+            default -> new HashSet<>();
+        };
     }
 }
