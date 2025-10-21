@@ -116,7 +116,7 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
 
         if(hasValidRecipe || canStoreRF || isEnchantedBook) {
-            craftCountdown = 0;
+            craftCountdown = 1;
             syncAndSave();
         }
     }
