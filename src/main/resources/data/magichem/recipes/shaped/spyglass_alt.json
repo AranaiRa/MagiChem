@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "L",
+    "C",
+    "C"
+  ],
+  "key": {
+    "L": {
+      "item": "magichem:glass_lens"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "result": {
+    "item": "minecraft:spyglass"
+  }
+}
