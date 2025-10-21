@@ -645,6 +645,12 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
         gui.drawString(font ,powerDraw+"/t", 200, 26, 0xff000000, false);
         gui.drawString(font ,secWhole+"."+(secPartial < 10 ? "0"+secPartial : secPartial)+" s", 200, 45, 0xff000000, false);
 
+        if (!menu.blockEntity.hasSufficientPower()) {
+            MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
+            int width = Minecraft.getInstance().font.width(warningText.getString());
+            gui.drawString(font, warningText, 89 - width / 2, -33, 0xff000000, false);
+        }
+
         if(menu.blockEntity.getCurrentRecipe() instanceof DistillationFabricationRecipe itemRecipe) {
             for (int i = 0; i < itemRecipe.getComponentMateria().size(); i++) {
                 Component text = Component.literal((itemRecipe.getComponentMateria().get(i).getCount() * menu.blockEntity.getBatchSize()) + "");
@@ -657,12 +663,6 @@ public class CircleFabricationScreen extends AbstractContainerScreen<CircleFabri
                 int amt = (int) Math.round(1f / itemRecipe.getOutputRate());
 
                 gui.drawString(font, amt < 9 ? "x" + amt : "" + amt, 99, 72, 0xff000000, false);
-            }
-
-            if (!menu.blockEntity.hasSufficientPower()) {
-                MutableComponent warningText = Component.translatable("gui.magichem.insufficientpower");
-                int width = Minecraft.getInstance().font.width(warningText.getString());
-                gui.drawString(font, warningText, 89 - width / 2, -33, 0xff000000, false);
             }
 
             if (itemRecipe.getBatchSize() > 1) {
