@@ -9,6 +9,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.DistillationFabricationRecipe;
 import com.aranaira.magichem.recipe.FluidDistillationFabricationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -760,5 +761,17 @@ public class CodexMateriaScreen extends AbstractContainerScreen<CodexMateriaMenu
         }
 
         pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+    }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (pKeyCode == InputConstants.KEY_ESCAPE) {
+            this.onClose();
+            return true;
+        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+            return true;
+        } else {
+            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
     }
 }
