@@ -160,6 +160,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties().durability(2000))
     );
 
+    public static final RegistryObject<TooltipLoreItem> SOLAR_FARSIGHT_LENS = ITEMS.register("solar_farsight_lens",
+            () -> new TooltipLoreItem(new Item.Properties().durability(2000))
+    );
+
     public static final RegistryObject<TooltipLoreItem> LUNAR_FARSIGHT_LENS = ITEMS.register("lunar_farsight_lens",
             () -> new TooltipLoreItem(new Item.Properties().durability(2000))
     );

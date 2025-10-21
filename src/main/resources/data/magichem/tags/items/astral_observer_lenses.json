@@ -1,9 +1,11 @@
 {
   "replace": false,
   "values": [
+    "magichem:glass_lens",
     "magichem:solar_cloister_lens",
     "magichem:lunar_cloister_lens",
     "magichem:sidereal_cloister_lens",
+    "magichem:solar_farsight_lens",
     "magichem:lunar_farsight_lens",
     "magichem:sidereal_farsight_lens"
   ]
