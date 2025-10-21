@@ -1,0 +1,20 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "occultism"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:fulmination",
+        "input": "occultism:silver_ore",
+        "input_count": 1,
+        "result": "occultism:silver_ore_deepslate",
+        "result_count": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:copper_ore",
+  "input_count": 1,
+  "result": "minecraft:deepslate_copper_ore",
+  "result_count": 1
+}

@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:iron_ore",
+  "input_count": 1,
+  "result": "minecraft:deepslate_iron_ore",
+  "result_count": 1
+}
