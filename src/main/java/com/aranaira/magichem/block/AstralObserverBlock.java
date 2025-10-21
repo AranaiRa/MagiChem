@@ -4,8 +4,10 @@ import com.aranaira.magichem.block.entity.AstralObserverBlockEntity;
 import com.aranaira.magichem.block.entity.SkywrathAltarBlockEntity;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -27,6 +29,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class AstralObserverBlock extends BaseEntityBlock {
@@ -52,32 +55,42 @@ public class AstralObserverBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide() && pLevel.getBlockEntity(pPos) instanceof AstralObserverBlockEntity astral && pHand == InteractionHand.MAIN_HAND) {
-            ItemStack stackQuery = pPlayer.getItemInHand(pHand);
-
-            final LazyOptional<IItemHandler> capQuery = astral.getCapability(ForgeCapabilities.ITEM_HANDLER);
-            if(capQuery.isPresent()) {
-                final IItemHandler cap = capQuery.resolve().get();
-
-                if(stackQuery.isEmpty()) {
-                    final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);
-                    pPlayer.setItemInHand(pHand, extractQuery);
-                } else if(stackQuery.getItem() == ItemRegistry.DEBUG_ORB.get()) {
-                    astral.skipToFullCharge();
-                } else {
-                    if (!cap.getStackInSlot(0).isEmpty()) {
-                        final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);
-                        ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), extractQuery);
-                        pLevel.addFreshEntity(ie);
-                    } else {
-                        cap.insertItem(0, pPlayer.getItemInHand(pHand).copy(), false);
-                        pPlayer.getItemInHand(pHand).shrink(1);
-                    }
-                }
+//        if (!pLevel.isClientSide() && pLevel.getBlockEntity(pPos) instanceof AstralObserverBlockEntity astral && pHand == InteractionHand.MAIN_HAND) {
+//            ItemStack stackQuery = pPlayer.getItemInHand(pHand);
+//
+//            final LazyOptional<IItemHandler> capQuery = astral.getCapability(ForgeCapabilities.ITEM_HANDLER);
+//            if(capQuery.isPresent()) {
+//                final IItemHandler cap = capQuery.resolve().get();
+//
+//                if(stackQuery.isEmpty()) {
+//                    final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);
+//                    pPlayer.setItemInHand(pHand, extractQuery);
+//                } else if(stackQuery.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+//                    astral.skipToFullCharge();
+//                } else {
+//                    if (!cap.getStackInSlot(0).isEmpty()) {
+//                        final ItemStack extractQuery = cap.extractItem(0, cap.getSlotLimit(0), false);
+//                        ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), extractQuery);
+//                        pLevel.addFreshEntity(ie);
+//                    } else {
+//                        cap.insertItem(0, pPlayer.getItemInHand(pHand).copy(), false);
+//                        pPlayer.getItemInHand(pHand).shrink(1);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return InteractionResult.CONSUME;
+        if(!pLevel.isClientSide()) {
+            BlockEntity entity = pLevel.getBlockEntity(pPos);
+            if(entity instanceof AstralObserverBlockEntity observer) {
+                NetworkHooks.openScreen((ServerPlayer) pPlayer, observer, pPos);
+            } else {
+                throw new IllegalStateException("AstralObserver container provider is missing!");
             }
         }
 
-        return InteractionResult.CONSUME;
+        return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
     @Override

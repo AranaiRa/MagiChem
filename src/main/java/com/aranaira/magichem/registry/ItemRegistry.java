@@ -132,6 +132,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> GLASS_LENS = ITEMS.register("glass_lens",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     public static final RegistryObject<TooltipLoreItem> SOLAR_ORB = ITEMS.register("solar_orb",
             () -> new TooltipLoreItem(new Item.Properties())
     );
@@ -142,6 +146,26 @@ public class ItemRegistry {
 
     public static final RegistryObject<TooltipLoreItem> SIDEREAL_ORB = ITEMS.register("sidereal_orb",
             () -> new TooltipLoreItem(new Item.Properties())
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SOLAR_CLOISTER_LENS = ITEMS.register("solar_cloister_lens",
+            () -> new TooltipLoreItem(new Item.Properties().durability(2000))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LUNAR_CLOISTER_LENS = ITEMS.register("lunar_cloister_lens",
+            () -> new TooltipLoreItem(new Item.Properties().durability(2000))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SIDEREAL_CLOISTER_LENS = ITEMS.register("sidereal_cloister_lens",
+            () -> new TooltipLoreItem(new Item.Properties().durability(2000))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> LUNAR_FARSIGHT_LENS = ITEMS.register("lunar_farsight_lens",
+            () -> new TooltipLoreItem(new Item.Properties().durability(2000))
+    );
+
+    public static final RegistryObject<TooltipLoreItem> SIDEREAL_FARSIGHT_LENS = ITEMS.register("sidereal_farsight_lens",
+            () -> new TooltipLoreItem(new Item.Properties().durability(2000))
     );
 
     public static final RegistryObject<TooltipLoreItem> CELESTIAL_MECHANISM = ITEMS.register("celestial_mechanism",

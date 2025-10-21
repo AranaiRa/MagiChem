@@ -1,7 +1,9 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.LuminType;
+import com.aranaira.magichem.gui.AstralObserverMenu;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.util.MathHelper;
@@ -18,12 +20,23 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Containers;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -41,7 +54,7 @@ import java.util.Random;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.NEEDS_HARD_UPDATE;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class AstralObserverBlockEntity extends BlockEntity {
+public class AstralObserverBlockEntity extends BlockEntity implements MenuProvider {
     private LuminType
             luminType = LuminType.NONE,
             recipeLuminType = LuminType.NONE;
@@ -50,6 +63,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
     private IlluminationRecipe recipe = null;
     private ItemStack heldItem = ItemStack.EMPTY;
     private static final Random r = new Random();
+    public static final TagKey<Item> ASTRAL_OBSERVER_LENSES = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "astral_observer_lenses"));
 
     public float
         colorLerp = 0, beamLerp = 0;
@@ -168,6 +182,20 @@ public class AstralObserverBlockEntity extends BlockEntity {
         }
     };
 
+    protected LazyOptional<IItemHandler> lazyLensItemHandler = LazyOptional.empty();
+    private final ItemStackHandler lensItemHandler = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            super.onContentsChanged(slot);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return stack.is(ASTRAL_OBSERVER_LENSES);
+        }
+    };
+
     public AstralObserverBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.ASTRAL_OBSERVER_BE.get(), pPos, pBlockState);
     }
@@ -187,24 +215,36 @@ public class AstralObserverBlockEntity extends BlockEntity {
         super.invalidateCaps();
 
         lazyItemHandler.invalidate();
+        lazyLensItemHandler.invalidate();
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER) return lazyItemHandler.cast();
+        if(cap == ForgeCapabilities.ITEM_HANDLER) {
+            if(side == Direction.UP || side == Direction.DOWN)
+                return lazyItemHandler.cast();
+            else
+                return lazyLensItemHandler.cast();
+        }
 
         return super.getCapability(cap, side);
+    }
+
+    public @NotNull LazyOptional<ItemStackHandler> getLensItemCapability() {
+        return lazyLensItemHandler.cast();
     }
 
     @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        lazyLensItemHandler = LazyOptional.of(() -> lensItemHandler);
     }
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("heldItem", heldItem.serializeNBT());
+        nbt.put("lensInventory", lensItemHandler.serializeNBT());
         nbt.putInt("type", luminType.ordinal());
         nbt.putInt("current", currentLumins);
         nbt.putInt("needed", luminsNeeded);
@@ -216,6 +256,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         heldItem = ItemStack.of(nbt.getCompound("heldItem"));
+        lensItemHandler.deserializeNBT(nbt.getCompound("lensInventory"));
         luminType = LuminType.luminTypeFromOrdinal(nbt.getInt("type"));
         currentLumins = nbt.getInt("current");
         luminsNeeded = nbt.getInt("needed");
@@ -225,6 +266,7 @@ public class AstralObserverBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.put("heldItem", heldItem.serializeNBT());
+        nbt.put("lensInventory", lensItemHandler.serializeNBT());
         nbt.putInt("type", luminType.ordinal());
         nbt.putInt("current", currentLumins);
         nbt.putInt("needed", luminsNeeded);
@@ -457,5 +499,16 @@ public class AstralObserverBlockEntity extends BlockEntity {
     public void skipToFullCharge() {
         currentLumins = luminsNeeded - 5;
         syncAndSave();
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.empty();
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        return new AstralObserverMenu(pContainerId, pPlayerInventory, this, new SimpleContainerData(0));
     }
 }
