@@ -214,8 +214,9 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
             } else {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof AlchemicalNexusBlockEntity anbe) {
-                    if (player.getItemInHand(hand).getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
-                        if(player.getItemInHand(hand).getItem() == ItemRegistry.ACADEMIC_SLURRY_BUCKET.get()) {
+                    final ItemStack itemInHand = player.getItemInHand(hand);
+                    if (!itemInHand.isEmpty() && itemInHand.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent()) {
+                        if(itemInHand.getItem() == ItemRegistry.ACADEMIC_SLURRY_BUCKET.get()) {
                             player.setItemInHand(hand, new ItemStack(Items.BUCKET));
                         }
 
