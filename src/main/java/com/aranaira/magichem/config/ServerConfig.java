@@ -500,6 +500,7 @@ public class ServerConfig
     private static final List<String> WISDOM_BLACKLIST_SPEED_DEFAULTS = new ArrayList<>();
     static {
         WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS.add("mna:components/shield");
+        WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS.add("mna:components/simulacrum");
     }
 
     private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_DAMAGE = BUILDER
