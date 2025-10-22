@@ -615,7 +615,7 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
             //Speed
             if (pX >= x+64 && pX < x+86 && pY >= y+45 && pY < y+67) {
                 tooltipContents.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.delay").withStyle(ChatFormatting.GOLD)));
+                        .append(Component.translatable("tooltip.magichem.gui.wisdom_wheel.speed").withStyle(ChatFormatting.GOLD)));
                 pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
             }
         }
