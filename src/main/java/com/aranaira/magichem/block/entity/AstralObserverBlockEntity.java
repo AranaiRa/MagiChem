@@ -108,6 +108,7 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                         lunarRecipe = null;
                         siderealRecipe = null;
                         luminTypeInItem = LuminType.NONE;
+                        holdingCompletedCraft = false;
                         syncAndSave();
                     }
                     return stack;
@@ -132,12 +133,13 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                             luminTypeInItem = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
                             currentLumins = luminsTag.getInt("current");
                             luminsNeeded = luminsTag.getInt("needed");
+                            nbt.remove("magichemLumins");
+                            heldItem.setTag(nbt);
                         }
                     }
                     if(!simulate) {
                         heldItem = stack.copy();
                         heldItem.setCount(1);
-                        heldItem.removeTagKey("magichemLumins");
                         syncAndSave();
                     }
 
@@ -166,6 +168,9 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                             luminTypeInItem = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
                             currentLumins = luminsTag.getInt("current");
                             luminsNeeded = luminsTag.getInt("needed");
+                            holdingCompletedCraft = false;
+                            nbt.remove("magichemLumins");
+                            heldItem.setTag(nbt);
                         }
                     }
                     heldItem = stack;
@@ -400,7 +405,7 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                             entity.syncAndSave();
                         }
                     } else if (recipeThisPhase != null && entity.currentLumins >= entity.luminsNeeded) {
-                        entity.itemHandler.setStackInSlot(0,recipeThisPhase.getResultItem().copy());
+                        entity.heldItem = recipeThisPhase.getResultItem().copy();
                         entity.holdingCompletedCraft = true;
                         entity.solarRecipe = null;
                         entity.lunarRecipe = null;
