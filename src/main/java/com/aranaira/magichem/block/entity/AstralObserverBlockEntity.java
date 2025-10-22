@@ -1,17 +1,21 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.gui.AstralObserverMenu;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.tools.math.MathUtils;
 import com.mna.tools.math.Vector3;
+import com.mojang.authlib.GameProfile;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,6 +39,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -42,6 +48,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -50,17 +57,21 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+import java.util.UUID;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.NEEDS_HARD_UPDATE;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
 public class AstralObserverBlockEntity extends BlockEntity implements MenuProvider {
     private LuminType
-            luminType = LuminType.NONE,
-            recipeLuminType = LuminType.NONE;
+            luminTypeThisTick = LuminType.NONE,
+            luminTypeInItem = LuminType.NONE;
     private int
             currentLumins = 0, luminsNeeded = 0, lastComparatorOutput = 0;
-    private IlluminationRecipe recipe = null;
+    private boolean
+            holdingCompletedCraft = false, recheckRecipe = false;
+    private IlluminationRecipe
+            solarRecipe = null, lunarRecipe = null, siderealRecipe = null;
     private ItemStack heldItem = ItemStack.EMPTY;
     private static final Random r = new Random();
     public static final TagKey<Item> ASTRAL_OBSERVER_LENSES = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "astral_observer_lenses"));
@@ -78,25 +89,25 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                 ItemStack stack = heldItem.copy();
                 if(!stack.isEmpty()) {
                     CompoundTag nbt = new CompoundTag();
-                    if(recipe != null && stack.getItem() != recipe.getResultItem().getItem()) {
-                        if (stack.hasTag()) {
-                            nbt = stack.getTag();
-                        }
-                        if (currentLumins > 0) {
-                            CompoundTag luminsTag = new CompoundTag();
-                            luminsTag.putInt("type", recipe.getLuminType().ordinal());
-                            luminsTag.putInt("current", currentLumins);
-                            luminsTag.putInt("needed", luminsNeeded);
-                            nbt.put("magichemLumins", luminsTag);
-                            stack.setTag(nbt);
-                        }
+                    if (stack.hasTag()) {
+                        nbt = stack.getTag();
+                    }
+                    if (currentLumins > 0) {
+                        CompoundTag luminsTag = new CompoundTag();
+                        luminsTag.putInt("type", luminTypeInItem.ordinal());
+                        luminsTag.putInt("current", currentLumins);
+                        luminsTag.putInt("needed", luminsNeeded);
+                        nbt.put("magichemLumins", luminsTag);
+                        stack.setTag(nbt);
                     }
                     if(!simulate) {
                         currentLumins = 0;
                         luminsNeeded = 0;
                         heldItem = ItemStack.EMPTY;
-                        recipe = null;
-                        recipeLuminType = LuminType.NONE;
+                        solarRecipe = null;
+                        lunarRecipe = null;
+                        siderealRecipe = null;
+                        luminTypeInItem = LuminType.NONE;
                         syncAndSave();
                     }
                     return stack;
@@ -110,27 +121,23 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
         public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
             if(level != null && !level.isClientSide()) {
                 if(heldItem.isEmpty()) {
+                    solarRecipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), LuminType.SOLAR);
+                    lunarRecipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), LuminType.LUNAR);
+                    siderealRecipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), LuminType.SIDEREAL);
+
                     if (stack.hasTag()) {
                         final CompoundTag nbt = stack.getTag();
                         if (!simulate && nbt != null && nbt.contains("magichemLumins")) {
                             CompoundTag luminsTag = nbt.getCompound("magichemLumins");
-                            recipeLuminType = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
+                            luminTypeInItem = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
                             currentLumins = luminsTag.getInt("current");
                             luminsNeeded = luminsTag.getInt("needed");
-                            recipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), recipeLuminType);
                         }
                     }
                     if(!simulate) {
                         heldItem = stack.copy();
                         heldItem.setCount(1);
-                        if(recipe == null) {
-                            recipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), getLuminPhase(false));
-                            if(recipe != null) {
-                                recipeLuminType = recipe.getLuminType();
-                                currentLumins = 0;
-                                luminsNeeded = recipe.getCraftTime() * 1200;
-                            }
-                        }
+                        heldItem.removeTagKey("magichemLumins");
                         syncAndSave();
                     }
 
@@ -153,8 +160,10 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                         final CompoundTag nbt = stack.getTag();
                         if (nbt != null && nbt.contains("magichemLumins")) {
                             CompoundTag luminsTag = nbt.getCompound("magichemLumins");
-                            recipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), recipeLuminType);
-                            recipeLuminType = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
+                            solarRecipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), LuminType.SOLAR);
+                            lunarRecipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), LuminType.LUNAR);
+                            siderealRecipe = IlluminationRecipe.getIlluminationRecipe(level, stack.getItem(), LuminType.SIDEREAL);
+                            luminTypeInItem = LuminType.luminTypeFromOrdinal(luminsTag.getInt("type"));
                             currentLumins = luminsTag.getInt("current");
                             luminsNeeded = luminsTag.getInt("needed");
                         }
@@ -192,7 +201,7 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            return stack.is(ASTRAL_OBSERVER_LENSES);
+            return stack.is(ASTRAL_OBSERVER_LENSES) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
         }
     };
 
@@ -208,6 +217,10 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
 
     public ItemStack getItem() {
         return itemHandler.getStackInSlot(0);
+    }
+
+    public ItemStack getLens() {
+        return lensItemHandler.getStackInSlot(0);
     }
 
     @Override
@@ -245,9 +258,10 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("heldItem", heldItem.serializeNBT());
         nbt.put("lensInventory", lensItemHandler.serializeNBT());
-        nbt.putInt("type", luminType.ordinal());
+        nbt.putInt("type", luminTypeInItem.ordinal());
         nbt.putInt("current", currentLumins);
         nbt.putInt("needed", luminsNeeded);
+        nbt.putBoolean("holdingCompletedCraft", holdingCompletedCraft);
 
         super.saveAdditional(nbt);
     }
@@ -257,9 +271,12 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
         super.load(nbt);
         heldItem = ItemStack.of(nbt.getCompound("heldItem"));
         lensItemHandler.deserializeNBT(nbt.getCompound("lensInventory"));
-        luminType = LuminType.luminTypeFromOrdinal(nbt.getInt("type"));
+        luminTypeInItem = LuminType.luminTypeFromOrdinal(nbt.getInt("type"));
         currentLumins = nbt.getInt("current");
         luminsNeeded = nbt.getInt("needed");
+        holdingCompletedCraft = nbt.getBoolean("holdingCompletedCraft");
+
+        recheckRecipe = true;
     }
 
     @Override
@@ -267,9 +284,10 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
         CompoundTag nbt = new CompoundTag();
         nbt.put("heldItem", heldItem.serializeNBT());
         nbt.put("lensInventory", lensItemHandler.serializeNBT());
-        nbt.putInt("type", luminType.ordinal());
+        nbt.putInt("type", luminTypeInItem.ordinal());
         nbt.putInt("current", currentLumins);
         nbt.putInt("needed", luminsNeeded);
+        nbt.putBoolean("holdingCompletedCraft", holdingCompletedCraft);
         return nbt;
     }
 
@@ -284,57 +302,119 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
-    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+    private static boolean processLuminsForPhase(AstralObserverBlockEntity pEntity, LuminType pType)
+    {
+        if(!pEntity.getItem().isEmpty() && !pEntity.getLens().isEmpty()){
+            IlluminationRecipe recipe = pEntity.getRecipeForPhase(pType);
+            if (recipe != null) {
+                if (pEntity.currentLumins <= 0) {
+                    pEntity.luminsNeeded = recipe.getCraftTime() * 1200 * ServerConfig.astralObserverLuminGainStandard;
+                    pEntity.luminTypeInItem = recipe.getLuminType();
+                }
+
+                if (pEntity.getLens().getItem() == ItemRegistry.GLASS_LENS.get() && pEntity.luminTypeInItem == recipe.getLuminType()) {
+                    pEntity.currentLumins = Math.min(pEntity.luminsNeeded, pEntity.currentLumins + ServerConfig.astralObserverLuminGainStandard);
+                    return true;
+                } else if (pEntity.isMatchingCloister(pType)) {
+                    pEntity.currentLumins = Math.min(pEntity.luminsNeeded, pEntity.currentLumins + ServerConfig.astralObserverLuminGainCloister);
+                    return true;
+                } else if (pEntity.isMatchingFarsight(pEntity.luminTypeInItem)) {
+                    pEntity.currentLumins = Math.min(pEntity.luminsNeeded, pEntity.currentLumins + ServerConfig.astralObserverLuminGainFarsight);
+                    return true;
+                } else if (pEntity.isNonMatchingCloister(pType)) {
+                    return true;
+                } else {
+                    pEntity.currentLumins = Math.max(0, pEntity.currentLumins - ServerConfig.astralObserverLuminLoss);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isMatchingCloister(LuminType pType) {
+        if(pType == LuminType.SOLAR) return getLens().getItem() == ItemRegistry.SOLAR_CLOISTER_LENS.get();
+        else if(pType == LuminType.LUNAR) return getLens().getItem() == ItemRegistry.LUNAR_CLOISTER_LENS.get();
+        else if(pType == LuminType.SIDEREAL) return getLens().getItem() == ItemRegistry.SIDEREAL_CLOISTER_LENS.get();
+        return false;
+    }
+
+    private boolean isNonMatchingCloister(LuminType pType) {
+        if(pType == LuminType.SOLAR)
+            return (getLens().getItem() == ItemRegistry.LUNAR_CLOISTER_LENS.get()) || (getLens().getItem() == ItemRegistry.SIDEREAL_CLOISTER_LENS.get());
+        else if(pType == LuminType.LUNAR)
+            return (getLens().getItem() == ItemRegistry.SOLAR_CLOISTER_LENS.get()) || (getLens().getItem() == ItemRegistry.SIDEREAL_CLOISTER_LENS.get());
+        else if(pType == LuminType.SIDEREAL)
+            return (getLens().getItem() == ItemRegistry.SOLAR_CLOISTER_LENS.get()) || (getLens().getItem() == ItemRegistry.LUNAR_CLOISTER_LENS.get());
+        return false;
+    }
+
+    private boolean isMatchingFarsight(LuminType pType) {
+        if(pType == LuminType.SOLAR) return getLens().getItem() == ItemRegistry.SOLAR_FARSIGHT_LENS.get();
+        else if(pType == LuminType.LUNAR) return getLens().getItem() == ItemRegistry.LUNAR_FARSIGHT_LENS.get();
+        else if(pType == LuminType.SIDEREAL) return getLens().getItem() == ItemRegistry.SIDEREAL_FARSIGHT_LENS.get();
+        return false;
+    }
+
+    public static <T extends BlockEntity> void tick(Level pLevel, BlockPos pPos, BlockState pState, T t) {
         if(t instanceof AstralObserverBlockEntity entity) {
+            LuminType previousType = entity.luminTypeThisTick;
+            entity.luminTypeThisTick = entity.getLuminPhase(true);
 
-            entity.luminType = entity.getLuminPhase(true);
+            //Recipe recheck
+            if(entity.recheckRecipe || previousType != entity.luminTypeThisTick) {
+                if(!entity.heldItem.isEmpty()) {
+                    entity.solarRecipe = IlluminationRecipe.getIlluminationRecipe(pLevel, entity.heldItem.getItem(), LuminType.SOLAR);
+                    entity.lunarRecipe = IlluminationRecipe.getIlluminationRecipe(pLevel, entity.heldItem.getItem(), LuminType.LUNAR);
+                    entity.siderealRecipe = IlluminationRecipe.getIlluminationRecipe(pLevel, entity.heldItem.getItem(), LuminType.SIDEREAL);
+                } else {
+                    entity.solarRecipe = null;
+                    entity.lunarRecipe = null;
+                    entity.siderealRecipe = null;
+                }
+                entity.recheckRecipe = false;
+            }
+            final IlluminationRecipe recipeThisPhase = entity.getRecipeForPhase(entity.luminTypeThisTick);
 
-            //recipe settling
-            if(entity.heldItem.isEmpty()) {
-                if(entity.recipe != null) entity.recipe = null;
-            } else {
-                boolean doRecipeChange = false;
-                if(entity.recipe == null)  doRecipeChange = true;
-                else if(entity.recipe.getInputItem().getItem() != entity.heldItem.getItem()) doRecipeChange = true;
+            //Progress lumins
+            if(!entity.holdingCompletedCraft) {
+                if (processLuminsForPhase(entity, entity.luminTypeThisTick) && pLevel.getGameTime() % 80 == 0) {
+                    final ItemStack lens = entity.getLens();
 
-                if(doRecipeChange) {
-                    entity.recipe = IlluminationRecipe.getIlluminationRecipe(level, entity.heldItem.getItem(), entity.recipeLuminType == LuminType.NONE ? entity.luminType : entity.recipeLuminType);
+                    //Damage lenses
+                    if (lens.getItem() != ItemRegistry.GLASS_LENS.get() && lens.getItem() != ItemRegistry.DEBUG_ORB.get()) {
+                        if (r.nextFloat() <= 1f / (float) (EnchantmentHelper.getTagEnchantmentLevel(Enchantments.UNBREAKING, lens) + 1)) {
+                            lens.setDamageValue(lens.getDamageValue() + 1);
+                            if (lens.getDamageValue() >= lens.getMaxDamage())
+                                entity.lensItemHandler.setStackInSlot(0, ItemStack.EMPTY);
+                        }
+                    }
+
+                    //Clear lumin data if lumin stuff is empty
+                    if (entity.currentLumins <= 0) {
+                        entity.luminTypeInItem = LuminType.NONE;
+                        entity.luminsNeeded = 1;
+                        CompoundTag nbt = entity.heldItem.getTag();
+                        if (nbt != null) {
+                            nbt.remove("magichemLumins");
+                            entity.syncAndSave();
+                        }
+                    } else if (recipeThisPhase != null && entity.currentLumins >= entity.luminsNeeded) {
+                        entity.itemHandler.setStackInSlot(0,recipeThisPhase.getResultItem().copy());
+                        entity.holdingCompletedCraft = true;
+                        entity.solarRecipe = null;
+                        entity.lunarRecipe = null;
+                        entity.siderealRecipe = null;
+                        entity.syncAndSave();
+                    }
                 }
             }
 
             if (true) { //sky check later
-                //we should have a recipe if there's an item present
-                boolean needsNewRecipe = entity.recipe == null && !entity.heldItem.isEmpty();
-
-                if (entity.recipe != null && entity.heldItem.getItem() != entity.recipe.getResultItem().getItem()) {
-                    //If we have the wrong type of lumins we need to start draining them
-                    if (entity.luminType != entity.recipe.getLuminType()) {
-                        entity.currentLumins = Math.max(0, entity.currentLumins - 2);
-                        //reset the recipe once the lumins are empty
-                        if (entity.currentLumins <= 0) {
-                            entity.recipe = IlluminationRecipe.getIlluminationRecipe(level, entity.heldItem.getItem(), entity.luminType);
-                            if(entity.recipe != null) {
-                                entity.recipeLuminType = entity.recipe.getLuminType();
-                                entity.luminsNeeded = entity.recipe.getCraftTime() * 1200;
-                                entity.syncAndSave();
-                            }
-                        }
-                    } else {
-                        if (entity.currentLumins < entity.luminsNeeded) {
-                            entity.currentLumins++;
-                        } else {
-                            entity.heldItem = entity.recipe.getResultItem().copy();
-                            level.setBlock(pos, blockState.setValue(NEEDS_HARD_UPDATE, true), 3);
-                            level.sendBlockUpdated(pos, blockState, blockState.setValue(NEEDS_HARD_UPDATE, true), 3);
-                            entity.syncAndSave();
-                        }
-                    }
-                }
-
                 //VFX and animation drivers
-                if (level.isClientSide() && entity.recipe != null) {
-                    if ((entity.luminType == entity.recipe.getLuminType()) && (entity.currentLumins < entity.luminsNeeded)) {
-                        int[] primaryColor = LuminType.getParticleColor(entity.luminType);
+                if (pLevel.isClientSide() && recipeThisPhase != null) {
+                    if ((entity.luminTypeInItem == recipeThisPhase.getLuminType()) && (entity.currentLumins < entity.luminsNeeded)) {
+                        int[] primaryColor = LuminType.getParticleColor(entity.luminTypeInItem);
                         int[] bleachedColor = new int[3];
                         bleachedColor[0] = (int) MathUtils.lerpf(primaryColor[0], 255, 0.425f);
                         bleachedColor[1] = (int) MathUtils.lerpf(primaryColor[1], 255, 0.425f);
@@ -347,14 +427,14 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                         Vector3 center = new Vector3(entity.getBlockPos().getX() + 0.5, entity.getBlockPos().getY() + 1.0625, entity.getBlockPos().getZ() + 0.5);
 
                         //sparks
-                        level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                        pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
                                         .setPhysics(false).setScale(0.0625f).setMaxAge(45).setPhysics(true).setGravity(0.02f)
                                         .setColor(bleachedColor[0], bleachedColor[1], bleachedColor[2], 196),
                                 center.x, center.y, center.z,
                                 r.nextDouble(0.1) - 0.05, 0.04 + r.nextDouble(0.12), r.nextDouble(0.1) - 0.05);
 
-                        if (level.getGameTime() % 2 == 0) {
-                            level.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                        if (pLevel.getGameTime() % 2 == 0) {
+                            pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
                                             .setPhysics(false).setScale(0.0625f).setMaxAge(65).setPhysics(true)
                                             .setColor(primaryColor[0], primaryColor[1], primaryColor[2], 196),
                                     center.x, center.y, center.z,
@@ -363,7 +443,7 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
 
                         //glow
                         Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
-                        level.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
                                         .setColor(dimmedColor[0], dimmedColor[1], dimmedColor[2], 96)
                                         .setScale(0.18f).setMaxAge(24)
                                         .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
@@ -373,14 +453,32 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                 }
             }
 
-            if(!level.isClientSide()) {
+            if(!pLevel.isClientSide()) {
 
-                if(blockState.getValue(NEEDS_HARD_UPDATE)) {
-                    level.setBlock(pos, blockState.setValue(NEEDS_HARD_UPDATE, false), 3);
-                    level.sendBlockUpdated(pos, blockState, blockState.setValue(NEEDS_HARD_UPDATE, false), 3);
+                if(pState.getValue(NEEDS_HARD_UPDATE)) {
+                    pLevel.setBlock(pPos, pState.setValue(NEEDS_HARD_UPDATE, false), 3);
+                    pLevel.sendBlockUpdated(pPos, pState, pState.setValue(NEEDS_HARD_UPDATE, false), 3);
                 }
             }
         }
+    }
+
+    @Nullable
+    private IlluminationRecipe getRecipeForPhase(LuminType pLuminType) {
+        if(getLens().getItem() == ItemRegistry.SOLAR_FARSIGHT_LENS.get()) return solarRecipe;
+        if(getLens().getItem() == ItemRegistry.LUNAR_FARSIGHT_LENS.get()) return lunarRecipe;
+        if(getLens().getItem() == ItemRegistry.SIDEREAL_FARSIGHT_LENS.get()) return siderealRecipe;
+
+        return switch(pLuminType) {
+            case SOLAR -> solarRecipe;
+            case LUNAR -> lunarRecipe;
+            case SIDEREAL -> siderealRecipe;
+            default -> null;
+        };
+    }
+
+    public LuminType getLuminTypeInItem() {
+        return luminTypeInItem;
     }
 
     public LuminType getLuminPhase(boolean pUpdateInternals) {
@@ -476,6 +574,7 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
     public int getComparatorOutput() {
         int out = 0;
 
+        final IlluminationRecipe recipe = getRecipeForPhase(luminTypeInItem);
         if(recipe != null && !heldItem.isEmpty()) {
             //done
             if(recipe.getResultItem().getItem() == heldItem.getItem()) out = 15;

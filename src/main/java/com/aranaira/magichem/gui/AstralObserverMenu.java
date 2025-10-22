@@ -40,7 +40,7 @@ public class AstralObserverMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, 0, 80, 65));
         });
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.NORTH).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 184, 14));
+            this.addSlot(new SlotItemHandler(handler, 0, 168, 22));
         });
     }
 

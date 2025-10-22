@@ -457,6 +457,24 @@ public class ServerConfig
             .comment("How many materia units are consumed by a Skywrath Altar when a craft is triggered by a redstone signal")
             .defineInRange("skywrathCondenserRedstoneTriggerCost", 120, 1, Integer.MAX_VALUE);
 
+    //----------------ASTRAL OBSERVER
+
+    private static final ForgeConfigSpec.IntValue ASTRAL_OBSERVER_LUMIN_GAIN_STANDARD = BUILDER
+            .comment("How many Lumins an object gains when using a standard glass lens during a correct celestial phase")
+            .defineInRange("astralObserverLuminGainStandard", 20, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue ASTRAL_OBSERVER_LUMIN_GAIN_CLOISTER = BUILDER
+            .comment("How many Lumins an object gains when using a cloister lens during a correct celestial phase")
+            .defineInRange("astralObserverLuminGainCloister", 12, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue ASTRAL_OBSERVER_LUMIN_GAIN_FARSIGHT = BUILDER
+            .comment("How many Lumins an object gains when using a standard glass lens during a correct celestial phase")
+            .defineInRange("astralObserverLuminGainFarsight", 6, 1, Integer.MAX_VALUE);
+
+    private static final ForgeConfigSpec.IntValue ASTRAL_OBSERVER_LUMIN_LOSS = BUILDER
+            .comment("How many Lumins an object loses when using a standard glass lens during incorrect celestial phases")
+            .defineInRange("astralObserverLuminLoss", 5, 1, Integer.MAX_VALUE);
+
     //----------------ACID BASIN
 
     private static final ForgeConfigSpec.IntValue ACID_BASIN_TANK_CAPACITY = BUILDER
@@ -645,6 +663,10 @@ public class ServerConfig
         skywrathCondenserMateriaUnitsPerDram,
         skywrathCondenserLightningTriggerCost,
         skywrathCondenserRedstoneTriggerCost,
+        astralObserverLuminGainStandard,
+        astralObserverLuminGainCloister,
+        astralObserverLuminGainFarsight,
+        astralObserverLuminLoss,
         acidBasinTankCapacity,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
@@ -793,6 +815,10 @@ public class ServerConfig
         skywrathCondenserMateriaUnitsPerDram = SKYWRATH_CONDENSER_MATERIA_UNITS_PER_DRAM.get();
         skywrathCondenserLightningTriggerCost = SKYWRATH_CONDENSER_LIGHTNING_TRIGGER_COST.get();
         skywrathCondenserRedstoneTriggerCost = SKYWRATH_CONDENSER_REDSTONE_TRIGGER_COST.get();
+        astralObserverLuminGainStandard = ASTRAL_OBSERVER_LUMIN_GAIN_STANDARD.get();
+        astralObserverLuminGainCloister = ASTRAL_OBSERVER_LUMIN_GAIN_CLOISTER.get();
+        astralObserverLuminGainFarsight = ASTRAL_OBSERVER_LUMIN_GAIN_FARSIGHT.get();
+        astralObserverLuminLoss = ASTRAL_OBSERVER_LUMIN_LOSS.get();
         acidBasinTankCapacity = ACID_BASIN_TANK_CAPACITY.get();
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();

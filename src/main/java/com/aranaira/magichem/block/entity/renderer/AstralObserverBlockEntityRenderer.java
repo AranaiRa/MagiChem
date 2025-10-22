@@ -106,9 +106,28 @@ public class AstralObserverBlockEntityRenderer implements BlockEntityRenderer<As
         }
 
         //Beams
-        if(true){ //sky check later
+        ItemStack lensItem = pBlockEntity.getLens();
+        if(!lensItem.isEmpty()){
             LuminType phase = pBlockEntity.getLuminPhase(true);
-            int[] color = LuminType.getParticleColor(pBlockEntity.getLuminPhase(true));
+            LuminType useOnlyPhase = LuminType.NONE;
+
+            int[] color;
+            if(lensItem.getItem() == ItemRegistry.SOLAR_CLOISTER_LENS.get() || lensItem.getItem() == ItemRegistry.SOLAR_FARSIGHT_LENS.get()) {
+                color = LuminType.getParticleColor(LuminType.SOLAR);
+                useOnlyPhase = LuminType.SOLAR;
+            }
+            else if(lensItem.getItem() == ItemRegistry.LUNAR_CLOISTER_LENS.get() || lensItem.getItem() == ItemRegistry.LUNAR_FARSIGHT_LENS.get()) {
+                color = LuminType.getParticleColor(LuminType.LUNAR);
+                useOnlyPhase = LuminType.LUNAR;
+            }
+            else if(lensItem.getItem() == ItemRegistry.SIDEREAL_CLOISTER_LENS.get() || lensItem.getItem() == ItemRegistry.SIDEREAL_FARSIGHT_LENS.get()) {
+                color = LuminType.getParticleColor(LuminType.SIDEREAL);
+                useOnlyPhase = LuminType.SIDEREAL;
+            }
+            else {
+                color = LuminType.getParticleColor(phase);
+            }
+
             if(pBlockEntity.doColorLerp) {
                 int[] colorFrom = LuminType.getParticleColor(pBlockEntity.getInverseLuminPhase(false));
                 color[0] = (int)MathUtils.lerpf(MathUtils.lerpf(colorFrom[0], color[0], pBlockEntity.colorLerp), 255, 0.425f);

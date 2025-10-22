@@ -3,8 +3,10 @@ package com.aranaira.magichem.gui;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.entity.SkywrathAltarBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.enums.LuminType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -43,7 +45,7 @@ public class AstralObserverScreen extends AbstractContainerScreen<AstralObserver
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
         //Lens slot
-        pGuiGraphics.blit(TEXTURE, x+179, y+24, 224, 0, 32, 32);
+        pGuiGraphics.blit(TEXTURE, x+179-16, y+24+8, 224, 0, 32, 32);
     }
 
     @Override
@@ -77,6 +79,15 @@ public class AstralObserverScreen extends AbstractContainerScreen<AstralObserver
     @Override
     protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
         Font font = Minecraft.getInstance().font;
+
+        if(!menu.blockEntity.getItem().isEmpty()) {
+            float fart = menu.blockEntity.getProgressPercent();
+            final MutableComponent text = Component.literal(String.format("%.1f", menu.blockEntity.getProgressPercent()*100)+"%");
+            int color = menu.blockEntity.getLuminTypeInItem() == LuminType.SOLAR ? 0xffffd07d :
+                        menu.blockEntity.getLuminTypeInItem() == LuminType.LUNAR ? 0xffc4ccd7 :
+                        menu.blockEntity.getLuminTypeInItem() == LuminType.SIDEREAL ? 0xff8b87d7 : 0xffff0000;
+            pGuiGraphics.drawString(font, text, 110, 70, color, true);
+        }
     }
 
     @Override
