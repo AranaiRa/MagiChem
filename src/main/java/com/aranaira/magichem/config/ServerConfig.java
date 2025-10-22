@@ -469,7 +469,7 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue ASTRAL_OBSERVER_LUMIN_GAIN_FARSIGHT = BUILDER
             .comment("How many Lumins an object gains when using a standard glass lens during a correct celestial phase")
-            .defineInRange("astralObserverLuminGainFarsight", 6, 1, Integer.MAX_VALUE);
+            .defineInRange("astralObserverLuminGainFarsight", 8, 1, Integer.MAX_VALUE);
 
     private static final ForgeConfigSpec.IntValue ASTRAL_OBSERVER_LUMIN_LOSS = BUILDER
             .comment("How many Lumins an object loses when using a standard glass lens during incorrect celestial phases")

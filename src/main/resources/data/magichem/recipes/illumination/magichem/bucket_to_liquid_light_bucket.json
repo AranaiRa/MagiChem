@@ -3,7 +3,7 @@
   "input": "minecraft:bucket",
   "lumins": {
     "type": 1,
-    "minutes": 3
+    "minutes": 2
   },
   "result": {
     "item": "magichem:liquid_light_bucket",

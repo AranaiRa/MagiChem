@@ -3,7 +3,7 @@
   "input": "magichem:glass_orb",
   "lumins": {
     "type": 3,
-    "minutes": 24
+    "minutes": 12
   },
   "result": {
     "item": "magichem:sidereal_orb",

@@ -3,7 +3,7 @@
   "input": "magichem:glass_orb",
   "lumins": {
     "type": 2,
-    "minutes": 24
+    "minutes": 12
   },
   "result": {
     "item": "magichem:lunar_orb",

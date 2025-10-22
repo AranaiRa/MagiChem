@@ -3,7 +3,7 @@
   "input": "magichem:scorched_theorem",
   "lumins": {
     "type": 1,
-    "minutes": 7
+    "minutes": 4
   },
   "result": {
     "item": "magichem:horoscope_solar",
