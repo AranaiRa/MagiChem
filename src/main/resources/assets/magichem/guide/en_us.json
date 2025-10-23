@@ -7542,7 +7542,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " for its recipe in order to receive Lumins. You can read more about Celestial Phases in the \"Process\": Illumination\" entry.\n\nIf an item is placed on the Astral Observer during an incorrect Celestial Phase, it will "
+            "text": " for its recipe in order to receive Lumins. You can read more about Celestial Phases in the \"Process\": Illumination\" entry.\n\nA lens of some sort must be fitted into the telescope of the Astral Observer for it to draw lumins from the heavens. The simplest of these is a basic "
+          },
+          {
+            "text": "Glass Lens",
+            "color": "dark_purple"
+          },
+          {
+            "text": ". This type of lens will never take durability damage, but also confers no special benefits.\n\nIf an item is placed on the Astral Observer during an incorrect Celestial Phase, it will "
           },
           {
             "text": "lose lumins",

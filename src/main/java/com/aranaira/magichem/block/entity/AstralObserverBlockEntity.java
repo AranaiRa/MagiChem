@@ -579,6 +579,8 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
     public int getComparatorOutput() {
         int out = 0;
 
+        if(holdingCompletedCraft) return 15;
+
         final IlluminationRecipe recipe = getRecipeForPhase(luminTypeInItem);
         if(recipe != null && !heldItem.isEmpty()) {
             //done
