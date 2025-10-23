@@ -1,0 +1,28 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 1,
+  "required_advancement": "magichem:astral_observer",
+  "object": {
+    "item": "magichem:solar_cloister_lens"
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:shield" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "magichem:glass_lens" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "magichem:abjuration" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_fire", "count": 38 },
+        { "item": "magichem:admixture_sight", "count": 45 },
+        { "item": "magichem:admixture_firmament", "count": 21 },
+        { "item": "magichem:admixture_protection", "count": 19 },
+        { "item": "magichem:admixture_light", "count": 13 }
+      ]
+    }
+  ]
+}

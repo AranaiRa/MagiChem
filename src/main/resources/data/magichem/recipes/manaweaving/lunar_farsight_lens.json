@@ -1,0 +1,19 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:lunar_farsight_lens",
+  "tier": 3,
+  "items": [
+    "magichem:magic_circle",
+    "magichem:lunar_cloister_lens",
+    "magichem:glass_lens",
+    "minecraft:netherite_ingot",
+    "minecraft:cauldron"
+  ],
+  "patterns": [
+    "mna:backslash",
+    "mna:circle",
+    "mna:circle",
+    "mna:square",
+    "mna:slash"
+  ]
+}

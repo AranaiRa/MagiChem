@@ -7549,14 +7549,35 @@
             "color": "dark_purple"
           },
           {
-            "text": " instead.\n\nA magic circle will slowly form around an object being infused with Lumins, giving an alchemist a rough idea of what percent complete the transformation is. Exact Lumin values can be checked by removing the item from the Astral Observer and looking at its tooltip. Items gain "
+            "text": " instead unless a "
           },
           {
-            "text": "ten lumins",
+            "text": "specialty lens",
             "color": "dark_purple"
           },
           {
-            "text": " per minute.\n\nThe Astral Observer "
+            "text": " is inserted into the device.\n\nThere are two types of specialty lenses: "
+          },
+          {
+            "text": "Cloister Lenses",
+            "color": "dark_purple"
+          },
+          {
+            "text": " slow down lumins gain by a moderate amount but prevent incorrect celestial phases from draining lumins; "
+          },
+          {
+            "text": "Farsight Lenses",
+            "color": "dark_purple"
+          },
+          {
+            "text": " slow down lumins gain by a large amount but allows the device to accumulate a specific type of lumin regardless of the time of day. Specialty lenses will be "
+          },
+          {
+            "text": "damaged over time",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and require occasional repair in a Runeforge.\n\nA magic circle will slowly form around an object being infused with Lumins, giving an alchemist a rough idea of what percent complete the transformation is. Exact Lumin values can be checked by removing the item from the Astral Observer and looking at its tooltip.\n\nThe Astral Observer "
           },
           {
             "text": "cannot be rotated",
@@ -7683,6 +7704,34 @@
       {
         "type": "manaweaving-altar",
         "location": "magichem:manaweaving/selenolabe"
+      },
+      {
+        "type": "runesmithing",
+        "location": "magichem:runeforging/glass_lens"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/solar_lens_cloister"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/lunar_lens_cloister"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/sidereal_lens_cloister"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/solar_farsight_lens"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/lunar_farsight_lens"
+      },
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/sidereal_farsight_lens"
       }
     ]
   },
