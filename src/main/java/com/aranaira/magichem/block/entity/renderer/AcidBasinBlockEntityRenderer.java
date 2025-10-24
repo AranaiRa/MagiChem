@@ -358,19 +358,19 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
         pPoseStack.pushPose();
         switch (state.getValue(BlockStateProperties.HORIZONTAL_FACING)) {
             case NORTH -> {
-                pPoseStack.translate(-0.15625f, 0.5625f, 0.46875f);
+                pPoseStack.translate(-1.15625f, 0.5625f, 1.46875f);
             }
             case EAST -> {
                 pPoseStack.mulPose(Axis.YN.rotationDegrees(90));
-                pPoseStack.translate(-0.15625f, 0.5625f, -0.53125f);
+                pPoseStack.translate(-1.15625f, 0.5625f, 0.46875f);
             }
             case SOUTH -> {
                 pPoseStack.mulPose(Axis.YN.rotationDegrees(180));
-                pPoseStack.translate(-1.15625f, 0.5625f, -0.53125f);
+                pPoseStack.translate(-2.15625f, 0.5625f, 0.46875f);
             }
             case WEST -> {
                 pPoseStack.mulPose(Axis.YN.rotationDegrees(270));
-                pPoseStack.translate(-1.15625f, 0.5625f, 0.46875f);
+                pPoseStack.translate(-2.15625f, 0.5625f, 1.46875f);
             }
         }
 
