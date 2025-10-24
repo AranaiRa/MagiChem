@@ -168,7 +168,7 @@ public class AcidBasinBlock extends BaseEntityBlock {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof AcidBasinBlockEntity abbe) {
-                abbe.packInventoryToBlockItem();
+                abbe.packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

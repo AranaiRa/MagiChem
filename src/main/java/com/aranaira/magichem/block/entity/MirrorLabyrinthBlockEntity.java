@@ -58,7 +58,7 @@ import java.util.*;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeDynamicBlockEntity implements MenuProvider, IShlorpReceiver, IRequiresRouterCleanupOnDestruction, ICanAbsorbConstructs {
+public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeDynamicBlockEntity implements MenuProvider, IShlorpReceiver, IRequiresRouterCleanupOnDestruction, ICanAbsorbConstructs, IKeepsInventoryOnBreak {
 
     public static final Random r = new Random();
     public static final int
@@ -216,7 +216,8 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         return new MirrorLabyrinthMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.MIRROR_LABYRINTH.get());
 
         CompoundTag nbt = new CompoundTag();
@@ -229,8 +230,17 @@ public class MirrorLabyrinthBlockEntity extends AbstractMateriaStorageMultiTypeD
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        itemHandler.deserializeNBT(pInventoryTag);
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            itemHandler.deserializeNBT(pNBT.getCompound("inventory"));
+        }
+        if (pNBT.contains("powerUsageSetting")) {
+            setPowerUsageSetting(pNBT.getInt("powerUsageSetting"));
+        }
+        if (pNBT.contains("materiaStorage")) {
+            unpackMateriaStorageFromTag(pNBT.getCompound("materiaStorage"));
+        }
     }
 
     @Override

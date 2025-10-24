@@ -62,7 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot {
+public class FuseryBlockEntity extends AbstractFixationBlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
     public static final int
             SLOT_COUNT = 21,
             SLOT_BOTTLES = 20, SLOT_BOTTLES_OUTPUT = 0,
@@ -318,33 +318,55 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         return nbt;
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.FUSERY.get());
         IGrimeCapability grimeCap = GrimeProvider.getCapability(FuseryBlockEntity.this);
 
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("grime", grimeCap.getGrime());
         nbt.put("inventory", itemHandler.serializeNBT());
+        if(containedSlurry.isEmpty())
+            nbt.putInt("fluidContents", 0);
+        else
+            nbt.putInt("fluidContents", containedSlurry.getAmount());
 
         stack.setTag(nbt);
 
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        int size = pInventoryTag.getInt("Size");
-        if(size == SLOT_COUNT) {
-            itemHandler.deserializeNBT(pInventoryTag);
-        } else if(getLevel() != null && getLevel().isClientSide()) {
-            final LocalPlayer player = Minecraft.getInstance().player;
-            if(player != null) {
-                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
-                        .append(Component.translatable("block.magichem.fusery").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
-                player.displayClientMessage(msg, false);
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            CompoundTag inventoryTag = pNBT.getCompound("inventory");
+            int size = inventoryTag.getInt("Size");
+            if (size == SLOT_COUNT) {
+                itemHandler.deserializeNBT(inventoryTag);
+            } else if (getLevel() != null && getLevel().isClientSide()) {
+                final LocalPlayer player = Minecraft.getInstance().player;
+                if (player != null) {
+                    MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
+                            .append(Component.translatable("block.magichem.fusery").withStyle(ChatFormatting.GOLD))
+                            .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
+                    player.displayClientMessage(msg, false);
+                }
             }
+            doDeferredRecipeCheck = true;
         }
-        doDeferredRecipeCheck = true;
+        if (pNBT.contains("grime")) {
+            GrimeProvider.getCapability(this).setGrime(pNBT.getInt("grime"));
+        }
+        if (pNBT.contains("fluidContents")) {
+            int fluidContents = pNBT.getInt("fluidContents");
+            if(fluidContents > 0)
+                containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
+            else
+                containedSlurry = FluidStack.EMPTY;
+        }
+    }
+
+    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
     }
 
     ////////////////////

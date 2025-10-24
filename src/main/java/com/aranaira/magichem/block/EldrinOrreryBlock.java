@@ -137,7 +137,7 @@ public class EldrinOrreryBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             if(level.getBlockEntity(pos) instanceof EldrinOrreryBlockEntity orrery) {
-                orrery.packInventoryToBlockItem();
+                orrery.packDataToBlockItem();
                 if(!level.isClientSide()) {
                     final EldrinOrreryLimiterSD eldrinOrreryData = level.getServer().overworld().getDataStorage().computeIfAbsent(EldrinOrreryLimiterSD::load, EldrinOrreryLimiterSD::create, "eldrinOrreryData");
                     eldrinOrreryData.removeOrrery(orrery.getPlacedBy().toString());

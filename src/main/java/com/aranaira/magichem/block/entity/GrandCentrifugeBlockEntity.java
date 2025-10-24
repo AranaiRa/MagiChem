@@ -68,7 +68,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot {
+public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
     public static final int
         SLOT_COUNT = 23,
         SLOT_BOTTLES = 0, SLOT_BOTTLES_OUTPUT = 1,
@@ -264,7 +264,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        unpackInventoryFromNBT(nbt.getCompound("inventory"));
+        unpackDataFromNBT(nbt);
         progress = nbt.getInt("craftingProgress");
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
@@ -303,7 +303,8 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         return nbt;
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.GRAND_CENTRIFUGE.get());
         IGrimeCapability grimeCap = GrimeProvider.getCapability(GrandCentrifugeBlockEntity.this);
 
@@ -317,20 +318,30 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        int size = pInventoryTag.getInt("Size");
-        if(size == SLOT_COUNT) {
-            itemHandler.deserializeNBT(pInventoryTag);
-        } else if(getLevel() != null && getLevel().isClientSide()) {
-            final LocalPlayer player = Minecraft.getInstance().player;
-            if(player != null) {
-                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
-                        .append(Component.translatable("block.magichem.grand_centrifuge").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
-                player.displayClientMessage(msg, false);
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            CompoundTag inventoryTag = pNBT.getCompound("inventory");
+            int size = inventoryTag.getInt("Size");
+            if (size == SLOT_COUNT) {
+                itemHandler.deserializeNBT(inventoryTag);
+            } else if (getLevel() != null && getLevel().isClientSide()) {
+                final LocalPlayer player = Minecraft.getInstance().player;
+                if (player != null) {
+                    MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
+                            .append(Component.translatable("block.magichem.grand_centrifuge").withStyle(ChatFormatting.GOLD))
+                            .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
+                    player.displayClientMessage(msg, false);
+                }
             }
+            doDeferredRecipeCheck = true;
         }
-        doDeferredRecipeCheck = true;
+        if (pNBT.contains("grime")) {
+            GrimeProvider.getCapability(this).setGrime(pNBT.getInt("grime"));
+        }
+        if (pNBT.contains("powerUsageSetting")) {
+            setPowerUsageSetting(pNBT.getInt("powerUsageSetting"));
+        }
     }
 
     @Override

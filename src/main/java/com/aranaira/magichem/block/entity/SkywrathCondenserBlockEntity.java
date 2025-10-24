@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.gui.SkywrathCondenserMenu;
@@ -46,7 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuProvider, IMateriaProvisionRequester, IShlorpReceiver {
+public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuProvider, IMateriaProvisionRequester, IShlorpReceiver, IKeepsInventoryOnBreak {
     public static final int
         SLOT_COUNT = 2,
         SLOT_MATERIA = 0, SLOT_BOTTLES = 1;
@@ -110,7 +111,8 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
         return out;
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.SKYWRATH_CONDENSER.get());
 
         CompoundTag nbt = new CompoundTag();
@@ -122,20 +124,24 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        int size = pInventoryTag.getCompound("inventory").getInt("Size");
-        if(size == SLOT_COUNT) {
-            itemHandler.deserializeNBT(pInventoryTag.getCompound("inventory"));
-        } else if(getLevel() != null && getLevel().isClientSide()) {
-            final LocalPlayer player = Minecraft.getInstance().player;
-            if(player != null) {
-                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
-                        .append(Component.translatable("block.magichem.skywrath_condenser").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
-                player.displayClientMessage(msg, false);
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            CompoundTag inventoryTag = pNBT.getCompound("inventory");
+            int size = inventoryTag.getInt("Size");
+            if (size == SLOT_COUNT) {
+                itemHandler.deserializeNBT(inventoryTag);
+            } else if (getLevel() != null && getLevel().isClientSide()) {
+                final LocalPlayer player = Minecraft.getInstance().player;
+                if (player != null) {
+                    MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
+                            .append(Component.translatable("block.magichem.skywrath_condenser").withStyle(ChatFormatting.GOLD))
+                            .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
+                    player.displayClientMessage(msg, false);
+                }
             }
+            droplets = inventoryTag.getInt("droplets");
         }
-        droplets = pInventoryTag.getInt("droplets");
     }
 
     @Override

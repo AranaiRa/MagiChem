@@ -1,13 +1,11 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.foundation.enums.EssentiaHouse;
 import com.aranaira.magichem.gui.VariegatorMenu;
-import com.aranaira.magichem.item.AdmixtureItem;
-import com.aranaira.magichem.item.EssentiaItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ColorationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -56,7 +54,7 @@ import java.util.Random;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.GROUNDED;
 
-public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IShlorpReceiver {
+public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IShlorpReceiver, IKeepsInventoryOnBreak {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     public static final int
@@ -166,7 +164,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("selectedColor", this.selectedColor);
 
-        CompoundTag colors = packColorsToCompoundTag();
+        CompoundTag colors = packColorsToNBT();
 
         nbt.put("colors", colors);
 
@@ -180,10 +178,10 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         progress = nbt.getInt("craftingProgress");
         selectedColor = nbt.getInt("selectedColor");
 
-        unpackColorsFromCompoundTag(nbt.getCompound("colors"));
+        unpackColorsFromNBT(nbt.getCompound("colors"));
     }
 
-    public CompoundTag packColorsToCompoundTag() {
+    public CompoundTag packColorsToNBT() {
         CompoundTag colors = new CompoundTag();
 
         colors.putInt("admixture", dyeAdmixture);
@@ -207,7 +205,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         return colors;
     }
 
-    public void unpackColorsFromCompoundTag(CompoundTag nbt) {
+    public void unpackColorsFromNBT(CompoundTag nbt) {
         dyeAdmixture = nbt.getInt("admixture");
         dyeRed = nbt.getInt("red");
         dyeOrange = nbt.getInt("orange");
@@ -234,7 +232,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         nbt.putInt("craftingProgress", this.progress);
         nbt.putInt("selectedColor", this.selectedColor);
 
-        CompoundTag colors = packColorsToCompoundTag();
+        CompoundTag colors = packColorsToNBT();
 
         nbt.put("colors", colors);
 
@@ -252,19 +250,26 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.VARIEGATOR.get());
 
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
-        nbt.put("colors", packColorsToCompoundTag());
+        nbt.put("colors", packColorsToNBT());
         stack.setTag(nbt);
 
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        itemHandler.deserializeNBT(pInventoryTag);
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            itemHandler.deserializeNBT(pNBT.getCompound("inventory"));
+        }
+        if (pNBT.contains("colors")) {
+            unpackColorsFromNBT(pNBT.getCompound("colors"));
+        }
     }
 
     ////////////////////

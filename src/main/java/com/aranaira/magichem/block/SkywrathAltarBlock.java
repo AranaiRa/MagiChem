@@ -44,7 +44,7 @@ public class SkywrathAltarBlock extends BaseEntityBlock {
             if(pLevel.getBlockState(posQuery).isAir()) {
                 pLevel.setBlock(posQuery, BlockRegistry.SKYWRATH_CONDENSER.get().defaultBlockState(), 3);
                 if(stackInHand.hasTag() && pLevel.getBlockEntity(posQuery) instanceof SkywrathCondenserBlockEntity condenser) {
-                    condenser.unpackInventoryFromNBT(stackInHand.getTag());
+                    condenser.unpackDataFromNBT(stackInHand.getTag());
                 }
                 stackInHand.shrink(1);
             }

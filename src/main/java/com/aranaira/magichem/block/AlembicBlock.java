@@ -114,7 +114,7 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof AlembicBlockEntity) {
-                ((AlembicBlockEntity) blockEntity).packInventoryToBlockItem();
+                ((AlembicBlockEntity) blockEntity).packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

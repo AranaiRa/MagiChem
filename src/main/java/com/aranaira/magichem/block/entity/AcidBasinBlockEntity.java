@@ -2,6 +2,7 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.AcidBasinBlock;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.recipe.VitriolationRecipe;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, IRequiresRouterCleanupOnDestruction {
+public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, IRequiresRouterCleanupOnDestruction, IKeepsInventoryOnBreak {
     public static final int
             SLOT_COUNT = 2,
             SLOT_INPUT = 0, SLOT_OUTPUT = 1,
@@ -457,7 +458,8 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         return 0;
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.ACID_BASIN.get());
 
         CompoundTag nbt = new CompoundTag();
@@ -479,6 +481,29 @@ public class AcidBasinBlockEntity extends BlockEntity implements IFluidHandler, 
         stack.setTag(nbt);
 
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            itemHandler.deserializeNBT(pNBT.getCompound("inventory"));
+        }
+        if(pNBT.contains("inputTank")) {
+            CompoundTag inputTankTag = pNBT.getCompound("inputTank");
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+            if(fluid != null)
+                inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+        } else {
+            inputTank = FluidStack.EMPTY;
+        }
+        if(pNBT.contains("outputTank")) {
+            CompoundTag outputTankTag = pNBT.getCompound("outputTank");
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(outputTankTag.getString("fluid")));
+            if(fluid != null)
+                outputTank = new FluidStack(fluid, outputTankTag.getInt("amount"));
+        } else {
+            outputTank = FluidStack.EMPTY;
+        }
     }
 
     @Override

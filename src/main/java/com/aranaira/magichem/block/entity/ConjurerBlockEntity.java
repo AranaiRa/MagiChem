@@ -1,10 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
-import com.aranaira.magichem.foundation.Triplet;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.ConjurerMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ConjurationRecipe;
@@ -50,7 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester {
+public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IRequiresRouterCleanupOnDestruction, IShlorpReceiver, IMateriaProvisionRequester, IKeepsInventoryOnBreak {
 
     protected LazyOptional<IItemHandler>
             lazyInsertionItemHandler = LazyOptional.empty(),
@@ -457,7 +454,8 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
         }
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.CONJURER.get());
 
         CompoundTag nbt = new CompoundTag();
@@ -470,11 +468,12 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        if(pInventoryTag.contains("extractionInventory"))
-            itemExtractionHandler.deserializeNBT(pInventoryTag.getCompound("extractionInventory"));
-        if(pInventoryTag.contains("insertionInventory"))
-            itemInsertionHandler.deserializeNBT(pInventoryTag.getCompound("insertionInventory"));
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("extractionInventory"))
+            itemExtractionHandler.deserializeNBT(pNBT.getCompound("extractionInventory"));
+        if(pNBT.contains("insertionInventory"))
+            itemInsertionHandler.deserializeNBT(pNBT.getCompound("insertionInventory"));
 
         ItemStack catalystStack = itemInsertionHandler.getStackInSlot(SLOT_INSERTION_CATALYST);
         if(!catalystStack.isEmpty()) {
@@ -482,8 +481,8 @@ public class ConjurerBlockEntity extends BlockEntity implements MenuProvider, IR
             if(recipeQuery != null) {
                 recipe = recipeQuery;
 
-                if(pInventoryTag.contains("materiaAmount")) {
-                    materiaAmount = pInventoryTag.getInt("materiaAmount");
+                if(pNBT.contains("materiaAmount")) {
+                    materiaAmount = pNBT.getInt("materiaAmount");
                     materiaType = recipe.getMateria();
                 }
             }

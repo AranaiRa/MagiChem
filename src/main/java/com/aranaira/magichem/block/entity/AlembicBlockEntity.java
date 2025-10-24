@@ -4,6 +4,7 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ext.AbstractDistillationBlockEntity;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
+import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IMateriaSortingRequester;
 import com.aranaira.magichem.gui.AlembicMenu;
 import com.aranaira.magichem.item.MateriaItem;
@@ -48,7 +49,7 @@ import java.util.Random;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_PASSIVE_HEAT;
 
-public class AlembicBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, IMateriaSortingRequester {
+public class AlembicBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, IMateriaSortingRequester, IKeepsInventoryOnBreak {
     public static final int
         SLOT_COUNT = 13,
         SLOT_BOTTLES = 0,
@@ -183,7 +184,7 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        unpackInventoryFromNBT(nbt.getCompound("inventory"));
+        unpackDataFromNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("craftingProgress");
         GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
         if(nbt.contains("inputTank")) {
@@ -211,7 +212,8 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         return nbt;
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.ALEMBIC.get());
         IGrimeCapability grimeCap = GrimeProvider.getCapability(AlembicBlockEntity.this);
 
@@ -230,26 +232,34 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        int size = pInventoryTag.getInt("Size");
-        if(size == SLOT_COUNT) {
-            itemHandler.deserializeNBT(pInventoryTag);
-            if(pInventoryTag.contains("inputTank")) {
-                CompoundTag inputTankTag = pInventoryTag.getCompound("inputTank");
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
-                if(fluid != null)
-                    inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
-            } else {
-                inputTank = FluidStack.EMPTY;
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            CompoundTag inventoryTag = pNBT.getCompound("inventory");
+
+            int size = inventoryTag.getInt("Size");
+            if (size == SLOT_COUNT) {
+                itemHandler.deserializeNBT(inventoryTag);
+                if (inventoryTag.contains("inputTank")) {
+                    CompoundTag inputTankTag = inventoryTag.getCompound("inputTank");
+                    Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+                    if (fluid != null)
+                        inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+                } else {
+                    inputTank = FluidStack.EMPTY;
+                }
+            } else if (getLevel() != null && getLevel().isClientSide()) {
+                final LocalPlayer player = Minecraft.getInstance().player;
+                if (player != null) {
+                    MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
+                            .append(Component.translatable("block.magichem.alembic").withStyle(ChatFormatting.GOLD))
+                            .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
+                    player.displayClientMessage(msg, false);
+                }
             }
-        } else if(getLevel() != null && getLevel().isClientSide()) {
-            final LocalPlayer player = Minecraft.getInstance().player;
-            if(player != null) {
-                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
-                        .append(Component.translatable("block.magichem.alembic").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
-                player.displayClientMessage(msg, false);
-            }
+        }
+        if(pNBT.contains("grime")) {
+            GrimeProvider.getCapability(this).setGrime(pNBT.getInt("grime"));
         }
     }
 

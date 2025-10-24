@@ -74,7 +74,7 @@ import java.util.function.Consumer;
 
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot {
+public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockEntity implements MenuProvider, Consumer<FriendlyByteBuf>, IShlorpReceiver, IMateriaProvisionRequester, IMateriaSortingRequester, IRequiresRouterCleanupOnDestruction, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
     public static final int
             SLOT_COUNT = 22,
             SLOT_BOTTLES = 0, SLOT_WISDOM = 21,
@@ -267,7 +267,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         super.load(nbt);
         if(nbt.contains("materiaToVent"))
             ventMateria(nbt.getInt("materiaToVent"));
-        unpackInventoryFromNBT(nbt.getCompound("inventory"));
+        unpackDataFromNBT(nbt);
         progress = nbt.getInt("craftingProgress");
         powerUsageSetting = nbt.getInt("powerUsageSetting");
         batchSize = nbt.getInt("batchSize");
@@ -1091,7 +1091,8 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         return new AABB(getBlockPos().offset(-3, 0, -3), getBlockPos().offset(3,4,3));
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.GRAND_CIRCLE_FABRICATION.get());
 
         CompoundTag nbt = new CompoundTag();
@@ -1103,18 +1104,25 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        int size = pInventoryTag.getInt("Size");
-        if(size == SLOT_COUNT) {
-            itemHandler.deserializeNBT(pInventoryTag);
-        } else if(getLevel() != null && getLevel().isClientSide()) {
-            final LocalPlayer player = Minecraft.getInstance().player;
-            if(player != null) {
-                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
-                        .append(Component.translatable("block.magichem.grand_circle_fabrication").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
-                player.displayClientMessage(msg, false);
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")){
+            CompoundTag pInventoryTag = pNBT.getCompound("inventory");
+            int size = pInventoryTag.getInt("Size");
+            if (size == SLOT_COUNT) {
+                itemHandler.deserializeNBT(pInventoryTag);
+            } else if (getLevel() != null && getLevel().isClientSide()) {
+                final LocalPlayer player = Minecraft.getInstance().player;
+                if (player != null) {
+                    MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
+                            .append(Component.translatable("block.magichem.grand_circle_fabrication").withStyle(ChatFormatting.GOLD))
+                            .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
+                    player.displayClientMessage(msg, false);
+                }
             }
+        }
+        if (pNBT.contains("powerUsageSetting")) {
+            setPowerUsageSetting(pNBT.getInt("powerUsageSetting"));
         }
     }
 

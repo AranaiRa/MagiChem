@@ -107,7 +107,7 @@ public class ConjurerBlock extends BaseEntityBlock {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof ConjurerBlockEntity) {
-                ((ConjurerBlockEntity) blockEntity).packInventoryToBlockItem();
+                ((ConjurerBlockEntity) blockEntity).packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

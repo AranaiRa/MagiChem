@@ -209,7 +209,7 @@ public class AlchemicalNexusBlock extends BaseEntityBlock {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof AlchemicalNexusBlockEntity anbe) {
-                anbe.packInventoryToBlockItem();
+                anbe.packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

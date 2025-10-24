@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.block.EldrinOrreryBlock;
+import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
@@ -54,7 +55,7 @@ import java.util.UUID;
 import static com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer.WELLSPRING_COLORS;
 import static com.aranaira.magichem.block.entity.renderer.EldrinOrreryBlockEntityRenderer.WELLSPRING_STARTS;
 
-public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction {
+public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction, IKeepsInventoryOnBreak {
     public static final int
         SLOT_COUNT = 10, SLOT_INPUT_START = 0, SLOT_INPUT_COUNT = 5, SLOT_OUTPUT_START = 5, SLOT_OUTPUT_COUNT = 5,
         SLOT_SOLAR_INPUT = 0, SLOT_LUNAR_INPUT = 1, SLOT_SIDEREAL_INPUT = 2, SLOT_FIRMAMENT_INPUT = 3, SLOT_REALM_INPUT = 4,
@@ -471,7 +472,8 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.ELDRIN_ORRERY.get());
 
         CompoundTag nbt = new CompoundTag();
@@ -487,13 +489,16 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        itemHandler.deserializeNBT(pInventoryTag.getCompound("inventory"));
-        solar = pInventoryTag.getInt("solar");
-        lunar = pInventoryTag.getInt("lunar");
-        sidereal = pInventoryTag.getInt("sidereal");
-        realm = pInventoryTag.getInt("realm");
-        firmament = pInventoryTag.getInt("firmament");
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            itemHandler.deserializeNBT(pNBT.getCompound("inventory"));
+            solar = pNBT.getInt("solar");
+            lunar = pNBT.getInt("lunar");
+            sidereal = pNBT.getInt("sidereal");
+            realm = pNBT.getInt("realm");
+            firmament = pNBT.getInt("firmament");
+        }
     }
 
     public float getSolarFillPercent(){

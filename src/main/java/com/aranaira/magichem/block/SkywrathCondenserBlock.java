@@ -92,7 +92,7 @@ public class SkywrathCondenserBlock extends BaseEntityBlock implements ISpellInt
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof SkywrathCondenserBlockEntity condenser) {
-                condenser.packInventoryToBlockItem();
+                condenser.packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

@@ -69,7 +69,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot {
+public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
 
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -327,7 +327,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        unpackInventoryFromNBT(nbt.getCompound("inventory"));
+        unpackDataFromNBT(nbt);
         progress = nbt.getInt("craftingProgress");
         animStage = nbt.getInt("animationStage");
         craftingStage = nbt.getInt("craftingStage");
@@ -486,7 +486,8 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         return new AlchemicalNexusMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.ALCHEMICAL_NEXUS.get());
 
         CompoundTag nbt = new CompoundTag();
@@ -499,25 +500,31 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        int size = pInventoryTag.getInt("Size");
-        if(size == SLOT_COUNT) {
-            itemHandler.deserializeNBT(pInventoryTag);
-        } else if(getLevel() != null && getLevel().isClientSide()) {
-            final LocalPlayer player = Minecraft.getInstance().player;
-            if(player != null) {
-                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
-                        .append(Component.translatable("block.magichem.alchemical_nexus").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
-                player.displayClientMessage(msg, false);
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            CompoundTag inventoryTag = pNBT.getCompound("inventory");
+            int size = inventoryTag.getInt("Size");
+            if (size == SLOT_COUNT) {
+                itemHandler.deserializeNBT(inventoryTag);
+            } else if (getLevel() != null && getLevel().isClientSide()) {
+                final LocalPlayer player = Minecraft.getInstance().player;
+                if (player != null) {
+                    MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
+                            .append(Component.translatable("block.magichem.alchemical_nexus").withStyle(ChatFormatting.GOLD))
+                            .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
+                    player.displayClientMessage(msg, false);
+                }
             }
+
+            doDeferredRecipeCheck = true;
         }
-
-        doDeferredRecipeCheck = true;
-    }
-
-    public void unpackSlurryFromNBT(CompoundTag pSlurryTag) {
-        containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pSlurryTag.getInt("slurry"));
+        if (pNBT.contains("powerLevel")) {
+            setPowerUsageSetting(pNBT.getInt("powerLevel"));
+        }
+        if (pNBT.contains("slurry")) {
+            containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), pNBT.getInt("slurry"));
+        }
     }
 
     ////////////////////
@@ -1389,18 +1396,21 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     }
 
     public void incrementPowerUsageSetting() {
+        int pre = this.powerLevel;
         this.powerLevel = Math.min(this.powerLevel + 1, 5);
-        this.setChanged();
+        if(pre != this.powerLevel) this.setChanged();
     }
 
     public void decrementPowerUsageSetting() {
+        int pre = this.powerLevel;
         this.powerLevel = Math.max(this.powerLevel - 1, 1);
-        this.setChanged();
+        if(pre != this.powerLevel) this.setChanged();
     }
 
     public void setPowerUsageSetting(int pNewSetting) {
+        int pre = this.powerLevel;
         this.powerLevel = pNewSetting;
-        this.setChanged();
+        if(pre != pNewSetting) this.setChanged();
     }
 
     public int getScaledProgress(int pWidth) {

@@ -249,7 +249,7 @@ public class GrandDistilleryBlock extends BaseEntityBlock implements ISpellInter
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof GrandDistilleryBlockEntity) {
-                ((GrandDistilleryBlockEntity) blockEntity).packInventoryToBlockItem();
+                ((GrandDistilleryBlockEntity) blockEntity).packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

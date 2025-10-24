@@ -243,7 +243,7 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof GrandFuseryBlockEntity) {
-                ((GrandFuseryBlockEntity) blockEntity).packInventoryToBlockItem();
+                ((GrandFuseryBlockEntity) blockEntity).packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

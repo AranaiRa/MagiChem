@@ -198,7 +198,7 @@ public class FuseryBlock extends BaseEntityBlock implements ISpellInteractibleBl
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof FuseryBlockEntity) {
-                ((FuseryBlockEntity) blockEntity).packInventoryToBlockItem();
+                ((FuseryBlockEntity) blockEntity).packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

@@ -63,7 +63,7 @@ import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.IS_EMITTING_LIGHT;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IMateriaSortingRequester {
+public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity implements MenuProvider, ICanTakePlugins, IPoweredAlchemyDevice, IRequiresRouterCleanupOnDestruction, IMateriaSortingRequester, IKeepsInventoryOnBreak {
     public static final int
         SLOT_COUNT = 25,
         SLOT_BOTTLES = 0,
@@ -250,7 +250,7 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        unpackInventoryFromNBT(nbt.getCompound("inventory"));
+        unpackDataFromNBT(nbt);
         progress = nbt.getInt("craftingProgress");
         hasSufficientPower = nbt.getBoolean("hasSufficientPower");
         batchSize = nbt.getInt("batchSize");
@@ -286,7 +286,8 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         return nbt;
     }
 
-    public void packInventoryToBlockItem() {
+    @Override
+    public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.GRAND_DISTILLERY.get());
         IGrimeCapability grimeCap = GrimeProvider.getCapability(GrandDistilleryBlockEntity.this);
 
@@ -306,26 +307,42 @@ public class GrandDistilleryBlockEntity extends AbstractDistillationBlockEntity 
         Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
     }
 
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
-        int size = pInventoryTag.getInt("Size");
-        if(size == SLOT_COUNT) {
-            itemHandler.deserializeNBT(pInventoryTag);
-            if(pInventoryTag.contains("inputTank")) {
-                CompoundTag inputTankTag = pInventoryTag.getCompound("inputTank");
-                Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
-                if(fluid != null)
-                    inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
-            } else {
-                inputTank = FluidStack.EMPTY;
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            CompoundTag inventoryTag = pNBT.getCompound("inventory");
+            int size = inventoryTag.getInt("Size");
+            if (size == SLOT_COUNT) {
+                itemHandler.deserializeNBT(inventoryTag);
+                if (inventoryTag.contains("inputTank")) {
+                    CompoundTag inputTankTag = inventoryTag.getCompound("inputTank");
+                    Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+                    if (fluid != null)
+                        inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+                } else {
+                    inputTank = FluidStack.EMPTY;
+                }
+            } else if (getLevel() != null && getLevel().isClientSide()) {
+                final LocalPlayer player = Minecraft.getInstance().player;
+                if (player != null) {
+                    MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
+                            .append(Component.translatable("block.magichem.grand_distillery").withStyle(ChatFormatting.GOLD))
+                            .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
+                    player.displayClientMessage(msg, false);
+                }
             }
-        } else if(getLevel() != null && getLevel().isClientSide()) {
-            final LocalPlayer player = Minecraft.getInstance().player;
-            if(player != null) {
-                MutableComponent msg = Component.translatable("feedback.warning.inventory_size_mismatch.part1")
-                        .append(Component.translatable("block.magichem.grand_distillery").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("feedback.warning.inventory_size_mismatch.part2"));
-                player.displayClientMessage(msg, false);
-            }
+        }
+        if (pNBT.contains("grime")) {
+            GrimeProvider.getCapability(this).setGrime(pNBT.getInt("grime"));
+        }
+        if (pNBT.contains("powerUsageSetting")) {
+            setPowerUsageSetting(pNBT.getInt("powerUsageSetting"));
+        }
+        if (pNBT.contains("inputTank")) {
+            CompoundTag inputTankTag = pNBT.getCompound("inputTank");
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+            if (fluid != null)
+                inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
         }
     }
 

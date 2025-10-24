@@ -108,7 +108,7 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof MirrorLabyrinthBlockEntity) {
                 ((MirrorLabyrinthBlockEntity) blockEntity).ejectConstruct();
-                ((MirrorLabyrinthBlockEntity) blockEntity).packInventoryToBlockItem();
+                ((MirrorLabyrinthBlockEntity) blockEntity).packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);

@@ -233,7 +233,7 @@ public class GrandCentrifugeBlock extends BaseEntityBlock implements ISpellInter
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof GrandCentrifugeBlockEntity) {
-                ((GrandCentrifugeBlockEntity) blockEntity).packInventoryToBlockItem();
+                ((GrandCentrifugeBlockEntity) blockEntity).packDataToBlockItem();
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
