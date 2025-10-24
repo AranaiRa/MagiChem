@@ -1501,6 +1501,8 @@
 
   "advancements.magichem.material_unlocks.nether_star.title" : "Dirtied Hands: Nether Star",
   "advancements.magichem.material_unlocks.nether_star.description" : "Defeat the Wither to learn how to fabricate Nether Stars alchemically",
+  "advancements.magichem.material_unlocks.wither_rose.title" : "Dirtied Hands: Wither Rose",
+  "advancements.magichem.material_unlocks.wither_rose.description" : "Collect a Wither Rose from the body of a creature slain by the Wither to learn how to fabricate them alchemically",
 
   "advancements.magichem.material_unlocks.bifrost.title": "Practical Experimentation: Solid Rainbows",
   "advancements.magichem.material_unlocks.bifrost.description": "Conventionally create a Rod of the Bifrost to learn how to fabricate Bifrost Blocks, Shimmerrock, and Shimmerwood alchemically",

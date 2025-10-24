@@ -4,7 +4,6 @@
   "categories": 1,
   "output_rate": 1.0,
   "batch_size": 1,
-  "required_advancement": "magichem:vanilla/kill_wither",
   "object": { "item": "minecraft:beacon" },
   "components": [
     { "item": "magichem:admixture_light", "count": 164 },
