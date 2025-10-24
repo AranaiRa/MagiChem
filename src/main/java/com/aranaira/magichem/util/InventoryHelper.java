@@ -49,7 +49,7 @@ public class InventoryHelper {
      * @return Ideally ItemStack.EMPTY if everything worked correctly.
      */
     public static ItemStack quickMoveStackHandler(int pTargetSlot, NonNullList<Slot> pSlots, Pair<Item, Integer>[] pDirectSpec, Vector2i pInventoryRange, Vector2i[] pInventoryOutgoingSpec, Vector2i[] pInventoryIncomingSpec, Pair<Integer, Vector2i> pContainerSpec) {
-        ItemStack modStack = pSlots.get(pTargetSlot).getItem();
+        ItemStack modStack = pSlots.get(pTargetSlot).remove(114514);
         boolean doContainerLimiting = pContainerSpec != null;
 
         //First we check to see if the slot was within the provided inventory range.
