@@ -241,28 +241,35 @@ public class CommonEventHandler {
                 }
             }
         }
-        else if(target instanceof AlchemicalNexusBlockEntity || target instanceof AlchemicalNexusRouterBlockEntity) {
-            IFluidHandler targetEntity = null;
-            if(target instanceof AlchemicalNexusBlockEntity anbe)
-                targetEntity = anbe;
-            else if(target instanceof AlchemicalNexusRouterBlockEntity anrbe)
-                targetEntity = anrbe.getMaster();
-
-            if(targetEntity != null) {
-                LazyOptional<IFluidHandlerItem> itemCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-                if(itemCap.isPresent()) {
-                    if(itemCap.resolve().isPresent()) {
-                        IFluidHandlerItem itemCapResolved = itemCap.resolve().get();
-
-                        if(itemCapResolved.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
-                            FluidStack maxTransfer = itemCapResolved.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
-                            int actualTransfer = targetEntity.fill(maxTransfer, IFluidHandler.FluidAction.EXECUTE);
-                            itemCapResolved.drain(actualTransfer, IFluidHandler.FluidAction.EXECUTE);
-                        }
-                    }
-                }
-            }
-        }
+//        else if(target instanceof AlchemicalNexusBlockEntity || target instanceof AlchemicalNexusRouterBlockEntity) {
+//            IFluidHandler targetEntity = null;
+//            if(target instanceof AlchemicalNexusBlockEntity anbe)
+//                targetEntity = anbe;
+//            else if(target instanceof AlchemicalNexusRouterBlockEntity anrbe)
+//                targetEntity = anrbe.getMaster();
+//
+//            if(targetEntity != null) {
+//                LazyOptional<IFluidHandlerItem> itemCap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+//                if(itemCap.isPresent()) {
+//                    if(itemCap.resolve().isPresent()) {
+//                        IFluidHandlerItem itemCapResolved = itemCap.resolve().get();
+//
+//                        if(stack.getItem() == ItemRegistry.ACADEMIC_SLURRY_BUCKET.get()) {
+//                            int spaceInTank = targetEntity.getTankCapacity(0) - targetEntity.getFluidInTank(0).getAmount();
+//                            if(spaceInTank >= 1000) {
+//                                FluidStack standardTransfer = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), 1000);
+//                                targetEntity.fill(standardTransfer, IFluidHandler.FluidAction.EXECUTE);
+//                            }
+//                        }
+//                        else if(itemCapResolved.getFluidInTank(0).getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+//                            FluidStack maxTransfer = itemCapResolved.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+//                            int actualTransfer = targetEntity.fill(maxTransfer, IFluidHandler.FluidAction.EXECUTE);
+//                            itemCapResolved.drain(actualTransfer, IFluidHandler.FluidAction.EXECUTE);
+//                        }
+//                    }
+//                }
+//            }
+//        }
         else if(target instanceof ExperienceExchangerBlockEntity eebe) {
             if(!event.getLevel().isClientSide() && event.getHand() == InteractionHand.MAIN_HAND) {
                 if (stack.getItem() == ItemInit.CRYSTAL_OF_MEMORIES.get() || stack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
