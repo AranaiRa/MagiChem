@@ -7633,7 +7633,21 @@
             "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ".\n\nConstructs can access the item being processed from the "
+          },
+          {
+            "text": "top or bottom",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of the device and the lens by from the "
+          },
+          {
+            "text": "sides",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of the device."
           }
         ]
       },
