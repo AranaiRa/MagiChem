@@ -4,6 +4,7 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ActuatorFireBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IHasNonStandardTooltipLore;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -15,8 +16,10 @@ import com.mna.api.spells.attributes.Attribute;
 import com.mna.api.spells.base.IModifiedSpellPart;
 import com.mna.api.spells.base.ISpellDefinition;
 import com.mna.api.spells.collections.Components;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -50,9 +53,11 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
-public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteractibleBlock<ActuatorFireBlock> {
+public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteractibleBlock<ActuatorFireBlock>, IHasNonStandardTooltipLore {
     public ActuatorFireBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -289,5 +294,13 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
             }
         }
         return false;
+    }
+
+    @Override
+    public void addTooltipComponents(List<Component> pTooltipComponents) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.actuator.fire")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
     }
 }

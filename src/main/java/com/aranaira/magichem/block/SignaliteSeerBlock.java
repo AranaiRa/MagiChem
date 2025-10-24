@@ -1,10 +1,9 @@
 package com.aranaira.magichem.block;
 
-import com.aranaira.magichem.block.entity.SignaliteBlockEntity;
 import com.aranaira.magichem.block.entity.SignaliteSeerBlockEntity;
+import com.aranaira.magichem.foundation.IHasNonStandardTooltipLore;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
-import com.aranaira.magichem.registry.BlockRegistry;
 import com.mna.items.ItemInit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -36,15 +34,13 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING_OMNI;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.LEVER_SIGNAL;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWER;
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public class SignaliteSeerBlock extends BaseEntityBlock {
+public class SignaliteSeerBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
     public static final VoxelShape
         VOXEL_SHAPE_CORE,
         VOXEL_SHAPE_NORTH, VOXEL_SHAPE_EAST, VOXEL_SHAPE_SOUTH, VOXEL_SHAPE_WEST, VOXEL_SHAPE_UP, VOXEL_SHAPE_DOWN,
@@ -219,6 +215,22 @@ public class SignaliteSeerBlock extends BaseEntityBlock {
                 VOXEL_SHAPE_WEST,
                 VOXEL_SHAPE_UP,
                 VOXEL_SHAPE_DOWN
+        );
+    }
+
+    @Override
+    public void addTooltipComponents(List<Component> pTooltipComponents) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.signalite.device")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.signalite.seer.line1")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.signalite.seer.line2")
+                        .withStyle(ChatFormatting.DARK_GRAY)
         );
     }
 }

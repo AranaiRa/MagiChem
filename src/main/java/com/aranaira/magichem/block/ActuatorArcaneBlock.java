@@ -3,12 +3,14 @@ package com.aranaira.magichem.block;
 import com.aranaira.magichem.block.entity.ActuatorArcaneBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.foundation.IHasNonStandardTooltipLore;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,9 +37,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
-public class ActuatorArcaneBlock extends BaseEntityBlock {
+public class ActuatorArcaneBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
     public ActuatorArcaneBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -226,5 +230,13 @@ public class ActuatorArcaneBlock extends BaseEntityBlock {
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_LONG, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_TALL, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLATFORM, 3));
+    }
+
+    @Override
+    public void addTooltipComponents(List<Component> pTooltipComponents) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.actuator.arcane")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
     }
 }

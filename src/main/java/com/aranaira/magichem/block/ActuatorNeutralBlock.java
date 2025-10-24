@@ -2,12 +2,14 @@ package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.ActuatorNeutralBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IHasNonStandardTooltipLore;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
-import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,23 +27,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
+import java.util.List;
 
-public class ActuatorNeutralBlock extends BaseEntityBlock {
+public class ActuatorNeutralBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
     public ActuatorNeutralBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -196,5 +191,13 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
         VOXEL_SHAPE_AGGREGATE_WEST = Shapes.or(
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_TOP, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY, 3));
+    }
+
+    @Override
+    public void addTooltipComponents(List<Component> pTooltipComponents) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.actuator.neutral")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
     }
 }

@@ -2,6 +2,7 @@ package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.entity.*;
 import com.aranaira.magichem.capabilities.grime.GrimeProvider;
+import com.aranaira.magichem.foundation.IHasNonStandardTooltipLore;
 import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +15,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -27,175 +27,8 @@ public class TooltipLoreBlockItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        if(pStack.getItem() == BlockRegistry.ACTUATOR_WATER.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.actuator.water")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ACTUATOR_FIRE.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.actuator.fire")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ACTUATOR_EARTH.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.actuator.earth")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ACTUATOR_AIR.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.actuator.air")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ACTUATOR_ARCANE.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.actuator.arcane")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ACTUATOR_ENDER.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.actuator.ender")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.ACTUATOR_NEUTRAL.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.actuator.neutral")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_AGGREGATING.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.variant")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.aggregating")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_BURNISHING.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.variant")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.burnishing")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_CHAOTIC.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.variant")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.chaotic")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_DEVOURING.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.variant")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.devouring")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_EQUATING.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.variant")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.equating")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_GATEKEEPING.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.variant")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.gatekeeping")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_METICULOUS.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.variant")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.meticulous")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_NEGATING.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.variant")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.negating")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_SEER.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.device")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.seer.line1")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.seer.line2")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_SINGING.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.device")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.singing.line1")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.singing.line2")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.SIGNALITE_LISTENING.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.device")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.listening.line1")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.signalite.listening.line2")
-                    .withStyle(ChatFormatting.DARK_GRAY)
-            );
+        if(pStack.getItem() instanceof IHasNonStandardTooltipLore ihtl) {
+            ihtl.addTooltipComponents(pTooltipComponents);
         }
         else if(pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS.get().asItem() ||
                 pStack.getItem() == BlockRegistry.ALCHEMICALLY_TREATED_GLASS_PANE.get().asItem() ||
@@ -238,16 +71,6 @@ public class TooltipLoreBlockItem extends BlockItem {
             }
             pTooltipComponents.add(
                     Component.translatable("tooltip.magichem.alchemically_treated_glass")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-        }
-        else if(pStack.getItem() == BlockRegistry.MAGIC_MIRROR.get().asItem()) {
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.magic_mirror.line1")
-                            .withStyle(ChatFormatting.DARK_GRAY)
-            );
-            pTooltipComponents.add(
-                    Component.translatable("tooltip.magichem.magic_mirror.line2")
                             .withStyle(ChatFormatting.DARK_GRAY)
             );
         }

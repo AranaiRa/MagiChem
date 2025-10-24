@@ -1,7 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.SignaliteBlockEntity;
-import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
+import com.aranaira.magichem.foundation.IHasNonStandardTooltipLore;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.ChatFormatting;
@@ -24,21 +24,18 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Random;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.LEVER_SIGNAL;
-import static net.minecraft.world.level.block.RedstoneTorchBlock.LIT;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWER;
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public class SignaliteBlock extends BaseEntityBlock {
+public class SignaliteBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
     public static final VoxelShape
         VOXEL_SHAPE_CORE,
         VOXEL_SHAPE_NORTH, VOXEL_SHAPE_EAST, VOXEL_SHAPE_SOUTH, VOXEL_SHAPE_WEST, VOXEL_SHAPE_UP, VOXEL_SHAPE_DOWN,
@@ -337,6 +334,96 @@ public class SignaliteBlock extends BaseEntityBlock {
                 VOXEL_SHAPE_UP,
                 VOXEL_SHAPE_DOWN
         );
+    }
+
+    @Override
+    public void addTooltipComponents(List<Component> pTooltipComponents) {
+        if(this.asItem() == BlockRegistry.SIGNALITE.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(this.asItem() == BlockRegistry.SIGNALITE_AGGREGATING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.aggregating")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(this.asItem() == BlockRegistry.SIGNALITE_BURNISHING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.burnishing")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(this.asItem() == BlockRegistry.SIGNALITE_CHAOTIC.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.chaotic")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(this.asItem() == BlockRegistry.SIGNALITE_DEVOURING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.devouring")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(this.asItem() == BlockRegistry.SIGNALITE_EQUATING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.equating")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(this.asItem() == BlockRegistry.SIGNALITE_GATEKEEPING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.gatekeeping")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(this.asItem() == BlockRegistry.SIGNALITE_METICULOUS.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.meticulous")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
+        else if(this.asItem() == BlockRegistry.SIGNALITE_NEGATING.get().asItem()) {
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.variant")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+            pTooltipComponents.add(
+                    Component.translatable("tooltip.magichem.signalite.negating")
+                            .withStyle(ChatFormatting.DARK_GRAY)
+            );
+        }
     }
 
     public enum SignaliteBlockType {

@@ -1,8 +1,10 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.MagicMirrorBlockEntity;
+import com.aranaira.magichem.foundation.IHasNonStandardTooltipLore;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.items.ItemInit;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -28,10 +30,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
+import java.util.List;
+
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.ATTACH_FACE;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
-public class MagicMirrorBlock extends BaseEntityBlock {
+public class MagicMirrorBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
 
     public static final VoxelShape
             VOXEL_SHAPE_N, VOXEL_SHAPE_E, VOXEL_SHAPE_S, VOXEL_SHAPE_W,
@@ -159,5 +163,17 @@ public class MagicMirrorBlock extends BaseEntityBlock {
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    public void addTooltipComponents(List<Component> pTooltipComponents) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.magic_mirror.line1")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.magic_mirror.line2")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
     }
 }

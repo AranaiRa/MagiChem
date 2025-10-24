@@ -4,13 +4,16 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.block.entity.ActuatorWaterBlockEntity;
 import com.aranaira.magichem.block.entity.routers.BaseActuatorRouterBlockEntity;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
+import com.aranaira.magichem.foundation.IHasNonStandardTooltipLore;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -45,9 +48,11 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
-public class ActuatorWaterBlock extends BaseEntityBlock {
+public class ActuatorWaterBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
     public ActuatorWaterBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -273,5 +278,13 @@ public class ActuatorWaterBlock extends BaseEntityBlock {
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_TUBEBASE, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_TUBEBODY, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_PIPES, 3));
+    }
+
+    @Override
+    public void addTooltipComponents(List<Component> pTooltipComponents) {
+        pTooltipComponents.add(
+                Component.translatable("tooltip.magichem.actuator.water")
+                        .withStyle(ChatFormatting.DARK_GRAY)
+        );
     }
 }
