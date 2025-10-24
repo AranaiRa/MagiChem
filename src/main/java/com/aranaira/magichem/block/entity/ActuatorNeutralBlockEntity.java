@@ -38,6 +38,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -51,12 +52,14 @@ import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEntity implements IPluginDevice {
 
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
     private boolean isFESatisfied = false;
     private static final int FE_CONSUMPTION_RATE = 10;
+    private static final Random r = new Random();
 
     public ActuatorNeutralBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
@@ -95,6 +98,7 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         nbt.putBoolean("isPaused", isPaused);
+        nbt.putBoolean("isFESatisfied", isFESatisfied);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
     }
@@ -103,6 +107,7 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
     public void load(CompoundTag nbt) {
         super.load(nbt);
         this.isPaused = nbt.getBoolean("isPaused");
+        this.isFESatisfied = nbt.getBoolean("isFESatisfied");
         this.ENERGY_STORAGE.setEnergy(nbt.getInt("storedPower"));
     }
 
@@ -110,6 +115,7 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
     public CompoundTag getUpdateTag() {
         CompoundTag nbt = new CompoundTag();
         nbt.putBoolean("isPaused", isPaused);
+        nbt.putBoolean("isFESatisfied", isFESatisfied);
         nbt.putInt("storedPower", this.ENERGY_STORAGE.getEnergyStored());
         return nbt;
     }
@@ -131,12 +137,61 @@ public class ActuatorNeutralBlockEntity extends AbstractDirectionalPluginBlockEn
     }
 
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+        if(t instanceof ActuatorNeutralBlockEntity entity) {
+            if (entity.isFESatisfied && level.isClientSide()) {
+                if (level.getGameTime() % 4 == 0) {
+                    Vector3 start, end;
+                    Direction dir = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
+                    if(dir != Direction.NORTH) {
+                        start = new Vector3(r.nextDouble(0.3125) + 0.375, 0.6875, 0.125);
+                        end = new Vector3(r.nextDouble(0.3125) + 0.375, 0.25, 0.125);
+
+                        level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                        .setMaxAge(10),
+                                pos.getX() + start.x, pos.getY() + start.y, pos.getZ() + start.z,
+                                pos.getX() + end.x, pos.getY() + end.y, pos.getZ() + end.z);
+                    }
+                    if(dir != Direction.EAST) {
+                        start = new Vector3(0.875, 0.6875, r.nextDouble(0.3125) + 0.375);
+                        end = new Vector3(0.875, 0.25, r.nextDouble(0.3125) + 0.375);
+
+                        level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                        .setMaxAge(10),
+                                pos.getX() + start.x, pos.getY() + start.y, pos.getZ() + start.z,
+                                pos.getX() + end.x, pos.getY() + end.y, pos.getZ() + end.z);
+                    }
+                    if(dir != Direction.SOUTH) {
+                        start = new Vector3(r.nextDouble(0.3125) + 0.375, 0.6875, 0.875);
+                        end = new Vector3(r.nextDouble(0.3125) + 0.375, 0.25, 0.875);
+
+                        level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                        .setMaxAge(10),
+                                pos.getX() + start.x, pos.getY() + start.y, pos.getZ() + start.z,
+                                pos.getX() + end.x, pos.getY() + end.y, pos.getZ() + end.z);
+                    }
+                    if(dir != Direction.WEST) {
+                        start = new Vector3(0.125, 0.6875, r.nextDouble(0.3125) + 0.375);
+                        end = new Vector3(0.125, 0.25, r.nextDouble(0.3125) + 0.375);
+
+                        level.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                        .setMaxAge(10),
+                                pos.getX() + start.x, pos.getY() + start.y, pos.getZ() + start.z,
+                                pos.getX() + end.x, pos.getY() + end.y, pos.getZ() + end.z);
+                    }
+                }
+            }
+        }
     }
 
     public static void delegatedTick(Level level, BlockPos pos, BlockState state, ActuatorNeutralBlockEntity entity) {
+        boolean pre = entity.isFESatisfied;
         int extracted = entity.ENERGY_STORAGE.extractEnergy(FE_CONSUMPTION_RATE, false);
         entity.isFESatisfied = extracted == FE_CONSUMPTION_RATE;
+
+        if(pre != entity.isFESatisfied) {
+            entity.syncAndSave();
+        }
     }
 
     private static Affinity getAffinity(Void unused) {
