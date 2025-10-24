@@ -192,7 +192,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
                 boolean efficiencyChanged = false;
                 boolean opTimeChanged = false;
 
-                if(neutral.getIsSatisfied()) {
+                if(neutral.getIsSatisfied() && !neutral.isPaused) {
                     if(pEntity.operationTimeMod != 20f) {
                         pEntity.operationTimeMod = 20f;
                         opTimeChanged = true;

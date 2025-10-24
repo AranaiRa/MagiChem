@@ -182,7 +182,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
                 boolean efficiencyChanged = false;
                 boolean opTimeChanged = false;
 
-                if(neutral.getIsSatisfied()) {
+                if(neutral.getIsSatisfied() && !neutral.isPaused) {
                     if(pEntity.operationTimeMod != 20f) {
                         pEntity.operationTimeMod = 20f;
                         opTimeChanged = true;

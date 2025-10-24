@@ -86,8 +86,8 @@ public class ActuatorNeutralBlock extends BaseEntityBlock {
     public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if(be != null) {
-            if(be instanceof ActuatorNeutralBlockEntity awbe) {
-                awbe.checkPaused();
+            if(be instanceof ActuatorNeutralBlockEntity anbe) {
+                anbe.checkPaused();
             }
         }
         super.neighborChanged(pState, pLevel, pPos, pNeighborBlock, pNeighborPos, pMovedByPiston);
