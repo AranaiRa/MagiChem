@@ -53,7 +53,7 @@ public class AbjurationNecroticItem extends Item {
                 if (pStack.hasTag()) {
                     nbt = pStack.getTag();
                     if (nbt.contains("uses")) {
-                        uses = nbt.getInt("uses") + 1;
+                        uses = nbt.getInt("uses") + (pPlayer.isCreative() ? 0 : 1);
                         if (uses >= 9) {
                             if(!pPlayer.level().isClientSide()) pPlayer.sendSystemMessage(Component.translatable("feedback.ritual.reborn_rose.abjuration"));
                             pStack.shrink(1);
