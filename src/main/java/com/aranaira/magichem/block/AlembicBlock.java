@@ -38,6 +38,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -201,6 +202,15 @@ public class AlembicBlock extends BaseEntityBlock implements ISpellInteractibleB
 
                     if(insertionQuery > 0) {
                         fluidHandler.fill(new FluidStack(Fluids.LAVA, 1000), IFluidHandler.FluidAction.EXECUTE);
+                        if(!pPlayer.isCreative()) {
+                            pPlayer.setItemInHand(pHand, new ItemStack(Items.BUCKET));
+                        }
+                    }
+                } else if(itemInHand.getItem() == Items.MILK_BUCKET) {
+                    int insertionQuery = fluidHandler.fill(new FluidStack(ForgeMod.MILK.get(), 1000), IFluidHandler.FluidAction.SIMULATE);
+
+                    if(insertionQuery > 0) {
+                        fluidHandler.fill(new FluidStack(ForgeMod.MILK.get(), 1000), IFluidHandler.FluidAction.EXECUTE);
                         if(!pPlayer.isCreative()) {
                             pPlayer.setItemInHand(pHand, new ItemStack(Items.BUCKET));
                         }
