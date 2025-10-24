@@ -68,7 +68,7 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                     return;
                 if(basin.hasSufficientItemsForRecipe()) {
 
-                    float fill = basin.getProgressPercent();
+                    float fill = Math.max(0,Math.min(1,basin.getProgressPercent()));
 
                     int color = Mth.hsvToRgb(fill / 3.0F, 1.0F, 1.0F) | -16777216;
                     int r = FastColor.ARGB32.red(color) / 3 * 2;
