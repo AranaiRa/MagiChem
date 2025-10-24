@@ -84,9 +84,9 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             CIRCLE_FILL_RATE = 0.025f, PARTICLE_PERCENT_RATE = 0.05f, PROJECTOR_PERCENT_RATE = 0.05f;
 
     private static final int[] POWER_DRAW = { //TODO: Convert this to config
-            70, 85, 105, 130, 160, 200, 250, 310, 390, 490,
-            610, 760, 950, 1185, 1480, 1850, 2310, 2890, 3610, 4510,
-            5640, 7050, 8810, 11010, 13765, 17205, 21505, 26880, 33600, 42000
+            50, 60, 75, 95, 115, 145, 180, 220, 280, 350,
+            435, 545, 680, 845, 1055, 1320, 1650, 2065, 2580, 3220,
+            4030, 5035, 6295, 7865, 9830, 12290, 15360, 19200, 24000, 30000
     };
 
     private static final float[] WISDOM_REDUCTION = { //TODO: Convert this to config
