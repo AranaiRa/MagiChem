@@ -5234,7 +5234,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first bit is 1 if the fuel slot has an item, or 0 if empty; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted.\n"
+            "text": ": the first bit is 1 if the fuel slot has an item, or 0 if empty; the second bit is 1 if the device has input items it has yet to process, and the fourth bit is 1 if the device has output items that have yet to be sorted the second bit is 1 if the device has fluid it has yet to process.\n"
           },
           {
             "text": "Meticulous Signalite",
@@ -5313,6 +5313,70 @@
           },
           {
             "text": ": Has fuel, input, and output items.\n"
+          },
+          {
+            "text": "8",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fluid.\n"
+          },
+          {
+            "text": "9",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel and fluid.\n"
+          },
+          {
+            "text": "10",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items and fluid.\n"
+          },
+          {
+            "text": "11",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel, input items, and fluid.\n"
+          },
+          {
+            "text": "12",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has output items and fluid.\n"
+          },
+          {
+            "text": "13",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel, output items, and fluid.\n"
+          },
+          {
+            "text": "14",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items, output items, and fluid.\n"
+          },
+          {
+            "text": "15",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fuel, input items, output items, and fluid.\n"
           }
         ]
       }
@@ -7050,7 +7114,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted.\n\n"
+            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted, and the fourth bit is 1 if the device has output items that have yet to be sorted the second bit is 1 if the device has fluid it has yet to process..\n\n"
           },
           {
             "text": "Meticulous Signalite",
@@ -7096,6 +7160,38 @@
           },
           {
             "text": ": Has input and output items.\n"
+          },
+          {
+            "text": "8",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has fluid.\n"
+          },
+          {
+            "text": "10",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items and fluid.\n"
+          },
+          {
+            "text": "12",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has output items and fluid.\n"
+          },
+          {
+            "text": "14",
+            "bold": true,
+            "color": "dark_red"
+          },
+          {
+            "text": ": Has input items, output items, and fluid.\n"
           }
         ]
       }

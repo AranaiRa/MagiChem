@@ -411,10 +411,12 @@ public class GrandDistilleryBlock extends BaseEntityBlock implements ISpellInter
         if(pLevel.getBlockEntity(pPos) instanceof GrandDistilleryBlockEntity dbe) {
             boolean hasInputItems = !dbe.getContentsOfInputSlots(GrandDistilleryBlockEntity::getVar).isEmpty();
             boolean hasOutputItems = !dbe.getContentsOfOutputSlots(GrandDistilleryBlockEntity::getVar).isEmpty();
+            boolean hasFluid = !dbe.getFluidInTank(0).isEmpty();
 
             int signal = 0;
             signal = signal | (hasInputItems ? 1 << 1 : 0);
             signal = signal | (hasOutputItems ? 1 << 2 : 0);
+            signal = signal | (hasFluid ? 1 << 3 : 0);
 
             return signal;
         }

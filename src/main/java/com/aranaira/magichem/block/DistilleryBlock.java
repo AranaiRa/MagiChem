@@ -399,11 +399,13 @@ public class DistilleryBlock extends BaseEntityBlock implements ISpellInteractib
             boolean hasInputItems = !dbe.getContentsOfInputSlots(DistilleryBlockEntity::getVar).isEmpty();
             boolean hasOutputItems = !dbe.getContentsOfOutputSlots(DistilleryBlockEntity::getVar).isEmpty();
             boolean hasFuel = dbe.hasFuelInSlot();
+            boolean hasFluid = !dbe.getFluidInTank(0).isEmpty();
 
             int signal = 0;
             signal = signal | (hasFuel ? 1 : 0);
             signal = signal | (hasInputItems ? 1 << 1 : 0);
             signal = signal | (hasOutputItems ? 1 << 2 : 0);
+            signal = signal | (hasFluid ? 1 << 3 : 0);
 
             return signal;
         }
