@@ -6682,14 +6682,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nIf there is a valid recipe charging in an Astral Observer, you can right click it with the orb to "
+            "text": ".\n\nIf inserted into the lens slot of an Astral Observer, recipes will "
           },
           {
-            "text": "instantly complete the craft",
+            "text": "complete instantly",
             "color": "dark_purple"
           },
           {
-            "text": "."
+            "text": ". Items already containing Lumins will complete based on that type of Lumins, while fresh items will complete based on the current time of day and moon cycle as appropriate.\n\nYou can insert the orb into the materia slot of a Skywrath Condenser. It acts as an "
+          },
+          {
+            "text": "infinite source",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of Admixture of the Storm."
           }
         ]
       }

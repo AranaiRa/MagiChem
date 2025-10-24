@@ -57,7 +57,7 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if(slot == SLOT_MATERIA) return stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("storm");
+            if(slot == SLOT_MATERIA) return (stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("storm")) || (stack.getItem() == ItemRegistry.DEBUG_ORB.get());
 
             return false;
         }
@@ -204,21 +204,28 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
             final ItemStack bottleSlot = pEntity.itemHandler.getStackInSlot(SLOT_BOTTLES);
             int upd = ServerConfig.skywrathCondenserMateriaUnitsPerDram;
             int limit = upd * 5;
-            if (pEntity.droplets <= limit - upd && !materiaSlot.isEmpty()) {
-                int maxDeduction = (limit - pEntity.droplets) / upd;
-                int actualDeduction = Math.min(maxDeduction, materiaSlot.getCount());
-
-                if(bottleSlot.isEmpty() || bottleSlot.getCount() <= pEntity.itemHandler.getSlotLimit(SLOT_BOTTLES) - actualDeduction) {
-                    materiaSlot.shrink(actualDeduction);
-                    if(!InventoryHelper.isMateriaUnbottled(materiaSlot)){
-                        if (bottleSlot.isEmpty()) {
-                            pEntity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, actualDeduction));
-                        } else {
-                            bottleSlot.grow(actualDeduction);
-                        }
-                    }
-                    pEntity.droplets += actualDeduction * upd;
+            if (materiaSlot.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                if(pEntity.droplets < limit) {
+                    pEntity.droplets = limit;
                     pEntity.syncAndSave();
+                }
+            } else {
+                if (pEntity.droplets <= limit - upd && !materiaSlot.isEmpty()) {
+                    int maxDeduction = (limit - pEntity.droplets) / upd;
+                    int actualDeduction = Math.min(maxDeduction, materiaSlot.getCount());
+
+                    if (bottleSlot.isEmpty() || bottleSlot.getCount() <= pEntity.itemHandler.getSlotLimit(SLOT_BOTTLES) - actualDeduction) {
+                        materiaSlot.shrink(actualDeduction);
+                        if (!InventoryHelper.isMateriaUnbottled(materiaSlot)) {
+                            if (bottleSlot.isEmpty()) {
+                                pEntity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE, actualDeduction));
+                            } else {
+                                bottleSlot.grow(actualDeduction);
+                            }
+                        }
+                        pEntity.droplets += actualDeduction * upd;
+                        pEntity.syncAndSave();
+                    }
                 }
             }
         }

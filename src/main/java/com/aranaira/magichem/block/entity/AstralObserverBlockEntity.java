@@ -92,7 +92,7 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
                     if (stack.hasTag()) {
                         nbt = stack.getTag();
                     }
-                    if (currentLumins > 0) {
+                    if (currentLumins > 0 && !holdingCompletedCraft) {
                         CompoundTag luminsTag = new CompoundTag();
                         luminsTag.putInt("type", luminTypeInItem.ordinal());
                         luminsTag.putInt("current", currentLumins);
@@ -312,6 +312,19 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
         if(!pEntity.getItem().isEmpty() && !pEntity.getLens().isEmpty()){
             IlluminationRecipe recipe = pEntity.getRecipeForPhase(pType);
             if (recipe != null) {
+                if(pEntity.getLens().getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                    IlluminationRecipe recipeFallback = pEntity.getRecipeForPhase(pEntity.luminTypeInItem);
+                    pEntity.heldItem = (recipeFallback == null ? recipe : recipeFallback).getResultItem().copy();
+                    pEntity.luminTypeInItem = (recipeFallback == null ? recipe : recipeFallback).getLuminType();
+                    pEntity.currentLumins = (recipeFallback == null ? recipe : recipeFallback).getCraftTime() * 1200 * ServerConfig.astralObserverLuminGainStandard;
+                    pEntity.luminsNeeded = pEntity.currentLumins;
+                    pEntity.holdingCompletedCraft = true;
+                    pEntity.solarRecipe = null;
+                    pEntity.lunarRecipe = null;
+                    pEntity.siderealRecipe = null;
+                    return true;
+                }
+
                 if (pEntity.currentLumins <= 0) {
                     pEntity.luminsNeeded = recipe.getCraftTime() * 1200 * ServerConfig.astralObserverLuminGainStandard;
                     pEntity.luminTypeInItem = recipe.getLuminType();
