@@ -238,7 +238,7 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == ForgeCapabilities.ITEM_HANDLER) {
+        if(cap == ForgeCapabilities.ITEM_HANDLER && side != null) {
             if(side == Direction.UP || side == Direction.DOWN)
                 return lazyItemHandler.cast();
             else
