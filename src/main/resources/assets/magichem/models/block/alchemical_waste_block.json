@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all":  "magichem:block/alchemical_waste_block",
+    "particle": "magichem:block/alchemical_waste_block"
+  }
+}

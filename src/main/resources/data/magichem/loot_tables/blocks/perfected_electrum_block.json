@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "magichem:astral_observer"
+          "name": "magichem:perfected_electrum_block"
         }
       ],
       "conditions": [

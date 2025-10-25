@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all":  "magichem:block/perfected_electrum_block",
+    "particle": "magichem:block/perfected_electrum_block"
+  }
+}

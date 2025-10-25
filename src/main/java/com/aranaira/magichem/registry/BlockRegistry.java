@@ -26,6 +26,16 @@ public class BlockRegistry {
                     .instabreak().noCollission().noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<Block> PERFECTED_ELECTRUM_BLOCK = registerBlock("perfected_electrum_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
+    public static final RegistryObject<Block> ALCHEMICAL_WASTE_BLOCK = registerBlock("alchemical_waste_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<Block> ALEMBIC = registerBlock("alembic",
             () -> new AlembicBlock(BlockBehaviour.Properties.of()
                     .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
@@ -647,7 +657,7 @@ public class BlockRegistry {
             case "standing_retort" -> ItemRegistry.ITEMS.register(name, () -> new StandingRetortBlockItem(block.get(), new Item.Properties()));
             case "bleached_amethyst_block", "signalite_block", "signalite_block_budding", "cluster_signalite", "cluster_signalite_large",
                     "cluster_signalite_medium", "cluster_signalite_small", "vinteum_crystal_block", "vinteum_crystal_block_budding", "cluster_vinteum",
-                    "cluster_vinteum_large", "cluster_vinteum_medium", "cluster_vinteum_small" ->
+                    "cluster_vinteum_large", "cluster_vinteum_medium", "cluster_vinteum_small", "perfected_electrum_block", "alchemical_waste_block" ->
                     ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
             default -> ItemRegistry.ITEMS.register(name, () -> new TooltipLoreBlockItem(block.get(), new Item.Properties()));
         };

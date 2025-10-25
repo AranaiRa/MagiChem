@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "magichem:alchemical_waste_block" }
+  ],
+  "result": {
+    "item": "magichem:alchemical_waste",
+    "count": 9
+  }
+}
