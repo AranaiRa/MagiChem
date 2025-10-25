@@ -3,6 +3,7 @@ package com.aranaira.magichem.entities.constructs.ai;
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
+import com.mna.api.affinity.Affinity;
 import com.mna.api.entities.construct.Animations;
 import com.mna.api.entities.construct.ConstructCapability;
 import com.mna.api.entities.construct.IConstruct;
@@ -15,6 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -91,7 +94,13 @@ public class ConstructHarvestCrystals extends ConstructAITask<ConstructHarvestCr
                     if(this.waitTimer > 0) {
                         this.waitTimer --;
                     } else {
-                        construct.asEntity().level().destroyBlock(targetCrystal, true, construct.asEntity());
+                        if(random.nextInt(8) < construct.getConstructData().getAffinityScore(Affinity.EARTH)) {
+                            ItemEntity ie = new ItemEntity(construct.asEntity().level(), targetCrystal.getX(), targetCrystal.getY(), targetCrystal.getZ(), new ItemStack(construct.asEntity().level().getBlockState(targetCrystal).getBlock().asItem()));
+                            construct.asEntity().level().destroyBlock(targetCrystal, false);
+                            construct.asEntity().level().addFreshEntity(ie);
+                        }
+                        else
+                            construct.asEntity().level().destroyBlock(targetCrystal, true, construct.asEntity());
                         this.waitTimer = 21;
                         this.phase = ETaskPhase.WAIT_TO_RESTART;
                         pushDiagnosticMessage("That one looks shiny enough! Bzzow!", false);

@@ -58,11 +58,11 @@
             "text": " to expand the available recipe options. The regular Circle of Fabrication is not advanced enough to use Wisdom Stones.\n\nEvery recipe in the Magnum Opus after the Inert Wisdom Stone requires the previous Wisdom Stone; you can "
           },
           {
-            "text": "remove the required Stone from the Nexus",
+            "text": "remove the required Stone from your curio slot",
             "color": "dark_purple"
           },
           {
-            "text": " safely when the recipe requests it.\n\nAll Wisdom Stones other than the Inert Wisdom Stone open the "
+            "text": " safely when the recipe requests it. The recipe will not be interrupted.\n\nAll Wisdom Stones other than the Inert Wisdom Stone open the "
           },
           {
             "text": "Wisdom Wheel",
@@ -4486,7 +4486,21 @@
             "color": "dark_purple"
           },
           {
-            "text": ". Firing magical sound waves through the mana cannon allows the construct to shatter the crystal clusters at a distance, perfect for reaching those pesky clusters on the ceilings of a geode."
+            "text": ". Firing magical sound waves through the mana cannon allows the construct to shatter the crystal clusters at a distance, perfect for reaching those pesky clusters on the ceilings of a geode.\n\nEach level of "
+          },
+          {
+            "text": "Earth Affinity",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that the construct is summoned with adds a 12.5% chance that the crystals will be harvested with a "
+          },
+          {
+            "text": "Silk Touch",
+            "color": "dark_purple"
+          },
+          {
+            "text": " effect."
           }
         ]
       }
@@ -6278,8 +6292,16 @@
         "location": "magichem:alchemical_sublimation_ritual/magichem/perfected_electrum"
       },
       {
+        "type": "sublimation_ritual",
+        "location": "magichem:alchemical_sublimation_ritual/magichem/perfected_electrum_block"
+      },
+      {
         "type": "sublimation",
         "location": "magichem:alchemical_sublimation/magichem/perfected_electrum"
+      },
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/perfected_electrum_block"
       }
     ]
   },
