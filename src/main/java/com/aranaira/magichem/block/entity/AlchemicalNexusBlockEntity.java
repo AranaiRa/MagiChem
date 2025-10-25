@@ -561,7 +561,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                                     for (MateriaItem mi : provisioningNeeds.keySet()) {
                                         int requested = provisioningNeeds.get(mi);
                                         int inStorage = multi.getCurrentStock(mi);
-                                        boolean instant = ender.getPowerLevel() == 3;
+                                        boolean instant = ender.getPowerLevel() == 2;
 
                                         int actualDrain = Math.min(requested, inStorage);
                                         if (actualDrain > 0) {
