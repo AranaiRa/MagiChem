@@ -327,7 +327,10 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
 
                 if (pEntity.currentLumins <= 0) {
                     pEntity.luminsNeeded = recipe.getCraftTime() * 1200 * ServerConfig.astralObserverLuminGainStandard;
-                    pEntity.luminTypeInItem = recipe.getLuminType();
+                    if(pEntity.getLens().getItem() == ItemRegistry.SOLAR_CLOISTER_LENS.get()) pEntity.luminTypeInItem = LuminType.SOLAR;
+                    else if(pEntity.getLens().getItem() == ItemRegistry.LUNAR_CLOISTER_LENS.get()) pEntity.luminTypeInItem = LuminType.LUNAR;
+                    else if(pEntity.getLens().getItem() == ItemRegistry.SIDEREAL_CLOISTER_LENS.get()) pEntity.luminTypeInItem = LuminType.SIDEREAL;
+                    else pEntity.luminTypeInItem = recipe.getLuminType();
                 }
 
                 if (pEntity.getLens().getItem() == ItemRegistry.GLASS_LENS.get() && pEntity.luminTypeInItem == recipe.getLuminType()) {
