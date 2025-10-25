@@ -1,0 +1,25 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:perfected_electrum_block",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:gold_block" },
+        { "item": "minecraft:gold_block" },
+        { "item": "magichem:alchemical_waste_block" },
+        { "item": "mna:decoration/transmuted_silver_block" },
+        { "item": "mna:decoration/transmuted_silver_block" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_metal", "count": 162 },
+        { "item": "magichem:essentia_nigredo", "count": 54 }
+      ]
+    }
+  ]
+}
