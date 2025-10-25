@@ -17,7 +17,7 @@
         { "item": "mna:decoration/transmuted_silver_block" }
       ],
       "materia": [
-        { "item": "magichem:admixture_metal", "count": 162 },
+        { "item": "magichem:admixture_metal", "count": 126 },
         { "item": "magichem:essentia_nigredo", "count": 54 }
       ]
     }

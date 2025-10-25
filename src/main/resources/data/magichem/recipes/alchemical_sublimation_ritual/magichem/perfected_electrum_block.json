@@ -4,7 +4,7 @@
     "item": "magichem:perfected_electrum_block"
   },
   "materia_type_one": { "item": "magichem:essentia_nigredo", "count": 36 },
-  "materia_type_two": { "item": "magichem:admixture_metal", "count": 108 },
+  "materia_type_two": { "item": "magichem:admixture_metal", "count": 81 },
   "components": [
     { "item": "magichem:alchemical_waste_block" },
     { "item": "minecraft:gold_block" },
