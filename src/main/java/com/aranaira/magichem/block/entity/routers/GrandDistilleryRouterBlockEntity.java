@@ -5,10 +5,7 @@ import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.entity.GrandDistilleryBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractBlockEntityWithEfficiency;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
-import com.aranaira.magichem.foundation.ICanTakePlugins;
-import com.aranaira.magichem.foundation.IDestroysMasterOnDestruction;
-import com.aranaira.magichem.foundation.IMateriaSortingRequester;
-import com.aranaira.magichem.foundation.IPoweredAlchemyDevice;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -47,6 +44,14 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
 
     public GrandDistilleryRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.GRAND_DISTILLERY_ROUTER_BE.get(), pPos, pBlockState);
+
+        final GrandDistilleryRouterType routerType = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_GRAND_DISTILLERY));
+        for (Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection> data : GrandDistilleryBlock.getRouterOffsets(pBlockState.getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            if(data.getSecond() == routerType) {
+                this.masterPos = pPos.offset(data.getFirst().multiply(-1));
+                this.plugDirection = data.getThird();
+            }
+        }
     }
 
     public Direction getFacing() {
@@ -80,12 +85,6 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
         else if(getPlugDirection() == DevicePlugDirection.WEST) target = target.west();
 
         return getLevel().getBlockEntity(target);
-    }
-
-    public void configure(BlockPos pMasterPos, DevicePlugDirection pPlugDirection) {
-        this.masterPos = pMasterPos;
-        this.plugDirection = pPlugDirection;
-        getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
     }
 
     @Override
@@ -127,7 +126,7 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return getMaster() == null ? LazyOptional.empty() : getMaster().getCapability(cap, side);
+        return (masterPos == null || getMaster() == null) ? LazyOptional.empty() : getMaster().getCapability(cap, side);
     }
 
     @Override

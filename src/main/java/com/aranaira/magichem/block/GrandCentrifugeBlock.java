@@ -98,7 +98,6 @@ public class GrandCentrifugeBlock extends BaseEntityBlock implements ISpellInter
                                 .setValue(FACING, facing)
                                 .setValue(ROUTER_TYPE_GRAND_CENTRIFUGE, routerType),
                         3);
-                ((GrandCentrifugeRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
         }
     }

@@ -97,7 +97,6 @@ public class MirrorLabyrinthBlock extends BaseEntityBlock {
                                 .setValue(FACING, facing)
                                 .setValue(ROUTER_TYPE_MIRROR_LABYRINTH, routerType),
                         3);
-                ((MirrorLabyrinthRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos);
             }
         }
     }

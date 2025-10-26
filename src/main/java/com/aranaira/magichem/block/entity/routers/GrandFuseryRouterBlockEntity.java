@@ -48,6 +48,14 @@ public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficie
 
     public GrandFuseryRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.GRAND_FUSERY_ROUTER_BE.get(), pPos, pBlockState);
+
+        final GrandFuseryRouterType routerType = GrandFuseryRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_GRAND_FUSERY));
+        for (Triplet<BlockPos, GrandFuseryRouterType, DevicePlugDirection> data : GrandFuseryBlock.getRouterOffsets(pBlockState.getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            if(data.getSecond() == routerType) {
+                this.masterPos = pPos.offset(data.getFirst().multiply(-1));
+                this.plugDirection = data.getThird();
+            }
+        }
     }
 
     public Direction getFacing() {
@@ -81,12 +89,6 @@ public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficie
         else if(getPlugDirection() == DevicePlugDirection.WEST) target = target.west();
 
         return getLevel().getBlockEntity(target);
-    }
-
-    public void configure(BlockPos pMasterPos, DevicePlugDirection pPlugDirection) {
-        this.masterPos = pMasterPos;
-        this.plugDirection = pPlugDirection;
-        getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
     }
 
     @Override
@@ -128,7 +130,7 @@ public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficie
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return getMaster() == null ? LazyOptional.empty() : getMaster().getCapability(cap, side);
+        return (masterPos == null || getMaster() == null) ? LazyOptional.empty() : getMaster().getCapability(cap, side);
     }
 
     @Override

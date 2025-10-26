@@ -206,7 +206,6 @@ public class GrandCircleFabricationBlock extends BaseEntityBlock {
                                 .setValue(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION, routerType)
                                 .setValue(FACING, facing),
                         3);
-                ((GrandCircleFabricationRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
         }
 

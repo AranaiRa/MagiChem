@@ -110,7 +110,6 @@ public class GrandDistilleryBlock extends BaseEntityBlock implements ISpellInter
                                 .setValue(FACING, facing)
                                 .setValue(ROUTER_TYPE_GRAND_DISTILLERY, routerType),
                         3);
-                ((GrandDistilleryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
         }
     }

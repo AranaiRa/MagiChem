@@ -100,7 +100,6 @@ public class GrandFuseryBlock extends BaseEntityBlock implements ISpellInteracti
                                 .setValue(FACING, facing)
                                 .setValue(ROUTER_TYPE_GRAND_FUSERY, routerType),
                         3);
-                ((GrandFuseryRouterBlockEntity) pLevel.getBlockEntity(targetPos)).configure(pPos, posAndType.getThird());
             }
         }
     }

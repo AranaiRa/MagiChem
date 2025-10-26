@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.CirclePowerBlock;
+import com.aranaira.magichem.block.GrandCircleFabricationBlock;
 import com.aranaira.magichem.block.entity.GrandCircleFabricationBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.*;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
@@ -40,12 +42,14 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
 
     public GrandCircleFabricationRouterBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.GRAND_CIRCLE_FABRICATION_ROUTER_BE.get(), pPos, pBlockState);
-    }
 
-    public void configure(BlockPos pMasterPos, DevicePlugDirection pPlugDirection) {
-        this.masterPos = pMasterPos;
-        this.plugDirection = pPlugDirection;
-        getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+        final int routerType = getBlockState().getValue(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION);
+        for (Triplet<BlockPos, Integer, DevicePlugDirection> data : GrandCircleFabricationBlock.getRouterOffsets(pBlockState.getValue(BlockStateProperties.HORIZONTAL_FACING))) {
+            if(data.getSecond() == routerType) {
+                this.masterPos = pPos.offset(data.getFirst().multiply(-1));
+                this.plugDirection = data.getThird();
+            }
+        }
     }
 
     public GrandCircleFabricationBlockEntity getMaster(){
@@ -72,7 +76,7 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return getMaster() == null ? LazyOptional.empty() : getMaster().getCapability(cap, side);
+        return (masterPos == null || getMaster() == null) ? LazyOptional.empty() : getMaster().getCapability(cap, side);
     }
 
     @Override
