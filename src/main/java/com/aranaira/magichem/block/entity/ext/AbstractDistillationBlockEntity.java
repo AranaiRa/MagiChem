@@ -820,6 +820,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     @Override
     public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
+        if(inputTank.isEmpty())
+            return FluidStack.EMPTY;
+
         if(resource.getFluid() == inputTank.getFluid() || inputTank.isEmpty()) {
             int extracted = Math.min(resource.getAmount(), inputTank.getAmount());
             FluidStack output = inputTank.copy();
@@ -836,6 +839,9 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     @Override
     public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+        if(inputTank.isEmpty())
+            return FluidStack.EMPTY;
+
         int extracted = Math.min(maxDrain, inputTank.getAmount());
         FluidStack output = inputTank.copy();
         output.setAmount(extracted);
