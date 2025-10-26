@@ -97,6 +97,9 @@ public class MateriaManifestBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        boolean holdingMarkPair = player.getInventory().getSelected().getItem() == ItemInit.RUNE_MARKING_PAIR.get();
+        boolean holdingMateria = player.getInventory().getSelected().getItem() instanceof MateriaItem;
+
         if(player.isCrouching()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof MateriaManifestBlockEntity mmbe) {
@@ -105,8 +108,6 @@ public class MateriaManifestBlock extends BaseEntityBlock {
             }
         }
         else if(!level.isClientSide()) {
-            boolean holdingMarkPair = player.getInventory().getSelected().getItem() == ItemInit.RUNE_MARKING_PAIR.get();
-            boolean holdingMateria = player.getInventory().getSelected().getItem() instanceof MateriaItem;
 
             if(!holdingMarkPair && !holdingMateria) {
                 BlockEntity entity = level.getBlockEntity(pos);
@@ -117,9 +118,6 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                 }
             }
         } else {
-            boolean holdingMarkPair = player.getInventory().getSelected().getItem() == ItemInit.RUNE_MARKING_PAIR.get();
-            boolean holdingMateria = player.getInventory().getSelected().getItem() instanceof MateriaItem;
-
             if(!holdingMarkPair && holdingMateria) {
                 BlockEntity entity = level.getBlockEntity(pos);
                 if (entity instanceof MateriaManifestBlockEntity mmbe) {
@@ -128,8 +126,10 @@ public class MateriaManifestBlock extends BaseEntityBlock {
 
                         final HashMap<MateriaItem, List<BlockEntity>> materiaStorageInZone = mmbe.getMateriaStorageInZone();
                         final List<MateriaItem> materiaTypesSorted = mmbe.getMateriaTypesSorted();
+                        boolean foundTarget = false;
                         for (MateriaItem type : materiaTypesSorted) {
                             if (type != null && type == mi) {
+                                foundTarget = true;
                                 mmbe.tetherTarget = materiaStorageInZone.get(mi).get(0);
                                 mmbe.tetherType = mi;
                                 player.displayClientMessage(Component.empty()
@@ -137,6 +137,14 @@ public class MateriaManifestBlock extends BaseEntityBlock {
                                                 .append(Component.translatable("item." + mi.getCreatorModId(player.getInventory().getSelected()) + "." + mi.toString())),
                                         true);
                             }
+                        }
+                        if(!foundTarget) {
+                            mmbe.tetherTarget = null;
+                            mmbe.tetherType = null;
+                            player.displayClientMessage(Component.empty()
+                                            .append(Component.translatable("feedback.block.materia_manifest.not_found").withStyle(ChatFormatting.DARK_GRAY))
+                                            .append(Component.translatable("item." + mi.getCreatorModId(player.getInventory().getSelected()) + "." + mi.toString())),
+                                    true);
                         }
                     }
                 } else {

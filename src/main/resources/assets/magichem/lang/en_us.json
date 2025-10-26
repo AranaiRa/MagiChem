@@ -702,6 +702,7 @@
   "feedback.block.materia_manifest.too_big.part1": "The designated area is too large. The maximum allowable size on each axis is ",
   "feedback.block.materia_manifest.too_big.part2": " blocks.",
   "feedback.block.materia_manifest.track_from_bottle": "Locating ",
+  "feedback.block.materia_manifest.not_found": "Unable to locate ",
   "feedback.block.signalite.target": "Signal target is now ",
   "feedback.block.signalite.bit_target": "Reading bit ",
   "feedback.block.signalite.no_bit_target": "Bit reading disabled",
