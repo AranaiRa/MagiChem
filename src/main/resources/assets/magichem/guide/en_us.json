@@ -1668,14 +1668,119 @@
             "color": "dark_purple"
           },
           {
-            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A construct can be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. The construct must be in follow mode, and only one construct can be bound to a single Circle of Toil at a time.\n\nThe rate at which Circle of Toil generates FE is dependent on "
+            "text": " uses a construct to generate a small amount of FE as its cogwheel is turned. A construct can be bound to the Circle of Toil by telling it to Interact using a Bell of Bidding. The construct must be in follow mode, and only one construct can be bound to a single Circle of Toil at a time.\n\nThe "
           },
           {
-            "text": "how quickly the cogwheel is turned",
+            "text": "composition of the construct",
             "color": "dark_purple"
           },
           {
-            "text": ". It will only generate and store up to three ticks' worth of FE at once.\n\nOnce bound, a construct needs some time to get up to speed; higher tier materials reach full speed faster than lower tier materials (though parts higher than Tier 3 have no additional affect). Once the construct is pushing at top speed, the Circle of Toil will emit small, harmless lightning bolts.\n\nConstructs with Ender Legs cannot be bound to a Circle of Toil.\n\nA construct can be relieved from its cog-cranking duties by activating the center block with a Bell of Bidding set to Interact."
+            "text": " determines how much FE is produced per tick.\n\nA Circle of Toil will only generate and store up to three ticks' worth of FE at once.\n\nConstructs with Ender Legs cannot be bound to a Circle of Toil.\n\nA construct can be relieved from its cog-cranking duties by activating the center block with a Bell of Bidding set to Interact."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Part Reference Chart",
+        "newPage": true
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": ""
+          },
+          {
+            "text": "Wickerwood",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 4 FE / part\n"
+          },
+          {
+            "text": "Wood",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 6 FE / part\n"
+          },
+          {
+            "text": "Stone",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 8 FE / part\n"
+          },
+          {
+            "text": "Gold",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 12 FE / part\n"
+          },
+          {
+            "text": "Bone",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 18 FE / part\n"
+          },
+          {
+            "text": "Iron",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 24 FE / part\n"
+          },
+          {
+            "text": "Obsidian",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 48 FE / part\n"
+          },
+          {
+            "text": "Diamond",
+            "color": "dark_purple"
+          },
+          {
+            "text": ": 96 FE / part\n\nThe bulkier design of "
+          },
+          {
+            "text": "Armor Torsos",
+            "color": "dark_purple"
+          },
+          {
+            "text": " and "
+          },
+          {
+            "text": "Reinforced Legs",
+            "color": "dark_purple"
+          },
+          {
+            "text": " allow the construct to push with more force, contributing "
+          },
+          {
+            "text": "50% more power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " than the part would normally provide.\n\nSummoning the construct with "
+          },
+          {
+            "text": "Fire or Lightning affinity",
+            "color": "dark_purple"
+          },
+          {
+            "text": " fills its body with passion and power, allowing it to generate up to "
+          },
+          {
+            "text": "50% more power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " from all of its parts."
           }
         ]
       }
@@ -1819,7 +1924,8 @@
       },
       {
         "type": "title",
-        "value": "Comparator Support"
+        "value": "Comparator Support",
+        "newPage": true
       },
       {
         "type": "item",
@@ -1838,14 +1944,14 @@
             "bold": true
           },
           {
-            "text": " and outputs a signal value based on which reagent slots are active.\nThe output strength is packed as a "
+            "text": " and outputs a signal value based on which reagent slots are active.\n\nThe output strength is packed as a "
           },
           {
             "text": "binary number",
             "color": "dark_red"
           },
           {
-            "text": ": the first bit is 1 if the first reagent is active, or 0 if inactive, and so on for reagent/bit 2, 3, and 4.\n\n\n\n\n"
+            "text": ": the first bit is 1 if the first reagent is active, or 0 if inactive, and so on for reagent/bit 2, 3, and 4.\n\n"
           },
           {
             "text": "Meticulous Signalite",

@@ -43,19 +43,29 @@ public class CircleToilBlockEntity extends BlockEntity implements ICanAbsorbCons
 
     public static float
             MAXIMUM_ROTATION_SPEED = 0.9f,
-            THETA_ACCELERATION_RATE_WICKERWOOD   = 0.00015f, //5 minutes
-            THETA_ACCELERATION_RATE_WOODSTONE    = 0.00075f, //60 seconds
-            THETA_ACCELERATION_RATE_IRONGOLDBONE = 0.015f; //3 seconds
+            THETA_ACCELERATION_RATE = 0.015f;
     public float
         theta, rotSpeed, acceleration;
     public boolean
         constructDataChanged = false;
     private static final Random r = new Random();
+    private static final HashMap<String, Integer> POWER_GEN_BY_PART_MATERIAL = new HashMap<>();
 
     private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
 
     public CircleToilBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.CIRCLE_TOIL_BE.get(), pos, state);
+
+        if(POWER_GEN_BY_PART_MATERIAL.size() == 0) {
+            POWER_GEN_BY_PART_MATERIAL.put("wickerwood", 4);
+            POWER_GEN_BY_PART_MATERIAL.put("wood", 6);
+            POWER_GEN_BY_PART_MATERIAL.put("stone", 8);
+            POWER_GEN_BY_PART_MATERIAL.put("gold", 12);
+            POWER_GEN_BY_PART_MATERIAL.put("bone", 18);
+            POWER_GEN_BY_PART_MATERIAL.put("iron", 24);
+            POWER_GEN_BY_PART_MATERIAL.put("obsidian", 48);
+            POWER_GEN_BY_PART_MATERIAL.put("diamond", 96);
+        }
     }
 
     @Override
@@ -81,37 +91,11 @@ public class CircleToilBlockEntity extends BlockEntity implements ICanAbsorbCons
 
     private void calculateAcceleration() {
         if(storedConstruct.isEmpty()) {
-            acceleration = -THETA_ACCELERATION_RATE_IRONGOLDBONE;
+            acceleration = -THETA_ACCELERATION_RATE;
             return;
         }
 
-        acceleration = 0;
-
-        CompoundTag composition = storedConstruct.getCompound("animated_construct_composition");
-        final String[] head = composition.getString("HEAD").split("_");
-        acceleration += getSpeedFromMaterialName(head[head.length-1]);
-
-        final String[] torso = composition.getString("TORSO").split("_");
-        acceleration += getSpeedFromMaterialName(torso[torso.length-1]);
-
-        final String[] armL = composition.getString("LEFT_ARM").split("_");
-        acceleration += getSpeedFromMaterialName(armL[armL.length-1]);
-
-        final String[] armR = composition.getString("RIGHT_ARM").split("_");
-        acceleration += getSpeedFromMaterialName(armR[armR.length-1]);
-
-        final String[] legs = composition.getString("LEGS").split("_");
-        acceleration += getSpeedFromMaterialName(legs[legs.length-1]);
-
-        acceleration *= 0.2;
-    }
-
-    private float getSpeedFromMaterialName(String pQuery) {
-        if(pQuery.equals("wickerwood")) return THETA_ACCELERATION_RATE_WICKERWOOD;
-        else if(pQuery.equals("wood")) return THETA_ACCELERATION_RATE_WOODSTONE;
-        else if(pQuery.equals("stone")) return THETA_ACCELERATION_RATE_WOODSTONE;
-
-        return THETA_ACCELERATION_RATE_IRONGOLDBONE;
+        acceleration = THETA_ACCELERATION_RATE * 0.2f;
     }
 
     @Override
@@ -261,7 +245,25 @@ public class CircleToilBlockEntity extends BlockEntity implements ICanAbsorbCons
         int cap;
         int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
 
-        int genRate = Math.round(ServerConfig.circleToilGen * (entity.rotSpeed / MAXIMUM_ROTATION_SPEED));
+        int genRate = 0;
+        CompoundTag composition = entity.storedConstruct.getCompound("animated_construct_composition");
+        final String[] head = composition.getString("HEAD").split("_");
+        genRate += POWER_GEN_BY_PART_MATERIAL.get(head[head.length-1]);
+
+        final String[] torso = composition.getString("TORSO").split("_");
+        genRate += Math.round((float)POWER_GEN_BY_PART_MATERIAL.get(torso[torso.length-1]) * (torso[1].equals("armor") ? 1.5f : 1.0f));
+
+        final String[] armL = composition.getString("LEFT_ARM").split("_");
+        genRate += POWER_GEN_BY_PART_MATERIAL.get(armL[armL.length-1]);
+
+        final String[] armR = composition.getString("RIGHT_ARM").split("_");
+        genRate += POWER_GEN_BY_PART_MATERIAL.get(armR[armR.length-1]);
+
+        final String[] legs = composition.getString("LEGS").split("_");
+        genRate += Math.round((float)POWER_GEN_BY_PART_MATERIAL.get(legs[legs.length-1]) * (legs[1].equals("reinforced") ? 1.5f : 1.0f));
+
+        int affinity = composition.getCompound("animated_construct_affinity").getInt("FIRE");
+        genRate = Math.round((float)genRate * (1f + 0.0625f*affinity));
 
         cap = genRate * ServerConfig.circleToilBuffer;
         entity.ENERGY_STORAGE.generateEnergy(genRate, false);

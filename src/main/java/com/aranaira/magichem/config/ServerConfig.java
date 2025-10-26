@@ -277,10 +277,6 @@ public class ServerConfig
 
     //----------------CIRCLE OF TOIL
 
-    private static final ForgeConfigSpec.IntValue CIRCLE_OF_TOIL_GEN = BUILDER
-            .comment("How much FE/tick the Circle of Toil generates at max speed")
-            .defineInRange("circleToilGen", 20, 1, Integer.MAX_VALUE);
-
     private static final ForgeConfigSpec.IntValue CIRCLE_OF_TOIL_BUFFER = BUILDER
             .comment("How many ticks of activity the Circle of Toil stores at once")
             .defineInRange("circleToilBuffer", 3, 1, 72000);
@@ -626,7 +622,6 @@ public class ServerConfig
         circlePowerGen3Reagent,
         circlePowerGen4Reagent,
         circlePowerBuffer,
-        circleToilGen,
         circleToilBuffer,
         circleFabricationTankCapacity,
         grandCircleFabricationTankCapacity,
@@ -778,7 +773,6 @@ public class ServerConfig
         circlePowerReprocessing3Eternal = CIRCLE_OF_POWER_REPROCESSING_3_ETERNAL.get();
         circlePowerReprocessing4Eternal = CIRCLE_OF_POWER_REPROCESSING_4_ETERNAL.get();
         circlePowerBuffer = CIRCLE_OF_POWER_BUFFER.get();
-        circleToilGen = CIRCLE_OF_TOIL_GEN.get();
         circleToilBuffer = CIRCLE_OF_TOIL_BUFFER.get();
         circleFabricationTankCapacity = CIRCLE_FABRICATION_TANK_CAPACITY.get();
         grandCircleFabricationTankCapacity = GRAND_CIRCLE_FABRICATION_TANK_CAPACITY.get();
