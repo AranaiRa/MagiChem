@@ -1764,7 +1764,28 @@
             "color": "dark_purple"
           },
           {
-            "text": " at Tier 5.\n\nOn the far right side of the GUI, items that "
+            "text": " at Tier 5.\n\nThe Circle of Power generates two pools of FE simultaneously: "
+          },
+          {
+            "text": "alchemical power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that can supply MagiChem devices using a "
+          },
+          {
+            "text": "Power Spike",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and "
+          },
+          {
+            "text": "electrical power",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that can supply any other machine.\n\nPower Spikes bound to a Circle of Power will supply energy from the appropriate pool, but cables from other mods will only ever draw from the electrical power pool.\n\nA reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product into a special slot that can be reprocessed back into the reagent with Constructs. If this slot is full, the waste product is ejected into the world instead.\n\nOne reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.\n\nBy default, each additional reagent supplied to the Circle of Power increases its power generation tenfold. Power is generated based on the "
           },
           {
             "text": "hold an FE charge",

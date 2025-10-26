@@ -1,9 +1,14 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -11,6 +16,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 public class PowerSpikeBlockEntity extends BlockEntity {
+    public static final TagKey<Block> ALCHEMICAL_DEVICES_TAG = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "alchemical_devices"));
 
     public PowerSpikeBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesRegistry.POWER_SPIKE_BE.get(), pos, state);
@@ -55,7 +61,20 @@ public class PowerSpikeBlockEntity extends BlockEntity {
             BlockEntity drawEntity = level.getBlockEntity(entity.powerDrawPos);
             BlockEntity transferEntity = level.getBlockEntity(entity.powerTransferPos);
 
-            if(drawEntity != null && transferEntity != null) {
+            if(drawEntity instanceof CirclePowerBlockEntity circle && transferEntity != null && transferEntity.getBlockState().is(ALCHEMICAL_DEVICES_TAG)) {
+                circle.getAlchemicalEnergyCapability(ForgeCapabilities.ENERGY).ifPresent(drawCap -> {
+                    transferEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(transferCap -> {
+                        powerAvailable.setValue(drawCap.getEnergyStored());
+
+                        powerToTransfer.setValue(transferCap.receiveEnergy(powerAvailable.intValue(), true));
+
+                        drawCap.extractEnergy(powerToTransfer.intValue(), false);
+
+                        transferCap.receiveEnergy(powerToTransfer.intValue(), false);
+                    });
+                });
+            }
+            else if(drawEntity != null && transferEntity != null) {
                 drawEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(drawCap -> {
                     transferEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(transferCap -> {
                         powerAvailable.setValue(drawCap.getEnergyStored());

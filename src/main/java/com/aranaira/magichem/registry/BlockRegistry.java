@@ -33,7 +33,7 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> ALCHEMICAL_WASTE_BLOCK = registerBlock("alchemical_waste_block",
             () -> new Block(BlockBehaviour.Properties.of()
-                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+                    .strength(0.75f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false).sound(SoundType.MUD))
     );
 
     public static final RegistryObject<Block> ALEMBIC = registerBlock("alembic",

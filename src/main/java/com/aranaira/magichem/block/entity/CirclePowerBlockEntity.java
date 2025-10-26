@@ -120,7 +120,8 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
     }
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-    private LazyOptional<IEnergyStorage> lazyEnergyHandler = LazyOptional.empty();
+    private LazyOptional<IEnergyStorage> lazyAlchEnergyHandler = LazyOptional.empty();
+    private LazyOptional<IEnergyStorage> lazyAuxEnergyHandler = LazyOptional.empty();
 
     protected final ContainerData data;
     private int
@@ -159,7 +160,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if(cap == ForgeCapabilities.ENERGY) {
-            return lazyEnergyHandler.cast();
+            return lazyAuxEnergyHandler.cast();
         }
 
         if(cap == ForgeCapabilities.ITEM_HANDLER) {
@@ -169,18 +170,24 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         return super.getCapability(cap, side);
     }
 
+    public @NotNull <T> LazyOptional<T> getAlchemicalEnergyCapability(@NotNull Capability<T> cap) {
+        return lazyAlchEnergyHandler.cast();
+    }
+
     @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
-        lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
+        lazyAlchEnergyHandler = LazyOptional.of(() -> ALCH_ENERGY_STORAGE);
+        lazyAuxEnergyHandler = LazyOptional.of(() -> AUX_ENERGY_STORAGE);
     }
 
     @Override
     public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
-        lazyEnergyHandler.invalidate();
+        lazyAlchEnergyHandler.invalidate();
+        lazyAuxEnergyHandler.invalidate();
     }
 
     @Override
@@ -190,7 +197,8 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         nbt.putInt("progressReagentTier2", this.progressReagentTier2);
         nbt.putInt("progressReagentTier3", this.progressReagentTier3);
         nbt.putInt("progressReagentTier4", this.progressReagentTier4);
-        nbt.putInt("storedEnergy", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.putInt("storedAlchEnergy", this.ALCH_ENERGY_STORAGE.getEnergyStored());
+        nbt.putInt("storedAuxEnergy", this.AUX_ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
     }
 
@@ -210,7 +218,8 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         progressReagentTier2 = nbt.getInt("progressReagentTier2");
         progressReagentTier3 = nbt.getInt("progressReagentTier3");
         progressReagentTier4 = nbt.getInt("progressReagentTier4");
-        ENERGY_STORAGE.setEnergy(nbt.getInt("storedEnergy"));
+        ALCH_ENERGY_STORAGE.setEnergy(nbt.getInt("storedAlchEnergy"));
+        AUX_ENERGY_STORAGE.setEnergy(nbt.getInt("storedAuxEnergy"));
     }
 
     @Override
@@ -221,7 +230,8 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         nbt.putInt("progressReagentTier2", this.progressReagentTier2);
         nbt.putInt("progressReagentTier3", this.progressReagentTier3);
         nbt.putInt("progressReagentTier4", this.progressReagentTier4);
-        nbt.putInt("storedEnergy", this.ENERGY_STORAGE.getEnergyStored());
+        nbt.putInt("storedAlchEnergy", this.ALCH_ENERGY_STORAGE.getEnergyStored());
+        nbt.putInt("storedAuxEnergy", this.AUX_ENERGY_STORAGE.getEnergyStored());
         return nbt;
     }
 
@@ -398,7 +408,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
 
         kickstart(entity);
 
-        if(entity.ENERGY_STORAGE.getEnergyStored() < getEnergyLimit(entity)) {
+        if(entity.ALCH_ENERGY_STORAGE.getEnergyStored() < getEnergyLimit(entity) || entity.AUX_ENERGY_STORAGE.getEnergyStored() < getEnergyLimit(entity)) {
             if(!ServerConfig.circlePowerReprocessing1Eternal)
                 processReagent(level, pos, state, entity, 1);
             if(!ServerConfig.circlePowerReprocessing2Eternal)
@@ -420,7 +430,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
                 //COMMENT THIS OUT DURING PARTICLE WORK
                 energyCapability.ifPresent(itemCap -> {
                     int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
-                    int energyExtracted = entity.ENERGY_STORAGE.extractEnergy(energyNeeded, false);
+                    int energyExtracted = entity.ALCH_ENERGY_STORAGE.extractEnergy(energyNeeded, false);
                     itemCap.receiveEnergy(energyExtracted, false);
                 });
             }
@@ -433,7 +443,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
 
             energyCapability.ifPresent(itemCap -> {
                 int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
-                int energyExtracted = entity.ENERGY_STORAGE.extractEnergy(energyNeeded, false);
+                int energyExtracted = entity.ALCH_ENERGY_STORAGE.extractEnergy(energyNeeded, false);
                 itemCap.receiveEnergy(energyExtracted, false);
             });
 
@@ -644,7 +654,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
     }
 
     public static int getEnergyLimit(CirclePowerBlockEntity entity) {
-        int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
+        int currentEnergy = entity.ALCH_ENERGY_STORAGE.getEnergyStored();
 
         boolean hasEternal1 = ServerConfig.circlePowerReprocessing1Eternal && entity.hasReagent(1);
         boolean hasEternal2 = ServerConfig.circlePowerReprocessing2Eternal && entity.hasReagent(2);
@@ -662,7 +672,19 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
 
     /* FE STUFF */
 
-    private final IEnergyStoragePlus ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+    private final IEnergyStoragePlus ALCH_ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
+        @Override
+        public void onEnergyChanged() {
+            setChanged();
+        }
+
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            return 0;
+        }
+    };
+
+    private final IEnergyStoragePlus AUX_ENERGY_STORAGE = new IEnergyStoragePlus(Integer.MAX_VALUE, Integer.MAX_VALUE) {
         @Override
         public void onEnergyChanged() {
             setChanged();
@@ -677,7 +699,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
     private static void generatePower(CirclePowerBlockEntity entity) {
         int reagentCount = 0;
         int cap;
-        int currentEnergy = entity.ENERGY_STORAGE.getEnergyStored();
+        int currentEnergy = entity.ALCH_ENERGY_STORAGE.getEnergyStored();
         if(ServerConfig.circlePowerReprocessing1Eternal && entity.hasReagent(1)) reagentCount++;
         else if(entity.progressReagentTier1 > 0) reagentCount++;
 
@@ -693,8 +715,12 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
         int genRate = getGenRate(reagentCount);
 
         cap = genRate * ServerConfig.circlePowerBuffer;
-        entity.ENERGY_STORAGE.generateEnergy(genRate, false);
-        if (currentEnergy + genRate > cap) entity.ENERGY_STORAGE.setEnergy(cap);
+
+        entity.ALCH_ENERGY_STORAGE.generateEnergy(genRate, false);
+        if (currentEnergy + genRate > cap) entity.ALCH_ENERGY_STORAGE.setEnergy(cap);
+
+        entity.AUX_ENERGY_STORAGE.generateEnergy(genRate, false);
+        if (currentEnergy + genRate > cap) entity.AUX_ENERGY_STORAGE.setEnergy(cap);
     }
 
     public static int getGenRate(int reagentCount) {
