@@ -207,7 +207,6 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         pGuiGraphics.setColor(dim, dim, dim, 1.0f);
         pGuiGraphics.blit(TEXTURE, x + PANEL_STATS_X, y + PANEL_STATS_Y, PANEL_STATS_U, PANEL_STATS_V, PANEL_STATS_W, PANEL_STATS_H);
         pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        pGuiGraphics.blit(TEXTURE, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
 
         if(dim != 1.0f) {
             b_powerLevelDown.visible = false;
@@ -215,6 +214,16 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         } else {
             b_powerLevelDown.visible = true;
             b_powerLevelUp.visible = true;
+        }
+
+        int a = menu.blockEntity.getCraftingStage();
+        dim = ((menu.blockEntity.getAnimStage() == ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_CRAFTING_IDLE) && menu.blockEntity.getCraftingStage() == 0) ? 1.0f : 0.5f;
+        pGuiGraphics.setColor(dim, dim, dim, 1.0f);
+        pGuiGraphics.blit(TEXTURE, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
+        pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+        for (ButtonData recipeSelectButton : recipeSelectButtons) {
+            recipeSelectButton.getButton().visible = dim == 1.0f;
         }
 
         //slurry gauge
