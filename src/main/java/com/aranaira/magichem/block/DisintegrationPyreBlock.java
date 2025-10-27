@@ -62,6 +62,17 @@ public class DisintegrationPyreBlock extends BaseEntityBlock {
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if(blockEntity instanceof DisintegrationPyreBlockEntity abbe) {
+                abbe.packDataToBlockItem();
+            }
+        }
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
+
     static {
         VOXEL_SHAPE_BASE = Block.box(0, 0, 0, 16, 3, 16);
         VOXEL_SHAPE_BODY = Block.box(1, 3, 1, 15, 7, 15);

@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.foundation.enums.LuminType;
@@ -7,6 +8,7 @@ import com.aranaira.magichem.gui.DisintegrationPyreMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuProvider, IMateriaProvisionRequester, IShlorpReceiver {
+public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuProvider, IMateriaProvisionRequester, IShlorpReceiver, IKeepsInventoryOnBreak {
     public static final int
         SLOT_COUNT = 3,
         SLOT_ITEM = 0, SLOT_MATERIA = 1, SLOT_BOTTLES = 2;
@@ -174,5 +177,26 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
     @Override
     public int insertStackFromShlorp(ItemStack pStack) {
         return 0;
+    }
+
+    @Override
+    public void packDataToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.DISINTEGRATION_PYRE.get());
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        nbt.putInt("percent", percent);
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("inventory")) {
+            itemHandler.deserializeNBT(pNBT.getCompound("inventory"));
+            percent = pNBT.getInt("percent");
+        }
     }
 }

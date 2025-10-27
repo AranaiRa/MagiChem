@@ -1,0 +1,22 @@
+{
+  "type": "mna:manaweaving-recipe",
+  "output": "magichem:disintegration_pyre",
+  "tier": 2,
+  "items": [
+    "magichem:admixture_destruction",
+    "mna:mote_fire",
+    "magichem:admixture_destruction",
+    "mna:decoration/arcane_sandstone",
+    "minecraft:soul_campfire",
+    "mna:decoration/arcane_sandstone",
+    "mna:decoration/arcane_sandstone",
+    "magichem:perfected_electrum",
+    "mna:decoration/arcane_sandstone"
+  ],
+  "patterns": [
+    "mna:knot3",
+    "mna:slash",
+    "mna:slash",
+    "mna:diamond"
+  ]
+}
