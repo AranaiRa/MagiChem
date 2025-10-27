@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block;
 
 import com.aranaira.magichem.block.entity.DisintegrationPyreBlockEntity;
+import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -12,6 +13,8 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -71,6 +74,15 @@ public class DisintegrationPyreBlock extends BaseEntityBlock {
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        if(pBlockEntityType == BlockEntitiesRegistry.DISINTEGRATION_PYRE_BE.get()) {
+            return DisintegrationPyreBlockEntity::tick;
+        }
+
+        return null;
     }
 
     static {

@@ -1,5 +1,6 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
@@ -9,6 +10,7 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.util.InventoryHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,6 +25,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,7 +45,8 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
         SLOT_COUNT = 3,
         SLOT_ITEM = 0, SLOT_MATERIA = 1, SLOT_BOTTLES = 2;
 
-    private int percent = 50;
+    private int
+            percent = 50, droplets = 0;
 
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private final ItemStackHandler itemHandler = new ItemStackHandler(SLOT_COUNT) {
@@ -90,6 +95,7 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
     protected void saveAdditional(CompoundTag nbt) {
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("percent", percent);
+        nbt.putInt("droplets", droplets);
 
         super.saveAdditional(nbt);
     }
@@ -99,6 +105,7 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         percent = nbt.getInt("percent");
+        droplets = nbt.getInt("droplets");
     }
 
     @Override
@@ -106,6 +113,7 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("percent", percent);
+        nbt.putInt("droplets", droplets);
         return nbt;
     }
 
@@ -186,6 +194,7 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
         CompoundTag nbt = new CompoundTag();
         nbt.put("inventory", itemHandler.serializeNBT());
         nbt.putInt("percent", percent);
+        nbt.putInt("droplets", droplets);
 
         stack.setTag(nbt);
 
@@ -197,6 +206,72 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
         if(pNBT.contains("inventory")) {
             itemHandler.deserializeNBT(pNBT.getCompound("inventory"));
             percent = pNBT.getInt("percent");
+            droplets = pNBT.getInt("droplets");
+        }
+    }
+
+    public int getDroplets() {
+        return droplets;
+    }
+
+    public float getDropletsPercent() {
+        return (float)droplets / (float)(ServerConfig.disintegrationPyreMateriaUnitsPerDram * 3);
+    }
+
+    public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, T t) {
+        if(t instanceof DisintegrationPyreBlockEntity entity) {
+            if(!level.isClientSide()) {
+                boolean changed = false;
+
+                if(!entity.itemHandler.getStackInSlot(SLOT_MATERIA).isEmpty()) {
+                    int fill = ServerConfig.disintegrationPyreMateriaUnitsPerDram;
+                    int limit = fill * 3;
+
+                    //Fill gauge with droplets
+                    int capacity = limit - entity.droplets;
+                    if (capacity >= fill) {
+                        ItemStack materiaStack = entity.itemHandler.getStackInSlot(SLOT_MATERIA);
+                        ItemStack bottleStack = entity.itemHandler.getStackInSlot(SLOT_BOTTLES);
+
+                        if(InventoryHelper.isMateriaUnbottled(materiaStack)) {
+                            materiaStack.shrink(1);
+                            entity.droplets = Math.min(limit, entity.droplets + fill);
+                            changed = true;
+                        }
+                        else if(bottleStack.isEmpty() || bottleStack.getCount() < bottleStack.getMaxStackSize()) {
+                            materiaStack.shrink(1);
+                            if(bottleStack.isEmpty()) {
+                                entity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE));
+                            } else {
+                                bottleStack.grow(1);
+                            }
+                            entity.droplets = Math.min(limit, entity.droplets + fill);
+                            changed = true;
+                        }
+                    }
+                }
+
+                //Damage item in slot
+                ItemStack stack = entity.itemHandler.getStackInSlot(SLOT_ITEM);
+                if(!stack.isEmpty() && level.getGameTime() % 6 == 0) {
+                    int maxDurability = stack.getMaxDamage();
+                    int targetDurability = Math.min(maxDurability-1, Math.round((float)maxDurability * (1 - ((float)entity.percent / 100f))));
+                    int remainingDurability = targetDurability - stack.getDamageValue();
+
+                    if(remainingDurability > 0) {
+                        int drain = Math.min(ServerConfig.disintegrationPyreMateriaUnitsPerDram, remainingDurability);
+                        drain = Math.min(entity.droplets, drain);
+
+                        entity.droplets = Math.max(0, entity.droplets - drain);
+                        stack.setDamageValue(stack.getDamageValue() + drain);
+                        changed = true;
+                    }
+                }
+
+                if(changed) {
+                    entity.syncAndSave();
+                }
+            }
         }
     }
 }

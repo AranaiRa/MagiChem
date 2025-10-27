@@ -1,6 +1,7 @@
 package com.aranaira.magichem.gui;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.networking.DisintegrationPyreSyncDataC2SPacket;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -43,6 +44,8 @@ public class DisintegrationPyreScreen extends AbstractContainerScreen<Disintegra
 
         //Materia panel
         pGuiGraphics.blit(TEXTURE, x + 157, y - 6, 216, 0, 40, 58);
+        int sM = Math.min(42, Math.round(menu.blockEntity.getDropletsPercent() * 42f));
+        pGuiGraphics.blit(TEXTURE, x + 165, y + 2 + (42 - sM), 214, 0, 2, sM);
 
         //Scroll Nubbin for Batch Size
         float percentAsFloat = (float)(menu.blockEntity.getPercent() - 1) / 98f;

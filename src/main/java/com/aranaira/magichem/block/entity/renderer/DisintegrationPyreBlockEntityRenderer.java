@@ -44,7 +44,7 @@ public class DisintegrationPyreBlockEntityRenderer implements BlockEntityRendere
 
         pPoseStack.pushPose();
 
-        ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_FLAME_LARGE, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
+        ModelUtils.renderModel(pBuffer, world, pos, state, pBlockEntity.getDropletsPercent() >= 0.5f ? RENDERER_MODEL_FLAME_LARGE : RENDERER_MODEL_FLAME_SMALL, pPoseStack, pPackedLight, pPackedOverlay, RenderType.cutout());
 
         pPoseStack.popPose();
     }
