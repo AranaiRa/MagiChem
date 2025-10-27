@@ -62,6 +62,7 @@ public class FluidFabricationRecipeCategory implements IRecipeCategory<FluidDist
     public void setRecipe(IRecipeLayoutBuilder builder, FluidDistillationFabricationRecipe recipe, IFocusGroup group) {
 
         builder.addSlot(RecipeIngredientRole.OUTPUT,40,88).addFluidStack(recipe.getAlchemyFluid().getFluid(), recipe.getAlchemyFluid().getAmount());
+        builder.addSlot(RecipeIngredientRole.OUTPUT,40000,6).addItemStack(new ItemStack(recipe.getAlchemyFluid().getFluid().getBucket()));
 
         int i=0;
         for(ItemStack stack : recipe.getComponentMateria()) {
