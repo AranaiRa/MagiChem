@@ -10584,6 +10584,78 @@
       }
     ]
   },
+  "Disintegration Pyre": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Disintegration Pyre"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "The "
+          },
+          {
+            "text": "Disintegration Pyre",
+            "color": "dark_purple"
+          },
+          {
+            "text": " holds an otherworldly, magically-infused flame that "
+          },
+          {
+            "text": "damages items",
+            "color": "dark_purple"
+          },
+          {
+            "text": " when supplied with "
+          },
+          {
+            "text": "Admixture of Destruction",
+            "color": "dark_purple"
+          },
+          {
+            "text": ".\n\nThe device's GUI allows you to set what "
+          },
+          {
+            "text": "percentage of maximum durability",
+            "color": "dark_purple"
+          },
+          {
+            "text": " the Pyre will damage inserted items down to.\n\nThis controlled degradation is especially useful for construct automation when combined with the "
+          },
+          {
+            "text": "durability-matching option",
+            "color": "dark_purple"
+          },
+          {
+            "text": " in a "
+          },
+          {
+            "text": "Ledger",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (the left check box)."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "manaweaving-altar",
+        "location": "magichem:manaweaving/disintegration_pyre"
+      },
+      {
+        "type": "crafting",
+        "location": "mna:filter_item"
+      }
+    ]
+  },
   "Gnostic Orb": {
     "index": "0",
     "category": "magichem_wonders",
