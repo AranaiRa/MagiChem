@@ -10,9 +10,11 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.BlockRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -38,12 +40,14 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuProvider, IMateriaProvisionRequester, IShlorpReceiver, IKeepsInventoryOnBreak {
     public static final int
         SLOT_COUNT = 3,
         SLOT_ITEM = 0, SLOT_MATERIA = 1, SLOT_BOTTLES = 2;
+    public static final MateriaItem ADMIXTURE_DESTRUCTION = ItemRegistry.getMateriaMap(false, false).get("destruction");
 
     private int
             percent = 50, droplets = 0;
@@ -148,46 +152,6 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
     }
 
     @Override
-    public boolean allowIncreasedDeliverySize() {
-        return false;
-    }
-
-    @Override
-    public boolean needsProvisioning() {
-        return false;
-    }
-
-    @Override
-    public Map<MateriaItem, Integer> getProvisioningNeeds() {
-        return null;
-    }
-
-    @Override
-    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
-
-    }
-
-    @Override
-    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
-
-    }
-
-    @Override
-    public void provide(ItemStack pStack) {
-
-    }
-
-    @Override
-    public int canAcceptStackFromShlorp(ItemStack pStack) {
-        return 0;
-    }
-
-    @Override
-    public int insertStackFromShlorp(ItemStack pStack) {
-        return 0;
-    }
-
-    @Override
     public void packDataToBlockItem() {
         ItemStack stack = new ItemStack(BlockRegistry.DISINTEGRATION_PYRE.get());
 
@@ -273,5 +237,87 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
                 }
             }
         }
+    }
+
+    ////////////////////
+    // PROVISIONING AND SHLORPS
+    ////////////////////
+
+    private final NonNullList<MateriaItem> activeProvisionRequests = NonNullList.create();
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        if(activeProvisionRequests.size() > 0) {
+            return false;
+        }
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA);
+        if(InventoryHelper.isMateriaUnbottled(insertionStack)) {
+            return insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA) / 2;
+        }
+        return insertionStack.isEmpty();
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        Map<MateriaItem, Integer> result = new HashMap<>();
+
+        ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA);
+
+        if(insertionStack.getCount() < itemHandler.getSlotLimit(SLOT_MATERIA) / 2) {
+            result.put(ADMIXTURE_DESTRUCTION, itemHandler.getSlotLimit(SLOT_MATERIA) - insertionStack.getCount());
+        }
+
+        return result;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(pMateriaItem == ADMIXTURE_DESTRUCTION)
+            activeProvisionRequests.add(pMateriaItem);
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        activeProvisionRequests.remove(pMateriaItem);
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(pStack.getItem() == ADMIXTURE_DESTRUCTION) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA);
+
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+            } else {
+                insertionStack.grow(pStack.getCount());
+            }
+            itemHandler.setStackInSlot(SLOT_MATERIA, insertionStack);
+
+            syncAndSave();
+
+            activeProvisionRequests.remove((MateriaItem)pStack.getItem());
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(pStack.getItem() == ADMIXTURE_DESTRUCTION) {
+            return 0;
+        }
+        return pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        provide(pStack);
+        return 0;
     }
 }

@@ -87,7 +87,7 @@ public class DisintegrationPyreBlock extends BaseEntityBlock {
 
     static {
         VOXEL_SHAPE_BASE = Block.box(0, 0, 0, 16, 3, 16);
-        VOXEL_SHAPE_BODY = Block.box(1, 3, 1, 15, 7, 15);
+        VOXEL_SHAPE_BODY = Block.box(2, 3, 2, 14, 7, 14);
 
         VOXEL_SHAPE_AGGREGATE = Shapes.or(VOXEL_SHAPE_BASE, VOXEL_SHAPE_BODY);
     }
