@@ -477,6 +477,13 @@ public class ServerConfig
             .comment("The amount of Water and Steam, in mB, both of the Acid Basin's internal tanks can hold.")
             .defineInRange("acidBasinTankCapacity", 5000, 1, Integer.MAX_VALUE);
 
+    //----------------DISINTEGRATION_PYRE
+
+    private static final ForgeConfigSpec.IntValue DISINTEGRATION_PYRE_MATERIA_UNITS_PER_DRAM = BUILDER
+            .comment("How many units does a single dram of ")
+            .comment("Reminder, one unit is one point of durability damage to inserted items.")
+            .defineInRange("disintegrationPyreMateriaUnitsPerDram", 500, 1, Integer.MAX_VALUE);
+
     //----------------MATERIA MANIFEST
 
     private static final ForgeConfigSpec.IntValue MATERIA_MANIFEST_SIZE_CONSTRAINT = BUILDER
@@ -663,6 +670,7 @@ public class ServerConfig
         astralObserverLuminGainFarsight,
         astralObserverLuminLoss,
         acidBasinTankCapacity,
+        disintegrationPyreMateriaUnitsPerDram,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
         materiaManifestDefaultRange,
@@ -814,6 +822,7 @@ public class ServerConfig
         astralObserverLuminGainFarsight = ASTRAL_OBSERVER_LUMIN_GAIN_FARSIGHT.get();
         astralObserverLuminLoss = ASTRAL_OBSERVER_LUMIN_LOSS.get();
         acidBasinTankCapacity = ACID_BASIN_TANK_CAPACITY.get();
+        disintegrationPyreMateriaUnitsPerDram = DISINTEGRATION_PYRE_MATERIA_UNITS_PER_DRAM.get();
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
         materiaManifestDefaultRange = MATERIA_MANIFEST_DEFAULT_RANGE.get();

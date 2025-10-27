@@ -2,11 +2,13 @@ package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.gui.AstralObserverMenu;
 import com.aranaira.magichem.recipe.IlluminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.particles.MAParticleType;
@@ -62,7 +64,7 @@ import java.util.UUID;
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.NEEDS_HARD_UPDATE;
 import static com.aranaira.magichem.util.render.ColorUtils.SIX_STEP_PARTICLE_COLORS;
 
-public class AstralObserverBlockEntity extends BlockEntity implements MenuProvider {
+public class AstralObserverBlockEntity extends BlockEntity implements MenuProvider, IKeepsInventoryOnBreak {
     private LuminType
             luminTypeThisTick = LuminType.NONE,
             luminTypeInItem = LuminType.NONE;
@@ -632,5 +634,35 @@ public class AstralObserverBlockEntity extends BlockEntity implements MenuProvid
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return new AstralObserverMenu(pContainerId, pPlayerInventory, this, new SimpleContainerData(0));
+    }
+
+    @Override
+    public void packDataToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.ASTRAL_OBSERVER.get());
+
+        CompoundTag nbt = new CompoundTag();
+
+        nbt.put("heldItem", heldItem.serializeNBT());
+        nbt.put("lensInventory", lensItemHandler.serializeNBT());
+        nbt.putInt("type", luminTypeInItem.ordinal());
+        nbt.putInt("current", currentLumins);
+        nbt.putInt("needed", luminsNeeded);
+        nbt.putBoolean("holdingCompletedCraft", holdingCompletedCraft);
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        if(pNBT.contains("heldItem")) {
+            heldItem = ItemStack.of(pNBT.getCompound("heldItem"));
+            lensItemHandler.deserializeNBT(pNBT.getCompound("lensInventory"));
+            luminTypeInItem = LuminType.luminTypeFromOrdinal(pNBT.getInt("type"));
+            currentLumins = pNBT.getInt("current");
+            luminsNeeded = pNBT.getInt("needed");
+            holdingCompletedCraft = pNBT.getBoolean("holdingCompletedCraft");
+        }
     }
 }
