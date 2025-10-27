@@ -1,0 +1,9 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 2
+
+newmtl PROTO_ACTUATOR
+map_Kd magichem:block/actuator_neutral
+
+
+newmtl SOUL_CAMPFIRE_FIRE.001
+map_Kd minecraft:block/soul_campfire_fire

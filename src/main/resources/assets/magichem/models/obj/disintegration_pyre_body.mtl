@@ -1,0 +1,6 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 1
+
+newmtl PROTO_ACTUATOR
+map_Kd magichem:block/actuator_neutral
+

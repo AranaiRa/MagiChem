@@ -1,0 +1,5 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 1
+
+newmtl SOUL_CAMPFIRE_FIRE.001
+map_Kd minecraft:block/soul_campfire_fire

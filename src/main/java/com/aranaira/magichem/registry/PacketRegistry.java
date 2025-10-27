@@ -131,6 +131,12 @@ public class PacketRegistry {
                 .consumerMainThread(ToggleWisdomC2SPacket::handle)
                 .add();
 
+        net.messageBuilder(DisintegrationPyreSyncDataC2SPacket.class, ID(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(DisintegrationPyreSyncDataC2SPacket::new)
+                .encoder(DisintegrationPyreSyncDataC2SPacket::toBytes)
+                .consumerMainThread(DisintegrationPyreSyncDataC2SPacket::handle)
+                .add();
+
         //Server to Clients
 
         MagiChemMod.CHANNEL.registerMessage(ID(), ParticleSpawnAnointingS2CPacket.class,

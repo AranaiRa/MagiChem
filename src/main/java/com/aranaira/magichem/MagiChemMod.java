@@ -174,6 +174,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.CODEX_MATERIA_MENU.get(), CodexMateriaScreen::new);
                 MenuScreens.register(MenuRegistry.SKYWRATH_CONDENSER_MENU.get(), SkywrathCondenserScreen::new);
                 MenuScreens.register(MenuRegistry.ASTRAL_OBSERVER_MENU.get(), AstralObserverScreen::new);
+                MenuScreens.register(MenuRegistry.DISINTEGRATION_PYRE_MENU.get(), DisintegrationPyreScreen::new);
 
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID_FLOWING.get(), RenderType.translucent());
@@ -295,6 +296,9 @@ public class MagiChemMod
             event.register(EldrinOrreryBlockEntityRenderer.RENDERER_MODEL_ORB_SUN);
             event.register(EldrinOrreryBlockEntityRenderer.RENDERER_MODEL_RING_SMALL);
             event.register(EldrinOrreryBlockEntityRenderer.RENDERER_MODEL_RING_LARGE);
+
+            event.register(DisintegrationPyreBlockEntityRenderer.RENDERER_MODEL_FLAME_SMALL);
+            event.register(DisintegrationPyreBlockEntityRenderer.RENDERER_MODEL_FLAME_LARGE);
         }
     }
 }

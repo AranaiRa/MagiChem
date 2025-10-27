@@ -302,6 +302,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(SelenolabeBlockEntity::new, BlockRegistry.SELENOLABE.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<DisintegrationPyreBlockEntity>> DISINTEGRATION_PYRE_BE = BLOCK_ENTITIES.register("disintegration_pyre", () ->
+            BlockEntityType.Builder.of(DisintegrationPyreBlockEntity::new, BlockRegistry.DISINTEGRATION_PYRE.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

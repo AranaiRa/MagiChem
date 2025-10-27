@@ -105,6 +105,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<AstralObserverMenu>> ASTRAL_OBSERVER_MENU =
             registerMenuType(AstralObserverMenu::new, "astral_observer");
 
+    public static final RegistryObject<MenuType<DisintegrationPyreMenu>> DISINTEGRATION_PYRE_MENU =
+            registerMenuType(DisintegrationPyreMenu::new, "disintegration_pyre");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
