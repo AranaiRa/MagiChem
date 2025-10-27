@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 
@@ -229,9 +228,17 @@ public class MagicMirrorBlockEntity extends AbstractMateriaStorageMultiTypeDynam
         syncAndSave();
     }
 
+    public BlockPos getMasterPos() {
+        return masterPos;
+    }
+
     public void setMasterDim(String pDimID) {
         masterDimID = pDimID;
         syncAndSave();
+    }
+
+    public String getMasterDim() {
+        return masterDimID;
     }
 
     //Shamelessly stolen and modified from MnA's WorldCharm class

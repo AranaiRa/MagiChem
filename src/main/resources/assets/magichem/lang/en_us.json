@@ -1233,6 +1233,10 @@
   "log.magichem.powerspike.bindtoil": "Power Spike bound to this Circle of Toil.",
 
   "overlay.magichem.actuator.port": "This port accepts:",
+  "overlay.magichem.magic_mirror.not_linked": "Not yet linked to a Mirror Labyrinth",
+  "overlay.magichem.magic_mirror.another_dimension": "Linked to another dimension",
+  "overlay.magichem.magic_mirror.linked.part1": "Linked to a Mirror Labyrinth ",
+  "overlay.magichem.magic_mirror.linked.part2": " away",
 
   "gui.magichem.typetofilter": "Filter...",
   "gui.magichem.generating": "Generating ",

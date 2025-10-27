@@ -6,6 +6,7 @@ import com.aranaira.magichem.block.GrandDistilleryRouterBlock;
 import com.aranaira.magichem.block.GrandFuseryRouterBlock;
 import com.aranaira.magichem.block.entity.ColoringCauldronBlockEntity;
 import com.aranaira.magichem.block.entity.DistilleryBlockEntity;
+import com.aranaira.magichem.block.entity.MagicMirrorBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageMultiTypeStaticBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractMateriaStorageSingleTypeBlockEntity;
 import com.aranaira.magichem.block.entity.routers.*;
@@ -183,6 +184,20 @@ public class ClientEventForgeBusHandler {
                             gui.drawString(font, Component.translatable("hud.magichem.coloring_cauldron.dye_list.waiting"), x + 4, y + 20, 0xffffff, true);
                             return;
                         }
+                    }
+                }
+                else if (blockEntity instanceof MagicMirrorBlockEntity mirror) {
+                    if(mirror.getMasterDim() != null) {
+                        gui.drawString(font, Component.translatable("overlay.magichem.magic_mirror.another_dimension"), x + 4, y + 4, 0xffffff, true);
+                    } else if(mirror.getMaster() == null) {
+                        gui.drawString(font, Component.translatable("overlay.magichem.magic_mirror.not_linked").withStyle(ChatFormatting.RED), x + 4, y + 4, 0xffffff, true);
+                    } else {
+                        final int dist = mirror.getMasterPos().distManhattan(mirror.getBlockPos());
+                        MutableComponent mc = Component.empty()
+                                .append(Component.translatable("overlay.magichem.magic_mirror.linked.part1"))
+                                .append(Component.literal(dist+"m").withStyle(ChatFormatting.GOLD))
+                                .append(Component.translatable("overlay.magichem.magic_mirror.linked.part2"));
+                        gui.drawString(font, mc, x + 4, y + 4, 0xffffff, true);
                     }
                 }
                 else if (Minecraft.getInstance().player.isCrouching() && blockEntity != null) {
