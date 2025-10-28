@@ -1,7 +1,8 @@
 {
   "replace": false,
   "entries": [
-    "magichem:ma_structure_loot",
+    "magichem:ma_structure_loot_nigredo",
+    "magichem:ma_structure_loot_sonic_bomb",
     "magichem:tier_1_cache",
     "magichem:tier_2_cache",
     "magichem:tier_3_cache",

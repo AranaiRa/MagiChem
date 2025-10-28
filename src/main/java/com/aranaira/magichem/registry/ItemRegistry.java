@@ -228,6 +228,10 @@ public class ItemRegistry {
             () -> new HellfeatherCharmItem(new Item.Properties().stacksTo(1))
     );
 
+    public static final RegistryObject<SonicBombItem> SONIC_BOMB = ITEMS.register("sonic_bomb",
+            () -> new SonicBombItem(new Item.Properties().stacksTo(4))
+    );
+
     public static final RegistryObject<ThunderstoneItem> THUNDERSTONE = ITEMS.register("thunderstone",
             () -> new ThunderstoneItem(new Item.Properties().fireResistant())
     );

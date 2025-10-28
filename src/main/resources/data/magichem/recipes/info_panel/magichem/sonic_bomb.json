@@ -1,0 +1,6 @@
+{
+  "type": "magichem:info_panel",
+  "output": "magichem:sonic_bomb",
+  "tier": 1,
+  "info": "jei.magichem.info_panel.loot_only"
+}

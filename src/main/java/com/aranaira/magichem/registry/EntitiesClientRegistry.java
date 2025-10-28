@@ -19,6 +19,7 @@ public class EntitiesClientRegistry {
     public static void registerEntityRenderers(FMLClientSetupEvent event) {
         EntityRenderers.register(EntitiesRegistry.SHLORP_ENTITY.get(), ShlorpEntityRenderer::new);
         EntityRenderers.register(EntitiesRegistry.SUBLIMATION_RITUAL_VFX_ENTITY.get(), SublimationRitualVFXEntityRenderer::new);
+        EntityRenderers.register(EntitiesRegistry.THROWN_SONIC_BOMB_ENTITY.get(), ThrownItemRenderer::new);
         EntityRenderers.register(EntitiesRegistry.THROWN_THUNDERSTONE_ENTITY.get(), ThrownItemRenderer::new);
         EntityRenderers.register(EntitiesRegistry.DESTRUCTIVE_HARMONICS_ENTITY.get(), DestructiveHarmonicsEntityRenderer::new);
         EntityRenderers.register(EntitiesRegistry.GNOSTIC_ORB_EXECUTOR_ENTITY.get(), GnosticOrbExecutorEntityRenderer::new);
