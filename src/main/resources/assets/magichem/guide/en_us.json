@@ -1890,7 +1890,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " that can supply any other machine.\n\nPower Spikes bound to a Circle of Power will supply energy from the appropriate pool, but cables from other mods will only ever draw from the electrical power pool.\n\nA reagent burns for a time based on its tier. After its burn duration concludes, the Circle of Power ejects a waste product into a special slot that can be reprocessed back into the reagent with Constructs. If this slot is full, the waste product is ejected into the world instead.\n\nOne reagent is available at Tier 2, and an additional reagent becomes available at Tier 3, Tier 4, and Tier 5.\n\nBy default, each additional reagent supplied to the Circle of Power increases its power generation tenfold. Power is generated based on the "
+            "text": " that can supply any other machine.\n\nPower Spikes bound to a Circle of Power will supply energy from the appropriate pool, but cables from other mods will only ever draw from the electrical power pool.\n\nOn the far right side of the GUI, items that "
           },
           {
             "text": "hold an FE charge",
@@ -7230,7 +7230,7 @@
         "value": "",
         "json": [
           {
-            "text": "The tall, leftmost slot is for input fluids and is currently unimplemented\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot. The alchemical Distillation symbol in the center acts as a progress bar and fills as the current items are Distilling.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time)."
+            "text": "The tall, leftmost slot is for input fluids.\n\nThe six slots to the left of that are for input items, which can be anything but Materia. Items placed within these slots will process one at a time, from the bottom-most slot to the top-most slot. The alchemical Distillation symbol in the center acts as a progress bar and fills as the current items are Distilling.\n\nThe eighteen slots to the right of the processing slot hold distilled Materia, which can only be extracted from the machine if bottles are present in the slot at the top.\n\nOn the far right is a gauge that you can use to set the FE consumption of the device (and by extension, its operation time)."
           }
         ]
       },
@@ -7263,7 +7263,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted, and the fourth bit is 1 if the device has output items that have yet to be sorted the second bit is 1 if the device has fluid it has yet to process..\n\n"
+            "text": ": the first bit is unused; the second bit is 1 if the device has input items it has yet to process, and the third bit is 1 if the device has output items that have yet to be sorted, and the fourth bit is 1 if the device has fluid it has yet to process.\n\n"
           },
           {
             "text": "Meticulous Signalite",
