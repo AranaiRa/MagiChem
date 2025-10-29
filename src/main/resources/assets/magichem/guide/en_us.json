@@ -1338,7 +1338,7 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nSkywrath Altars must be placed three blocks below the Skywrath Condenser (there must be two air blocks in between the altar. A single Condenser can activate up to nine Altars arranged a 3x3 pattern.\n\nIt must be supplied with "
+            "text": ".\n\nSkywrath Altars must be placed three blocks below the Skywrath Condenser (there must be two air blocks in between the altar and the condenser). A single Condenser can activate up to nine Altars arranged a 3x3 pattern.\n\nIt must be supplied with "
           },
           {
             "text": "Admixture of the Storm",
