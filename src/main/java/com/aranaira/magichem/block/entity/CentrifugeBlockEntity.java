@@ -234,13 +234,12 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        unpackDataFromNBT(nbt.getCompound("inventory"));
+        unpackDataFromNBT(nbt);
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
         batchSize = nbt.getInt("batchSize");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
-        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
 
         if(nbt.contains("recipe"))
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));

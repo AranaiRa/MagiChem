@@ -184,17 +184,8 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        unpackDataFromNBT(nbt.getCompound("inventory"));
+        unpackDataFromNBT(nbt);
         progress = nbt.getInt("craftingProgress");
-        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
-        if(nbt.contains("inputTank")) {
-            CompoundTag inputTankTag = nbt.getCompound("inputTank");
-            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
-            if(fluid != null)
-                inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
-        } else {
-            inputTank = FluidStack.EMPTY;
-        }
     }
 
     @Override
@@ -260,6 +251,14 @@ public class AlembicBlockEntity extends AbstractDistillationBlockEntity implemen
         }
         if(pNBT.contains("grime")) {
             GrimeProvider.getCapability(this).setGrime(pNBT.getInt("grime"));
+        }
+        if(pNBT.contains("inputTank")) {
+            CompoundTag inputTankTag = pNBT.getCompound("inputTank");
+            Fluid fluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputTankTag.getString("fluid")));
+            if(fluid != null)
+                inputTank = new FluidStack(fluid, inputTankTag.getInt("amount"));
+        } else {
+            inputTank = FluidStack.EMPTY;
         }
     }
 

@@ -271,24 +271,18 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         super.load(nbt);
         if(nbt.contains("materiaToVent"))
             ventMateria(nbt.getInt("materiaToVent"));
-        unpackInventoryFromNBT(nbt.getCompound("inventory"));
+        unpackDataFromNBT(nbt);
         progress = nbt.getInt("craftingProgress");
         remainingTorque = nbt.getInt("remainingTorque");
         remainingAnimus = nbt.getInt("remainingAnimus");
         batchSize = nbt.getInt("batchSize");
         clearRecipeAfterNextProcess = nbt.getBoolean("clearRecipeAfterNextProcess");
-        GrimeProvider.getCapability(this).setGrime((int)nbt.getLong("grime"));
-
-        int fluidContents = nbt.getInt("fluidContents");
-        if(fluidContents > 0)
-            containedSlurry = new FluidStack(FluidRegistry.ACADEMIC_SLURRY.get(), fluidContents);
-        else
-            containedSlurry = FluidStack.EMPTY;
 
         if(nbt.contains("recipe"))
             deferredRecipeQuery = new ResourceLocation(nbt.getString("recipe"));
         else
             deferredRecipeQuery = null;
+        doDeferredRecipeCheck = true;
 
         doDeferredRecipeCheck = true;
     }
@@ -364,9 +358,6 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
             else
                 containedSlurry = FluidStack.EMPTY;
         }
-    }
-
-    public void unpackInventoryFromNBT(CompoundTag pInventoryTag) {
     }
 
     ////////////////////
