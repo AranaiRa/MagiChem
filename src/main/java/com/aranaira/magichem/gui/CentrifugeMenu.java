@@ -44,7 +44,7 @@ public class CentrifugeMenu extends AbstractContainerMenu {
 
             //Bottle slots
             this.addSlot(new SlotItemHandler(handler, CentrifugeBlockEntity.SLOT_BOTTLES, 116, -12));
-            this.addSlot(new SlotItemHandler(handler, CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, 62, 2));
+            this.addSlot(new SlotItemHandler(handler, CentrifugeBlockEntity.SLOT_BOTTLES_OUTPUT, 62, 3));
 
             //Input item slots
             for(int i = CentrifugeBlockEntity.SLOT_INPUT_START; i< CentrifugeBlockEntity.SLOT_INPUT_START + CentrifugeBlockEntity.SLOT_INPUT_COUNT; i++)
