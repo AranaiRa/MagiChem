@@ -430,7 +430,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
                 //COMMENT THIS OUT DURING PARTICLE WORK
                 energyCapability.ifPresent(itemCap -> {
                     int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
-                    int energyExtracted = entity.ALCH_ENERGY_STORAGE.extractEnergy(energyNeeded, false);
+                    int energyExtracted = entity.AUX_ENERGY_STORAGE.extractEnergy(energyNeeded, false);
                     itemCap.receiveEnergy(energyExtracted, false);
                 });
             }
@@ -443,7 +443,7 @@ public class CirclePowerBlockEntity extends BlockEntity implements MenuProvider,
 
             energyCapability.ifPresent(itemCap -> {
                 int energyNeeded = itemCap.getMaxEnergyStored() - itemCap.getEnergyStored();
-                int energyExtracted = entity.ALCH_ENERGY_STORAGE.extractEnergy(energyNeeded, false);
+                int energyExtracted = entity.AUX_ENERGY_STORAGE.extractEnergy(energyNeeded, false);
                 itemCap.receiveEnergy(energyExtracted, false);
             });
 
