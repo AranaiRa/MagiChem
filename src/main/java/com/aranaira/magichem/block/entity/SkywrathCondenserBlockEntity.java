@@ -241,6 +241,10 @@ public class SkywrathCondenserBlockEntity extends BlockEntity implements MenuPro
         return droplets;
     }
 
+    public float getDropletsPercent() {
+        return (float)droplets / (float)(ServerConfig.skywrathCondenserMateriaUnitsPerDram * 5);
+    }
+
     ////////////////////
     // PROVISIONING AND SHLORPS
     ////////////////////

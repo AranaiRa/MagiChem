@@ -5,6 +5,7 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.networking.DisintegrationPyreSyncDataC2SPacket;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -62,17 +63,34 @@ public class DisintegrationPyreScreen extends AbstractContainerScreen<Disintegra
         int y = (height - PANEL_MAIN_H) / 2;
         boolean doOriginalTooltip = true;
 
-//        if (pX >= x + 79 && pX <= x + 106 &&
-//                pY >= y + 48 && pY <= y + 68) {
-//
-//            tooltipContents.addAll(materiaStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
-//            tooltipContents.add(Component.empty());
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.literal("" + Math.min(ServerConfig.conjurerMateriaCapacity, menu.blockEntity.getMateriaAmount())).withStyle(ChatFormatting.DARK_AQUA))
-//                    .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
-//                    .append(Component.literal("" + ServerConfig.conjurerMateriaCapacity).withStyle(ChatFormatting.DARK_AQUA))
-//            );
-//        }
+        //Admixture
+        if(pX >= x+164 && pX <= x+167 &&
+                pY >= y+1 && pY <= y+45) {
+
+            int current = menu.blockEntity.getDroplets();
+            int max = ServerConfig.disintegrationPyreMateriaUnitsPerDram * 3;
+            float percent = menu.blockEntity.getDropletsPercent();
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.disintegration_pyre.admixture").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.disintegration_pyre.admixture.line1")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add((Component.empty())
+                    .append(Component.translatable("tooltip.magichem.gui.disintegration_pyre.admixture.line2a"))
+                    .append(Component.literal(ServerConfig.disintegrationPyreMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.disintegration_pyre.admixture.line2b")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.disintegration_pyre.admixture.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(Math.min(max, current) + " / " + max).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, percent) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+            pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+        }
 
 
         if(doOriginalTooltip)

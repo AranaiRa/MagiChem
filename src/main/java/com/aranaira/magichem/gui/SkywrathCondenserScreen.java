@@ -5,6 +5,7 @@ import com.aranaira.magichem.block.entity.SkywrathAltarBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -96,17 +97,34 @@ public class SkywrathCondenserScreen extends AbstractContainerScreen<SkywrathCon
         int y = (height - PANEL_MAIN_H) / 2;
         boolean doOriginalTooltip = true;
 
-//        if (pX >= x + 79 && pX <= x + 106 &&
-//                pY >= y + 48 && pY <= y + 68) {
-//
-//            tooltipContents.addAll(materiaStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
-//            tooltipContents.add(Component.empty());
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.literal("" + Math.min(ServerConfig.conjurerMateriaCapacity, menu.blockEntity.getMateriaAmount())).withStyle(ChatFormatting.DARK_AQUA))
-//                    .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
-//                    .append(Component.literal("" + ServerConfig.conjurerMateriaCapacity).withStyle(ChatFormatting.DARK_AQUA))
-//            );
-//        }
+        //Essentia
+        if(pX >= x+106 && pX <= x+109 &&
+                pY >= y+7 && pY <= y+51) {
+
+            int current = menu.blockEntity.getDroplets();
+            int max = ServerConfig.skywrathCondenserMateriaUnitsPerDram * 5;
+            float percent = menu.blockEntity.getDropletsPercent();
+
+            tooltipContents.clear();
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.skywrath_condenser.admixture").withStyle(ChatFormatting.GOLD))
+                    .append(": ")
+                    .append(Component.translatable("tooltip.magichem.gui.skywrath_condenser.admixture.line1")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add((Component.empty())
+                    .append(Component.translatable("tooltip.magichem.gui.skywrath_condenser.admixture.line2a"))
+                    .append(Component.literal(ServerConfig.skywrathCondenserMateriaUnitsPerDram+"").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.gui.skywrath_condenser.admixture.line2b")));
+            tooltipContents.add((Component.empty()));
+            tooltipContents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.gui.skywrath_condenser.admixture.line3").withStyle(ChatFormatting.DARK_GRAY))
+                    .append(Component.literal(Math.min(max, current) + " / " + max).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("  ")
+                            .append(Component.literal("( ").withStyle(ChatFormatting.DARK_GRAY))
+                            .append(Component.literal(String.format("%.1f", Math.min(1, percent) * 100)+"%")).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal(" )").withStyle(ChatFormatting.DARK_GRAY)));
+            pGuiGraphics.renderTooltip(font, tooltipContents, Optional.empty(), pX, pY);
+        }
 
 
         if(doOriginalTooltip)
