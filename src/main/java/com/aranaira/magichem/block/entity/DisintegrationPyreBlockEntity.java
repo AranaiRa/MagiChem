@@ -57,7 +57,7 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             if(slot == SLOT_ITEM) return stack.getItem().isDamageable(stack);
-            if(slot == SLOT_MATERIA) return stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("destruction");
+            if(slot == SLOT_MATERIA) return (stack.getItem() instanceof MateriaItem mi && mi.getMateriaName().equals("destruction")) || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
 
             return false;
         }
@@ -190,27 +190,32 @@ public class DisintegrationPyreBlockEntity extends BlockEntity implements MenuPr
                 if(!entity.itemHandler.getStackInSlot(SLOT_MATERIA).isEmpty()) {
                     int fill = ServerConfig.disintegrationPyreMateriaUnitsPerDram;
                     int limit = fill * 3;
-
-                    //Fill gauge with droplets
-                    int capacity = limit - entity.droplets;
-                    if (capacity >= fill) {
-                        ItemStack materiaStack = entity.itemHandler.getStackInSlot(SLOT_MATERIA);
-                        ItemStack bottleStack = entity.itemHandler.getStackInSlot(SLOT_BOTTLES);
-
-                        if(InventoryHelper.isMateriaUnbottled(materiaStack)) {
-                            materiaStack.shrink(1);
-                            entity.droplets = Math.min(limit, entity.droplets + fill);
-                            changed = true;
+                    if(entity.itemHandler.getStackInSlot(SLOT_MATERIA).getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                        if(entity.droplets < limit) {
+                            entity.droplets = limit;
+                            entity.syncAndSave();
                         }
-                        else if(bottleStack.isEmpty() || bottleStack.getCount() < bottleStack.getMaxStackSize()) {
-                            materiaStack.shrink(1);
-                            if(bottleStack.isEmpty()) {
-                                entity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE));
-                            } else {
-                                bottleStack.grow(1);
+                    } else {
+                        //Fill gauge with droplets
+                        int capacity = limit - entity.droplets;
+                        if (capacity >= fill) {
+                            ItemStack materiaStack = entity.itemHandler.getStackInSlot(SLOT_MATERIA);
+                            ItemStack bottleStack = entity.itemHandler.getStackInSlot(SLOT_BOTTLES);
+
+                            if (InventoryHelper.isMateriaUnbottled(materiaStack)) {
+                                materiaStack.shrink(1);
+                                entity.droplets = Math.min(limit, entity.droplets + fill);
+                                changed = true;
+                            } else if (bottleStack.isEmpty() || bottleStack.getCount() < bottleStack.getMaxStackSize()) {
+                                materiaStack.shrink(1);
+                                if (bottleStack.isEmpty()) {
+                                    entity.itemHandler.setStackInSlot(SLOT_BOTTLES, new ItemStack(Items.GLASS_BOTTLE));
+                                } else {
+                                    bottleStack.grow(1);
+                                }
+                                entity.droplets = Math.min(limit, entity.droplets + fill);
+                                changed = true;
                             }
-                            entity.droplets = Math.min(limit, entity.droplets + fill);
-                            changed = true;
                         }
                     }
                 }
