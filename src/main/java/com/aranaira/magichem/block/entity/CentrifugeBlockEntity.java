@@ -440,7 +440,15 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
         for(BlockEntity be : query) {
             if (be instanceof CentrifugeRouterBlockEntity crbe) {
                 BlockEntity pe = crbe.getPlugEntity();
-                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) {
+                    final ICanTakePlugins targetMachine = dpbe.getTargetMachine();
+                    if(targetMachine instanceof CentrifugeRouterBlockEntity router) {
+                        CentrifugeBlockEntity master = router.getMaster();
+                        if(master == this) pluginDevices.add(dpbe);
+                    } else if (targetMachine == this) {
+                        pluginDevices.add(dpbe);
+                    }
+                }
             }
         }
     }

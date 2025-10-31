@@ -407,8 +407,9 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         pluginDevices.clear();
 
         //Start by grabbing the actuator plugged into the main block
-        if(getPlugEntity() instanceof AbstractDirectionalPluginBlockEntity dpbe)
-            pluginDevices.add(dpbe);
+        if(getPlugEntity() instanceof AbstractDirectionalPluginBlockEntity dpbe) {
+            if(dpbe.getTargetMachine() == this) pluginDevices.add(dpbe);
+        }
 
         List<BlockEntity> query = new ArrayList<>();
         for(Triplet<BlockPos, DistilleryRouterType, DevicePlugDirection> posAndType : DistilleryBlock.getRouterOffsets(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))) {
@@ -418,9 +419,17 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
         }
 
         for(BlockEntity be : query) {
-            if (be instanceof DistilleryRouterBlockEntity crbe) {
-                BlockEntity pe = crbe.getPlugEntity();
-                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+            if (be instanceof DistilleryRouterBlockEntity drbe) {
+                BlockEntity pe = drbe.getPlugEntity();
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) {
+                    final ICanTakePlugins targetMachine = dpbe.getTargetMachine();
+                    if(targetMachine instanceof DistilleryRouterBlockEntity router) {
+                        DistilleryBlockEntity master = router.getMaster();
+                        if(master == this) pluginDevices.add(dpbe);
+                    } else if (targetMachine == this) {
+                        pluginDevices.add(dpbe);
+                    }
+                }
             }
         }
     }

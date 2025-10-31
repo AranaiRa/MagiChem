@@ -796,11 +796,16 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         }
 
         for(BlockEntity be : query) {
-            if (be instanceof GrandFuseryRouterBlockEntity router) {
-                BlockEntity pe = router.getPlugEntity();
-                if(pe instanceof AbstractDirectionalPluginBlockEntity actuator) {
-                    actuator.setDevicePaused(false);
-                    pluginDevices.add(actuator);
+            if (be instanceof GrandFuseryRouterBlockEntity gfrbe) {
+                BlockEntity pe = gfrbe.getPlugEntity();
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) {
+                    final ICanTakePlugins targetMachine = dpbe.getTargetMachine();
+                    if(targetMachine instanceof GrandFuseryRouterBlockEntity router) {
+                        GrandFuseryBlockEntity master = router.getMaster();
+                        if(master == this) pluginDevices.add(dpbe);
+                    } else if (targetMachine == this) {
+                        pluginDevices.add(dpbe);
+                    }
                 }
             }
         }

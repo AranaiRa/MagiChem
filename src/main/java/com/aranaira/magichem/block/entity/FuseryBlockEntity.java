@@ -505,7 +505,15 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         for(BlockEntity be : query) {
             if (be instanceof FuseryRouterBlockEntity frbe) {
                 BlockEntity pe = frbe.getPlugEntity();
-                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) pluginDevices.add(dpbe);
+                if(pe instanceof AbstractDirectionalPluginBlockEntity dpbe) {
+                    final ICanTakePlugins targetMachine = dpbe.getTargetMachine();
+                    if(targetMachine instanceof FuseryRouterBlockEntity router) {
+                        FuseryBlockEntity master = router.getMaster();
+                        if(master == this) pluginDevices.add(dpbe);
+                    } else if (targetMachine == this) {
+                        pluginDevices.add(dpbe);
+                    }
+                }
             }
         }
     }
