@@ -470,7 +470,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
 
         if(pEntity.remainingHeat <= 0) {
             ItemStack fuelStack = pEntity.itemHandler.getStackInSlot(SLOT_FUEL);
-            if(fuelStack != ItemStack.EMPTY) {
+            if(fuelStack != ItemStack.EMPTY && fuelStack.getItem() != Items.BUCKET) {
                 int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
 
                 if(fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
