@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "botania"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "botania:main/mana_pool_pickup",
+        "object": {
+          "item": "botania:black_lotus"
+        },
+        "components": [
+          { "item": "magichem:admixture_mana", "count": 100 },
+          { "item": "magichem:admixture_color", "count": 3 },
+          { "item": "magichem:admixture_odors", "count": 2 },
+          { "item": "magichem:essentia_verdant", "count": 2 }
+        ]
+      }
+    }
+  ]
+}
