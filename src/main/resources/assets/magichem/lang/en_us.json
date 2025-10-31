@@ -1033,6 +1033,7 @@
   "tooltip.magichem.gui.slurry.tank.line2b": ".",
   "tooltip.magichem.gui.slurry.tank.line3": "Current Contents: ",
   "tooltip.magichem.gui.sublimation_config_locked": "Nexus settings may not be changed while a Sublimation craft is in progress.",
+  "tooltip.magichem.gui.sublimation_recipe_locked": "Nexus recipe may not be changed while a Sublimation craft is in progress.",
   "tooltip.magichem.gui.siphon_mode": "Siphoning Mode",
   "tooltip.magichem.gui.siphon_mode.line1": "How the Alchemical Nexus interacts with Materia containers.",
   "tooltip.magichem.gui.siphon_mode.line2": "In Drain mode, the Alchemical Nexus will empty Materia containers if necessary.",

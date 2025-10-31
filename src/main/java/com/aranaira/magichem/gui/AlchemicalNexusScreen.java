@@ -216,7 +216,13 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             b_powerLevelUp.visible = true;
         }
 
-        int a = menu.blockEntity.getCraftingStage();
+        //Protect/Drain Indicator
+        if(menu.blockEntity.preventDrawingLastMateria) {
+            pGuiGraphics.setColor(dim, dim, dim, 1.0f);
+            pGuiGraphics.blit(TEXTURE, x + 196, y + 81, 221, 245, 11, 11);
+            pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+
         dim = ((menu.blockEntity.getAnimStage() == ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_CRAFTING_IDLE) && menu.blockEntity.getCraftingStage() == 0) ? 1.0f : 0.5f;
         pGuiGraphics.setColor(dim, dim, dim, 1.0f);
         pGuiGraphics.blit(TEXTURE, x + PANEL_RECIPE_X, y + PANEL_RECIPE_Y, PANEL_RECIPE_U, 0, PANEL_RECIPE_W, PANEL_RECIPE_H);
@@ -304,13 +310,6 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             float percent = (float)recipeFilterRow / (float)(recipeFilterRowTotal - 5);
             int nubbinShift = (int)Math.floor(percent * 80);
             pGuiGraphics.blit(TEXTURE, x - 19, y + 23 + nubbinShift, 38, 230, 8, 8);
-        }
-
-        //Protect/Drain Indicator
-        if(menu.blockEntity.preventDrawingLastMateria) {
-            pGuiGraphics.setColor(dim, dim, dim, 1.0f);
-            pGuiGraphics.blit(TEXTURE, x + 196, y + 81, 221, 245, 11, 11);
-            pGuiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
 
         //Philosopher's Stone hole
@@ -496,15 +495,20 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         //Items in recipe picker
         if(pX >= x+TOOLTIP_RECIPE_ZONE_X && pX <= x+TOOLTIP_RECIPE_ZONE_X+TOOLTIP_RECIPE_ZONE_W &&
                 pY >= y+TOOLTIP_RECIPE_ZONE_Y && pY <= y+TOOLTIP_RECIPE_ZONE_Y+TOOLTIP_RECIPE_ZONE_H) {
-            int mx = pX - (x+TOOLTIP_RECIPE_ZONE_X);
-            int my = pY - (y+TOOLTIP_RECIPE_ZONE_Y);
-            int id = ((my / 18) * 3) + ((mx / 18) % 3);
+            if(menu.blockEntity.getAnimStage() == ANIM_STAGE_IDLE) {
+                int mx = pX - (x + TOOLTIP_RECIPE_ZONE_X);
+                int my = pY - (y + TOOLTIP_RECIPE_ZONE_Y);
+                int id = ((my / 18) * 3) + ((mx / 18) % 3);
 
-            if (id >= 0 && id < 16) {
-                if(id + recipeFilterRow * 3 < filteredRecipes.size()) {
-                    ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3);
-                    tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                if (id >= 0 && id < 16) {
+                    if (id + recipeFilterRow * 3 < filteredRecipes.size()) {
+                        ItemStack stackUnderMouse = filteredRecipes.get(id + recipeFilterRow * 3);
+                        tooltipContents.addAll(stackUnderMouse.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+                    }
                 }
+            } else {
+                tooltipContents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.gui.sublimation_recipe_locked")));
             }
         }
 
@@ -541,7 +545,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             }
         }
 
-        if(menu.blockEntity.getAnimStage() == ANIM_STAGE_IDLE) {
+        if(menu.blockEntity.getAnimStage() == ANIM_STAGE_IDLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_CRAFTING_IDLE) {
             //Experience Cost
             if (pX >= x + TOOLTIP_EXPERIENCE_X && pX <= x + TOOLTIP_EXPERIENCE_X + TOOLTIP_EXPERIENCE_W &&
                     pY >= y + TOOLTIP_EXPERIENCE_Y && pY <= y + TOOLTIP_EXPERIENCE_Y + TOOLTIP_EXPERIENCE_H) {
@@ -738,8 +742,16 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
 
             for(int y=0; y<5; y++) {
                 for (int x = 0; x < 3; x++) {
-
-                    gui.renderItem(snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
+                    if(snipped.get(c).getItem() instanceof BlockItem) {
+                        gui.renderItem(snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
+                        if(menu.blockEntity.getAnimStage() != ANIM_STAGE_IDLE) gui.fill(RenderType.guiGhostRecipeOverlay(), xOrigin - 76 + x*18, yOrigin + 23 + y*18, xOrigin - 60 + x*18, yOrigin + 39 + y*18, 0x80636363);
+                    } else {
+                        float alpha = menu.blockEntity.getAnimStage() != ANIM_STAGE_IDLE ? 0.35f : 1.0f;
+                        gui.setColor(1, 1, 1, alpha);
+                        gui.renderItem(snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
+                        gui.renderItemDecorations(Minecraft.getInstance().font, snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
+                        gui.setColor(1, 1, 1, 1);
+                    }
                     c++;
                     if(c >= cLimit) break;
                 }
