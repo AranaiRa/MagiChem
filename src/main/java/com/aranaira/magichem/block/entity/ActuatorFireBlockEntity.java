@@ -29,6 +29,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -96,22 +97,7 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
     public ActuatorFireBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.ACTUATOR_FIRE_BE.get(), pPos, pBlockState);
 
-        this.data = new ContainerData() {
-            @Override
-            public int get(int pIndex) {
-                return 0;
-            }
-
-            @Override
-            public void set(int pIndex, int pValue) {
-
-            }
-
-            @Override
-            public int getCount() {
-                return 0;
-            }
-        };
+        this.data = new SimpleContainerData(0);
 
         this.containedSmoke = FluidStack.EMPTY;
         this.fluidHandler = LazyOptional.of(() -> this);
@@ -127,7 +113,8 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot == SLOT_FUEL) {
                     if (stack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get() ||
-                            stack.getItem() == ItemInit.FLUID_JUG.get())
+                            stack.getItem() == ItemInit.FLUID_JUG.get() ||
+                            stack.getItem() == ItemRegistry.DEBUG_ORB.get())
                         return true;
                     return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
                 } else if(slot == SLOT_ESSENTIA_INSERTION) {
@@ -410,12 +397,14 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
                 ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
                 if (!fuelStack.isEmpty()) {
                     int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
-                    if (fuelStack.getItem() == ItemRegistry.CATALYTIC_CARBON.get())
+                    if (fuelStack.getItem() == ItemRegistry.CATALYTIC_CARBON.get() || fuelStack.getItem() == ItemRegistry.DEBUG_ORB.get())
                         entity.flags = (entity.flags | FLAG_FUEL_SUPER) & ~FLAG_FUEL_NORMAL;
                     else
                         entity.flags = (entity.flags | FLAG_FUEL_NORMAL) & ~FLAG_FUEL_SUPER;
 
-                    if (fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
+                    if (fuelStack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                        burnTime = 38400;
+                    } else if (fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
                         LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
                         AtomicReference<Integer> mi = new AtomicReference<>(0);
                         cap.ifPresent(handler -> {
