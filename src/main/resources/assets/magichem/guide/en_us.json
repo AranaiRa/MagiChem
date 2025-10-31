@@ -41,7 +41,14 @@
             "color": "dark_purple"
           },
           {
-            "text": ". In theory, completing each of these stages will reveal the path to the Philosopher's Stone itself.\n\nWisdom Stones can be inserted into the "
+            "text": ". In theory, completing each of these stages will reveal the path to the Philosopher's Stone itself.\n\nWhile worn in the "
+          },
+          {
+            "text": "Wisdom Stone curio slot",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", a Stone will expand the recipe options available in the "
           },
           {
             "text": "Alchemical Nexus",
@@ -55,7 +62,14 @@
             "color": "dark_purple"
           },
           {
-            "text": " to expand the available recipe options. The regular Circle of Fabrication is not advanced enough to use Wisdom Stones.\n\nEvery recipe in the Magnum Opus after the Inert Wisdom Stone requires the previous Wisdom Stone; you can "
+            "text": ". The regular Circle of Fabrication is not advanced enough to use Wisdom Stones. Grand Circles of Fabrication will also benefit from a "
+          },
+          {
+            "text": "FE consumption discount",
+            "color": "dark_purple"
+          },
+          {
+            "text": " that improves with the development of the Wisdom Stone.\n\nEvery recipe in the Magnum Opus after the Inert Wisdom Stone requires the previous Wisdom Stone; you can "
           },
           {
             "text": "remove the required Stone from your curio slot",
@@ -107,11 +121,6 @@
             "text": "). An icon near your magic level on your mana bar will display whether your Wisdom Wheel is currently active or not as long as the Stone is in your curio slot."
           }
         ]
-      },
-      {
-        "type": "title",
-        "value": " ",
-        "newPage": true
       },
       {
         "type": "title",
