@@ -2,6 +2,7 @@ package com.aranaira.magichem.item;
 
 import com.aranaira.magichem.block.entity.CirclePowerBlockEntity;
 import com.aranaira.magichem.gui.ChargingTalismanMenu;
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -26,12 +27,16 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.network.NetworkHooks;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurio;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class ChargingTalismanItem extends Item {
+public class ChargingTalismanItem extends Item implements ICurioItem {
     public ChargingTalismanItem(Properties pProperties) {
         super(pProperties);
     }
@@ -70,5 +75,42 @@ public class ChargingTalismanItem extends Item {
         );
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        ICurioItem.super.curioTick(slotContext, stack);
+
+        if(!slotContext.entity().level().isClientSide() && stack.hasTag() && stack.getTag().contains("magichem.powerspike.targetpos")) {
+            BlockPos posQuery = BlockPos.of(stack.getTag().getLong("magichem.powerspike.targetpos"));
+            BlockEntity entityQuery = slotContext.entity().level().getBlockEntity(posQuery);
+
+            if(entityQuery instanceof CirclePowerBlockEntity circle) {
+
+                if (slotContext.entity() instanceof Player player) {
+                    int remainingPower = tryChargeSlot(circle, player.getItemInHand(InteractionHand.MAIN_HAND));
+                    if (remainingPower > 0) tryChargeSlot(circle, player.getItemInHand(InteractionHand.OFF_HAND));
+                    for (ItemStack armorSlot : player.getArmorSlots()) {
+                        if (remainingPower > 0) tryChargeSlot(circle, armorSlot);
+                        if (remainingPower <= 0) break;
+                    }
+                }
+            }
+        }
+    }
+
+    private int tryChargeSlot(CirclePowerBlockEntity circle, ItemStack itemQuery) {
+        MutableInt out = new MutableInt(-1);
+        if (!itemQuery.isEmpty()) {
+            itemQuery.getCapability(ForgeCapabilities.ENERGY).ifPresent(itemCap -> {
+                circle.getCapability(ForgeCapabilities.ENERGY).ifPresent(circleCap -> {
+                    int extractQuery = circleCap.extractEnergy(Integer.MAX_VALUE, true);
+                    int actualInsertion = itemCap.receiveEnergy(extractQuery, false);
+                    circleCap.extractEnergy(actualInsertion, false);
+                    out.setValue(circleCap.getEnergyStored());
+                });
+            });
+        }
+        return out.intValue();
     }
 }

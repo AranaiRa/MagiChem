@@ -6937,7 +6937,28 @@
             "color": "dark_purple"
           },
           {
-            "text": ".\n\nA Power Spike can be inserted into the upper right slot, which determines what Circle of Power to draw FE from. The item to be recharged can be inserted into the lower left slot.\n\nWhile there are no extra benefits for doing so, a Charging Talisman can be worn in a neck or charm curio slot.\n\n"
+            "text": ".\n\nA Power Spike can be inserted into the upper right slot, which determines what Circle of Power to draw FE from. The item to be recharged can be inserted into the lower left slot.\n\nA Charging Talisman can be worn in a neck or charm curio slot. While worn, the talisman will recharge the item in your "
+          },
+          {
+            "text": "main hand",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", "
+          },
+          {
+            "text": "off hand",
+            "color": "dark_purple"
+          },
+          {
+            "text": ", and then "
+          },
+          {
+            "text": "equipped armor",
+            "color": "dark_purple"
+          },
+          {
+            "text": " (in that order) if it is possible to do so.\n\n"
           },
           {
             "text": "Note: Neither Mana and Artifice or MagiChem include any items that hold FE charge. This item is intended to be used alongside other mods.",
@@ -11698,6 +11719,76 @@
         "type": "anointing",
         "location": "magichem:anointing/magichem/ensorcelled_soil_to_ensorcelled_soil_depths"
       }
+    ]
+  },
+  "Uncraftable Magical Loot": {
+    "index": "-10",
+    "category": "magichem_wonders",
+    "tier": 1,
+    "required_advancement": "magichem:__wisdom_1",
+    "sections": [
+      {
+        "type": "title",
+        "value": "Uncraftable Magical Loot"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "MagiChem adds a few items that can only be obtained from chests. These items cannot be crafted.\n\nUnless otherwise specified, items in this entry can be found in "
+          },
+          {
+            "text": "Mana and Artifice structures",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      },
+      {
+        "type": "title",
+        "value": "Sonic Bomb",
+        "newPage": true
+      },
+      {
+        "type": "item",
+        "location": "magichem:sonic_bomb",
+        "scale": 2
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "When thrown, a "
+          },
+          {
+            "text": "Sonic Bomb",
+            "color": "dark_purple"
+          },
+          {
+            "text": " releases a burst of resonant sound magic. These destructive harmonics are harmless to living things, but will "
+          },
+          {
+            "text": "quickly shatter",
+            "color": "dark_purple"
+          },
+          {
+            "text": " crystalline blocks within a small radius.\n\nAny block shattered in this manner drops itself, including normally unobtainable crystalline blocks like "
+          },
+          {
+            "text": "Budding Amethyst",
+            "color": "dark_purple"
+          },
+          {
+            "text": "."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
     ]
   },
   "Alchemical Ore Processing": {

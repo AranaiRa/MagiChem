@@ -6,6 +6,7 @@ import com.aranaira.magichem.data.DamageTypeProvider;
 import com.aranaira.magichem.gui.*;
 import com.aranaira.magichem.interop.OccultismCompat;
 import com.aranaira.magichem.interop.mna.MnAPlugin;
+import com.aranaira.magichem.item.ChargingTalismanItem;
 import com.aranaira.magichem.item.renderer.*;
 import com.aranaira.magichem.item.renderer.mna.CodexMateriaItemRenderer;
 import com.aranaira.magichem.item.renderer.mna.SublimationPrimerItemRenderer;
@@ -42,6 +43,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.List;
 
@@ -109,6 +111,7 @@ public class MagiChemMod
         event.enqueueWork(() -> {
             CantripRegistry.register();
             ConstructFluidSprayRegistry.register();
+            CuriosApi.registerCurio(ItemRegistry.CHARGING_TALISMAN.get(), ItemRegistry.CHARGING_TALISMAN.get());
         });
 
         PacketRegistry.register();
