@@ -704,6 +704,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
     }
 
     public static int getScaledHeat(int pHeat, int pHeatDuration, Function<IDs, Integer> pVarFunc) {
+        if(pHeat == 0) return 0;
         return 1 + (pVarFunc.apply(IDs.GUI_HEAT_GAUGE_HEIGHT) * pHeat / pHeatDuration);
     }
 
