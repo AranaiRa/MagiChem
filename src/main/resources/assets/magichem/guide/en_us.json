@@ -3664,14 +3664,21 @@
         "value": "",
         "json": [
           {
-            "text": "A "
+            "text": "An "
+          },
+          {
+            "text": "Elemental Actuator",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is a device that consumes elemental Essentia and/or Eldrin power (and other reagents) in order to enhance an alchemical device. An elemental actuator supplied with both Essentia and appropriate Eldrin power becomes much more effcient, consuming both resources at a much slower rate.\n\nThe Alembic is too simple and crude to make use of Elemental Actuators, but all other devices have at least two ports that an Elemental Actuator can be plugged into. Looking at a port while sneaking will provide you with a list of what Elemental Actuators are compatible with the device.\n\nSlotting multiple copies of an Elemental Actuator into the same device has no effect; only one of the Actuators will have any effect on the target device.\n\nElemental Actuators that use Earth, Water, Air, and Fire Eldrin power can be crafted at Tier 3, while those that use Arcane and Ender Eldrin power can be crafted at Tier 4.\n\nThe benefits provided by an Elemental Actuator do not stack with a "
           },
           {
             "text": "Proto Actuator",
             "color": "dark_purple"
           },
           {
-            "text": " "
+            "text": "; the Elemental Actuator's bonus will override the Proto Actuator."
           }
         ]
       }
@@ -5384,7 +5391,7 @@
             "color": "dark_red"
           },
           {
-            "text": ": the first bit is 1 if the fuel slot has an item, or 0 if empty; the second bit is 1 if the device has input items it has yet to process, and the fourth bit is 1 if the device has output items that have yet to be sorted the second bit is 1 if the device has fluid it has yet to process.\n"
+            "text": ": the first bit is 1 if the fuel slot has an item, or 0 if empty; the second bit is 1 if the device has input items it has yet to process; the third bit is 1 if the device has output items; the fourth bit is 1 if the device has fluid it has yet to process.\n"
           },
           {
             "text": "Meticulous Signalite",

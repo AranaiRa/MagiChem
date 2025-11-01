@@ -1583,6 +1583,7 @@
   "magichem:circle_power_reagent_3.description" : "[MagiChem] Create an Amplifying Prism to upgrade your Circle of Power tenfold again",
 
   "magichem:acid_basin.description" : "[MagiChem] Create an Acid Basin to begin working with alchemical acids",
+  "magichem:actuator_neutral.description" : "[MagiChem] Create a Proto Actuator to enhance your Distillery or Centrifuge",
   "magichem:alembic.description" : "[MagiChem] Create an Alembic to begin distilling items into materia",
   "magichem:astral_observer.description" : "[MagiChem] Sublimate an Astral Observer to start instilling items with magic from the skies",
   "magichem:centrifuge.description" : "[MagiChem] Create a Centrifuge to begin splitting materia into its components",
@@ -1604,7 +1605,6 @@
   "magichem:materia_jar.description" : "[MagiChem] Create at least one Materia Jar to free up some bottles",
   "magichem:materia_vessel.description" : "[MagiChem] Upgrade at least one Materia Jar to a Materia Vessel to greatly improve your materia storage capacity",
   "magichem:materia_manifest.description" : "[MagiChem] Create a Materia Manifest to help organize your laboratory",
-  "magichem:proto_actuator.description" : "[MagiChem] Create a Proto Actuator to enhance your Distillery or Centrifuge",
   "magichem:radiant_rose.description" : "[MagiChem] Remove the curse on a wither rose with the Ritual of the Reborn Rose",
   "magichem:selenolabe.description" : "[MagiChem] Create a Selenolabe to help automate the Astral Observer",
   "magichem:shimmering_wine.description" : "[MagiChem] Create a bottle of Shimmering Wine in an Acid Basin",
