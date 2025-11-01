@@ -1,6 +1,7 @@
 package com.aranaira.magichem;
 
 import com.aranaira.magichem.block.entity.renderer.*;
+import com.aranaira.magichem.commands.MagiChemCommand;
 import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.data.DamageTypeProvider;
 import com.aranaira.magichem.gui.*;
@@ -45,6 +46,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.lang.management.ManagementFactory;
 import java.util.List;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -53,9 +55,12 @@ public class MagiChemMod
 {
     public static final String MODID = "magichem";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static MagiChemMod INSTANCE = null;
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+
+    public final boolean isDebug = ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
 
     private static final String PROTOCOL_VERSION = "1.0";
     public static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
@@ -68,6 +73,8 @@ public class MagiChemMod
 
     public MagiChemMod()
     {
+        INSTANCE = this;
+
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ItemRegistry.register(eventBus);
@@ -80,6 +87,7 @@ public class MagiChemMod
         EntitiesRegistry.register(eventBus);
         LootModifierRegistry.register(eventBus);
         MobEffectsRegistry.register(eventBus);
+        MinecraftForge.EVENT_BUS.register(CommandRegistry.class);
 
         if(FMLEnvironment.dist.isClient()) {
             eventBus.register(BlockEntitiesClientRegistry.class);
