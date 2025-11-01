@@ -16,7 +16,7 @@
         "batch_size": 1,
         "required_advancement": "botania:main/mana_pool_pickup",
         "object": {
-          "item": "botania:black_lotus"
+          "item": "botania:blacker_lotus"
         },
         "components": [
           { "item": "magichem:admixture_mana", "count": 100 },

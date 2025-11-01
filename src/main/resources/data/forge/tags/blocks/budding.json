@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "magichem:signalite_block_budding",
     "magichem:vinteum_crystal_block_budding"
   ]
 }
