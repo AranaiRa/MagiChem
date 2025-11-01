@@ -57,7 +57,7 @@ import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
-public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteractibleBlock<ActuatorFireBlock>, IHasNonStandardTooltipLore {
+public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteractibleBlock<ActuatorFireBlock> {
     public ActuatorFireBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -294,13 +294,5 @@ public class ActuatorFireBlock extends BaseEntityBlock implements ISpellInteract
             }
         }
         return false;
-    }
-
-    @Override
-    public void addTooltipComponents(List<Component> pTooltipComponents) {
-        pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.actuator.fire")
-                        .withStyle(ChatFormatting.DARK_GRAY)
-        );
     }
 }

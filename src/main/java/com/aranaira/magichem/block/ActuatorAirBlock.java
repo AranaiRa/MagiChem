@@ -50,7 +50,7 @@ import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
-public class ActuatorAirBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
+public class ActuatorAirBlock extends BaseEntityBlock {
     public ActuatorAirBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -281,13 +281,5 @@ public class ActuatorAirBlock extends BaseEntityBlock implements IHasNonStandard
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_FANS, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_SIPHON, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_TANK_MOUNT, 3));
-    }
-
-    @Override
-    public void addTooltipComponents(List<Component> pTooltipComponents) {
-        pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.actuator.air")
-                        .withStyle(ChatFormatting.DARK_GRAY)
-        );
     }
 }

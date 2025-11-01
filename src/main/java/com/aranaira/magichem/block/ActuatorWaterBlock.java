@@ -52,7 +52,7 @@ import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
-public class ActuatorWaterBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
+public class ActuatorWaterBlock extends BaseEntityBlock {
     public ActuatorWaterBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -278,13 +278,5 @@ public class ActuatorWaterBlock extends BaseEntityBlock implements IHasNonStanda
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_TUBEBASE, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_TUBEBODY, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_NORTH_PIPES, 3));
-    }
-
-    @Override
-    public void addTooltipComponents(List<Component> pTooltipComponents) {
-        pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.actuator.water")
-                        .withStyle(ChatFormatting.DARK_GRAY)
-        );
     }
 }

@@ -41,7 +41,7 @@ import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
-public class ActuatorEarthBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
+public class ActuatorEarthBlock extends BaseEntityBlock {
     public ActuatorEarthBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -240,13 +240,5 @@ public class ActuatorEarthBlock extends BaseEntityBlock implements IHasNonStanda
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_POST_SW_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_POST_SE_NORTH, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_BASIN_NORTH, 3));
-    }
-
-    @Override
-    public void addTooltipComponents(List<Component> pTooltipComponents) {
-        pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.actuator.earth")
-                        .withStyle(ChatFormatting.DARK_GRAY)
-        );
     }
 }

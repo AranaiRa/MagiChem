@@ -41,7 +41,7 @@ import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ACTUATOR_ELEMENT;
 
-public class ActuatorEnderBlock extends BaseEntityBlock implements IHasNonStandardTooltipLore {
+public class ActuatorEnderBlock extends BaseEntityBlock {
     public ActuatorEnderBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -230,13 +230,5 @@ public class ActuatorEnderBlock extends BaseEntityBlock implements IHasNonStanda
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_LONG, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_BODY_TALL, 3),
                 MathHelper.rotateVoxelShape(VOXEL_SHAPE_PLATFORM, 3));
-    }
-
-    @Override
-    public void addTooltipComponents(List<Component> pTooltipComponents) {
-        pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.actuator.ender")
-                        .withStyle(ChatFormatting.DARK_GRAY)
-        );
     }
 }

@@ -3,7 +3,10 @@ package com.aranaira.magichem.item;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.MobEffectsRegistry;
 import com.mna.effects.EffectInit;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -89,6 +92,11 @@ public class DrinkableItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+//        pTooltipComponents.add(
+//                Component.translatable("tooltip.magichem."+this.toString())
+//                        .withStyle(ChatFormatting.DARK_GRAY)
+//        );
+
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 }
