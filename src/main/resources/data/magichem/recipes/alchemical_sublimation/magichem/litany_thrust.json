@@ -10,6 +10,7 @@
     {
       "experience": 0,
       "components": [
+        { "item": "mna:vellum" },
         { "item": "mna:purified_vinteum_ingot" },
         { "item": "minecraft:blast_furnace" },
         { "item": "magichem:mote_achromatic" }

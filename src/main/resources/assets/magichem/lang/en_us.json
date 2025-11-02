@@ -788,7 +788,7 @@
   "tooltip.magichem.wisdom_stone_citrinitas": "The fourth stage of the Magnum Opus. Its inner light has elegantly matured.",
   "tooltip.magichem.wisdom_stone_rubedo": "The fifth stage of the Magnum Opus. Its relentless hunger has been sated.",
   "tooltip.magichem.philosophers_stone": "The culmination of the Magnum Opus. It radiates with magic almost too bright to look at.",
-  "tooltip.magichem.wisdom_stone_recipes": "Can be inserted into the Nexus or Grand Circle of Fabrication to unlock more recipes.",
+  "tooltip.magichem.wisdom_stone_recipes": "Unlocks more recipes on the Nexus and Grand Circle of Fabrication when worn in the Wisdom curio slot.",
 
   "tooltip.magichem.signalite": "Transmits redstone signals in any direction. Can be locked, hidden, and waterlogged.",
   "tooltip.magichem.signalite.variant": "A variant of Signalite with an additional property.",
