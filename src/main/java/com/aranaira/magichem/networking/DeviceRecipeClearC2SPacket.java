@@ -47,7 +47,7 @@ public class DeviceRecipeClearC2SPacket {
                 fabrication.clearRecipeAfterNextProcess = true;
             }
             else if(entity instanceof AlchemicalNexusBlockEntity nexus) {
-                nexus.clearRecipeAfterNextProcess = true;
+                nexus.clearRecipe();
             }
         });
 

@@ -843,7 +843,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     }
 
     public void clearActiveRecipe() {
-        menu.blockEntity.clearRecipeAfterNextProcess = true;
+        menu.blockEntity.clearRecipe();
         PacketRegistry.sendToServer(new DeviceRecipeClearC2SPacket(
                 menu.blockEntity.getBlockPos()
         ));
