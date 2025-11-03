@@ -72,9 +72,6 @@ public class ClientEventForgeBusHandler {
     private static final TagKey<Item>
             TAG_MAGICHEM_WISDOM_STONES = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "wisdom_stones"));
     private static final ResourceLocation TEXTURE_WISDOM = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_active.png");
-    private static IWisdomCapability PLAYER_WISDOM_CAP = null;
-    private static IPlayerMagic PLAYER_MAGIC_CAP = null;
-    private static ICuriosItemHandler PLAYER_CURIOS = null;
 
     @SubscribeEvent
     public static void onDrawScreenPost(RenderGuiOverlayEvent.Post event) {
@@ -83,36 +80,37 @@ public class ClientEventForgeBusHandler {
         Player player = Minecraft.getInstance().player;
         final GuiGraphics gui = event.getGuiGraphics();
 
-        //Set references so that we're not hammering the capabilities getter every frame
-        if(PLAYER_MAGIC_CAP == null && player != null) {
+        IPlayerMagic playerMagicCap = null;
+        IWisdomCapability playerWisdomCap = null;
+        ICuriosItemHandler playerCuriosCap = null;
+
+        if(player != null) {
             final LazyOptional<IPlayerMagic> query = player.getCapability(PlayerMagicProvider.MAGIC);
-            if(query.isPresent() && query.resolve().isPresent())
-                PLAYER_MAGIC_CAP = query.resolve().get();
-        }
-        if(PLAYER_WISDOM_CAP == null) {
-            if(player != null && WisdomProvider.getCapability(player).isPresent())
-                PLAYER_WISDOM_CAP = WisdomProvider.getCapability(player).get();
-        }
-        if(PLAYER_CURIOS == null) {
-            if(player != null && CuriosApi.getCuriosInventory(player).isPresent() && CuriosApi.getCuriosInventory(player).resolve().isPresent())
-                PLAYER_CURIOS = CuriosApi.getCuriosInventory(player).resolve().get();
+            if (query.isPresent() && query.resolve().isPresent())
+                playerMagicCap = query.resolve().get();
+            
+            if(WisdomProvider.getCapability(player).isPresent())
+                playerWisdomCap = WisdomProvider.getCapability(player).get();
+            
+            if(CuriosApi.getCuriosInventory(player).isPresent() && CuriosApi.getCuriosInventory(player).resolve().isPresent())
+                playerCuriosCap = CuriosApi.getCuriosInventory(player).resolve().get();
         }
 
         //handle GUI element that displays whether Wisdom is active
-        if(PLAYER_MAGIC_CAP != null && PLAYER_WISDOM_CAP != null){
-            if(!PLAYER_WISDOM_CAP.getIsDisabled() && PLAYER_MAGIC_CAP.isMagicUnlocked()) {
+        if(playerMagicCap != null && playerWisdomCap != null){
+            if(!playerWisdomCap.getIsDisabled() && playerMagicCap.isMagicUnlocked()) {
                 Pair<Integer, Integer> coords = getHudCoordinates(event.getWindow().getGuiScaledWidth(), event.getWindow().getGuiScaledHeight());
                 int x = coords.getFirst();
                 int y = coords.getSecond();
 
-                if(PLAYER_CURIOS.getStacksHandler("wisdom").isPresent()) {
-                    if(!PLAYER_CURIOS.getStacksHandler("wisdom").get().getStacks().getStackInSlot(0).isEmpty()) {
-                        if (ClientConfigValues.HudPosition == ClientConfigValues.HudPos.TopLeft ||
-                                ClientConfigValues.HudPosition == ClientConfigValues.HudPos.TopCenter ||
-                                ClientConfigValues.HudPosition == ClientConfigValues.HudPos.TopRight) {
-                            event.getGuiGraphics().blit(TEXTURE_WISDOM, x + 14, y + 38, 0, 0, 16, 16, 16, 16);
-                        } else {
+                if(playerCuriosCap.getStacksHandler("wisdom").isPresent()) {
+                    if(!playerCuriosCap.getStacksHandler("wisdom").get().getStacks().getStackInSlot(0).isEmpty()) {
+                        if (ClientConfigValues.HudPosition == ClientConfigValues.HudPos.BottomLeft ||
+                                ClientConfigValues.HudPosition == ClientConfigValues.HudPos.BottomCenter ||
+                                ClientConfigValues.HudPosition == ClientConfigValues.HudPos.BottomRight) {
                             event.getGuiGraphics().blit(TEXTURE_WISDOM, x + 14, y - 22, 0, 0, 16, 16, 16, 16);
+                        } else {
+                            event.getGuiGraphics().blit(TEXTURE_WISDOM, x + 14, y + 38, 0, 0, 16, 16, 16, 16);
                         }
                     }
                 }
@@ -411,6 +409,7 @@ public class ClientEventForgeBusHandler {
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
 
         if (!mc.isPaused() && mc.screen == null) {
             handleRadialKeyDown();
@@ -431,8 +430,12 @@ public class ClientEventForgeBusHandler {
                     });
                 }
                 if (KeybindRegistry.ToggleWisdomEffects.get().isDown() && !wisdomToggleWasDown) {
-                    PLAYER_WISDOM_CAP.setIsDisabled(!PLAYER_WISDOM_CAP.getIsDisabled());
-                    PacketRegistry.sendToServer(new ToggleWisdomC2SPacket());
+
+                    if(player != null && WisdomProvider.getCapability(player).isPresent()) {
+                        IWisdomCapability playerWisdomCap = WisdomProvider.getCapability(player).get();
+                        playerWisdomCap.setIsDisabled(!playerWisdomCap.getIsDisabled());
+                        PacketRegistry.sendToServer(new ToggleWisdomC2SPacket());
+                    }
                 }
                 wisdomToggleWasDown = KeybindRegistry.ToggleWisdomEffects.get().isDown();
             }
