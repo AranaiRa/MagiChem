@@ -46,7 +46,7 @@ public class AlchemicalNexusMenu extends AbstractContainerMenu {
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             //Mark slot
-            this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_MARKS, 134, -6));
+            this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_MARKS, 134, -5));
 
             //Processing slot
             this.addSlot(new SlotItemHandler(handler, AlchemicalNexusBlockEntity.SLOT_PROGRESS_HOLDER, 80, -5));

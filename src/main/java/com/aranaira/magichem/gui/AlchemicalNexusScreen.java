@@ -244,7 +244,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         menu.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             if(handler.getStackInSlot(AlchemicalNexusBlockEntity.SLOT_MARKS).isEmpty()) {
                 pGuiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
-                pGuiGraphics.blit(TEXTURE, (x + 134) * 2, (y + 7) * 2, 66, 222, 32, 32);
+                pGuiGraphics.blit(TEXTURE, (x + 134) * 2, (y + 8) * 2, 66, 222, 32, 32);
                 pGuiGraphics.pose().scale(2.0f, 2.0f, 2.0f);
             }
 
