@@ -8,6 +8,7 @@ import com.aranaira.magichem.networking.WisdomSyncC2SPacket;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mna.api.spells.attributes.Attribute;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -361,6 +363,11 @@ public class WisdomScreen extends AbstractContainerScreen<WisdomMenu> {
 
     @Override
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1,1,1,1);
+        RenderSystem.setShaderTexture(0, getTexture());
+        RenderSystem.enableBlend();
+
         int x = (width - PANEL_MAIN_W) / 2;
         int y = (height - PANEL_MAIN_H) / 2;
 
