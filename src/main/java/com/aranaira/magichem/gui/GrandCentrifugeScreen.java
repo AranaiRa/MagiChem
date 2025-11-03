@@ -13,6 +13,7 @@ import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.networking.GrandDeviceSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -554,11 +555,13 @@ public class GrandCentrifugeScreen extends AbstractContainerScreen<GrandCentrifu
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        boolean isNumber = (pKeyCode >= 48) && (pKeyCode <= 57);
-        boolean isNumpadNumber = (pKeyCode >= 97) && (pKeyCode <= 105);
-
-        if(isNumber || isNumpadNumber) return false;
-
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        if (pKeyCode == InputConstants.KEY_ESCAPE) {
+            this.onClose();
+            return true;
+        } else if (this.recipeFilterBox.keyPressed(pKeyCode, pScanCode, pModifiers)) {
+            return true;
+        } else {
+            return this.recipeFilterBox.isFocused() && this.recipeFilterBox.isVisible() || super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        }
     }
 }
