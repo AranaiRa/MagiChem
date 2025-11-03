@@ -63,11 +63,11 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                 basin = query.getMaster();
             }
 
-            if(basin != null) {
+            if(basin == pBlockEntity) {
                 if(basin.getInputItem().isEmpty() || basin.getFluidInTank(TANK_INPUT).isEmpty())
                     return;
                 if(basin.hasSufficientItemsForRecipe()) {
-
+                    Direction dir = pBlockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
                     float fill = Math.max(0,Math.min(1,basin.getProgressPercent()));
 
                     int color = Mth.hsvToRgb(fill / 3.0F, 1.0F, 1.0F) | -16777216;
@@ -78,6 +78,9 @@ public class AcidBasinBlockEntityRenderer implements BlockEntityRenderer<AcidBas
                     for (int i = 0; i < 4; i++) {
                         pPoseStack.pushPose();
                         pPoseStack.translate(-0.5D, 0.0D, 0.5D);
+                        if(dir == Direction.EAST) pPoseStack.translate(1.0D, 0.0D, -1.0D);
+                        else if(dir == Direction.SOUTH) pPoseStack.translate(2.0D, 0.0D, 0.0D);
+                        else if(dir == Direction.WEST) pPoseStack.translate(1.0D, 0.0D, 1.0D);
                         pPoseStack.mulPose(Axis.YP.rotationDegrees((float) (i * 90)));
                         pPoseStack.translate(0.0D, 1.1875D, -0.3145D);
                         pPoseStack.scale(0.565F, 0.05F, 1.0F);
