@@ -607,7 +607,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 NonNullList<ItemStack> componentItems = menu.getStage(menu.getCurrentStageID()).componentItems;
 
                 if (i < componentItems.size()) {
-                    ItemStack stackInSlot = menu.getItems().get(AlchemicalNexusBlockEntity.SLOT_INPUT_START + i + 35);
+                    ItemStack stackInSlot = menu.getItems().get(AlchemicalNexusBlockEntity.SLOT_INPUT_START + i + 36);
 
                     if (stackInSlot.isEmpty()) {
                         String name = componentItems.get(i).getDisplayName().getString();
@@ -744,13 +744,13 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 for (int x = 0; x < 3; x++) {
                     if(snipped.get(c).getItem() instanceof BlockItem) {
                         gui.renderItem(snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
-                        if(menu.blockEntity.getAnimStage() != ANIM_STAGE_IDLE) gui.fill(RenderType.guiGhostRecipeOverlay(), xOrigin - 76 + x*18, yOrigin + 23 + y*18, xOrigin - 60 + x*18, yOrigin + 39 + y*18, 0x80636363);
+//                        if(menu.blockEntity.getAnimStage() != ANIM_STAGE_IDLE) gui.fill(RenderType.guiGhostRecipeOverlay(), xOrigin - 76 + x*18, yOrigin + 23 + y*18, xOrigin - 60 + x*18, yOrigin + 39 + y*18, 0x80636363);
                     } else {
-                        float alpha = menu.blockEntity.getAnimStage() != ANIM_STAGE_IDLE ? 0.35f : 1.0f;
-                        gui.setColor(1, 1, 1, alpha);
+//                        float alpha = menu.blockEntity.getAnimStage() != ANIM_STAGE_IDLE ? 0.35f : 1.0f;
+//                        gui.setColor(1, 1, 1, alpha);
                         gui.renderItem(snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
                         gui.renderItemDecorations(Minecraft.getInstance().font, snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
-                        gui.setColor(1, 1, 1, 1);
+//                        gui.setColor(1, 1, 1, 1);
                     }
                     c++;
                     if(c >= cLimit) break;
