@@ -28,7 +28,7 @@
         { "item": "mna:chimerite_gem" },
         { "item": "magichem:magic_circle" },
         { "item": "magichem:magichemical_mechanism" },
-        { "item": "minecraft:polished_deepslate" }
+        { "item": "magichem:circle_fabrication" }
       ],
       "materia": [
         { "item": "magichem:admixture_memory", "count": 22 },

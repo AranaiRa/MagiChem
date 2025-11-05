@@ -1,6 +1,7 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.apache.commons.lang3.mutable.MutableInt;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING_OMNI;
 
 public class PowerSpikeBlockEntity extends BlockEntity {
     public static final TagKey<Block> ALCHEMICAL_DEVICES_TAG = BlockTags.create(new ResourceLocation(MagiChemMod.MODID, "alchemical_devices"));
@@ -63,7 +66,7 @@ public class PowerSpikeBlockEntity extends BlockEntity {
 
             if(drawEntity instanceof CirclePowerBlockEntity circle && transferEntity != null && transferEntity.getBlockState().is(ALCHEMICAL_DEVICES_TAG)) {
                 circle.getAlchemicalEnergyCapability(ForgeCapabilities.ENERGY).ifPresent(drawCap -> {
-                    transferEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(transferCap -> {
+                    transferEntity.getCapability(ForgeCapabilities.ENERGY, state.getValue(FACING_OMNI).getOpposite()).ifPresent(transferCap -> {
                         powerAvailable.setValue(drawCap.getEnergyStored());
 
                         powerToTransfer.setValue(transferCap.receiveEnergy(powerAvailable.intValue(), true));
@@ -76,7 +79,7 @@ public class PowerSpikeBlockEntity extends BlockEntity {
             }
             else if(drawEntity != null && transferEntity != null) {
                 drawEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(drawCap -> {
-                    transferEntity.getCapability(ForgeCapabilities.ENERGY).ifPresent(transferCap -> {
+                    transferEntity.getCapability(ForgeCapabilities.ENERGY, state.getValue(FACING_OMNI).getOpposite()).ifPresent(transferCap -> {
                         powerAvailable.setValue(drawCap.getEnergyStored());
 
                         powerToTransfer.setValue(transferCap.receiveEnergy(powerAvailable.intValue(), true));
