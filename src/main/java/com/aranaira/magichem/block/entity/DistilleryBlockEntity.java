@@ -470,38 +470,42 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
 
         if(pEntity.remainingHeat <= 0) {
             ItemStack fuelStack = pEntity.itemHandler.getStackInSlot(SLOT_FUEL);
-            if(fuelStack != ItemStack.EMPTY && fuelStack.getItem() != Items.BUCKET) {
+            if(!fuelStack.isEmpty()) {
                 int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
 
-                if(fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
-                    LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-                    AtomicReference<Integer> mi = new AtomicReference<>(0);
-                    cap.ifPresent(handler -> {
-                        FluidStack fluidInTank = handler.getFluidInTank(0);
-                        if(fluidInTank.getAmount() > 0) {
-                            if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
-                                FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
-                                float proportion = operation.getAmount() / 1000f;
-                                int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                                mi.set((int) (lavaBurnTime * proportion));
+                if(burnTime > 0){
+                    if (fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
+                        LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                        AtomicReference<Integer> mi = new AtomicReference<>(0);
+                        cap.ifPresent(handler -> {
+                            FluidStack fluidInTank = handler.getFluidInTank(0);
+                            if (fluidInTank.getAmount() > 0) {
+                                if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
+                                    FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                                    float proportion = operation.getAmount() / 1000f;
+                                    int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                                    mi.set((int) (lavaBurnTime * proportion));
+                                }
                             }
-                        }
-                    });
-                    burnTime = mi.get();
-                } else if(fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
-                    burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                } else if(fuelStack.getItem() == Items.LAVA_BUCKET) {
-                    fuelStack = new ItemStack(Items.BUCKET);
-                } else {
-                    fuelStack.shrink(1);
+                        });
+                        burnTime = mi.get();
+                    } else if (fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
+                        burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                    } else {
+                        ItemStack remainder = fuelStack.getCraftingRemainingItem();
+                        if (!remainder.isEmpty()) {
+                            fuelStack = remainder.copy();
+                        } else
+                            fuelStack.shrink(1);
+                    }
+
+                    pEntity.itemHandler.setStackInSlot(SLOT_FUEL, fuelStack);
+                    pEntity.remainingHeat = burnTime;
+                    pEntity.heatDuration = burnTime;
+                    pEntity.pushData();
+
+                    pEntity.syncAndSave();
                 }
-
-                pEntity.itemHandler.setStackInSlot(SLOT_FUEL, fuelStack);
-                pEntity.remainingHeat = burnTime;
-                pEntity.heatDuration = burnTime;
-                pEntity.pushData();
-
-                pEntity.syncAndSave();
             }
         }
 

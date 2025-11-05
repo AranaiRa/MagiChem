@@ -798,10 +798,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     public void setCurrentRecipe(Item pQuery) {
         if(!level.isClientSide()) {
+            DistillationFabricationRecipe previousItemRecipe = currentItemRecipe;
             currentItemRecipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
             currentFluidRecipe = null;
 
-            if (currentItemRecipe != null && currentItemRecipe.getAlchemyObject().getItem() != pQuery) {
+            if (currentItemRecipe != null && previousItemRecipe.getAlchemyObject().getItem() != pQuery) {
                 batchSize = currentItemRecipe.getBatchSize();
                 ItemStack[] componentMateria = new ItemStack[5];
                 currentItemRecipe.getComponentMateria().toArray(componentMateria);
@@ -835,10 +836,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
 
     public void setCurrentRecipe(Fluid pQuery) {
         if(!level.isClientSide()) {
+            FluidDistillationFabricationRecipe previousFluidRecipe = currentFluidRecipe;
             currentFluidRecipe = getRecipeForFluid(pQuery);
             currentItemRecipe = null;
 
-            if (currentFluidRecipe != null && currentFluidRecipe.getAlchemyFluid().getFluid() != pQuery) {
+            if (currentFluidRecipe != null && previousFluidRecipe.getAlchemyFluid().getFluid() != pQuery) {
                 batchSize = currentFluidRecipe.getBatchSize();
                 ItemStack[] componentMateria = new ItemStack[5];
                 currentFluidRecipe.getComponentMateria().toArray(componentMateria);

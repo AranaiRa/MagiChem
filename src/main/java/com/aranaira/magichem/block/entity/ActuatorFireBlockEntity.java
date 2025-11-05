@@ -397,40 +397,45 @@ public class ActuatorFireBlockEntity extends AbstractDirectionalPluginBlockEntit
                 ItemStack fuelStack = entity.itemHandler.getStackInSlot(0);
                 if (!fuelStack.isEmpty()) {
                     int burnTime = ForgeHooks.getBurnTime(new ItemStack(fuelStack.getItem()), RecipeType.SMELTING);
-                    if (fuelStack.getItem() == ItemRegistry.CATALYTIC_CARBON.get() || fuelStack.getItem() == ItemRegistry.DEBUG_ORB.get())
-                        entity.flags = (entity.flags | FLAG_FUEL_SUPER) & ~FLAG_FUEL_NORMAL;
-                    else
-                        entity.flags = (entity.flags | FLAG_FUEL_NORMAL) & ~FLAG_FUEL_SUPER;
 
-                    if (fuelStack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
-                        burnTime = 38400;
-                    } else if (fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
-                        LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-                        AtomicReference<Integer> mi = new AtomicReference<>(0);
-                        cap.ifPresent(handler -> {
-                            FluidStack fluidInTank = handler.getFluidInTank(0);
-                            if (fluidInTank.getAmount() > 0) {
-                                if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
-                                    FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
-                                    float proportion = operation.getAmount() / 1000f;
-                                    int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                                    mi.set((int) (lavaBurnTime * proportion));
+                    if(burnTime > 0){
+                        if (fuelStack.getItem() == ItemRegistry.CATALYTIC_CARBON.get() || fuelStack.getItem() == ItemRegistry.DEBUG_ORB.get())
+                            entity.flags = (entity.flags | FLAG_FUEL_SUPER) & ~FLAG_FUEL_NORMAL;
+                        else
+                            entity.flags = (entity.flags | FLAG_FUEL_NORMAL) & ~FLAG_FUEL_SUPER;
+
+                        if (fuelStack.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                            burnTime = 38400;
+                        } else if (fuelStack.getItem() == ItemInit.FLUID_JUG.get()) {
+                            LazyOptional<IFluidHandlerItem> cap = fuelStack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+                            AtomicReference<Integer> mi = new AtomicReference<>(0);
+                            cap.ifPresent(handler -> {
+                                FluidStack fluidInTank = handler.getFluidInTank(0);
+                                if (fluidInTank.getAmount() > 0) {
+                                    if (fluidInTank.getFluid() == Fluids.LAVA || fluidInTank.getFluid() == Fluids.FLOWING_LAVA) {
+                                        FluidStack operation = handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                                        float proportion = operation.getAmount() / 1000f;
+                                        int lavaBurnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                                        mi.set((int) (lavaBurnTime * proportion));
+                                    }
                                 }
-                            }
-                        });
-                        burnTime = mi.get();
-                    } else if (fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
-                        burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
-                    } else if (fuelStack.getItem() == Items.LAVA_BUCKET) {
-                        fuelStack = new ItemStack(Items.BUCKET);
-                    } else {
-                        fuelStack.shrink(1);
-                    }
+                            });
+                            burnTime = mi.get();
+                        } else if (fuelStack.getItem() == ItemInit.FLUID_JUG_INFINITE_LAVA.get()) {
+                            burnTime = ForgeHooks.getBurnTime(new ItemStack(Items.LAVA_BUCKET), RecipeType.SMELTING);
+                        } else {
+                            ItemStack remainder = fuelStack.getCraftingRemainingItem();
+                            if (!remainder.isEmpty()) {
+                                fuelStack = remainder.copy();
+                            } else
+                                fuelStack.shrink(1);
+                        }
 
-                    entity.fuelDuration = burnTime;
-                    entity.remainingFuelTime = burnTime;
-                    entity.itemHandler.setStackInSlot(0, fuelStack);
-                    changed = true;
+                        entity.fuelDuration = burnTime;
+                        entity.remainingFuelTime = burnTime;
+                        entity.itemHandler.setStackInSlot(0, fuelStack);
+                        changed = true;
+                    }
                 } else {
                     if (getIsFuelled(entity) || getIsSuperFuelled(entity)) {
                         entity.flags = entity.flags & ~FLAG_FUEL_SATISFACTION_TYPE;
