@@ -1,0 +1,29 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "forbidden_advancement": "minecraft:story/enter_the_nether",
+  "object": {
+    "item": "minecraft:basalt",
+    "count": 3
+  },
+  "stages": [
+    {
+      "experience": 25,
+      "components": [
+        { "item": "minecraft:gunpowder" },
+        { "item": "minecraft:deepslate" },
+        { "item": "minecraft:deepslate" },
+        { "item": "minecraft:deepslate" },
+        { "item": "minecraft:gunpowder" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_fire", "count": 47 },
+        { "item": "magichem:admixture_change", "count": 63 },
+        { "item": "magichem:admixture_stone", "count": 31 },
+        { "item": "magichem:admixture_potential", "count": 5 },
+        { "item": "magichem:essentia_mineral", "count": 47 }
+      ]
+    }
+  ]
+}

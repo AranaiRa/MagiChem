@@ -1,0 +1,28 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 1,
+  "forbidden_advancement": "minecraft:end/find_end_city",
+  "object": {
+    "item": "minecraft:shulker_shell",
+    "count": 2
+  },
+  "stages": [
+    {
+      "experience": 40,
+      "components": [
+        { "item": "minecraft:shield" },
+        { "item": "minecraft:scute" },
+        { "item": "minecraft:scute" },
+        { "item": "minecraft:shield" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_change", "count": 63 },
+        { "item": "magichem:admixture_protection", "count": 31 },
+        { "item": "magichem:admixture_monster", "count": 13 },
+        { "item": "magichem:admixture_potential", "count": 5 },
+        { "item": "magichem:essentia_albedo", "count": 12 }
+      ]
+    }
+  ]
+}

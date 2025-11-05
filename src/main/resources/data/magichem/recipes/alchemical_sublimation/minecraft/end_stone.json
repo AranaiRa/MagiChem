@@ -1,0 +1,29 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 1,
+  "forbidden_advancement": "minecraft:end/root",
+  "object": {
+    "item": "minecraft:end_stone",
+    "count": 3
+  },
+  "stages": [
+    {
+      "experience": 40,
+      "components": [
+        { "item": "mna:resonating_dust" },
+        { "item": "minecraft:diorite" },
+        { "item": "minecraft:diorite" },
+        { "item": "minecraft:diorite" },
+        { "item": "mna:resonating_dust" }
+      ],
+      "materia": [
+        { "item": "magichem:essentia_ender", "count": 47 },
+        { "item": "magichem:admixture_change", "count": 63 },
+        { "item": "magichem:admixture_stone", "count": 31 },
+        { "item": "magichem:admixture_potential", "count": 5 },
+        { "item": "magichem:essentia_mineral", "count": 47 }
+      ]
+    }
+  ]
+}

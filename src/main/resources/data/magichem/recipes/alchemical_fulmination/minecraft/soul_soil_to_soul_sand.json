@@ -1,0 +1,7 @@
+{
+  "type": "magichem:fulmination",
+  "input": "minecraft:soul_soil",
+  "input_count": 16,
+  "result": "minecraft:soul_sand",
+  "result_count": 16
+}
