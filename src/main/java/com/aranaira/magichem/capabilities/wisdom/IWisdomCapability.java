@@ -24,4 +24,6 @@ public interface IWisdomCapability {
     boolean getIsDisabled();
 
     void setIsDisabled(boolean pDisabled);
+
+    void copyFrom(IWisdomCapability pCapability);
 }

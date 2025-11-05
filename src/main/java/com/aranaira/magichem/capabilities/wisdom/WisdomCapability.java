@@ -65,6 +65,15 @@ public class WisdomCapability implements IWisdomCapability {
         isDisabled = pDisabled;
     }
 
+    @Override
+    public void copyFrom(IWisdomCapability pCapability) {
+        values.clear();
+        for(Attribute a : pCapability.getValues().keySet()) {
+            values.put(a, pCapability.getValue(a));
+        }
+        isDisabled = pCapability.getIsDisabled();
+    }
+
     private static HashMap<Attribute, int[]> getOrDefineLimits() {
         if(LIMITS.size() == 0) {
             LIMITS.put(Attribute.DAMAGE,           new int[]{0, 1, 2, 3, 5, 8});

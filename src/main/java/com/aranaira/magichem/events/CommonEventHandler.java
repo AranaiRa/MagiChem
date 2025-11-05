@@ -645,4 +645,14 @@ public class CommonEventHandler {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event) {
+        final Optional<IWisdomCapability> original = WisdomProvider.getCapability(event.getOriginal());
+        final Optional<IWisdomCapability> clone = WisdomProvider.getCapability(event.getEntity());
+
+        if(original.isPresent() && clone.isPresent()) {
+            clone.get().copyFrom(original.get());
+        }
+    }
 }
