@@ -137,7 +137,7 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
             }
             else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                 ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
-                if (ender.getIsSatisfied()) {
+                if (ender.getIsSatisfied() && !ender.getPaused()) {
                     //exporting
                     if (ender.getMirrorTarget() != null) {
                         final SimpleContainer outputs = pEntity.getContentsOfOutputSlots();

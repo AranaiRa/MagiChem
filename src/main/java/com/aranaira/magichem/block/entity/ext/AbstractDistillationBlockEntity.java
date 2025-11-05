@@ -156,7 +156,7 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
             }
             else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                 ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
-                if (ender.getIsSatisfied()) {
+                if (ender.getIsSatisfied() && !ender.getPaused()) {
                     //exporting
                     if (ender.getMirrorTarget() != null) {
                         boolean instant = ender.getPowerLevel() == 2;

@@ -558,7 +558,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                     }
                     else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                         ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pBlockState, ender);
-                        if (ender.getIsSatisfied()) {
+                        if (ender.getIsSatisfied() && !ender.getPaused()) {
                             //importing
                             final Map<MateriaItem, Integer> provisioningNeeds = anbe.getProvisioningNeeds();
                             if (provisioningNeeds != null && provisioningNeeds.size() > 0) {

@@ -114,7 +114,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             }
             if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                 ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
-                if (ender.getIsSatisfied()) {
+                if (ender.getIsSatisfied() && !ender.getPaused()) {
                     //importing
                     final Map<MateriaItem, Integer> provisioningNeeds = pEntity.getProvisioningNeeds();
                     if (provisioningNeeds != null && provisioningNeeds.size() > 0) {
