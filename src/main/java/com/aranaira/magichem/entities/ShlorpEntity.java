@@ -346,6 +346,9 @@ public class ShlorpEntity extends Entity implements IEntityAdditionalSpawnData {
     }
 
     private void deliverPayload() {
+        if(stackInTransit.isEmpty())
+            return;
+
         Vector3 actualTargetPos = endLocation.add(new Vector3(position().x, position().y, position().z));
         BlockPos targetBlockPos = new BlockPos((int) Math.floor(actualTargetPos.x - 0.5), (int) Math.floor(actualTargetPos.y), (int) Math.floor(actualTargetPos.z - 0.5));
         BlockEntity be = this.level().getBlockEntity(targetBlockPos);
