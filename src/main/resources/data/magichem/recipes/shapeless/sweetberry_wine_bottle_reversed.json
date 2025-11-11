@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:bucket"
+    },
+    {
+      "item": "magichem:sweetberry_wine_bottle"
+    },
+    {
+      "item": "magichem:sweetberry_wine_bottle"
+    },
+    {
+      "item": "magichem:sweetberry_wine_bottle"
+    }
+  ],
+  "result": {
+    "item": "magichem:sweetberry_wine_bucket",
+    "count": 1
+  }
+}
