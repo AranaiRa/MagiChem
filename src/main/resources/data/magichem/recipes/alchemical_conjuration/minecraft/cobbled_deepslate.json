@@ -3,13 +3,13 @@
   "catalyst": "minecraft:deepslate",
   "materia": "magichem:admixture_darkness",
   "passive": {
-    "item": "minecraft:deepslate",
+    "item": "minecraft:cobbled_deepslate",
     "count": 1,
-    "period": 320
+    "period": 160
   },
   "supplied": {
-    "item": "minecraft:deepslate",
-    "count": 8,
+    "item": "minecraft:cobbled_deepslate",
+    "count": 16,
     "period": 20,
     "charge_usage": 1
   }
