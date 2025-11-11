@@ -11806,7 +11806,7 @@
   "Alchemical Ore Processing": {
     "index": "-10",
     "category": "magichem_wonders",
-    "tier": 3,
+    "tier": 2,
     "required_advancement": "magichem:acid_basin",
     "sections": [
       {
