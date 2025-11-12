@@ -186,6 +186,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.SKYWRATH_CONDENSER_MENU.get(), SkywrathCondenserScreen::new);
                 MenuScreens.register(MenuRegistry.ASTRAL_OBSERVER_MENU.get(), AstralObserverScreen::new);
                 MenuScreens.register(MenuRegistry.DISINTEGRATION_PYRE_MENU.get(), DisintegrationPyreScreen::new);
+                MenuScreens.register(MenuRegistry.COVETOUS_COFFER_MENU.get(), CovetousCofferScreen::new);
 
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID_FLOWING.get(), RenderType.translucent());
@@ -310,6 +311,8 @@ public class MagiChemMod
 
             event.register(DisintegrationPyreBlockEntityRenderer.RENDERER_MODEL_FLAME_SMALL);
             event.register(DisintegrationPyreBlockEntityRenderer.RENDERER_MODEL_FLAME_LARGE);
+
+            event.register(CovetousCofferBlockEntityRenderer.RENDERER_MODEL_LID);
         }
     }
 }

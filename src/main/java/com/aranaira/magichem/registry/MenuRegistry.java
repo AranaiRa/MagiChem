@@ -108,6 +108,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<DisintegrationPyreMenu>> DISINTEGRATION_PYRE_MENU =
             registerMenuType(DisintegrationPyreMenu::new, "disintegration_pyre");
 
+    public static final RegistryObject<MenuType<CovetousCofferMenu>> COVETOUS_COFFER_MENU =
+            registerMenuType(CovetousCofferMenu::new, "covetous_coffer");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }

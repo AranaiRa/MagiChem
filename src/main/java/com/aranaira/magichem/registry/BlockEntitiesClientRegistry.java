@@ -56,5 +56,6 @@ public class BlockEntitiesClientRegistry {
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.ELDRIN_ORRERY_BE.get(), EldrinOrreryBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.SELENOLABE_BE.get(), SelenolabeBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(BlockEntitiesRegistry.DISINTEGRATION_PYRE_BE.get(), DisintegrationPyreBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitiesRegistry.COVETOUS_COFFER_BE.get(), CovetousCofferBlockEntityRenderer::new);
     }
 }

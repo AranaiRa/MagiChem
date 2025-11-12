@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "magichem:block/covetous_coffer"
+    },
+    "facing=east": {
+      "model": "magichem:block/covetous_coffer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "magichem:block/covetous_coffer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "magichem:block/covetous_coffer",
+      "y": 270
+    }
+  }
+}

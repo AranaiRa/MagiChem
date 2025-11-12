@@ -477,12 +477,18 @@ public class ServerConfig
             .comment("The amount of Water and Steam, in mB, both of the Acid Basin's internal tanks can hold.")
             .defineInRange("acidBasinTankCapacity", 5000, 1, Integer.MAX_VALUE);
 
-    //----------------DISINTEGRATION_PYRE
+    //----------------DISINTEGRATION PYRE
 
     private static final ForgeConfigSpec.IntValue DISINTEGRATION_PYRE_MATERIA_UNITS_PER_DRAM = BUILDER
-            .comment("How many units does a single dram of ")
+            .comment("How many units does a single dram of Admixture of Destruction supply to the Disintegration Pyre?")
             .comment("Reminder, one unit is one point of durability damage to inserted items.")
             .defineInRange("disintegrationPyreMateriaUnitsPerDram", 500, 1, Integer.MAX_VALUE);
+
+    //----------------COVETOUS COFFER
+
+    private static final ForgeConfigSpec.IntValue COVETOUS_COFFER_CAPACITY = BUILDER
+            .comment("How many items can a Covetous Coffer hold in each slot?")
+            .defineInRange("covetousCofferCapacity", 2048, 1, Integer.MAX_VALUE);
 
     //----------------MATERIA MANIFEST
 
@@ -671,6 +677,7 @@ public class ServerConfig
         astralObserverLuminLoss,
         acidBasinTankCapacity,
         disintegrationPyreMateriaUnitsPerDram,
+        covetousCofferCapacity,
         materiaManifestSizeConstraint,
         materiaManifestDistanceLimit,
         materiaManifestDefaultRange,
@@ -823,6 +830,7 @@ public class ServerConfig
         astralObserverLuminLoss = ASTRAL_OBSERVER_LUMIN_LOSS.get();
         acidBasinTankCapacity = ACID_BASIN_TANK_CAPACITY.get();
         disintegrationPyreMateriaUnitsPerDram = DISINTEGRATION_PYRE_MATERIA_UNITS_PER_DRAM.get();
+        covetousCofferCapacity = COVETOUS_COFFER_CAPACITY.get();
         materiaManifestSizeConstraint = MATERIA_MANIFEST_SIZE_CONSTRAINT.get();
         materiaManifestDistanceLimit = MATERIA_MANIFEST_DISTANCE_LIMIT.get();
         materiaManifestDefaultRange = MATERIA_MANIFEST_DEFAULT_RANGE.get();

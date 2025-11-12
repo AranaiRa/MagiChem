@@ -306,6 +306,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(DisintegrationPyreBlockEntity::new, BlockRegistry.DISINTEGRATION_PYRE.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<CovetousCofferBlockEntity>> COVETOUS_COFFER_BE = BLOCK_ENTITIES.register("covetous_coffer", () ->
+            BlockEntityType.Builder.of(CovetousCofferBlockEntity::new, BlockRegistry.COVETOUS_COFFER.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

@@ -1,0 +1,26 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:covetous_coffer",
+    "count": 1
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "minecraft:chest" },
+        { "item": "mna:decoration/transmuted_silver_slab" },
+        { "item": "magichem:materia_jar_quad" },
+        { "item": "mna:rune_ritual_metal" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_vessel", "count": 25 },
+        { "item": "magichem:admixture_satiety", "count": 11 },
+        { "item": "magichem:admixture_trap", "count": 7 },
+        { "item": "magichem:essentia_precious", "count": 4 }
+      ]
+    }
+  ]
+}

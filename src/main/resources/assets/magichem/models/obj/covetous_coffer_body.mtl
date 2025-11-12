@@ -1,0 +1,5 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 1
+
+newmtl COVETOUS_COFFER
+map_Kd magichem:block/covetous_coffer
