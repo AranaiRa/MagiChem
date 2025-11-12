@@ -354,4 +354,8 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
     public void unpackDataFromNBT(CompoundTag pNBT) {
         load(pNBT);
     }
+
+    public boolean containsItem(ItemStack item) {
+        return itemType1 == item.getItem() || itemType2 == item.getItem() || itemType3 == item.getItem() || itemType4 == item.getItem();
+    }
 }

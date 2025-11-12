@@ -6,6 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -20,6 +22,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,6 +83,23 @@ public class CovetousCofferBlock extends BaseEntityBlock {
             }
         }
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Override
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
+        if(pEntity instanceof ItemEntity ie && !pLevel.isClientSide()) {
+            BlockEntity be = pLevel.getBlockEntity(pPos);
+            if (be instanceof CovetousCofferBlockEntity coffer) {
+                if(coffer.containsItem(ie.getItem())) {
+                    final LazyOptional<IItemHandler> op = coffer.getCapability(ForgeCapabilities.ITEM_HANDLER);
+                    if(op.isPresent() && op.resolve().isPresent()) {
+                        IItemHandler itemHandler = op.resolve().get();
+                        itemHandler.insertItem(CovetousCofferBlockEntity.SLOT_INPUT, ie.getItem(), false);
+                        ie.kill();
+                    }
+                }
+            }
+        }
     }
 
     @Override
