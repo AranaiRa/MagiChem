@@ -1,6 +1,6 @@
 {
   "type": "magichem:conjuration",
-  "catalyst": "minecraft:deepslate",
+  "catalyst": "minecraft:cobbled_deepslate",
   "materia": "magichem:admixture_darkness",
   "passive": {
     "item": "minecraft:cobbled_deepslate",
