@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +40,13 @@ public class CovetousCofferScreen extends AbstractContainerScreen<CovetousCoffer
         //Main panel
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, PANEL_MAIN_W, PANEL_MAIN_H);
 
-        for(int i=1; i<=4; i++)
-        if(menu.blockEntity.getTypeFromSlotID(i) != null) {
-            pGuiGraphics.renderItem(menu.blockEntity.getOutputStackFromSlotID(i), x + 26 + (i-1)*36, y + 49);
-            String storedAmount = ""+menu.blockEntity.getCountFromSlotID(i);
-            pGuiGraphics.drawString(font, storedAmount, x+34 - font.width(storedAmount)/2 + (i-1)*36, y+70, 0xff000000, false);
+        for(int i=1; i<=4; i++) {
+            final ItemStack displayStack = menu.blockEntity.getDisplayStackFromSlotID(i);
+            if (displayStack != null) {
+                pGuiGraphics.renderItem(displayStack, x + 26 + (i - 1) * 36, y + 49);
+                String storedAmount = "" + menu.blockEntity.getCountFromSlotID(i);
+                pGuiGraphics.drawString(font, storedAmount, x + 34 - font.width(storedAmount) / 2 + (i - 1) * 36, y + 70, displayStack.isEmpty() ? 0xff444444 : 0xff000000, false);
+            }
         }
     }
 

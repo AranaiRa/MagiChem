@@ -36,7 +36,10 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
     private Item
         itemType1 = null, itemType2 = null, itemType3 = null, itemType4 = null;
     private int
-        itemCount1 = 0, itemCount2 = 0, itemCount3 = 0, itemCount4 = 0;
+        itemCount1 = 0, itemCount2 = 0, itemCount3 = 0, itemCount4 = 0,
+        outputSlotSkip = 0;
+    private ItemStack
+        displayStack1 = null, displayStack2 = null, displayStack3 = null, displayStack4 = null;
 
     protected ItemStackHandler itemHandler;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -53,8 +56,6 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
                     boolean foundType = false;
                     for(int i=1;i<=4;i++) {
                         if(getTypeFromSlotID(i) == stack.getItem()) {
-//                            if(!simulate) setCountFromSlotID(i, Math.min(ServerConfig.covetousCofferCapacity, getCountFromSlotID(i) + stack.getCount()));
-
                             foundType = true;
                             break;
                         }
@@ -62,11 +63,6 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
                     if(!foundType) {
                         for(int i=1;i<=4;i++) {
                             if(getTypeFromSlotID(i) == null) {
-//                                if(!simulate) {
-//                                    setTypeFromSlotID(i, stack.getItem());
-//                                    setCountFromSlotID(i, Math.min(ServerConfig.covetousCofferCapacity, stack.getCount()));
-//                                }
-
                                 foundType = true;
                                 break;
                             }
@@ -82,76 +78,95 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
 
             @Override
             protected void onContentsChanged(int slot) {
+                boolean changed = false;
                 if(level != null && !level.isClientSide()){
-                    if (!getStackInSlot(SLOT_INPUT).isEmpty()) {
-                        ItemStack stack = getStackInSlot(SLOT_INPUT);
-                        boolean foundType = false;
-                        for (int i = 1; i <= 4; i++) {
-                            if (getTypeFromSlotID(i) == stack.getItem()) {
-                                setCountFromSlotID(i, Math.min(ServerConfig.covetousCofferCapacity, getCountFromSlotID(i) + stack.getCount()));
-
-                                foundType = true;
-                                break;
-                            }
-                        }
-                        if (!foundType) {
+                    if (slot == SLOT_INPUT && !getStackInSlot(SLOT_INPUT).isEmpty()) {
+                        ItemStack inputStack = getStackInSlot(SLOT_INPUT);
+                        int targetSlot = 0;
+                        if(!inputStack.isEmpty()){
+                            boolean foundType = false;
                             for (int i = 1; i <= 4; i++) {
-                                if (getTypeFromSlotID(i) == null) {
-                                    setTypeFromSlotID(i, stack.getItem());
-                                    setCountFromSlotID(i, Math.min(ServerConfig.covetousCofferCapacity, stack.getCount()));
+                                if (getTypeFromSlotID(i) == inputStack.getItem()) {
+                                    setCountFromSlotID(i, Math.min(ServerConfig.covetousCofferCapacity, getCountFromSlotID(i) + inputStack.getCount()));
+
+                                    targetSlot = i;
+                                    foundType = true;
+                                    changed = true;
                                     break;
                                 }
                             }
-                        }
-                        tryUpdateOutputSlots();
+                            if (!foundType) {
+                                for (int i = 1; i <= 4; i++) {
+                                    if (getTypeFromSlotID(i) == null) {
+                                        setTypeFromSlotID(i, inputStack.getItem());
+                                        setCountFromSlotID(i, Math.min(ServerConfig.covetousCofferCapacity, inputStack.getCount()));
 
+                                        targetSlot = i;
+                                        changed = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if(targetSlot > 0) {
+                            updateOutputSlot(targetSlot);
+                        }
                         setStackInSlot(SLOT_INPUT, ItemStack.EMPTY);
-                    } else if (slot >= SLOT_OUTPUT_ITEM_1 && slot <= SLOT_OUTPUT_ITEM_4) {
-                        tryUpdateOutputSlots();
+                    }
+                    else if (slot >= SLOT_OUTPUT_ITEM_1 && slot <= SLOT_OUTPUT_ITEM_4) {
+                        ItemStack outputSlot = getStackInSlot(slot);
+                        if(getCountFromSlotID(slot) > 0 && (outputSlot.isEmpty() || outputSlot.getCount() < outputSlot.getMaxStackSize())) {
+                            int pre = getCountFromSlotID(slot);
+                            updateOutputSlot(slot);
+                            changed = pre != getCountFromSlotID(slot);
+                        }
+
+                        if(getCountFromSlotID(slot) <= 0 && outputSlot.isEmpty()) {
+                            setTypeFromSlotID(slot, null);
+                            setCountFromSlotID(slot, 0);
+                            changed = true;
+                        }
                     }
                 }
-                setChanged();
+                if(changed) {
+                    syncAndSave();
+                }
             }
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
                 if(slot == SLOT_INPUT) {
-                    boolean matches1 = getStackInSlot(SLOT_OUTPUT_ITEM_1).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_1).isEmpty();
-                    boolean matches2 = getStackInSlot(SLOT_OUTPUT_ITEM_2).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_2).isEmpty();
-                    boolean matches3 = getStackInSlot(SLOT_OUTPUT_ITEM_3).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_3).isEmpty();
-                    boolean matches4 = getStackInSlot(SLOT_OUTPUT_ITEM_4).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_4).isEmpty();
+                    boolean valid1 = getStackInSlot(SLOT_OUTPUT_ITEM_1).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_1).isEmpty() || getTypeFromSlotID(1) == null;
+                    boolean valid2 = getStackInSlot(SLOT_OUTPUT_ITEM_2).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_2).isEmpty() || getTypeFromSlotID(2) == null;
+                    boolean valid3 = getStackInSlot(SLOT_OUTPUT_ITEM_3).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_3).isEmpty() || getTypeFromSlotID(3) == null;
+                    boolean valid4 = getStackInSlot(SLOT_OUTPUT_ITEM_4).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_4).isEmpty() || getTypeFromSlotID(4) == null;
+                    boolean fullyRepaired = stack.getDamageValue() == 0;
 
-                    return matches1 || matches2 || matches3 || matches4;
+                    return fullyRepaired && (valid1 || valid2 || valid3 || valid4);
                 }
                 return false;
             }
         };
     }
 
-    private void tryUpdateOutputSlots() {
-        boolean changed = false;
-        for(int i=1; i<=4; i++) {
-            if (getTypeFromSlotID(i) != null) {
-                ItemStack stack = itemHandler.getStackInSlot(i);
-                if(stack.isEmpty()) {
-                    int count = Math.min(getCountFromSlotID(i), new ItemStack(getTypeFromSlotID(i)).getMaxStackSize());
-                    stack = new ItemStack(getTypeFromSlotID(i), count);
-                    setCountFromSlotID(i, Math.max(0, getCountFromSlotID(i) - count));
-                    itemHandler.setStackInSlot(i, stack);
-                    changed = true;
-                }
-                else if(stack.getCount() < stack.getMaxStackSize()) {
-                    int maxStackSize = new ItemStack(getTypeFromSlotID(i)).getMaxStackSize();
-                    int count = Math.min(getCountFromSlotID(i), maxStackSize - stack.getCount());
-                    if(count > 0) {
-                        stack.grow(count);
-                        changed = true;
-                    }
+    private void updateOutputSlot(int pID) {
+        if (getTypeFromSlotID(pID) != null) {
+            ItemStack stack = itemHandler.getStackInSlot(pID);
+            if (stack.isEmpty()) {
+                int count = Math.min(getCountFromSlotID(pID), new ItemStack(getTypeFromSlotID(pID)).getMaxStackSize());
+                stack = new ItemStack(getTypeFromSlotID(pID), count);
+                setCountFromSlotID(pID, Math.max(0, getCountFromSlotID(pID) - count));
+                itemHandler.setStackInSlot(pID, stack);
+            } else if (stack.getCount() < stack.getMaxStackSize()) {
+                int maxStackSize = new ItemStack(getTypeFromSlotID(pID)).getMaxStackSize();
+                int count = Math.min(getCountFromSlotID(pID), maxStackSize - stack.getCount());
+                if (count > 0) {
+                    stack.grow(count);
+                    setCountFromSlotID(pID, Math.max(0, getCountFromSlotID(pID) - count));
                 }
             }
         }
-
-        if(changed) syncAndSave();
     }
 
     public Item getTypeFromSlotID(int pID) {
@@ -191,6 +206,36 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
         else if(pID == 4) return itemHandler.getStackInSlot(SLOT_OUTPUT_ITEM_4);
 
         return ItemStack.EMPTY;
+    }
+
+    public void setDisplayStackFromSlotID(int pID, Item pType) {
+        if(pID == 1) displayStack1 = pType == null ? null : new ItemStack(pType);
+        else if(pID == 2) displayStack2 = pType == null ? null : new ItemStack(pType);
+        else if(pID == 3) displayStack3 = pType == null ? null : new ItemStack(pType);
+        else if(pID == 4) displayStack4 = pType == null ? null : new ItemStack(pType);
+    }
+
+    public ItemStack getDisplayStackFromSlotID(int pID) {
+        if(pID == 1) return displayStack1;
+        else if(pID == 2) return displayStack2;
+        else if(pID == 3) return displayStack3;
+        else if(pID == 4) return displayStack4;
+
+        return ItemStack.EMPTY;
+    }
+
+    public void updateDisplayStacks() {
+        for(int i=1; i<=4; i++) {
+            if(getTypeFromSlotID(i) == null) {
+                setDisplayStackFromSlotID(i, null);
+            }
+            else if(getDisplayStackFromSlotID(i) == null && getTypeFromSlotID(i) != null) {
+                setDisplayStackFromSlotID(i, getTypeFromSlotID(i));
+            }
+            else if(getDisplayStackFromSlotID(i).getItem() != getTypeFromSlotID(i)) {
+                setDisplayStackFromSlotID(i, getTypeFromSlotID(i));
+            }
+        }
     }
 
     @Override
@@ -243,6 +288,8 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
             setTypeFromSlotID(i, ForgeRegistries.ITEMS.getValue(key));
             setCountFromSlotID(i, bufferTag.getInt("count"));
         }
+
+        updateDisplayStacks();
     }
 
     @Override
