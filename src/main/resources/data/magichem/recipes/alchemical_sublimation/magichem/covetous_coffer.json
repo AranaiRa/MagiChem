@@ -11,9 +11,9 @@
       "experience": 0,
       "components": [
         { "item": "minecraft:chest" },
-        { "item": "mna:decoration/transmuted_silver_slab" },
         { "item": "magichem:materia_jar_quad" },
-        { "item": "mna:rune_ritual_metal" }
+        { "item": "mna:decoration/transmuted_silver_slab" },
+        { "item": "minecraft:gold_ingot" }
       ],
       "materia": [
         { "item": "magichem:admixture_vessel", "count": 25 },

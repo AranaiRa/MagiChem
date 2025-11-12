@@ -30,14 +30,14 @@ public class CovetousCofferBlockEntityRenderer implements BlockEntityRenderer<Co
 
     @Override
     public void render(CovetousCofferBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        this.renderLid(pBlockEntity, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
-    }
-
-    private void renderLid(CovetousCofferBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         Level world = pBlockEntity.getLevel();
         BlockPos pos = pBlockEntity.getBlockPos();
         BlockState state = pBlockEntity.getBlockState();
         Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+        pBlockEntity.lidAngle = Math.min(1, Math.max(0, pBlockEntity.lidAngle + (pBlockEntity.isLidOpening ? pPartialTick : -pPartialTick) * 0.05f));
+        float weightedAnim = 1 - ((1-pBlockEntity.lidAngle) * (1-pBlockEntity.lidAngle));
+        float lidRotDegrees = 60 * weightedAnim;
 
         pPoseStack.pushPose();
 
@@ -57,7 +57,8 @@ public class CovetousCofferBlockEntityRenderer implements BlockEntityRenderer<Co
 
         pPoseStack.translate(0.5f, 0.375f, 0.125f);
         pPoseStack.mulPose(Axis.YN.rotationDegrees(rot));
-        pPoseStack.mulPose(Axis.XN.rotationDegrees(45));
+
+        pPoseStack.mulPose(Axis.XN.rotationDegrees(lidRotDegrees));
         ModelUtils.renderModel(pBuffer, world, pos, state, RENDERER_MODEL_LID, pPoseStack, pPackedLight, pPackedOverlay);
 
         pPoseStack.popPose();

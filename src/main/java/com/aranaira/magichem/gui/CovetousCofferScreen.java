@@ -13,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class CovetousCofferScreen extends AbstractContainerScreen<CovetousCoffer
 
     public CovetousCofferScreen(CovetousCofferMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        menu.blockEntity.isLidOpening = true;
     }
 
     @Override
@@ -44,8 +46,12 @@ public class CovetousCofferScreen extends AbstractContainerScreen<CovetousCoffer
             final ItemStack displayStack = menu.blockEntity.getDisplayStackFromSlotID(i);
             if (displayStack != null) {
                 pGuiGraphics.renderItem(displayStack, x + 26 + (i - 1) * 36, y + 49);
-                String storedAmount = "" + menu.blockEntity.getCountFromSlotID(i);
-                pGuiGraphics.drawString(font, storedAmount, x + 34 - font.width(storedAmount) / 2 + (i - 1) * 36, y + 70, displayStack.isEmpty() ? 0xff444444 : 0xff000000, false);
+                int count = menu.blockEntity.getCountFromSlotID(i);
+                String formattedCount = "" + menu.blockEntity.getCountFromSlotID(i);
+                if(count > 999999999) formattedCount = (count / 1000000000)+"B";
+                else if(count > 999999) formattedCount = (count / 1000000)+"M";
+                else if(count > 99999) formattedCount = (count / 1000)+"K";
+                pGuiGraphics.drawString(font, formattedCount, x + 34 - font.width(formattedCount) / 2 + (i - 1) * 36, y + 70, displayStack.isEmpty() ? 0xff444444 : 0xff000000, false);
             }
         }
     }
@@ -59,17 +65,25 @@ public class CovetousCofferScreen extends AbstractContainerScreen<CovetousCoffer
         int y = (height - PANEL_MAIN_H) / 2;
         boolean doOriginalTooltip = true;
 
-//        if (pX >= x + 79 && pX <= x + 106 &&
-//                pY >= y + 48 && pY <= y + 68) {
-//
-//            tooltipContents.addAll(materiaStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
-//            tooltipContents.add(Component.empty());
-//            tooltipContents.add(Component.empty()
-//                    .append(Component.literal("" + Math.min(ServerConfig.conjurerMateriaCapacity, menu.blockEntity.getMateriaAmount())).withStyle(ChatFormatting.DARK_AQUA))
-//                    .append(Component.literal(" / ").withStyle(ChatFormatting.DARK_GRAY))
-//                    .append(Component.literal("" + ServerConfig.conjurerMateriaCapacity).withStyle(ChatFormatting.DARK_AQUA))
-//            );
-//        }
+        if (pX >= x + 25 && pX <= x + 43 &&
+                pY >= y + 48 && pY <= y + 66) {
+            if(!menu.blockEntity.getDisplayStackFromSlotID(1).isEmpty()) tooltipContents.addAll(menu.blockEntity.getDisplayStackFromSlotID(1).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+        }
+
+        if (pX >= x + 61 && pX <= x + 104 &&
+                pY >= y + 48 && pY <= y + 66) {
+            if(!menu.blockEntity.getDisplayStackFromSlotID(2).isEmpty()) tooltipContents.addAll(menu.blockEntity.getDisplayStackFromSlotID(2).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+        }
+
+        if (pX >= x + 97 && pX <= x + 115 &&
+                pY >= y + 48 && pY <= y + 66) {
+            if(!menu.blockEntity.getDisplayStackFromSlotID(3).isEmpty()) tooltipContents.addAll(menu.blockEntity.getDisplayStackFromSlotID(3).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+        }
+
+        if (pX >= x + 133 && pX <= x + 151 &&
+                pY >= y + 48 && pY <= y + 66) {
+            if(!menu.blockEntity.getDisplayStackFromSlotID(4).isEmpty()) tooltipContents.addAll(menu.blockEntity.getDisplayStackFromSlotID(4).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+        }
 
 
         if(doOriginalTooltip)
@@ -88,5 +102,11 @@ public class CovetousCofferScreen extends AbstractContainerScreen<CovetousCoffer
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+    }
+
+    @Override
+    public void onClose() {
+        super.onClose();
+        menu.blockEntity.isLidOpening = false;
     }
 }

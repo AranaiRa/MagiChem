@@ -1,8 +1,10 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.gui.CovetousCofferMenu;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
+import com.aranaira.magichem.registry.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +13,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -29,17 +32,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvider {
+public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvider, IKeepsInventoryOnBreak {
     public static final int
         SLOT_COUNT = 5,
         SLOT_INPUT = 0, SLOT_OUTPUT_ITEM_1 = 1, SLOT_OUTPUT_ITEM_2 = 2, SLOT_OUTPUT_ITEM_3 = 3, SLOT_OUTPUT_ITEM_4 = 4;
     private Item
         itemType1 = null, itemType2 = null, itemType3 = null, itemType4 = null;
     private int
-        itemCount1 = 0, itemCount2 = 0, itemCount3 = 0, itemCount4 = 0,
-        outputSlotSkip = 0;
+        itemCount1 = 0, itemCount2 = 0, itemCount3 = 0, itemCount4 = 0;
     private ItemStack
         displayStack1 = null, displayStack2 = null, displayStack3 = null, displayStack4 = null;
+
+    public boolean isLidOpening = false;
+    public float lidAngle = 0f;
 
     protected ItemStackHandler itemHandler;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -325,5 +330,28 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         return new CovetousCofferMenu(pContainerId, pPlayerInventory, this, new SimpleContainerData(0));
+    }
+
+    @Override
+    public void packDataToBlockItem() {
+        ItemStack stack = new ItemStack(BlockRegistry.COVETOUS_COFFER.get());
+
+        CompoundTag nbt = new CompoundTag();
+        nbt.put("inventory", itemHandler.serializeNBT());
+        for (int i = 1; i <= 4; i++) {
+            CompoundTag bufferTag = new CompoundTag();
+            bufferTag.putString("item", ForgeRegistries.ITEMS.getKey(getTypeFromSlotID(i)).toString());
+            bufferTag.putInt("count", getCountFromSlotID(i));
+            nbt.put("itemBuffer" + i, bufferTag);
+        }
+
+        stack.setTag(nbt);
+
+        Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), stack);
+    }
+
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+        load(pNBT);
     }
 }
