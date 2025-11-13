@@ -488,7 +488,7 @@ public class ServerConfig
 
     private static final ForgeConfigSpec.IntValue COVETOUS_COFFER_CAPACITY = BUILDER
             .comment("How many items can a Covetous Coffer hold in each slot?")
-            .defineInRange("covetousCofferCapacity", 2048, 1, Integer.MAX_VALUE);
+            .defineInRange("covetousCofferCapacity", 4096, 1, Integer.MAX_VALUE);
 
     //----------------MATERIA MANIFEST
 

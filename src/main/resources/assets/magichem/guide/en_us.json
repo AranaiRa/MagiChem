@@ -11891,5 +11891,59 @@
       }
     ]
   },
+  "Covetous Coffer": {
+    "index": "0",
+    "category": "magichem_wonders",
+    "tier": 2,
+    "sections": [
+      {
+        "type": "title",
+        "value": "Covetous Coffer"
+      },
+      {
+        "type": "text",
+        "value": "",
+        "json": [
+          {
+            "text": "A "
+          },
+          {
+            "text": "Covetous Coffer",
+            "color": "dark_purple"
+          },
+          {
+            "text": " is an alchemically modified chest with strange spatial properties. It can only hold "
+          },
+          {
+            "text": "four types",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of items, but can contain "
+          },
+          {
+            "text": "more than a double chest's worth",
+            "color": "dark_purple"
+          },
+          {
+            "text": " of each type.\n\nOnce a type of item is full excess items inserted will vanish into the depths of the coffer, never to be seen again.\n\nIf an item that the coffer contains touches it, the coffer will "
+          },
+          {
+            "text": "absorb the item",
+            "color": "dark_purple"
+          },
+          {
+            "text": " into itself. Empty slots in the coffer cannot be filled in this manner.\n\nItems that are damaged and items that hold an enchantment cannot be inserted into a Covetous Coffer."
+          }
+        ]
+      }
+    ],
+    "related_recipes": [
+      {
+        "type": "sublimation",
+        "location": "magichem:alchemical_sublimation/magichem/covetous_coffer"
+      }
+    ]
+  },
   "version": "1.0.0a"
 }

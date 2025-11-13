@@ -147,8 +147,12 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
                     boolean valid3 = getStackInSlot(SLOT_OUTPUT_ITEM_3).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_3).isEmpty() || getTypeFromSlotID(3) == null;
                     boolean valid4 = getStackInSlot(SLOT_OUTPUT_ITEM_4).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_4).isEmpty() || getTypeFromSlotID(4) == null;
                     boolean fullyRepaired = stack.getDamageValue() == 0;
+                    boolean hasEnchantments = false;
+                    if(stack.hasTag()) {
+                        hasEnchantments = stack.getTag().contains("Enchantments") || stack.getTag().contains("StoredEnchantments");
+                    }
 
-                    return fullyRepaired && (valid1 || valid2 || valid3 || valid4);
+                    return fullyRepaired && !hasEnchantments && (valid1 || valid2 || valid3 || valid4);
                 }
                 return false;
             }
@@ -289,9 +293,16 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
 
         for(int i=1; i<=4; i++) {
             CompoundTag bufferTag = nbt.getCompound("itemBuffer"+i);
-            ResourceLocation key = new ResourceLocation(bufferTag.getString("item"));
-            setTypeFromSlotID(i, ForgeRegistries.ITEMS.getValue(key));
-            setCountFromSlotID(i, bufferTag.getInt("count"));
+            int count = bufferTag.getInt("count");
+            if(bufferTag.getString("item").equals("minecraft:air")) {
+                setTypeFromSlotID(i, null);
+                setCountFromSlotID(i, 0);
+            }
+            else {
+                ResourceLocation key = new ResourceLocation(bufferTag.getString("item"));
+                setTypeFromSlotID(i, ForgeRegistries.ITEMS.getValue(key));
+                setCountFromSlotID(i, count);
+            }
         }
 
         updateDisplayStacks();

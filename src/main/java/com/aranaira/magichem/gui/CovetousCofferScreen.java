@@ -67,22 +67,26 @@ public class CovetousCofferScreen extends AbstractContainerScreen<CovetousCoffer
 
         if (pX >= x + 25 && pX <= x + 43 &&
                 pY >= y + 48 && pY <= y + 66) {
-            if(!menu.blockEntity.getDisplayStackFromSlotID(1).isEmpty()) tooltipContents.addAll(menu.blockEntity.getDisplayStackFromSlotID(1).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            ItemStack displayStack = menu.blockEntity.getDisplayStackFromSlotID(1);
+            if(displayStack != null && !displayStack.isEmpty()) tooltipContents.addAll(displayStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
         }
 
         if (pX >= x + 61 && pX <= x + 104 &&
                 pY >= y + 48 && pY <= y + 66) {
-            if(!menu.blockEntity.getDisplayStackFromSlotID(2).isEmpty()) tooltipContents.addAll(menu.blockEntity.getDisplayStackFromSlotID(2).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            ItemStack displayStack = menu.blockEntity.getDisplayStackFromSlotID(2);
+            if(displayStack != null && !displayStack.isEmpty()) tooltipContents.addAll(displayStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
         }
 
         if (pX >= x + 97 && pX <= x + 115 &&
                 pY >= y + 48 && pY <= y + 66) {
-            if(!menu.blockEntity.getDisplayStackFromSlotID(3).isEmpty()) tooltipContents.addAll(menu.blockEntity.getDisplayStackFromSlotID(3).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            ItemStack displayStack = menu.blockEntity.getDisplayStackFromSlotID(3);
+            if(displayStack != null && !displayStack.isEmpty()) tooltipContents.addAll(displayStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
         }
 
         if (pX >= x + 133 && pX <= x + 151 &&
                 pY >= y + 48 && pY <= y + 66) {
-            if(!menu.blockEntity.getDisplayStackFromSlotID(4).isEmpty()) tooltipContents.addAll(menu.blockEntity.getDisplayStackFromSlotID(4).getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
+            ItemStack displayStack = menu.blockEntity.getDisplayStackFromSlotID(4);
+            if(displayStack != null && !displayStack.isEmpty()) tooltipContents.addAll(displayStack.getTooltipLines(getMinecraft().player, TooltipFlag.NORMAL));
         }
 
 
