@@ -528,6 +528,7 @@ public class ServerConfig
     static {
         WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS.add("mna:components/shield");
         WISDOM_BLACKLIST_MAGNITUDE_DEFAULTS.add("mna:components/simulacrum");
+        WISDOM_BLACKLIST_RANGE_DEFAULTS.add("mna:components/light");
     }
 
     private static final ForgeConfigSpec.ConfigValue<List<?>> WISDOM_BLACKLIST_DAMAGE = BUILDER
