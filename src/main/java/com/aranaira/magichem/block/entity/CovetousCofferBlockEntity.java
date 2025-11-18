@@ -147,12 +147,12 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
                     boolean valid3 = getStackInSlot(SLOT_OUTPUT_ITEM_3).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_3).isEmpty() || getTypeFromSlotID(3) == null;
                     boolean valid4 = getStackInSlot(SLOT_OUTPUT_ITEM_4).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_4).isEmpty() || getTypeFromSlotID(4) == null;
                     boolean fullyRepaired = stack.getDamageValue() == 0;
-                    boolean hasEnchantments = false;
+                    boolean hasTagData = false;
                     if(stack.hasTag()) {
-                        hasEnchantments = stack.getTag().contains("Enchantments") || stack.getTag().contains("StoredEnchantments");
+                        hasTagData = stack.getTag().size() > 0;
                     }
 
-                    return fullyRepaired && !hasEnchantments && (valid1 || valid2 || valid3 || valid4);
+                    return fullyRepaired && !hasTagData && (valid1 || valid2 || valid3 || valid4);
                 }
                 return false;
             }
