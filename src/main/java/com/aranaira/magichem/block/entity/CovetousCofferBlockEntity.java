@@ -152,6 +152,9 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
                     boolean isWaterBottle = false;
                     if(stack.hasTag()) {
                         hasTagData = stack.getTag().size() > 0;
+                        if(stack.getTag().size() == 1 && stack.getTag().contains("Damage")) {
+                            hasTagData = !(stack.getTag().getInt("Damage") == 0);
+                        }
                         if(stack.getItem() == Items.POTION && stack.getTag().contains("Potion")) {
                             isWaterBottle = stack.getTag().getString("Potion").equals("minecraft:water");
                         }
