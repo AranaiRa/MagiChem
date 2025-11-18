@@ -90,7 +90,7 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
             if(slot == SLOT_DYE_BOTTLES) {
                 return false;
             } else if(slot == SLOT_DYE_INPUT) {
-                return stack.getItem() instanceof DyeItem || stack.getItem() == ADMIXTURE_COLOR_STACK.getItem();
+                return stack.getItem() instanceof DyeItem || stack.getItem() == ADMIXTURE_COLOR_STACK.getItem() || stack.getItem() == ItemRegistry.DEBUG_ORB.get();
             } else if(slot >= SLOT_OUTPUT_START && slot < SLOT_OUTPUT_START + SLOT_OUTPUT_COUNT) {
                 return false;
             }
@@ -324,6 +324,19 @@ public class VariegatorBlockEntity extends BlockEntity implements MenuProvider, 
 
                             changed = true;
                         }
+                    }
+                }
+                //Otherwise, debug orb
+                else if(insert.getItem() == ItemRegistry.DEBUG_ORB.get()) {
+                    for(DyeColor c : DyeColor.values()) {
+                        if(pEntity.getDyeFillByColor(c) < ServerConfig.variegatorMaxDye) {
+                            pEntity.setDyeFillByColor(c, ServerConfig.variegatorMaxDye);
+                            changed = true;
+                        }
+                    }
+                    if(pEntity.dyeAdmixture < ServerConfig.variegatorMaxAdmixture) {
+                        pEntity.dyeAdmixture = ServerConfig.variegatorMaxAdmixture;
+                        changed = true;
                     }
                 }
 
