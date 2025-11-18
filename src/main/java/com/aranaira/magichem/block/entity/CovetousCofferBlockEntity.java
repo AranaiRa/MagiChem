@@ -21,6 +21,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -148,11 +149,15 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
                     boolean valid4 = getStackInSlot(SLOT_OUTPUT_ITEM_4).getItem() == stack.getItem() || getStackInSlot(SLOT_OUTPUT_ITEM_4).isEmpty() || getTypeFromSlotID(4) == null;
                     boolean fullyRepaired = stack.getDamageValue() == 0;
                     boolean hasTagData = false;
+                    boolean isWaterBottle = false;
                     if(stack.hasTag()) {
                         hasTagData = stack.getTag().size() > 0;
+                        if(stack.getItem() == Items.POTION && stack.getTag().contains("Potion")) {
+                            isWaterBottle = stack.getTag().getString("Potion").equals("minecraft:water");
+                        }
                     }
 
-                    return fullyRepaired && !hasTagData && (valid1 || valid2 || valid3 || valid4);
+                    return fullyRepaired && (!hasTagData || isWaterBottle) && (valid1 || valid2 || valid3 || valid4);
                 }
                 return false;
             }
@@ -165,6 +170,11 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
             if (stack.isEmpty()) {
                 int count = Math.min(getCountFromSlotID(pID), new ItemStack(getTypeFromSlotID(pID)).getMaxStackSize());
                 stack = new ItemStack(getTypeFromSlotID(pID), count);
+                if(stack.getItem() == Items.POTION) {
+                    CompoundTag nbt = new CompoundTag();
+                    nbt.putString("Potion", "minecraft:water");
+                    stack.setTag(nbt);
+                }
                 setCountFromSlotID(pID, Math.max(0, getCountFromSlotID(pID) - count));
                 itemHandler.setStackInSlot(pID, stack);
             } else if (stack.getCount() < stack.getMaxStackSize()) {
@@ -218,10 +228,24 @@ public class CovetousCofferBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public void setDisplayStackFromSlotID(int pID, Item pType) {
-        if(pID == 1) displayStack1 = pType == null ? null : new ItemStack(pType);
-        else if(pID == 2) displayStack2 = pType == null ? null : new ItemStack(pType);
-        else if(pID == 3) displayStack3 = pType == null ? null : new ItemStack(pType);
-        else if(pID == 4) displayStack4 = pType == null ? null : new ItemStack(pType);
+        if(pID == 1) displayStack1 = generateDisplayStackSingle(pType);
+        else if(pID == 2) displayStack2 = generateDisplayStackSingle(pType);
+        else if(pID == 3) displayStack3 = generateDisplayStackSingle(pType);
+        else if(pID == 4) displayStack4 = generateDisplayStackSingle(pType);
+    }
+
+    private ItemStack generateDisplayStackSingle(Item pType) {
+        if(pType == null) {
+            return null;
+        } else if(pType == Items.POTION) {
+            CompoundTag nbt = new CompoundTag();
+            nbt.putString("Potion", "minecraft:water");
+            ItemStack out = new ItemStack(pType);
+            out.setTag(nbt);
+            return out;
+        } else {
+            return new ItemStack(pType);
+        }
     }
 
     public ItemStack getDisplayStackFromSlotID(int pID) {
