@@ -1264,11 +1264,17 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
     ////////////////////
 
     public void clearRecipe() {
-        clearRecipeAfterNextProcess = true;
-        doDeferredRecipeCheck = false;
-        if(animStage == ANIM_STAGE_IDLE) {
-            currentRecipe = null;
+        if(!clearRecipeAfterNextProcess) {
+            clearRecipeAfterNextProcess = true;
+            doDeferredRecipeCheck = false;
+            if (animStage == ANIM_STAGE_IDLE) {
+                currentRecipe = null;
+                clearRecipeAfterNextProcess = false;
+            }
+        } else {
             clearRecipeAfterNextProcess = false;
+            doDeferredRecipeCheck = false;
+            currentRecipe = null;
         }
         syncAndSave();
     }

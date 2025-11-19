@@ -664,6 +664,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
         if(!level.isClientSide()) {
             currentItemRecipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
             currentFluidRecipe = null;
+            clearRecipeAfterNextProcess = false;
 
             if (currentItemRecipe != null) {
                 batchSize = 1;
@@ -700,6 +701,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
     public void setCurrentRecipe(Fluid pQuery) {
         currentFluidRecipe = FluidDistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
         currentItemRecipe = null;
+        clearRecipeAfterNextProcess = false;
 
         if (currentFluidRecipe != null) {
             batchSize = 1;

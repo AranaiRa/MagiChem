@@ -38,13 +38,13 @@ public class DeviceRecipeClearC2SPacket {
 
         context.enqueueWork(() -> {
             if(entity instanceof AbstractFixationBlockEntity fixation) {
-                fixation.clearRecipeAfterNextProcess = true;
+                fixation.clearRecipe();
             }
             else if(entity instanceof AbstractSeparationBlockEntity separation) {
-                separation.clearRecipeAfterNextProcess = true;
+                separation.clearRecipe();
             }
             else if(entity instanceof AbstractFabricationBlockEntity fabrication) {
-                fabrication.clearRecipeAfterNextProcess = true;
+                fabrication.clearRecipe();
             }
             else if(entity instanceof AlchemicalNexusBlockEntity nexus) {
                 nexus.clearRecipe();

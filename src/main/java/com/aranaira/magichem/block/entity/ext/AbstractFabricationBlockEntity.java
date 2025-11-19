@@ -270,6 +270,19 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
     // RECIPE HANDLING
     ////////////////////
 
+    public void clearRecipe() {
+        if(!clearRecipeAfterNextProcess) {
+            clearRecipeAfterNextProcess = true;
+            doDeferredRecipeCheck = false;
+        } else {
+            clearRecipeAfterNextProcess = false;
+            doDeferredRecipeCheck = false;
+            currentItemRecipe = null;
+            currentFluidRecipe = null;
+        }
+        syncAndSave();
+    }
+
     protected DistillationFabricationRecipe getRecipeForItem(Item pItem) {
         if(allItemRecipes.size() == 0) {
             for(DistillationFabricationRecipe recipe : DistillationFabricationRecipe.getAllDistillingRecipes(level)) {
@@ -387,6 +400,8 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         resolveActuators(pEntity, materiaCreated);
         if(pEntity.clearRecipeAfterNextProcess) {
             pEntity.currentItemRecipe = null;
+            pEntity.currentFluidRecipe = null;
+            pEntity.doDeferredRecipeCheck = false;
             pEntity.clearRecipeAfterNextProcess = false;
             pEntity.syncAndSave();
         }

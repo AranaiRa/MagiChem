@@ -308,6 +308,18 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     // RECIPE HANDLING
     ////////////////////
 
+    public void clearRecipe() {
+        if(!clearRecipeAfterNextProcess) {
+            clearRecipeAfterNextProcess = true;
+            doDeferredRecipeCheck = false;
+        } else {
+            clearRecipeAfterNextProcess = false;
+            doDeferredRecipeCheck = false;
+            currentRecipe = null;
+        }
+        syncAndSave();
+    }
+
     protected static boolean canCraftItem(AbstractFixationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
         //Can't craft if there's no set recipe
         if(pEntity.currentRecipe == null)

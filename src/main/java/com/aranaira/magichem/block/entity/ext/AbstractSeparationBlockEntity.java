@@ -330,6 +330,18 @@ public abstract class AbstractSeparationBlockEntity extends AbstractBlockEntityW
     // RECIPE HANDLING
     ////////////////////
 
+    public void clearRecipe() {
+        if(!clearRecipeAfterNextProcess) {
+            clearRecipeAfterNextProcess = true;
+            doDeferredRecipeCheck = false;
+        } else {
+            clearRecipeAfterNextProcess = false;
+            doDeferredRecipeCheck = false;
+            currentRecipe = null;
+        }
+        syncAndSave();
+    }
+
     protected static boolean canCraftItem(AbstractSeparationBlockEntity pEntity, Function<IDs, Integer> pVarFunc) {
         //Can't craft if the bottle output is full
         if(pEntity.itemHandler.getStackInSlot(pVarFunc.apply(IDs.SLOT_BOTTLES_OUTPUT)).getCount() == 64)

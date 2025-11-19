@@ -801,6 +801,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             DistillationFabricationRecipe previousItemRecipe = currentItemRecipe;
             currentItemRecipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
             currentFluidRecipe = null;
+            clearRecipeAfterNextProcess = false;
 
             if (currentItemRecipe != null && previousItemRecipe.getAlchemyObject().getItem() != pQuery) {
                 batchSize = currentItemRecipe.getBatchSize();
@@ -829,6 +830,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                 }
             }
         }
+        else {
+            currentItemRecipe = DistillationFabricationRecipe.getFabricatingRecipe(level, pQuery);
+            currentFluidRecipe = null;
+            clearRecipeAfterNextProcess = false;
+        }
         doDeferredRecipeCheck = false;
 
         syncAndSave();
@@ -839,6 +845,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
             FluidDistillationFabricationRecipe previousFluidRecipe = currentFluidRecipe;
             currentFluidRecipe = getRecipeForFluid(pQuery);
             currentItemRecipe = null;
+            clearRecipeAfterNextProcess = false;
 
             if (currentFluidRecipe != null && previousFluidRecipe.getAlchemyFluid().getFluid() != pQuery) {
                 batchSize = currentFluidRecipe.getBatchSize();
@@ -866,6 +873,11 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
                     materiaToVent = materiaToVent & ~(1 << i);
                 }
             }
+        }
+        else {
+            currentFluidRecipe = getRecipeForFluid(pQuery);
+            currentItemRecipe = null;
+            clearRecipeAfterNextProcess = false;
         }
         doDeferredRecipeCheck = false;
 
