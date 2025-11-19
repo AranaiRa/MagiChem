@@ -462,7 +462,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
             }
 
             if(bowlPositions.length > 0) {
-                final ItemStack[] contentsOfInputSlots = pEntity.getContentsOfInputSlots();
+                final ItemStack[] contentsOfInputSlots = pEntity.getContentsOfInputSlotsAsArray();
                 boolean has1 = !contentsOfInputSlots[0].isEmpty() || !contentsOfInputSlots[1].isEmpty();
                 boolean has2 = !contentsOfInputSlots[2].isEmpty() || !contentsOfInputSlots[3].isEmpty();
                 boolean has3 = !contentsOfInputSlots[4].isEmpty() || !contentsOfInputSlots[5].isEmpty();
@@ -599,7 +599,7 @@ public class CircleFabricationBlockEntity extends AbstractFabricationBlockEntity
                 0, 0, 0);
     }
 
-    public ItemStack[] getContentsOfInputSlots() {
+    public ItemStack[] getContentsOfInputSlotsAsArray() {
         ItemStack[] out = new ItemStack[10];
         for(int i=SLOT_INPUT_START; i<SLOT_INPUT_START+SLOT_INPUT_COUNT; i++) {
             out[i-SLOT_INPUT_START] = itemHandler.getStackInSlot(i);

@@ -18,8 +18,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -204,7 +202,7 @@ public class GrandCircleFabricationBlockEntityRenderer implements BlockEntityRen
         float fill1 = 0, fill2 = 0, fill3 = 0, fill4 = 0, fill5 = 0;
         boolean has1 = false, has2 = false, has3 = false, has4 = false, has5 = false;
 
-        final ItemStack[] contentsOfInputSlots = pBlockEntity.getContentsOfInputSlots();
+        final ItemStack[] contentsOfInputSlots = pBlockEntity.getContentsOfInputSlotsAsArray();
         if(!contentsOfInputSlots[0].isEmpty() || !contentsOfInputSlots[1].isEmpty()) {
             ItemStack stack = contentsOfInputSlots[0].isEmpty() ?
                     contentsOfInputSlots[1] :

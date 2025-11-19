@@ -115,6 +115,7 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
             if (dpbe instanceof ActuatorEnderBlockEntity ender) {
                 ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pState, ender);
                 if (ender.getIsSatisfied() && !ender.getPaused()) {
+                    boolean instant = ender.getPowerLevel() == 2;
                     //importing
                     final Map<MateriaItem, Integer> provisioningNeeds = pEntity.getProvisioningNeeds();
                     if (provisioningNeeds != null && provisioningNeeds.size() > 0) {
@@ -122,7 +123,6 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
                             for (MateriaItem mi : provisioningNeeds.keySet()) {
                                 int requested = provisioningNeeds.get(mi);
                                 int inStorage = multi.getCurrentStock(mi);
-                                boolean instant = ender.getPowerLevel() == 2;
 
                                 int actualDrain = Math.min(requested, inStorage);
                                 if (actualDrain > 0) {
@@ -131,6 +131,16 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
 
                                     pEntity.setProvisioningInProgress(mi);
                                 }
+                            }
+                        }
+                    }
+                    if(pEntity.currentItemRecipe == null && pEntity.currentFluidRecipe == null && pLevel.getGameTime() % 40 == 0) {
+                        final SimpleContainer inputs = pEntity.getContentsOfInputSlots(pVarFunc);
+                        for (int i = 0; i < inputs.getContainerSize(); i++) {
+                            final ItemStack inputQuery = inputs.getItem(i);
+                            if(!inputQuery.isEmpty() && InventoryHelper.isMateriaUnbottled(inputQuery)) {
+                                pEntity.itemHandler.setStackInSlot(pVarFunc.apply(AbstractFabricationBlockEntity.IDs.SLOT_INPUT_START) + i, ItemStack.EMPTY);
+                                ender.createShlorpToTarget(inputQuery, instant);
                             }
                         }
                     }
@@ -186,6 +196,20 @@ public abstract class AbstractFabricationBlockEntity extends BlockEntity impleme
         }
 
         return changed;
+    }
+
+    public SimpleContainer getContentsOfInputSlots() {
+        return getContentsOfInputSlots(AbstractFabricationBlockEntity::getVar);
+    }
+
+    public SimpleContainer getContentsOfInputSlots(Function<IDs, Integer> pVarFunc) {
+        SimpleContainer output = new SimpleContainer(pVarFunc.apply(IDs.SLOT_INPUT_COUNT));
+
+        for(int i = pVarFunc.apply(IDs.SLOT_INPUT_START); i<pVarFunc.apply(IDs.SLOT_INPUT_START)+pVarFunc.apply(IDs.SLOT_INPUT_COUNT); i++) {
+            output.setItem(i-pVarFunc.apply(IDs.SLOT_INPUT_START), itemHandler.getStackInSlot(i));
+        }
+
+        return output;
     }
 
     public SimpleContainer getContentsOfOutputSlots() {
