@@ -144,6 +144,8 @@
   "item.magichem.oil_of_vitriol_bucket": "Oil of Vitriol Bucket",
   "item.magichem.azoth_bucket": "Azoth Bucket",
 
+  "item.magichem.black_diamond": "Black Diamond",
+
   "item.magichem.liquefacted_copper_bucket": "Liquefacted Copper Bucket",
   "item.magichem.liquefacted_iron_bucket": "Liquefacted Iron Bucket",
   "item.magichem.liquefacted_gold_bucket": "Liquefacted Gold Bucket",
@@ -912,6 +914,8 @@
   "tooltip.magichem.vinteum_crystal_shard": "Alchemically grown crystals bearing vinteum. Can be crushed into Vinteum Dust by a Construct.",
   "tooltip.magichem.winter_charge": "Freezes water and creates snow in a small area when used.",
 
+  "tooltip.magichem.black_diamond": "The result of esoteric alchemical research on diamonds. Can be distilled into a large amount of Nigredo Essentia.",
+
   "tooltip.magichem.prepared_vinteum_crystal": "Stage one of eight of creating an Immaculate Vinteum Crystal. Must be Sublimated next.",
   "tooltip.magichem.laden_vinteum_crystal": "Stage two of eight of creating an Immaculate Vinteum Crystal. Must be Vitriolated next.",
   "tooltip.magichem.lightly_enhanced_vinteum_crystal": "Stage three of eight of creating an Immaculate Vinteum Crystal. Must be crafted with proper materials next.",
@@ -1052,7 +1056,7 @@
   "tooltip.magichem.gui.shlorps.waiting": "Waiting...",
   "tooltip.magichem.gui.shlorps.idle": "Idle",
   "tooltip.magichem.gui.sublimation_in_progress.line1": "Removing this item will pause the active Sublimation.",
-  "tooltip.magichem.gui.sublimation_in_progress.line2": "Re-inserting the Sublimation in Progress will allow you to resume the craft where you left off.",
+  "tooltip.magichem.gui.sublimation_in_progress.line2": "Re-inserting the Sublimation in Progress will allow you to r1me the craft where you left off.",
   "tooltip.magichem.gui.tier_lock": "Tier Lock",
   "tooltip.magichem.gui.tier_lock.line1": "This power setting is currently beyond your limits.",
   "tooltip.magichem.gui.tier_lock.4": "It will become available once you reach Tier 4.",
@@ -1229,6 +1233,17 @@
   "tooltip.magichem.jei.illumination.lumins.solar": "Solar Lumins",
   "tooltip.magichem.jei.illumination.lumins.lunar": "Lunar Lumins",
   "tooltip.magichem.jei.illumination.lumins.sidereal": "Sidereal Lumins",
+  "tooltip.magichem.jei.exaltation.eldrin.part1": "This recipe uses ",
+  "tooltip.magichem.jei.exaltation.eldrin.part2": " Eldrin power.",
+  "tooltip.magichem.jei.exaltation.eldrin.ender": "Ender",
+  "tooltip.magichem.jei.exaltation.eldrin.earth": "Earth",
+  "tooltip.magichem.jei.exaltation.eldrin.water": "Water",
+  "tooltip.magichem.jei.exaltation.eldrin.air": "Air",
+  "tooltip.magichem.jei.exaltation.eldrin.fire": "Fire",
+  "tooltip.magichem.jei.exaltation.eldrin.arcane": "Arcane",
+  "tooltip.magichem.jei.exaltation.slurry.part1": "This recipe uses ",
+  "tooltip.magichem.jei.exaltation.slurry.part2": "Academic Slurry",
+  "tooltip.magichem.jei.exaltation.slurry.part3": ".",
   "tooltip.magichem.jei.vitriolation.acid.line1.part1": "If one of the following fluids is in the main tank of the Acid Basin, this recipe will consume ",
   "tooltip.magichem.jei.vitriolation.acid.line1.part2": ":",
   "tooltip.magichem.jei.vitriolation.acid.line2.part1": "Alternatively, if one of the following fluids is in the main tank of the Acid Basin, this recipe will consume ",
@@ -1648,6 +1663,7 @@
   "jei.magichem.separation": "Alchemical Separation",
   "jei.magichem.sublimation": "Alchemical Sublimation",
   "jei.magichem.sublimation_ritual": "Alchemical Sublimation (Ritual)",
+  "jei.magichem.exaltation": "Alchemical Exaltation",
   "jei.magichem.vitriolation": "Alchemical Vitriolation",
 
   "jei.magichem.info_panel.academic_slurry": "Created by extracting Experience from a Crystal of Memories with an Experience Exchanger or an Occult Matrix. \n Some alchemical devices, like the Fusery, consume Academic Slurry.",

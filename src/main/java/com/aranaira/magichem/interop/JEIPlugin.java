@@ -42,6 +42,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(SublimationRitualRecipeCategory.UID, SublimationRitualRecipe.class);
     public static RecipeType<SublimationRecipe> SUBLIMATION_TYPE =
             new RecipeType<>(SublimationRecipeCategory.UID, SublimationRecipe.class);
+    public static RecipeType<ExaltationRecipe> EXALTATION_TYPE =
+            new RecipeType<>(ExaltationRecipeCategory.UID, ExaltationRecipe.class);
     public static RecipeType<ColorationRecipe> COLORATION_TYPE =
             new RecipeType<>(ColorationRecipeCategory.UID, ColorationRecipe.class);
     public static RecipeType<ConjurationRecipe> CONJURATION_TYPE =
@@ -80,6 +82,8 @@ public class JEIPlugin implements IModPlugin {
                 SublimationRitualRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 SublimationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                ExaltationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 ColorationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
@@ -128,6 +132,9 @@ public class JEIPlugin implements IModPlugin {
 
         List<SublimationRecipe> recipesSublimation = rm.getAllRecipesFor(SublimationRecipe.Type.INSTANCE);
         registration.addRecipes(SUBLIMATION_TYPE, recipesSublimation);
+
+        List<ExaltationRecipe> recipesExaltation = rm.getAllRecipesFor(ExaltationRecipe.Type.INSTANCE);
+        registration.addRecipes(EXALTATION_TYPE, recipesExaltation);
 
         List<ColorationRecipe> recipesColoration = rm.getAllRecipesFor(ColorationRecipe.Type.INSTANCE);
         registration.addRecipes(COLORATION_TYPE, recipesColoration);
@@ -178,6 +185,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ACID_BASIN.get(), 1), VITRIOLATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ASTRAL_OBSERVER.get(), 1), ILLUMINATION_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GNOSTIC_ORB.get(), 1), EXALTATION_TYPE);
 
         IModPlugin.super.registerRecipeCatalysts(registration);
     }
