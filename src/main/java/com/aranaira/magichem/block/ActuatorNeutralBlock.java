@@ -196,7 +196,7 @@ public class ActuatorNeutralBlock extends BaseEntityBlock implements IHasNonStan
     @Override
     public void addTooltipComponents(List<Component> pTooltipComponents) {
         pTooltipComponents.add(
-                Component.translatable("tooltip.magichem.actuator.neutral")
+                Component.translatable("tooltip.magichem.actuator_neutral")
                         .withStyle(ChatFormatting.DARK_GRAY)
         );
     }
