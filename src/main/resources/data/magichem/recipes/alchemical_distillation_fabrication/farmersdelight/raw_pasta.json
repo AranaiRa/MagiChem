@@ -18,7 +18,6 @@
         "components": [
           { "item": "magichem:essentia_water", "count": 1 },
           { "item": "magichem:admixture_satiety", "count": 1 },
-          { "item": "magichem:essentia_nourishing", "count": 4 },
           { "item": "magichem:essentia_wrought", "count": 1 }
         ]
       }
