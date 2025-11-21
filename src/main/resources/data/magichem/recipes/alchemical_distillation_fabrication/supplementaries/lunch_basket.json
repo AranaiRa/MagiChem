@@ -19,7 +19,7 @@
         },
         "components": [
           { "item": "magichem:admixture_vessel", "count": 4 },
-          { "item": "magichem:admixture_satiety", "count": 2 },
+          { "item": "magichem:admixture_delight", "count": 2 },
           { "item": "magichem:admixture_wood", "count": 2 },
           { "item": "magichem:essentia_wrought", "count": 2 }
         ]
