@@ -147,11 +147,11 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         renderBackground(pGuiGraphics);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        renderTooltip(pGuiGraphics, pMouseX, pMouseY);
         if(recipesChanged || menu.blockEntity.forceDisplayedRecipeUpdate)
             updateDisplayedRecipes(recipeFilterBox == null ? "" : recipeFilterBox.getValue());
         renderRecipeOptions(pGuiGraphics);
         updateFilterBoxContents();
+        renderTooltip(pGuiGraphics, pMouseX, pMouseY);
     }
 
     private void initializePowerLevelButtons(){
