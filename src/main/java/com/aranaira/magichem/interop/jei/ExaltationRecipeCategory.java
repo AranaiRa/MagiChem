@@ -78,7 +78,7 @@ public class ExaltationRecipeCategory implements IRecipeCategory<ExaltationRecip
         gui.drawString(font, materiaText, 75 - font.width(materiaText), 13, 0xff000000, false);
 
         gui.drawString(font, recipe.getEldrinRequired()+"", 3, 33, 0xff000000, false);
-        String slurryText = recipe.getMateriaRequired()+"";
+        String slurryText = recipe.getSlurryRequired()+"";
         gui.drawString(font, slurryText, 94 - font.width(slurryText), 33, 0xff000000, false);
         gui.drawString(font, "mB", 94 - font.width("mB"), 43, 0xff000000, false);
     }

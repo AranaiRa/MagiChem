@@ -2,6 +2,7 @@ package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.recipe.ConstructStudyMaterialRecipe;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.Animations;
@@ -21,9 +22,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 public class ConstructStudy extends ConstructAITask<ConstructStudy> {
     private static final ConstructCapability[] requiredCaps;
@@ -32,10 +31,8 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
     private int waitTimer, studyCyclesRemaining, learningItemExperience;
     private Optional<InteractionHand>  learningItemHand;
     private static final Random random = new Random();
-    private static final TagKey<Item>
-        studyMaterialSimple = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "construct_study_materials_simple")),
-        studyMaterialAdvanced = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "construct_study_materials_advanced")),
-        studyMaterialMaster = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "construct_study_materials_master"));
+    private static List<ConstructStudyMaterialRecipe> allRecipes = new ArrayList<>();
+    private static HashMap<Item, Integer> recipeData = new HashMap<>();
 
     public ConstructStudy(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
@@ -44,6 +41,13 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
     @Override
     public void start() {
         super.start();
+        if(allRecipes.size() == 0) {
+            allRecipes = ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(construct.asEntity().level());
+            recipeData.clear();
+            for(ConstructStudyMaterialRecipe recipe : allRecipes) {
+                recipeData.put(recipe.getItem(), recipe.getExperience());
+            }
+        }
     }
 
     @Override
@@ -51,7 +55,7 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
         super.tick();
         if(isFullyConfigured()) {
             if(construct.getIntelligence() < 16) {
-                pushDiagnosticMessage("All these words are confusing me... I don't think I'm smart enough for this whole \"studying\" thing, boss.", false);
+                pushDiagnosticMessage("This thing I'm looking at is confusing me... I don't think I'm smart enough for this whole \"studying\" thing, boss.", false);
                 forceFail();
             }
 
@@ -65,18 +69,18 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                                 if (learningItem.isEmpty()) {
                                     pushDiagnosticMessage("I need something to study, boss!", false);
                                     forceFail();
-                                } else {
-                                    learningItemExperience = 0;
-                                    if (learningItem.is(studyMaterialSimple)) learningItemExperience = ServerConfig.constructStudyExperienceSimple;
-                                    if (learningItem.is(studyMaterialAdvanced)) learningItemExperience = ServerConfig.constructStudyExperienceAdvanced;
-                                    if (learningItem.is(studyMaterialMaster)) learningItemExperience = ServerConfig.constructStudyExperienceMaster;
+                                } else if(recipeData.containsKey(learningItem.getItem())) {
+                                    learningItemExperience = recipeData.get(learningItem.getItem());
 
                                     this.setMoveTarget(deskPos);
                                     this.phase = ETaskPhase.MOVE_TO_DESK;
-                                    pushDiagnosticMessage("Found my desk! I'll get started reading right away.", false);
+                                    pushDiagnosticMessage("Found my desk! I'll get started learning right away.", false);
+                                } else {
+                                    pushDiagnosticMessage("I can't study this item. Sorry, boss.", false);
+                                    forceFail();
                                 }
                             } else {
-                                pushDiagnosticMessage("I can't study if I can't hold things to read!", false);
+                                pushDiagnosticMessage("I can't study if I can't hold onto things!", false);
                                 forceFail();
                             }
                         } else {
@@ -124,7 +128,7 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                     learningItem.shrink(1);
                     construct.asEntity().setItemInHand(learningItemHand.get(), learningItem.isEmpty() ? ItemStack.EMPTY : learningItem);
                     construct.clearForcedAnimation();
-                    pushDiagnosticMessage("What an interesting read! I brokeded the book though...", false);
+                    pushDiagnosticMessage("What an interesting thingie! I brokeded it though...", false);
                     setSuccessCode();
 
                     this.phase = ETaskPhase.SETUP;

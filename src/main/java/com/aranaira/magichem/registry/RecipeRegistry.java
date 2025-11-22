@@ -54,6 +54,9 @@ public class RecipeRegistry {
     public static final RegistryObject<RecipeSerializer<ExaltationRecipe>> EXALTATION_SERIALIZER =
             SERIALIZERS.register("exaltation", () -> ExaltationRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<ConstructStudyMaterialRecipe>> CONSTRUCT_STUDY_MATERIAL_SERIALIZER =
+            SERIALIZERS.register("construct_study_material", () -> ConstructStudyMaterialRecipe.Serializer.INSTANCE);
+
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
     }

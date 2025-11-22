@@ -5,6 +5,7 @@ import com.aranaira.magichem.interop.jei.*;
 import com.aranaira.magichem.recipe.*;
 import com.aranaira.magichem.registry.BlockRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.blocks.BlockInit;
 import com.mna.items.ItemInit;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -56,6 +57,8 @@ public class JEIPlugin implements IModPlugin {
             new RecipeType<>(VitriolationRecipeCategory.UID, VitriolationRecipe.class);
     public static RecipeType<InfoPanelRecipe> INFO_PANEL_TYPE =
             new RecipeType<>(InfoPanelRecipeCategory.UID, InfoPanelRecipe.class);
+    public static RecipeType<ConstructStudyMaterialRecipe> CONSTRUCT_STUDY_MATERIAL_TYPE =
+            new RecipeType<>(ConstructStudyMaterialRecipeCategory.UID, ConstructStudyMaterialRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -96,6 +99,8 @@ public class JEIPlugin implements IModPlugin {
                 IlluminationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new
                 VitriolationRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new
+                ConstructStudyMaterialRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -148,6 +153,9 @@ public class JEIPlugin implements IModPlugin {
         List<InfoPanelRecipe> recipesInfoPanel = rm.getAllRecipesFor(InfoPanelRecipe.Type.INSTANCE);
         registration.addRecipes(INFO_PANEL_TYPE, recipesInfoPanel);
 
+        List<ConstructStudyMaterialRecipe> recipesConstructStudyMaterial = rm.getAllRecipesFor(ConstructStudyMaterialRecipe.Type.INSTANCE);
+        registration.addRecipes(CONSTRUCT_STUDY_MATERIAL_TYPE, recipesConstructStudyMaterial);
+
         List<IlluminationRecipe> recipesIllumination = rm.getAllRecipesFor(IlluminationRecipe.Type.INSTANCE);
         registration.addRecipes(ILLUMINATION_TYPE, recipesIllumination);
 
@@ -187,6 +195,8 @@ public class JEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ASTRAL_OBSERVER.get(), 1), ILLUMINATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GNOSTIC_ORB.get(), 1), EXALTATION_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(BlockInit.STUDY_DESK.get(), 1), CONSTRUCT_STUDY_MATERIAL_TYPE);
 
         IModPlugin.super.registerRecipeCatalysts(registration);
     }

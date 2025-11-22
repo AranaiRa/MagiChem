@@ -672,6 +672,10 @@ public class ItemRegistry {
             () -> new Item(new Item.Properties())
     );
 
+    public static final RegistryObject<Item> DUMMY_CONSTRUCT_STUDY_MATERIAL = ITEMS.register("dummy/dummy_construct_study_material",
+            () -> new Item(new Item.Properties())
+    );
+
     public static final RegistryObject<Item> DUMMY_INFO_PANEL = ITEMS.register("dummy/dummy_info_panel",
             () -> new Item(new Item.Properties())
     );

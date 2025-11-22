@@ -5,5 +5,5 @@
   "items": { "type": "minecraft:diamond", "required": 13 },
   "eldrin": { "type": 2, "required": 80 },
   "materia": { "type": "magichem:essentia_mineral", "required": 120 },
-  "slurry": 1300
+  "slurry": 2300
 }

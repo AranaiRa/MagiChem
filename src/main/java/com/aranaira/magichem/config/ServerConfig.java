@@ -31,18 +31,6 @@ public class ServerConfig
             .comment("How many mB of Academic Slurry constitutes one experience point.")
             .defineInRange("fluidPerXPPoint", 100, 1, 1000);
 
-    private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_SIMPLE = BUILDER
-            .comment("How many experience points a Studying construct generates from simple study materials.")
-            .defineInRange("constructStudyExperienceSimple", 12, 1, Integer.MAX_VALUE);
-
-    private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_ADVANCED = BUILDER
-            .comment("How many experience points a Studying construct generates from advanced study materials.")
-            .defineInRange("constructStudyExperienceAdvanced", 40, 2, Integer.MAX_VALUE);
-
-    private static final ForgeConfigSpec.IntValue CONSTRUCT_STUDY_EXPERIENCE_MASTER = BUILDER
-            .comment("How many experience points a Studying construct generates from master study materials.")
-            .defineInRange("constructStudyExperienceMaster", 145, 4, Integer.MAX_VALUE);
-
     private static final ForgeConfigSpec.IntValue HOUSE_OF_ALCHEMY_DISTILLATION_EFFICIENCY_BONUS = BUILDER
             .comment("The Efficiency that Nigredo, Albedo, Citrinitas, and Rubedo receive during distillation. A percentage of the distance between the actual device Efficiency and 100% Efficiency.")
             .defineInRange("houseOfAlchemyDistillationEfficiencyBonus", 50, 0, 100);
@@ -585,9 +573,6 @@ public class ServerConfig
         grimePerWaste,
         grimePenaltyPoint,
         fluidPerXPPoint,
-        constructStudyExperienceSimple,
-        constructStudyExperienceAdvanced,
-        constructStudyExperienceMaster,
         houseOfAlchemyDistillationEfficiencyBonus,
         fixationBaseSlurryCost,
         fixationSlurryCompoundCost,
@@ -733,9 +718,6 @@ public class ServerConfig
         grimePerWaste = GRIME_PER_WASTE.get();
         grimePenaltyPoint = GRIME_PENALTY_POINT.get();
         fluidPerXPPoint = FLUID_PER_XP_POINT.get();
-        constructStudyExperienceSimple = CONSTRUCT_STUDY_EXPERIENCE_SIMPLE.get();
-        constructStudyExperienceAdvanced = CONSTRUCT_STUDY_EXPERIENCE_ADVANCED.get();
-        constructStudyExperienceMaster = CONSTRUCT_STUDY_EXPERIENCE_MASTER.get();
         houseOfAlchemyDistillationEfficiencyBonus = HOUSE_OF_ALCHEMY_DISTILLATION_EFFICIENCY_BONUS.get();
         canAzothDestroyBedrock = CAN_AZOTH_DESTROY_BEDROCK.get();
         fixationBaseSlurryCost = FIXATION_BASE_SLURRY_COST.get();
