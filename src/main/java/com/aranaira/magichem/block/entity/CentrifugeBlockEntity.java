@@ -210,6 +210,7 @@ public class CentrifugeBlockEntity extends AbstractSeparationBlockEntity impleme
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        linkPlugins();
     }
 
     @Override

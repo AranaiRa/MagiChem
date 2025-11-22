@@ -239,6 +239,7 @@ public class GrandCentrifugeBlockEntity extends AbstractSeparationBlockEntity im
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        linkPlugins();
     }
 
     @Override

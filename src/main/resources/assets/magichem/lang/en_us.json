@@ -1258,6 +1258,9 @@
   "tooltip.magichem.jei.advancement_forbidden.part1": "The following advancement will ",
   "tooltip.magichem.jei.advancement_forbidden.part2": " this recipe: ",
 
+  "tooltip.magichem.event.study.part1": "A Construct can study this for ",
+  "tooltip.magichem.event.study.part2": " xp",
+
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
   "log.magichem.powerspike.bindpower": "Power Spike bound to this Circle of Power.",
   "log.magichem.powerspike.bindtoil": "Power Spike bound to this Circle of Toil.",

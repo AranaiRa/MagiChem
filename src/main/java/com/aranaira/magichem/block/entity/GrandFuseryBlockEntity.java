@@ -270,6 +270,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
+        linkPlugins();
     }
 
     @Override

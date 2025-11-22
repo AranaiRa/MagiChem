@@ -4,8 +4,10 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.events.compat.OccultismEventHelper;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.item.*;
+import com.aranaira.magichem.recipe.ConstructStudyMaterialRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.KeybindRegistry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -40,12 +42,38 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 @Mod.EventBusSubscriber(
         modid = MagiChemMod.MODID,
         bus = Mod.EventBusSubscriber.Bus.MOD,
         value = Dist.CLIENT
 )
 public class ClientEventHandler {
+    private static List<ConstructStudyMaterialRecipe> allStudyRecipes = new ArrayList<>();
+    private static final HashMap<Item, Integer> studyRecipeData = new HashMap<>();
+
+    @SubscribeEvent
+    public static void renderItemTooltips(ItemTooltipEvent event) {
+        if(allStudyRecipes.size() == 0) {
+            allStudyRecipes = ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(event.getEntity().level());
+            for(ConstructStudyMaterialRecipe recipe : allStudyRecipes) {
+                studyRecipeData.put(recipe.getItem(), recipe.getExperience());
+            }
+        }
+
+        if(studyRecipeData.containsKey(event.getItemStack().getItem())) {
+            event.getToolTip().add(
+                    Component.empty().withStyle(ChatFormatting.GREEN)
+                            .append(Component.translatable("tooltip.magichem.event.study.part1"))
+                            .append(Component.literal(""+studyRecipeData.get(event.getItemStack().getItem())))
+                            .append(Component.translatable("tooltip.magichem.event.study.part2"))
+            );
+        }
+
+    }
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {

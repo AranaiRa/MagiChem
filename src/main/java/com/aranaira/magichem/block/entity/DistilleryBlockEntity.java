@@ -219,6 +219,7 @@ public class DistilleryBlockEntity extends AbstractDistillationBlockEntity imple
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        linkPlugins();
     }
 
     @Override
