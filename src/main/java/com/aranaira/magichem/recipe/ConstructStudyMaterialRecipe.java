@@ -28,11 +28,13 @@ public class ConstructStudyMaterialRecipe implements Recipe<SimpleContainer>, IM
     private final ResourceLocation id;
     private final Item item;
     private final int experience;
+    private final boolean consumed;
 
-    public ConstructStudyMaterialRecipe(ResourceLocation pID, Item pItem, int pExperience) {
+    public ConstructStudyMaterialRecipe(ResourceLocation pID, Item pItem, int pExperience, boolean pConsumed) {
         this.id = pID;
         this.item = pItem;
         this.experience = pExperience;
+        this.consumed = pConsumed;
     }
 
     @Override
@@ -51,6 +53,10 @@ public class ConstructStudyMaterialRecipe implements Recipe<SimpleContainer>, IM
 
     public int getExperience() {
         return experience;
+    }
+
+    public boolean isConsumed() {
+        return consumed;
     }
 
     @Override
@@ -138,8 +144,9 @@ public class ConstructStudyMaterialRecipe implements Recipe<SimpleContainer>, IM
             Item itemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemRL));
 
             int experience = GsonHelper.getAsInt(pSerializedRecipe, "experience");
+            boolean consumed = GsonHelper.getAsBoolean(pSerializedRecipe, "consumed");
 
-            return new ConstructStudyMaterialRecipe(pRecipeId, itemAsItem, experience);
+            return new ConstructStudyMaterialRecipe(pRecipeId, itemAsItem, experience, consumed);
         }
 
         @Override
@@ -148,8 +155,9 @@ public class ConstructStudyMaterialRecipe implements Recipe<SimpleContainer>, IM
 
             Item itemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("item")));
             int experience = nbt.getInt("experience");
+            boolean consumed = nbt.getBoolean("consumed");
 
-            return new ConstructStudyMaterialRecipe(pRecipeId, itemAsItem, experience);
+            return new ConstructStudyMaterialRecipe(pRecipeId, itemAsItem, experience, consumed);
         }
 
         @Override
@@ -158,6 +166,7 @@ public class ConstructStudyMaterialRecipe implements Recipe<SimpleContainer>, IM
 
             nbt.putString("item", ForgeRegistries.ITEMS.getKey(pRecipe.item).toString());
             nbt.putInt("experience", pRecipe.experience);
+            nbt.putBoolean("consumed", pRecipe.consumed);
 
             pBuffer.writeNbt(nbt);
         }

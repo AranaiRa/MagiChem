@@ -52,28 +52,6 @@ import java.util.List;
         value = Dist.CLIENT
 )
 public class ClientEventHandler {
-    private static List<ConstructStudyMaterialRecipe> allStudyRecipes = new ArrayList<>();
-    private static final HashMap<Item, Integer> studyRecipeData = new HashMap<>();
-
-    @SubscribeEvent
-    public static void renderItemTooltips(ItemTooltipEvent event) {
-        if(allStudyRecipes.size() == 0) {
-            allStudyRecipes = ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(event.getEntity().level());
-            for(ConstructStudyMaterialRecipe recipe : allStudyRecipes) {
-                studyRecipeData.put(recipe.getItem(), recipe.getExperience());
-            }
-        }
-
-        if(studyRecipeData.containsKey(event.getItemStack().getItem())) {
-            event.getToolTip().add(
-                    Component.empty().withStyle(ChatFormatting.GREEN)
-                            .append(Component.translatable("tooltip.magichem.event.study.part1"))
-                            .append(Component.literal(""+studyRecipeData.get(event.getItemStack().getItem())))
-                            .append(Component.translatable("tooltip.magichem.event.study.part2"))
-            );
-        }
-
-    }
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {

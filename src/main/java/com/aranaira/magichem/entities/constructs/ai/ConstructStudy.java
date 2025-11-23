@@ -12,6 +12,7 @@ import com.mna.api.entities.construct.ai.ConstructAITask;
 import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
 import com.mna.blocks.BlockInit;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -31,8 +32,7 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
     private int waitTimer, studyCyclesRemaining, learningItemExperience;
     private Optional<InteractionHand>  learningItemHand;
     private static final Random random = new Random();
-    private static List<ConstructStudyMaterialRecipe> allRecipes = new ArrayList<>();
-    private static HashMap<Item, Integer> recipeData = new HashMap<>();
+    private static final HashMap<Item, ConstructStudyMaterialRecipe> recipeData = new HashMap<>();
 
     public ConstructStudy(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
@@ -41,11 +41,9 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
     @Override
     public void start() {
         super.start();
-        if(allRecipes.size() == 0) {
-            allRecipes = ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(construct.asEntity().level());
-            recipeData.clear();
-            for(ConstructStudyMaterialRecipe recipe : allRecipes) {
-                recipeData.put(recipe.getItem(), recipe.getExperience());
+        if(recipeData.size() == 0) {
+            for(ConstructStudyMaterialRecipe recipe : ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(construct.asEntity().level())) {
+                recipeData.put(recipe.getItem(), recipe);
             }
         }
     }
@@ -69,8 +67,11 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                                 if (learningItem.isEmpty()) {
                                     pushDiagnosticMessage("I need something to study, boss!", false);
                                     forceFail();
+                                } else if(learningItem.hasTag() && learningItem.getTag().contains("alreadyStudied")) {
+                                    pushDiagnosticMessage("This item has already been studied, sorry boss!", false);
+                                    forceFail();
                                 } else if(recipeData.containsKey(learningItem.getItem())) {
-                                    learningItemExperience = recipeData.get(learningItem.getItem());
+                                    learningItemExperience = recipeData.get(learningItem.getItem()).getExperience();
 
                                     this.setMoveTarget(deskPos);
                                     this.phase = ETaskPhase.MOVE_TO_DESK;
@@ -125,7 +126,18 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                             learningItemExperience);
                     construct.asEntity().level().addFreshEntity(eo);
                     ItemStack learningItem = construct.asEntity().getItemInHand(learningItemHand.get());
-                    learningItem.shrink(1);
+                    if(recipeData.get(learningItem.getItem()).isConsumed()) {
+                        learningItem.shrink(1);
+                    } else {
+                        CompoundTag nbt;
+                        if(learningItem.hasTag()) {
+                            nbt = learningItem.getTag();
+                        } else {
+                            nbt = new CompoundTag();
+                        }
+                        nbt.putBoolean("alreadyStudied", true);
+                        learningItem.setTag(nbt);
+                    }
                     construct.asEntity().setItemInHand(learningItemHand.get(), learningItem.isEmpty() ? ItemStack.EMPTY : learningItem);
                     construct.clearForcedAnimation();
                     pushDiagnosticMessage("What an interesting thingie! I brokeded it though...", false);

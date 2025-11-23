@@ -69,8 +69,12 @@ public class ConstructStudyMaterialRecipeCategory implements IRecipeCategory<Con
         Minecraft mc = Minecraft.getInstance();
         if (mc.font != null) {
             Component xpComponent = Component.literal(recipe.getExperience() + " xp");
+            guiGraphics.drawString(mc.font, xpComponent, 32 - mc.font.width(xpComponent) / 2, 73, 0x27753b, false);
 
-            guiGraphics.drawString(mc.font, xpComponent, 32 - mc.font.width(xpComponent) / 2, 77, 0x27753b, false);
+            if(recipe.isConsumed()) {
+                Component resultComponent = Component.translatable("jei.magichem.construct_study_material.destroys");
+                guiGraphics.drawString(mc.font, resultComponent, 32 - mc.font.width(resultComponent) / 2, 83, 0x444444, false);
+            }
         }
         IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
     }

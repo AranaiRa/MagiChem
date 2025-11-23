@@ -19,7 +19,7 @@
           { "item": "magichem:essentia_air", "count": 4 },
           { "item": "magichem:admixture_vessel", "count": 2 },
           { "item": "magichem:admixture_satiety", "count": 1 },
-          { "item": "magichem:essentia_nourshing", "count": 3 }
+          { "item": "magichem:essentia_nourishing", "count": 3 }
         ]
       }
     }

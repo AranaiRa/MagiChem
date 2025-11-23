@@ -17,7 +17,7 @@ import com.aranaira.magichem.gui.radial.*;
 import com.aranaira.magichem.item.*;
 import com.aranaira.magichem.networking.OpenWisdomWheelC2SPacket;
 import com.aranaira.magichem.networking.ToggleWisdomC2SPacket;
-import com.aranaira.magichem.networking.WisdomSyncC2SPacket;
+import com.aranaira.magichem.recipe.ConstructStudyMaterialRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.registry.KeybindRegistry;
 import com.aranaira.magichem.registry.PacketRegistry;
@@ -25,7 +25,6 @@ import com.mna.KeybindInit;
 import com.mna.api.capabilities.IPlayerMagic;
 import com.mna.api.config.ClientConfigValues;
 import com.mna.capabilities.playerdata.magic.PlayerMagicProvider;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -52,12 +51,14 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
@@ -72,6 +73,34 @@ public class ClientEventForgeBusHandler {
     private static final TagKey<Item>
             TAG_MAGICHEM_WISDOM_STONES = ItemTags.create(new ResourceLocation(MagiChemMod.MODID, "wisdom_stones"));
     private static final ResourceLocation TEXTURE_WISDOM = new ResourceLocation(MagiChemMod.MODID, "textures/gui/gui_wisdom_active.png");
+    private static final HashMap<Item, ConstructStudyMaterialRecipe> studyRecipes = new HashMap<>();
+
+    @SubscribeEvent
+    public static void renderItemTooltips(ItemTooltipEvent event) {
+        if(event.getEntity() != null && event.getEntity().level() != null){
+            if (studyRecipes.size() == 0) {
+                for (ConstructStudyMaterialRecipe recipe : ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(event.getEntity().level())) {
+                    studyRecipes.put(recipe.getItem(), recipe);
+                }
+            }
+
+            if (event.getItemStack().hasTag() && event.getItemStack().getTag().contains("alreadyStudied")) {
+                event.getToolTip().add(1,
+                        Component.empty().withStyle(ChatFormatting.BLUE)
+                                .append(Component.translatable("tooltip.magichem.event.study.part1"))
+                                .append(Component.translatable("tooltip.magichem.event.study.part2.complete"))
+                );
+            } else if (studyRecipes.containsKey(event.getItemStack().getItem())) {
+                event.getToolTip().add(1,
+                        Component.empty().withStyle(ChatFormatting.GREEN)
+                                .append(Component.translatable("tooltip.magichem.event.study.part1"))
+                                .append(Component.literal("" + studyRecipes.get(event.getItemStack().getItem()).getExperience()))
+                                .append(Component.translatable("tooltip.magichem.event.study.part2.xp"))
+                                .append(Component.translatable(studyRecipes.get(event.getItemStack().getItem()).isConsumed() ? "tooltip.magichem.event.study.part3.destroys" : "tooltip.magichem.event.study.part3.once"))
+                );
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onDrawScreenPost(RenderGuiOverlayEvent.Post event) {

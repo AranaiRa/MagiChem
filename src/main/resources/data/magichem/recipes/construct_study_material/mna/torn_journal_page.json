@@ -1,5 +1,6 @@
 {
   "type": "magichem:construct_study_material",
-  "item": "mna:guide_book",
-  "experience": 65
+  "item": "mna:torn_journal_page",
+  "experience": 65,
+  "consumed": false
 }

@@ -1258,8 +1258,12 @@
   "tooltip.magichem.jei.advancement_forbidden.part1": "The following advancement will ",
   "tooltip.magichem.jei.advancement_forbidden.part2": " this recipe: ",
 
-  "tooltip.magichem.event.study.part1": "A Construct can study this for ",
-  "tooltip.magichem.event.study.part2": " xp",
+  "tooltip.magichem.event.study.part1": "Study: ",
+  "tooltip.magichem.event.study.part2.xp": " xp",
+  "tooltip.magichem.event.study.part2.complete": "Complete",
+  "tooltip.magichem.event.study.part3.destroys": " (Destroys Item)",
+  "tooltip.magichem.event.study.part3.once": " (Once)",
+  "tooltip.magichem.event.study.part3.unlimited": " (No Limit)",
 
   "log.magichem.powerspike.nosource": "This Power Spike has not been bound to a Circle of Power. It will not transfer any FE.",
   "log.magichem.powerspike.bindpower": "Power Spike bound to this Circle of Power.",
@@ -1669,6 +1673,8 @@
   "jei.magichem.sublimation_ritual": "Alchemical Sublimation (Ritual)",
   "jei.magichem.exaltation": "Alchemical Exaltation",
   "jei.magichem.vitriolation": "Alchemical Vitriolation",
+
+  "jei.magichem.construct_study_material.destroys": "Consumed",
 
   "jei.magichem.info_panel.academic_slurry": "Created by extracting Experience from a Crystal of Memories with an Experience Exchanger or an Occult Matrix. \n Some alchemical devices, like the Fusery, consume Academic Slurry.",
   "jei.magichem.info_panel.alchemical_waste": "Created by cleaning an alchemical device. Grime inside the device is removed and becomes Alchemical Waste. \n Devices can be cleaned with a Cleaning Brush, with a Splash spell, or through Construct automation.",
