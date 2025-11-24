@@ -2,8 +2,10 @@ package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.item.FractallinePuzzleBoxItem;
 import com.aranaira.magichem.recipe.ConstructStudyMaterialRecipe;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.Animations;
 import com.mna.api.entities.construct.ConstructCapability;
@@ -67,6 +69,12 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                                 if (learningItem.isEmpty()) {
                                     pushDiagnosticMessage("I need something to study, boss!", false);
                                     forceFail();
+                                } else if(learningItem.getItem() == ItemRegistry.FRACTALLINE_PUZZLE_BOX.get()) {
+                                    learningItemExperience = FractallinePuzzleBoxItem.getExperienceGain(learningItem);
+
+                                    this.setMoveTarget(deskPos);
+                                    this.phase = ETaskPhase.MOVE_TO_DESK;
+                                    pushDiagnosticMessage("Found my desk! I'll figure out this puzzle this time, you'll see!", false);
                                 } else if(learningItem.hasTag() && learningItem.getTag().contains("alreadyStudied")) {
                                     pushDiagnosticMessage("This item has already been studied, sorry boss!", false);
                                     forceFail();
@@ -92,7 +100,8 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                 case MOVE_TO_DESK -> {
                     if(this.doMove(2.5f)) {
                         this.studyCyclesRemaining = 6;
-                        this.waitTimer = 85 - construct.getIntelligence();
+                        ItemStack learningItem = construct.asEntity().getItemInHand(construct.getHandWithCapability(ConstructCapability.CARRY).get());
+                        this.waitTimer = (85 - construct.getIntelligence()) * (learningItem.getItem() == ItemRegistry.FRACTALLINE_PUZZLE_BOX.get() ? 3 : 1);
                         this.phase = ETaskPhase.STUDY_CYCLE;
                         construct.forceAnimation(Animations.READING, true);
                     }
@@ -118,31 +127,46 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                     }
                 }
                 case GENERATE_ORB -> {
-                    ExperienceOrb eo = new ExperienceOrb(
-                            construct.asEntity().level(),
-                            construct.asEntity().position().x,
-                            construct.asEntity().position().y + 1.25f,
-                            construct.asEntity().position().z,
-                            learningItemExperience);
-                    construct.asEntity().level().addFreshEntity(eo);
                     ItemStack learningItem = construct.asEntity().getItemInHand(learningItemHand.get());
-                    if(recipeData.get(learningItem.getItem()).isConsumed()) {
-                        learningItem.shrink(1);
+                    if(learningItem.isEmpty()) {
+                        pushDiagnosticMessage("Hey, where did that thing I was holding go...?", false);
+                        forceFail();
                     } else {
-                        CompoundTag nbt;
-                        if(learningItem.hasTag()) {
-                            nbt = learningItem.getTag();
-                        } else {
-                            nbt = new CompoundTag();
+                        ExperienceOrb eo = new ExperienceOrb(
+                                construct.asEntity().level(),
+                                construct.asEntity().position().x,
+                                construct.asEntity().position().y + 1.25f,
+                                construct.asEntity().position().z,
+                                learningItemExperience);
+                        construct.asEntity().level().addFreshEntity(eo);
+                        if (learningItem.getItem() != ItemRegistry.FRACTALLINE_PUZZLE_BOX.get()) {
+                            if (recipeData.get(learningItem.getItem()).isConsumed()) {
+                                learningItem.shrink(1);
+                            } else {
+                                CompoundTag nbt;
+                                if (learningItem.hasTag()) {
+                                    nbt = learningItem.getTag();
+                                } else {
+                                    nbt = new CompoundTag();
+                                }
+                                nbt.putBoolean("alreadyStudied", true);
+                                learningItem.setTag(nbt);
+                            }
                         }
-                        nbt.putBoolean("alreadyStudied", true);
-                        learningItem.setTag(nbt);
+                        construct.asEntity().setItemInHand(learningItemHand.get(), learningItem.isEmpty() ? ItemStack.EMPTY : learningItem);
+                        construct.clearForcedAnimation();
+                        if(learningItem.getItem() == ItemRegistry.FRACTALLINE_PUZZLE_BOX.get()) {
+                            if(FractallinePuzzleBoxItem.trySolvePuzzle(learningItem))
+                                pushDiagnosticMessage("Take THAT, puzzle! ...Wow, there's another puzzle inside! Today is the best.", false);
+                            else
+                                pushDiagnosticMessage("Hmm, that didn't work, but I bet I could get it with one more try...", false);
+                        } else if(recipeData.get(learningItem.getItem()).isConsumed()){
+                            pushDiagnosticMessage("What an interesting thingie! I learned a lot, but I brokeded it...", false);
+                        } else {
+                            pushDiagnosticMessage("What an interesting doodad! I learned a lot, boss!", false);
+                        }
+                        setSuccessCode();
                     }
-                    construct.asEntity().setItemInHand(learningItemHand.get(), learningItem.isEmpty() ? ItemStack.EMPTY : learningItem);
-                    construct.clearForcedAnimation();
-                    pushDiagnosticMessage("What an interesting thingie! I brokeded it though...", false);
-                    setSuccessCode();
-
                     this.phase = ETaskPhase.SETUP;
                 }
             }

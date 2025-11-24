@@ -49,6 +49,7 @@
   "item.magichem.litany_sorcery": "Litany to Sorcery",
   "item.magichem.litany_teleportation": "Litany to Teleportation",
   "item.magichem.litany_thrust": "Litany to Thrust",
+  "item.magichem.fractalline_puzzle_box": "Fractalline Puzzle Box",
   "item.magichem.focusing_catalyst": "Focusing Catalyst",
   "item.magichem.focusing_catalyst_warped": "Warped Focusing Catalyst",
   "item.magichem.focusing_catalyst_casing": "Damaged Catalyst Casing",
@@ -916,6 +917,8 @@
 
   "tooltip.magichem.black_diamond": "The result of esoteric alchemical research on diamonds. Can be distilled into a large amount of Nigredo Essentia.",
 
+  "tooltip.magichem.fractalline_puzzle_box": "An impossibly complex puzzle that somehow becomes larger and more complex as more layers are solved.",
+
   "tooltip.magichem.prepared_vinteum_crystal": "Stage one of eight of creating an Immaculate Vinteum Crystal. Must be Sublimated next.",
   "tooltip.magichem.laden_vinteum_crystal": "Stage two of eight of creating an Immaculate Vinteum Crystal. Must be Vitriolated next.",
   "tooltip.magichem.lightly_enhanced_vinteum_crystal": "Stage three of eight of creating an Immaculate Vinteum Crystal. Must be crafted with proper materials next.",
@@ -1674,7 +1677,7 @@
   "jei.magichem.exaltation": "Alchemical Exaltation",
   "jei.magichem.vitriolation": "Alchemical Vitriolation",
 
-  "jei.magichem.construct_study_material.destroys": "Consumed",
+  "jei.magichem.construct_study_material.destroys": "Destroys",
 
   "jei.magichem.info_panel.academic_slurry": "Created by extracting Experience from a Crystal of Memories with an Experience Exchanger or an Occult Matrix. \n Some alchemical devices, like the Fusery, consume Academic Slurry.",
   "jei.magichem.info_panel.alchemical_waste": "Created by cleaning an alchemical device. Grime inside the device is removed and becomes Alchemical Waste. \n Devices can be cleaned with a Cleaning Brush, with a Splash spell, or through Construct automation.",
