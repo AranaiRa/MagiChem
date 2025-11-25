@@ -9,6 +9,7 @@ import com.mna.api.spells.adjusters.SpellAdjustingContext;
 import com.mna.api.spells.adjusters.SpellCastStage;
 import com.mna.api.spells.attributes.Attribute;
 import com.mna.api.spells.base.IModifiedSpellPart;
+import com.mna.api.spells.collections.Components;
 import com.mna.api.spells.parts.Shape;
 import com.mna.api.spells.parts.SpellEffect;
 import net.minecraft.resources.ResourceLocation;
@@ -183,7 +184,7 @@ public class WisdomSpellAdjuster {
             pContext.spell.iterateComponents((c) -> {
                 for (Attribute attributeQuery : c.getContainedAttributes()) {
                     final String nameQuery = c.getPart().getRegistryName().toString();
-                    if (!getBlacklistForAttribute(attributeQuery).contains(nameQuery)) {
+                    if (!getBlacklistForAttribute(attributeQuery).contains(nameQuery) && !isException(pContext, attributeQuery)) {
                         if (attributeQuery == pAttribute) {
                             for (int i = 0; i < pSteps; i++)
                                 c.stepUpIgnoreMax(pAttribute);
@@ -192,6 +193,19 @@ public class WisdomSpellAdjuster {
                 }
             });
         }
+    }
+
+    private static boolean isException(SpellAdjustingContext pContext, Attribute pAttribute) {
+        if(pAttribute == Attribute.SPEED) {
+            for (IModifiedSpellPart<SpellEffect> component : pContext.spell.getComponents()) {
+                //Speed 0 Gust spells should ignore Wisdom boosts so that archaeology isn't annoying
+                if(component.getPart() == Components.GUST) {
+                    if(component.getValue(Attribute.SPEED) == 0) return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private static HashSet<? extends String> getBlacklistForAttribute(Attribute pAttribute) {
