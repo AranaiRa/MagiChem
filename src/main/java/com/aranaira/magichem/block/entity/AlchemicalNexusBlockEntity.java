@@ -293,6 +293,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
         doDeferredRecipeCheck = true;
+        linkPlugins();
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.aranaira.magichem.entities.constructs.ai;
 
 import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.item.FractallinePuzzleBoxItem;
 import com.aranaira.magichem.recipe.ConstructStudyMaterialRecipe;
 import com.aranaira.magichem.registry.ConstructTasksRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.mna.api.ManaAndArtificeMod;
 import com.mna.api.entities.construct.Animations;
 import com.mna.api.entities.construct.ConstructCapability;
@@ -12,6 +14,7 @@ import com.mna.api.entities.construct.ai.ConstructAITask;
 import com.mna.api.entities.construct.ai.parameter.ConstructAITaskParameter;
 import com.mna.api.entities.construct.ai.parameter.ConstructTaskPointParameter;
 import com.mna.blocks.BlockInit;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -31,8 +34,7 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
     private int waitTimer, studyCyclesRemaining, learningItemExperience;
     private Optional<InteractionHand>  learningItemHand;
     private static final Random random = new Random();
-    private static List<ConstructStudyMaterialRecipe> allRecipes = new ArrayList<>();
-    private static HashMap<Item, Integer> recipeData = new HashMap<>();
+    private static final HashMap<Item, ConstructStudyMaterialRecipe> recipeData = new HashMap<>();
 
     public ConstructStudy(IConstruct<?> construct, ResourceLocation guiIcon) {
         super(construct, guiIcon);
@@ -41,11 +43,9 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
     @Override
     public void start() {
         super.start();
-        if(allRecipes.size() == 0) {
-            allRecipes = ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(construct.asEntity().level());
-            recipeData.clear();
-            for(ConstructStudyMaterialRecipe recipe : allRecipes) {
-                recipeData.put(recipe.getItem(), recipe.getExperience());
+        if(recipeData.size() == 0) {
+            for(ConstructStudyMaterialRecipe recipe : ConstructStudyMaterialRecipe.getAllConstructStudyMaterialRecipes(construct.asEntity().level())) {
+                recipeData.put(recipe.getItem(), recipe);
             }
         }
     }
@@ -69,8 +69,17 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                                 if (learningItem.isEmpty()) {
                                     pushDiagnosticMessage("I need something to study, boss!", false);
                                     forceFail();
+                                } else if(learningItem.getItem() == ItemRegistry.FRACTALLINE_PUZZLE_BOX.get()) {
+                                    learningItemExperience = FractallinePuzzleBoxItem.getExperienceGain(learningItem);
+
+                                    this.setMoveTarget(deskPos);
+                                    this.phase = ETaskPhase.MOVE_TO_DESK;
+                                    pushDiagnosticMessage("Found my desk! I'll figure out this puzzle this time, you'll see!", false);
+                                } else if(learningItem.hasTag() && learningItem.getTag().contains("alreadyStudied")) {
+                                    pushDiagnosticMessage("This item has already been studied, sorry boss!", false);
+                                    forceFail();
                                 } else if(recipeData.containsKey(learningItem.getItem())) {
-                                    learningItemExperience = recipeData.get(learningItem.getItem());
+                                    learningItemExperience = recipeData.get(learningItem.getItem()).getExperience();
 
                                     this.setMoveTarget(deskPos);
                                     this.phase = ETaskPhase.MOVE_TO_DESK;
@@ -91,7 +100,8 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                 case MOVE_TO_DESK -> {
                     if(this.doMove(2.5f)) {
                         this.studyCyclesRemaining = 6;
-                        this.waitTimer = 85 - construct.getIntelligence();
+                        ItemStack learningItem = construct.asEntity().getItemInHand(construct.getHandWithCapability(ConstructCapability.CARRY).get());
+                        this.waitTimer = (85 - construct.getIntelligence()) * (learningItem.getItem() == ItemRegistry.FRACTALLINE_PUZZLE_BOX.get() ? 3 : 1);
                         this.phase = ETaskPhase.STUDY_CYCLE;
                         construct.forceAnimation(Animations.READING, true);
                     }
@@ -117,20 +127,46 @@ public class ConstructStudy extends ConstructAITask<ConstructStudy> {
                     }
                 }
                 case GENERATE_ORB -> {
-                    ExperienceOrb eo = new ExperienceOrb(
-                            construct.asEntity().level(),
-                            construct.asEntity().position().x,
-                            construct.asEntity().position().y + 1.25f,
-                            construct.asEntity().position().z,
-                            learningItemExperience);
-                    construct.asEntity().level().addFreshEntity(eo);
                     ItemStack learningItem = construct.asEntity().getItemInHand(learningItemHand.get());
-                    learningItem.shrink(1);
-                    construct.asEntity().setItemInHand(learningItemHand.get(), learningItem.isEmpty() ? ItemStack.EMPTY : learningItem);
-                    construct.clearForcedAnimation();
-                    pushDiagnosticMessage("What an interesting thingie! I brokeded it though...", false);
-                    setSuccessCode();
-
+                    if(learningItem.isEmpty()) {
+                        pushDiagnosticMessage("Hey, where did that thing I was holding go...?", false);
+                        forceFail();
+                    } else {
+                        ExperienceOrb eo = new ExperienceOrb(
+                                construct.asEntity().level(),
+                                construct.asEntity().position().x,
+                                construct.asEntity().position().y + 1.25f,
+                                construct.asEntity().position().z,
+                                learningItemExperience);
+                        construct.asEntity().level().addFreshEntity(eo);
+                        if (learningItem.getItem() != ItemRegistry.FRACTALLINE_PUZZLE_BOX.get()) {
+                            if (recipeData.get(learningItem.getItem()).isConsumed()) {
+                                learningItem.shrink(1);
+                            } else {
+                                CompoundTag nbt;
+                                if (learningItem.hasTag()) {
+                                    nbt = learningItem.getTag();
+                                } else {
+                                    nbt = new CompoundTag();
+                                }
+                                nbt.putBoolean("alreadyStudied", true);
+                                learningItem.setTag(nbt);
+                            }
+                        }
+                        construct.asEntity().setItemInHand(learningItemHand.get(), learningItem.isEmpty() ? ItemStack.EMPTY : learningItem);
+                        construct.clearForcedAnimation();
+                        if(learningItem.getItem() == ItemRegistry.FRACTALLINE_PUZZLE_BOX.get()) {
+                            if(FractallinePuzzleBoxItem.trySolvePuzzle(learningItem))
+                                pushDiagnosticMessage("Take THAT, puzzle! ...Wow, there's another puzzle inside! Today is the best.", false);
+                            else
+                                pushDiagnosticMessage("Hmm, that didn't work, but I bet I could get it with one more try...", false);
+                        } else if(recipeData.get(learningItem.getItem()).isConsumed()){
+                            pushDiagnosticMessage("What an interesting thingie! I learned a lot, but I brokeded it...", false);
+                        } else {
+                            pushDiagnosticMessage("What an interesting doodad! I learned a lot, boss!", false);
+                        }
+                        setSuccessCode();
+                    }
                     this.phase = ETaskPhase.SETUP;
                 }
             }

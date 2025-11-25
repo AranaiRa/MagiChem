@@ -609,6 +609,14 @@ public class ItemRegistry {
     );
 
     ///////////////
+    // RELICS
+    ///////////////
+
+    public static final RegistryObject<FractallinePuzzleBoxItem> FRACTALLINE_PUZZLE_BOX = ITEMS.register("fractalline_puzzle_box",
+            () -> new FractallinePuzzleBoxItem(new Item.Properties())
+    );
+
+    ///////////////
     // RADIANT ROSE PETAL (SO IT APPEARS NEXT TO THE ROSE)
     ///////////////
 

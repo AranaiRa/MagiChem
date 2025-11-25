@@ -19,7 +19,7 @@
           { "item": "magichem:admixture_crystal", "count": 7 },
           { "item": "magichem:admixture_instrument", "count": 7 },
           { "item": "magichem:essentia_precious", "count": 8 },
-          { "item": "magichem:nigredo_potentia", "count": 2 }
+          { "item": "magichem:essentia_nigredo", "count": 2 }
         ]
       }
     }

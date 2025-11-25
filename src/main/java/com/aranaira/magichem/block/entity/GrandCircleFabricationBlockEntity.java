@@ -216,6 +216,7 @@ public class GrandCircleFabricationBlockEntity extends AbstractFabricationBlockE
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
         lazyEnergyHandler = LazyOptional.of(() -> ENERGY_STORAGE);
+        linkPlugins();
     }
 
     @Override

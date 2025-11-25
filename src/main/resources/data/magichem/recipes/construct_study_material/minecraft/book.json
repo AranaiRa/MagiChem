@@ -1,5 +1,6 @@
 {
   "type": "magichem:construct_study_material",
   "item": "minecraft:book",
-  "experience": 12
+  "experience": 12,
+  "consumed": true
 }

@@ -240,6 +240,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
         lazyFluidHandler = LazyOptional.of(() -> this);
+        linkPlugins();
     }
 
     @Override

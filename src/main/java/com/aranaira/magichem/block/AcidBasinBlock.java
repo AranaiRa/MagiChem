@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -135,13 +136,15 @@ public class AcidBasinBlock extends BaseEntityBlock {
         if(pLevel.getBlockEntity(pPos) instanceof AcidBasinBlockEntity basin) {
 
             //Try to extract an item
-            if (itemInHand.isEmpty()) {
-                final LazyOptional<IItemHandler> itemHandlerQuery = basin.getCapability(ForgeCapabilities.ITEM_HANDLER);
-                if (itemHandlerQuery.isPresent()) {
-                    final IItemHandler itemHandler = itemHandlerQuery.resolve().get();
-                    if (!itemHandler.getStackInSlot(SLOT_OUTPUT).isEmpty()) {
-                        ItemStack extraction = itemHandler.extractItem(SLOT_OUTPUT, Integer.MAX_VALUE, false);
-                        pPlayer.setItemInHand(InteractionHand.MAIN_HAND, extraction);
+            final LazyOptional<IItemHandler> itemHandlerQuery = basin.getCapability(ForgeCapabilities.ITEM_HANDLER);
+            if (itemHandlerQuery.isPresent()) {
+                final IItemHandler itemHandler = itemHandlerQuery.resolve().get();
+                if (!itemHandler.getStackInSlot(SLOT_OUTPUT).isEmpty()) {
+                    ItemStack extraction = itemHandler.extractItem(SLOT_OUTPUT, itemHandler.getStackInSlot(SLOT_OUTPUT).getMaxStackSize(), false);
+                    if(!extraction.isEmpty()) {
+                        ItemEntity ie = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), extraction);
+                        pLevel.addFreshEntity(ie);
+                        return InteractionResult.CONSUME;
                     }
                 }
             }

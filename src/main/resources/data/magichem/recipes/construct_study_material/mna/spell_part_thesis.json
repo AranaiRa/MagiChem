@@ -1,5 +1,6 @@
 {
   "type": "magichem:construct_study_material",
-  "item": "mna:guide_book",
-  "experience": 145
+  "item": "mna:spell_part_thesis",
+  "experience": 145,
+  "consumed": true
 }
