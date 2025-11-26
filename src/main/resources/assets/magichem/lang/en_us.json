@@ -1061,7 +1061,7 @@
   "tooltip.magichem.gui.shlorps.waiting": "Waiting...",
   "tooltip.magichem.gui.shlorps.idle": "Idle",
   "tooltip.magichem.gui.sublimation_in_progress.line1": "Removing this item will pause the active Sublimation.",
-  "tooltip.magichem.gui.sublimation_in_progress.line2": "Re-inserting the Sublimation in Progress will allow you to r1me the craft where you left off.",
+  "tooltip.magichem.gui.sublimation_in_progress.line2": "Re-inserting the Sublimation in Progress will allow you to resume the craft where you left off.",
   "tooltip.magichem.gui.tier_lock": "Tier Lock",
   "tooltip.magichem.gui.tier_lock.line1": "This power setting is currently beyond your limits.",
   "tooltip.magichem.gui.tier_lock.4": "It will become available once you reach Tier 4.",

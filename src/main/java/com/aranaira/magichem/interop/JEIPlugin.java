@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +195,7 @@ public class JEIPlugin implements IModPlugin {
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ASTRAL_OBSERVER.get(), 1), ILLUMINATION_TYPE);
 
-        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.GNOSTIC_ORB.get(), 1), EXALTATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(Blocks.BEDROCK, 1), EXALTATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockInit.STUDY_DESK.get(), 1), CONSTRUCT_STUDY_MATERIAL_TYPE);
 

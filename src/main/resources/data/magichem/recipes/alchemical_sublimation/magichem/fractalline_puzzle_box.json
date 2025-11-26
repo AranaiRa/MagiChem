@@ -1,0 +1,64 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 3,
+  "wisdom": 1,
+  "forbidden_advancement": "magichem:craft_a_relic",
+  "granted_advancement": "magichem:craft_a_relic",
+  "object": {
+    "item": "magichem:fractalline_puzzle_box"
+  },
+  "stages": [
+    {
+      "experience": 20,
+      "components": [
+        { "item": "minecraft:piston" },
+        { "item": "minecraft:gold_block" },
+        { "item": "minecraft:piston" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_thought", "count": 128 },
+        { "item": "magichem:admixture_permanence", "count": 58 },
+        { "item": "magichem:admixture_luck", "count": 35 }
+      ]
+    },
+    {
+      "experience": 25,
+      "components": [
+        { "item": "mna:rune_projection" },
+        { "item": "magichem:sidereal_orb" },
+        { "item": "mna:rune_projection" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_adornment", "count": 99 },
+        { "item": "magichem:admixture_lies", "count": 63 },
+        { "item": "magichem:essentia_nigredo", "count": 36 }
+      ]
+    },
+    {
+      "experience": 30,
+      "components": [
+        { "item": "mna:rune_arcane" },
+        { "item": "magichem:inert_wisdom_stone" },
+        { "item": "mna:rune_arcane" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_metal", "count": 80 },
+        { "item": "magichem:admixture_potential", "count": 49 },
+        { "item": "magichem:essentia_albedo", "count": 24 }
+      ]
+    },
+    {
+      "experience": 35,
+      "components": [
+        { "item": "mna:crystal_of_memories" },
+        { "item": "minecraft:gold_block" },
+        { "item": "mna:crystal_of_memories" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_memory", "count": 74 },
+        { "item": "magichem:admixture_legend", "count": 6 },
+        { "item": "magichem:essentia_citrinitas", "count": 16 }
+      ]
+    }
+  ]
+}
