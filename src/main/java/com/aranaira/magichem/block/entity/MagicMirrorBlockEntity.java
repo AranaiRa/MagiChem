@@ -217,10 +217,12 @@ public class MagicMirrorBlockEntity extends AbstractMateriaStorageMultiTypeDynam
 
     @Override
     public void handleUpdateTag(CompoundTag nbt) {
-        if(nbt.contains("masterPos"))
-            masterPos = BlockPos.of(nbt.getLong("masterPos"));
-        if(nbt.contains("masterDimID"))
-            masterDimID = nbt.getString("masterDimID");
+        if(nbt != null){
+            if (nbt.contains("masterPos"))
+                masterPos = BlockPos.of(nbt.getLong("masterPos"));
+            if (nbt.contains("masterDimID"))
+                masterDimID = nbt.getString("masterDimID");
+        }
     }
 
     public void setMasterPos(BlockPos pPos) {

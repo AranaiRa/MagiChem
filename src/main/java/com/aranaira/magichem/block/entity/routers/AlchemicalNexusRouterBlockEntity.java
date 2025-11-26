@@ -1,11 +1,13 @@
 package com.aranaira.magichem.block.entity.routers;
 
 import com.aranaira.magichem.block.AlchemicalNexusBlock;
+import com.aranaira.magichem.block.AlchemicalNexusRouterBlock;
 import com.aranaira.magichem.block.entity.AlchemicalNexusBlockEntity;
 import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.foundation.enums.AlchemicalNexusRouterType;
 import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
+import com.aranaira.magichem.foundation.enums.GrandDistilleryRouterType;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
@@ -30,6 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.FACING;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_ALCHEMICAL_NEXUS;
 
 public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IShlorpReceiver, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot {
 
@@ -91,15 +96,22 @@ public class AlchemicalNexusRouterBlockEntity extends BlockEntity implements Men
     }
 
     public AlchemicalNexusBlockEntity getMaster(){
-        if(master == null) {
-            if(masterPos != null)
-                master = (AlchemicalNexusBlockEntity) getLevel().getBlockEntity(masterPos);
-
-            //if master is still null we've got a problem and the router needs to be deleted
-            if(master == null) {
-                level.setBlock(getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+        if(master == null || masterPos == null) {
+            final int routerType = getBlockState().getValue(ROUTER_TYPE_ALCHEMICAL_NEXUS);
+            for (Triplet<BlockPos, AlchemicalNexusRouterType, DevicePlugDirection> query : AlchemicalNexusBlock.getRouterOffsets(getBlockState().getValue(FACING))) {
+                if(routerType == query.getSecond().ordinal()) {
+                    BlockPos offset = query.getFirst().multiply(-1);
+                    BlockPos target = getBlockPos().offset(offset);
+                    BlockEntity be = level.getBlockEntity(target);
+                    if(be instanceof AlchemicalNexusBlockEntity nexus) {
+                        masterPos = nexus.getBlockPos();
+                        master = nexus;
+                        return master;
+                    }
+                }
             }
         }
+
         return master;
     }
 

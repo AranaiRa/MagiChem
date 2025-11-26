@@ -53,15 +53,22 @@ public class GrandCircleFabricationRouterBlockEntity extends BlockEntity impleme
     }
 
     public GrandCircleFabricationBlockEntity getMaster(){
-        if(master == null) {
-            if(masterPos != null)
-                master = (GrandCircleFabricationBlockEntity) getLevel().getBlockEntity(masterPos);
-
-            //if master is still null we've got a problem and the router needs to be deleted
-            if(master == null) {
-                level.setBlock(getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+        if(master == null || masterPos == null) {
+            final int routerType = getBlockState().getValue(ROUTER_TYPE_GRAND_CIRCLE_FABRICATION);
+            for (Triplet<BlockPos, Integer, DevicePlugDirection> query : GrandCircleFabricationBlock.getRouterOffsets(getBlockState().getValue(FACING))) {
+                if(routerType == query.getSecond()) {
+                    BlockPos offset = query.getFirst().multiply(-1);
+                    BlockPos target = getBlockPos().offset(offset);
+                    BlockEntity be = level.getBlockEntity(target);
+                    if(be instanceof GrandCircleFabricationBlockEntity circle) {
+                        masterPos = circle.getBlockPos();
+                        master = circle;
+                        return master;
+                    }
+                }
             }
         }
+
         return master;
     }
 

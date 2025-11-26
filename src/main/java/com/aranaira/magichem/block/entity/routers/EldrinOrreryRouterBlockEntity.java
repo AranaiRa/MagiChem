@@ -12,6 +12,7 @@ import com.aranaira.magichem.foundation.enums.DevicePlugDirection;
 import com.aranaira.magichem.foundation.enums.EldrinOrreryRouterType;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.mna.items.base.INoCreativeTab;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -72,15 +73,22 @@ public class EldrinOrreryRouterBlockEntity extends BlockEntity implements MenuPr
     }
 
     public EldrinOrreryBlockEntity getMaster(){
-        if(master == null) {
-            if(masterPos != null)
-                master = (EldrinOrreryBlockEntity) getLevel().getBlockEntity(masterPos);
-
-            //if master is still null we've got a problem and the router needs to be deleted
-            if(master == null) {
-                level.setBlock(getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+        if(master == null || masterPos == null) {
+            final EldrinOrreryRouterType routerType = EldrinOrreryBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_ELDRIN_ORRERY));
+            for (Pair<BlockPos, EldrinOrreryRouterType> query : EldrinOrreryBlock.getRouterOffsets()) {
+                if(routerType == query.getSecond()) {
+                    BlockPos offset = query.getFirst().multiply(-1);
+                    BlockPos target = getBlockPos().offset(offset);
+                    BlockEntity be = level.getBlockEntity(target);
+                    if(be instanceof EldrinOrreryBlockEntity orrery) {
+                        masterPos = orrery.getBlockPos();
+                        master = orrery;
+                        return master;
+                    }
+                }
             }
         }
+
         return master;
     }
 

@@ -33,8 +33,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_DISTILLERY;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaSortingRequester {
     private BlockPos masterPos;
@@ -103,15 +102,22 @@ public class GrandDistilleryRouterBlockEntity extends AbstractBlockEntityWithEff
     }
 
     public GrandDistilleryBlockEntity getMaster(){
-        if(master == null) {
-            if(masterPos != null)
-                master = (GrandDistilleryBlockEntity) getLevel().getBlockEntity(masterPos);
-
-            //if master is still null we've got a problem and the router needs to be deleted
-            if(master == null) {
-                level.setBlock(getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+        if(master == null || masterPos == null) {
+            final GrandDistilleryRouterType routerType = GrandDistilleryRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_GRAND_DISTILLERY));
+            for (Triplet<BlockPos, GrandDistilleryRouterType, DevicePlugDirection> query : GrandDistilleryBlock.getRouterOffsets(getBlockState().getValue(FACING))) {
+                if(routerType == query.getSecond()) {
+                    BlockPos offset = query.getFirst().multiply(-1);
+                    BlockPos target = getBlockPos().offset(offset);
+                    BlockEntity be = level.getBlockEntity(target);
+                    if(be instanceof GrandDistilleryBlockEntity distillery) {
+                        masterPos = distillery.getBlockPos();
+                        master = distillery;
+                        return master;
+                    }
+                }
             }
         }
+
         return master;
     }
 

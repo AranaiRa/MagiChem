@@ -37,8 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.HAS_LABORATORY_UPGRADE;
-import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.ROUTER_TYPE_GRAND_FUSERY;
+import static com.aranaira.magichem.foundation.MagiChemBlockStateProperties.*;
 
 public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficiency implements MenuProvider, INoCreativeTab, ICanTakePlugins, IRouterBlockEntity, IPoweredAlchemyDevice, IDestroysMasterOnDestruction, IMateriaProvisionRequester, IMateriaSortingRequester, IShlorpReceiver {
     private BlockPos masterPos;
@@ -107,15 +106,22 @@ public class GrandFuseryRouterBlockEntity extends AbstractBlockEntityWithEfficie
     }
 
     public GrandFuseryBlockEntity getMaster(){
-        if(master == null) {
-            if(masterPos != null)
-                master = (GrandFuseryBlockEntity) getLevel().getBlockEntity(masterPos);
-
-            //if master is still null we've got a problem and the router needs to be deleted
-            if(master == null) {
-                level.setBlock(getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+        if(master == null || masterPos == null) {
+            final GrandFuseryRouterType routerType = GrandFuseryRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_GRAND_FUSERY));
+            for (Triplet<BlockPos, GrandFuseryRouterType, DevicePlugDirection> query : GrandFuseryBlock.getRouterOffsets(getBlockState().getValue(FACING))) {
+                if(routerType == query.getSecond()) {
+                    BlockPos offset = query.getFirst().multiply(-1);
+                    BlockPos target = getBlockPos().offset(offset);
+                    BlockEntity be = level.getBlockEntity(target);
+                    if(be instanceof GrandFuseryBlockEntity Fusery) {
+                        masterPos = Fusery.getBlockPos();
+                        master = Fusery;
+                        return master;
+                    }
+                }
             }
         }
+
         return master;
     }
 

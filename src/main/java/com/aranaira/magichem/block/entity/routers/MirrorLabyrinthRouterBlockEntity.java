@@ -77,12 +77,12 @@ public class MirrorLabyrinthRouterBlockEntity extends AbstractMateriaStorageMult
             case DAIS -> 1;
             case CENTER -> 2;
             case LEFT_FRONT -> 3;
-            case RIGHT_FRONT -> 4;
-            case LEFT -> 5;
-            case RIGHT -> 6;
-            case LEFT_BACK -> 7;
-            case CENTER_BACK -> 8;
-            case RIGHT_BACK -> 9;
+            case LEFT -> 4;
+            case LEFT_BACK -> 5;
+            case CENTER_BACK -> 6;
+            case RIGHT_BACK -> 7;
+            case RIGHT -> 8;
+            case RIGHT_FRONT -> 9;
             case CONSTRUCT_LOWER -> 10;
             case CONSTRUCT_UPPER -> 11;
             case MATRIX_LOWER -> 12;
@@ -96,12 +96,12 @@ public class MirrorLabyrinthRouterBlockEntity extends AbstractMateriaStorageMult
             case 1 -> MirrorLabyrinthRouterType.DAIS;
             case 2 -> MirrorLabyrinthRouterType.CENTER;
             case 3 -> MirrorLabyrinthRouterType.LEFT_FRONT;
-            case 4 -> MirrorLabyrinthRouterType.RIGHT_FRONT;
-            case 5 -> MirrorLabyrinthRouterType.LEFT;
-            case 6 -> MirrorLabyrinthRouterType.RIGHT;
-            case 7 -> MirrorLabyrinthRouterType.LEFT_BACK;
-            case 8 -> MirrorLabyrinthRouterType.CENTER_BACK;
-            case 9 -> MirrorLabyrinthRouterType.RIGHT_BACK;
+            case 4 -> MirrorLabyrinthRouterType.LEFT;
+            case 5 -> MirrorLabyrinthRouterType.LEFT_BACK;
+            case 6 -> MirrorLabyrinthRouterType.CENTER_BACK;
+            case 7 -> MirrorLabyrinthRouterType.RIGHT_BACK;
+            case 8 -> MirrorLabyrinthRouterType.RIGHT;
+            case 9 -> MirrorLabyrinthRouterType.RIGHT_FRONT;
             case 10 -> MirrorLabyrinthRouterType.CONSTRUCT_LOWER;
             case 11 -> MirrorLabyrinthRouterType.CONSTRUCT_UPPER;
             case 12 -> MirrorLabyrinthRouterType.MATRIX_LOWER;
@@ -120,13 +120,19 @@ public class MirrorLabyrinthRouterBlockEntity extends AbstractMateriaStorageMult
     }
 
     public MirrorLabyrinthBlockEntity getMaster() {
-        if(masterPos == null) return null;
-
-        if(master == null) {
-            BlockEntity be = getLevel().getBlockEntity(masterPos);
-            if(be instanceof MirrorLabyrinthBlockEntity mmbe) {
-                master = mmbe;
-                return mmbe;
+        if(master == null || masterPos == null) {
+            final MirrorLabyrinthRouterType routerType = MirrorLabyrinthRouterBlockEntity.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_MIRROR_LABYRINTH));
+            for (Pair<BlockPos, MirrorLabyrinthRouterType> query : MirrorLabyrinthBlock.getRouterOffsets(getBlockState().getValue(FACING))) {
+                if(routerType == query.getSecond()) {
+                    BlockPos offset = query.getFirst().multiply(-1);
+                    BlockPos target = getBlockPos().offset(offset);
+                    BlockEntity be = level.getBlockEntity(target);
+                    if(be instanceof MirrorLabyrinthBlockEntity labyrinth) {
+                        masterPos = labyrinth.getBlockPos();
+                        master = labyrinth;
+                        return master;
+                    }
+                }
             }
         }
 
