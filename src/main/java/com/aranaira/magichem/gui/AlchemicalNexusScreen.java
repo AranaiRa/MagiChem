@@ -830,6 +830,12 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 menu.blockEntity.preventDrawingLastMateria ? Component.translatable("gui.magichem.mode.protect") : Component.translatable("gui.magichem.mode.drain"),
                 210, 70, 0xff000000, false);
 
+        if (menu.blockEntity.getCurrentRecipe() != null && menu.blockEntity.getCurrentRecipe().getResultItem().getCount() > 1) {
+            int amt = menu.blockEntity.getCurrentRecipe().getResultItem().getCount();
+
+            pGuiGraphics.drawString(font, amt < 9 ? "x" + amt : "" + amt, 99, 72, 0xff000000, false);
+        }
+
         if(menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CIRCLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
             MutableComponent warningText = Component.translatable("gui.magichem.waitingforslurry");
             int width = Minecraft.getInstance().font.width(warningText.getString());
