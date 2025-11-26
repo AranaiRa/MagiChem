@@ -540,6 +540,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> ALABASTER_PEARL = ITEMS.register("alabaster_pearl",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     ///////////////
     // MAGICHEM FLUID BUCKETS
     ///////////////

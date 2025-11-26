@@ -1,0 +1,5 @@
+# Blender MTL File: 'puzzle_box.blend'
+# Material Count: 1
+
+newmtl PUZZLE_BOX
+map_Kd magichem:item/fractalline_puzzle_box

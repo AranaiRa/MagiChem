@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 2,
+  "result": { "item": "minecraft:pumpkin", "count": 10 },
+  "items": { "type": "minecraft:pumpkin_seeds", "required": 64 },
+  "eldrin": { "type": 3, "required": 8 },
+  "materia": { "type": "magichem:essentia_nourishing", "required": 16 },
+  "slurry": 40
+}

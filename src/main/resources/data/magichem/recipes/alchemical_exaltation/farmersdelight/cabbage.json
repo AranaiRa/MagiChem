@@ -1,0 +1,22 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "farmersdelight"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:exaltation",
+        "tier": 2,
+        "result": { "item": "farmersdelight:cabbage", "count": 20 },
+        "items": { "type": "farmersdelight:cabbage_seeds", "required": 64 },
+        "eldrin": { "type": 3, "required": 6 },
+        "materia": { "type": "magichem:essentia_nourishing", "required": 12 },
+        "slurry": 40
+      }
+    }
+  ]
+}

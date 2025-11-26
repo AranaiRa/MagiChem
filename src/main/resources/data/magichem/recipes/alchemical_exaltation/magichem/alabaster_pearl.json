@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 3,
+  "result": { "item": "magichem:alabaster_pearl", "count": 1 },
+  "items": { "type": "magichem:glass_orb", "required": 1 },
+  "eldrin": { "type": 7, "required": 135 },
+  "materia": { "type": "magichem:essentia_nigredo", "required": 60 },
+  "slurry": 3000
+}

@@ -1,0 +1,6 @@
+{
+  "type": "magichem:construct_study_material",
+  "item": "magichem:alabaster_pearl",
+  "experience": 32,
+  "consumed": false
+}

@@ -145,6 +145,7 @@
   "item.magichem.oil_of_vitriol_bucket": "Oil of Vitriol Bucket",
   "item.magichem.azoth_bucket": "Azoth Bucket",
 
+  "item.magichem.alabaster_pearl": "Alabaster Pearl",
   "item.magichem.black_diamond": "Black Diamond",
 
   "item.magichem.liquefacted_copper_bucket": "Liquefacted Copper Bucket",
@@ -915,6 +916,7 @@
   "tooltip.magichem.vinteum_crystal_shard": "Alchemically grown crystals bearing vinteum. Can be crushed into Vinteum Dust by a Construct.",
   "tooltip.magichem.winter_charge": "Freezes water and creates snow in a small area when used.",
 
+  "tooltip.magichem.alabaster_pearl": "The result of esoteric alchemical research on Nigredo. Can be distilled into a large amount of Albedo Essentia.",
   "tooltip.magichem.black_diamond": "The result of esoteric alchemical research on diamonds. Can be distilled into a large amount of Nigredo Essentia.",
 
   "tooltip.magichem.fractalline_puzzle_box": "An impossibly complex puzzle that somehow becomes larger and more complex as more layers are solved.",
