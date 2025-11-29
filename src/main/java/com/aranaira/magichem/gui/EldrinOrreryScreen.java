@@ -180,7 +180,7 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line3"))
-                    .append(Component.literal("+200%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("+300%").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("."))
             );
             tooltipContents.add(Component.empty());
@@ -210,7 +210,7 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line3"))
-                    .append(Component.literal("+300%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("+400%").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("."))
             );
             tooltipContents.add(Component.empty());
@@ -240,7 +240,7 @@ public class EldrinOrreryScreen extends AbstractContainerScreen<EldrinOrreryMenu
             tooltipContents.add(Component.empty());
             tooltipContents.add(Component.empty()
                     .append(Component.translatable("tooltip.magichem.gui.eldrin_orrery.lumins.line3"))
-                    .append(Component.literal("+400%").withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.literal("+500%").withStyle(ChatFormatting.DARK_AQUA))
                     .append(Component.literal("."))
             );
             tooltipContents.add(Component.empty());
