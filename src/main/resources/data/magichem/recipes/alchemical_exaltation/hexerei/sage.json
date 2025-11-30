@@ -12,7 +12,7 @@
         "type": "magichem:exaltation",
         "tier": 2,
         "result": { "item": "hexerei:sage", "count": 20 },
-        "items": { "type": "hexerei:sage_seeds", "required": 64 },
+        "items": { "type": "hexerei:sage_seed", "required": 64 },
         "eldrin": { "type": 3, "required": 6 },
         "materia": { "type": "magichem:essentia_nourishing", "required": 12 },
         "slurry": 40

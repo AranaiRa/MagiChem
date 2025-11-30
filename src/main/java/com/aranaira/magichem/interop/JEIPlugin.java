@@ -195,7 +195,7 @@ public class JEIPlugin implements IModPlugin {
 
         registration.addRecipeCatalyst(new ItemStack(BlockRegistry.ASTRAL_OBSERVER.get(), 1), ILLUMINATION_TYPE);
 
-        registration.addRecipeCatalyst(new ItemStack(Blocks.BEDROCK, 1), EXALTATION_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(BlockRegistry.PRIME_AGGREGATOR.get(), 1), EXALTATION_TYPE);
 
         registration.addRecipeCatalyst(new ItemStack(BlockInit.STUDY_DESK.get(), 1), CONSTRUCT_STUDY_MATERIAL_TYPE);
 

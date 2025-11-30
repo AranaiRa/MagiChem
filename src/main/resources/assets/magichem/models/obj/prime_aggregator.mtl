@@ -1,0 +1,14 @@
+# Blender MTL File: 'chem devices.blend'
+# Material Count: 4
+
+newmtl CENTRIFUGE
+map_Kd magichem:block/centrifuge
+
+newmtl CHIMERITE
+map_Kd mna:block/oreblockchimerite
+
+newmtl ELDRIN_RIFT
+map_Kd mna:item/eldrin_rift
+
+newmtl EXALTATION_CRUCIBLE
+map_Kd magichem:block/prime_aggregator
