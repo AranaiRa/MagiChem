@@ -253,6 +253,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
             } else {
                 if(menu.getCurrentRecipe().getAlchemyObject().getItem() instanceof BlockItem) {
                     pGuiGraphics.renderItem(menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
+                    pGuiGraphics.renderItemDecorations(Minecraft.getInstance().font, menu.getCurrentRecipe().getAlchemyObject(), x + 80, y + 80);
                     if(menu.blockEntity.clearRecipeAfterNextProcess) pGuiGraphics.fill(RenderType.guiGhostRecipeOverlay(), x + 80, y + 80, x + 98, y + 98, 0x40ffffff);
                 } else {
                     float alpha = menu.blockEntity.clearRecipeAfterNextProcess ? 0.5f : 1.0f;
@@ -744,6 +745,7 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
                 for (int x = 0; x < 3; x++) {
                     if(snipped.get(c).getItem() instanceof BlockItem) {
                         gui.renderItem(snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
+                        gui.renderItemDecorations(font, snipped.get(c), xOrigin - 76 + x*18, yOrigin + 23 + y*18);
 //                        if(menu.blockEntity.getAnimStage() != ANIM_STAGE_IDLE) gui.fill(RenderType.guiGhostRecipeOverlay(), xOrigin - 76 + x*18, yOrigin + 23 + y*18, xOrigin - 60 + x*18, yOrigin + 39 + y*18, 0x80636363);
                     } else {
 //                        float alpha = menu.blockEntity.getAnimStage() != ANIM_STAGE_IDLE ? 0.35f : 1.0f;
@@ -829,12 +831,6 @@ public class AlchemicalNexusScreen extends AbstractContainerScreen<AlchemicalNex
         pGuiGraphics.drawString(font ,
                 menu.blockEntity.preventDrawingLastMateria ? Component.translatable("gui.magichem.mode.protect") : Component.translatable("gui.magichem.mode.drain"),
                 210, 70, 0xff000000, false);
-
-        if (menu.blockEntity.getCurrentRecipe() != null && menu.blockEntity.getCurrentRecipe().getResultItem().getCount() > 1) {
-            int amt = menu.blockEntity.getCurrentRecipe().getResultItem().getCount();
-
-            pGuiGraphics.drawString(font, amt < 9 ? "x" + amt : "" + amt, 99, 72, 0xff000000, false);
-        }
 
         if(menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CIRCLE || menu.blockEntity.getAnimStage() == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) {
             MutableComponent warningText = Component.translatable("gui.magichem.waitingforslurry");
