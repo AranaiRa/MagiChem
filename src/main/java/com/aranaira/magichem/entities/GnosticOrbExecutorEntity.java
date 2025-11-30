@@ -1,6 +1,7 @@
 package com.aranaira.magichem.entities;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.foundation.Quadlet;
 import com.aranaira.magichem.networking.ParticleSpawnAnointingS2CPacket;
 import com.aranaira.magichem.recipe.ProphecyErosionRecipe;
@@ -73,7 +74,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
             PROPHECY_DATA.put("disaster",  new Quadlet<>(4, 75, GnosticOrbExecutorEntity::preCacheDisaster, GnosticOrbExecutorEntity::prophecyEffectDisaster));
             PROPHECY_DATA.put("erosion",   new Quadlet<>(3, 120, GnosticOrbExecutorEntity::preCacheErosion, GnosticOrbExecutorEntity::prophecyEffectErosion));
             PROPHECY_DATA.put("exanimate", new Quadlet<>(4, 20, GnosticOrbExecutorEntity::preCacheExanimate, GnosticOrbExecutorEntity::prophecyEffectExanimate));
-            PROPHECY_DATA.put("luck",     new Quadlet<>(2, 160, GnosticOrbExecutorEntity::preCacheLuck, GnosticOrbExecutorEntity::prophecyEffectLuck));
+            PROPHECY_DATA.put("luck",     new Quadlet<>(1, 200, GnosticOrbExecutorEntity::preCacheLuck, GnosticOrbExecutorEntity::prophecyEffectLuck));
             PROPHECY_DATA.put("odors",     new Quadlet<>(1, 240, GnosticOrbExecutorEntity::preCacheOdors, GnosticOrbExecutorEntity::prophecyEffectOdors));
             PROPHECY_DATA.put("thought",   new Quadlet<>(1, 1, GnosticOrbExecutorEntity::preCacheThought, GnosticOrbExecutorEntity::prophecyEffectThought));
         }
@@ -356,9 +357,7 @@ public class GnosticOrbExecutorEntity extends Entity implements IEntityAdditiona
                     BlockPos posQuery = new BlockPos(x, y, z);
                     BlockState stateQuery = pEntity.level().getBlockState(posQuery);
 
-                    boolean isStoneOreReplaceable = stateQuery.is(BlockTags.STONE_ORE_REPLACEABLES);
-
-                    if(isStoneOreReplaceable) {
+                    if(stateQuery.getBlock() == Blocks.STONE) {
                         pEntity.validBlockTargets.add(posQuery);
                     }
                 }
