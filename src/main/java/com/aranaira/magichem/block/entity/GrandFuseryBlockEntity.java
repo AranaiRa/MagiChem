@@ -414,6 +414,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
     public byte setRecipe(ItemStack pStack, Player player) {
         if(pStack.getItem() instanceof AdmixtureItem ai) {
             currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(player.level(), ai);
+            recalculateBatchSize();
             syncAndSave();
             return ERROR_CODE_SUCCESS;
         }
@@ -870,6 +871,7 @@ public class GrandFuseryBlockEntity extends AbstractFixationBlockEntity implemen
 
         if(fsr != null) {
             this.currentRecipe = fsr;
+            this.recalculateBatchSize();
             this.syncAndSave();
         }
 

@@ -6,6 +6,7 @@ import com.aranaira.magichem.capabilities.grime.GrimeProvider;
 import com.aranaira.magichem.capabilities.grime.IGrimeCapability;
 import com.aranaira.magichem.foundation.ICanTakePlugins;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.item.AdmixtureItem;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.FixationSeparationRecipe;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -52,7 +53,7 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
     protected LazyOptional<IFluidHandler> lazyFluidHandler;
     protected ContainerData data;
     protected int
-            progress = 0, batchSize = 1, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3, reductionRate = 0;
+            progress = 0, batchSize = 4, remainingTorque = 0, remainingAnimus = 0, pluginLinkageCountdown = 3, reductionRate = 0;
     public boolean clearRecipeAfterNextProcess = false;
     public boolean doDeferredRecipeCheck = false;
 
@@ -104,6 +105,26 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
+    public void recalculateBatchSize() {
+        int mult = 1;
+        for (AbstractDirectionalPluginBlockEntity dpbe : pluginDevices) {
+            if (dpbe instanceof ActuatorAirBlockEntity air) {
+                if (air.getIsSatisfied() && !air.getPaused()) {
+                    mult = air.getBatchSize();
+                }
+            }
+        }
+
+        int baseBatchSize = 4;
+        int batchSizeCap = 32;
+        if (currentRecipe != null && currentRecipe.getResultAdmixture().getItem() instanceof AdmixtureItem ai) {
+            baseBatchSize = ai.getInitialBatchSize();
+            batchSizeCap = ai.getBatchSizeCap();
+        }
+
+        batchSize = Math.min(batchSizeCap, baseBatchSize * mult);
+    }
+
     ////////////////////
     // CRAFTING HANDLERS
     ////////////////////
@@ -134,11 +155,18 @@ public abstract class AbstractFixationBlockEntity extends AbstractBlockEntityWit
             else if (dpbe instanceof ActuatorAirBlockEntity air) {
                 ActuatorAirBlockEntity.delegatedTick(pLevel, pPos, pState, air);
                 int pre = pEntity.batchSize;
+                int baseBatchSize = 4;
+                int batchSizeCap = 32;
+                if(pEntity.currentRecipe != null && pEntity.currentRecipe.getResultAdmixture().getItem() instanceof AdmixtureItem ai) {
+                    baseBatchSize = ai.getInitialBatchSize();
+                    batchSizeCap = ai.getBatchSizeCap();
+                }
 
                 if(air.getIsSatisfied() && !air.getPaused()) {
-                    pEntity.batchSize = air.getBatchSize();
+                    pEntity.batchSize = baseBatchSize * air.getBatchSize();
                 } else
-                    pEntity.batchSize = 1;
+                    pEntity.batchSize = baseBatchSize;
+                pEntity.batchSize = Math.min(batchSizeCap, pEntity.batchSize);
 
                 if(pre != pEntity.batchSize)
                     pEntity.syncAndSave();

@@ -582,6 +582,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
 
         if(fsr != null) {
             this.currentRecipe = fsr;
+            this.recalculateBatchSize();
             this.syncAndSave();
         }
 
@@ -784,6 +785,7 @@ public class FuseryBlockEntity extends AbstractFixationBlockEntity implements Me
     public byte setRecipe(ItemStack pStack, Player player) {
         if(pStack.getItem() instanceof AdmixtureItem ai) {
             currentRecipe = FixationSeparationRecipe.getSeparatingRecipe(player.level(), ai);
+            recalculateBatchSize();
             syncAndSave();
             return ERROR_CODE_SUCCESS;
         }
