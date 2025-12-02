@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "magichem:item/admixture_philosophers_concoction"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "magichem:item/materia_unbottled_philosophers_concoction"
+    }
+  ]
+}

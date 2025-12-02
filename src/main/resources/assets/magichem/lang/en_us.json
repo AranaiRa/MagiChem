@@ -694,6 +694,9 @@
   "item.magichem.admixture_wood": "Admixture of Wood",
   "item.magichem.admixture_wood.short": "Wood",
   "item.magichem.admixture_wood.truncated": "Wood",
+  "item.magichem.admixture_philosophers_concoction": "Philosopher's Concoction",
+  "item.magichem.admixture_philosophers_concoction.short": "Philosopher's Concoction",
+  "item.magichem.admixture_philosophers_concoction.truncated": "Phil. Conc.",
 
   "feedback.ritual.sublimation.novessel": "This ritual requires Materia Jars or Vessels in very specific locations. Make sure there's a Materia Jar or Vessel with the proper type of materia in the \"crook\" of the scale pattern on both sides.",
   "feedback.ritual.sublimation.insufficient.a": "This recipe requires ",

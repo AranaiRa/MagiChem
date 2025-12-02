@@ -402,6 +402,8 @@
       "name": "legend",
       "color": "a2882d",
       "depth": 4,
+      "initialBatchSize": 1,
+      "batchSizeCap": 4,
       "components": [
         { "admixture": "history", "count": 48 },
         { "admixture": "luck", "count": 36 },
@@ -800,6 +802,18 @@
         { "admixture": "nectar", "count": 1 },
         { "admixture": "protection", "count": 1 },
         { "essentia": "verdant", "count": 2 }
+      ]
+    },
+    {
+      "name": "philosophers_concoction",
+      "color": "ffffff",
+      "depth": 5,
+      "components": [
+        { "essentia": "conceptual", "count": 21 },
+        { "essentia": "nigredo", "count": 17 },
+        { "essentia": "albedo", "count": 15 },
+        { "essentia": "citrinitas", "count": 13 },
+        { "essentia": "rubedo", "count": 11 }
       ]
     }
   ]

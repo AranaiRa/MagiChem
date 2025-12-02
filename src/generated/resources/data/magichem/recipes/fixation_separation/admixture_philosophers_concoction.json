@@ -1,0 +1,28 @@
+{
+  "type": "magichem:fixation_separation",
+  "object": {
+    "item": "magichem:admixture_philosophers_concoction"
+  },
+  "components": [
+    {
+      "item": "magichem:essentia_conceptual",
+      "count": 25
+    },
+    {
+      "item": "magichem:essentia_nigredo",
+      "count": 18
+    },
+    {
+      "item": "magichem:essentia_albedo",
+      "count": 13
+    },
+    {
+      "item": "magichem:essentia_citrinitas",
+      "count": 10
+    },
+    {
+      "item": "magichem:essentia_rubedo",
+      "count": 7
+    }
+  ]
+}

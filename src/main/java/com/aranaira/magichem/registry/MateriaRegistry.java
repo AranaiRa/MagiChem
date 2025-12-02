@@ -16,6 +16,7 @@ import com.google.gson.JsonParser;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -57,6 +58,12 @@ public class MateriaRegistry {
             String admixtureName = object.get("name").getAsString();
             String color = object.get("color").getAsString();
             int depth = object.get("depth").getAsInt();
+            MutableInt initialBatchSize = new MutableInt(4);
+            if(object.has("initialBatchSize"))
+                initialBatchSize.setValue(object.get("initialBatchSize").getAsInt());
+            MutableInt batchSizeCap = new MutableInt(32);
+            if(object.has("batchSizeCap"))
+                batchSizeCap.setValue(object.get("batchSizeCap").getAsInt());
             JsonArray components = object.getAsJsonArray("components");
             List<NameCountPair> formulaE = new ArrayList<>();
             List<NameCountPair> formulaA = new ArrayList<>();
@@ -77,7 +84,7 @@ public class MateriaRegistry {
             }
 
             ItemRegistry.ADMIXTURES.register("admixture_"+admixtureName,
-                    () -> new AdmixtureItem(admixtureName, color, depth, formulaE, formulaA));
+                    () -> new AdmixtureItem(admixtureName, color, depth, formulaE, formulaA, initialBatchSize.getValue(), batchSizeCap.getValue()));
             RegistryObject<Item> registryObject = ItemRegistry.getRegistryObject(ItemRegistry.ADMIXTURES, "admixture_"+admixtureName);
         }
     }

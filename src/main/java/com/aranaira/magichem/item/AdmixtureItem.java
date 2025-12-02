@@ -27,14 +27,16 @@ public class AdmixtureItem extends MateriaItem {
     private final List<NameCountPair> formulaEssentiaPortions;
     private final List<NameCountPair> formulaAdmixturePortions;
 
-    private final int depth;
+    private final int depth, initialBatchSize, batchSizeCap;
 
-    public AdmixtureItem(String pName, String pColor, int pDepth, List<NameCountPair> pFormulaEssentia, List<NameCountPair> pFormulaAdmixtures) {
+    public AdmixtureItem(String pName, String pColor, int pDepth, List<NameCountPair> pFormulaEssentia, List<NameCountPair> pFormulaAdmixtures, int pInitialBatchSize, int pBatchSizeCap) {
         super(pName, pColor, new Properties());
         this.name = pName;
         this.depth = pDepth;
         this.formulaEssentiaPortions = pFormulaEssentia;
         this.formulaAdmixturePortions = pFormulaAdmixtures;
+        this.initialBatchSize = pInitialBatchSize;
+        this.batchSizeCap = pBatchSizeCap;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -62,6 +64,14 @@ public class AdmixtureItem extends MateriaItem {
         } else {
             return constructDisplayFormula();
         }
+    }
+
+    public int getInitialBatchSize() {
+        return initialBatchSize;
+    }
+
+    public int getBatchSizeCap() {
+        return batchSizeCap;
     }
 
     public int getDepth() {
@@ -183,6 +193,6 @@ public class AdmixtureItem extends MateriaItem {
 
     @Override
     public String getMateriaSortingName() {
-        return "2_0_0_"+this.name;
+        return (name.equals("philosophers_concoction") ? "3" : "2") + "_0_0_"+this.name;
     }
 }
