@@ -231,29 +231,34 @@ public class ClientEventForgeBusHandler {
                     List<MutableComponent> components = new ArrayList<>();
                     BlockState state = blockEntity.getBlockState();
                     int mode = 0;
+                    boolean includeProto = false;
                     //mode 1: all six types
                     //mode 2: just arcane and ender
 
                     if (blockEntity instanceof DistilleryBlockEntity dbe) {
                         if(CommonEventHelper.checkDirectionAndPos(dbe.getPlugDirection(), bhr)) {
                             mode = 1;
+                            includeProto = true;
                         }
                     } else if (blockEntity instanceof DistilleryRouterBlockEntity drbe) {
                         if (drbe.getRouterType() == DistilleryRouterType.PLUG_LEFT) {
                             if(CommonEventHelper.checkDirectionAndPos(drbe.getPlugDirection(), bhr)) {
                                 mode = 1;
+                                includeProto = true;
                             }
                         }
                     } else if (blockEntity instanceof CentrifugeRouterBlockEntity crbe) {
                         if (crbe.getRouterType() == CentrifugeRouterType.PLUG_LEFT || crbe.getRouterType() == CentrifugeRouterType.PLUG_RIGHT) {
                             if(CommonEventHelper.checkDirectionAndPos(crbe.getPlugDirection(), bhr)) {
                                 mode = 1;
+                                includeProto = true;
                             }
                         }
                     } else if (blockEntity instanceof FuseryRouterBlockEntity frbe) {
                         if (frbe.getRouterType() == FuseryRouterType.PLUG_LEFT || frbe.getRouterType() == FuseryRouterType.PLUG_RIGHT) {
                             if(CommonEventHelper.checkDirectionAndPos(frbe.getPlugDirection(), bhr)) {
                                 mode = 1;
+                                includeProto = true;
                             }
                         }
                     } else if (blockEntity instanceof AlchemicalNexusRouterBlockEntity anrbe) {
@@ -325,7 +330,8 @@ public class ClientEventForgeBusHandler {
 
                     if (mode == 1) {
                         components.add(Component.translatable("overlay.magichem.actuator.port"));
-                        components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_neutral")));
+                        if(includeProto)
+                            components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_neutral")));
                         components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_fire")));
                         components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_water")));
                         components.add(Component.literal("• ").append(Component.translatable("block.magichem.actuator_earth")));
