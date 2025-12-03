@@ -69,7 +69,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
+public class  AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IRequiresRouterCleanupOnDestruction, IMateriaProvisionRequester, IHasDeviceRecipeSlot, IKeepsInventoryOnBreak {
 
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
@@ -546,7 +546,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
             } else {
                 for (AbstractDirectionalPluginBlockEntity dpbe : anbe.pluginDevices) {
                     if (dpbe instanceof ActuatorArcaneBlockEntity arcane) {
-                        ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pBlockState, arcane, true);
+                        if(anbe.animStage == ANIM_STAGE_RAMP_CIRCLE || anbe.animStage == ANIM_STAGE_RAMP_CRAFTING_CIRCLE) ActuatorArcaneBlockEntity.delegatedTick(pLevel, pPos, pBlockState, arcane, true);
                         float newReductionRate = arcane.getSlurryReductionRate() / 100f;
                         if(newReductionRate == 0 && anbe.reductionRate != 0) {
                             anbe.reductionRate = 0;
@@ -558,7 +558,7 @@ public class AlchemicalNexusBlockEntity extends AbstractMateriaProcessorBlockEnt
                         }
                     }
                     else if (dpbe instanceof ActuatorEnderBlockEntity ender) {
-                        ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pBlockState, ender);
+                        if(anbe.animStage == ANIM_STAGE_SHLORPS)  ActuatorEnderBlockEntity.delegatedTick(pLevel, pPos, pBlockState, ender);
                         if (ender.getIsSatisfied() && !ender.getPaused()) {
                             //importing
                             final Map<MateriaItem, Integer> provisioningNeeds = anbe.getProvisioningNeeds();
