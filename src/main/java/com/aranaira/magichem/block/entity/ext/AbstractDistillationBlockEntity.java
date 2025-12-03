@@ -800,21 +800,23 @@ public abstract class AbstractDistillationBlockEntity extends AbstractBlockEntit
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-        if(inputTank.isEmpty()) {
-            int inserted = Math.min(getTankCapacity(0), resource.getAmount());
-            if(action == FluidAction.EXECUTE) {
-                inputTank = new FluidStack(resource.getFluid(), inserted);
-                syncAndSave();
+        if(fluidHasDistillationRecipe(resource.getFluid())){
+            if (inputTank.isEmpty()) {
+                int inserted = Math.min(getTankCapacity(0), resource.getAmount());
+                if (action == FluidAction.EXECUTE) {
+                    inputTank = new FluidStack(resource.getFluid(), inserted);
+                    syncAndSave();
+                }
+                return inserted;
+            } else if (resource.getFluid() == inputTank.getFluid()) {
+                int capacity = getTankCapacity(0) - inputTank.getAmount();
+                int inserted = Math.min(resource.getAmount(), capacity);
+                if (action == FluidAction.EXECUTE) {
+                    inputTank.grow(inserted);
+                    syncAndSave();
+                }
+                return inserted;
             }
-            return inserted;
-        } else if(resource.getFluid() == inputTank.getFluid()) {
-            int capacity = getTankCapacity(0) - inputTank.getAmount();
-            int inserted = Math.min(resource.getAmount(), capacity);
-            if(action == FluidAction.EXECUTE) {
-                inputTank.grow(inserted);
-                syncAndSave();
-            }
-            return inserted;
         }
         return 0;
     }
