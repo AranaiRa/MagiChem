@@ -6,6 +6,7 @@ import com.aranaira.magichem.entities.ShlorpEntity;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IPluginDevice;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.MagiChemBlockStateProperties;
 import com.aranaira.magichem.foundation.enums.ShlorpParticleMode;
 import com.aranaira.magichem.gui.ActuatorEnderMenu;
 import com.aranaira.magichem.item.MateriaItem;
@@ -45,6 +46,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import team.chisel.ctm.client.util.Dir;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -267,15 +269,31 @@ public class ActuatorEnderBlockEntity extends AbstractDirectionalPluginBlockEnti
 
             Vector3 origin = Vector3.zero(), tangent = Vector3.zero();
             if(pPayload.getItem() instanceof MateriaItem mi) {
-                if (beQuery instanceof MagicMirrorBlockEntity mmbe) {
-                    origin = mmbe.getDefaultOriginAndTangent(mi).getFirst();
-                    tangent = mmbe.getDefaultOriginAndTangent(mi).getSecond();
-                } else if (beQuery instanceof MirrorLabyrinthBlockEntity mlbe) {
-                    origin = mlbe.getDefaultOriginAndTangent(mi).getFirst();
-                    tangent = mlbe.getDefaultOriginAndTangent(mi).getSecond();
-                } else if (beQuery instanceof MirrorLabyrinthRouterBlockEntity mlrbe) {
-                    origin = mlrbe.getDefaultOriginAndTangent(mi).getFirst();
-                    tangent = mlrbe.getDefaultOriginAndTangent(mi).getSecond();
+                if (beQuery instanceof MagicMirrorBlockEntity mirror) {
+                    origin = mirror.getDefaultOriginAndTangent(mi).getFirst();
+                    tangent = mirror.getDefaultOriginAndTangent(mi).getSecond();
+                } else if (beQuery instanceof MirrorLabyrinthBlockEntity labyrinth) {
+                    int x = 0, y = 0, z = 0;
+                    Direction dir = labyrinth.getBlockState().getValue(MagiChemBlockStateProperties.FACING);
+                    if(dir == Direction.NORTH) z = -1;
+                    else if(dir == Direction.EAST) x = 1;
+                    else if(dir == Direction.SOUTH) z = 1;
+                    else if(dir == Direction.WEST) x = -1;
+                    origin = new Vector3(x + 0.5, y + 4.5, z + 0.5);
+                    tangent = new Vector3(r.nextDouble()-0.5, r.nextDouble()-0.5, r.nextDouble()-0.5).normalize().scale(4);
+                } else if (beQuery instanceof MirrorLabyrinthRouterBlockEntity router) {
+                    MirrorLabyrinthBlockEntity labyrinth = router.getMaster();
+                    if(labyrinth != null) {
+                        BlockPos dif = labyrinth.getBlockPos().subtract(router.getBlockPos());
+                        int x = dif.getX(), y = dif.getY(), z = dif.getZ();
+                        Direction dir = labyrinth.getBlockState().getValue(MagiChemBlockStateProperties.FACING);
+                        if(dir == Direction.NORTH) z -= 1;
+                        else if(dir == Direction.EAST) x += 1;
+                        else if(dir == Direction.SOUTH) z += 1;
+                        else if(dir == Direction.WEST) x -= 1;
+                        origin = new Vector3(x + 0.5, y + 4.5, z + 0.5);
+                        tangent = new Vector3(r.nextDouble()-0.5, r.nextDouble()-0.5, r.nextDouble()-0.5).normalize().scale(4);
+                    }
                 }
 
                 ShlorpEntity shlorp = new ShlorpEntity(EntitiesRegistry.SHLORP_ENTITY.get(), level);
