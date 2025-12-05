@@ -701,7 +701,11 @@ public class ItemRegistry {
     );
 
     public static final RegistryObject<Item> SUBLIMATION_IN_PROGRESS = ITEMS.register("sublimation_in_progress",
-            () -> new SublimationInProgressItem(new Item.Properties().stacksTo(1))
+            () -> new CraftingInProgressItem(new Item.Properties().stacksTo(1))
+    );
+
+    public static final RegistryObject<Item> EXALTATION_IN_PROGRESS = ITEMS.register("exaltation_in_progress",
+            () -> new CraftingInProgressItem(new Item.Properties().stacksTo(1))
     );
 
     public static final RegistryObject<Item> ESSENTIA_DROPLETS_ENDER = ITEMS.register("essentia_droplets_ender",
@@ -733,7 +737,8 @@ public class ItemRegistry {
     ///////////////
 
     public static final List<RegistryObject<Item>> ITEMS_EXCLUDED_FROM_TABS = Arrays.asList(
-            PHILOSOPHERS_STONE_DUMMY, SUBLIMATION_IN_PROGRESS,
+            PHILOSOPHERS_STONE_DUMMY, SUBLIMATION_IN_PROGRESS, EXALTATION_IN_PROGRESS,
+            DUMMY_CONSTRUCT_STUDY_MATERIAL,
             DUMMY_ANOINTING,DUMMY_INFO_PANEL,DUMMY_VITRIOLATION,DUMMY_ILLUMINATION,
             DUMMY_PROCESS_FULMINATION, DUMMY_PROCESS_DISTILLATION, DUMMY_PROCESS_FABRICATION, DUMMY_PROCESS_FIXATION, DUMMY_PROCESS_SEPARATION, DUMMY_PROCESS_SUBLIMATION, DUMMY_PROCESS_SUBLIMATION_RITUAL, DUMMY_PROCESS_COLORATION, DUMMY_PROCESS_CONJURATION,
             DUMMY_PROCESS_FLUID_DISTILLATION, DUMMY_PROCESS_FLUID_FABRICATION, DUMMY_PROCESS_EXALTATION,

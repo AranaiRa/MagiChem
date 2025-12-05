@@ -1,9 +1,6 @@
 package com.aranaira.magichem.networking;
 
-import com.aranaira.magichem.block.entity.CentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.FuseryBlockEntity;
-import com.aranaira.magichem.block.entity.GrandCentrifugeBlockEntity;
-import com.aranaira.magichem.block.entity.GrandFuseryBlockEntity;
+import com.aranaira.magichem.block.entity.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -43,17 +40,20 @@ public class DeviceRecipeSyncDataC2SPacket {
         BlockEntity entity = player.level().getBlockEntity(blockPos);
 
         context.enqueueWork(() -> {
-            if(entity instanceof FuseryBlockEntity fbe) {
-                fbe.setRecipeByOutput(new ItemStack(recipeItem));
+            if(entity instanceof FuseryBlockEntity fusery) {
+                fusery.setRecipeByOutput(new ItemStack(recipeItem));
             }
-            else if(entity instanceof GrandFuseryBlockEntity gfbe) {
-                gfbe.setRecipeByOutput(new ItemStack(recipeItem));
+            else if(entity instanceof GrandFuseryBlockEntity fusery) {
+                fusery.setRecipeByOutput(new ItemStack(recipeItem));
             }
-            else if(entity instanceof CentrifugeBlockEntity cbe) {
-                cbe.setRecipeByOutput(new ItemStack(recipeItem));
+            else if(entity instanceof CentrifugeBlockEntity centrifuge) {
+                centrifuge.setRecipeByOutput(new ItemStack(recipeItem));
             }
-            else if(entity instanceof GrandCentrifugeBlockEntity gcbe) {
-                gcbe.setRecipeByOutput(new ItemStack(recipeItem));
+            else if(entity instanceof GrandCentrifugeBlockEntity centrifuge) {
+                centrifuge.setRecipeByOutput(new ItemStack(recipeItem));
+            }
+            else if(entity instanceof PrimeAggregatorBlockEntity aggregator) {
+                aggregator.setRecipeByOutput(new ItemStack(recipeItem));
             }
         });
 

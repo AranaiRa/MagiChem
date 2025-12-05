@@ -187,6 +187,7 @@ public class MagiChemMod
                 MenuScreens.register(MenuRegistry.ASTRAL_OBSERVER_MENU.get(), AstralObserverScreen::new);
                 MenuScreens.register(MenuRegistry.DISINTEGRATION_PYRE_MENU.get(), DisintegrationPyreScreen::new);
                 MenuScreens.register(MenuRegistry.COVETOUS_COFFER_MENU.get(), CovetousCofferScreen::new);
+                MenuScreens.register(MenuRegistry.PRIME_AGGREGATOR_MENU.get(), PrimeAggregatorScreen::new);
 
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID.get(), RenderType.translucent());
                 ItemBlockRenderTypes.setRenderLayer(FluidRegistry.SIMPLE_ACID_FLOWING.get(), RenderType.translucent());

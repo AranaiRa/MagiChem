@@ -310,6 +310,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(CovetousCofferBlockEntity::new, BlockRegistry.COVETOUS_COFFER.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<PrimeAggregatorBlockEntity>> PRIME_AGGREGATOR_BE = BLOCK_ENTITIES.register("prime_aggregator", () ->
+            BlockEntityType.Builder.of(PrimeAggregatorBlockEntity::new, BlockRegistry.PRIME_AGGREGATOR.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }

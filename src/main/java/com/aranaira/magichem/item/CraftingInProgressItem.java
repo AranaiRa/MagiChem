@@ -1,5 +1,6 @@
 package com.aranaira.magichem.item;
 
+import com.aranaira.magichem.registry.ItemRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -21,8 +22,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SublimationInProgressItem extends Item {
-    public SublimationInProgressItem(Properties pProperties) {
+public class CraftingInProgressItem extends Item {
+    public CraftingInProgressItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -30,18 +31,20 @@ public class SublimationInProgressItem extends Item {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         CompoundTag nbt = pStack.getOrCreateTag();
 
-        pTooltipComponents.add(Component.empty()
-                .append(Component.translatable("tooltip.magichem.sublimation_in_progress.line1").withStyle(ChatFormatting.DARK_GRAY))
-        );
-        if(nbt.contains("alchemyObject")) {
-            ResourceLocation rl = new ResourceLocation(nbt.getString("alchemyObject"));
-            Item itemQuery = ForgeRegistries.ITEMS.getValue(rl);
-            String key = (itemQuery instanceof BlockItem ? "block." : "item.") + rl.getNamespace() + "." + rl.getPath();
-            pTooltipComponents.add(Component.empty());
+        if(pStack.getItem() == ItemRegistry.SUBLIMATION_IN_PROGRESS.get()){
             pTooltipComponents.add(Component.empty()
-                    .append(Component.translatable("tooltip.magichem.sublimation_in_progress.line2").withStyle(ChatFormatting.DARK_GRAY))
-                    .append(Component.translatable(key).withStyle(ChatFormatting.DARK_AQUA))
+                    .append(Component.translatable("tooltip.magichem.sublimation_in_progress.line1").withStyle(ChatFormatting.DARK_GRAY))
             );
+            if (nbt.contains("alchemyObject")) {
+                ResourceLocation rl = new ResourceLocation(nbt.getString("alchemyObject"));
+                Item itemQuery = ForgeRegistries.ITEMS.getValue(rl);
+                String key = (itemQuery instanceof BlockItem ? "block." : "item.") + rl.getNamespace() + "." + rl.getPath();
+                pTooltipComponents.add(Component.empty());
+                pTooltipComponents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.sublimation_in_progress.line2").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable(key).withStyle(ChatFormatting.DARK_AQUA))
+                );
+            }
         }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);

@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "magichem:item/recipe_in_progress_exaltation"
+  }
+}

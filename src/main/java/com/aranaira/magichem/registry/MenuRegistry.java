@@ -111,6 +111,9 @@ public class MenuRegistry {
     public static final RegistryObject<MenuType<CovetousCofferMenu>> COVETOUS_COFFER_MENU =
             registerMenuType(CovetousCofferMenu::new, "covetous_coffer");
 
+    public static final RegistryObject<MenuType<PrimeAggregatorMenu>> PRIME_AGGREGATOR_MENU =
+            registerMenuType(PrimeAggregatorMenu::new, "prime_aggregator");
+
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
