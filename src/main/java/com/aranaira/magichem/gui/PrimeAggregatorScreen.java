@@ -10,8 +10,10 @@ import com.aranaira.magichem.networking.DeviceRecipeClearC2SPacket;
 import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
+import com.mna.api.affinity.Affinity;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -19,15 +21,22 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+
+import static com.aranaira.magichem.block.entity.PrimeAggregatorBlockEntity.SLOT_BOTTLES_OUTPUT;
 
 public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregatorMenu> {
     private static final ResourceLocation TEXTURE =
@@ -44,6 +53,8 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
     private ItemStack lastRecipeResultAdmixture = ItemStack.EMPTY;
     private boolean recipesChanged = false;
+    private IItemHandler itemHandler;
+    private ItemStack displayItemStack = ItemStack.EMPTY, displayMateriaStack = ItemStack.EMPTY;
 
     public PrimeAggregatorScreen(PrimeAggregatorMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -55,6 +66,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         super.init();
         initializeRecipeSelectorButtons();
         initializeRecipeFilterBox();
+        itemHandler = menu.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().get();
     }
 
     @Override
@@ -210,6 +222,9 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         gui.setColor(0.5f, 0.5f, 0.5f, 1.0f);
         //Materia
         gui.blit(TEXTURE, x + 144, y - 31, 0, 102, 64, 53);
+        if(itemHandler.getStackInSlot(SLOT_BOTTLES_OUTPUT).isEmpty()) {
+            gui.blit(TEXTURE, x + 183, y - 24, 166, 0, 18, 18);
+        }
 
         //Slurry
         gui.blit(TEXTURE, x + 144, y + 26, 102, 73, 64, 73);
@@ -219,6 +234,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
 
         gui.setColor(1f, 1f, 1f, 1f);
         gui.blit(TEXTURE, x + 45, y + 10, 184, 7, 12, 14);
+
         //Progress bar
 //        int sp = PrimeAggregatorBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), PrimeAggregatorBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
 //        if(sp > 0)
@@ -236,6 +252,42 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
             float percent = (float)recipeFilterRow / (float)(recipeFilterRowTotal - 5);
             int nubbinShift = (int)Math.floor(percent * 80);
             gui.blit(TEXTURE, x - 19, y + 23 + nubbinShift, 64, 240, 8, 8);
+        }
+
+        //Recipe Indicator
+        if(menu.blockEntity.getCurrentRecipe() == null) {
+            gui.blit(TEXTURE, x + 79, y + 67, 28, 238, 16, 16);
+        } else {
+            float alpha = menu.blockEntity.clearRecipeAfterNextProcess ? 0.5f : 1.0f;
+            gui.setColor(1,1,1, alpha);
+            gui.renderItem(menu.blockEntity.getCurrentRecipe().getResultItem(), x + 80, y + 68);
+            gui.renderItemDecorations(Minecraft.getInstance().font, menu.blockEntity.getCurrentRecipe().getResultItem(), x + 80, y + 68);
+            gui.setColor(1,1,1, 1);
+        }
+
+        //Ghosts
+        if(menu.blockEntity.getCurrentRecipe() != null) {
+            if(displayItemStack.getItem() != menu.blockEntity.getCurrentRecipe().getItemType()) displayItemStack = new ItemStack(menu.blockEntity.getCurrentRecipe().getItemType());
+            if(displayMateriaStack.getItem() != menu.blockEntity.getCurrentRecipe().getItemType()) displayMateriaStack = new ItemStack(menu.blockEntity.getCurrentRecipe().getMateriaType());
+
+            gui.setColor(1f, 1f, 1f, 0.25f);
+            gui.renderFakeItem(displayItemStack, x - 6, y - 23);
+            if(displayItemStack.getItem() instanceof BlockItem) {
+                gui.fill(RenderType.guiGhostRecipeOverlay(), x - 6, y - 23, x - 6 + 16, y - 23 + 16, 0xff8b8b8b);
+                gui.fill(RenderType.guiGhostRecipeOverlay(), x - 6, y - 23, x - 6 + 16, y - 23 + 16, 0xff8b8b8b);
+                gui.fill(RenderType.guiGhostRecipeOverlay(), x - 6, y - 23, x - 6 + 16, y - 23 + 16, 0xff8b8b8b);
+                gui.fill(RenderType.guiGhostRecipeOverlay(), x - 6, y - 23, x - 6 + 16, y - 23 + 16, 0xff8b8b8b);
+            }
+            gui.renderFakeItem(displayMateriaStack, x + 152, y - 23);
+            gui.setColor(1f, 1f, 1f, 1f);
+
+            final ArrayList<Affinity> eldrinTypes = menu.blockEntity.getCurrentRecipe().getEldrinTypes();
+            if(eldrinTypes.contains(Affinity.ENDER)) gui.blit(TEXTURE, x - 22, y + 64, 184, 0, 7, 7);
+            if(eldrinTypes.contains(Affinity.EARTH)) gui.blit(TEXTURE, x - 14, y + 64, 191, 0, 7, 7);
+            if(eldrinTypes.contains(Affinity.WATER)) gui.blit(TEXTURE, x - 6, y + 64, 198, 0, 7, 7);
+            if(eldrinTypes.contains(Affinity.WIND)) gui.blit(TEXTURE, x + 2, y + 64, 205, 0, 7, 7);
+            if(eldrinTypes.contains(Affinity.FIRE)) gui.blit(TEXTURE, x + 10, y + 64, 212, 0, 7, 7);
+            if(eldrinTypes.contains(Affinity.ARCANE)) gui.blit(TEXTURE, x + 18, y + 64, 219, 0, 7, 7);
         }
     }
 
@@ -312,6 +364,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
                 for (int x = 0; x < 3; x++) {
 
                     gui.renderItem(snipped.get(c), xOrigin - 105 + x*18, yOrigin + 20 + y*18);
+                    gui.renderItemDecorations(Minecraft.getInstance().font, snipped.get(c), xOrigin - 105 + x*18, yOrigin + 20 + y*18);
                     c++;
                     if(c >= cLimit) break;
                 }
@@ -374,19 +427,26 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
     }
 
     @Override
-    protected void renderLabels(GuiGraphics gui, int x, int y) {
-        //Recipe selector + current
-//        Triplet<ExaltationRecipe, NonNullList<ItemStack>, ItemStack> recipeCompound = getOrUpdateRecipe();
-//        if(recipeCompound.getFirst() != null) {
-//            for (int i = 0; i < recipeCompound.getSecond().size(); i++) {
-//                Component text = Component.literal(recipeCompound.getSecond().get(i).getCount() + " x ")
-//                        .append(Component.translatable("item."+MagiChemMod.MODID+"."+recipeCompound.getSecond().get(i).getItem()+".short"));
-//                gui.pose().scale(0.5f, 0.5f, 0.5f);
-//
-//                gui.drawString(Minecraft.getInstance().font, text, 400, 184 + i*36, 0xff000000, false);
-//                gui.pose().scale(2.0f, 2.0f, 2.0f);
-//            }
-//        }
+    protected void renderLabels(GuiGraphics gui, int mouseX, int mouseY) {
+        final Font font = Minecraft.getInstance().font;
+
+        if(menu.blockEntity.getCurrentRecipe() != null) {
+            final Pair<Integer, Integer> items = menu.blockEntity.getItems();
+            String itemCounter = ""+(items.getSecond() - items.getFirst());
+            gui.drawString(font, itemCounter, 3 - font.width(itemCounter)/2, -6, 0xff000000, false);
+
+            final Pair<Integer, Integer> eldrin = menu.blockEntity.getEldrin();
+            String eldrinCounter = ""+(eldrin.getSecond() - eldrin.getFirst());
+            gui.drawString(font, eldrinCounter, 3 - font.width(eldrinCounter)/2, 71, 0xff000000, false);
+
+            final Pair<Integer, Integer> materia = menu.blockEntity.getMateria();
+            String materiaCounter = ""+(materia.getSecond() - materia.getFirst());
+            gui.drawString(font, materiaCounter, 177 - font.width(materiaCounter)/2, -6, 0xff000000, false);
+
+            final Pair<Integer, Integer> slurry = menu.blockEntity.getSlurry();
+            String slurryCounter = ""+(slurry.getSecond() - slurry.getFirst());
+            gui.drawString(font, slurryCounter, 177 - font.width(slurryCounter)/2, 71, 0xff000000, false);
+        }
     }
 
     @Override

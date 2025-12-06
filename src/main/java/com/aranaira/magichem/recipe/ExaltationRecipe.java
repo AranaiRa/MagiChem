@@ -81,31 +81,29 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     public ArrayList<Affinity> getEldrinTypes() {
         ArrayList<Affinity> out = new ArrayList<>();
 
-        switch(eldrinType) {
-            case 1: out.add(Affinity.ENDER);
-            case 2: out.add(Affinity.EARTH);
-            case 3: out.add(Affinity.WATER);
-            case 4: out.add(Affinity.WIND);
-            case 5: out.add(Affinity.FIRE);
-            case 6: out.add(Affinity.ARCANE);
-            case 7: {
-                out.add(Affinity.EARTH);
-                out.add(Affinity.ENDER);
-                out.add(Affinity.WIND);
-            }
-            case 8: {
-                out.add(Affinity.WATER);
-                out.add(Affinity.ARCANE);
-                out.add(Affinity.FIRE);
-            }
-            case 9: {
-                out.add(Affinity.EARTH);
-                out.add(Affinity.ENDER);
-                out.add(Affinity.WIND);
-                out.add(Affinity.WATER);
-                out.add(Affinity.ARCANE);
-                out.add(Affinity.FIRE);
-            }
+        if(eldrinType == 1) out.add(Affinity.ENDER);
+        else if(eldrinType == 2) out.add(Affinity.EARTH);
+        else if(eldrinType == 3) out.add(Affinity.WATER);
+        else if(eldrinType == 4) out.add(Affinity.WIND);
+        else if(eldrinType == 5) out.add(Affinity.FIRE);
+        else if(eldrinType == 6) out.add(Affinity.ARCANE);
+        else if(eldrinType == 7) {
+            out.add(Affinity.EARTH);
+            out.add(Affinity.ENDER);
+            out.add(Affinity.WIND);
+        }
+        else if(eldrinType == 8) {
+            out.add(Affinity.WATER);
+            out.add(Affinity.ARCANE);
+            out.add(Affinity.FIRE);
+        }
+        else if(eldrinType == 9) {
+            out.add(Affinity.EARTH);
+            out.add(Affinity.ENDER);
+            out.add(Affinity.WIND);
+            out.add(Affinity.WATER);
+            out.add(Affinity.ARCANE);
+            out.add(Affinity.FIRE);
         }
 
         return out;

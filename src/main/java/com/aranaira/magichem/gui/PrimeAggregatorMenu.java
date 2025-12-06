@@ -42,17 +42,17 @@ public class PrimeAggregatorMenu extends AbstractContainerMenu {
 
         this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
 
-            this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_ITEM_INPUT, 0, 0));
-            this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_MATERIA_INPUT, 0, 18));
-            this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_BOTTLES_OUTPUT, 18, 18));
+            this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_ITEM_INPUT, -6, -28));
+            this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_MATERIA_INPUT, 152, -28));
+            this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_BOTTLES_OUTPUT, 184, -28));
+            this.addSlot(new SlotItemHandler(handler, PrimeAggregatorBlockEntity.SLOT_PROGRESS_HOLDER, 80, -7));
 
             //Output item slots
             for(int i = PrimeAggregatorBlockEntity.SLOT_OUTPUT_START; i< PrimeAggregatorBlockEntity.SLOT_OUTPUT_START + PrimeAggregatorBlockEntity.SLOT_OUTPUT_COUNT; i++)
             {
-                int x = (i - PrimeAggregatorBlockEntity.SLOT_OUTPUT_START) % 3;
-                int y = (i - PrimeAggregatorBlockEntity.SLOT_OUTPUT_START) / 3;
+                int y = i - PrimeAggregatorBlockEntity.SLOT_OUTPUT_START;
 
-                this.addSlot(new SlotItemHandler(handler, i, 116 + (x) * 18, 21 + (y) * 18));
+                this.addSlot(new SlotItemHandler(handler, i, 116, 10 + y * 18));
             }
         });
 
