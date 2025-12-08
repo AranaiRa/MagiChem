@@ -3,7 +3,7 @@
   "tier": 2,
   "result": { "item": "magichem:scorched_profundity", "count": 1 },
   "items": { "type": "magichem:scorched_theorem", "required": 72 },
-  "eldrin": { "type": 6, "required": 360 },
+  "eldrin": { "type": 32, "required": 360 },
   "materia": { "type": "magichem:essentia_conceptual", "required": 120 },
   "slurry": 7000
 }

@@ -6,6 +6,7 @@ import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.api.affinity.Affinity;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -70,7 +71,30 @@ public class ExaltationRecipeCategory implements IRecipeCategory<ExaltationRecip
     public void draw(ExaltationRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics gui, double mouseX, double mouseY) {
         IRecipeCategory.super.draw(recipe, recipeSlotsView, gui, mouseX, mouseY);
 
-        gui.blit(TEXTURE, 3, 24, 192 + (recipe.getEldrinTypeIndex() - 1) * 7, 56,7, 7);
+        int shift = 0;
+        if(recipe.usesEldrinType(Affinity.ENDER)) {
+            gui.blit(TEXTURE, 3, 24, 192, 56, 7, 7);
+            shift += 8;
+        }
+        if(recipe.usesEldrinType(Affinity.EARTH)) {
+            gui.blit(TEXTURE, 3+shift, 24, 199, 56, 7, 7);
+            shift += 8;
+        }
+        if(recipe.usesEldrinType(Affinity.WATER)) {
+            gui.blit(TEXTURE, 3+shift, 24, 206, 56, 7, 7);
+            shift += 8;
+        }
+        if(recipe.usesEldrinType(Affinity.WIND)) {
+            gui.blit(TEXTURE, 3+shift, 24, 213, 56, 7, 7);
+            shift += 8;
+        }
+        if(recipe.usesEldrinType(Affinity.FIRE)) {
+            gui.blit(TEXTURE, 3+shift, 24, 220, 56, 7, 7);
+            shift += 8;
+        }
+        if(recipe.usesEldrinType(Affinity.ARCANE)) {
+            gui.blit(TEXTURE, 3+shift, 24, 227, 56, 7, 7);
+        }
         final Font font = Minecraft.getInstance().font;
 
         gui.drawString(font, "x"+recipe.getItemsRequired(), 22, 4, 0xff000000, false);

@@ -3,7 +3,7 @@
   "tier": 2,
   "result": { "item": "minecraft:melon", "count": 10 },
   "items": { "type": "minecraft:melon_seeds", "required": 64 },
-  "eldrin": { "type": 3, "required": 8 },
+  "eldrin": { "type": 4, "required": 8 },
   "materia": { "type": "magichem:essentia_nourishing", "required": 16 },
   "slurry": 40
 }

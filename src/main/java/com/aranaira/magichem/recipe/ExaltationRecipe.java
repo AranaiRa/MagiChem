@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
+    public static final int
+        ENDER = 1, EARTH = 2, WATER = 4, AIR = 8, FIRE = 16, ARCANE = 32;
+
     private final ResourceLocation id;
     private final ItemStack result;
     private final Item itemType;
@@ -81,32 +84,25 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     public ArrayList<Affinity> getEldrinTypes() {
         ArrayList<Affinity> out = new ArrayList<>();
 
-        if(eldrinType == 1) out.add(Affinity.ENDER);
-        else if(eldrinType == 2) out.add(Affinity.EARTH);
-        else if(eldrinType == 3) out.add(Affinity.WATER);
-        else if(eldrinType == 4) out.add(Affinity.WIND);
-        else if(eldrinType == 5) out.add(Affinity.FIRE);
-        else if(eldrinType == 6) out.add(Affinity.ARCANE);
-        else if(eldrinType == 7) {
-            out.add(Affinity.EARTH);
-            out.add(Affinity.ENDER);
-            out.add(Affinity.WIND);
-        }
-        else if(eldrinType == 8) {
-            out.add(Affinity.WATER);
-            out.add(Affinity.ARCANE);
-            out.add(Affinity.FIRE);
-        }
-        else if(eldrinType == 9) {
-            out.add(Affinity.EARTH);
-            out.add(Affinity.ENDER);
-            out.add(Affinity.WIND);
-            out.add(Affinity.WATER);
-            out.add(Affinity.ARCANE);
-            out.add(Affinity.FIRE);
-        }
+        if((eldrinType & ENDER) == ENDER) out.add(Affinity.ENDER);
+        if((eldrinType & EARTH) == EARTH) out.add(Affinity.EARTH);
+        if((eldrinType & WATER) == WATER) out.add(Affinity.WATER);
+        if((eldrinType & AIR) == AIR) out.add(Affinity.WIND);
+        if((eldrinType & FIRE) == FIRE) out.add(Affinity.FIRE);
+        if((eldrinType & ARCANE) == ARCANE) out.add(Affinity.ARCANE);
 
         return out;
+    }
+
+    public boolean usesEldrinType(Affinity pAffinity) {
+        if(pAffinity == Affinity.ENDER && (eldrinType & ENDER) == ENDER) return true;
+        if(pAffinity == Affinity.EARTH && (eldrinType & EARTH) == EARTH) return true;
+        if(pAffinity == Affinity.WATER && (eldrinType & WATER) == WATER) return true;
+        if(pAffinity == Affinity.WIND && (eldrinType & AIR) == AIR) return true;
+        if(pAffinity == Affinity.FIRE && (eldrinType & FIRE) == FIRE) return true;
+        if(pAffinity == Affinity.ARCANE && (eldrinType & ARCANE) == ARCANE) return true;
+
+        return false;
     }
 
     public int getEldrinRequired() {
