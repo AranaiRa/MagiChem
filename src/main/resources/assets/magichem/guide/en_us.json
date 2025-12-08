@@ -10274,11 +10274,7 @@
             "color": "dark_purple"
           },
           {
-            "text": " a large amount of Verdigris.\n\n"
-          },
-          {
-            "text": "Designer's Note: Until fluid distillation is added in MagiChem 0.5.1, Vitriolating copper blocks to get Verdigris will void the copper.",
-            "italic": true
+            "text": " a large amount of Verdigris."
           }
         ]
       }

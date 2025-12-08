@@ -10,11 +10,11 @@
     {
       "experience": 0,
       "components": [
+        { "item": "mna:vellum" },
         { "item": "mna:purified_vinteum_ingot" },
         { "item": "minecraft:saddle" }
       ],
       "materia": [
-        { "item": "mna:vellum", "count": 20 },
         { "item": "magichem:essentia_wrought", "count": 20 },
         { "item": "magichem:admixture_travel", "count": 15 },
         { "item": "magichem:admixture_construct", "count": 3 }
