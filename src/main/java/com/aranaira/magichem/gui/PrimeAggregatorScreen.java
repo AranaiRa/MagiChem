@@ -11,6 +11,7 @@ import com.aranaira.magichem.networking.DeviceRecipeSyncDataC2SPacket;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.PacketRegistry;
 import com.mna.api.affinity.Affinity;
+import com.mna.tools.math.Vector3;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
@@ -36,7 +37,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static com.aranaira.magichem.block.entity.PrimeAggregatorBlockEntity.SLOT_BOTTLES_OUTPUT;
+import static com.aranaira.magichem.block.entity.PrimeAggregatorBlockEntity.*;
+import static com.mna.api.affinity.Affinity.*;
 
 public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregatorMenu> {
     private static final ResourceLocation TEXTURE =
@@ -47,7 +49,12 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
             new ResourceLocation(MagiChemMod.MODID, "textures/block/fluid/experience_still.png");
     private static final int
             PANEL_MAIN_W = 176, PANEL_MAIN_H = 176;
+    private static final Affinity[] AFFINITIES_ORDERED = {
+            ENDER, EARTH, WATER, WIND, FIRE, ARCANE
+    };
+    private static final HashMap<Affinity, Vector3> AFFINITIES = new HashMap<>();
     private final ButtonData[] recipeSelectButtons = new ButtonData[15];
+
     private EditBox recipeFilterBox;
     private ExaltationRecipe lastRecipe = null;
     private NonNullList<ItemStack> lastRecipeComponentMateria = NonNullList.create();
@@ -59,6 +66,15 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
     public PrimeAggregatorScreen(PrimeAggregatorMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
         updateDisplayedRecipes("");
+
+        if(AFFINITIES.size() == 0) {
+            AFFINITIES.put(ENDER, new Vector3(ENDER.getColor()[0]/255f, ENDER.getColor()[1]/255f, ENDER.getColor()[2]/255f));
+            AFFINITIES.put(EARTH, new Vector3(EARTH.getColor()[0]/255f, EARTH.getColor()[1]/255f, EARTH.getColor()[2]/255f));
+            AFFINITIES.put(WATER, new Vector3(WATER.getColor()[0]/255f, WATER.getColor()[1]/255f, WATER.getColor()[2]/255f));
+            AFFINITIES.put(WIND, new Vector3(1f, 1f, 1f));
+            AFFINITIES.put(FIRE, new Vector3(FIRE.getColor()[0]/255f, FIRE.getColor()[1]/255f, FIRE.getColor()[2]/255f));
+            AFFINITIES.put(ARCANE, new Vector3(168/255f, 94/255f, 214/255f));
+        }
     }
 
     @Override
@@ -216,36 +232,104 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         //Main Panel
         gui.blit(TEXTURE, x + 38, y - 10, 0, 0, 102, 102);
 
+        int animStage = menu.blockEntity.getAnimStage();
+        int blinkLevel = (animStage / 2) + 1;
+        int solidLevel = blinkLevel - 1;
+        float rgb = 1f;
         //Items
+        if(solidLevel >= 1) {
+            gui.blit(TEXTURE, x + 45, y + 10, 184, 7, 12, 14);
+        } else if(blinkLevel == 1) {
+            if(menu.blockEntity.getLevel().getGameTime() % 40 < 20)
+                gui.blit(TEXTURE, x + 45, y + 10, 184, 7, 12, 14);
+        }
+        rgb = (animStage == ANIM_STAGE_IDLE || animStage == ANIM_STAGE_GATHERING_ITEMS) ? 1.0f : 0.5f;
+        gui.setColor(rgb, rgb, rgb, 1.0f);
         gui.blit(TEXTURE, x - 30, y - 31, 0, 155, 64, 53);
+        gui.setColor(1f, 1f, 1f, 1f);
+//        gui.blit(TEXTURE, x - 23, y - 3, 166, 21, 50, 18);
 
-        gui.setColor(0.5f, 0.5f, 0.5f, 1.0f);
         //Materia
+        if(solidLevel >= 2) {
+            gui.blit(TEXTURE, x + 45, y + 26, 196, 7, 12, 14);
+        } else if(blinkLevel == 2) {
+            if(menu.blockEntity.getLevel().getGameTime() % 40 < 20)
+                gui.blit(TEXTURE, x + 45, y + 26, 196, 7, 12, 14);
+        }
+        rgb = animStage == ANIM_STAGE_GATHERING_MATERIA ? 1.0f : 0.5f;
+        gui.setColor(rgb, rgb, rgb, 1.0f);
         gui.blit(TEXTURE, x + 144, y - 31, 0, 102, 64, 53);
         if(itemHandler.getStackInSlot(SLOT_BOTTLES_OUTPUT).isEmpty()) {
             gui.blit(TEXTURE, x + 183, y - 24, 166, 0, 18, 18);
         }
+        gui.setColor(1f, 1f, 1f, 1f);
+//        gui.blit(TEXTURE, x + 151, y - 3, 166, 21, 50, 18);
 
         //Slurry
+        if(solidLevel >= 3) {
+            gui.blit(TEXTURE, x + 45, y + 42, 208, 7, 12, 14);
+        } else if(blinkLevel == 3) {
+            if(menu.blockEntity.getLevel().getGameTime() % 40 < 20)
+                gui.blit(TEXTURE, x + 45, y + 42, 208, 7, 12, 14);
+        }
+        rgb = animStage == ANIM_STAGE_GATHERING_SLURRY ? 1.0f : 0.5f;
+        gui.setColor(rgb, rgb, rgb, 1.0f);
         gui.blit(TEXTURE, x + 144, y + 26, 102, 73, 64, 73);
+        gui.setColor(1f, 1f, 1f, 1f);
+//        gui.blit(TEXTURE, x + 151, y + 74, 166, 21, 50, 18);
 
         //Eldrin
+        if(solidLevel >= 4) {
+            gui.blit(TEXTURE, x + 45, y + 59, 220, 7, 12, 14);
+        } else if(blinkLevel == 4) {
+            if(menu.blockEntity.getLevel().getGameTime() % 40 < 20)
+                gui.blit(TEXTURE, x + 45, y + 59, 220, 7, 12, 14);
+        }
+        rgb = animStage == ANIM_STAGE_GATHERING_ELDRIN ? 1.0f : 0.5f;
+        gui.setColor(rgb, rgb, rgb, 1.0f);
         gui.blit(TEXTURE, x - 30, y + 26, 102, 0, 64, 73);
-
         gui.setColor(1f, 1f, 1f, 1f);
-        gui.blit(TEXTURE, x + 45, y + 10, 184, 7, 12, 14);
+//        gui.blit(TEXTURE, x - 23, y + 74, 166, 21, 50, 18);
 
         //Progress bar
-//        int sp = PrimeAggregatorBlockEntity.getScaledProgress(menu.getProgress(), menu.getGrime(), menu.getBatchSize(), menu.getOperationTimeMod(), PrimeAggregatorBlockEntity::getVar, menu.blockEntity::getPoweredOperationTime);
-//        if(sp > 0)
-//            gui.blit(TEXTURE, x+74, y+53, 0, 228, sp, PrimeAggregatorBlockEntity.PROGRESS_BAR_WIDTH);
-//
-//        renderSelectedRecipe(gui, x + 79, y + 94);
+        int sp = menu.blockEntity.getScaledProgress();
+        if(sp > 0)
+            gui.blit(TEXTURE, x+74, y+53, 0, 228, sp, 28);
+
+        //Secondary progress bars
+        gui.setColor(0.1686f, 0.4431f, 0.6863f, 1.0f);
+        int si = menu.blockEntity.getScaledItems();
+        if(si > 0) {
+            gui.blit(TEXTURE, x - 21, y + 11, 210, 254, si, 2);
+        }
+        int sm = menu.blockEntity.getScaledMateria();
+        if(sm > 0) {
+            gui.blit(TEXTURE, x + 153, y + 11, 210, 254, sm, 2);
+        }
+        int ss = menu.blockEntity.getScaledSlurry();
+        if(ss > 0) {
+            gui.blit(TEXTURE, x + 153, y + 88, 210, 254, ss, 2);
+        }
+        int se = menu.blockEntity.getScaledEldrin();
+        if(se > 0) {
+            gui.blit(TEXTURE, x - 21, y + 88, 210, 254, se, 2);
+        }
+        int xShift = 0;
+        for(Affinity affinity : AFFINITIES_ORDERED) {
+            if(menu.blockEntity.getCurrentRecipe().usesEldrinType(affinity)){
+                int ses = menu.blockEntity.getScaledEldrinSingle(affinity);
+                gui.setColor(AFFINITIES.get(affinity).x, AFFINITIES.get(affinity).y, AFFINITIES.get(affinity).z, 1f);
+
+                gui.blit(TEXTURE, x - 20 + xShift, y + 62 - ses, 253, 226, 3, ses);
+            }
+            xShift += 8;
+        }
+        gui.setColor(1f, 1f, 1f, 1f);
 
         //slurry gauge
-//        int slurryH = PrimeAggregatorBlockEntity.getScaledSlurry(menu.getSlurryInTank(), PrimeAggregatorBlockEntity::getVar);
-//        RenderSystem.setShaderTexture(1, TEXTURE_SLURRY);
-//        gui.blit(TEXTURE_SLURRY, x + SLURRY_X, y + SLURRY_Y + SLURRY_H - slurryH, 0, 0, SLURRY_W, slurryH, 16, 16);
+        int slurryH = PrimeAggregatorBlockEntity.getScaledTankSlurry(menu.blockEntity.getFluidInTank(0).getAmount());
+        RenderSystem.setShaderTexture(1, TEXTURE_SLURRY);
+        gui.blit(TEXTURE_SLURRY, x + 168, y + 70 - slurryH, 0, 0, 16, slurryH, 16, 16);
 
         //Scroll Nubbin
         if(recipeFilterRowTotal > 5) {
@@ -281,13 +365,12 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
             gui.renderFakeItem(displayMateriaStack, x + 152, y - 23);
             gui.setColor(1f, 1f, 1f, 1f);
 
-            final ArrayList<Affinity> eldrinTypes = menu.blockEntity.getCurrentRecipe().getEldrinTypes();
-            if(eldrinTypes.contains(Affinity.ENDER)) gui.blit(TEXTURE, x - 22, y + 64, 184, 0, 7, 7);
-            if(eldrinTypes.contains(Affinity.EARTH)) gui.blit(TEXTURE, x - 14, y + 64, 191, 0, 7, 7);
-            if(eldrinTypes.contains(Affinity.WATER)) gui.blit(TEXTURE, x - 6, y + 64, 198, 0, 7, 7);
-            if(eldrinTypes.contains(Affinity.WIND)) gui.blit(TEXTURE, x + 2, y + 64, 205, 0, 7, 7);
-            if(eldrinTypes.contains(Affinity.FIRE)) gui.blit(TEXTURE, x + 10, y + 64, 212, 0, 7, 7);
-            if(eldrinTypes.contains(Affinity.ARCANE)) gui.blit(TEXTURE, x + 18, y + 64, 219, 0, 7, 7);
+            if(menu.blockEntity.getCurrentRecipe().usesEldrinType(ENDER)) gui.blit(TEXTURE, x - 22, y + 64, 184, 0, 7, 7);
+            if(menu.blockEntity.getCurrentRecipe().usesEldrinType(EARTH)) gui.blit(TEXTURE, x - 14, y + 64, 191, 0, 7, 7);
+            if(menu.blockEntity.getCurrentRecipe().usesEldrinType(WATER)) gui.blit(TEXTURE, x - 6, y + 64, 198, 0, 7, 7);
+            if(menu.blockEntity.getCurrentRecipe().usesEldrinType(WIND)) gui.blit(TEXTURE, x + 2, y + 64, 205, 0, 7, 7);
+            if(menu.blockEntity.getCurrentRecipe().usesEldrinType(FIRE)) gui.blit(TEXTURE, x + 10, y + 64, 212, 0, 7, 7);
+            if(menu.blockEntity.getCurrentRecipe().usesEldrinType(ARCANE)) gui.blit(TEXTURE, x + 18, y + 64, 219, 0, 7, 7);
         }
     }
 
