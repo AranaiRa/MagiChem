@@ -18,6 +18,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -59,7 +60,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             ANIM_STAGE_GATHERING_MATERIA = 3, ANIM_STAGE_TO_SLURRY = 4,
             ANIM_STAGE_GATHERING_SLURRY = 5, ANIM_STAGE_TO_ELDRIN = 6,
             ANIM_STAGE_GATHERING_ELDRIN = 7, ANIM_STAGE_CRAFTING = 8,
-            CRAFTING_DURATION = 60;
+            TO_MATERIA_DURATION = 40, TO_SLURRY_DURATION = 40, TO_ELDRIN_DURATION = 40, CRAFTING_DURATION = 60;
     public boolean clearRecipeAfterNextProcess = false;
 
     private Player owner;
@@ -348,9 +349,13 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         return new Pair<>(0, -1);
     }
 
+    public int getProgress() {
+        return progress;
+    }
+
     public int getScaledProgress() {
         if(currentRecipe == null || animStage != ANIM_STAGE_CRAFTING) return 0;
-        return progress * 28 / CRAFTING_DURATION;
+        return (progress * 28) / CRAFTING_DURATION;
     }
 
     public int getScaledItems() {
@@ -428,109 +433,186 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                 pEntity.syncAndSave();
         }
 
-        if(!pLevel.isClientSide() && pEntity.currentRecipe != null) {
-            if(pEntity.animStage == ANIM_STAGE_IDLE || pEntity.animStage == ANIM_STAGE_GATHERING_ITEMS) {
-                boolean changed = false;
+        if(pEntity.getCurrentRecipe() != null) {
+            if (pEntity.animStage == ANIM_STAGE_TO_MATERIA) {
+                pEntity.progress++;
 
-                ItemStack itemQuery = pEntity.itemHandler.getStackInSlot(SLOT_ITEM_INPUT);
-                if(!itemQuery.isEmpty() && itemQuery.getItem() == pEntity.currentRecipe.getItemType()) {
-                    int remaining = pEntity.currentRecipe.getItemsRequired() - pEntity.itemsDelivered;
-                    int extraction = Math.min(itemQuery.getCount(), remaining);
-
-                    if(extraction > 0) {
-                        pEntity.itemsDelivered += extraction;
-                        itemQuery.shrink(extraction);
-                        changed = true;
-
-                        if(pEntity.itemsDelivered >= pEntity.currentRecipe.getItemsRequired()) {
-                            pEntity.animStage = ANIM_STAGE_GATHERING_MATERIA;
-                        } else if(pEntity.itemsDelivered > 0) {
-                            pEntity.animStage = ANIM_STAGE_GATHERING_ITEMS;
-                        }
-                    }
-                }
-
-                if(changed) {
-                    pEntity.syncAndSave();
-                }
-            } else if(pEntity.animStage == ANIM_STAGE_GATHERING_MATERIA) {
-                boolean changed = false;
-
-                ItemStack materiaQuery = pEntity.itemHandler.getStackInSlot(SLOT_MATERIA_INPUT);
-                ItemStack bottleQuery = pEntity.itemHandler.getStackInSlot(SLOT_BOTTLES_OUTPUT);
-                if(!materiaQuery.isEmpty() && materiaQuery.getItem() == pEntity.currentRecipe.getMateriaType()) {
-                    int bottleSpace = bottleQuery.isEmpty() ? 64 : bottleQuery.getMaxStackSize() - bottleQuery.getCount();
-                    int remaining = pEntity.currentRecipe.getMateriaRequired() - pEntity.materiaDelivered;
-                    int extraction = Math.min(Math.min(materiaQuery.getCount(), remaining), bottleSpace);
-
-                    if(extraction > 0) {
-                        pEntity.materiaDelivered += extraction;
-                        if(!InventoryHelper.isMateriaUnbottled(materiaQuery)) {
-                            if(bottleQuery.isEmpty()) {
-                                pEntity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, extraction));
-                            } else {
-                                bottleQuery.grow(extraction);
-                            }
-                        }
-                        materiaQuery.shrink(extraction);
-                        changed = true;
-
-                        if(pEntity.materiaDelivered >= pEntity.currentRecipe.getMateriaRequired()) {
-                            pEntity.animStage = ANIM_STAGE_GATHERING_SLURRY;
-                        }
-                    }
-                }
-
-                if(changed) {
-                    pEntity.syncAndSave();
-                }
-            } else if(pEntity.animStage == ANIM_STAGE_GATHERING_SLURRY) {
-                boolean changed = false;
-
-                if(!pEntity.containedSlurry.isEmpty() && pEntity.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
-                    int remaining = pEntity.currentRecipe.getSlurryRequired() - pEntity.slurryDelivered;
-                    int extraction = Math.min(pEntity.containedSlurry.getAmount(), remaining);
-
-                    if(extraction > 0) {
-                        pEntity.slurryDelivered += extraction;
-                        pEntity.containedSlurry.shrink(extraction);
-                        changed = true;
-
-                        if(pEntity.slurryDelivered >= pEntity.currentRecipe.getSlurryRequired()) {
-                            pEntity.animStage = ANIM_STAGE_GATHERING_ELDRIN;
-                        }
-                    }
-                }
-
-                if(changed) {
-                    pEntity.syncAndSave();
-                }
-            } else if(pEntity.animStage == ANIM_STAGE_GATHERING_ELDRIN) {
-                boolean changed = false;
-                boolean complete = true;
-
-                if(pEntity.getOwner() != null) {
-                    for (Affinity affinity : pEntity.currentRecipe.getEldrinTypes()) {
-                        float consumedRaw = pEntity.consume(pEntity.getOwner(), pEntity.getBlockPos(), pEntity.getBlockPos().getCenter(), affinity, pEntity.currentRecipe.getEldrinRequired() - pEntity.eldrinDelivered.get(affinity), 1);
-                        if(consumedRaw > 0) {
-                            int consumed = (int)Math.ceil(consumedRaw);
-                            int updated = Math.min(pEntity.eldrinDelivered.get(affinity) + consumed, pEntity.currentRecipe.getEldrinRequired());
-                            pEntity.eldrinDelivered.put(affinity, updated);
-
-                            complete &= pEntity.eldrinDelivered.get(affinity) >= pEntity.currentRecipe.getEldrinRequired();
-                            changed = true;
-                        }
-                    }
-                }
-
-                if(complete) {
-                    pEntity.animStage = ANIM_STAGE_CRAFTING;
-                }
-
-                if(changed) {
-                    pEntity.syncAndSave();
+                if (pEntity.progress >= TO_MATERIA_DURATION) {
+                    pEntity.animStage = ANIM_STAGE_GATHERING_MATERIA;
                 }
             }
+            else if (pEntity.animStage == ANIM_STAGE_TO_SLURRY) {
+                pEntity.progress++;
+
+                if (pEntity.progress >= TO_SLURRY_DURATION) {
+                    pEntity.animStage = ANIM_STAGE_GATHERING_SLURRY;
+                }
+            }
+            else if (pEntity.animStage == ANIM_STAGE_TO_ELDRIN) {
+                pEntity.progress++;
+
+                if (pEntity.progress >= TO_ELDRIN_DURATION) {
+                    pEntity.animStage = ANIM_STAGE_GATHERING_ELDRIN;
+                }
+            }
+            else if (pEntity.animStage == ANIM_STAGE_CRAFTING) {
+                if (pEntity.canCraftItem() && pEntity.progress < CRAFTING_DURATION) {
+                    pEntity.progress++;
+
+                    if (!pLevel.isClientSide() && pEntity.progress >= CRAFTING_DURATION) {
+                        pEntity.craftItem();
+                        pEntity.clearDeliveries();
+                        pEntity.progress = 0;
+                        pEntity.animStage = ANIM_STAGE_IDLE;
+                        pEntity.syncAndSave();
+                    }
+                }
+            }
+            else if (!pLevel.isClientSide()) {
+                if (pEntity.animStage == ANIM_STAGE_IDLE || pEntity.animStage == ANIM_STAGE_GATHERING_ITEMS) {
+                    boolean changed = false;
+
+                    ItemStack itemQuery = pEntity.itemHandler.getStackInSlot(SLOT_ITEM_INPUT);
+                    if (!itemQuery.isEmpty() && itemQuery.getItem() == pEntity.currentRecipe.getItemType()) {
+                        int remaining = pEntity.currentRecipe.getItemsRequired() - pEntity.itemsDelivered;
+                        int extraction = Math.min(itemQuery.getCount(), remaining);
+
+                        if (extraction > 0) {
+                            pEntity.itemsDelivered += extraction;
+                            itemQuery.shrink(extraction);
+                            changed = true;
+
+                            if (pEntity.itemsDelivered >= pEntity.currentRecipe.getItemsRequired()) {
+                                pEntity.progress = 0;
+                                pEntity.animStage = ANIM_STAGE_TO_MATERIA;
+                            } else if (pEntity.itemsDelivered > 0) {
+                                pEntity.animStage = ANIM_STAGE_GATHERING_ITEMS;
+                            }
+                        }
+                    }
+
+                    if (changed) {
+                        pEntity.syncAndSave();
+                    }
+                } else if (pEntity.animStage == ANIM_STAGE_GATHERING_MATERIA) {
+                    boolean changed = false;
+
+                    ItemStack materiaQuery = pEntity.itemHandler.getStackInSlot(SLOT_MATERIA_INPUT);
+                    ItemStack bottleQuery = pEntity.itemHandler.getStackInSlot(SLOT_BOTTLES_OUTPUT);
+                    if (!materiaQuery.isEmpty() && materiaQuery.getItem() == pEntity.currentRecipe.getMateriaType()) {
+                        int bottleSpace = bottleQuery.isEmpty() ? 64 : bottleQuery.getMaxStackSize() - bottleQuery.getCount();
+                        int remaining = pEntity.currentRecipe.getMateriaRequired() - pEntity.materiaDelivered;
+                        int extraction = Math.min(Math.min(materiaQuery.getCount(), remaining), bottleSpace);
+
+                        if (extraction > 0) {
+                            pEntity.materiaDelivered += extraction;
+                            if (!InventoryHelper.isMateriaUnbottled(materiaQuery)) {
+                                if (bottleQuery.isEmpty()) {
+                                    pEntity.itemHandler.setStackInSlot(SLOT_BOTTLES_OUTPUT, new ItemStack(Items.GLASS_BOTTLE, extraction));
+                                } else {
+                                    bottleQuery.grow(extraction);
+                                }
+                            }
+                            materiaQuery.shrink(extraction);
+                            changed = true;
+
+                            if (pEntity.materiaDelivered >= pEntity.currentRecipe.getMateriaRequired()) {
+                                pEntity.progress = 0;
+                                pEntity.animStage = ANIM_STAGE_TO_SLURRY;
+                            }
+                        }
+                    }
+
+                    if (changed) {
+                        pEntity.syncAndSave();
+                    }
+                } else if (pEntity.animStage == ANIM_STAGE_GATHERING_SLURRY) {
+                    boolean changed = false;
+
+                    if (!pEntity.containedSlurry.isEmpty() && pEntity.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                        int remaining = pEntity.currentRecipe.getSlurryRequired() - pEntity.slurryDelivered;
+                        int extraction = Math.min(pEntity.containedSlurry.getAmount(), remaining);
+
+                        if (extraction > 0) {
+                            pEntity.slurryDelivered += extraction;
+                            pEntity.containedSlurry.shrink(extraction);
+                            changed = true;
+
+                            if (pEntity.slurryDelivered >= pEntity.currentRecipe.getSlurryRequired()) {
+                                pEntity.progress = 0;
+                                pEntity.animStage = ANIM_STAGE_TO_ELDRIN;
+                            }
+                        }
+                    }
+
+                    if (changed) {
+                        pEntity.syncAndSave();
+                    }
+                } else if (pEntity.animStage == ANIM_STAGE_GATHERING_ELDRIN) {
+                    boolean changed = false;
+                    boolean complete = true;
+
+                    if (pEntity.getOwner() != null) {
+                        for (Affinity affinity : pEntity.currentRecipe.getEldrinTypes()) {
+                            float consumedRaw = pEntity.consume(pEntity.getOwner(), pEntity.getBlockPos(), pEntity.getBlockPos().getCenter(), affinity, pEntity.currentRecipe.getEldrinRequired() - pEntity.eldrinDelivered.get(affinity), 1);
+                            if (consumedRaw > 0) {
+                                int consumed = (int) Math.ceil(consumedRaw);
+                                int updated = Math.min(pEntity.eldrinDelivered.get(affinity) + consumed, pEntity.currentRecipe.getEldrinRequired());
+                                pEntity.eldrinDelivered.put(affinity, updated);
+
+                                changed = true;
+                            }
+                            complete &= pEntity.eldrinDelivered.get(affinity) >= pEntity.currentRecipe.getEldrinRequired();
+                        }
+                    }
+
+                    if (complete) {
+                        pEntity.progress = 0;
+                        pEntity.animStage = ANIM_STAGE_CRAFTING;
+                    }
+
+                    if (changed) {
+                        pEntity.syncAndSave();
+                    }
+                }
+            }
+        }
+    }
+
+    public SimpleContainer getContentsOfOutputSlots() {
+        SimpleContainer output = new SimpleContainer(SLOT_OUTPUT_COUNT);
+
+        for(int i = SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            output.setItem(i-SLOT_OUTPUT_START, itemHandler.getStackInSlot(i));
+        }
+
+        return output;
+    }
+
+    private boolean canCraftItem() {
+        SimpleContainer output = getContentsOfOutputSlots();
+        boolean valid = false;
+
+        for(int i=0; i<output.getContainerSize(); i++) {
+            ItemStack query = output.getItem(i);
+            if(query.isEmpty()) valid = true;
+            else if(query.getItem() == currentRecipe.getResultItem().getItem()) {
+                int space = currentRecipe.getResultItem().getMaxStackSize() - query.getCount();
+                valid = space >= currentRecipe.getResultItem().getCount();
+            }
+
+            if(valid) break;
+        }
+
+        return valid;
+    }
+
+    private void craftItem() {
+        SimpleContainer output = getContentsOfOutputSlots();
+        output.addItem(currentRecipe.getResultItem().copy());
+
+        for(int i=0; i<SLOT_OUTPUT_COUNT; i++) {
+            itemHandler.setStackInSlot(SLOT_OUTPUT_START+i, output.getItem(i));
         }
     }
 

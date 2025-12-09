@@ -252,7 +252,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         //Materia
         if(solidLevel >= 2) {
             gui.blit(TEXTURE, x + 45, y + 26, 196, 7, 12, 14);
-        } else if(blinkLevel == 2) {
+        } else if(blinkLevel == 2 && animStage % 2 != 0) {
             if(menu.blockEntity.getLevel().getGameTime() % 40 < 20)
                 gui.blit(TEXTURE, x + 45, y + 26, 196, 7, 12, 14);
         }
@@ -268,7 +268,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         //Slurry
         if(solidLevel >= 3) {
             gui.blit(TEXTURE, x + 45, y + 42, 208, 7, 12, 14);
-        } else if(blinkLevel == 3) {
+        } else if(blinkLevel == 3 && animStage % 2 != 0) {
             if(menu.blockEntity.getLevel().getGameTime() % 40 < 20)
                 gui.blit(TEXTURE, x + 45, y + 42, 208, 7, 12, 14);
         }
@@ -281,7 +281,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         //Eldrin
         if(solidLevel >= 4) {
             gui.blit(TEXTURE, x + 45, y + 59, 220, 7, 12, 14);
-        } else if(blinkLevel == 4) {
+        } else if(blinkLevel == 4 && animStage % 2 != 0) {
             if(menu.blockEntity.getLevel().getGameTime() % 40 < 20)
                 gui.blit(TEXTURE, x + 45, y + 59, 220, 7, 12, 14);
         }
@@ -294,7 +294,7 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
         //Progress bar
         int sp = menu.blockEntity.getScaledProgress();
         if(sp > 0)
-            gui.blit(TEXTURE, x+74, y+53, 0, 228, sp, 28);
+            gui.blit(TEXTURE, x+74, y+27, 0, 228, sp, 28);
 
         //Secondary progress bars
         gui.setColor(0.1686f, 0.4431f, 0.6863f, 1.0f);
