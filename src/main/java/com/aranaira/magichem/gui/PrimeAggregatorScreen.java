@@ -315,14 +315,16 @@ public class PrimeAggregatorScreen extends AbstractContainerScreen<PrimeAggregat
             gui.blit(TEXTURE, x - 21, y + 88, 210, 254, se, 2);
         }
         int xShift = 0;
-        for(Affinity affinity : AFFINITIES_ORDERED) {
-            if(menu.blockEntity.getCurrentRecipe().usesEldrinType(affinity)){
-                int ses = menu.blockEntity.getScaledEldrinSingle(affinity);
-                gui.setColor(AFFINITIES.get(affinity).x, AFFINITIES.get(affinity).y, AFFINITIES.get(affinity).z, 1f);
+        if(menu.blockEntity.getCurrentRecipe() != null){
+            for (Affinity affinity : AFFINITIES_ORDERED) {
+                if (menu.blockEntity.getCurrentRecipe().usesEldrinType(affinity)) {
+                    int ses = menu.blockEntity.getScaledEldrinSingle(affinity);
+                    gui.setColor(AFFINITIES.get(affinity).x, AFFINITIES.get(affinity).y, AFFINITIES.get(affinity).z, 1f);
 
-                gui.blit(TEXTURE, x - 20 + xShift, y + 62 - ses, 253, 226, 3, ses);
+                    gui.blit(TEXTURE, x - 20 + xShift, y + 62 - ses, 253, 226, 3, ses);
+                }
+                xShift += 8;
             }
-            xShift += 8;
         }
         gui.setColor(1f, 1f, 1f, 1f);
 

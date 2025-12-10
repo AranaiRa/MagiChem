@@ -1,7 +1,10 @@
 package com.aranaira.magichem.block.entity;
 
 import com.aranaira.magichem.config.ServerConfig;
+import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
+import com.aranaira.magichem.foundation.IShlorpReceiver;
 import com.aranaira.magichem.gui.PrimeAggregatorMenu;
+import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
@@ -11,6 +14,7 @@ import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -46,11 +50,12 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2i;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.mna.api.affinity.Affinity.*;
 
-public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvider, IFluidHandler, IEldrinConsumerTile {
+public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvider, IFluidHandler, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
     public static final int
             SLOT_COUNT = 7, SLOT_INPUT_COUNT = 2,
             SLOT_ITEM_INPUT = 0, SLOT_MATERIA_INPUT = 1, SLOT_BOTTLES_OUTPUT = 2, SLOT_PROGRESS_HOLDER = 3,
@@ -118,6 +123,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         itemsDelivered = 0;
         materiaDelivered = 0;
         slurryDelivered = 0;
+        provisioningInProgress = false;
 
         eldrinDelivered.clear();
         eldrinDelivered.put(ENDER, 0);
@@ -698,5 +704,82 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
     public static int getScaledTankSlurry(int pSlurry) {
         return (36 * pSlurry) / ServerConfig.primeAggregatorTankCapacity;
+    }
+
+    ////////////////////
+    // SHLORP HANDLING
+    ////////////////////
+
+    private boolean provisioningInProgress = false;
+
+    @Override
+    public boolean allowIncreasedDeliverySize() {
+        return false;
+    }
+
+    @Override
+    public boolean needsProvisioning() {
+        return currentRecipe != null && animStage == ANIM_STAGE_GATHERING_MATERIA;
+    }
+
+    @Override
+    public Map<MateriaItem, Integer> getProvisioningNeeds() {
+        HashMap<MateriaItem, Integer> needs = new HashMap<>();
+
+        if(currentRecipe != null && animStage == ANIM_STAGE_GATHERING_MATERIA && !provisioningInProgress) {
+            int materiaNeeded = currentRecipe.getMateriaRequired() - materiaDelivered;
+            if(materiaNeeded > 0)
+                needs.put(currentRecipe.getMateriaType(), materiaNeeded);
+        }
+
+        return needs;
+    }
+
+    @Override
+    public void setProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(currentRecipe != null && animStage == ANIM_STAGE_GATHERING_MATERIA && pMateriaItem == currentRecipe.getMateriaType())
+            provisioningInProgress = true;
+    }
+
+    @Override
+    public void cancelProvisioningInProgress(MateriaItem pMateriaItem) {
+        if(currentRecipe != null && currentRecipe.getMateriaType() == pMateriaItem)
+            provisioningInProgress = false;
+    }
+
+    @Override
+    public void provide(ItemStack pStack) {
+        if(currentRecipe != null && pStack.getItem() == currentRecipe.getMateriaType()) {
+            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INPUT);
+
+            if(insertionStack.isEmpty()) {
+                insertionStack = pStack.copy();
+                CompoundTag nbt = new CompoundTag();
+                nbt.putInt("CustomModelData", 1);
+                insertionStack.setTag(nbt);
+            } else {
+                insertionStack.grow(pStack.getCount());
+            }
+            itemHandler.setStackInSlot(SLOT_MATERIA_INPUT, insertionStack);
+
+            syncAndSave();
+
+            provisioningInProgress = false;
+        }
+    }
+
+    @Override
+    public int canAcceptStackFromShlorp(ItemStack pStack) {
+        if(currentRecipe != null && pStack.getItem() == currentRecipe.getMateriaType()) return 0;
+        return pStack.getCount();
+    }
+
+    @Override
+    public int insertStackFromShlorp(ItemStack pStack) {
+        if(currentRecipe != null && pStack.getItem() == currentRecipe.getMateriaType()) {
+            provide(pStack);
+            return 0;
+        }
+        return pStack.getCount();
     }
 }
