@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:conjuration",
+        "catalyst": "create:limestone",
+        "materia": "magichem:admixture_erosion",
+        "passive": {
+          "item": "create:limestone",
+          "count": 1,
+          "period": 300
+        },
+        "supplied": {
+          "item": "create:limestone",
+          "count": 8,
+          "period": 30,
+          "charge_usage": 1
+        }
+      }
+    }
+  ]
+}

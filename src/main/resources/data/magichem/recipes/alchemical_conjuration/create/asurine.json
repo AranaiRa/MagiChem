@@ -1,0 +1,33 @@
+
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": 
+      {
+        "type": "magichem:conjuration",
+        "catalyst": "create:asurine",
+        "materia": "magichem:essentia_mineral",
+        "passive": 
+      {
+        "item": "create:asurine",
+        "count": 1,
+        "period": 300
+      },
+    "supplied": 
+      {
+        "item": "create:asurine",
+        "count": 8,
+        "period": 30,
+        "charge_usage": 1
+      }
+      }
+    }
+  ]
+}

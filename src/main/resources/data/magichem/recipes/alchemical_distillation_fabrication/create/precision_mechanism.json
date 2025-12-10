@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 4,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "create:precision_mechanism"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_industry",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.events.compat.CreateEventHelper;
 import com.aranaira.magichem.events.compat.OccultismEventHelper;
 import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.item.*;
@@ -72,6 +73,11 @@ public class ClientEventHandler {
 
         //Compat items below this point
         ModList modList = ModList.get();
+
+        //Create
+        if(modList.isLoaded("create")) {
+            CreateEventHelper.registerItemLayers(event);
+        }
 
         //Occultism
         if(modList.isLoaded("occultism")) {

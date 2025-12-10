@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 0.5,
+        "batch_size": 1,
+        "object": {
+          "item": "create:train_door"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_travel",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

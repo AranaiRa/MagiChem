@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:conjuration",
+        "catalyst": "create:scoria",
+        "materia": "magichem:admixture_erosion",
+        "passive": {
+          "item": "create:scoria",
+          "count": 1,
+          "period": 200
+        },
+        "supplied": {
+          "item": "create:scoria",
+          "count": 16,
+          "period": 20,
+          "charge_usage": 1
+        }
+      }
+    }
+  ]
+}

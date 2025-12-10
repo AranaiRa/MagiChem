@@ -1,0 +1,89 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "create"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:coloration",
+                "charge_usage": 1,
+                "crafting_time_multiplier": 1.0,
+                "valid_on_cauldron": true,
+                "valid_on_variegator": true,
+                "colorless_default": {
+                    "item": "create:brown_toolbox"
+                },
+                "outputs": [
+                    {
+                        "color": "red",
+                        "item": "create:red_toolbox"
+                    },
+                    {
+                        "color": "white",
+                        "item": "create:white_toolbox"
+                    },
+                    {
+                        "color": "orange",
+                        "item": "create:orange_toolbox"
+                    },
+                    {
+                        "color": "magenta",
+                        "item": "create:magenta_toolbox"
+                    },
+                    {
+                        "color": "light_blue",
+                        "item": "create:light_blue_toolbox"
+                    },
+                    {
+                        "color": "yellow",
+                        "item": "create:yellow_toolbox"
+                    },
+                    {
+                        "color": "lime",
+                        "item": "create:lime_toolbox"
+                    },
+                    {
+                        "color": "pink",
+                        "item": "create:pink_toolbox"
+                    },
+                    {
+                        "color": "gray",
+                        "item": "create:gray_toolbox"
+                    },
+                    {
+                        "color": "light_gray",
+                        "item": "create:light_gray_toolbox"
+                    },
+                    {
+                        "color": "cyan",
+                        "item": "create:cyan_toolbox"
+                    },
+                    {
+                        "color": "purple",
+                        "item": "create:purple_toolbox"
+                    },
+                    {
+                        "color": "blue",
+                        "item": "create:blue_toolbox"
+                    },
+                    {
+                        "color": "brown",
+                        "item": "create:brown_toolbox"
+                    },
+                    {
+                        "color": "green",
+                        "item": "create:green_toolbox"
+                    },
+                    {
+                        "color": "black",
+                        "item": "create:black_toolbox"
+                    }
+                ]
+            }
+        }
+    ]
+}

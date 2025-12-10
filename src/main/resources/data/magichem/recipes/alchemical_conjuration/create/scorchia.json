@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:conjuration",
+        "catalyst": "create:scorchia",
+        "materia": "magichem:admixture_darkness",
+        "passive": {
+          "item": "create:scorchia",
+          "count": 1,
+          "period": 200
+        },
+        "supplied": {
+          "item": "create:scorchia",
+          "count": 16,
+          "period": 20,
+          "charge_usage": 1
+        }
+      }
+    }
+  ]
+}

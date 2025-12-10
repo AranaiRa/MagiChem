@@ -1,0 +1,89 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "create"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:coloration",
+                "charge_usage": 1,
+                "crafting_time_multiplier": 1.0,
+                "valid_on_cauldron": true,
+                "valid_on_variegator": true,
+                "colorless_default": {
+                    "item": "create:red_seat"
+                },
+                "outputs": [
+                    {
+                        "color": "red",
+                        "item": "create:red_seat"
+                    },
+                    {
+                        "color": "white",
+                        "item": "create:white_seat"
+                    },
+                    {
+                        "color": "orange",
+                        "item": "create:orange_seat"
+                    },
+                    {
+                        "color": "magenta",
+                        "item": "create:magenta_seat"
+                    },
+                    {
+                        "color": "light_blue",
+                        "item": "create:light_blue_seat"
+                    },
+                    {
+                        "color": "yellow",
+                        "item": "create:yellow_seat"
+                    },
+                    {
+                        "color": "lime",
+                        "item": "create:lime_seat"
+                    },
+                    {
+                        "color": "pink",
+                        "item": "create:pink_seat"
+                    },
+                    {
+                        "color": "gray",
+                        "item": "create:gray_seat"
+                    },
+                    {
+                        "color": "light_gray",
+                        "item": "create:light_gray_seat"
+                    },
+                    {
+                        "color": "cyan",
+                        "item": "create:cyan_seat"
+                    },
+                    {
+                        "color": "purple",
+                        "item": "create:purple_seat"
+                    },
+                    {
+                        "color": "blue",
+                        "item": "create:blue_seat"
+                    },
+                    {
+                        "color": "brown",
+                        "item": "create:brown_seat"
+                    },
+                    {
+                        "color": "green",
+                        "item": "create:green_seat"
+                    },
+                    {
+                        "color": "black",
+                        "item": "create:black_seat"
+                    }
+                ]
+            }
+        }
+    ]
+}

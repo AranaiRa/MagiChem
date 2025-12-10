@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "object": {
+          "item": "create:bar_of_chocolate"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_delight",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_satiety",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_odors",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_comfort",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

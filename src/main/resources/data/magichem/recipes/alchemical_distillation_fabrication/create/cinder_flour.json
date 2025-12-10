@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 10,
+        "output_rate": 0.125,
+        "batch_size": 1,
+        "object": {
+          "item": "create:cinder_flour"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_erosion",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_hells",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_dust",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

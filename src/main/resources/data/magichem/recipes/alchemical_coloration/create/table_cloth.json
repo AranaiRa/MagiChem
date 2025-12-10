@@ -1,0 +1,89 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "create"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:coloration",
+                "charge_usage": 1,
+                "crafting_time_multiplier": 1.0,
+                "valid_on_cauldron": true,
+                "valid_on_variegator": true,
+                "colorless_default": {
+                    "item": "create:red_table_cloth"
+                },
+                "outputs": [
+                    {
+                        "color": "red",
+                        "item": "create:red_table_cloth"
+                    },
+                    {
+                        "color": "white",
+                        "item": "create:white_table_cloth"
+                    },
+                    {
+                        "color": "orange",
+                        "item": "create:orange_table_cloth"
+                    },
+                    {
+                        "color": "magenta",
+                        "item": "create:magenta_table_cloth"
+                    },
+                    {
+                        "color": "light_blue",
+                        "item": "create:light_blue_table_cloth"
+                    },
+                    {
+                        "color": "yellow",
+                        "item": "create:yellow_table_cloth"
+                    },
+                    {
+                        "color": "lime",
+                        "item": "create:lime_table_cloth"
+                    },
+                    {
+                        "color": "pink",
+                        "item": "create:pink_table_cloth"
+                    },
+                    {
+                        "color": "gray",
+                        "item": "create:gray_table_cloth"
+                    },
+                    {
+                        "color": "light_gray",
+                        "item": "create:light_gray_table_cloth"
+                    },
+                    {
+                        "color": "cyan",
+                        "item": "create:cyan_table_cloth"
+                    },
+                    {
+                        "color": "purple",
+                        "item": "create:purple_table_cloth"
+                    },
+                    {
+                        "color": "blue",
+                        "item": "create:blue_table_cloth"
+                    },
+                    {
+                        "color": "brown",
+                        "item": "create:brown_table_cloth"
+                    },
+                    {
+                        "color": "green",
+                        "item": "create:green_table_cloth"
+                    },
+                    {
+                        "color": "black",
+                        "item": "create:black_table_cloth"
+                    }
+                ]
+            }
+        }
+    ]
+}

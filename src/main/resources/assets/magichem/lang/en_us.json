@@ -153,6 +153,7 @@
   "item.magichem.liquefacted_iron_bucket": "Liquefacted Iron Bucket",
   "item.magichem.liquefacted_gold_bucket": "Liquefacted Gold Bucket",
   "item.magichem.liquefacted_debris_bucket": "Liquefacted Debris Bucket",
+  "item.magichem.liquefacted_zinc_bucket": "Liquefacted Zinc Bucket",
   "item.magichem.liquefacted_silver_bucket": "Liquefacted Silver Bucket",
   "item.magichem.liquefacted_iesnium_bucket": "Liquefacted Iesnium Bucket",
 
@@ -356,6 +357,9 @@
   "magichem:liquefacted_debris": "Liquefacted Debris",
   "liquefacted_debris_fluid_type": "Liquefacted Debris",
   "block.magichem.liquefacted_debris_block": "Liquefacted Debris",
+  "magichem:liquefacted_zinc": "Liquefacted Zinc",
+  "liquefacted_zinc_fluid_type": "Liquefacted Zinc",
+  "block.magichem.liquefacted_zinc_block": "Liquefacted Zinc",
   "magichem:liquefacted_silver": "Liquefacted Silver",
   "liquefacted_silver_fluid_type": "Liquefacted Silver",
   "block.magichem.liquefacted_silver_block": "Liquefacted Silver",

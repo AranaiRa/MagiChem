@@ -1,0 +1,31 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "create"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:vitriolation",
+                "minimumAcidStrength": 1,
+                "acidConsumed": 60,
+                "duration": 120,
+                "inputItem": {
+                    "item": "create:weathered_copper_shingle_stairs",
+                    "count": 1
+                },
+                "resultItem": {
+                    "item": "magichem:verdigris",
+                    "count": 3
+                },
+                "resultFluid": {
+                    "fluid": "create:liquefacted_copper",
+                    "amount": 25
+                }
+            }
+        }
+    ]
+}

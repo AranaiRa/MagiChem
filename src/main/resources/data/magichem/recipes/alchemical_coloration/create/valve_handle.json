@@ -1,0 +1,89 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "create"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:coloration",
+                "charge_usage": 1,
+                "crafting_time_multiplier": 1.0,
+                "valid_on_cauldron": true,
+                "valid_on_variegator": true,
+                "colorless_default": {
+                    "item": "create:copper_valve_handle"
+                },
+                "outputs": [
+                    {
+                        "color": "red",
+                        "item": "create:red_valve_handle"
+                    },
+                    {
+                        "color": "white",
+                        "item": "create:white_valve_handle"
+                    },
+                    {
+                        "color": "orange",
+                        "item": "create:orange_valve_handle"
+                    },
+                    {
+                        "color": "magenta",
+                        "item": "create:magenta_valve_handle"
+                    },
+                    {
+                        "color": "light_blue",
+                        "item": "create:light_blue_valve_handle"
+                    },
+                    {
+                        "color": "yellow",
+                        "item": "create:yellow_valve_handle"
+                    },
+                    {
+                        "color": "lime",
+                        "item": "create:lime_valve_handle"
+                    },
+                    {
+                        "color": "pink",
+                        "item": "create:pink_valve_handle"
+                    },
+                    {
+                        "color": "gray",
+                        "item": "create:gray_valve_handle"
+                    },
+                    {
+                        "color": "light_gray",
+                        "item": "create:light_gray_valve_handle"
+                    },
+                    {
+                        "color": "cyan",
+                        "item": "create:cyan_valve_handle"
+                    },
+                    {
+                        "color": "purple",
+                        "item": "create:purple_valve_handle"
+                    },
+                    {
+                        "color": "blue",
+                        "item": "create:blue_valve_handle"
+                    },
+                    {
+                        "color": "brown",
+                        "item": "create:brown_valve_handle"
+                    },
+                    {
+                        "color": "green",
+                        "item": "create:green_valve_handle"
+                    },
+                    {
+                        "color": "black",
+                        "item": "create:black_valve_handle"
+                    }
+                ]
+            }
+        }
+    ]
+}

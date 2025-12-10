@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "create:bound_cardboard_block"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_wood",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_industry",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 26
+          }
+        ]
+      }
+    }
+  ]
+}

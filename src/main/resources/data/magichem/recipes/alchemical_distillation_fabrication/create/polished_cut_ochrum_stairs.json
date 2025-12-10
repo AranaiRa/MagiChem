@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 0.063,
+        "batch_size": 1,
+        "object": {
+          "item": "create:polished_cut_ochrum_stairs"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_mineral",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_citrinitas",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "create:sweet_roll"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_air",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_satiety",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 3
+          }
+        ]
+      }
+    }
+  ]
+}

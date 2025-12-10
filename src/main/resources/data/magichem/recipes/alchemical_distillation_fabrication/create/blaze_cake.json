@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "create:blaze_cake"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_fire",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_satiety",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_hells",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

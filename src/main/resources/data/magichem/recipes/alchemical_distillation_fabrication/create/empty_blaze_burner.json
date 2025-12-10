@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "create:empty_blaze_burner"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_hells",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 8
+          }
+        ]
+      }
+    }
+  ]
+}

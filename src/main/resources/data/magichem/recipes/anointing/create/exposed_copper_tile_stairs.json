@@ -1,0 +1,21 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": 
+      {
+        "type": "magichem:anointing",
+        "targetBlock": "create:copper_tile_stairs",
+        "materia": "magichem:admixture_erosion",
+        "chance": 65.0,
+        "result": "create:exposed_copper_tile_stairs"
+      }
+    }
+  ]
+}

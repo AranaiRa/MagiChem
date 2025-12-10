@@ -1,0 +1,21 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": 
+      {
+        "type": "magichem:anointing",
+        "targetBlock": "create:exposed_copper_tile_slab",
+        "materia": "magichem:admixture_erosion",
+        "chance": 50.0,
+        "result": "create:weathered_copper_tile_slab"
+      }
+    }
+  ]
+}

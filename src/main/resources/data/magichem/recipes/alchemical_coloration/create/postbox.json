@@ -1,0 +1,89 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "create"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:coloration",
+                "charge_usage": 1,
+                "crafting_time_multiplier": 1.0,
+                "valid_on_cauldron": true,
+                "valid_on_variegator": true,
+                "colorless_default": {
+                    "item": "create:white_postbox"
+                },
+                "outputs": [
+                    {
+                        "color": "red",
+                        "item": "create:red_postbox"
+                    },
+                    {
+                        "color": "white",
+                        "item": "create:white_postbox"
+                    },
+                    {
+                        "color": "orange",
+                        "item": "create:orange_postbox"
+                    },
+                    {
+                        "color": "magenta",
+                        "item": "create:magenta_postbox"
+                    },
+                    {
+                        "color": "light_blue",
+                        "item": "create:light_blue_postbox"
+                    },
+                    {
+                        "color": "yellow",
+                        "item": "create:yellow_postbox"
+                    },
+                    {
+                        "color": "lime",
+                        "item": "create:lime_postbox"
+                    },
+                    {
+                        "color": "pink",
+                        "item": "create:pink_postbox"
+                    },
+                    {
+                        "color": "gray",
+                        "item": "create:gray_postbox"
+                    },
+                    {
+                        "color": "light_gray",
+                        "item": "create:light_gray_postbox"
+                    },
+                    {
+                        "color": "cyan",
+                        "item": "create:cyan_postbox"
+                    },
+                    {
+                        "color": "purple",
+                        "item": "create:purple_postbox"
+                    },
+                    {
+                        "color": "blue",
+                        "item": "create:blue_postbox"
+                    },
+                    {
+                        "color": "brown",
+                        "item": "create:brown_postbox"
+                    },
+                    {
+                        "color": "green",
+                        "item": "create:green_postbox"
+                    },
+                    {
+                        "color": "black",
+                        "item": "create:black_postbox"
+                    }
+                ]
+            }
+        }
+    ]
+}

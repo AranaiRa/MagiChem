@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:conjuration",
+        "catalyst": "create:veridium",
+        "materia": "magichem:admixture_poison",
+        "passive": {
+          "item": "create:veridium",
+          "count": 1,
+          "period": 300
+        },
+        "supplied": {
+          "item": "create:veridium",
+          "count": 8,
+          "period": 30,
+          "charge_usage": 1
+        }
+      }
+    }
+  ]
+}

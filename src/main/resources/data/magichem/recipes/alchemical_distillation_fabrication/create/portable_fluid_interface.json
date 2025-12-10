@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "create:portable_fluid_interface"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_water",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_industry",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

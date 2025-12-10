@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 0.063,
+        "batch_size": 1,
+        "object": {
+          "item": "create:cut_tuff_stairs"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_mountains",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

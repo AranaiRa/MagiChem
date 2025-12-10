@@ -12,6 +12,7 @@ import com.aranaira.magichem.item.renderer.*;
 import com.aranaira.magichem.item.renderer.mna.CodexMateriaItemRenderer;
 import com.aranaira.magichem.item.renderer.mna.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.registry.*;
+import com.aranaira.magichem.registry.compat.CreateItemRegistry;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
 import com.mna.items.base.INoCreativeTab;
@@ -104,6 +105,9 @@ public class MagiChemMod
         //Conditional registration
         ModList modList = ModList.get();
 
+        if(modList.isLoaded("create")) {
+            CreateItemRegistry.ITEMS_COMPAT_CREATE.register(eventBus);
+        }
         if(modList.isLoaded("occultism")) {
             OccultismItemRegistry.ITEMS_COMPAT_OCCULTISM.register(eventBus);
             OccultismCompat.handleRegistration(eventBus);

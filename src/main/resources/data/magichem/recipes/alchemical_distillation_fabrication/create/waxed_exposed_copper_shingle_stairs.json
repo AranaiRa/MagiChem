@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 0.333,
+        "batch_size": 1,
+        "object": {
+          "item": "create:waxed_exposed_copper_shingle_stairs"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}
