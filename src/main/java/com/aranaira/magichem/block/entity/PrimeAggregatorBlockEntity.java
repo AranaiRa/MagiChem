@@ -1,8 +1,8 @@
 package com.aranaira.magichem.block.entity;
 
+import com.aranaira.magichem.block.entity.ext.AbstractDirectionalPluginBlockEntity;
 import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
-import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.*;
 import com.aranaira.magichem.gui.PrimeAggregatorMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
@@ -55,7 +55,7 @@ import java.util.UUID;
 
 import static com.mna.api.affinity.Affinity.*;
 
-public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvider, IFluidHandler, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester {
+public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvider, ICanTakePlugins, IFluidHandler, IHasDeviceRecipeSlot, IEldrinConsumerTile, IShlorpReceiver, IMateriaProvisionRequester, IRequiresRouterCleanupOnDestruction, IKeepsInventoryOnBreak {
     public static final int
             SLOT_COUNT = 7, SLOT_INPUT_COUNT = 2,
             SLOT_ITEM_INPUT = 0, SLOT_MATERIA_INPUT = 1, SLOT_BOTTLES_OUTPUT = 2, SLOT_PROGRESS_HOLDER = 3,
@@ -166,6 +166,13 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             this.animStage = ANIM_STAGE_IDLE;
             this.syncAndSave();
         }
+    }
+
+    public void clearRecipe() {
+        this.currentRecipe = null;
+        this.clearDeliveries();
+        this.animStage = ANIM_STAGE_IDLE;
+        this.syncAndSave();
     }
 
     @Override
@@ -781,5 +788,68 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             return 0;
         }
         return pStack.getCount();
+    }
+
+    ////////////////////
+    // ACTUATOR HANDLING
+    ////////////////////
+
+    @Override
+    public void linkPluginsDeferred() {
+
+    }
+
+    @Override
+    public void linkPlugins() {
+
+    }
+
+    @Override
+    public void removePlugin(AbstractDirectionalPluginBlockEntity pPlugin) {
+
+    }
+
+    @Override
+    public void destroyRouters() {
+
+    }
+
+    @Override
+    public byte setRecipe(ItemStack pStack, Player player) {
+        if(pStack.isEmpty()) clearRecipe();
+        ExaltationRecipe recipePre = currentRecipe;
+        ExaltationRecipe recipeQuery = ExaltationRecipe.getExaltationRecipe(level, pStack.getItem());
+
+        if(recipeQuery == null) {
+            return ERROR_CODE_NO_SUCH_RECIPE;
+        } else if(recipePre == recipeQuery) {
+            return ERROR_CODE_SUCCESS;
+        } else {
+            this.currentRecipe = recipeQuery;
+            this.clearDeliveries();
+            this.animStage = ANIM_STAGE_IDLE;
+            this.syncAndSave();
+            return ERROR_CODE_SUCCESS;
+        }
+    }
+
+    @Override
+    public ItemStack getRecipeItem() {
+        return currentRecipe.getResultItem();
+    }
+
+    @Override
+    public ItemStack getRecipeItem(boolean pMakeCopy) {
+        return pMakeCopy ? currentRecipe.getResultItem().copy() : currentRecipe.getResultItem();
+    }
+
+    @Override
+    public void packDataToBlockItem() {
+
+    }
+
+    @Override
+    public void unpackDataFromNBT(CompoundTag pNBT) {
+
     }
 }

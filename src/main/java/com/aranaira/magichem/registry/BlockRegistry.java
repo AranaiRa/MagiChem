@@ -116,6 +116,11 @@ public class BlockRegistry {
                     .strength(3.0f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
     );
 
+    public static final RegistryObject<PrimeAggregatorRouterBlock> PRIME_AGGREGATOR_ROUTER = registerBlock("prime_aggregator_router",
+            () -> new PrimeAggregatorRouterBlock(BlockBehaviour.Properties.of()
+                    .strength(3.0f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))
+    );
+
     public static final RegistryObject<AcidBasinRouterBlock> ACID_BASIN_ROUTER = registerBlock("acid_basin_router",
             () -> new AcidBasinRouterBlock(BlockBehaviour.Properties.of()
                     .strength(3.0f).noOcclusion().isSuffocating((pState, pLevel, pPos) -> false))

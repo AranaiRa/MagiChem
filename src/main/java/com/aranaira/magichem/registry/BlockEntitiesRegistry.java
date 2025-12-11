@@ -314,6 +314,10 @@ public class BlockEntitiesRegistry {
             BlockEntityType.Builder.of(PrimeAggregatorBlockEntity::new, BlockRegistry.PRIME_AGGREGATOR.get()).build(null)
     );
 
+    public static final RegistryObject<BlockEntityType<PrimeAggregatorRouterBlockEntity>> PRIME_AGGREGATOR_ROUTER_BE = BLOCK_ENTITIES.register("prime_aggregator_router", () ->
+            BlockEntityType.Builder.of(PrimeAggregatorRouterBlockEntity::new, BlockRegistry.PRIME_AGGREGATOR_ROUTER.get()).build(null)
+    );
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register((eventBus));
     }
