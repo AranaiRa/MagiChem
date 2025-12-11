@@ -1,0 +1,43 @@
+{
+  "type": "magichem:sublimation",
+  "tier": 2,
+  "wisdom": 0,
+  "object": {
+    "item": "magichem:prime_aggregator",
+    "count": 1
+  },
+  "stages": [
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:perfected_electrum" },
+        { "item": "mna:chimerite_gem" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_change", "count": 25 },
+        { "item": "magichem:admixture_sorcery", "count": 25 },
+        { "item": "magichem:admixture_industry", "count": 16 },
+        { "item": "magichem:essentia_precious", "count": 30 }
+      ]
+    },
+    {
+      "experience": 0,
+      "components": [
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "mna:chimerite_gem" },
+        { "item": "magichem:magichemical_mechanism" },
+        { "item": "mna:chimerite_gem" }
+      ],
+      "materia": [
+        { "item": "magichem:admixture_vessel", "count": 32 },
+        { "item": "magichem:admixture_depths", "count": 16 },
+        { "item": "magichem:admixture_mountains", "count": 16 },
+        { "item": "magichem:essentia_nigredo", "count": 9 }
+      ]
+    }
+  ]
+}

@@ -1,20 +1,20 @@
 {
   "display": {
     "icon": {
-      "item": "magichem:gnostic_orb"
+      "item": "magichem:black_diamond"
     },
     "title": {
-      "translate": "advancements.magichem.gnostic_orb.title"
+      "translate": "advancements.magichem.black_diamond.title"
     },
     "description": {
-      "translate": "advancements.magichem.gnostic_orb.description"
+      "translate": "advancements.magichem.black_diamond.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false
   },
-  "parent": "magichem:__wisdom_2",
+  "parent": "magichem:prime_aggregator",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -22,7 +22,7 @@
         "items": [
           {
             "items": [
-              "magichem:gnostic_orb"
+              "magichem:black_diamond"
             ]
           }
         ]
