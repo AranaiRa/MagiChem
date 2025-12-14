@@ -1,10 +1,23 @@
 {
-  "type": "magichem:vitriolation",
-  "minimumAcidStrength": 0,
-  "acidConsumed": 20,
-  "inputFluidOverride": "magichem:simple_acid",
-  "duration": 120,
-  "inputItem": { "item": "create:raw_zinc", "count": 1 },
-  "resultFluid": { "fluid": "magichem:liquefacted_zinc", "amount": 200 },
-  "outputForCodex": "magichem:liquefacted_zinc_bucket"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:vitriolation",
+        "minimumAcidStrength": 0,
+        "acidConsumed": 20,
+        "inputFluidOverride": "magichem:simple_acid",
+        "duration": 120,
+        "inputItem": { "item": "create:raw_zinc", "count": 1 },
+        "resultFluid": { "fluid": "magichem:liquefacted_zinc", "amount": 200 },
+        "outputForCodex": "magichem:liquefacted_zinc_bucket"
+      }
+    }
+  ]
 }
