@@ -22,7 +22,7 @@
                     "count": 6
                 },
                 "resultFluid": {
-                    "fluid": "create:liquefacted_copper",
+                    "fluid": "magichem:liquefacted_copper",
                     "amount": 25
                 }
             }
