@@ -10,20 +10,21 @@
             ],
             "recipe": {
                 "type": "magichem:vitriolation",
-                "minimumAcidStrength": 1,
-                "acidConsumed": 60,
-                "duration": 120,
+                "minimumAcidStrength": 0,
+                "acidConsumed": 20,
+                "duration": 80,
+                "inputFluidOverride": "magichem:simple_acid",
                 "inputItem": {
-                    "item": "create:weathered_copper_shingle_stairs",
+                    "item": "create:crushed_raw_copper",
                     "count": 1
                 },
                 "resultItem": {
-                    "item": "magichem:verdigris",
-                    "count": 3
+                    "item": "minecraft:clay_ball",
+                    "count": 1
                 },
                 "resultFluid": {
                     "fluid": "magichem:liquefacted_copper",
-                    "amount": 25
+                    "amount": 200
                 },
                 "outputForCodex": "magichem:liquefacted_copper_bucket"
             }
