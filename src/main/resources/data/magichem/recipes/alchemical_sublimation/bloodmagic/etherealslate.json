@@ -1,0 +1,123 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "bloodmagic"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:sublimation",
+                "tier": 3,
+                "wisdom": 3,
+                "required_advancement": "magichem:material_unlocks/bloodmagic/infused_slate",
+                "object": {
+                    "item": "bloodmagic:etherealslate",
+                    "count": 1
+                },
+                "stages": [
+                    {
+                        "experience": 0,
+                        "components": [
+                            {
+                                "item": "bloodmagic:infusedslate"
+                            },
+                            {
+                                "item": "minecraft:obsidian"
+                            },
+                            {
+                                "item": "bloodmagic:infusedslate"
+                            }
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_blood",
+                                "count": 24
+                            },
+                            {
+                                "item": "magichem:admixture_demon",
+                                "count": 12
+                            },
+                            {
+                                "item": "magichem:admixture_sorcery",
+                                "count": 12
+                            },
+                            {
+                                "item": "magichem:admixture_spirit",
+                                "count": 10
+                            }
+                        ]
+                    },
+                    {
+                        "experience": 0,
+                        "components": [
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            },
+                            {
+                                "item": "minecraft:amethyst_shard"
+                            },
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            },
+                            {
+                                "item": "minecraft:amethyst_shard"
+                            },
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            }
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_blood",
+                                "count": 32
+                            },
+                            {
+                                "item": "magichem:admixture_spirit",
+                                "count": 22
+                            },
+                            {
+                                "item": "magichem:admixture_potential",
+                                "count": 15
+                            },
+                            {
+                                "item": "magichem:admixture_sorcery",
+                                "count": 12
+                            }
+                        ]
+                    },
+                    {
+                        "experience": 0,
+                        "components": [
+                            {
+                                "item": "bloodmagic:largebloodstonebrick"
+                            },
+                            {
+                                "item": "minecraft:ghast_tear"
+                            },
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            }
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_blood",
+                                "count": 32
+                            },
+                            {
+                                "item": "magichem:admixture_spirit",
+                                "count": 16
+                            },
+                            {
+                                "item": "magichem:admixture_permanence",
+                                "count": 10
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

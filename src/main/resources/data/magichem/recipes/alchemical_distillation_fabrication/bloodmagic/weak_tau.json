@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 0.333,
+        "batch_size": 7,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/imbued_slate",
+        "object": {
+          "item": "bloodmagic:weak_tau"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_demon",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_acid",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_verdant",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

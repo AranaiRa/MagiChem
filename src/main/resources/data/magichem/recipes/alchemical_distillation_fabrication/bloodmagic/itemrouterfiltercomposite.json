@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:itemrouterfiltercomposite"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_thought",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_sight",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

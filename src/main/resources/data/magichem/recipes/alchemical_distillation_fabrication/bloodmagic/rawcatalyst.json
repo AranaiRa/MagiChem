@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/common_tartaric_gem",
+        "object": {
+          "item": "bloodmagic:rawcatalyst"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_potential",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_acid",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

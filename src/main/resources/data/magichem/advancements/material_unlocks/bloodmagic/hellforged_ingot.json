@@ -1,0 +1,39 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "advancement": {
+        "display": {
+          "icon": {
+            "item": "bloodmagic:ingot_hellforged"
+          },
+          "title": "Acquiring Hellware",
+          "description": "Go dungeon delving and acquire a Demonite Ingot.",
+          "frame": "task",
+          "show_toast": true,
+          "announce_to_chat": false,
+          "hidden": false
+        },
+        "criteria": {
+          "get_ingot": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "bloodmagic:ingot_hellforged"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

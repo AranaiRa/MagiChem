@@ -1,0 +1,93 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "bloodmagic"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:sublimation",
+                "tier": 3,
+                "wisdom": 2,
+                "required_advancement": "magichem:material_unlocks/bloodmagic/demonic_slate",
+                "object": {
+                    "item": "bloodmagic:demonslate",
+                    "count": 1
+                },
+                "stages": [
+                    {
+                        "experience": 0,
+                        "components": [
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            },
+                            {
+                                "item": "bloodmagic:defaultcrystal"
+                            },
+                            {
+                                "item": "magichem:bleached_amethyst_shard"
+                            },
+                            {
+                                "item": "bloodmagic:defaultcrystal"
+                            },
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            }
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_sorcery",
+                                "count": 24
+                            },
+                            {
+                                "item": "magichem:admixture_demon",
+                                "count": 12
+                            },
+                            {
+                                "item": "magichem:admixture_blood",
+                                "count": 10
+                            }
+                        ]
+                    },
+                    {
+                        "experience": 0,
+                        "components": [
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            },
+                            {
+                                "item": "minecraft:deepslate"
+                            },
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            },
+                            {
+                                "item": "minecraft:deepslate"
+                            },
+                            {
+                                "item": "bloodmagic:weakbloodshard"
+                            }
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_spirit",
+                                "count": 12
+                            },
+                            {
+                                "item": "magichem:admixture_blood",
+                                "count": 10
+                            },
+                            {
+                                "item": "magichem:admixture_sorcery",
+                                "count": 10
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/magician_blood_orb",
+        "object": {
+          "item": "bloodmagic:weapon_repair_anointment_l"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_potential",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_healing",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 3
+          }
+        ]
+      }
+    }
+  ]
+}

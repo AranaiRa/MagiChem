@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:sand_hellforged"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_hells",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_dust",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

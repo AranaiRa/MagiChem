@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/imbued_slate",
+        "object": {
+          "item": "bloodmagic:waterscribetool"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_water",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

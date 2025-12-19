@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:arc"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 80
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 22
+          },
+          {
+            "item": "magichem:admixture_industry",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 10
+          }
+        ]
+      }
+    }
+  ]
+}

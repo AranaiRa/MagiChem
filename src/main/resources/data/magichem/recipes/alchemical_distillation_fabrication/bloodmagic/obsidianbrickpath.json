@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 4,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/archmage_blood_orb",
+        "object": {
+          "item": "bloodmagic:obsidianbrickpath"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_comfort",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

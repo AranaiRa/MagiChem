@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 5,
+        "output_rate": 0.125,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/demon_will",
+        "object": {
+          "item": "bloodmagic:dungeon_stone_c"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_poison",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/crystallized_demon_will",
+        "object": {
+          "item": "bloodmagic:dungeon_stone"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

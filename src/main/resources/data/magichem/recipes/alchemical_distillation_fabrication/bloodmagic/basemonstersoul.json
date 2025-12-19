@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 7,
+        "output_rate": 0.1,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:basemonstersoul"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_demon",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_curse",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

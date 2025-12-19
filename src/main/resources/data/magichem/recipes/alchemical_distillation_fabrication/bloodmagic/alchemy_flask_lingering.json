@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:alchemy_flask_lingering"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_breath",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

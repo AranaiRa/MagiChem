@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:deforester_charge_2"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 32
+          },
+          {
+            "item": "magichem:admixture_destruction",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 10
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 12
+          }
+        ]
+      }
+    }
+  ]
+}

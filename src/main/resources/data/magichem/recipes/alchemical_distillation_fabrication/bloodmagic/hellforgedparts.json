@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 4,
+        "categories": 34,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/hellforged_ingot",
+        "object": {
+        "item": "bloodmagic:hellforgedparts"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_industry",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 5
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 10
+          }
+        ]
+      }
+    }
+  ]
+}

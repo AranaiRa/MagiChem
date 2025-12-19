@@ -1,0 +1,27 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "bloodmagic"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:vitriolation",
+                "minimumAcidStrength": 2,
+                "acidConsumed": 10,
+                "duration": 20,
+                "inputItem": {
+                    "item": "bloodmagic:ironsand",
+                    "count": 1
+                },
+                "resultFluid": {
+                    "fluid": "magichem:liquefacted_iron",
+                    "amount": 150
+                }
+            }
+        }
+    ]
+}

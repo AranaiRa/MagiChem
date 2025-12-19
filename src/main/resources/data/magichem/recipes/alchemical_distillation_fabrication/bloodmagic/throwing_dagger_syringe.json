@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:throwing_dagger_syringe"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

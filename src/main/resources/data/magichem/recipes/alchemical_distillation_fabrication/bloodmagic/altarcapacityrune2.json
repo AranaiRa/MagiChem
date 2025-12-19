@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:altarcapacityrune2"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_motion",
+            "count": 25
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 25
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 16
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 5
+          },
+          {
+            "item": "magichem:essentia_albedo",
+            "count": 10
+          }
+        ]
+      }
+    }
+  ]
+}

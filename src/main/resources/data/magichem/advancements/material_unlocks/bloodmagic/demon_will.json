@@ -1,0 +1,54 @@
+{
+  "advancements": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "advancement": {
+        "display": {
+          "icon": { "item": "bloodmagic:demonwillgauge" },
+          "title": "Resonant Will",
+          "description": "Coax Crystallized Demon Will into one of it's purer forms through the Resonance of the Faceted Crystal.",
+          "frame": "task",
+          "show_toast": true,
+          "announce_to_chat": false,
+          "hidden": false
+        },
+
+        "criteria": {
+          "corrosive": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [{ "items": ["bloodmagic:corrosivecrystal"] }]
+            }
+          },
+          "vengeful": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [{ "items": ["bloodmagic:vengefulcrystal"] }]
+            }
+          },
+          "steadfast": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [{ "items": ["bloodmagic:steadfastcrystal"] }]
+            }
+          },
+          "destructive": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+              "items": [{ "items": ["bloodmagic:destructivecrystal"] }]
+            }
+          }
+        },
+
+        "requirements": [
+          ["corrosive", "vengeful", "steadfast", "destructive"]
+        ]
+      }
+    }
+  ]
+}

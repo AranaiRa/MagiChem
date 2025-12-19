@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 1,
+        "object": {
+          "item": "bloodmagic:veinmine_charge"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_fire",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_destruction",
+            "count": 20
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 14
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 14
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 10
+          }
+        ]
+      }
+    }
+  ]
+}

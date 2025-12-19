@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/master_blood_orb",
+        "object": {
+          "item": "bloodmagic:voiding_anointment_xl"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_ender",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_destruction",
+            "count": 46
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 20
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 14
+          }
+        ]
+      }
+    }
+  ]
+}

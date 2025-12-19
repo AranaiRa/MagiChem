@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.1,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/demon_will",
+        "object": {
+          "item": "bloodmagic:basemonstersoul_corrosive"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_poison",
+            "count": 5
+          },
+          {
+            "item": "magichem:admixture_demon",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_curse",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

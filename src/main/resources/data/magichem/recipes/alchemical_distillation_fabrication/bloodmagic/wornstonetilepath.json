@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/master_blood_orb",
+        "object": {
+          "item": "bloodmagic:wornstonetilepath"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_comfort",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_erosion",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 3
+          }
+        ]
+      }
+    }
+  ]
+}
