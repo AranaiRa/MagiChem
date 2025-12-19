@@ -5,7 +5,7 @@
       "conditions": [
         {
           "type": "forge:mod_loaded",
-          "modid": "create"
+          "modid": "bloodmagic"
         }
       ],
       "recipe": {
@@ -14,24 +14,29 @@
         "categories": 1,
         "output_rate": 1.0,
         "batch_size": 1,
+        "required_advancement": "magichem:material_unlocks/bloodmagic/greater_tartaric_gem",
         "object": {
-          "fluid": "create:chocolate"
+          "item": "bloodmagic:corrupted_dust"
         },
         "components": [
           {
-            "item": "magichem:admixture_delight",
-            "count": 5
-          },
-          {
-            "item": "magichem:admixture_satiety",
+            "item": "magichem:admixture_potential",
             "count": 4
           },
           {
-            "item": "magichem:admixture_odors",
+            "item": "magichem:admixture_demon",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_change",
             "count": 2
           },
           {
-            "item": "magichem:admixture_comfort",
+            "item": "magichem:admixture_energy",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_sorcery",
             "count": 1
           }
         ]

@@ -19,7 +19,7 @@
         },
         "components": [
           {
-            "item": "magichem:admixture_sounds",
+            "item": "magichem:admixture_sound",
             "count": 12
           },
           {

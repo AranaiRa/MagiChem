@@ -10,34 +10,33 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 2,
+        "wisdom": 6,
         "categories": 1,
         "output_rate": 1.0,
         "batch_size": 1,
-        "required_advancement": "magichem:material_unlocks/bloodmagic/greater_tartaric_gem",
         "object": {
-          "item": "bloodmagic:corrupteddust"
+          "item": "bloodmagic:livingplate"
         },
         "components": [
           {
+            "item": "magichem:admixture_metal",
+            "count": 48
+          },
+          {
+            "item": "magichem:admixture_protection",
+            "count": 40
+          },
+          {
             "item": "magichem:admixture_potential",
-            "count": 4
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_construct",
+            "count": 8
           },
           {
             "item": "magichem:admixture_demon",
-            "count": 3
-          },
-          {
-            "item": "magichem:admixture_change",
-            "count": 2
-          },
-          {
-            "item": "magichem:admixture_energy",
-            "count": 1
-          },
-          {
-            "item": "magichem:admixture_sorcery",
-            "count": 1
+            "count": 6
           }
         ]
       }

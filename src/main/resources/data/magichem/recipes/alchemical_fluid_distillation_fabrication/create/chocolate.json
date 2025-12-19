@@ -16,10 +16,10 @@
         "batch_size": 1,
         "fluid": "create:chocolate",
         "components": [
-          { "item": "magichem:admixture_satiety", "count": 8 },
-          { "item": "magichem:admixture_comfort", "count": 4 },
-          { "item": "magichem:admixture_delight", "count": 4 },
-          { "item": "magichem:admixture_odors", "count": 4}
+          { "item": "magichem:admixture_delight", "count": 5 },
+          { "item": "magichem:admixture_satiety", "count": 4 },
+          { "item": "magichem:admixture_odors", "count": 2 },
+          { "item": "magichem:admixture_comfort", "count": 1 }
         ]
       }
     }

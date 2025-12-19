@@ -18,9 +18,9 @@
           "item": "create:minecart_coupling"
         },
         "components": [
-          { "item": "magichem:admixture_Stone", "count": 1 },
           { "item": "magichem:admixture_metal", "count": 6 },
-          { "item": "magichem:admixture_instrument", "count": 4 }
+          { "item": "magichem:admixture_instrument", "count": 4 },
+          { "item": "magichem:admixture_stone", "count": 1 }
         ]
       }
     }
