@@ -1,6 +1,7 @@
 package com.aranaira.magichem.events;
 
 import com.aranaira.magichem.MagiChemMod;
+import com.aranaira.magichem.events.compat.BloodMagicEventHelper;
 import com.aranaira.magichem.events.compat.CreateEventHelper;
 import com.aranaira.magichem.events.compat.OccultismEventHelper;
 import com.aranaira.magichem.foundation.enums.LuminType;
@@ -73,6 +74,11 @@ public class ClientEventHandler {
 
         //Compat items below this point
         ModList modList = ModList.get();
+
+        //Blood Magic
+        if(modList.isLoaded("bloodmagic")) {
+            BloodMagicEventHelper.registerItemLayers(event);
+        }
 
         //Create
         if(modList.isLoaded("create")) {

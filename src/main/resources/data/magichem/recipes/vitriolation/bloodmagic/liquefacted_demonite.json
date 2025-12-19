@@ -1,0 +1,22 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "bloodmagic"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:vitriolation",
+        "minimumAcidStrength": 2,
+        "acidConsumed": 10,
+        "duration": 80,
+        "inputItem": { "item": "occultism:rawdemonite", "count": 1 },
+        "resultFluid": { "fluid": "magichem:liquefacted_demonite", "amount": 250 },
+        "outputForCodex": "magichem:liquefacted_demonite_bucket"
+      }
+    }
+  ]
+}

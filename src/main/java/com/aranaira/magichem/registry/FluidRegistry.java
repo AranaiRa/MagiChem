@@ -4,6 +4,7 @@ import com.aranaira.magichem.MagiChemMod;
 import com.aranaira.magichem.block.fluid.AcidFluidBlock;
 import com.aranaira.magichem.block.fluid.LiquidLightFluidBlock;
 import com.aranaira.magichem.fluid.AcidFluidType;
+import com.aranaira.magichem.registry.compat.BloodMagicFluidRegistry;
 import com.aranaira.magichem.registry.compat.CreateFluidRegistry;
 import com.aranaira.magichem.registry.compat.OccultismFluidRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -627,6 +628,9 @@ public class FluidRegistry {
 
         ModList modList = ModList.get();
 
+        if(modList.isLoaded("bloodmagic")) {
+            BloodMagicFluidRegistry.register(eventBus);
+        }
         if(modList.isLoaded("create")) {
             CreateFluidRegistry.register(eventBus);
         }

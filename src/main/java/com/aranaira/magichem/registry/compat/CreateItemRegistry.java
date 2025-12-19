@@ -15,7 +15,7 @@ public class CreateItemRegistry {
     public static final DeferredRegister<Item> ITEMS_COMPAT_CREATE = DeferredRegister.create(ForgeRegistries.ITEMS, MagiChemMod.MODID);
 
     ///////////////
-    // OCCULTISM COMPAT ITEMS
+    // CREATE COMPAT ITEMS
     ///////////////
 
     public static final RegistryObject<Item> LIQUEFACTED_ZINC_BUCKET = ITEMS_COMPAT_CREATE.register("liquefacted_zinc_bucket",

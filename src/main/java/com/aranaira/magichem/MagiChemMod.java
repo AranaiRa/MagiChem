@@ -12,6 +12,7 @@ import com.aranaira.magichem.item.renderer.*;
 import com.aranaira.magichem.item.renderer.mna.CodexMateriaItemRenderer;
 import com.aranaira.magichem.item.renderer.mna.SublimationPrimerItemRenderer;
 import com.aranaira.magichem.registry.*;
+import com.aranaira.magichem.registry.compat.BloodMagicItemRegistry;
 import com.aranaira.magichem.registry.compat.CreateItemRegistry;
 import com.aranaira.magichem.registry.compat.OccultismItemRegistry;
 import com.mna.api.guidebook.RegisterGuidebooksEvent;
@@ -105,6 +106,9 @@ public class MagiChemMod
         //Conditional registration
         ModList modList = ModList.get();
 
+        if(modList.isLoaded("bloodmagic")) {
+            BloodMagicItemRegistry.ITEMS_COMPAT_BLOOD_MAGIC.register(eventBus);
+        }
         if(modList.isLoaded("create")) {
             CreateItemRegistry.ITEMS_COMPAT_CREATE.register(eventBus);
         }
