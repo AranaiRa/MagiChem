@@ -12,13 +12,18 @@
           "icon": {
             "item": "bloodmagic:magicianbloodorb"
           },
-          "title": "Crimson Accord",
-          "description": "Obtain a Magician’s Blood Orb.",
+          "title": {
+            "translate": "advancements.magichem.material_unlocks.magician_blood_orb.title"
+          },
+          "description": {
+            "translate": "advancements.magichem.material_unlocks.magician_blood_orb.description"
+          },
           "frame": "task",
           "show_toast": true,
           "announce_to_chat": false,
           "hidden": false
         },
+        "parent": "magichem:material_unlocks/bloodmagic/apprentice_blood_orb",
         "criteria": {
           "get_orb": {
             "trigger": "minecraft:inventory_changed",

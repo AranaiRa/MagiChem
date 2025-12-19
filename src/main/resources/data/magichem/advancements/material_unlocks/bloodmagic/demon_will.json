@@ -10,14 +10,18 @@
       "advancement": {
         "display": {
           "icon": { "item": "bloodmagic:demonwillgauge" },
-          "title": "Resonant Will",
-          "description": "Coax Crystallized Demon Will into one of it's purer forms through the Resonance of the Faceted Crystal.",
+          "title": {
+            "translate": "advancements.magichem.material_unlocks.demon_will.title"
+          },
+          "description": {
+            "translate": "advancements.magichem.material_unlocks.demon_will.description"
+          },
           "frame": "task",
           "show_toast": true,
           "announce_to_chat": false,
           "hidden": false
         },
-
+        "parent": "magichem:material_unlocks/bloodmagic/crystallized_demon_will",
         "criteria": {
           "corrosive": {
             "trigger": "minecraft:inventory_changed",

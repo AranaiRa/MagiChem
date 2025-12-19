@@ -12,13 +12,18 @@
           "icon": {
             "item": "bloodmagic:soulgemgreater"
           },
-          "title": "A Perfect Vessel",
-          "description": "Obtain a Greater Tartaric Gem",
+          "title": {
+            "translate": "advancements.magichem.material_unlocks.greater_tartaric_gem.title"
+          },
+          "description": {
+            "translate": "advancements.magichem.material_unlocks.greater_tartaric_gem.description"
+          },
           "frame": "task",
           "show_toast": true,
           "announce_to_chat": false,
           "hidden": false
         },
+        "parent": "magichem:material_unlocks/bloodmagic/common_tartaric_gem",
         "criteria": {
           "get_orb": {
             "trigger": "minecraft:inventory_changed",

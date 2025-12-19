@@ -12,13 +12,18 @@
           "icon": {
             "item": "bloodmagic:demonslate"
           },
-          "title": "Carved in Defiance",
-          "description": "Obtain a Demonic Slate.",
+          "title": {
+            "translate": "advancements.magichem.material_unlocks.demonic_slate.title"
+          },
+          "description": {
+            "translate": "advancements.magichem.material_unlocks.demonic_slate.description"
+          },
           "frame": "task",
           "show_toast": true,
           "announce_to_chat": false,
           "hidden": false
         },
+        "parent": "magichem:material_unlocks/imbued_slate",
         "criteria": {
           "get_orb": {
             "trigger": "minecraft:inventory_changed",

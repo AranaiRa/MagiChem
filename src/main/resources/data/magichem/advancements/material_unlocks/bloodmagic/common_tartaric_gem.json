@@ -7,18 +7,23 @@
           "modid": "bloodmagic"
         }
       ],
-      "advancement": {{
+      "advancement": {
       "display": {
         "icon": {
           "item": "bloodmagic:soulgemcommon"
         },
-        "title": "A Common Vessel",
-        "description": "Obtain a Common Tartaric Gem",
+        "title": {
+          "translate": "advancements.magichem.material_unlocks.common_tartaric_gem.title"
+        },
+        "description": {
+          "translate": "advancements.magichem.material_unlocks.common_tartaric_gem.description"
+        },
         "frame": "task",
         "show_toast": true,
         "announce_to_chat": false,
         "hidden": false
       },
+      "parent": "magichem:material_unlocks/root",
       "criteria": {
         "get_orb": {
           "trigger": "minecraft:inventory_changed",
@@ -31,7 +36,7 @@
           }
         }
       }
-    },
+    }
     }
   ]
 }

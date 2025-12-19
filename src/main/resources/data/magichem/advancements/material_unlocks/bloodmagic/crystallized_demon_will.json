@@ -12,13 +12,18 @@
           "icon": {
             "item": "bloodmagic:defaultcrystal"
           },
-          "title": "Will, Made Solid",
-          "description": "Crystallize some Demon Will using a Demon Crystallizer",
+          "title": {
+            "translate": "advancements.magichem.material_unlocks.crystallized_demon_will.title"
+          },
+          "description": {
+            "translate": "advancements.magichem.material_unlocks.crystallized_demon_will.description"
+          },
           "frame": "task",
           "show_toast": true,
           "announce_to_chat": false,
           "hidden": false
         },
+        "parent": "magichem:material_unlocks/root",
         "criteria": {
           "get_orb": {
             "trigger": "minecraft:inventory_changed",
