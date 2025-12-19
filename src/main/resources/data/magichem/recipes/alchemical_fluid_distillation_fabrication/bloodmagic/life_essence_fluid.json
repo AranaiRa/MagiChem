@@ -11,8 +11,8 @@
       "recipe": {
         "type": "magichem:fluid_distillation_fabrication",
         "wisdom": 2,
-        "categories": 7,
-        "output_rate": 1.0,
+        "categories": 5,
+        "output_rate": 0.0625,
         "batch_size": 1,
         "required_advancement": "magichem:material_unlocks/bloodmagic/imbued_slate",
         "fluid": "bloodmagic:life_essence_fluid",
@@ -20,8 +20,7 @@
           { "item": "magichem:admixture_blood", "count": 4 },
           { "item": "magichem:admixture_spirit", "count": 3 },
           { "item": "magichem:admixture_mana", "count": 2 },
-          { "item": "magichem:admixture_potential", "count": 2 },
-          { "item": "magichem:essentia_fleshy", "count": 1 }
+          { "item": "magichem:admixture_potential", "count": 2 }
         ]
       }
     }
