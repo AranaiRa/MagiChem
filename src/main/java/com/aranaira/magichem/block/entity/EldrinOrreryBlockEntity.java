@@ -5,6 +5,7 @@ import com.aranaira.magichem.foundation.IKeepsInventoryOnBreak;
 import com.aranaira.magichem.foundation.IMateriaProvisionRequester;
 import com.aranaira.magichem.foundation.IRequiresRouterCleanupOnDestruction;
 import com.aranaira.magichem.foundation.IShlorpReceiver;
+import com.aranaira.magichem.foundation.saveddata.EldrinOrreryLimiterSD;
 import com.aranaira.magichem.gui.EldrinOrreryMenu;
 import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
@@ -74,6 +75,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     private Player playerRef;
     private int solar, lunar, sidereal, firmament, realm;
     private static final Random r = new Random();
+    private boolean doWorldDataWrite = false;
 
     //animation drivers
     public float
@@ -272,6 +274,20 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     public static <E extends BlockEntity> void tick(Level level, BlockPos pos, BlockState blockState, E e) {
         if(e instanceof EldrinOrreryBlockEntity entity) {
             if(!level.isClientSide()) {
+                if(entity.doWorldDataWrite) {
+                    final EldrinOrreryLimiterSD eldrinOrreryData = level.getServer().overworld().getDataStorage().computeIfAbsent(EldrinOrreryLimiterSD::load, EldrinOrreryLimiterSD::create, "eldrinOrreryData");
+
+                    if(entity.playerRef == null) {
+                        entity.playerRef = level.getPlayerByUUID(entity.placedBy);
+                    }
+
+                    if(entity.playerRef != null && !eldrinOrreryData.playerHasOrrery(entity.playerRef)) {
+                        eldrinOrreryData.addOrrery(entity.playerRef);
+                    }
+
+                    entity.doWorldDataWrite = false;
+                }
+
                 boolean changed = false;
                 if(entity.solar <= CHARGE_SOLAR * CHARGE_CAP_MULT_ORBS - CHARGE_SOLAR) {
                     ItemStack inStack = entity.itemHandler.getStackInSlot(SLOT_SOLAR_INPUT);
@@ -421,6 +437,7 @@ public class EldrinOrreryBlockEntity extends BlockEntity implements MenuProvider
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);
+        doWorldDataWrite = true;
     }
 
     @Override

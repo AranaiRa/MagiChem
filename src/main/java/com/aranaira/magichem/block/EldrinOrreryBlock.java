@@ -79,12 +79,11 @@ public class EldrinOrreryBlock extends BaseEntityBlock {
             }
 
             final EldrinOrreryLimiterSD eldrinOrreryData = pContext.getLevel().getServer().overworld().getDataStorage().computeIfAbsent(EldrinOrreryLimiterSD::load, EldrinOrreryLimiterSD::create, "eldrinOrreryData");
-            if(!eldrinOrreryData.playerHasOrrery(pContext.getPlayer())) {
-                eldrinOrreryData.addOrrery(pContext.getPlayer());
+            if(eldrinOrreryData.playerHasOrrery(pContext.getPlayer())) {
+                pContext.getPlayer().sendSystemMessage(Component.translatable("feedback.block.eldrin_orrery.over_limit"));
+            } else {
                 return super.getStateForPlacement(pContext);
             }
-            else
-                pContext.getPlayer().sendSystemMessage(Component.translatable("feedback.block.eldrin_orrery.over_limit"));
         }
         return null;
     }
