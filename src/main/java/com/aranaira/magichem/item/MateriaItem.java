@@ -73,18 +73,14 @@ public class MateriaItem extends Item {
                     if (ar.getTarget() == targetState.getBlock()) {
 
                         if (ar.getChance() >= 100f || r.nextFloat(100) <= ar.getChance()) {
+                            
                             BlockState newState = ar.getResult().defaultBlockState();
-
-                            if (targetState.hasProperty(FACING))
-                                newState = newState.setValue(FACING, targetState.getValue(FACING));
-                            if (targetState.hasProperty(HORIZONTAL_FACING))
-                                newState = newState.setValue(HORIZONTAL_FACING, targetState.getValue(HORIZONTAL_FACING));
-                            if (targetState.hasProperty(HALF))
-                                newState = newState.setValue(HALF, targetState.getValue(HALF));
-                            if (targetState.hasProperty(STAIRS_SHAPE))
-                                newState = newState.setValue(STAIRS_SHAPE, targetState.getValue(STAIRS_SHAPE));
-                            if (targetState.hasProperty(WATERLOGGED))
-                                newState = newState.setValue(WATERLOGGED, targetState.getValue(WATERLOGGED));
+                            //New logic to make getting and storing data from blocks generic
+                            for (var property : targetState.getProperties()) {
+                                if (newState.hasProperty(property)) {
+                                    newState = copyProperty(property, targetState, newState);
+                                }
+                        }
 
                             pContext.getLevel().setBlock(pContext.getClickedPos(), newState, 3);
                             pContext.getLevel().sendBlockUpdated(pContext.getClickedPos(), targetState, newState, 3);
@@ -125,6 +121,23 @@ public class MateriaItem extends Item {
 
         return super.useOn(pContext);
     }
+
+    //helper code for safety
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static <T extends Comparable<T>> BlockState copyProperty(
+        net.minecraft.world.level.block.state.properties.Property<T> property,
+        BlockState from,
+        BlockState to
+    ) {
+    T value = from.getValue(property);
+
+    if (property.getPossibleValues().contains(value)) {
+        return to.setValue(property, value);
+        }
+    }
+
+    return to;
+}
 
     public static void generateSuccessParticles(int pX, int pY, int pZ, int pColor) {
         if(Minecraft.getInstance().level != null) {
