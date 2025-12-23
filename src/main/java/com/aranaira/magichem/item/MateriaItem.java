@@ -80,7 +80,7 @@ public class MateriaItem extends Item {
                                 if (newState.hasProperty(property)) {
                                     newState = copyProperty(property, targetState, newState);
                                 }
-                        }
+                            }
 
                             pContext.getLevel().setBlock(pContext.getClickedPos(), newState, 3);
                             pContext.getLevel().sendBlockUpdated(pContext.getClickedPos(), targetState, newState, 3);
@@ -133,7 +133,6 @@ public class MateriaItem extends Item {
 
     if (property.getPossibleValues().contains(value)) {
         return to.setValue(property, value);
-        }
     }
 
     return to;
