@@ -62,9 +62,9 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             SLOT_OUTPUT_START = 4, SLOT_OUTPUT_COUNT  = 3,
             ANIM_STAGE_IDLE = 0,
             ANIM_STAGE_GATHERING_ITEMS = 1, ANIM_STAGE_TO_MATERIA = 2,
-            ANIM_STAGE_GATHERING_MATERIA = 3, ANIM_STAGE_TO_SLURRY = 4,
-            ANIM_STAGE_GATHERING_SLURRY = 5, ANIM_STAGE_TO_ELDRIN = 6,
-            ANIM_STAGE_GATHERING_ELDRIN = 7, ANIM_STAGE_CRAFTING = 8,
+            ANIM_STAGE_GATHERING_MATERIA = 3, ANIM_STAGE_TO_ELDRIN = 4,
+            ANIM_STAGE_GATHERING_ELDRIN = 5, ANIM_STAGE_TO_SLURRY = 6,
+            ANIM_STAGE_GATHERING_SLURRY = 7, ANIM_STAGE_CRAFTING = 8,
             TO_MATERIA_DURATION = 40, TO_SLURRY_DURATION = 40, TO_ELDRIN_DURATION = 40, CRAFTING_DURATION = 60;
     public boolean clearRecipeAfterNextProcess = false;
 
@@ -531,28 +531,6 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
                             if (pEntity.materiaDelivered >= pEntity.currentRecipe.getMateriaRequired()) {
                                 pEntity.progress = 0;
-                                pEntity.animStage = ANIM_STAGE_TO_SLURRY;
-                            }
-                        }
-                    }
-
-                    if (changed) {
-                        pEntity.syncAndSave();
-                    }
-                } else if (pEntity.animStage == ANIM_STAGE_GATHERING_SLURRY) {
-                    boolean changed = false;
-
-                    if (!pEntity.containedSlurry.isEmpty() && pEntity.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
-                        int remaining = pEntity.currentRecipe.getSlurryRequired() - pEntity.slurryDelivered;
-                        int extraction = Math.min(pEntity.containedSlurry.getAmount(), remaining);
-
-                        if (extraction > 0) {
-                            pEntity.slurryDelivered += extraction;
-                            pEntity.containedSlurry.shrink(extraction);
-                            changed = true;
-
-                            if (pEntity.slurryDelivered >= pEntity.currentRecipe.getSlurryRequired()) {
-                                pEntity.progress = 0;
                                 pEntity.animStage = ANIM_STAGE_TO_ELDRIN;
                             }
                         }
@@ -581,7 +559,29 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
                     if (complete) {
                         pEntity.progress = 0;
-                        pEntity.animStage = ANIM_STAGE_CRAFTING;
+                        pEntity.animStage = ANIM_STAGE_TO_SLURRY;
+                    }
+
+                    if (changed) {
+                        pEntity.syncAndSave();
+                    }
+                } else if (pEntity.animStage == ANIM_STAGE_GATHERING_SLURRY) {
+                    boolean changed = false;
+
+                    if (!pEntity.containedSlurry.isEmpty() && pEntity.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                        int remaining = pEntity.currentRecipe.getSlurryRequired() - pEntity.slurryDelivered;
+                        int extraction = Math.min(pEntity.containedSlurry.getAmount(), remaining);
+
+                        if (extraction > 0) {
+                            pEntity.slurryDelivered += extraction;
+                            pEntity.containedSlurry.shrink(extraction);
+                            changed = true;
+
+                            if (pEntity.slurryDelivered >= pEntity.currentRecipe.getSlurryRequired()) {
+                                pEntity.progress = 0;
+                                pEntity.animStage = ANIM_STAGE_CRAFTING;
+                            }
+                        }
                     }
 
                     if (changed) {
