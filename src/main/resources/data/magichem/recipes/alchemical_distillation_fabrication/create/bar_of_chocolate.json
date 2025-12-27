@@ -13,7 +13,7 @@
         "wisdom": 2,
         "categories": 1,
         "output_rate": 0.25,
-        "batch_size": 1,
+        "batch_size": 4,
         "object": {
           "item": "create:bar_of_chocolate"
         },
