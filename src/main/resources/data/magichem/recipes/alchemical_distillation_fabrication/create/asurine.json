@@ -10,9 +10,9 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 1,
+        "wisdom": 2,
         "categories": 1,
-        "output_rate": 0.063,
+        "output_rate": 0.125,
         "batch_size": 4,
         "object": {
           "item": "create:asurine"
