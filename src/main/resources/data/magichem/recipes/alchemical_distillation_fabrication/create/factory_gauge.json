@@ -10,10 +10,11 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 2,
+        "wisdom": 4,
         "categories": 1,
         "output_rate": 0.5,
         "batch_size": 1,
+        "required_advancement": "create:brass",
         "object": {
           "item": "create:factory_gauge"
         },
