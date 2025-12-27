@@ -13,7 +13,8 @@
         "wisdom": 3,
         "categories": 1,
         "output_rate": 0.5,
-        "batch_size": 1,
+        "batch_size": 16,
+        "required_advancement": "create:sturdy_sheet",
         "object": {
           "item": "create:train_door"
         },
