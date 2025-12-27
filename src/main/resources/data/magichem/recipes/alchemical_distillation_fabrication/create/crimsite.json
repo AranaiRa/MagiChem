@@ -10,7 +10,7 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 2,
+        "wisdom": 1,
         "categories": 1,
         "output_rate": 0.125,
         "batch_size": 4,
