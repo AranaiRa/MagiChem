@@ -13,7 +13,7 @@
         "wisdom": 1,
         "categories": 3,
         "output_rate": 1.0,
-        "batch_size": 1,
+        "batch_size": 8,
         "object": {
           "item": "create:builders_tea"
         },
