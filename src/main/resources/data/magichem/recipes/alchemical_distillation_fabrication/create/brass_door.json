@@ -16,7 +16,7 @@
         "batch_size": 16,
         "required_advancement": "create:brass",
         "object": {
-          "item": "create:brass_door"
+        "item": "create:brass_door"
         },
         "components": [
           {
