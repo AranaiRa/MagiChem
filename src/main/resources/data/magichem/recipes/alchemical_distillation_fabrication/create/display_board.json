@@ -10,10 +10,11 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 6,
+        "wisdom": 2,
         "categories": 1,
         "output_rate": 0.5,
         "batch_size": 1,
+        "required_advancement": "create:rose_quartz",
         "object": {
           "item": "create:display_board"
         },

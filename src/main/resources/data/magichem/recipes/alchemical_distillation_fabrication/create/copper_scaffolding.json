@@ -13,7 +13,7 @@
         "wisdom": 1,
         "categories": 1,
         "output_rate": 0.5,
-        "batch_size": 1,
+        "batch_size": 8,
         "object": {
           "item": "create:copper_scaffolding"
         },

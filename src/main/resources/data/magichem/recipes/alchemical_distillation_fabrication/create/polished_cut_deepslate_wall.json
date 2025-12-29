@@ -13,7 +13,7 @@
         "wisdom": 1,
         "categories": 1,
         "output_rate": 0.063,
-        "batch_size": 1,
+        "batch_size": 4,
         "object": {
           "item": "create:polished_cut_deepslate_wall"
         },

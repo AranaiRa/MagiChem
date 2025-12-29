@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "create"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 0.1875,
+        "batch_size": 1,
+        "object": {
+          "item": "create:ornate_iron_window_pane"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

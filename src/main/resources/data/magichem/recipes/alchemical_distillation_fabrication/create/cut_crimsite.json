@@ -13,18 +13,18 @@
         "wisdom": 1,
         "categories": 1,
         "output_rate": 0.063,
-        "batch_size": 1,
+        "batch_size": 4,
         "object": {
           "item": "create:cut_crimsite"
         },
         "components": [
           {
             "item": "magichem:admixture_stone",
-            "count": 2
+            "count": 3
           },
           {
             "item": "magichem:admixture_crystal",
-            "count": 1
+            "count": 2
           },
           {
             "item": "magichem:essentia_mineral",

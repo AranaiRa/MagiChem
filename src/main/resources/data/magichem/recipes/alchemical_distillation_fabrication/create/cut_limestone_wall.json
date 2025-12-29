@@ -13,7 +13,7 @@
         "wisdom": 1,
         "categories": 1,
         "output_rate": 0.063,
-        "batch_size": 1,
+        "batch_size": 4,
         "object": {
           "item": "create:cut_limestone_wall"
         },
@@ -29,10 +29,6 @@
           {
             "item": "magichem:essentia_mineral",
             "count": 2
-          },
-          {
-            "item": "magichem:essentia_albedo",
-            "count": 1
           }
         ]
       }

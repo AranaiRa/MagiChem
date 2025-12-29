@@ -13,9 +13,10 @@
         "wisdom": 2,
         "categories": 1,
         "output_rate": 1.0,
-        "batch_size": 1,
+        "batch_size": 16,
+        "required_advancement": "create:brass",
         "object": {
-          "item": "create:brass_door"
+        "item": "create:brass_door"
         },
         "components": [
           {
