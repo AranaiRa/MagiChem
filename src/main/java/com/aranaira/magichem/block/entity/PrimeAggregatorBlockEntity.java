@@ -9,12 +9,17 @@ import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
+import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
+import com.mna.api.particles.MAParticleType;
+import com.mna.api.particles.ParticleInit;
+import com.mna.particles.types.movers.ParticleLerpMover;
+import com.mna.particles.types.movers.ParticleOrbitMover;
+import com.mna.tools.math.Vector3;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -31,12 +36,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -47,11 +51,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2i;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static com.mna.api.affinity.Affinity.*;
 
@@ -65,13 +66,14 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             ANIM_STAGE_GATHERING_MATERIA = 3, ANIM_STAGE_TO_ELDRIN = 4,
             ANIM_STAGE_GATHERING_ELDRIN = 5, ANIM_STAGE_TO_SLURRY = 6,
             ANIM_STAGE_GATHERING_SLURRY = 7, ANIM_STAGE_CRAFTING = 8,
-            TO_MATERIA_DURATION = 40, TO_SLURRY_DURATION = 40, TO_ELDRIN_DURATION = 40, CRAFTING_DURATION = 60;
-    public boolean clearRecipeAfterNextProcess = false;
+            TO_MATERIA_DURATION = 100, TO_ELDRIN_DURATION = 100, TO_SLURRY_DURATION = 100, CRAFTING_DURATION = 100;
+    public static final HashMap<Direction, Vector3[]> CRYSTAL_POSITIONS = new HashMap<>();
+    private static final Random r = new Random();
 
     private Player owner;
     private UUID ownerUUID;
     private int animStage = ANIM_STAGE_IDLE, itemsDelivered = 0, materiaDelivered = 0, slurryDelivered = 0, progress = 0;
-    private HashMap<Affinity, Integer> eldrinDelivered = new HashMap<>();
+    private final HashMap<Affinity, Integer> eldrinDelivered = new HashMap<>();
     private boolean doDeferredRecipeCheck = false;
     private ExaltationRecipe currentRecipe = null;
     private ResourceLocation deferredRecipeQuery = null;
@@ -80,6 +82,8 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected LazyOptional<IFluidHandler> lazyFluidHandler = LazyOptional.of(() -> this);
     private final ItemStackHandler itemHandler;
+
+    public boolean clearRecipeAfterNextProcess = false;
 
     public PrimeAggregatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(BlockEntitiesRegistry.PRIME_AGGREGATOR_BE.get(), pPos, pBlockState);
@@ -103,6 +107,41 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         };
 
         clearDeliveries();
+
+        if(CRYSTAL_POSITIONS.size() == 0) {
+            CRYSTAL_POSITIONS.put(Direction.NORTH, new Vector3[]{
+                    new Vector3( 0.500, 1.875, -0.506),
+                    new Vector3( 1.371, 1.750, -0.003),
+                    new Vector3( 1.371, 1.625,  1.003),
+                    new Vector3( 0.500, 1.500,  1.506),
+                    new Vector3(-0.371, 1.625,  1.003),
+                    new Vector3(-0.371, 1.750, -0.003)
+            });
+            CRYSTAL_POSITIONS.put(Direction.EAST,  new Vector3[]{
+                    new Vector3( 1.506, 1.875,  0.500),
+                    new Vector3( 1.003, 1.750,  1.371),
+                    new Vector3(-0.003, 1.625,  1.371),
+                    new Vector3(-0.506, 1.500,  0.500),
+                    new Vector3(-0.003, 1.625, -0.371),
+                    new Vector3( 1.003, 1.750, -0.371)
+            });
+            CRYSTAL_POSITIONS.put(Direction.SOUTH, new Vector3[]{
+                    new Vector3( 0.500, 1.875,  1.506),
+                    new Vector3(-0.371, 1.750,  1.003),
+                    new Vector3(-0.371, 1.625, -0.003),
+                    new Vector3( 0.500, 1.500, -0.506),
+                    new Vector3( 1.371, 1.625, -0.003),
+                    new Vector3( 1.371, 1.750,  1.003)
+            });
+            CRYSTAL_POSITIONS.put(Direction.WEST,  new Vector3[]{
+                    new Vector3(-0.506, 1.875,  0.500),
+                    new Vector3(-0.003, 1.750, -0.371),
+                    new Vector3( 1.003, 1.625, -0.371),
+                    new Vector3( 1.506, 1.500,  0.500),
+                    new Vector3( 1.003, 1.625,  1.371),
+                    new Vector3(-0.003, 1.750,  1.371)
+            });
+        }
     }
 
     public void setOwner(Player owner) {
@@ -447,6 +486,293 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         }
 
         if(pEntity.getCurrentRecipe() != null) {
+            //particle work
+            if(pLevel.isClientSide()) {
+                if(pEntity.animStage == ANIM_STAGE_GATHERING_ITEMS) {
+                    float progThroughPhase = (float)pEntity.itemsDelivered / (float)pEntity.currentRecipe.getItemsRequired();
+                    int particlesPerTick = progThroughPhase > 0.2 ? (int)Math.min(4,Math.max(1,Math.floor(progThroughPhase * 5) - 1)) : 1;
+                    int modulus = progThroughPhase > 0.2 ? 1 : (int)Math.round((1 - (progThroughPhase / 0.2)) * 9) + 1;
+
+                    if(pLevel.getGameTime() % modulus == 0) {
+                        for (int i = 0; i < particlesPerTick; i++) {
+                            Vector3 start = new Vector3(pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 0.5, pEntity.getBlockPos().getZ() + 0.5);
+                            Vector3 speed = new Vector3(r.nextDouble() - 0.5, 0, r.nextDouble() - 0.5).normalize().scale(0.16f + r.nextFloat(1.2f));
+
+                            pLevel.addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                                            .setMover(new ParticleOrbitMover(new Vec3(start.x, start.y, start.z), -0.03, 0.015 + r.nextDouble(0.025), 0.02 + r.nextDouble(0.28)))
+                                            .setScale(0.05f).setMaxAge(20 + r.nextInt(240))
+                                            .setStack(pEntity.currentRecipe.getInputItemAsStack()).setPhysics(false),
+                                    start.x, start.y, start.z,
+                                    speed.x, speed.y, speed.z);
+                        }
+                    }
+                } else if(pEntity.animStage == ANIM_STAGE_TO_MATERIA) {
+                    Vector3 center = new Vector3(pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 1.8125, pEntity.getBlockPos().getZ() + 0.5);
+                    float progThroughPhase = (float)pEntity.progress / TO_MATERIA_DURATION;
+                    int particlesPerTick = progThroughPhase > 0.333 ? (int)Math.min(4,Math.max(1,Math.floor(progThroughPhase * 10) - 1)) : 1;
+                    int modulus = progThroughPhase > 0.333 ? 1 : (int)Math.round((1 - (progThroughPhase / 0.333)) * 9) + 1;
+
+                    //ITEM CHUNKS
+                    if(progThroughPhase <= 0.625f){
+                        for (int i = 0; i < 4; i++) {
+                            Vector3 start = new Vector3(pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 0.5, pEntity.getBlockPos().getZ() + 0.5);
+                            Vector3 speed = new Vector3(r.nextDouble() - 0.5, 0, r.nextDouble() - 0.5).normalize().scale(0.16f + r.nextFloat(1.2f));
+
+                            pLevel.addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                                            .setMover(new ParticleOrbitMover(new Vec3(start.x, start.y, start.z), -0.03, 0.015 + r.nextDouble(0.025), 0.02 + r.nextDouble(0.28)))
+                                            .setScale(0.05f).setMaxAge(20 + r.nextInt(240))
+                                            .setStack(pEntity.currentRecipe.getInputItemAsStack()).setPhysics(false),
+                                    start.x, start.y, start.z,
+                                    speed.x, speed.y, speed.z);
+                        }
+                    }
+
+                    if(pLevel.getGameTime() % modulus == 0) {
+                        for (int i = 0; i < particlesPerTick; i++) {
+                            Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.875f);
+                            pLevel.addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                                            .setStack(pEntity.currentRecipe.getInputItemAsStack())
+                                            .setScale(0.05f).setMaxAge(16)
+                                            .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                    center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                    0, 0, 0);
+                        }
+                    }
+
+                    //SPHERE
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(255, 255, 255).setScale(0.2f * progThroughPhase),
+                            center.x, center.y, center.z,
+                            0, 0, 0);
+
+                    for (int i = 0; i < 3; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(30, 78, 121, Math.round(64 * progThroughPhase))
+                                        .setScale(0.09f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+                } else if(pEntity.animStage == ANIM_STAGE_GATHERING_MATERIA) {
+                    float progThroughPhase = (float)pEntity.materiaDelivered / pEntity.getCurrentRecipe().getMateriaRequired();
+                    int modulus = progThroughPhase > 0.666 ? 2 : (int)Math.round((1 - (progThroughPhase / 0.666)) * 9) + 2;
+                    int segments = progThroughPhase > 0.666 ? 6 : (int)Math.round((progThroughPhase / 0.666) * 5) + 1;
+                    Vector3 center = new Vector3(pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 1.8125, pEntity.getBlockPos().getZ() + 0.5);
+
+                    //SPHERE
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(255, 255, 255).setScale(0.2f),
+                            center.x, center.y, center.z,
+                            0, 0, 0);
+
+                    for (int i = 0; i < 3; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(30, 78, 121, 64)
+                                        .setScale(0.09f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+
+                    //LIGHTNING
+                    if(pLevel.getGameTime() % modulus == 0) {
+                        Vector3[] offsets = CRYSTAL_POSITIONS.get(pBlockState.getValue(MagiChemBlockStateProperties.FACING));
+                        BlockPos pos = pEntity.getBlockPos();
+                        int firstSegment = r.nextInt(6);
+                        for(int i=0;i<segments;i++) {
+                            int start = (firstSegment+i) % 6;
+                            int end = (firstSegment+i+1) % 6;
+
+                            pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                            .setMaxAge(8 + r.nextInt(8))
+                                            .setColor(43, 113, 175, 255),
+                                    pos.getX() + offsets[start].x, pos.getY() + offsets[start].y, pos.getZ() + offsets[start].z,
+                                    pos.getX() + offsets[end].x, pos.getY() + offsets[end].y, pos.getZ() + offsets[end].z);
+                        }
+                    }
+
+                } else if(pEntity.animStage == ANIM_STAGE_TO_ELDRIN) {
+                    float progThroughPhase = (float)pEntity.progress / TO_ELDRIN_DURATION;
+                    Vector3 center = new Vector3(pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 1.8125 + MathHelper.doubleExponentialSeat(progThroughPhase, 3) * 1.1875, pEntity.getBlockPos().getZ() + 0.5);
+
+                    //SPHERE
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(255, 255, 255).setScale(0.2f * progThroughPhase).setMaxAge(20),
+                            center.x, center.y, center.z,
+                            0, 0, 0);
+
+                    for (int i = 0; i < 3; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f);
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(30, 78, 121, 64)
+                                        .setScale(0.09f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+
+                    //LIGHTNING
+                    if(pLevel.getGameTime() % 2 == 0){
+                        Vector3[] offsets = CRYSTAL_POSITIONS.get(pBlockState.getValue(MagiChemBlockStateProperties.FACING));
+                        BlockPos pos = pEntity.getBlockPos();
+
+                        //TO ORB
+                        for (int i = 0; i < 6; i += 2) {
+                            pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                            .setMaxAge(8 + r.nextInt(8))
+                                            .setColor(43, 113, 175, 255),
+                                    pos.getX() + offsets[i].x, pos.getY() + offsets[i].y, pos.getZ() + offsets[i].z,
+                                    center.x, center.y, center.z);
+                        }
+                        //TO VOID
+                        for (int i = 1; i < 6; i += 2) {
+                            pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                            .setMaxAge(8 + r.nextInt(8))
+                                            .setColor(43, 113, 175, 255),
+                                    pos.getX() + offsets[i].x, pos.getY() + offsets[i].y, pos.getZ() + offsets[i].z,
+                                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                        }
+                        //VOID TO ORB
+                        for(int i=0; i<3; i++) {
+                            pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                            .setMaxAge(4)
+                                            .setColor(43, 113, 175, 255),
+                                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                                    center.x, center.y, center.z);
+                        }
+                    }
+                } else if(pEntity.animStage == ANIM_STAGE_GATHERING_ELDRIN) {
+                    Pair<Integer, Integer> eldrinData = pEntity.getEldrin();
+                    float progThroughPhase = (float)eldrinData.getFirst() / (float)eldrinData.getSecond();
+                    float period = 0.333f;
+                    int particlesPerTick = progThroughPhase > period ? 1 : (int)Math.min(2,Math.max(0,Math.floor((1 - (progThroughPhase / period)) * 2) + 1));
+                    int modulus = progThroughPhase > period ? Math.round(((progThroughPhase - period) / period) * 9) + 1 : 1;
+                    BlockPos pos = pEntity.getBlockPos();
+                    Vector3 center = new Vector3(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
+
+                    //SPHERE
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(255, 255, 255).setScale(0.2f + 0.4f * progThroughPhase),
+                            center.x, center.y, center.z,
+                            0, 0, 0);
+
+                    for (int i = 0; i < 3; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.3f + 0.1f * progThroughPhase);
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(30, 78, 121, 64)
+                                        .setScale(0.09f + 0.09f * progThroughPhase).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+
+                    //VOID TO ORB
+                    if(pLevel.getGameTime() % modulus == 0) {
+                        for (int i = 0; i < particlesPerTick; i++) {
+                            pLevel.addParticle(new MAParticleType(ParticleInit.LIGHTNING_BOLT.get())
+                                            .setMaxAge(4 + Math.round(progThroughPhase * 4))
+                                            .setColor(43, 113, 175, 255),
+                                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                                    center.x, center.y, center.z);
+                        }
+                    }
+                } else if(pEntity.animStage == ANIM_STAGE_TO_SLURRY) {
+                    float progThroughPhase = (float)pEntity.progress / (float)TO_SLURRY_DURATION;
+                    Vector3 center = new Vector3(pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 1.8125 + MathHelper.doubleExponentialSeat(1 - progThroughPhase, 3) * 1.1875, pEntity.getBlockPos().getZ() + 0.5);
+
+                    //SPHERE
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(255, 255, 255).setScale(0.6f).setMaxAge(20),
+                            center.x, center.y, center.z,
+                            0, 0, 0);
+
+                    for (int i = 0; i < 3; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.4f);
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(30, 78, 121, 64)
+                                        .setScale(0.18f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+                } else if(pEntity.animStage == ANIM_STAGE_GATHERING_SLURRY) {
+                    float progThroughPhase = (float)pEntity.slurryDelivered / (float)pEntity.currentRecipe.getSlurryRequired();
+                    Vector3 center = new Vector3(pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 1.8125, pEntity.getBlockPos().getZ() + 0.5);
+                    int modulus = progThroughPhase > 0.666 ? 1 : (int)Math.round((1 - (progThroughPhase / 0.666)) * 14) + 1;
+
+                    //SPHERE
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(255, 255, 255).setScale(0.6f).setMaxAge(20),
+                            center.x, center.y, center.z,
+                            0, 0, 0);
+
+                    for (int i = 0; i < 3; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.4f);
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(30, 78, 121, 64)
+                                        .setScale(0.18f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+
+                    if(pLevel.getGameTime() % modulus == 0) {
+                        BlockPos pos = pEntity.getBlockPos();
+                        int loopingTime = (int) (pLevel.getGameTime() % 12);
+                        double theta = ((double) loopingTime / 6.0) * Math.PI + Math.PI / 4.0;
+                        double scale = 0.2;
+
+                        Vector3 shift = new Vector3(Math.cos(-theta) * scale, 0, Math.sin(-theta) * scale);
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                        .setColor(188, 232, 95).setScale(0.2f).setMaxAge(15 + r.nextInt(15)),
+                                pos.getX() + shift.x + 0.5, pos.getY() + 0.3125, pos.getZ() + shift.z + 0.5,
+                                center.x, center.y, center.z);
+
+                        scale = 0.4;
+                        shift = new Vector3(Math.cos(theta) * scale, 0, Math.sin(theta) * scale);
+
+                        pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_LERP_POINT.get())
+                                        .setColor(188, 232, 95).setScale(0.2f).setMaxAge(15 + r.nextInt(15)),
+                                pos.getX() + shift.x + 0.5, pos.getY() + 0.3125, pos.getZ() + shift.z + 0.5,
+                                center.x, center.y, center.z);
+                    }
+                } else if(pEntity.animStage == ANIM_STAGE_CRAFTING) {
+                    float progThroughPhase = (float)pEntity.progress / (float)CRAFTING_DURATION;
+                    Vector3 center = new Vector3(pEntity.getBlockPos().getX() + 0.5, pEntity.getBlockPos().getY() + 1.8125, pEntity.getBlockPos().getZ() + 0.5);
+
+                    pLevel.addParticle(new MAParticleType(ParticleInit.SPARKLE_VELOCITY.get())
+                                    .setColor(255, 255, 255).setScale(0.6f).setMaxAge(20),
+                            center.x, center.y, center.z,
+                            0, 0, 0);
+
+                    for (int i = 0; i < 3; i++) {
+                        Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.4f);
+                        pLevel.addParticle(new MAParticleType(ParticleInit.ARCANE_LERP.get())
+                                        .setColor(30, 78, 121, 64)
+                                        .setScale(0.18f).setMaxAge(16)
+                                        .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                0, 0, 0);
+                    }
+
+                    //ITEM CHUNKS
+                    if(progThroughPhase < 0.875f){
+                        for (int i = 0; i < 4; i++) {
+                            Vector3 offset = new Vector3(r.nextFloat() - 0.5, r.nextFloat() - 0.5, r.nextFloat() - 0.5).normalize().scale(0.875f);
+                            pLevel.addParticle(new MAParticleType(ParticleInit.ITEM.get())
+                                            .setStack(pEntity.currentRecipe.getResultItem())
+                                            .setScale(0.05f).setMaxAge(16)
+                                            .setMover(new ParticleLerpMover(center.x + offset.x, center.y + offset.y, center.z + offset.z, center.x, center.y, center.z)),
+                                    center.x + offset.x, center.y + offset.y, center.z + offset.z,
+                                    0, 0, 0);
+                        }
+                    }
+                }
+            }
+
             if (pEntity.animStage == ANIM_STAGE_TO_MATERIA) {
                 pEntity.progress++;
 
@@ -541,19 +867,24 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                     }
                 } else if (pEntity.animStage == ANIM_STAGE_GATHERING_ELDRIN) {
                     boolean changed = false;
-                    boolean complete = true;
+                    boolean complete = false;
 
                     if (pEntity.getOwner() != null) {
-                        for (Affinity affinity : pEntity.currentRecipe.getEldrinTypes()) {
-                            float consumedRaw = pEntity.consume(pEntity.getOwner(), pEntity.getBlockPos(), pEntity.getBlockPos().getCenter(), affinity, pEntity.currentRecipe.getEldrinRequired() - pEntity.eldrinDelivered.get(affinity), 1);
-                            if (consumedRaw > 0) {
-                                int consumed = (int) Math.ceil(consumedRaw);
-                                int updated = Math.min(pEntity.eldrinDelivered.get(affinity) + consumed, pEntity.currentRecipe.getEldrinRequired());
-                                pEntity.eldrinDelivered.put(affinity, updated);
+                        int maxDrainPerTick = Math.max(1, pEntity.currentRecipe.getEldrinRequired() / 4);
 
-                                changed = true;
+                        if(pLevel.getGameTime() % 20 == 0) {
+                            complete = true;
+                            for (Affinity affinity : pEntity.currentRecipe.getEldrinTypes()) {
+                                float consumedRaw = pEntity.consume(pEntity.getOwner(), pEntity.getBlockPos(), pEntity.getBlockPos().getCenter(), affinity, Math.min(maxDrainPerTick, pEntity.currentRecipe.getEldrinRequired() - pEntity.eldrinDelivered.get(affinity)), 1);
+                                if (consumedRaw > 0) {
+                                    int consumed = (int) Math.ceil(consumedRaw);
+                                    int updated = Math.min(pEntity.eldrinDelivered.get(affinity) + consumed, pEntity.currentRecipe.getEldrinRequired());
+                                    pEntity.eldrinDelivered.put(affinity, updated);
+
+                                    changed = true;
+                                }
+                                complete &= pEntity.eldrinDelivered.get(affinity) >= pEntity.currentRecipe.getEldrinRequired();
                             }
-                            complete &= pEntity.eldrinDelivered.get(affinity) >= pEntity.currentRecipe.getEldrinRequired();
                         }
                     }
 
@@ -568,18 +899,22 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                 } else if (pEntity.animStage == ANIM_STAGE_GATHERING_SLURRY) {
                     boolean changed = false;
 
-                    if (!pEntity.containedSlurry.isEmpty() && pEntity.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
-                        int remaining = pEntity.currentRecipe.getSlurryRequired() - pEntity.slurryDelivered;
-                        int extraction = Math.min(pEntity.containedSlurry.getAmount(), remaining);
+                    if(pLevel.getGameTime() % 5 == 0){
+                        if (!pEntity.containedSlurry.isEmpty() && pEntity.containedSlurry.getFluid() == FluidRegistry.ACADEMIC_SLURRY.get()) {
+                            int remaining = pEntity.currentRecipe.getSlurryRequired() - pEntity.slurryDelivered;
+                            int extraction = Math.min(pEntity.containedSlurry.getAmount(), remaining);
+                            int limit = Math.max(1, pEntity.currentRecipe.getSlurryRequired() / 16);
+                            extraction = Math.min(extraction, limit);
 
-                        if (extraction > 0) {
-                            pEntity.slurryDelivered += extraction;
-                            pEntity.containedSlurry.shrink(extraction);
-                            changed = true;
+                            if (extraction > 0) {
+                                pEntity.slurryDelivered += extraction;
+                                pEntity.containedSlurry.shrink(extraction);
+                                changed = true;
 
-                            if (pEntity.slurryDelivered >= pEntity.currentRecipe.getSlurryRequired()) {
-                                pEntity.progress = 0;
-                                pEntity.animStage = ANIM_STAGE_CRAFTING;
+                                if (pEntity.slurryDelivered >= pEntity.currentRecipe.getSlurryRequired()) {
+                                    pEntity.progress = 0;
+                                    pEntity.animStage = ANIM_STAGE_CRAFTING;
+                                }
                             }
                         }
                     }
@@ -600,6 +935,14 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         }
 
         return output;
+    }
+
+    public ItemStack getFirstOutputItem() {
+        for(int i=SLOT_OUTPUT_START; i<SLOT_OUTPUT_START+SLOT_OUTPUT_COUNT; i++) {
+            if(!itemHandler.getStackInSlot(i).isEmpty()) return itemHandler.getStackInSlot(i);
+        }
+
+        return ItemStack.EMPTY;
     }
 
     private boolean canCraftItem() {

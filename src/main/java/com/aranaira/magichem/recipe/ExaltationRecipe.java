@@ -37,6 +37,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     private final MateriaItem materiaType;
     private final int itemsRequired, materiaRequired, slurryRequired, eldrinRequired;
     private final byte tier, eldrinType;
+    private ItemStack itemAsStack = ItemStack.EMPTY, materiaAsStack = ItemStack.EMPTY;
 
     public ExaltationRecipe(ResourceLocation pID, ItemStack pResult, byte pTier, Item pItemType, int pItemsRequired, MateriaItem pMateriaType, int pMateriaRequired, byte pEldrinType, int pEldrinRequired, int pSlurryRequired) {
         this.id = pID;
@@ -49,6 +50,9 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         this.eldrinType = pEldrinType;
         this.eldrinRequired = pEldrinRequired;
         this.slurryRequired = pSlurryRequired;
+
+        this.itemAsStack = new ItemStack(pItemType);
+        this.materiaAsStack = new ItemStack(pMateriaType);
     }
 
     @Override
@@ -173,6 +177,14 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
     @Override
     public ItemStack getResultItem() {
         return result;
+    }
+
+    public ItemStack getInputItemAsStack() {
+        return itemAsStack;
+    }
+
+    public ItemStack getMateriaTypeAsStack() {
+        return materiaAsStack;
     }
 
     @Override
