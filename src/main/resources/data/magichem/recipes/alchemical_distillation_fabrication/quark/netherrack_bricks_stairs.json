@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 4,
+        "required_advancement": "minecraft:story/enter_the_nether",
+        "object": {
+          "item": "quark:netherrack_bricks_stairs"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_hells",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

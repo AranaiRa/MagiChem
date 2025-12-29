@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 24,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "minecraft:story/enter_the_nether",
+        "object": {
+          "item": "quark:soul_bead"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_spirit",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

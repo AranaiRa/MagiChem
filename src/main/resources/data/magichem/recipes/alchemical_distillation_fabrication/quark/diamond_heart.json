@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 16,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:diamond_heart"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 30
+          },
+          {
+            "item": "magichem:admixture_monster",
+            "count": 25
+          },
+          {
+            "item": "magichem:essentia_mineral",
+            "count": 15
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 50
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 5
+          }
+        ]
+      }
+    }
+  ]
+}

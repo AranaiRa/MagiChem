@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
+          "item": "quark:dripstone_block_stairs"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:raw_iron_bricks_stairs"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 27
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

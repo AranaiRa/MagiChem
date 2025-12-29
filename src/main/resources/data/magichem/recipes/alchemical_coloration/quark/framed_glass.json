@@ -1,0 +1,89 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "valid_on_cauldron": true,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "quark:framed_glass"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "quark:red_framed_glass"
+          },
+          {
+            "color": "orange",
+            "item": "quark:orange_framed_glass"
+          },
+          {
+            "color": "yellow",
+            "item": "quark:yellow_framed_glass"
+          },
+          {
+            "color": "lime",
+            "item": "quark:lime_framed_glass"
+          },
+          {
+            "color": "green",
+            "item": "quark:green_framed_glass"
+          },
+          {
+            "color": "cyan",
+            "item": "quark:cyan_framed_glass"
+          },
+          {
+            "color": "light_blue",
+            "item": "quark:light_blue_framed_glass"
+          },
+          {
+            "color": "blue",
+            "item": "quark:blue_framed_glass"
+          },
+          {
+            "color": "purple",
+            "item": "quark:purple_framed_glass"
+          },
+          {
+            "color": "magenta",
+            "item": "quark:magenta_framed_glass"
+          },
+          {
+            "color": "pink",
+            "item": "quark:pink_framed_glass"
+          },
+          {
+            "color": "brown",
+            "item": "quark:brown_framed_glass"
+          },
+          {
+            "color": "black",
+            "item": "quark:black_framed_glass"
+          },
+          {
+            "color": "gray",
+            "item": "quark:gray_framed_glass"
+          },
+          {
+            "color": "light_gray",
+            "item": "quark:light_gray_framed_glass"
+          },
+          {
+            "color": "white",
+            "item": "quark:white_framed_glass"
+          }
+        ]
+      }
+    }
+  ]
+}

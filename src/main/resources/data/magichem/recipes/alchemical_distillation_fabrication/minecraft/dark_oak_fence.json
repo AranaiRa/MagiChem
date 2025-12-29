@@ -6,7 +6,7 @@
   "batch_size": 1,
   "object": { "item": "minecraft:dark_oak_fence" },
   "components": [
-    { "item": "magichem:admixture_wood", "count": 2 }
+    { "item": "magichem:admixture_wood", "count": 2 },
     { "item": "magichem:admixture_forests", "count": 1 }
   ]
 }

@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 11,
+        "output_rate": 0.5,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:prismarine_vertical_slab"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_depths",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

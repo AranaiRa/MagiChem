@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "object": {
+          "item": "quark:red_blossom_hedge"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_wastes",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

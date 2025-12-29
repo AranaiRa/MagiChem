@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:seed_pouch"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 9
+          },
+          {
+            "item": "magichem:essentia_fleshy",
+            "count": 25
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

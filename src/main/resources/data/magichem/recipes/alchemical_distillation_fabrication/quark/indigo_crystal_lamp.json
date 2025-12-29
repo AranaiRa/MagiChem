@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:indigo_crystal_lamp"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_light",
+            "count": 28
+          },
+          {
+            "item": "magichem:admixture_signals",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_color",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_industry",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

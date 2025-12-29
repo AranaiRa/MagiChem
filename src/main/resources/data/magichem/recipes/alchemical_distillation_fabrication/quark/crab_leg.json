@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 0.5,
+        "batch_size": 4,
+        "object": {
+          "item": "quark:crab_leg"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_water",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_blood",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_fleshy",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

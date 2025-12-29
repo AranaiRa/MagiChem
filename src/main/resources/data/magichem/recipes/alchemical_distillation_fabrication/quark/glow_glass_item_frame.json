@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.5,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:glow_glass_item_frame"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_light",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

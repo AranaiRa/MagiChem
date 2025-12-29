@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "required_advancement": "minecraft:nether/root",
+        "object": {
+          "item": "quark:chiseled_soul_sandstone"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_dust",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_erosion",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_hells",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 1.0,
+        "valid_on_cauldron": true,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "quark:shingles"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "quark:red_shingles"
+          },
+          {
+            "color": "orange",
+            "item": "quark:orange_shingles"
+          },
+          {
+            "color": "yellow",
+            "item": "quark:yellow_shingles"
+          },
+          {
+            "color": "lime",
+            "item": "quark:lime_shingles"
+          },
+          {
+            "color": "green",
+            "item": "quark:green_shingles"
+          },
+          {
+            "color": "cyan",
+            "item": "quark:cyan_shingles"
+          },
+          {
+            "color": "light_blue",
+            "item": "quark:light_blue_shingles"
+          },
+          {
+            "color": "blue",
+            "item": "quark:blue_shingles"
+          },
+          {
+            "color": "purple",
+            "item": "quark:purple_shingles"
+          },
+          {
+            "color": "magenta",
+            "item": "quark:magenta_shingles"
+          },
+          {
+            "color": "pink",
+            "item": "quark:pink_shingles"
+          },
+          {
+            "color": "brown",
+            "item": "quark:brown_shingles"
+          },
+          {
+            "color": "black",
+            "item": "quark:black_shingles"
+          },
+          {
+            "color": "gray",
+            "item": "quark:gray_shingles"
+          },
+          {
+            "color": "light_gray",
+            "item": "quark:light_gray_shingles"
+          },
+          {
+            "color": "white",
+            "item": "quark:white_shingles"
+          }
+        ]
+      }
+    }
+  ]
+}

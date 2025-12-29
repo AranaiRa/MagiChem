@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 6,
+        "output_rate": 0.1665,
+        "batch_size": 8,
+        "object": {
+          "item": "quark:yellow_blossom_leaf_carpet"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_plains",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

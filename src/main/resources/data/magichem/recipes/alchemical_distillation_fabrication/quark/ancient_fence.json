@@ -1,0 +1,34 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "required_advancement": "minecraft:husbandry/plant_any_sniffer_seed",
+        "object": {
+          "item": "quark:ancient_fence"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_wood",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

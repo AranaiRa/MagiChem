@@ -1,0 +1,89 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 0.25,
+        "valid_on_cauldron": false,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "quark:clear_shard"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "quark:red_shard"
+          },
+          {
+            "color": "orange",
+            "item": "quark:orange_shard"
+          },
+          {
+            "color": "yellow",
+            "item": "quark:yellow_shard"
+          },
+          {
+            "color": "lime",
+            "item": "quark:lime_shard"
+          },
+          {
+            "color": "green",
+            "item": "quark:green_shard"
+          },
+          {
+            "color": "cyan",
+            "item": "quark:cyan_shard"
+          },
+          {
+            "color": "light_blue",
+            "item": "quark:light_blue_shard"
+          },
+          {
+            "color": "blue",
+            "item": "quark:blue_shard"
+          },
+          {
+            "color": "purple",
+            "item": "quark:purple_shard"
+          },
+          {
+            "color": "magenta",
+            "item": "quark:magenta_shard"
+          },
+          {
+            "color": "pink",
+            "item": "quark:pink_shard"
+          },
+          {
+            "color": "brown",
+            "item": "quark:brown_shard"
+          },
+          {
+            "color": "black",
+            "item": "quark:black_shard"
+          },
+          {
+            "color": "gray",
+            "item": "quark:gray_shard"
+          },
+          {
+            "color": "light_gray",
+            "item": "quark:light_gray_shard"
+          },
+          {
+            "color": "white",
+            "item": "quark:white_shard"
+          }
+        ]
+      }
+    }
+  ]
+}

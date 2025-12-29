@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:nether_wart_sack"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_mana",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_fungus",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_hells",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_verdant",
+            "count": 3
+          }
+        ]
+      }
+    }
+  ]
+}

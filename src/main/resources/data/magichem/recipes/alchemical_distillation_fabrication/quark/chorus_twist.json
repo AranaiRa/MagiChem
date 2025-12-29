@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 10,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "minecraft:end/root",
+        "object": {
+          "item": "quark:chorus_twist"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_alien",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

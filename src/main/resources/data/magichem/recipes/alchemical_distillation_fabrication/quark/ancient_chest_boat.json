@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "minecraft:husbandry/plant_any_sniffer_seed",
+        "object": {
+          "item": "quark:ancient_chest_boat"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_vessel",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

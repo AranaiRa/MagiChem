@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 8,
+        "required_advancement": "minecraft:end/root",
+        "object": {
+          "item": "quark:end_stone_brick_vertical_slab"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_alien",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

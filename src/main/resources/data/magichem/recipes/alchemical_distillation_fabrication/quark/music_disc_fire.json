@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 48,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:music_disc_fire"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_sound",
+            "count": 23
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_signals",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 9
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "type": "magichem:anointing",
+  "targetBlock": "minecraft:weathered_cut_copper_vertical_slab",
+  "materia": "magichem:admixture_erosion",
+  "chance": 35.0,
+  "result": "minecraft:oxidised_cut_copper_vertical_slab"
+}

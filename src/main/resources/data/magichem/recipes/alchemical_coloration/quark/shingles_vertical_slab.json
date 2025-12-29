@@ -1,0 +1,89 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:coloration",
+        "charge_usage": 1,
+        "crafting_time_multiplier": 0.5,
+        "valid_on_cauldron": true,
+        "valid_on_variegator": true,
+        "colorless_default": {
+          "item": "quark:shingles_vertical_slab"
+        },
+        "outputs": [
+          {
+            "color": "red",
+            "item": "quark:red_shingles_vertical_slab"
+          },
+          {
+            "color": "orange",
+            "item": "quark:orange_shingles_vertical_slab"
+          },
+          {
+            "color": "yellow",
+            "item": "quark:yellow_shingles_vertical_slab"
+          },
+          {
+            "color": "lime",
+            "item": "quark:lime_shingles_vertical_slab"
+          },
+          {
+            "color": "green",
+            "item": "quark:green_shingles_vertical_slab"
+          },
+          {
+            "color": "cyan",
+            "item": "quark:cyan_shingles_vertical_slab"
+          },
+          {
+            "color": "light_blue",
+            "item": "quark:light_blue_shingles_vertical_slab"
+          },
+          {
+            "color": "blue",
+            "item": "quark:blue_shingles_vertical_slab"
+          },
+          {
+            "color": "purple",
+            "item": "quark:purple_shingles_vertical_slab"
+          },
+          {
+            "color": "magenta",
+            "item": "quark:magenta_shingles_vertical_slab"
+          },
+          {
+            "color": "pink",
+            "item": "quark:pink_shingles_vertical_slab"
+          },
+          {
+            "color": "brown",
+            "item": "quark:brown_shingles_vertical_slab"
+          },
+          {
+            "color": "black",
+            "item": "quark:black_shingles_vertical_slab"
+          },
+          {
+            "color": "gray",
+            "item": "quark:gray_shingles_vertical_slab"
+          },
+          {
+            "color": "light_gray",
+            "item": "quark:light_gray_shingles_vertical_slab"
+          },
+          {
+            "color": "white",
+            "item": "quark:white_shingles_vertical_slab"
+          }
+        ]
+      }
+    }
+  ]
+}

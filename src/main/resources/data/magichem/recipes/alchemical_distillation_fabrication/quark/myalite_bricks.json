@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 4,
+        "required_advancement": "minecraft:end/root",
+        "object": {
+          "item": "quark:myalite_bricks"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_alien",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_change",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

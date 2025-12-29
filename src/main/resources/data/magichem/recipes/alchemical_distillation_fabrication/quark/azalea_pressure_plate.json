@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:azalea_pressure_plate"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_mountains",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_signals",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

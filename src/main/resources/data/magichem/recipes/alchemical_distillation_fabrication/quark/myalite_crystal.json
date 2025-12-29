@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 4,
+        "required_advancement": "minecraft:end/root",
+        "object": {
+          "item": "quark:myalite_crystal"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_light",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_travel",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_nigredo",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

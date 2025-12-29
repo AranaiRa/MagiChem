@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 6,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "quark:get_all_corundum",
+        "object": {
+          "item": "quark:indigo_corundum"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_arcane",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_color",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_light",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

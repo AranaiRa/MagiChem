@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.5,
+        "batch_size": 1,
+        "object": {
+          "item": "quark:blossom_fence_gate"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_wood",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_realm",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

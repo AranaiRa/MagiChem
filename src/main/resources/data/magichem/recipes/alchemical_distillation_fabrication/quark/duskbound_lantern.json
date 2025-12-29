@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "quark"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 1,
+        "required_advancement": "minecraft:end/root",
+        "object": {
+          "item": "quark:duskbound_lantern"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_alien",
+            "count": 35
+          },
+          {
+            "item": "magichem:admixture_light",
+            "count": 28
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}
