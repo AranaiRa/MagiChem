@@ -547,6 +547,10 @@ public class ItemRegistry {
             () -> new TooltipLoreItem(new Item.Properties())
     );
 
+    public static final RegistryObject<TooltipLoreItem> XANTHOTIC_GOLD = ITEMS.register("xanthotic_gold",
+            () -> new TooltipLoreItem(new Item.Properties())
+    );
+
     ///////////////
     // MAGICHEM FLUID BUCKETS
     ///////////////

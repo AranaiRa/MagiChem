@@ -148,6 +148,7 @@
 
   "item.magichem.alabaster_pearl": "Alabaster Pearl",
   "item.magichem.black_diamond": "Black Diamond",
+  "item.magichem.xanthotic_gold": "Xanthotic Gold",
 
   "item.magichem.liquefacted_copper_bucket": "Liquefacted Copper Bucket",
   "item.magichem.liquefacted_iron_bucket": "Liquefacted Iron Bucket",
@@ -932,6 +933,7 @@
 
   "tooltip.magichem.alabaster_pearl": "The result of esoteric alchemical research on Nigredo. Can be distilled into a large amount of Albedo Essentia.",
   "tooltip.magichem.black_diamond": "The result of esoteric alchemical research on diamonds. Can be distilled into a large amount of Nigredo Essentia.",
+  "tooltip.magichem.xanthotic_gold": "The result of esoteric alchemical research on Albedo. Can be distilled into a large amount of Citrinitas Essentia.",
 
   "tooltip.magichem.fractalline_puzzle_box": "An impossibly complex puzzle that somehow becomes larger and more complex as more layers are solved.",
 
@@ -1569,6 +1571,8 @@
   "advancements.magichem.vintage_shimmering_wine.description" : "Artificially age a bottle of Shimmering Wine using Sublimation",
   "advancements.magichem.vinteum_crystal_block_budding.title" : "Crystalline Blue",
   "advancements.magichem.vinteum_crystal_block_budding.description" : "Sublimate Budding Amethyst into Budding Vinteum Crystal",
+  "advancements.magichem.xanthotic_gold.title" : "A Study in Yellow",
+  "advancements.magichem.xanthotic_gold.description" : "Exalt a piece of Xanthotic Gold in the Prime Aggregator to transmute Albedo into Citrinitas",
 
   "advancements.magichem.material_unlocks.root.title" : "MagiChem Material Research",
   "advancements.magichem.material_unlocks.root.description" : "Craft, Explore, and Battle to learn the secrets of esoteric materials",

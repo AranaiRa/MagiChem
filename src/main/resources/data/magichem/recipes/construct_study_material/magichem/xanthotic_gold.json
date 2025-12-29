@@ -1,0 +1,6 @@
+{
+  "type": "magichem:construct_study_material",
+  "item": "magichem:xanthotic_gold",
+  "experience": 42,
+  "consumed": false
+}

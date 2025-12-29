@@ -205,12 +205,6 @@ public class PrimeAggregatorRouterBlockEntity extends BlockEntity implements Men
 
     @Override
     public void destroyMaster() {
-        if(getBlockState().getValue(HAS_LABORATORY_UPGRADE)) {
-            ItemStack charmStack = new ItemStack(ItemRegistry.LABORATORY_CHARM.get());
-            ItemEntity ie = new ItemEntity(getLevel(), getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), charmStack);
-            getLevel().addFreshEntity(ie);
-        }
-
         getLevel().destroyBlock(getMasterPos(), true);
         PrimeAggregatorBlock.destroyRouters(getLevel(), getMasterPos(), getFacing());
     }

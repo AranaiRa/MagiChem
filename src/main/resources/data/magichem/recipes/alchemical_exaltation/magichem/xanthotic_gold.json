@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 4,
+  "result": { "item": "magichem:xanthotic_gold", "count": 1 },
+  "items": { "type": "minecraft:gold_ingot", "required": 27 },
+  "eldrin": { "type": 52, "required": 225 },
+  "materia": { "type": "magichem:essentia_albedo", "required": 60 },
+  "slurry": 3900
+}
