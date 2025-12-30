@@ -261,8 +261,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             CompoundTag materiaTag = nbt.getCompound("materia");
             CompoundTag eldrinTag = nbt.getCompound("eldrin");
 
-            ItemStack result = ItemStack.EMPTY;
-            result.deserializeNBT(nbt.getCompound("result"));
+            ItemStack result = ItemStack.of(nbt.getCompound("result"));
             byte tier = nbt.getByte("tier");
 
             Item itemType = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemTag.getString("type")));
