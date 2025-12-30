@@ -81,7 +81,7 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         return itemsRequired;
     }
 
-    public int getEldrinTypeIndex() {
+    public int getEldrinTypeBitpack() {
         return eldrinType;
     }
 
@@ -107,6 +107,19 @@ public class ExaltationRecipe implements Recipe<SimpleContainer>, IMARecipe {
         if(pAffinity == Affinity.ARCANE && (eldrinType & ARCANE) == ARCANE) return true;
 
         return false;
+    }
+
+    public int getEldrinTypeCount() {
+        int out = 0;
+
+        if((eldrinType & ENDER) == ENDER) out++;
+        if((eldrinType & EARTH) == EARTH) out++;
+        if((eldrinType & WATER) == WATER) out++;
+        if((eldrinType & AIR) == AIR) out++;
+        if((eldrinType & FIRE) == FIRE) out++;
+        if((eldrinType & ARCANE) == ARCANE) out++;
+
+        return out;
     }
 
     public int getEldrinRequired() {

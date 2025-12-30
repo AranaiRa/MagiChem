@@ -1,8 +1,6 @@
 package com.aranaira.magichem.interop.jei;
 
 import com.aranaira.magichem.MagiChemMod;
-import com.aranaira.magichem.config.ServerConfig;
-import com.aranaira.magichem.foundation.enums.LuminType;
 import com.aranaira.magichem.interop.JEIPlugin;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.ItemRegistry;
@@ -120,84 +118,34 @@ public class ExaltationRecipeCategory implements IRecipeCategory<ExaltationRecip
             }
         }
 
-        boolean xCoord = mouseX >= 3 && mouseX <= 11;
-        boolean yCoord = mouseY >= 24  && mouseY <= 32;
+        boolean xCoord = mouseX >= 3 && mouseX <= 11 + (recipe.getEldrinTypeCount() - 1) * 8;
+        boolean yCoord = mouseY >= 24 && mouseY <= 32;
 
         if(xCoord && yCoord) {
-            int index = recipe.getEldrinTypeIndex();
-            if(index == 1) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.ender").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
-            } else if(index == 2) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.earth").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
-            } else if(index == 3) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.water").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
-            } else if(index == 4) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.air").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
-            } else if(index == 5) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.fire").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
-            } else if(index == 6) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.arcane").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
-            } else if(index == 7) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.earth").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.ender").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.air").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
-            } else if(index == 8) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.water").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.arcane").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.fire").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
-            } else if(index == 9) {
-                out.add(Component.empty()
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.ender").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.earth").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.water").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.air").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.fire").withStyle(ChatFormatting.GOLD))
-                        .append(Component.literal(" + "))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.arcane").withStyle(ChatFormatting.GOLD))
-                        .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"))
-                );
+            MutableComponent tt = Component.empty()
+                    .append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part1"));
+
+            int count = 0;
+            for(Affinity aff : recipe.getEldrinTypes()) {
+                if(count > 0)  tt.append(" + ");
+
+                String elem = switch(aff) {
+                    case ENDER -> "ender";
+                    case EARTH -> "earth";
+                    case WATER -> "water";
+                    case WIND -> "air";
+                    case FIRE -> "fire";
+                    case ARCANE -> "arcane";
+                    default -> "what";
+                };
+
+                tt.append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin."+elem).withStyle(ChatFormatting.GOLD));
+
+                count++;
             }
+            tt.append(Component.translatable("tooltip.magichem.jei.exaltation.eldrin.part2"));
+
+            out.add(tt);
         }
 
         xCoord = mouseX >= 86 && mouseX <= 94;
