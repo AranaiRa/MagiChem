@@ -46,6 +46,21 @@ public class CraftingInProgressItem extends Item {
                 );
             }
         }
+        else if(pStack.getItem() == ItemRegistry.EXALTATION_IN_PROGRESS.get()){
+            pTooltipComponents.add(Component.empty()
+                    .append(Component.translatable("tooltip.magichem.exaltation_in_progress.line1").withStyle(ChatFormatting.DARK_GRAY))
+            );
+            if (nbt.contains("result")) {
+                ResourceLocation rl = new ResourceLocation(nbt.getString("result"));
+                Item itemQuery = ForgeRegistries.ITEMS.getValue(rl);
+                String key = (itemQuery instanceof BlockItem ? "block." : "item.") + rl.getNamespace() + "." + rl.getPath();
+                pTooltipComponents.add(Component.empty());
+                pTooltipComponents.add(Component.empty()
+                        .append(Component.translatable("tooltip.magichem.exaltation_in_progress.line2").withStyle(ChatFormatting.DARK_GRAY))
+                        .append(Component.translatable(key).withStyle(ChatFormatting.DARK_AQUA))
+                );
+            }
+        }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }

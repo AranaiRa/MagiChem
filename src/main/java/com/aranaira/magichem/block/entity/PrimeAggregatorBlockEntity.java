@@ -8,12 +8,14 @@ import com.aranaira.magichem.item.MateriaItem;
 import com.aranaira.magichem.recipe.ExaltationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.FluidRegistry;
+import com.aranaira.magichem.registry.ItemRegistry;
 import com.aranaira.magichem.util.InventoryHelper;
 import com.aranaira.magichem.util.MathHelper;
 import com.mna.api.affinity.Affinity;
 import com.mna.api.blocks.tile.IEldrinConsumerTile;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
+import com.mna.items.ItemInit;
 import com.mna.particles.types.movers.ParticleLerpMover;
 import com.mna.particles.types.movers.ParticleOrbitMover;
 import com.mna.tools.math.Vector3;
@@ -91,7 +93,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         this.itemHandler = new ItemStackHandler(SLOT_COUNT) {
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                if(slot == SLOT_PROGRESS_HOLDER) return false;
+                if(slot == SLOT_PROGRESS_HOLDER) return stack.getItem() == ItemRegistry.EXALTATION_IN_PROGRESS.get();
                 if(currentRecipe != null) {
                     if(slot == SLOT_ITEM_INPUT) return stack.getItem() == currentRecipe.getItemType();
                     else if(slot == SLOT_MATERIA_INPUT) return stack.getItem() == currentRecipe.getMateriaType();
@@ -101,7 +103,33 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
             }
 
             @Override
+            public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (slot == SLOT_PROGRESS_HOLDER) {
+                    final ItemStack stackInSlot = itemHandler.getStackInSlot(slot).copy();
+                    if (!simulate) {
+                        stackInSlot.setTag(packCraftDataToTag());
+                        itemHandler.setStackInSlot(slot, ItemStack.EMPTY);
+                    }
+                    return stackInSlot;
+                } /*else if(slot == SLOT_WISDOM) {
+                    return ItemStack.EMPTY;
+                }*/
+
+                return super.extractItem(slot, amount, simulate);
+            }
+
+                @Override
             protected void onContentsChanged(int slot) {
+                ItemStack stackInSlot = getStackInSlot(slot);
+                if(slot == SLOT_PROGRESS_HOLDER && !getLevel().isClientSide()) {
+                    if(stackInSlot.isEmpty()) {
+                        animStage = ANIM_STAGE_IDLE;
+                        clearDeliveries();
+                        syncAndSave();
+                    } else if(stackInSlot.hasTag()) {
+                        unpackCraftDataFromTag(stackInSlot.getTag());
+                    }
+                }
                 setChanged();
             }
         };
@@ -141,6 +169,51 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                     new Vector3( 1.003, 1.625,  1.371),
                     new Vector3(-0.003, 1.750,  1.371)
             });
+        }
+    }
+
+    private CompoundTag packCraftDataToTag() {
+        CompoundTag nbt = new CompoundTag();
+
+        if(currentRecipe != null) {
+            nbt.putString("result", ForgeRegistries.ITEMS.getKey(currentRecipe.getResultItem().getItem()).toString());
+            nbt.putInt("animStage", animStage);
+            nbt.putInt("itemsDelivered", itemsDelivered);
+            nbt.putInt("materiaDelivered", materiaDelivered);
+            nbt.putInt("slurryDelivered", slurryDelivered);
+            CompoundTag eldrinDeliveryTag = new CompoundTag();
+            for(Affinity aff : eldrinDelivered.keySet()) {
+                eldrinDeliveryTag.putInt(aff.name(), eldrinDelivered.get(aff));
+            }
+            nbt.put("eldrinDelivered", eldrinDeliveryTag);
+        }
+
+        return nbt;
+    }
+
+    public void unpackCraftDataFromTag(CompoundTag nbt) {
+        if(nbt.contains("result")) {
+            Item itemQuery = ForgeRegistries.ITEMS.getValue(new ResourceLocation(nbt.getString("result")));
+            if(itemQuery != null && level != null) {
+                ExaltationRecipe er = ExaltationRecipe.getExaltationRecipe(level, itemQuery);
+                if(er != null) {
+                    currentRecipe = er;
+                    doDeferredRecipeCheck = false;
+                    progress = 0;
+
+                    animStage = nbt.getInt("animStage");
+                    itemsDelivered = nbt.getInt("itemsDelivered");
+                    materiaDelivered = nbt.getInt("materiaDelivered");
+                    slurryDelivered = nbt.getInt("slurryDelivered");
+
+                    CompoundTag eldrinDeliveryTag = nbt.getCompound("eldrinDelivered");
+                    for(String key : eldrinDeliveryTag.getAllKeys()){
+                        eldrinDelivered.put(Affinity.valueOf(key), eldrinDeliveryTag.getInt(key));
+                    }
+
+                    syncAndSave();
+                }
+            }
         }
     }
 
@@ -820,6 +893,10 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                             pEntity.itemsDelivered += extraction;
                             itemQuery.shrink(extraction);
                             changed = true;
+
+                            if(pEntity.itemHandler.getStackInSlot(SLOT_PROGRESS_HOLDER).isEmpty()) {
+                                pEntity.itemHandler.setStackInSlot(SLOT_PROGRESS_HOLDER, new ItemStack(ItemRegistry.EXALTATION_IN_PROGRESS.get()));
+                            }
 
                             if (pEntity.itemsDelivered >= pEntity.currentRecipe.getItemsRequired()) {
                                 pEntity.progress = 0;

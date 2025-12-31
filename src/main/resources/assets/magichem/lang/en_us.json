@@ -853,6 +853,8 @@
   "tooltip.magichem.daunting_esoterica": "An extensive, exhaustive, and overwhelming text completely opaque to all but the most learned and determined readers.",
   "tooltip.magichem.debug_orb": "Has several creative mode functions. Not craftable.",
   "tooltip.magichem.droplets": "Quickly evaporates if removed from a device.",
+  "tooltip.magichem.exaltation_in_progress.line1": "An interrupted Exaltation. Re-insert into the Prime Aggregator to resume crafting.",
+  "tooltip.magichem.exaltation_in_progress.line2": "Will become: ",
   "tooltip.magichem.gas_bucket": "A simple spell spoken over this bucket keeps the vapor inside from escaping.",
   "tooltip.magichem.glass_cutting_tools": "Tools used to shape raw glass on a Runic Anvil.",
   "tooltip.magichem.glass_lens": "Glass that has been painstakingly cut into a light-focusing lens. Has magical applications.",
