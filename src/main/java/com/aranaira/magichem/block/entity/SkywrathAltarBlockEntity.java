@@ -4,8 +4,15 @@ import com.aranaira.magichem.config.ServerConfig;
 import com.aranaira.magichem.recipe.FulminationRecipe;
 import com.aranaira.magichem.registry.BlockEntitiesRegistry;
 import com.aranaira.magichem.registry.ItemRegistry;
+import com.mna.Registries;
 import com.mna.api.particles.MAParticleType;
 import com.mna.api.particles.ParticleInit;
+import com.mna.api.spells.collections.Components;
+import com.mna.api.spells.parts.Modifier;
+import com.mna.api.spells.parts.Shape;
+import com.mna.api.spells.parts.SpellEffect;
+import com.mna.items.ItemInit;
+import com.mna.spells.SpellsInit;
 import com.mna.tools.math.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -114,8 +121,9 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         boolean hasValidRecipe = recipe != null && heldItem.getCount() >= recipe.getInput().getCount();
         boolean canStoreRF = heldItem.getCapability(ForgeCapabilities.ENERGY).isPresent();
         boolean isEnchantedBook = heldItem.getItem() == Items.ENCHANTED_BOOK;
+        boolean isJournalFragment = heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get();
 
-        if(hasValidRecipe || canStoreRF || isEnchantedBook) {
+        if(hasValidRecipe || canStoreRF || isEnchantedBook || isJournalFragment) {
             craftCountdown = 1;
             syncAndSave();
         }
@@ -173,17 +181,42 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
                     totalLevelsExpo += ((lvlCapped*4) * (lvlCapped*5));
                 }
             } else {
-                highestLevel = 1;
                 totalLevelsExpo = 1;
             }
 
-            float divisor = Math.max(1, 10 - highestLevel);
-            float chance = (totalLevelsExpo / divisor);
-            if(r.nextFloat(100) <= chance) {
-                heldItem = new ItemStack(ItemRegistry.SCORCHED_PROFUNDITY.get(), 1);
-            } else {
-                heldItem = new ItemStack(ItemRegistry.SCORCHED_THEOREM.get(), (int)Math.ceil(totalLevelsExpo / 10f));
+            heldItem = new ItemStack(ItemRegistry.SCORCHED_THEOREM.get(), (int)Math.ceil(totalLevelsExpo / 10f));
+
+            syncAndSave();
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean scrapJournalFragment() {
+        if(heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get()) {
+            int tier = 0;
+
+            if(heldItem.hasTag() && heldItem.getTag().contains("part")) {
+                final String query = heldItem.getTag().getString("part");
+
+                final Shape shapeQuery = Registries.Shape.get().getValue(new ResourceLocation(query));
+                if(shapeQuery != null) {
+                    tier = shapeQuery.getTier(level);
+                } else {
+                    final SpellEffect effectQuery = Registries.SpellEffect.get().getValue(new ResourceLocation(query));
+                    if(effectQuery != null) {
+                        tier = effectQuery.getTier(level);
+                    } else {
+                        final Modifier modifierQuery = Registries.Modifier.get().getValue(new ResourceLocation(query));
+                        if(modifierQuery != null) {
+                            tier = modifierQuery.getTier(level);
+                        }
+                    }
+                }
             }
+
+            heldItem = new ItemStack(ItemRegistry.SCORCHED_THEOREM.get(), new int[]{1,6,16,29,45,64}[tier]);
 
             syncAndSave();
             return true;
@@ -277,9 +310,17 @@ public class SkywrathAltarBlockEntity extends BlockEntity {
         if(t instanceof SkywrathAltarBlockEntity entity)
             if(entity.craftCountdown >= 0) {
                 if(entity.craftCountdown == 0) {
-                    if(!entity.chargeItem())
-                        if(!entity.craftItem())
+                    if(!entity.chargeItem()) {
+                        if(entity.heldItem.getItem() == Items.ENCHANTED_BOOK) {
                             entity.scrapEnchantedBook();
+                        }
+                        else if(entity.heldItem.getItem() == ItemInit.TORN_JOURNAL_PAGE.get()) {
+                            entity.scrapJournalFragment();
+                        }
+                        else {
+                            entity.craftItem();
+                        }
+                    }
                 }
 
                 //Particle work
