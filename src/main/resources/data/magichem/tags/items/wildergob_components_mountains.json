@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cherry_log",
+    "minecraft:cherry_leaves",
+    "minecraft:azalea",
+    "minecraft:azalea_leaves",
+    "minecraft:flowering_azalea",
+    "minecraft:flowering_azalea_leaves"
+  ]
+}
