@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "minecraft:spruce_log",
+    "minecraft:spruce_sapling",
     "minecraft:spruce_leaves"
   ]
 }
