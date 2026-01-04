@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 2,
+  "result": { "item": "magichem:terrarium_hells", "count": 1 },
+  "items": { "type": "magichem:wildergob_hells", "required": 16 },
+  "eldrin": { "type": 16, "required": 10 },
+  "materia": { "type": "magichem:essentia_fire", "required": 16 },
+  "slurry": 400
+}

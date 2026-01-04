@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 2,
+  "result": { "item": "magichem:terrarium_end", "count": 1 },
+  "items": { "type": "magichem:wildergob_end", "required": 16 },
+  "eldrin": { "type": 1, "required": 10 },
+  "materia": { "type": "magichem:essentia_ender", "required": 16 },
+  "slurry": 400
+}

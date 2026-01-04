@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "mna:aum",
     "minecraft:oak_log",
     "minecraft:dark_oak_log"
   ]

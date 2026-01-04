@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 4,
+  "result": { "item": "magichem:scarlet_coral", "count": 1 },
+  "items": { "type": "minecraft:fire_coral_fan", "required": 48 },
+  "eldrin": { "type": 63, "required": 375 },
+  "materia": { "type": "magichem:essentia_citrinitas", "required": 60 },
+  "slurry": 5200
+}

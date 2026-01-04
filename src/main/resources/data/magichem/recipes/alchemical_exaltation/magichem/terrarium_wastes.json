@@ -1,0 +1,9 @@
+{
+  "type": "magichem:exaltation",
+  "tier": 2,
+  "result": { "item": "magichem:terrarium_wastes", "count": 1 },
+  "items": { "type": "magichem:wildergob_wastes", "required": 16 },
+  "eldrin": { "type": 8, "required": 10 },
+  "materia": { "type": "magichem:essentia_air", "required": 16 },
+  "slurry": 400
+}
