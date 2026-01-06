@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 3,
+        "output_rate": 0.25,
+        "batch_size": 8,
+        "object": {
+          "item": "alexscaves:wafer_cookie_block"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_delight",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_odors",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

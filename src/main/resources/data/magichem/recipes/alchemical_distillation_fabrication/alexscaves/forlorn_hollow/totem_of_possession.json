@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_forlorn_hollows",
+        "object": {
+          "item": "alexscaves:totem_of_possession"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_creature",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 11,
+        "output_rate": 0.063,
+        "batch_size": 4,
+        "required_advancement": "alexscaves:alexscaves/discover_abyssal_chasm",
+        "object": {
+          "item": "alexscaves:abyssmarine"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_depths",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_permanence",
+            "count": 3
+          }
+        ]
+      }
+    }
+  ]
+}

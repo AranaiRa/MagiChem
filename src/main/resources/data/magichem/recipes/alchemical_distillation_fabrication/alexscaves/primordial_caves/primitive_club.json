@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "alexscaves:primitive_club"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_wood",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

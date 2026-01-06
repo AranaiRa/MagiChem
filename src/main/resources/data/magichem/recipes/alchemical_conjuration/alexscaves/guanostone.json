@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "alexscaves:guanostone",
+  "materia": "magichem:essentia_earth",
+  "passive": {
+    "item": "alexscaves:guanostone",
+    "count": 1,
+    "period": 160
+  },
+  "supplied": {
+    "item": "alexscaves:guanostone",
+    "count": 8,
+    "period": 20,
+    "charge_usage": 1
+  }
+}

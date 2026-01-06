@@ -1,0 +1,34 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 4,
+        "categories": 32,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "minecraft:adventure/craft_decorated_pot_using_only_sherds",
+        "object": {
+          "item": "alexscaves:footprint_pottery_sherd"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_creature",
+            "count": 125
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 12
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 1,
+  "crafting_time_multiplier": 1.0,
+  "valid_on_cauldron": true,
+  "valid_on_variegator": true,
+  "colorless_default": {
+    "item": "alexscaves:rock_candy_white"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "alexscaves:rock_candy_red"
+    },
+    {
+      "color": "orange",
+      "item": "alexscaves:rock_candy_orange"
+    },
+    {
+      "color": "yellow",
+      "item": "alexscaves:rock_candy_yellow"
+    },
+    {
+      "color": "lime",
+      "item": "alexscaves:rock_candy_lime"
+    },
+    {
+      "color": "green",
+      "item": "alexscaves:rock_candy_green"
+    },
+    {
+      "color": "cyan",
+      "item": "alexscaves:rock_candy_cyan"
+    },
+    {
+      "color": "light_blue",
+      "item": "alexscaves:rock_candy_light_blue"
+    },
+    {
+      "color": "blue",
+      "item": "alexscaves:rock_candy_blue"
+    },
+    {
+      "color": "purple",
+      "item": "alexscaves:rock_candy_purple"
+    },
+    {
+      "color": "magenta",
+      "item": "alexscaves:rock_candy_magenta"
+    },
+    {
+      "color": "pink",
+      "item": "alexscaves:rock_candy_pink"
+    },
+    {
+      "color": "brown",
+      "item": "alexscaves:rock_candy_brown"
+    },
+    {
+      "color": "black",
+      "item": "alexscaves:rock_candy_black"
+    },
+    {
+      "color": "gray",
+      "item": "alexscaves:rock_candy_gray"
+    },
+    {
+      "color": "light_gray",
+      "item": "alexscaves:rock_candy_light_gray"
+    },
+    {
+      "color": "white",
+      "item": "alexscaves:rock_candy_white"
+    }
+  ]
+}

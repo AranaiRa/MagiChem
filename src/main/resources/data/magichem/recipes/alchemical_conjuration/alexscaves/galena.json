@@ -1,0 +1,16 @@
+{
+  "type": "magichem:conjuration",
+  "catalyst": "alexscaves:galena",
+  "materia": "magichem:admixture_metal",
+  "passive": {
+    "item": "alexscaves:galena",
+    "count": 1,
+    "period": 160
+  },
+  "supplied": {
+    "item": "alexscaves:galena",
+    "count": 8,
+    "period": 20,
+    "charge_usage": 1
+  }
+}

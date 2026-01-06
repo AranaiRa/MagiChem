@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 16,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
+          "item": "malum:grim_talc"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_bone",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_death",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_crystal",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_mineral",
+            "count": 4
+          }
+        ]
+      }
+    }
+  ]
+}

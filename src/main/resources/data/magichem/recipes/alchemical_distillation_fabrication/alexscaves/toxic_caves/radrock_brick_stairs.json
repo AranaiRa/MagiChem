@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 4,
+        "required_advancement": "alexscaves:alexscaves/discover_toxic_caves",
+        "object": {
+          "item": "alexscaves:radrock_brick_stairs"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_stone",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_filth",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_radiation",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

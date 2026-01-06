@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 16,
+        "required_advancement": "alexscaves:alexscaves/discover_forlorn_hollows",
+        "object": {
+          "item": "alexscaves:thornwood_button"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_signals",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_wastes",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_wood",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "required_advancement": "alexscaves:alexscaves/discover_toxic_caves",
+        "object": {
+          "item": "alexscaves:sulfur_dust"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_dust",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_odors",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_mineral",
+            "count": 3
+          }
+        ]
+      }
+    }
+  ]
+}

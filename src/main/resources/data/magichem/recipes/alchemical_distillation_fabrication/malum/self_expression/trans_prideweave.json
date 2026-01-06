@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "malum:trans_prideweave"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_comfort",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_color",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

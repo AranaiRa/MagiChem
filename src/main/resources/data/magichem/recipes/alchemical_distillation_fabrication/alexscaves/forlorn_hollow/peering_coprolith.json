@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.25,
+        "batch_size": 4,
+        "required_advancement": "alexscaves:alexscaves/discover_forlorn_hollows",
+        "object": {
+          "item": "alexscaves:peering_coprolith"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_earth",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_alien",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_monster",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_filth",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 20,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "alexscaves:glow_ink_bomb"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_light",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_trap",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

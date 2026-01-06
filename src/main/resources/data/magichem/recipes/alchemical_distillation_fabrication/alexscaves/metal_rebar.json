@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 0.125,
+        "batch_size": 4,
+        "object": {
+          "item": "alexscaves:metal_rebar"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_filth",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

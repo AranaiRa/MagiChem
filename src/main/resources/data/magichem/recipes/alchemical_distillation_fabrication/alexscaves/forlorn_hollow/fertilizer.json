@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "required_advancement": "alexscaves:alexscaves/guano",
+        "object": {
+          "item": "alexscaves:fertilizer"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_filth",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_odors",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_bone",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

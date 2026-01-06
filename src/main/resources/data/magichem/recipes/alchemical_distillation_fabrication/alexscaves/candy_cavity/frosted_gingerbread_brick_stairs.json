@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 3,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "required_advancement": "alexscaves:alexscaves/discover_candy_cavity",
+        "object": {
+          "item": "alexscaves:frosted_gingerbread_brick_stairs"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_air",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 3
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

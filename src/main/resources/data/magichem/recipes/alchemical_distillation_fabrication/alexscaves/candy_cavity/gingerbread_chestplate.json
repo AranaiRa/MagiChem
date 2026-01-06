@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 32,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "alexscaves:gingerbread_chestplate"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_delight",
+            "count": 64
+          },
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 48
+          },
+          {
+            "item": "magichem:admixture_motion",
+            "count": 20
+          },
+          {
+            "item": "magichem:admixture_protection",
+            "count": 20
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 16
+          }
+        ]
+      }
+    }
+  ]
+}

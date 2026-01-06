@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 3,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "required_advancement": "alexscaves:alexscaves/discover_abyssal_chasm",
+        "object": {
+          "item": "alexscaves:abyssal_altar"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_bargain",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_depths",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_darkness",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

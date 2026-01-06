@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "object": {
+          "item": "alexscaves:seething_stew"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_gourmet",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 9
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_thought",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

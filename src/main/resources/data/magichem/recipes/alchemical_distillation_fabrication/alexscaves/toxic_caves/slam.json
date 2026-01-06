@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_toxic_caves",
+        "object": {
+          "item": "alexscaves:slam"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_healing",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_fleshy",
+            "count": 6
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 1.0,
+        "batch_size": 16,
+        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "object": {
+          "item": "alexscaves:tree_star"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_verdant",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_nourishing",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "alexscaves:holocoder"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_sight",
+            "count": 24
+          },
+          {
+            "item": "magichem:admixture_light",
+            "count": 10
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_thought",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_industry",
+            "count": 6
+          }
+        ]
+      }
+    }
+  ]
+}

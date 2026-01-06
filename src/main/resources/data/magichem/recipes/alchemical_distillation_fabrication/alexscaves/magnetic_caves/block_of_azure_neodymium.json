@@ -1,0 +1,41 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "alexscaves:block_of_azure_neodymium"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_metal",
+            "count": 72
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 27
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 18
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 18
+          }
+        ]
+      }
+    }
+  ]
+}

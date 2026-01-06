@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 3,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "object": {
+          "item": "alexscaves:cave_painting_grottoceratops_friend"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_sight",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_history",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_mineral",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

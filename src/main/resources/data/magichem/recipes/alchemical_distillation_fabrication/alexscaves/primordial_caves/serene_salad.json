@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "object": {
+          "item": "alexscaves:serene_salad"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_history",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_satiety",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_healing",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_plant",
+            "count": 2
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

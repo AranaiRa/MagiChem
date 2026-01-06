@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 7,
+        "output_rate": 0.25,
+        "batch_size": 4,
+        "object": {
+          "item": "alexscaves:energized_galena_neutral"
+        },
+        "components": [
+          {
+            "item": "magichem:essentia_ender",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_energy",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_light",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_metal",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

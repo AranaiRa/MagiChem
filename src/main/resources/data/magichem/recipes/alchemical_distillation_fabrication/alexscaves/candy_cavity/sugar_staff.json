@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 6,
+        "categories": 48,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "alexscaves:sugar_staff"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_whimsy",
+            "count": 12
+          },
+          {
+            "item": "magichem:admixture_sorcery",
+            "count": 8
+          },
+          {
+            "item": "magichem:admixture_wizard",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_delight",
+            "count": 4
+          },
+          {
+            "item": "magichem:admixture_violence",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 1,
+        "categories": 7,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "object": {
+          "item": "alexscaves:fern_thatch"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_plant",
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_wrought",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

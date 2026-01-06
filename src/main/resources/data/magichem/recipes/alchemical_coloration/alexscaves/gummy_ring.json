@@ -1,0 +1,32 @@
+{
+  "type": "magichem:coloration",
+  "charge_usage": 2,
+  "crafting_time_multiplier": 1.0,
+  "valid_on_cauldron": false,
+  "valid_on_variegator": true,
+  "colorless_default": {
+    "item": "alexscaves:gummy_ring_red"
+  },
+  "outputs": [
+    {
+      "color": "red",
+      "item": "alexscaves:gummy_ring_red"
+    },
+    {
+      "color": "yellow",
+      "item": "alexscaves:gummy_ring_yellow"
+    },
+    {
+      "color": "green",
+      "item": "alexscaves:gummy_ring_green"
+    },
+    {
+      "color": "blue",
+      "item": "alexscaves:gummy_ring_blue"
+    },
+    {
+      "color": "pink",
+      "item": "alexscaves:gummy_ring_pink"
+    }
+  ]
+}

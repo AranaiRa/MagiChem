@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "malum"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 4,
+        "object": {
+          "item": "malum:ether_torch"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_light",
+            "count": 5
+          }
+        ]
+      }
+    }
+  ]
+}

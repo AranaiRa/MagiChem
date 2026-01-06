@@ -31,7 +31,7 @@ public class BloodMagicFluidRegistry {
 
     //DEMONITE/HELLFORGED_INGOT
     public static final RegistryObject<FluidType> LIQUEFACTED_DEMONITE_FLUID_TYPE = FLUID_TYPES.register("liquefacted_demonite_fluid_type", () ->
-            new FluidType(FluidType.Properties.create().descriptionId("liquefacted_zinc_fluid_type")
+            new FluidType(FluidType.Properties.create().descriptionId("liquefacted_demonite_fluid_type")
                     .canExtinguish(true).canConvertToSource(false)
                     .supportsBoating(true).canHydrate(false).viscosity(0).canPushEntity(false)
                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
