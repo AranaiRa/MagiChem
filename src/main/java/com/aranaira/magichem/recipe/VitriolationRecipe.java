@@ -16,6 +16,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -298,6 +299,8 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
             int inputItemCount = GsonHelper.getAsInt(inputItemObject, "count");
             Item inputItemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(inputItemRL));
 
+            if(inputItemAsItem == null || inputItemAsItem == Items.AIR) MagiChemMod.LOGGER.warn("&&&&& Vitriolation recipe couldn't find input item \""+inputItemRL.toString()+"\"!");
+
             Item resultItemAsItem = null;
             String resultItemRL = null;
             int resultItemCount = 0;
@@ -305,6 +308,8 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 resultItemRL = GsonHelper.getAsString(resultItemObject, "item");
                 resultItemCount = GsonHelper.getAsInt(resultItemObject, "count");
                 resultItemAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(resultItemRL));
+
+                if(resultItemAsItem == null || resultItemAsItem == Items.AIR) MagiChemMod.LOGGER.warn("&&&&& Vitriolation recipe couldn't find result item \""+resultItemRL.toString()+"\"!");
             }
 
             Fluid resultFluidAsFluid = null;
@@ -314,16 +319,24 @@ public class VitriolationRecipe implements Recipe<SimpleContainer>, IMARecipe {
                 resultFluidRL = GsonHelper.getAsString(resultFluidObject, "fluid");
                 resultFluidCount = GsonHelper.getAsInt(resultFluidObject, "amount");
                 resultFluidAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(resultFluidRL));
+
+                if(resultFluidAsFluid == null || resultFluidAsFluid == Fluids.EMPTY) MagiChemMod.LOGGER.warn("&&&&& Vitriolation recipe couldn't find result fluid \""+resultFluidRL.toString()+"\"!");
             }
 
             Fluid inputFluidOverrideAsFluid = null;
             if(inputFluidOverrideString != null) {
-                inputFluidOverrideAsFluid = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(inputFluidOverrideString));
+                ResourceLocation inputFluidOverrideRL = new ResourceLocation(inputFluidOverrideString);
+                inputFluidOverrideAsFluid = ForgeRegistries.FLUIDS.getValue(inputFluidOverrideRL);
+
+                if(inputFluidOverrideAsFluid == null || inputFluidOverrideAsFluid == Fluids.EMPTY) MagiChemMod.LOGGER.warn("&&&&& Vitriolation recipe couldn't find input fluid override \""+inputFluidOverrideRL.toString()+"\"!");
             }
 
             Item outputForCodexAsItem = null;
             if(outputForCodexString != null) {
-                outputForCodexAsItem = ForgeRegistries.ITEMS.getValue(new ResourceLocation(outputForCodexString));
+                ResourceLocation outputForCodexRL = new ResourceLocation(outputForCodexString);
+                outputForCodexAsItem = ForgeRegistries.ITEMS.getValue(outputForCodexRL);
+
+                if(outputForCodexAsItem == null || outputForCodexAsItem == Items.AIR) MagiChemMod.LOGGER.warn("&&&&& Vitriolation recipe couldn't find codex tab item \""+outputForCodexRL.toString()+"\"!");
             }
 
             return new VitriolationRecipe(pRecipeId,
