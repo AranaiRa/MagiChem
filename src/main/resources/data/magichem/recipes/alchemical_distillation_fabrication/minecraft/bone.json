@@ -3,7 +3,7 @@
   "wisdom": 0,
   "categories": 16,
   "output_rate": 1.0,
-  "batch_size": 1,
+  "batch_size": 6,
   "object": { "item": "minecraft:bone" },
   "components": [
     { "item": "magichem:admixture_bone", "count": 9 },
