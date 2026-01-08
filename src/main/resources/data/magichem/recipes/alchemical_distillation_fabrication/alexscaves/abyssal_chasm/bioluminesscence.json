@@ -10,25 +10,29 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 2,
-        "categories": 2,
+        "wisdom": 1,
+        "categories": 10,
         "output_rate": 1.0,
-        "batch_size": 16,
-        "required_advancement": "alexscaves:alexscaves/discover_abyssal_chasm",
+        "batch_size": 4,
+        "required_advancement": "alexscaves:alexscaves/bioluminesscence",
         "object": {
-          "item": "alexscaves:baleen_covered_bone"
+          "item": "alexscaves:bioluminesscence"
         },
         "components": [
           {
-            "item": "magichem:admixture_bone",
-            "count": 27
+            "item": "magichem:essentia_water",
+            "count": 4
           },
           {
-            "item": "magichem:admixture_death",
+            "item": "magichem:admixture_light",
             "count": 6
           },
           {
-            "item": "magichem:admixture_creature",
+            "item": "magichem:admixture_depths",
+            "count": 4
+          },
+          {
+            "item": "magichem:essentia_fleshy",
             "count": 4
           }
         ]

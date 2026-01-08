@@ -16,6 +16,7 @@
         "batch_size": 1,
         "required_advancement": "create:rose_quartz",
         "object": {
+          "item": "create:packager"
         },
         "components": [
           {

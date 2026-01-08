@@ -10,30 +10,29 @@
       ],
       "recipe": {
         "type": "magichem:distillation_fabrication",
-        "wisdom": 1,
-        "categories": 10,
-        "output_rate": 1.0,
-        "batch_size": 4,
-        "required_advancement": "alexscaves:alexscaves/bioluminesscence",
+        "wisdom": 6,
+        "categories": 1,
+        "output_rate": 0.5,
+        "batch_size": 1,
         "object": {
-          "item": "alexscaves:bioluminessence"
+          "item": "alexscaves:guano_layer"
         },
         "components": [
           {
-            "item": "magichem:essentia_water",
-            "count": 4
+            "item": "magichem:admixture_filth",
+            "count": 16
           },
           {
-            "item": "magichem:admixture_light",
-            "count": 6
-          },
-          {
-            "item": "magichem:admixture_depths",
+            "item": "magichem:admixture_odors",
             "count": 4
           },
           {
             "item": "magichem:essentia_fleshy",
-            "count": 4
+            "count": 8
+          },
+          {
+            "item": "magichem:essentia_rotten",
+            "count": 12
           }
         ]
       }

@@ -14,22 +14,26 @@
         "categories": 3,
         "output_rate": 0.125,
         "batch_size": 4,
-        "required_advancement": "alexscaves:alexscaves/discover_primordial_caves",
+        "required_advancement": "alexscaves:alexscaves/discover_forlorn_hollows",
         "object": {
-          "item": "alexscaves:chiseled_limestone"
+          "item": "alexscaves:smooth_coprolith_stairs"
         },
         "components": [
           {
+            "item": "magichem:essentia_earth",
+            "count": 4
+          },
+          {
             "item": "magichem:admixture_stone",
+            "count": 3
+          },
+          {
+            "item": "magichem:admixture_darkness",
             "count": 2
           },
           {
-            "item": "magichem:admixture_erosion",
+            "item": "magichem:admixture_filth",
             "count": 1
-          },
-          {
-            "item": "magichem:essentia_mineral",
-            "count": 2
           },
           {
             "item": "magichem:essentia_wrought",

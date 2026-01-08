@@ -16,7 +16,7 @@
         "batch_size": 4,
         "required_advancement": "alexscaves:alexscaves/discover_forlorn_hollows",
         "object": {
-          "item": "alexscaves:smooth_cropolith_stairs"
+          "item": "alexscaves:smooth_coprolith"
         },
         "components": [
           {
