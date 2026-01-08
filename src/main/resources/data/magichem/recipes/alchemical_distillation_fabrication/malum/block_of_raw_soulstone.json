@@ -15,23 +15,23 @@
         "output_rate": 1.0,
         "batch_size": 1,
         "object": {
-          "item": "malum:blazing_quartz_block"
+          "item": "malum:block_of_raw_soulstone"
         },
         "components": [
           {
-            "item": "magichem:essentia_fire",
-            "count": 72
+            "item": "magichem:essentia_arcane",
+            "count": 9
           },
           {
-            "item": "magichem:admixture_crystal",
-            "count": 18
+            "item": "magichem:admixture_spirit",
+            "count": 9
           },
           {
-            "item": "magichem:admixture_energy",
-            "count": 18
+            "item": "magichem:admixture_potential",
+            "count": 5
           },
           {
-            "item": "magichem:admixture_hells",
+            "item": "magichem:essentia_mineral",
             "count": 9
           }
         ]
