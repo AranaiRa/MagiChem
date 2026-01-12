@@ -2,8 +2,8 @@
   "type": "magichem:exaltation",
   "tier": 2,
   "result": { "item": "magichem:scorched_profundity", "count": 1 },
-  "items": { "type": "magichem:scorched_theorem", "required": 72 },
-  "eldrin": { "type": 32, "required": 120 },
-  "materia": { "type": "magichem:essentia_conceptual", "required": 120 },
-  "slurry": 7000
+  "items": { "type": "magichem:scorched_theorem", "required": 52 },
+  "eldrin": { "type": 32, "required": 90 },
+  "materia": { "type": "magichem:essentia_conceptual", "required": 90 },
+  "slurry": 6000
 }
