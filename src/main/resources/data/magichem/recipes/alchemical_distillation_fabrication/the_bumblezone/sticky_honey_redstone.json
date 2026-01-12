@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 2,
+        "categories": 1,
+        "output_rate": 1.0,
+        "batch_size": 8,
+        "required_advancement": "the_bumblezone:honey_crystal/obtain_sticky_honey_residue",
+        "object": {
+          "item": "the_bumblezone:sticky_honey_redstone"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_trap",
+            "count": 7
+          },
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 6
+          },
+          {
+            "item": "magichem:admixture_dust",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_filth",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_signals",
+            "count": 2
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "the_bumblezone"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:sublimation",
+                "tier": 3,
+                "wisdom": 2,
+                "required_advancement": "the_bumblezone:essence/essence_knowing",
+                "object": {
+                    "item": "the_bumblezone:essence_knowing",
+                    "count": 1
+                },
+                "stages": [
+                    {
+                        "experience": 0,
+                        "components": [
+                            {"item": "magichem:vinteum_crystal_block"},
+                            {"item": "the_bumblezone:crystalline_flower"},
+                            {"item": "magichem:vinteum_crystal_block"}
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_light",
+                                "count": 43
+                            },
+                            {
+                                "item": "magichem:admixture_energy",
+                                "count": 20
+                            },
+                            {
+                                "item": "magichem:admixture_thought",
+                                "count": 12
+                            }
+                        ]
+                    },
+                    {
+                        "experience": 0,
+                        "components": [
+                            {"item": "mna:chimerite_block"},
+                            {"item": "minecraft:spyglass"},
+                            {"item": "the_bumblezone:essence_of_the_bees"},
+                            {"item": "minecraft:spyglass"},
+                            {"item": "mna:chimerite_block"}
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_sight",
+                                "count": 33
+                            },
+                            {
+                                "item": "magichem:admixture_mana",
+                                "count": 21
+                            },
+                            {
+                                "item": "magichem:essentia_nigredo",
+                                "count": 12
+                            }
+                        ]
+                    },
+                    {
+                        "experience": 0,
+                        "components": [
+                            {"item": "mna:rune_arcane"},
+                            {"item": "magichem:inert_wisdom_stone"},
+                            {"item": "mna:rune_ender"}
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_instrument",
+                                "count": 20
+                            },
+                            {
+                                "item": "magichem:admixture_legend",
+                                "count": 2
+                            },
+                            {
+                                "item": "magichem:essentia_albedo",
+                                "count": 6
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

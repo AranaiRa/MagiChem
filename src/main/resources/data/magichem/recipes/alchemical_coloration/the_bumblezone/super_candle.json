@@ -1,0 +1,89 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "the_bumblezone"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:coloration",
+                "charge_usage": 1,
+                "crafting_time_multiplier": 1.0,
+                "valid_on_cauldron": true,
+                "valid_on_variegator": true,
+                "colorless_default": {
+                    "item": "the_bumblezone:super_candle"
+                },
+                "outputs": [
+                    {
+                        "color": "red",
+                        "item": "the_bumblezone:super_candle_red"
+                    },
+                    {
+                        "color": "white",
+                        "item": "the_bumblezone:super_candle_white"
+                    },
+                    {
+                        "color": "orange",
+                        "item": "the_bumblezone:super_candle_orange"
+                    },
+                    {
+                        "color": "magenta",
+                        "item": "the_bumblezone:super_candle_magenta"
+                    },
+                    {
+                        "color": "light_blue",
+                        "item": "the_bumblezone:super_candle_light_blue"
+                    },
+                    {
+                        "color": "yellow",
+                        "item": "the_bumblezone:super_candle_yellow"
+                    },
+                    {
+                        "color": "lime",
+                        "item": "the_bumblezone:super_candle_lime"
+                    },
+                    {
+                        "color": "pink",
+                        "item": "the_bumblezone:super_candle_pink"
+                    },
+                    {
+                        "color": "gray",
+                        "item": "the_bumblezone:super_candle_gray"
+                    },
+                    {
+                        "color": "light_gray",
+                        "item": "the_bumblezone:super_candle_light_gray"
+                    },
+                    {
+                        "color": "cyan",
+                        "item": "the_bumblezone:super_candle_cyan"
+                    },
+                    {
+                        "color": "purple",
+                        "item": "the_bumblezone:super_candle_purple"
+                    },
+                    {
+                        "color": "blue",
+                        "item": "the_bumblezone:super_candle_blue"
+                    },
+                    {
+                        "color": "brown",
+                        "item": "the_bumblezone:super_candle_brown"
+                    },
+                    {
+                        "color": "green",
+                        "item": "the_bumblezone:super_candle_green"
+                    },
+                    {
+                        "color": "black",
+                        "item": "the_bumblezone:super_candle_black"
+                    }
+                ]
+            }
+        }
+    ]
+}

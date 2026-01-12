@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 0,
+        "categories": 6,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "object": {
+          "item": "the_bumblezone:pollen_puff"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 1
+          },
+          {
+            "item": "magichem:admixture_potential",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ]
+}

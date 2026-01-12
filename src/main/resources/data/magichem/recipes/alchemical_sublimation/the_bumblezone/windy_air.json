@@ -1,0 +1,47 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "the_bumblezone"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:sublimation",
+                "tier": 2,
+                "wisdom": 0,
+                "required_advancement": "the_bumblezone:windy_air/obtain_windy_air",
+                "object": {
+                    "item": "the_bumblezone:windy_air",
+                    "count": 8
+                },
+                "stages": [
+                    {
+                        "experience": 0,
+                        "components": [
+                            {
+                                "item": "mna:mote_air"
+                            }
+                        ],
+                        "materia": [
+                            {
+                                "item": "magichem:admixture_breath",
+                                "count": 16
+                            },
+                            {
+                                "item": "magichem:admixture_motion",
+                                "count": 8
+                            },
+                            {
+                                "item": "magichem:admixture_permanence",
+                                "count": 4
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

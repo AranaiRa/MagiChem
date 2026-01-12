@@ -1,0 +1,49 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "the_bumblezone"
+                }
+            ],
+            "recipe": {
+                "type": "magichem:coloration",
+                "charge_usage": 4,
+                "crafting_time_multiplier": 1.0,
+                "valid_on_cauldron": false,
+                "valid_on_variegator": true,
+                "colorless_default": {
+                    "item": "the_bumblezone:luminescent_wax_corner"
+                },
+                "outputs": [
+                    {
+                        "color": "red",
+                        "item": "the_bumblezone:luminescent_wax_corner_red"
+                    },
+                    {
+                        "color": "white",
+                        "item": "the_bumblezone:luminescent_wax_corner_white"
+                    },
+                    {
+                        "color": "yellow",
+                        "item": "the_bumblezone:luminescent_wax_corner_yellow"
+                    },
+                    {
+                        "color": "purple",
+                        "item": "the_bumblezone:luminescent_wax_corner_purple"
+                    },
+                    {
+                        "color": "blue",
+                        "item": "the_bumblezone:luminescent_wax_corner_blue"
+                    },
+                    {
+                        "color": "green",
+                        "item": "the_bumblezone:luminescent_wax_corner_green"
+                    }
+                ]
+            }
+        }
+    ]
+}

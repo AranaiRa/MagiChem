@@ -1,0 +1,29 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:conjuration",
+        "catalyst": "the_bumblezone:sugar_infused_cobblestone",
+        "materia": "magichem:admixture_delight",
+        "passive": {
+          "item": "the_bumblezone:sugar_infused_cobblestone",
+          "count": 1,
+          "period": 160
+        },
+        "supplied": {
+          "item": "the_bumblezone:sugar_infused_cobblestone",
+          "count": 16,
+          "period": 20,
+          "charge_usage": 1
+        }
+      }
+    }
+  ]
+}

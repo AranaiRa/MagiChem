@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "the_bumblezone"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:distillation_fabrication",
+        "wisdom": 3,
+        "categories": 40,
+        "output_rate": 1.0,
+        "batch_size": 1,
+        "required_advancement": "the_bumblezone:music_disc/obtain_all_music_discs",
+        "object": {
+          "item": "the_bumblezone:music_disc_honey_bee_rat_faced_boy"
+        },
+        "components": [
+          {
+            "item": "magichem:admixture_sound",
+            "count": 23
+          },
+          {
+            "item": "magichem:admixture_nectar",
+            "count": 18
+          },
+          {
+            "item": "magichem:admixture_instrument",
+            "count": 2
+          },
+          {
+            "item": "magichem:admixture_signals",
+            "count": 1
+          },
+          {
+            "item": "magichem:essentia_precious",
+            "count": 9
+          }
+        ]
+      }
+    }
+  ]
+}
