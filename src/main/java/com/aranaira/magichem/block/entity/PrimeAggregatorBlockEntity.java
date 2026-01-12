@@ -972,8 +972,6 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                         int extraction = Math.min(Math.min(materiaQuery.getCount(), remaining), bottleSpace);
 
                         if (extraction > 0) {
-                            boolean unbottledDelivery = !materiaQuery.isEmpty() && InventoryHelper.isMateriaUnbottled(materiaQuery);
-
                             pEntity.materiaDelivered += extraction;
                             if (!InventoryHelper.isMateriaUnbottled(materiaQuery)) {
                                 if (bottleQuery.isEmpty()) {
@@ -984,16 +982,14 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
                             }
                             materiaQuery.shrink(extraction);
                             changed = true;
-
-                            if(unbottledDelivery) {
-                                pEntity.provisioningInProgress = false;
-                            }
-
-                            if (pEntity.materiaDelivered >= pEntity.currentRecipe.getMateriaRequired()) {
-                                pEntity.progress = 0;
-                                pEntity.animStage = ANIM_STAGE_TO_ELDRIN;
-                            }
                         }
+                    }
+
+                    if (pEntity.materiaDelivered >= pEntity.currentRecipe.getMateriaRequired()) {
+                        pEntity.progress = 0;
+                        pEntity.provisioningInProgress = false;
+                        pEntity.animStage = ANIM_STAGE_TO_ELDRIN;
+                        changed = true;
                     }
 
                     if (changed) {
@@ -1213,7 +1209,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
 
     @Override
     public boolean needsProvisioning() {
-        return currentRecipe != null && animStage == ANIM_STAGE_GATHERING_MATERIA;
+        return currentRecipe != null && animStage == ANIM_STAGE_GATHERING_MATERIA && materiaDelivered < currentRecipe.getMateriaRequired();
     }
 
     @Override
@@ -1223,7 +1219,7 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
         if(currentRecipe != null && animStage == ANIM_STAGE_GATHERING_MATERIA && !provisioningInProgress) {
             int materiaNeeded = currentRecipe.getMateriaRequired() - materiaDelivered;
             if(materiaNeeded > 0)
-                needs.put(currentRecipe.getMateriaType(), Math.max(0,Math.min(64,materiaNeeded)));
+                needs.put(currentRecipe.getMateriaType(), Math.min(64,materiaNeeded));
         }
 
         return needs;
@@ -1244,22 +1240,9 @@ public class PrimeAggregatorBlockEntity extends BlockEntity implements MenuProvi
     @Override
     public void provide(ItemStack pStack) {
         if(currentRecipe != null && pStack.getItem() == currentRecipe.getMateriaType()) {
-            ItemStack insertionStack = itemHandler.getStackInSlot(SLOT_MATERIA_INPUT);
-
-            if(insertionStack.isEmpty()) {
-                insertionStack = pStack.copy();
-                CompoundTag nbt = new CompoundTag();
-                nbt.putInt("CustomModelData", 1);
-                insertionStack.setTag(nbt);
-            } else {
-                insertionStack.grow(pStack.getCount());
-            }
-            itemHandler.setStackInSlot(SLOT_MATERIA_INPUT, insertionStack);
-
+            materiaDelivered += pStack.getCount();
+            provisioningInProgress = false;
             syncAndSave();
-
-            if(insertionStack.getCount() + materiaDelivered < currentRecipe.getMateriaRequired())
-                provisioningInProgress = false;
         }
     }
 
