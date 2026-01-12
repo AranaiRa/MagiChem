@@ -61,11 +61,11 @@ public class PrimeAggregatorRouterBlockEntity extends BlockEntity implements Men
     }
 
     public PrimeAggregatorRouterType getRouterType() {
-        return PrimeAggregatorRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_GRAND_CENTRIFUGE));
+        return PrimeAggregatorRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_PRIME_AGGREGATOR));
     }
 
     public DevicePlugDirection getPlugDirection() {
-        PrimeAggregatorRouterType type = PrimeAggregatorRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_GRAND_CENTRIFUGE));
+        PrimeAggregatorRouterType type = PrimeAggregatorRouterBlock.unmapRouterTypeFromInt(getBlockState().getValue(ROUTER_TYPE_PRIME_AGGREGATOR));
 
         if(type == PrimeAggregatorRouterType.PLUG_LEFT || type == PrimeAggregatorRouterType.PLUG_RIGHT){
             return this.plugDirection;
