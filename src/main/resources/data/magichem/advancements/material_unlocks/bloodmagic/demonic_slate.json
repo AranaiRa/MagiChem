@@ -23,7 +23,7 @@
           "announce_to_chat": false,
           "hidden": false
         },
-        "parent": "magichem:material_unlocks/imbued_slate",
+        "parent": "magichem:material_unlocks/bloodmagic/imbued_slate",
         "criteria": {
           "get_orb": {
             "trigger": "minecraft:inventory_changed",
