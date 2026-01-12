@@ -1,16 +1,29 @@
 {
-  "type": "magichem:conjuration",
-  "catalyst": "alexscaves:limestone",
-  "materia": "magichem:admixture_erosion",
-  "passive": {
-    "item": "alexscaves:limestone",
-    "count": 1,
-    "period": 160
-  },
-  "supplied": {
-    "item": "alexscaves:limestone",
-    "count": 8,
-    "period": 20,
-    "charge_usage": 1
-  }
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ],
+      "recipe": {
+        "type": "magichem:conjuration",
+        "catalyst": "alexscaves:limestone",
+        "materia": "magichem:admixture_erosion",
+        "passive": {
+          "item": "alexscaves:limestone",
+          "count": 1,
+          "period": 160
+        },
+        "supplied": {
+          "item": "alexscaves:limestone",
+          "count": 8,
+          "period": 20,
+          "charge_usage": 1
+        }
+      }
+    }
+  ]
 }
