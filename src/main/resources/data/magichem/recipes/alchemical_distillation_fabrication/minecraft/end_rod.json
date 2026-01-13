@@ -4,7 +4,7 @@
   "categories": 3,
   "output_rate": 0.25,
   "batch_size": 8,
-  "required_advancement": "minecraft:end/find_end_city",
+  "required_advancement": "minecraft:end/enter_end_gateway",
   "object": { "item": "minecraft:end_rod" },
   "components": [
     { "item": "magichem:admixture_alien", "count": 6 },
